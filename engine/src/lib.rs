@@ -1,12 +1,15 @@
 mod consts;
+mod enemies;
 mod events;
 mod hud;
+mod map;
 mod types;
 
 use consts::*;
+use enemies::{enemy_def, is_hostile_kind};
 use events::*;
 pub use hud::{Hud, HUD_OFFSETS, HUD_SIZE};
-use types::{Ent, FxCmd};
+use types::{AmbushTrigger, Ent, FxCmd};
 
 struct Engine {
     w: usize,
@@ -76,6 +79,7 @@ struct Engine {
     hell: bool,
     boss_spawned: bool,
     boss_intro: f32,
+    ambush: Vec<AmbushTrigger>,
 }
 
 /// Single engine instance. WASM is single-threaded; raw-ref access keeps
@@ -159,9 +163,9 @@ impl Engine {
                 effect_tick: 0.0,
                 zoff: 0.0,
             }; ENT_N],
-            px: 4.5,
-            py: 6.5,
-            pa: 0.0,
+            px: map::PLAYER_START.0,
+            py: map::PLAYER_START.1,
+            pa: map::PLAYER_START.2,
             pitch: 0.0,
             pr: 0.22,
             health: 100,
@@ -209,8 +213,8 @@ impl Engine {
                 hitmarker: 0.0,
                 yaw: 0.0,
                 speed: 0.0,
-                x: 4.5,
-                y: 6.5,
+                x: map::PLAYER_START.0,
+                y: map::PLAYER_START.1,
                 reserve: 36,
                 reloading: 0.0,
                 weap_frame: 0,
@@ -251,6 +255,7 @@ impl Engine {
             hell: false,
             boss_spawned: false,
             boss_intro: 0.0,
+            ambush: Vec::new(),
         };
         e.build_map();
         if generate { e.gen_textures(); }
@@ -357,74 +362,7 @@ impl Engine {
     }
 
     fn build_map(&mut self) {
-        self.map.fill(1);
-        self.floor.fill(0);
-        self.decal.fill(0);
-        // start hangar — riveted steel with hazard strips
-        self.room(1, 1, 15, 12, 1, 0);
-        // metal lab — live CRT walls
-        self.room(18, 2, 13, 11, 6, 0);
-        // brick chapel
-        self.room(33, 1, 14, 14, 2, 1);
-        // barracks — hazard / caution
-        self.room(1, 15, 16, 13, 7, 1);
-        // flesh pit
-        self.room(20, 16, 16, 13, 3, 0);
-        // vault
-        self.room(37, 18, 10, 11, 5, 1);
-        // secret alcove off chapel
-        self.room(40, 1, 7, 5, 2, 1);
-
-        self.hall_h(15, 18, 6, 16);
-        self.hall_h(30, 33, 7, 31);
-        self.hall_v(7, 12, 15, 13);
-        self.hall_h(16, 20, 21, 18);
-        self.hall_h(35, 37, 23, 36);
-        // secret door in chapel north
-        self.set_cell(42, 5, 9);
-        self.set_cell(43, 5, 9);
-
-        self.pillar(38, 6, 2);
-        self.pillar(24, 6, 6);
-        self.pillar(26, 21, 3);
-        self.pillar(8, 20, 7);
-
-        // hangar hazard bulkheads
-        self.set_cell(1, 5, 7);
-        self.set_cell(1, 6, 7);
-        self.set_cell(1, 7, 7);
-        self.set_cell(15, 4, 7);
-        self.set_cell(15, 5, 7);
-        // lab monitor bulk
-        self.set_cell(18, 5, 6);
-        self.set_cell(18, 6, 6);
-        self.set_cell(30, 8, 6);
-        // chapel bone niches
-        self.set_cell(33, 8, 5);
-        self.set_cell(46, 8, 5);
-
-        self.set_cell(42, 23, 10);
-        self.set_cell(43, 23, 10);
-        self.set_cell(42, 24, 10);
-        self.set_cell(43, 24, 10);
-
-        self.mix_edge(1, 1, 15, 12, &[1, 7, 4, 1, 6, 7]);
-        self.mix_edge(18, 2, 13, 11, &[6, 1, 6, 4, 6]);
-        self.mix_edge(33, 1, 14, 14, &[2, 5, 2, 2, 5]);
-        self.mix_edge(1, 15, 16, 13, &[7, 1, 4, 7, 1]);
-        self.mix_edge(20, 16, 16, 13, &[3, 2, 3, 3]);
-        self.mix_edge(37, 18, 10, 11, &[1, 6, 4, 1]);
-        self.mix_edge(40, 1, 7, 5, &[2, 5, 2]);
-        for j in SEAL_Y..SEAL_Y + SEAL_H {
-            for i in SEAL_X..SEAL_X + SEAL_W {
-                if self.cell(i, j) == 0 {
-                    let idx = j as usize * MAP_W + i as usize;
-                    if idx < self.floor.len() {
-                        self.floor[idx] = 2;
-                    }
-                }
-            }
-        }
+        map::build_hub_spoke(self);
     }
 
     fn tex_at_mut(&mut self, id: usize) -> &mut [u32] {
@@ -764,25 +702,10 @@ impl Engine {
     }
 
     fn spawn(&mut self, kind: u8, x: f32, y: f32) -> Option<usize> {
-        let (hp, radius, zoff) = match kind {
-            EK_HUSK => (28, 0.28, 0.0),
-            EK_BRUTE => (78, 0.38, 0.0),
-            EK_WRAITH => (20, 0.26, -70.0),
-            EK_BOSS => (520, 0.62, 8.0),
-            EK_MED | EK_AMMO | EK_ARMOR | EK_GUN2 | EK_GUN3 | EK_GUN4 | EK_GUN5 => (1, 0.22, 34.0),
-            EK_BARREL => (14, 0.3, 78.0),
-            EK_PROJ => (1, 0.12, -10.0),
-            EK_RAY => (1, 0.1, -6.0),
-            EK_BOLT => (1, 0.14, 12.0),
-            EK_GIB => (1, 0.08, 0.0),
-            EK_LAMP => (1, 0.16, -118.0),
-            EK_CRATE => (1, 0.32, 86.0),
-            EK_CHAIN => (1, 0.12, -104.0),
-            EK_IMPACT => (1, 0.1, -6.0),
-            EK_SPARK => (1, 0.06, 0.0),
-            EK_SMOKE => (1, 0.1, -4.0),
-            EK_FLAME => (1, 0.14, 42.0),
-            _ => (1, 0.2, 0.0),
+        // Stats come from the roster table so new enemies need no code here.
+        let (hp, radius, zoff) = match enemy_def(kind) {
+            Some(d) => (d.hp, d.radius, d.zoff),
+            None => (1, 0.2, 0.0),
         };
         for (i, e) in self.ents.iter_mut().enumerate() {
             if e.kind == 0 {
@@ -945,61 +868,7 @@ impl Engine {
     }
 
     fn place_ents(&mut self) {
-        self.ents = [Ent {
-            kind: 0,
-            x: 0.0,
-            y: 0.0,
-            vx: 0.0,
-            vy: 0.0,
-            hp: 0,
-            timer: 0.0,
-            frame: 0.0,
-            radius: 0.25,
-            flash: 0.0,
-            stun: 0.0,
-            effect_tick: 0.0,
-            zoff: 0.0,
-        }; ENT_N];
-        self.spawn(EK_MED, 12.5, 9.5);
-        self.spawn(EK_LAMP, 6.5, 4.5);
-        self.spawn(EK_LAMP, 12.5, 8.5);
-        self.spawn(EK_CRATE, 3.5, 9.5);
-        self.spawn(EK_CRATE, 9.5, 10.6);
-        self.spawn(EK_FLAME, 7.5, 2.6);
-        self.spawn(EK_FLAME, 11.5, 10.4);
-        self.spawn(EK_CHAIN, 8.5, 3.4);
-        self.spawn(EK_GUN2, 24.5, 4.5);
-        self.spawn(EK_AMMO, 28.5, 10.5);
-        self.spawn(EK_LAMP, 21.5, 4.5);
-        self.spawn(EK_LAMP, 28.5, 8.5);
-        self.spawn(EK_CRATE, 20.5, 10.5);
-        self.spawn(EK_FLAME, 25.5, 3.4);
-        self.spawn(EK_ARMOR, 35.5, 12.5);
-        self.spawn(EK_AMMO, 44.5, 12.5);
-        // Introduce the Lance before the chapel's aligned firing line.
-        self.spawn(EK_GUN4, 35.5, 8.5);
-        self.spawn(EK_LAMP, 36.5, 5.5);
-        self.spawn(EK_CHAIN, 40.5, 8.5);
-        self.spawn(EK_FLAME, 38.5, 3.5);
-        self.spawn(EK_GUN3, 43.5, 2.7);
-        self.spawn(EK_MED, 41.5, 2.7);
-        self.spawn(EK_BARREL, 4.5, 17.5);
-        self.spawn(EK_BARREL, 14.5, 18.5);
-        self.spawn(EK_BARREL, 10.5, 25.5);
-        self.spawn(EK_MED, 3.5, 25.5);
-        self.spawn(EK_LAMP, 8.5, 18.5);
-        self.spawn(EK_CRATE, 14.5, 22.5);
-        self.spawn(EK_FLAME, 3.5, 18.6);
-        self.spawn(EK_AMMO, 33.5, 18.5);
-        // The pit entrance gives the Pyre a doorway to hold against approaching brutes.
-        self.spawn(EK_GUN5, 22.5, 19.5);
-        self.spawn(EK_LAMP, 25.5, 22.5);
-        self.spawn(EK_CHAIN, 22.5, 18.5);
-        self.spawn(EK_CHAIN, 30.5, 24.5);
-        self.spawn(EK_FLAME, 28.5, 18.4);
-        self.spawn(EK_MED, 39.5, 26.5);
-        self.spawn(EK_LAMP, 40.5, 22.5);
-        self.spawn_hostiles(1);
+        map::place_hub_spoke(self);
     }
 
     fn spawn_hostiles(&mut self, mult: i32) {
@@ -1027,9 +896,9 @@ impl Engine {
         let mult = 1i32 << shift;
         self.health = 100;
         self.iframes = 1.4;
-        self.px = 4.5;
-        self.py = 6.5;
-        self.pa = 0.0;
+        self.px = map::PLAYER_START.0;
+        self.py = map::PLAYER_START.1;
+        self.pa = map::PLAYER_START.2;
         self.pitch = 0.0;
         self.state = 0;
         self.cooldown = 0.0;
@@ -1057,10 +926,7 @@ impl Engine {
             self.ammo[4] = self.ammo[4].max(60);
         }
         for e in self.ents.iter_mut() {
-            if matches!(
-                e.kind,
-                EK_HUSK | EK_BRUTE | EK_WRAITH | EK_PROJ | EK_RAY | EK_BOLT | EK_BOSS | EK_FIREPATCH
-            ) {
+            if e.kind != 0 && enemy_def(e.kind).is_some_and(|d| d.cleared_on_wave) {
                 e.kind = 0;
             }
         }
@@ -1083,8 +949,8 @@ impl Engine {
         let fx = self.pa.cos();
         let fy = self.pa.sin();
         let spots = [
-            (41.5, 22.5),
-            (42.7, 24.6),
+            (map::BOSS_SPOTS[0].0, map::BOSS_SPOTS[0].1),
+            (map::BOSS_SPOTS[1].0, map::BOSS_SPOTS[1].1),
             (self.px + fx * 4.6, self.py + fy * 4.6),
             (self.px + fx * 3.2 - fy * 2.4, self.py + fy * 3.2 + fx * 2.4),
         ];
@@ -1236,7 +1102,7 @@ impl Engine {
     }
 
     fn is_boss_door(&self, x: i32, y: i32) -> bool {
-        x == 36 && (y == 23 || y == 24)
+        (x == 36 || x == 37) && (y == 18 || y == 19)
     }
 
     fn wall_tex(&self, c: u8, x: i32, y: i32) -> usize {
@@ -1281,8 +1147,8 @@ impl Engine {
         }
         self.door[idx] = 0.06;
         self.events |= EV_DOOR;
-        if c == 9 && self.secrets == 0 {
-            self.secrets = 1;
+        if c == 9 {
+            self.secrets += 1;
         }
         true
     }
@@ -1939,6 +1805,7 @@ impl Engine {
             if self.cell(self.px.floor() as i32, self.py.floor() as i32) == 10 {
                 self.maybe_spawn_boss();
             }
+            map::check_ambushes(self);
         } else {
             self.hud.speed = 0.0;
         }
@@ -1961,7 +1828,7 @@ impl Engine {
             }
             let e = &mut self.ents[i];
             e.flash = (e.flash - dt).max(0.0);
-            if !matches!(e.kind, EK_HUSK | EK_BRUTE | EK_WRAITH | EK_BOSS) {
+            if !is_hostile_kind(e.kind) {
                 e.frame += dt;
             }
             match e.kind {
@@ -2216,7 +2083,7 @@ impl Engine {
 
         let mut living = 0;
         for e in self.ents.iter() {
-            if matches!(e.kind, EK_HUSK | EK_BRUTE | EK_WRAITH | EK_BOSS) {
+            if is_hostile_kind(e.kind) {
                 living += 1;
             }
         }
@@ -2715,29 +2582,11 @@ impl Engine {
             if ty <= 0.12 {
                 continue;
             }
-            let (tid, scale, sheet4) = match e.kind {
-                EK_HUSK => (T_HUSK, 0.95, true),
-                EK_BRUTE => (T_BRUTE, 1.25, true),
-                EK_BOSS => (T_BRUTE, 2.45, true),
-                EK_WRAITH => (T_WRAITH, 0.7, true),
-                EK_PROJ => (T_BALL, 0.28, false),
-                EK_RAY => (T_BALL, 0.10, false),
-                EK_FIREPATCH => (T_FLAME, 0.60, true),
-                EK_BOLT => (T_FLAME, 0.36, true),
-                EK_MED => (T_MED, 0.38, false),
-                EK_AMMO => (T_AMMO, 0.4, false),
-                EK_GUN2 | EK_GUN3 | EK_GUN4 | EK_GUN5 => (T_GUN, 0.46, false),
-                EK_ARMOR => (T_ARMOR, 0.48, false),
-                EK_BARREL => (T_BARREL, 0.72, false),
-                EK_GIB => (T_SPLAT, 0.18, false),
-                EK_LAMP => (T_LAMP, 0.52, false),
-                EK_CRATE => (T_CRATE, 0.62, false),
-                EK_CHAIN => (T_CHAIN, 1.05, false),
-                EK_IMPACT => (T_IMPACT, 0.48, true),
-                EK_SPARK => (T_MUZZLEFX, 0.05, true),
-                EK_SMOKE => (T_FLAME, 0.28, true),
-                EK_FLAME => (T_FLAME, 0.82, true),
-                _ => (T_SPLAT, 0.3, false),
+            // Presentation comes from the roster table: texture slot,
+            // world scale and sheet layout per kind (see enemies.rs).
+            let (tid, scale, sheet4) = match enemy_def(e.kind) {
+                Some(d) => (d.texture, d.scale, d.sheet4),
+                None => (T_SPLAT, 0.3, false),
             };
             let sprite_h = (h as f32 / ty * scale).abs();
             let voff = e.zoff / ty;

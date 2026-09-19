@@ -27,3 +27,14 @@ pub(crate) struct FxCmd {
     pub(crate) timer: f32,
     pub(crate) zoff: f32,
 }
+
+/// A one-shot ambush zone. When the player steps inside the rect, the
+/// matching group from `map::AMBUSH_DEFS` spawns and `fired` latches.
+#[derive(Clone, Copy)]
+pub(crate) struct AmbushTrigger {
+    pub(crate) x0: f32,
+    pub(crate) y0: f32,
+    pub(crate) x1: f32,
+    pub(crate) y1: f32,
+    pub(crate) fired: bool,
+}

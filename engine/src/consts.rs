@@ -68,21 +68,26 @@ pub(crate) const EK_BOLT: u8 = 22;
 pub(crate) const EK_BOSS: u8 = 23;
 pub(crate) const EK_FIREPATCH: u8 = 24;
 
+/// Opening hostile cast for the hub-and-spoke map, west to east then
+/// south: hangar duo, plaza pair, lab guards, chapel line, vault
+/// honor guard, pit pair. Every coordinate must be an open cell —
+/// `map::tests::hub_spoke_zones_are_all_connected` enforces reachability
+/// and `opening_cast_matches_the_zone_playlist` pins the count.
 pub(crate) const HOSTILES: [(u8, f32, f32); 14] = [
-    (EK_HUSK, 11.5, 5.5),
-    (EK_HUSK, 22.5, 5.5),
-    (EK_HUSK, 27.5, 9.5),
-    (EK_HUSK, 39.5, 10.5),
-    (EK_BRUTE, 41.5, 10.5),
-    (EK_HUSK, 43.5, 10.5),
-    (EK_HUSK, 5.5, 20.5),
-    (EK_HUSK, 12.5, 24.5),
-    (EK_BRUTE, 24.5, 20.5),
-    (EK_BRUTE, 31.5, 25.5),
-    (EK_WRAITH, 27.5, 22.5),
+    (EK_HUSK, 7.5, 14.5),
+    (EK_HUSK, 14.5, 15.5),
+    (EK_HUSK, 20.5, 13.5),
+    (EK_BRUTE, 25.5, 17.5),
+    (EK_HUSK, 22.5, 9.5),
+    (EK_BRUTE, 26.5, 3.5),
+    (EK_WRAITH, 19.5, 3.5),
+    (EK_HUSK, 32.5, 15.5),
+    (EK_BRUTE, 37.5, 13.5),
+    (EK_WRAITH, 36.5, 21.5),
+    (EK_BRUTE, 41.5, 25.5),
+    (EK_WRAITH, 38.5, 26.5),
     (EK_WRAITH, 22.5, 26.5),
-    (EK_BRUTE, 41.5, 21.5),
-    (EK_WRAITH, 44.5, 26.5),
+    (EK_BRUTE, 25.5, 25.5),
 ];
 pub(crate) const IN_W: u32 = 1;
 pub(crate) const IN_S: u32 = 2;
