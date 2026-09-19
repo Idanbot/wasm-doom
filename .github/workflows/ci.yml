@@ -16,6 +16,7 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm run check:wasm
+      - run: npm run check:assets
       - run: npm run build
       - run: node --experimental-strip-types --test src/components/game/data.test.ts src/game/hud-abi.test.ts
       - uses: dtolnay/rust-toolchain@stable
