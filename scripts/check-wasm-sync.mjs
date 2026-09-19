@@ -33,7 +33,8 @@ export function collectSourceFiles(dir) {
 export function hashSources(srcDir) {
   const hash = createHash("sha256");
   for (const file of collectSourceFiles(srcDir)) {
-    hash.update(file);
+    // Relative path: absolute checkouts differ per machine (notably CI).
+    hash.update(file.slice(srcDir.length));
     hash.update("\0");
     hash.update(readFileSync(file));
     hash.update("\0");
