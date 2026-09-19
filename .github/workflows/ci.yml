@@ -6,11 +6,17 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: 22
+          # Must match the local toolchain (npm 11): npm 10 resolves
+          # optional peer deps differently and rejects this lockfile.
+          node-version: 24
+          cache: npm
       - run: npm ci
       - run: npm run typecheck
       - run: npm run check:wasm
       - run: npm run build
+      - run: node --experimental-strip-types --test src/components/game/data.test.ts src/game/hud-abi.test.ts
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo test --manifest-path engine/Cargo.toml
