@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="720" viewBox="0 0 640 720">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a2420"/>
+      <stop offset="0.5" stop-color="#161210"/>
+      <stop offset="1" stop-color="#0c0a09"/>
+    </linearGradient>
+    <pattern id="noise" width="8" height="8" patternUnits="userSpaceOnUse">
+      <rect width="8" height="8" fill="#1a1614"/>
+      <circle cx="1" cy="2" r="0.6" fill="#000" opacity="0.35"/>
+      <circle cx="5" cy="6" r="0.5" fill="#3a3330" opacity="0.25"/>
+    </pattern>
+  </defs>
+  <rect width="640" height="720" fill="url(#g)"/>
+  <rect width="640" height="720" fill="url(#noise)" opacity="0.55"/>
+  <rect x="10" y="10" width="620" height="700" fill="none" stroke="#5a5048" stroke-width="3"/>
+  <rect x="18" y="18" width="604" height="684" fill="none" stroke="#1a1412" stroke-width="2"/>
+  <g fill="#8a8078">
+    <circle cx="28" cy="28" r="6"/>
+    <circle cx="612" cy="28" r="6"/>
+    <circle cx="28" cy="692" r="6"/>
+    <circle cx="612" cy="692" r="6"/>
+  </g>
+  <g fill="#2a2420">
+    <circle cx="28" cy="28" r="2"/>
+    <circle cx="612" cy="28" r="2"/>
+    <circle cx="28" cy="692" r="2"/>
+    <circle cx="612" cy="692" r="2"/>
+  </g>
+  <rect x="40" y="8" width="560" height="6" fill="#c4452d" opacity="0.85"/>
+</svg>

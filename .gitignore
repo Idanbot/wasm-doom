@@ -1,0 +1,12 @@
+node_modules/
+.tanstack/
+.vercel/
+dist/
+.engine/
+engine/target/
+.grok/dev.log
+.grok/og-pending
+screenshots/batch-*.png
+screenshots/arsenal-*.png
+*.log
+.DS_Store

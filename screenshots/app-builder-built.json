@@ -1,0 +1,40 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "HELLSCAN",
+      "hasCanvas": true,
+      "bodyTextLen": 466,
+      "bodyTextHash": "2d832f426b02e7ea0f6be49ae095a872bc0f6643e5b8c0daa085471394f37d3b",
+      "bodyTextPrefix": "NADIR-7 / WASM + WEBGPU HELLSCAN Site Nadir-7 went dark. You are",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "HELLSCAN",
+      "hasCanvas": true,
+      "bodyTextLen": 466,
+      "bodyTextHash": "2d832f426b02e7ea0f6be49ae095a872bc0f6643e5b8c0daa085471394f37d3b",
+      "bodyTextPrefix": "NADIR-7 / WASM + WEBGPU HELLSCAN Site Nadir-7 went dark. You are",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-built.json",
+  "divergesFromBaseline": true,
+  "baselineReasons": [
+    "mobile: body text changed (521 -> 466 chars, hash mismatch)"
+  ]
+}
