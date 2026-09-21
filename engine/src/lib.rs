@@ -1013,14 +1013,21 @@ impl Engine {
         self.sample_mip(id, u, v, level, (lod.fract() * 256.0) as u32)
     }
 
-    fn sample_mip_at(&self, id: usize, u: i32, v: i32, level: usize) -> u32 {
+    fn mip_slot(id: usize, u: i32, v: i32, level: usize) -> (u8, usize) {
         if level == 0 {
-            return self.sample(id, u, v);
+            let u = (u as usize) & (TEX - 1);
+            let v = (v as usize) & (TEX - 1);
+            return (0, id * TEX * TEX + v * TEX + u);
         }
         let size = TEX >> level;
         let x = ((u & TEXM) as usize) >> level;
         let y = ((v & TEXM) as usize) >> level;
-        self.mipmaps[level - 1][id * size * size + y * size + x]
+        (level as u8, id * size * size + y * size + x)
+    }
+
+    fn sample_mip_at(&self, id: usize, u: i32, v: i32, level: usize) -> u32 {
+        let (which, idx) = Self::mip_slot(id, u, v, level);
+        if which == 0 { self.tex[idx] } else { self.mipmaps[which as usize - 1][idx] }
     }
 
     fn blend_mips(a: u32, b: u32, mix: u32) -> u32 {
@@ -1089,6 +1096,20 @@ impl Engine {
     #[inline(always)]
     fn sample_mip4(&self, id: usize, uv: [(i32, i32); 4], level: usize, mix: u32) -> [u32; 4] {
         let next = (level + 1).min(8);
+        // Close rows rarely share a texel, and the slot compare loses to four gathers.
+        if level >= 3 {
+            let slot = Self::mip_slot(id, uv[0].0, uv[0].1, level);
+            let slot_b = Self::mip_slot(id, uv[0].0, uv[0].1, next);
+            let shared = (1..4).all(|i| {
+                Self::mip_slot(id, uv[i].0, uv[i].1, level) == slot
+                    && Self::mip_slot(id, uv[i].0, uv[i].1, next) == slot_b
+            });
+            if shared {
+                let a = self.sample_mip_at(id, uv[0].0, uv[0].1, level);
+                let b = self.sample_mip_at(id, uv[0].0, uv[0].1, next);
+                return Self::blend_mips4([a, a, a, a], [b, b, b, b], mix);
+            }
+        }
         let mut a = [0u32; 4];
         let mut b = [0u32; 4];
         for i in 0..4 {
@@ -2371,6 +2392,43 @@ impl Engine {
         out
     }
 
+    /// Four-wide copy of [`shade_rgb`]. Scale is constant across a wall column.
+    #[inline(always)]
+    fn shade_rgb4(colors: [u32; 4], ambient: f32, light: [f32; 3]) -> [u32; 4] {
+        #[cfg(target_feature = "simd128")]
+        {
+            use core::arch::wasm32::*;
+            let scale = [
+                (ambient + light[0]).clamp(0.18, 1.8),
+                (ambient + light[1]).clamp(0.18, 1.8),
+                (ambient + light[2]).clamp(0.18, 1.8),
+            ];
+            let color = u32x4(colors[0], colors[1], colors[2], colors[3]);
+            let mask = u32x4_splat(255);
+            let cap = f32x4_splat(255.0);
+            let mut out = v128_and(color, u32x4_splat(0xff00_0000));
+            for channel in 0..3 {
+                let chan = v128_and(u32x4_shr(color, channel * 8), mask);
+                let lit = f32x4_min(f32x4_mul(f32x4_convert_i32x4(chan), f32x4_splat(scale[channel as usize])), cap);
+                let bits = i32x4_trunc_sat_f32x4(lit);
+                out = v128_or(out, u32x4_shl(bits, channel * 8));
+            }
+            return [
+                u32x4_extract_lane::<0>(out),
+                u32x4_extract_lane::<1>(out),
+                u32x4_extract_lane::<2>(out),
+                u32x4_extract_lane::<3>(out),
+            ];
+        }
+        #[cfg(not(target_feature = "simd128"))]
+        [
+            Self::shade_rgb(colors[0], ambient, light),
+            Self::shade_rgb(colors[1], ambient, light),
+            Self::shade_rgb(colors[2], ambient, light),
+            Self::shade_rgb(colors[3], ambient, light),
+        ]
+    }
+
     #[cfg_attr(target_feature = "simd128", allow(dead_code))]
     fn shade_texel(color: u32, gain: [i32; 3], alpha: u32) -> u32 {
         let r = (((color & 255) * gain[0] as u32) >> 16).min(255);
@@ -2699,32 +2757,55 @@ impl Engine {
             };
 
             if hit != 0 && tex_x >= 0 && tex_x < TEX as i32 {
-                for y in draw0..=draw1 {
-                    let tex_y = (tex_pos as i32).wrapping_add(scroll) & TEXM;
-                    tex_pos += step;
-                    let mut col = self.sample_mip(tid, tex_x, tex_y, level, mix);
-                    if tid == T_TECH && (tex_y & 7) == 0 {
-                        col = Self::shade(col, 1.35);
+                let mut y = draw0;
+                let end = draw1 + 1;
+                while y < end {
+                    let n = (end - y).min(4) as usize;
+                    let mut tex_y = [0i32; 4];
+                    let mut uv = [(tex_x, 0); 4];
+                    for i in 0..n {
+                        let ty = (tex_pos as i32).wrapping_add(scroll) & TEXM;
+                        tex_pos += step;
+                        tex_y[i] = ty;
+                        uv[i] = (tex_x, ty);
                     }
-                    if (tid == T_METAL || tid == T_HAZARD) && (tex_y & 31) < 3 && (hash & 1) == 0 {
-                        col = Self::blend(col, Self::pack(255, 140, 40, 255), 0.35);
+                    if n < 4 {
+                        let pad = uv[0];
+                        uv[n..4].fill(pad);
                     }
-                    if dec > 0 {
-                        let splat = self.sample_mip(T_SPLAT, tex_x, tex_y.wrapping_add(dec as i32 * 17), level, mix);
-                        if ((splat >> 24) & 255) > 24 {
-                            col = Self::blend(col, splat, 0.28 + dec as f32 * 0.18);
+                    let mut colors = self.sample_mip4(tid, uv, level, mix);
+                    for i in 0..n {
+                        let ty = tex_y[i];
+                        if tid == T_TECH && (ty & 7) == 0 {
+                            colors[i] = Self::shade(colors[i], 1.35);
+                        }
+                        if (tid == T_METAL || tid == T_HAZARD) && (ty & 31) < 3 && (hash & 1) == 0 {
+                            colors[i] = Self::blend(colors[i], Self::pack(255, 140, 40, 255), 0.35);
+                        }
+                        if dec > 0 {
+                            let splat = self.sample_mip(
+                                T_SPLAT, tex_x, ty.wrapping_add(dec as i32 * 17), level, mix,
+                            );
+                            if ((splat >> 24) & 255) > 24 {
+                                colors[i] = Self::blend(colors[i], splat, 0.28 + dec as f32 * 0.18);
+                            }
                         }
                     }
-                    col = Self::shade_rgb(col, dist_mul, light);
-                    if tid == T_TECH && (tex_y & 31) < 2 {
-                        col = Self::blend(col, Self::pack(64, 190, 224, 255), 0.62);
+                    let shaded = Self::shade_rgb4(colors, dist_mul, light);
+                    for i in 0..n {
+                        let ty = tex_y[i];
+                        let mut col = shaded[i];
+                        if tid == T_TECH && (ty & 31) < 2 {
+                            col = Self::blend(col, Self::pack(64, 190, 224, 255), 0.62);
+                        }
+                        col = Self::fog(col, perp);
+                        let yy = y + i as i32 + shy;
+                        let xx = x as i32 + shx;
+                        if yy >= 0 && yy < h as i32 && xx >= 0 && xx < w as i32 {
+                            self.fb[yy as usize * w + xx as usize] = col;
+                        }
                     }
-                    col = Self::fog(col, perp);
-                    let yy = y + shy;
-                    let xx = x as i32 + shx;
-                    if yy >= 0 && yy < h as i32 && xx >= 0 && xx < w as i32 {
-                        self.fb[yy as usize * w + xx as usize] = col;
-                    }
+                    y += n as i32;
                 }
             }
 
@@ -3057,6 +3138,13 @@ pub extern "C" fn hs_simd_probe() -> i32 {
             if blended[i] != Engine::blend_mips(a[i], b[i], mix) {
                 mismatches += 1;
             }
+        }
+    }
+    let light = [0.4, -0.2, 1.2];
+    let rgb = Engine::shade_rgb4(colors, 0.7, light);
+    for i in 0..4 {
+        if rgb[i] != Engine::shade_rgb(colors[i], 0.7, light) {
+            mismatches += 1;
         }
     }
     mismatches
@@ -3562,5 +3650,23 @@ mod tests {
         assert!(far >= 3, "a distant column must use the mip chain, got {far}");
         let (capped, _) = Engine::column_lod(80.0, 1, 0.72, 320);
         assert!(capped <= 8);
+    }
+
+    #[test]
+    fn wall_shade_matches_one_pixel_at_a_time() {
+        let colors = [Engine::pack(200, 10, 255, 128), 0x0102_0304, 0x00ff_ffff, 0];
+        let light = [0.55, -0.4, 2.0];
+        let batch = Engine::shade_rgb4(colors, 0.82, light);
+        for i in 0..4 {
+            assert_eq!(batch[i], Engine::shade_rgb(colors[i], 0.82, light));
+        }
+        let shared = [(3, 5), (259, 5), (-253, 261), (3, 5 + 512)];
+        let mut e = arena();
+        e.rebuild_mipmaps();
+        assert_eq!(
+            e.sample_mip4(0, shared, 0, 0),
+            [e.sample(0, 3, 5); 4],
+            "wrapped uvs that land on one texel must splat, not resample",
+        );
     }
 }
