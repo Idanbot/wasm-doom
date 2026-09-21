@@ -2601,6 +2601,146 @@ impl Engine {
         }
     }
 
+    fn prepare_gpu(&mut self) {
+        self.update_lighting();
+        let w = self.w.min(MAX_W);
+        let h = self.h;
+        let dir_x = self.pa.cos();
+        let dir_y = self.pa.sin();
+        let aspect = w as f32 / h.max(1) as f32;
+        let plane_len = 0.72 * (aspect / 1.6);
+        let plane_x = -dir_y * plane_len;
+        let plane_y = dir_x * plane_len;
+        let horizon = h as f32 * 0.5 + self.pitch * h as f32 * 0.9;
+        let tnow = self.time;
+        let scratch = gpu_scratch();
+        scratch.view = GpuView {
+            px: self.px,
+            py: self.py,
+            dir_x,
+            dir_y,
+            plane_x,
+            plane_y,
+            horizon,
+            time: tnow,
+            hell: if self.hell { 1.0 } else { 0.0 },
+            muzzle: self.muzzle,
+            w: w as f32,
+            h: h as f32,
+            plane_len,
+            sprite_n: 0.0,
+            _p1: 0.0,
+            _p2: 0.0,
+        };
+        for x in 0..w {
+            let cam = 2.0 * (x as f32 + 0.5) / w as f32 - 1.0;
+            let mut rdx = dir_x + plane_x * cam;
+            let mut rdy = dir_y + plane_y * cam;
+            if rdx.abs() < 1e-6 { rdx = 1e-6; }
+            if rdy.abs() < 1e-6 { rdy = 1e-6; }
+            let mut map_x = self.px.floor() as i32;
+            let mut map_y = self.py.floor() as i32;
+            let ddx = (1.0 / rdx).abs();
+            let ddy = (1.0 / rdy).abs();
+            let step_x = if rdx < 0.0 { -1 } else { 1 };
+            let step_y = if rdy < 0.0 { -1 } else { 1 };
+            let mut sdx = if rdx < 0.0 { (self.px - map_x as f32) * ddx } else { (map_x as f32 + 1.0 - self.px) * ddx };
+            let mut sdy = if rdy < 0.0 { (self.py - map_y as f32) * ddy } else { (map_y as f32 + 1.0 - self.py) * ddy };
+            let mut side = 0;
+            let mut hit = 0u8;
+            for _ in 0..(MAP_W + MAP_H) {
+                if sdx < sdy {
+                    sdx += ddx;
+                    map_x += step_x;
+                    side = 0;
+                } else {
+                    sdy += ddy;
+                    map_y += step_y;
+                    side = 1;
+                }
+                let c = self.cell(map_x, map_y);
+                if c != 0 && c != 10 {
+                    let open = if (c == 8 || c == 9) && map_x >= 0 && map_y >= 0 && (map_x as usize) < MAP_W && (map_y as usize) < MAP_H {
+                        self.door[map_y as usize * MAP_W + map_x as usize]
+                    } else { 0.0 };
+                    if open >= 0.98 { continue; }
+                    hit = c;
+                    break;
+                }
+            }
+            let perp = if side == 0 {
+                (map_x as f32 - self.px + (1 - step_x) as f32 / 2.0) / rdx
+            } else {
+                (map_y as f32 - self.py + (1 - step_y) as f32 / 2.0) / rdy
+            }.abs().max(0.05);
+            let z = if hit == 0 { 40.0 } else { perp };
+            let line_h = (h as f32 / perp) as i32;
+            let ds_full = -line_h / 2 + horizon as i32;
+            let mut draw0 = ds_full;
+            let mut draw1 = line_h / 2 + horizon as i32;
+            if draw0 < 0 { draw0 = 0; }
+            if draw1 >= h as i32 { draw1 = h as i32 - 1; }
+            if hit == 0 { draw0 = h as i32; draw1 = -1; }
+            let mut wall_x = if side == 0 { self.py + perp * rdy } else { self.px + perp * rdx };
+            wall_x -= wall_x.floor();
+            let mut tex_x = (wall_x * TEX as f32) as i32;
+            if side == 0 && rdx > 0.0 { tex_x = TEX as i32 - tex_x - 1; }
+            if side == 1 && rdy < 0.0 { tex_x = TEX as i32 - tex_x - 1; }
+            let open = if (hit == 8 || hit == 9) && map_x >= 0 && map_y >= 0 && (map_x as usize) < MAP_W && (map_y as usize) < MAP_H {
+                self.door[map_y as usize * MAP_W + map_x as usize]
+            } else { 0.0 };
+            tex_x = (tex_x + (open * TEX as f32) as i32) & TEXM;
+            let mut tid = if hit == 0 { 0 } else { self.wall_tex(hit, map_x, map_y) };
+            let hash = (map_x.wrapping_mul(19) + map_y.wrapping_mul(7)) as u32;
+            if tid == T_METAL && hash % 7 == 0 { tid = T_HAZARD; }
+            if tid == T_BRICK && hash % 5 == 0 { tid = T_SKULL; }
+            let light = self.light_at(self.px + (perp - 0.03) * rdx, self.py + (perp - 0.03) * rdy);
+            let dec = if map_x >= 0 && map_y >= 0 && (map_x as usize) < MAP_W && (map_y as usize) < MAP_H {
+                self.decal[map_y as usize * MAP_W + map_x as usize]
+            } else { 0 };
+            scratch.cols[x] = GpuCol {
+                perp,
+                tex_x: tex_x as f32,
+                light_r: light[0],
+                light_g: light[1],
+                light_b: light[2],
+                draw0: draw0 as f32,
+                draw1: draw1 as f32,
+                line_h: line_h.max(1) as f32,
+                ds_full: ds_full as f32,
+                tex: tid as f32,
+                side: side as f32,
+                dec: dec as f32,
+                hash: hash as f32,
+                hit: hit as f32,
+                z,
+                _pad: 0.0,
+            };
+        }
+        let mut n = 0usize;
+        for e in &self.ents {
+            if e.kind == 0 || n >= ENT_N { continue; }
+            let (tex, scale, sheet4) = match enemy_def(e.kind) {
+                Some(d) => (d.texture as f32, d.scale, d.sheet4),
+                None => (T_SPLAT as f32, 0.3, false),
+            };
+            let frame = if sheet4 { ((e.frame * 4.0) as i32).rem_euclid(4) as f32 } else { -1.0 };
+            scratch.sprites[n] = GpuSprite {
+                x: e.x,
+                y: e.y,
+                zoff: e.zoff,
+                scale,
+                tex,
+                frame,
+                flash: if e.flash > 0.0 { 1.0 } else { 0.0 },
+                kind: e.kind as f32,
+            };
+            n += 1;
+        }
+        scratch.sprite_n = n;
+        scratch.view.sprite_n = n as f32;
+    }
+
     fn render(&mut self) {
         self.update_lighting();
         let w = self.w;
@@ -2979,6 +3119,102 @@ impl Engine {
         }
 
     }
+}
+
+
+#[repr(C)]
+#[derive(Clone, Copy)]
+struct GpuView {
+    px: f32, py: f32, dir_x: f32, dir_y: f32,
+    plane_x: f32, plane_y: f32, horizon: f32, time: f32,
+    hell: f32, muzzle: f32, w: f32, h: f32,
+    plane_len: f32, sprite_n: f32, _p1: f32, _p2: f32,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy)]
+struct GpuCol {
+    perp: f32, tex_x: f32, light_r: f32, light_g: f32,
+    light_b: f32, draw0: f32, draw1: f32, line_h: f32,
+    ds_full: f32, tex: f32, side: f32, dec: f32,
+    hash: f32, hit: f32, z: f32, _pad: f32,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy)]
+struct GpuSprite {
+    x: f32, y: f32, zoff: f32, scale: f32,
+    tex: f32, frame: f32, flash: f32, kind: f32,
+}
+
+struct GpuScratch {
+    cols: Vec<GpuCol>,
+    sprites: Vec<GpuSprite>,
+    sprite_n: usize,
+    view: GpuView,
+}
+
+fn gpu_scratch() -> &'static mut GpuScratch {
+    static mut G: Option<GpuScratch> = None;
+    unsafe {
+        if G.is_none() {
+            G = Some(GpuScratch {
+                cols: vec![GpuCol {
+                    perp: 0.0, tex_x: 0.0, light_r: 0.0, light_g: 0.0,
+                    light_b: 0.0, draw0: 0.0, draw1: -1.0, line_h: 1.0,
+                    ds_full: 0.0, tex: 0.0, side: 0.0, dec: 0.0,
+                    hash: 0.0, hit: 0.0, z: 40.0, _pad: 0.0,
+                }; MAX_W],
+                sprites: vec![GpuSprite {
+                    x: 0.0, y: 0.0, zoff: 0.0, scale: 0.0,
+                    tex: 0.0, frame: -1.0, flash: 0.0, kind: 0.0,
+                }; ENT_N],
+                sprite_n: 0,
+                view: GpuView {
+                    px: 0.0, py: 0.0, dir_x: 1.0, dir_y: 0.0,
+                    plane_x: 0.0, plane_y: 0.0, horizon: 0.0, time: 0.0,
+                    hell: 0.0, muzzle: 0.0, w: 0.0, h: 0.0,
+                    plane_len: 0.0, sprite_n: 0.0, _p1: 0.0, _p2: 0.0,
+                },
+            });
+        }
+        G.as_mut().unwrap_unchecked()
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn hs_prepare_gpu() {
+    eng().prepare_gpu();
+}
+
+#[no_mangle]
+pub extern "C" fn hs_gpu_view() -> *const GpuView {
+    &gpu_scratch().view
+}
+
+#[no_mangle]
+pub extern "C" fn hs_gpu_cols() -> *const GpuCol {
+    gpu_scratch().cols.as_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn hs_gpu_sprites() -> *const GpuSprite {
+    gpu_scratch().sprites.as_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn hs_gpu_sprite_count() -> i32 {
+    gpu_scratch().sprite_n as i32
+}
+
+#[no_mangle]
+pub extern "C" fn hs_floor_ptr() -> *const u8 {
+    eng().floor.as_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn hs_light_ptr() -> *const f32 {
+    eng().light_grid.as_ptr() as *const f32
 }
 
 #[no_mangle]
@@ -3668,5 +3904,18 @@ mod tests {
             [e.sample(0, 3, 5); 4],
             "wrapped uvs that land on one texel must splat, not resample",
         );
+    }
+
+    #[test]
+    fn gpu_cast_hits_a_wall_and_packs_sprites() {
+        hs_init(160, 100);
+        hs_prepare_gpu();
+        let cols = unsafe { std::slice::from_raw_parts(hs_gpu_cols(), 160) };
+        assert!(cols.iter().any(|c| c.hit > 0.5), "the enclosed map must hit a wall");
+        assert!(cols.iter().all(|c| c.perp.is_finite() && c.z.is_finite()));
+        assert!(hs_gpu_sprite_count() > 0);
+        assert_eq!(std::mem::size_of::<GpuCol>() / 4, 16);
+        assert_eq!(std::mem::size_of::<GpuView>() / 4, 16);
+        assert_eq!(std::mem::size_of::<GpuSprite>() / 4, 8);
     }
 }

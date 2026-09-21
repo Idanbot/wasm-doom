@@ -1,5 +1,6 @@
 import { createAudio, type GameAudio } from "./audio";
 import { createBlitter, type BlitKind, type Blitter } from "./blit";
+import { readWorldFrame, TEX_N } from "./gpu-world";
 import { HUD_SIZE } from "./hud-abi";
 import { DEFAULT_GFX, DEFAULT_HUD, type GfxOpts, type HudState, type ResMode } from "./types";
 
@@ -27,6 +28,13 @@ type WasmExports = {
   hs_fire_patches: () => number;
   hs_tick: (dt: number) => void;
   hs_render: () => void;
+  hs_prepare_gpu: () => void;
+  hs_gpu_view: () => number;
+  hs_gpu_cols: () => number;
+  hs_gpu_sprites: () => number;
+  hs_gpu_sprite_count: () => number;
+  hs_floor_ptr: () => number;
+  hs_light_ptr: () => number;
   hs_yaw: () => number;
   hs_speed: () => number;
   hs_spread: () => number;
@@ -264,6 +272,7 @@ export class HellscanRuntime {
   private fbView: Uint8Array | null = null;
   private fbBuf: ArrayBuffer | null = null;
   private fbLen = 0;
+  private gpuReady = false;
 
   constructor(canvas: HTMLCanvasElement, hooks: RuntimeHooks) {
     this.canvas = canvas;
@@ -498,6 +507,7 @@ export class HellscanRuntime {
       }
     }
     wasm.hs_textures_ready();
+    this.pushAtlas();
   }
 
   private bind() {
@@ -680,34 +690,60 @@ export class HellscanRuntime {
       this.sfxFromEvents(this.wasm.hs_events(), this.wasm.hs_ev_weapon());
       this.accumulator -= step;
     }
-    this.wasm.hs_render();
-
+    const hud = this.readHud();
+    const fx = { muzzle: hud.muzzle, hurt: hud.hurt, time: t * 0.001 };
     const w = this.wasm.hs_fb_w();
     const h = this.wasm.hs_fb_h();
-    const ptr = this.wasm.hs_fb_ptr();
-    const buf = this.wasm.memory.buffer;
-    const len = w * h * 4;
-    if (!this.fbView || this.fbBuf !== buf || this.fbLen !== len) {
-      this.fbView = new Uint8Array(buf, ptr, len);
-      this.fbBuf = buf;
-      this.fbLen = len;
-    } else if ((this.fbView as Uint8Array).byteOffset !== ptr) {
-      this.fbView = new Uint8Array(buf, ptr, len);
-      this.fbLen = len;
+    let presented = false;
+    if (this.gpuReady && this.blit.drawWorld) {
+      this.wasm.hs_prepare_gpu();
+      const mem = this.wasm.memory.buffer;
+      const frame = readWorldFrame(
+        mem,
+        this.wasm.hs_gpu_view(),
+        this.wasm.hs_gpu_cols(),
+        this.wasm.hs_gpu_sprites(),
+        this.wasm.hs_gpu_sprite_count(),
+        this.wasm.hs_floor_ptr(),
+        this.wasm.hs_light_ptr(),
+        w,
+      );
+      presented = this.blit.drawWorld(frame, fx);
     }
-    const pixels = this.fbView as Uint8Array;
-    const hud = this.readHud();
-    this.blit.draw(pixels, w, h, {
-      muzzle: hud.muzzle,
-      hurt: hud.hurt,
-      time: t * 0.001,
-    });
+    if (!presented) {
+      this.wasm.hs_render();
+      const ptr = this.wasm.hs_fb_ptr();
+      const buf = this.wasm.memory.buffer;
+      const len = w * h * 4;
+      if (!this.fbView || this.fbBuf !== buf || this.fbLen !== len) {
+        this.fbView = new Uint8Array(buf, ptr, len);
+        this.fbBuf = buf;
+        this.fbLen = len;
+      } else if ((this.fbView as Uint8Array).byteOffset !== ptr) {
+        this.fbView = new Uint8Array(buf, ptr, len);
+        this.fbLen = len;
+      }
+      this.blit.draw(this.fbView as Uint8Array, w, h, fx);
+    }
 
     this.hud = hud;
     this.hooks.onHud(hud, this.fps, `${w} × ${h}`);
     if (hud.state !== this.prevHud.state) this.hooks.onState(hud.state);
     this.prevHud = hud;
   };
+  private pushAtlas() {
+    const wasm = this.wasm;
+    if (!wasm || !this.blit?.uploadAtlas) return;
+    const size = wasm.hs_tex_size();
+    const layers = new Uint8Array(TEX_N * size * size * 4);
+    for (let id = 0; id < TEX_N; id++) {
+      const ptr = wasm.hs_tex_ptr(id);
+      layers.set(new Uint8Array(wasm.memory.buffer, ptr, size * size * 4), id * size * size * 4);
+    }
+    this.blit.uploadAtlas(layers);
+    this.gpuReady = true;
+  }
+
 
   private sfxFromEvents(events: number, evWeapon: number) {
     try {

@@ -1,3 +1,4 @@
+import { createWebGlWorld, createWebGpuWorld, type GpuWorld, type WorldFrame } from "./gpu-world";
 import { DEFAULT_GFX, type GfxOpts } from "./types";
 
 export type BlitKind = "webgpu" | "webgl2" | "canvas2d";
@@ -11,6 +12,8 @@ export type BlitFx = {
 export type Blitter = {
   kind: BlitKind;
   draw: (pixels: Uint8Array, w: number, h: number, fx?: BlitFx) => void;
+  uploadAtlas?: (layers: Uint8Array) => void;
+  drawWorld?: (frame: WorldFrame, fx?: BlitFx) => boolean;
   resize: (w: number, h: number) => void;
   setGfx: (g: GfxOpts) => void;
   dispose: () => void;
@@ -203,6 +206,7 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
   let gen = 0;
   let recoveries = 0;
   let settingUp = false;
+  let world: GpuWorld | null = null;
 
 
   const configure = () => {
@@ -236,7 +240,7 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
       const t = device.createTexture({
         size: { width: w, height: h },
         format: "rgba8unorm",
-        usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST,
+        usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST | GPUTextureUsage.RENDER_ATTACHMENT,
       });
       tex.push(t);
       view.push(t.createView());
@@ -324,6 +328,8 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
         size: 48,
         usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
       });
+      world?.dispose();
+      try { world = createWebGpuWorld(dev); } catch { world = null; }
       ready = true;
       void dev.lost.then(() => {
         if (my !== gen) return;
@@ -363,6 +369,8 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
     dispose() {
       gen += 1;
       ready = false;
+      world?.dispose();
+      world = null;
       destroyTex();
       uniBuf?.destroy();
       ctx?.unconfigure();
@@ -374,6 +382,44 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
     resize() {
       const { changed } = syncDisplay(canvas);
       if (changed) configure();
+    },
+    uploadAtlas(layers) {
+      world?.uploadAtlas(layers);
+    },
+    drawWorld(frame, fx) {
+      if (!ready || !device || !ctx || !pipeline || !bloomPipe || !world) return false;
+      const { dw, dh, changed } = syncDisplay(canvas);
+      if (changed) configure();
+      ensureTex(frame.w, frame.h);
+      const i = ping;
+      ping ^= 1;
+      if (!tex[i] || !view[i] || !bind[i] || !bloomView) return false;
+      try {
+        const encoder = device.createCommandEncoder();
+        world.draw(encoder, view[i]!, frame);
+        writeUni(frame.w, frame.h, dw, dh, fx);
+        if (gfx.bloom) {
+          const bp = encoder.beginRenderPass({
+            colorAttachments: [{ view: bloomView, loadOp: "clear", storeOp: "store", clearValue: { r: 0, g: 0, b: 0, a: 1 } }],
+          });
+          bp.setPipeline(bloomPipe);
+          bp.setBindGroup(0, bloomBind[i]!);
+          bp.draw(3);
+          bp.end();
+        }
+        const viewOut = ctx.getCurrentTexture().createView();
+        const pass = encoder.beginRenderPass({
+          colorAttachments: [{ view: viewOut, loadOp: "clear", storeOp: "store", clearValue: { r: 0.04, g: 0.03, b: 0.03, a: 1 } }],
+        });
+        pass.setPipeline(pipeline);
+        pass.setBindGroup(0, bind[i]!);
+        pass.draw(3);
+        pass.end();
+        device.queue.submit([encoder.finish()]);
+        return true;
+      } catch {
+        return false;
+      }
     },
     draw(pixels, w, h, fx) {
       if (!ready || !device || !ctx || !pipeline || !bloomPipe) return;
@@ -495,7 +541,8 @@ void main(){
     rgb *= 1.0 - 0.14 * abs(sin(uv.y * res.y * 3.14159265));
   }
   o = vec4(rgb, 1.0);
-}`;
+}
+`;
 
 function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Blitter {
   const vs = gl.createShader(gl.VERTEX_SHADER);
@@ -534,10 +581,12 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
   let texW = 0;
   let texH = 0;
   let gfx: GfxOpts = { ...DEFAULT_GFX };
+  const world = createWebGlWorld(gl);
 
   return {
     kind: "webgl2",
     dispose() {
+      world?.dispose();
       gl.deleteTexture(tex);
       gl.deleteVertexArray(vao);
       gl.deleteProgram(prog);
@@ -550,6 +599,34 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
     resize() {
       const { dw, dh, changed } = syncDisplay(canvas);
       if (changed) gl.viewport(0, 0, dw, dh);
+    },
+    uploadAtlas(layers) {
+      world?.uploadAtlas(layers);
+    },
+    drawWorld(frame, fx) {
+      if (!world) return false;
+      const { dw, dh, changed } = syncDisplay(canvas);
+      if (changed) gl.viewport(0, 0, dw, dh);
+      gl.bindTexture(gl.TEXTURE_2D, tex);
+      if (texW !== frame.w || texH !== frame.h) {
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, frame.w, frame.h, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+        texW = frame.w;
+        texH = frame.h;
+      }
+      if (!world.draw(tex, frame)) return false;
+      gl.bindTexture(gl.TEXTURE_2D, tex);
+      gl.useProgram(prog);
+      gl.uniform2f(locRes, frame.w, frame.h);
+      gl.uniform2f(locDisplay, dw, dh);
+      gl.uniform1f(locMuzzle, fx?.muzzle ?? 0);
+      gl.uniform1f(locHurt, fx?.hurt ?? 0);
+      gl.uniform1f(locCrt, gfx.crt ? 1 : 0);
+      gl.uniform1f(locBloom, gfx.bloom ? 1 : 0);
+      gl.uniform1f(locFog, gfx.fog ? 1 : 0);
+      gl.bindVertexArray(vao);
+      gl.viewport(0, 0, dw, dh);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+      return true;
     },
     draw(pixels, w, h, fx) {
       const { dw, dh, changed } = syncDisplay(canvas);

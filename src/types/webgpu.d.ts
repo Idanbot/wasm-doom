@@ -14,6 +14,7 @@ interface GPUDevice {
   createRenderPipeline(desc: Record<string, unknown>): GPURenderPipeline;
   createBuffer(desc: { size: number; usage: number }): GPUBuffer;
   createTexture(desc: Record<string, unknown>): GPUTexture;
+  createSampler(desc: Record<string, unknown>): GPUSampler;
   createBindGroup(desc: Record<string, unknown>): GPUBindGroup;
   createBindGroupLayout(desc: Record<string, unknown>): GPUBindGroupLayout;
   createPipelineLayout(desc: Record<string, unknown>): GPUPipelineLayout;
@@ -23,6 +24,8 @@ interface GPUDevice {
   destroy(): void;
 }
 
+interface GPUSampler {}
+
 interface GPUShaderModule {}
 interface GPURenderPipeline {
   getBindGroupLayout(i: number): GPUBindGroupLayout;
@@ -31,7 +34,7 @@ interface GPUBindGroupLayout {}
 interface GPUPipelineLayout {}
 interface GPUBuffer { destroy(): void; }
 interface GPUTexture {
-  createView(): GPUTextureView;
+  createView(desc?: Record<string, unknown>): GPUTextureView;
   destroy(): void;
 }
 interface GPUTextureView {}
@@ -43,18 +46,18 @@ interface GPUCommandEncoder {
 interface GPURenderPass {
   setPipeline(p: GPURenderPipeline): void;
   setBindGroup(i: number, g: GPUBindGroup): void;
-  draw(n: number): void;
+  draw(n: number, instances?: number): void;
   end(): void;
 }
 interface GPUCommandBuffer {}
 interface GPUQueue {
   writeTexture(
-    dest: { texture: GPUTexture },
-    data: BufferSource,
+    dest: { texture: GPUTexture; origin?: { x?: number; y?: number; z?: number } },
+    data: ArrayBufferView<ArrayBufferLike> | ArrayBuffer,
     layout: { bytesPerRow: number; rowsPerImage: number },
-    size: { width: number; height: number },
+    size: { width: number; height: number; depthOrArrayLayers?: number },
   ): void;
-  writeBuffer(buf: GPUBuffer, offset: number, data: BufferSource): void;
+  writeBuffer(buf: GPUBuffer, offset: number, data: ArrayBufferView<ArrayBufferLike> | ArrayBuffer): void;
   submit(cmds: GPUCommandBuffer[]): void;
 }
 
@@ -72,6 +75,7 @@ declare const GPUTextureUsage: {
 
 declare const GPUBufferUsage: {
   UNIFORM: number;
+  STORAGE: number;
   COPY_DST: number;
 };
 
