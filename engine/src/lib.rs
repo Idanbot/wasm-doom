@@ -3077,4 +3077,251 @@ mod tests {
         assert_eq!((middle >> 16) & 255, 0);
         assert!(e.fb.iter().all(|c| *c != 0));
     }
+
+    #[test]
+    fn armor_soaks_two_thirds_then_iframes_and_death_stick() {
+        let mut e = arena();
+        e.armor = 30;
+        e.damage_player(15);
+        assert_eq!(e.armor, 20, "armor soaks two thirds, capped by the vest");
+        assert_eq!(e.health, 95);
+        assert!(e.events & EV_HURT != 0);
+        e.damage_player(40);
+        assert_eq!(e.health, 95, "iframes must swallow the follow-up");
+        assert_eq!(e.armor, 20);
+        e.iframes = 0.0;
+        e.armor = 0;
+        e.damage_player(200);
+        assert_eq!(e.health, 0);
+        assert_eq!(e.state, 1);
+        assert!(e.events & EV_DIE != 0);
+        e.damage_player(20);
+        assert_eq!(e.health, 0, "a downed player takes no further damage");
+        assert_eq!(e.state, 1);
+    }
+
+    #[test]
+    fn reload_draws_reserve_and_blocks_the_trigger() {
+        let mut e = arena();
+        e.mag[0] = MAG_SZ[0];
+        e.ammo[0] = 4;
+        e.bits = IN_RELOAD;
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.reload_t, 0.0, "a full magazine must not reload");
+        assert_eq!(e.ammo[0], 4);
+
+        e.bits = 0;
+        e.tick(1.0 / 60.0);
+        e.mag[0] = 2;
+        e.ammo[0] = 0;
+        e.bits = IN_RELOAD;
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.reload_t, 0.0, "an empty reserve must not start a reload");
+
+        e.bits = 0;
+        e.tick(1.0 / 60.0);
+        e.ammo[0] = 5;
+        e.bits = IN_RELOAD;
+        e.tick(1.0 / 60.0);
+        assert!((e.reload_t - RELOAD_T[0]).abs() < 0.001);
+        assert!(e.events & EV_RELOAD != 0);
+        e.bits = IN_FIRE;
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.mag[0], 2, "the trigger is dead while reloading");
+        e.bits = 0;
+        while e.reload_t > 0.0 {
+            e.tick(1.0 / 60.0);
+        }
+        assert_eq!(e.mag[0], 7);
+        assert_eq!(e.ammo[0], 0);
+
+        e.mag[0] = 10;
+        e.ammo[0] = 1;
+        e.begin_reload();
+        while e.reload_t > 0.0 {
+            e.tick(1.0 / 60.0);
+        }
+        assert_eq!(e.mag[0], 11, "reload takes only what the reserve holds");
+        assert_eq!(e.ammo[0], 0);
+
+        e.mag[0] = 0;
+        e.bits = IN_FIRE;
+        e.tick(1.0 / 60.0);
+        assert!(e.events & EV_EMPTY != 0);
+        assert_eq!(e.reload_t, 0.0);
+        assert_eq!(e.mag[0], 0);
+    }
+
+    #[test]
+    fn held_weapon_key_does_not_cancel_reload() {
+        let mut e = arena();
+        e.has_w2 = true;
+        e.mag[1] = MAG_SZ[1];
+        e.ammo[1] = 6;
+        e.bits = IN_W2;
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.weapon, 1);
+        e.mag[1] = 1;
+        e.begin_reload();
+        e.bits = IN_W2;
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.weapon, 1);
+        assert!(e.reload_t > 0.0, "a held weapon key must not restart the swap");
+        e.bits = 0;
+        e.tick(1.0 / 60.0);
+        e.bits = IN_W1;
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.weapon, 0);
+        assert_eq!(e.reload_t, 0.0, "an actual swap cancels the reload");
+        e.bits = 0;
+        e.tick(1.0 / 60.0);
+        e.bits = IN_W3;
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.weapon, 0, "a locked gun must not switch");
+    }
+
+    #[test]
+    fn approach_opens_doors_but_secrets_need_use() {
+        let mut e = arena();
+        e.pa = 0.0;
+        e.set_cell(5, 4, 8);
+        e.set_cell(5, 3, 9);
+        e.tick(1.0 / 60.0);
+        assert!(e.door[4 * MAP_W + 5] > 0.0, "a door opens on approach");
+        assert_eq!(e.door[3 * MAP_W + 5], 0.0, "a secret stays shut");
+        assert_eq!(e.secrets, 0);
+        e.bits = IN_USE;
+        e.tick(1.0 / 60.0);
+        assert!(e.door[3 * MAP_W + 5] > 0.0);
+        assert_eq!(e.secrets, 1);
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.secrets, 1, "holding use must not recount the secret");
+    }
+
+    #[test]
+    fn hitscan_stops_at_cover() {
+        let mut e = arena();
+        e.pa = 0.0;
+        let behind = e.spawn(EK_HUSK, 8.5, 4.5).unwrap();
+        let hp = e.ents[behind].hp;
+        e.set_cell(6, 4, 1);
+        assert!(!e.hitscan(0.0, 15, 22.0));
+        assert_eq!(e.ents[behind].hp, hp);
+        e.set_cell(6, 4, 0);
+        assert!(e.hitscan(0.0, 15, 22.0));
+        assert_eq!(e.ents[behind].hp, hp - 15);
+    }
+
+    #[test]
+    fn boss_death_wins_and_barrels_chain_without_kills() {
+        let mut e = arena();
+        let boss = e.spawn(EK_BOSS, 6.5, 4.5).unwrap();
+        e.ents[boss].hp = 1;
+        e.hurt_ent(boss, 5, e.px, e.py);
+        assert_eq!(e.ents[boss].kind, EK_NONE);
+        assert_eq!(e.state, 2, "the vault master is the win");
+        assert_eq!(e.kills, 1);
+
+        let mut e = arena();
+        let a = e.spawn(EK_BARREL, 5.0, 4.5).unwrap();
+        let b = e.spawn(EK_BARREL, 6.2, 4.5).unwrap();
+        e.ents[a].hp = 1;
+        e.ents[b].hp = 1;
+        e.hurt_ent(a, 5, 4.0, 4.5);
+        assert_eq!(e.ents[a].kind, EK_NONE);
+        assert_eq!(e.ents[b].kind, EK_NONE, "a barrel blast chains");
+        assert_eq!(e.kills, 0, "props are not kills");
+        assert_eq!(e.state, 0);
+        assert!(e.health > 0, "a single chain must not delete the player");
+    }
+
+    #[test]
+    fn next_wave_restores_the_body_and_keeps_found_gear() {
+        let mut e = arena();
+        e.health = 11;
+        e.state = 1;
+        e.has_w4 = true;
+        e.weapon = 3;
+        e.ammo[3] = 1;
+        e.mag[3] = 0;
+        let med = e.spawn(EK_MED, 8.5, 8.5).unwrap();
+        e.spawn(EK_HUSK, 9.5, 8.5).unwrap();
+        e.next_wave();
+        assert_eq!(e.wave, 2);
+        assert_eq!(e.health, 100);
+        assert_eq!(e.state, 0);
+        assert!(e.has_w4);
+        assert_eq!(e.weapon, 3, "a found gun stays in hand");
+        assert_eq!(e.mag[3], MAG_SZ[3]);
+        assert!(e.ammo[3] >= 8);
+        assert_eq!(e.ents[med].kind, EK_MED, "supplies survive the wave");
+        assert_eq!(
+            e.ents.iter().filter(|en| is_hostile_kind(en.kind)).count(),
+            28,
+            "the previous cast is cleared, then two copies of the roster spawn",
+        );
+        e.wave = 12;
+        e.next_wave();
+        assert_eq!(e.wave, 12, "waves cap at 12");
+        assert_eq!(e.ents[med].kind, EK_MED);
+    }
+
+    #[test]
+    fn a_hitch_cannot_outrun_the_step_cap() {
+        let mut e = arena();
+        e.pa = 0.0;
+        e.bits = IN_W;
+        e.tick(5.0);
+        let dist = ((e.px - 4.5).powi(2) + (e.py - 4.5).powi(2)).sqrt();
+        assert!((dist - 3.35 * 0.08).abs() < 0.001);
+        assert!((e.time - 0.08).abs() < 1e-5);
+        let x = e.px;
+        e.tick(-3.0);
+        assert!((e.time - 0.08).abs() < 1e-5, "a negative step must not rewind");
+        assert!((e.px - x).abs() < 0.001);
+    }
+
+    #[test]
+    fn full_armor_is_left_on_the_floor() {
+        let mut e = arena();
+        e.armor = 100;
+        let item = e.spawn(EK_ARMOR, e.px, e.py).unwrap();
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.ents[item].kind, EK_ARMOR);
+        assert_eq!(e.armor, 100);
+        e.armor = 40;
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.armor, 90);
+        assert_eq!(e.ents[item].kind, EK_NONE);
+    }
+
+    #[test]
+    fn the_seal_spawns_one_boss_scaled_to_the_wave() {
+        let mut e = arena();
+        e.wave = 2;
+        e.set_cell(4, 4, 10);
+        e.tick(1.0 / 60.0);
+        let bosses: Vec<_> = e.ents.iter().filter(|en| en.kind == EK_BOSS).collect();
+        assert_eq!(bosses.len(), 1);
+        assert_eq!(bosses[0].hp, 720);
+        assert!(e.boss_spawned);
+        assert!(e.hell);
+        assert!(e.events & EV_BOSS_DROP != 0);
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.ents.iter().filter(|en| en.kind == EK_BOSS).count(), 1);
+    }
+
+    #[test]
+    fn hell_swaps_walls_but_keeps_the_seal() {
+        let mut e = arena();
+        assert_eq!(e.wall_tex(2, 1, 1), T_BRICK);
+        assert_eq!(e.wall_tex(8, 36, 18), T_SEAL);
+        e.hell = true;
+        assert_eq!(e.wall_tex(2, 1, 1), T_FLESH);
+        assert_eq!(e.wall_tex(6, 1, 1), T_FLESH, "tech becomes flesh, not skull");
+        assert_eq!(e.wall_tex(7, 1, 1), T_SKULL, "hazard striping becomes skull");
+        assert_eq!(e.wall_tex(9, 1, 1), T_SKULL);
+        assert_eq!(e.wall_tex(8, 36, 18), T_SEAL);
+        assert_eq!(e.wall_tex(9, 36, 19), T_SEAL);
+    }
 }
