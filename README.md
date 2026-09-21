@@ -64,4 +64,4 @@ cargo test --manifest-path engine/Cargo.toml
 - 60fps at the default 640×400 mode (measured headless); 320×200–1600×1000 selectable
 - WebGPU with automatic WebGL2/Canvas2D fallback; renderer switchable without restarting the sim
 - 5 weapons, 3 enemy types + boss, wave system, local leaderboard
-- 39 Rust tests, 75 TS tests, script integration tests; CI runs typecheck, wasm-sync, and build
+- 41 Rust tests, 75 TS tests, script integration tests; CI runs typecheck, wasm-sync, and build

@@ -1,0 +1,4 @@
+# Floor/ceiling shading uses wasm SIMD. startup.sh and `npm run build:wasm`
+# both invoke cargo, so the flag lives here rather than in one script.
+[target.wasm32-unknown-unknown]
+rustflags = ["-C", "target-feature=+simd128"]
