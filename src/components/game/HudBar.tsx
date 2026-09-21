@@ -14,7 +14,7 @@ export function HudBar({
   renderer: string;
 }) {
   return (
-    <div className="pointer-events-none absolute inset-0 p-4 sm:p-5">
+    <div className="pointer-events-none absolute inset-0 z-20 p-4 sm:p-5">
       <div className="flex items-start justify-between">
         <div className="rounded-md border border-border bg-bg/70 px-3 py-2">
           <p className="font-display text-[10px] tracking-[0.22em] text-muted">HEALTH</p>

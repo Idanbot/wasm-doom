@@ -48,6 +48,20 @@ try {
       await hold(['KeyW', 'KeyD']);
       right = -(t.getX() - x) * Math.sin(yaw) + (t.getY() - y) * Math.cos(yaw);
       if (right <= 0.05) throw Error('D must strafe right while moving forward');
+      // Exercise the actual mouse listener, including its pointer-lock guard.
+      const canvas = document.querySelector('canvas');
+      Object.defineProperty(document, 'pointerLockElement', { configurable: true, get: () => canvas });
+      const moveMouse = async dx => {
+        for (let i = 0; i < 4; i++) document.dispatchEvent(new MouseEvent('mousemove', { movementX: dx }));
+        for (let i = 0; i < 3; i++) await new Promise(requestAnimationFrame);
+      };
+      const beforeLeft = t.getYaw();
+      await moveMouse(-12);
+      if (t.getYaw() >= beforeLeft) throw Error('Mouse left must turn left');
+      const beforeRight = t.getYaw();
+      await moveMouse(12);
+      if (t.getYaw() <= beforeRight) throw Error('Mouse right must turn right');
+      delete document.pointerLockElement;
       const ammo = t.getAmmo();
       await hold(['Space']);
       if (t.getAmmo() >= ammo) throw Error('Firing must consume ammunition');

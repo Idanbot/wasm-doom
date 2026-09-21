@@ -492,6 +492,7 @@ void main(){
 const GL_FS = `#version 300 es
 precision mediump float;
 uniform sampler2D t;
+uniform bool worldTexture;
 uniform vec2 res;
 uniform vec2 display;
 uniform float muzzle;
@@ -510,10 +511,10 @@ vec3 applyFog(vec4 c) {
 }
 
 void main(){
-  vec2 uv = v;
+  vec2 uv = worldTexture ? vec2(v.x, 1.0 - v.y) : v;
   vec4 raw = texture(t, uv);
   vec3 rgb = applyFog(raw);
-  vec2 g = uv * 2.0 - 1.0;
+  vec2 g = v * 2.0 - 1.0;
   rgb *= 1.0 - 0.22 * dot(g, g);
 
   if (hurt > 0.04) {
@@ -568,6 +569,7 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
   gl.pixelStorei(gl.UNPACK_ALIGNMENT, 4);
   gl.useProgram(prog);
+  const locWorldTexture = gl.getUniformLocation(prog, "worldTexture");
   const locRes = gl.getUniformLocation(prog, "res");
   const locDisplay = gl.getUniformLocation(prog, "display");
   const locMuzzle = gl.getUniformLocation(prog, "muzzle");
@@ -607,6 +609,7 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
       if (!world) return false;
       const { dw, dh, changed } = syncDisplay(canvas);
       if (changed) gl.viewport(0, 0, dw, dh);
+      gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D, tex);
       if (texW !== frame.w || texH !== frame.h) {
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, frame.w, frame.h, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
@@ -614,8 +617,11 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
         texH = frame.h;
       }
       if (!world.draw(tex, frame)) return false;
+      gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D, tex);
       gl.useProgram(prog);
+      // FBO textures use bottom-left rows; CPU uploads use top-left rows.
+      gl.uniform1i(locWorldTexture, 1);
       gl.uniform2f(locRes, frame.w, frame.h);
       gl.uniform2f(locDisplay, dw, dh);
       gl.uniform1f(locMuzzle, fx?.muzzle ?? 0);
@@ -631,6 +637,7 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
     draw(pixels, w, h, fx) {
       const { dw, dh, changed } = syncDisplay(canvas);
       if (changed) gl.viewport(0, 0, dw, dh);
+      gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D, tex);
       if (texW !== w || texH !== h) {
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, w, h, 0, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
@@ -639,6 +646,9 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
       } else {
         gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
       }
+      gl.useProgram(prog);
+      gl.bindVertexArray(vao);
+      gl.uniform1i(locWorldTexture, 0);
       gl.uniform2f(locRes, w, h);
       gl.uniform2f(locDisplay, dw, dh);
       gl.uniform1f(locMuzzle, fx?.muzzle ?? 0);

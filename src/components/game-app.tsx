@@ -327,7 +327,7 @@ export function GameApp() {
           )}
           <button
             type="button"
-            className="absolute right-4 top-20 z-10 h-11 rounded-md border border-border bg-bg/70 px-3 font-display text-xs tracking-[0.18em] text-muted"
+            className="absolute right-4 top-28 z-10 h-11 rounded-md border border-border bg-bg/70 px-3 font-display text-xs tracking-[0.18em] text-muted"
             onClick={pause}
           >
             Pause

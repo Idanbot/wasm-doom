@@ -555,8 +555,8 @@ export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
   const fbo = gl.createFramebuffer();
   const sprBuf = gl.createBuffer();
   const sprVao = gl.createVertexArray();
-  if (!colsTex || !floorTex || !lightTex || !atlas || !fbo || !sprBuf || !sprVao) return null;
-  if (!colsTex || !floorTex || !lightTex || !atlas || !fbo || !sprBuf) return null;
+  const fillVao = gl.createVertexArray();
+  if (!colsTex || !floorTex || !lightTex || !atlas || !fbo || !sprBuf || !sprVao || !fillVao) return null;
   const colsImg = new Float32Array(1920 * 4 * 4);
   let atlasReady = false;
   gl.bindTexture(gl.TEXTURE_2D_ARRAY, atlas);
@@ -606,7 +606,12 @@ export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA32F, MAP_W, MAP_H, 0, gl.RGBA, gl.FLOAT, lightRgba);
       gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
       gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, target, 0);
+      if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) {
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        return false;
+      }
       gl.viewport(0, 0, frame.w, frame.h);
+      gl.bindVertexArray(fillVao);
       gl.useProgram(prog);
       gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D_ARRAY, atlas);
@@ -674,6 +679,7 @@ export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
       gl.deleteProgram(sprProg);
       gl.deleteBuffer(sprBuf);
       gl.deleteVertexArray(sprVao);
+      gl.deleteVertexArray(fillVao);
       gl.deleteTexture(colsTex);
       gl.deleteTexture(floorTex);
       gl.deleteTexture(lightTex);
