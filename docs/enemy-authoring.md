@@ -25,11 +25,11 @@ Floor kinds: `0` normal, `1` alt, `2` seal-flag (under the vault seal).
 
 | Fact | Value |
 |---|---|
-| Atlas | **256×256 RGBA** per slot (`TEX`), **29 slots** (`TEX_N`, ids `0–28`) |
-| Hostile sheets | **2×2 grid of 128×128 cells**, frame `(anim·4) mod 4` → cell `(fr&1, fr>>1)` |
+| Atlas | **256×256 RGBA** per slot (`TEX`), **120 slots** (`TEX_N`, ids `0–119`) |
+| Hostile sheets | Seven **2×2 layers** per BLACKSITE skin: idle (2), move (4), pain (2), fire (2), reload/charge (2), dead (2), special (2) |
 | Single images | Whole 256×256 sampled (props, pickups, projectiles) |
 | Upload | Stretched to 256×256 with smoothing **off**; procedural fallback generated if the PNG is missing |
-| Transparency | Flood-filled from the atlas edge: alpha < 16, magenta (`R>220, B>220, G<40`), or near-black (`max(R,G,B) < 28`). **Never paint silhouettes pure black** |
+| Transparency | Deterministic magenta key removes edge-connected and enclosed gaps; alpha < 16 and near-black remain safety keys. **Never paint silhouettes pure black** |
 | Billboard | Square (`sprite_w = sprite_h`), nearest sampling |
 
 ### The `EnemyDef` size fields
@@ -58,7 +58,21 @@ pathing ≤ 22u), separation, hit-flash, stun and the wave lifecycle.
 Custom attacks still need code in the AI section — the table covers
 stats, art and lifecycle, not bespoke boss patterns.
 
-## 2. Template: add a row
+## 2. BLACKSITE animation contract
+
+`art/blacksite-enemy-generation-plan.json` is the locked roster prompt and
+frame plan. Each 1024px source render is processed by
+`scripts/build-blacksite-enemy-atlas.py` into seven 256px RGBA layers under
+`public/game/`. Two-frame groups occupy the first two cells and duplicate the
+last frame into the unused cells; move uses all four cells. The simulation
+selects groups from hit reaction, movement, firing, reload/charge timing,
+melee specials and the two-frame death hold.
+
+`Ent.skin` selects the roster identity while the existing four archetypes keep
+combat tuning shared. Add a skin entry and seven atlas files together; do not
+make the model produce a packed sheet.
+
+## 3. Template: add a row
 
 ```rust
 // engine/src/enemies.rs — copy a row, e.g. a fast charger:
@@ -77,15 +91,16 @@ EnemyDef {
 },
 ```
 
-## 3. Checklist (nothing else to touch)
+## 4. Checklist (nothing else to touch)
 
-1. **Art** per `monster-sprite-design.md` → `public/game/spr_<name>.png`.
-2. **`TEX_FILES`** in `src/game/runtime.ts`: `{ id: <T_*>, src: "/game/spr_<name>.png" }` — id must equal the `T_*` const.
-3. **`EK_*`** const in `engine/src/consts.rs` (next free `u8`: 25+).
-4. **`EnemyDef` row** in `engine/src/enemies.rs` (copy the TEMPLATE comment there).
-5. **Placement** in `engine/src/map.rs`: `place_hub_spoke`, a spawn group, or an `AMBUSH_DEFS` entry.
-6. **Tests**: `cargo test` pins roster uniqueness, hostile set, legacy tuning and map connectivity — extend them if you add zones.
-7. **Rebuild**: `npm run build:wasm` (writes the binary + source hash), verify `npm run check:wasm`.
+1. **Source art**: generate a 1024px render using the roster plan → `art/source_hd/enemies/enemy_<slug>.png` (the Cloudflare batch script may leave the native JPEG as `.jpg`).
+2. **Pack**: run `python3 scripts/build-blacksite-enemy-atlas.py --spec <slug>`; it creates all seven `public/game/enemy_<slug>_<animation>.png` layers and metadata.
+3. **`TEX_FILES`** in `src/game/runtime.ts`: add the seven generated files when the roster list changes.
+4. **`EK_*`** const in `engine/src/consts.rs` (next free `u8`: 25+).
+5. **`EnemyDef` row** in `engine/src/enemies.rs` (copy the TEMPLATE comment there).
+6. **Placement** in `engine/src/map.rs`: `place_hub_spoke`, a spawn group, or an `AMBUSH_DEFS` entry.
+7. **Tests**: `cargo test` pins roster uniqueness, hostile set, legacy tuning and map connectivity — extend them if you add zones.
+8. **Rebuild**: `npm run build:wasm` (writes the binary + source hash), verify `npm run check:wasm`.
 
 `spawn()`, the renderer, wave cleanup, the living count and the AI
 filter all read `ENEMY_DEFS` — there is no other match on kinds to update.

@@ -6,7 +6,12 @@ pub(crate) const MAX_W: usize = 1920;
 pub(crate) const MAX_H: usize = 1200;
 pub(crate) const TEX: usize = 256;
 pub(crate) const TEXM: i32 = (TEX as i32) - 1;
-pub(crate) const TEX_N: usize = 29;
+/// Atlas layers: the original 29 world layers plus seven animation sheets
+/// for each of the thirteen BLACKSITE enemy skins.
+pub(crate) const ENEMY_ANIM_COUNT: usize = 7;
+pub(crate) const ENEMY_SKIN_COUNT: usize = 13;
+pub(crate) const ENEMY_TEX_BASE: usize = 29;
+pub(crate) const TEX_N: usize = ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT;
 pub(crate) const ENT_N: usize = 192;
 pub(crate) const T_BRICK: usize = 0;
 pub(crate) const T_METAL: usize = 1;
@@ -67,6 +72,52 @@ pub(crate) const EK_RAY: u8 = 21;
 pub(crate) const EK_BOLT: u8 = 22;
 pub(crate) const EK_BOSS: u8 = 23;
 pub(crate) const EK_FIREPATCH: u8 = 24;
+
+// BLACKSITE animation groups. Each group is one 2x2 atlas layer; two-frame
+// groups duplicate their last frame into the unused cells during packing.
+pub(crate) const ANIM_IDLE: u8 = 0;
+pub(crate) const ANIM_MOVE: u8 = 1;
+pub(crate) const ANIM_PAIN: u8 = 2;
+pub(crate) const ANIM_FIRE: u8 = 3;
+pub(crate) const ANIM_RELOAD: u8 = 4;
+pub(crate) const ANIM_DEAD: u8 = 5;
+pub(crate) const ANIM_SPECIAL: u8 = 6;
+pub(crate) const ANIM_FRAME_COUNTS: [u8; ENEMY_ANIM_COUNT] = [2, 4, 2, 2, 2, 2, 2];
+pub(crate) const SKIN_NONE: u8 = 255;
+
+pub(crate) const SKIN_RIFLEMAN: u8 = 0;
+pub(crate) const SKIN_BREACHER: u8 = 1;
+pub(crate) const SKIN_SUBJECT: u8 = 2;
+pub(crate) const SKIN_HAZMAT: u8 = 3;
+pub(crate) const SKIN_GUNNER: u8 = 4;
+pub(crate) const SKIN_LOADER: u8 = 5;
+pub(crate) const SKIN_VATBRUTE: u8 = 6;
+pub(crate) const SKIN_MARKSMAN: u8 = 7;
+pub(crate) const SKIN_HORNET: u8 = 8;
+pub(crate) const SKIN_HOUND: u8 = 9;
+pub(crate) const SKIN_SPITTER: u8 = 10;
+pub(crate) const SKIN_MARTYR: u8 = 11;
+pub(crate) const SKIN_VEYRAN: u8 = 12;
+
+/// Skins assigned to the opening cast in map order. The engine behavior still
+/// comes from the four legacy archetypes; this table changes the presentation
+/// without duplicating combat code.
+pub(crate) const HOSTILE_SKINS: [u8; 14] = [
+    SKIN_RIFLEMAN,
+    SKIN_BREACHER,
+    SKIN_SUBJECT,
+    SKIN_HAZMAT,
+    SKIN_RIFLEMAN,
+    SKIN_GUNNER,
+    SKIN_MARKSMAN,
+    SKIN_SUBJECT,
+    SKIN_LOADER,
+    SKIN_HORNET,
+    SKIN_VATBRUTE,
+    SKIN_HOUND,
+    SKIN_SPITTER,
+    SKIN_HAZMAT,
+];
 
 /// Opening hostile cast for the hub-and-spoke map, west to east then
 /// south: hangar duo, plaza pair, lab guards, chapel line, vault
@@ -149,9 +200,9 @@ mod tests {
 
     #[test]
     fn texture_slots_cover_the_known_atlas() {
-        assert_eq!(TEX_N, 29);
+        assert_eq!(TEX_N, ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT);
         assert_eq!(TEX, 256);
         assert_eq!(TEXM, 255);
-        assert_eq!(T_SEAL, TEX_N - 1);
+        assert_eq!(T_SEAL, 28);
     }
 }

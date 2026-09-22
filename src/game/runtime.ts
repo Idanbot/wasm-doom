@@ -1,6 +1,6 @@
 import { createAudio, type GameAudio } from "./audio";
 import { createBlitter, type BlitKind, type Blitter } from "./blit";
-import { readWorldFrame, TEX_N } from "./gpu-world";
+import { ENEMY_ANIM_COUNT, ENEMY_TEX_BASE, readWorldFrame, TEX_N } from "./gpu-world";
 import { HUD_SIZE } from "./hud-abi";
 import { DEFAULT_GFX, DEFAULT_HUD, type GfxOpts, type HudState, type ResMode } from "./types";
 
@@ -84,6 +84,23 @@ const CODE_BITS: Record<string, number> = {
   KeyR: IN.RELOAD,
 };
 
+const ENEMY_SKINS = [
+  "rifleman",
+  "breacher",
+  "subject",
+  "hazmat",
+  "gunner",
+  "loader",
+  "vatbrute",
+  "marksman",
+  "hornet",
+  "hound",
+  "spitter",
+  "martyr",
+  "veyran",
+] as const;
+const ENEMY_ANIMATIONS = ["idle", "move", "pain", "fire", "reload", "dead", "special"] as const;
+
 const TEX_FILES: { id: number; src: string }[] = [
   { id: 0, src: "/game/wall_brick.png" },
   { id: 1, src: "/game/wall_metal.png" },
@@ -111,6 +128,12 @@ const TEX_FILES: { id: number; src: string }[] = [
   { id: 26, src: "/game/wall_pipes.png" },
   { id: 27, src: "/game/spr_gun.png" },
   { id: 28, src: "/game/floor_seal.png" },
+  ...ENEMY_SKINS.flatMap((skin, skinIndex) =>
+    ENEMY_ANIMATIONS.map((animation, animationIndex) => ({
+      id: ENEMY_TEX_BASE + skinIndex * ENEMY_ANIM_COUNT + animationIndex,
+      src: `/game/enemy_${skin}_${animation}.png`,
+    })),
+  ),
 ];
 
 const UI_CRITICAL = [
@@ -177,7 +200,7 @@ function keySpriteAlpha(data: Uint8ClampedArray, size: number) {
     const b = data[o + 2];
     const a = data[o + 3];
     if (a < 16) return true;
-    if (r > 220 && b > 220 && g < 40) return true;
+    if (r > 220 && b > 170 && g < 100) return true;
     const mx = r > g ? (r > b ? r : b) : g > b ? g : b;
     const mn = r < g ? (r < b ? r : b) : g < b ? g : b;
     return mx < 28 || (mx < 42 && mx - mn < 10);
@@ -206,6 +229,16 @@ function keySpriteAlpha(data: Uint8ClampedArray, size: number) {
     if (x + 1 < size) q.push(i + 1);
     if (y > 0) q.push(i - size);
     if (y + 1 < size) q.push(i + size);
+  }
+  // A model can leave a magenta island inside a closed silhouette (between
+  // an arm and the torso, under a weapon, etc.). Those pixels are background
+  // too, even though they are not connected to the canvas edge.
+  for (let i = 0; i < n; i++) {
+    const o = i * 4;
+    const r = data[o];
+    const g = data[o + 1];
+    const b = data[o + 2];
+    if (r > 220 && b > 170 && g < 100) data[o + 3] = 0;
   }
   for (let i = 0; i < n; i++) {
     if (data[i * 4 + 3] === 0) continue;
@@ -475,7 +508,10 @@ export class HellscanRuntime {
     scratch.height = size;
     const ctx = scratch.getContext("2d", { willReadFrequently: true });
     if (!ctx) return;
-    const loaded = await preloadImages(TEX_FILES.map((t) => t.src));
+    // Enemy animation layers are independent 256px files; decode them in a
+    // wider batch so the first playable frame is not gated by four-at-a-time
+    // image loads.
+    const loaded = await preloadImages(TEX_FILES.map((t) => t.src), 12);
     for (let i = 0; i < TEX_FILES.length; i++) {
       const img = loaded[i];
       const id = TEX_FILES[i]!.id;
@@ -497,7 +533,7 @@ export class HellscanRuntime {
         }
 
         const pixels = ctx.getImageData(0, 0, size, size);
-        const sprite = id === 27 || (id >= 8 && id <= 14) || (id >= 20 && id <= 25);
+        const sprite = id === 27 || (id >= 8 && id <= 14) || (id >= 20 && id <= 25) || id >= ENEMY_TEX_BASE;
         if (sprite) keySpriteAlpha(pixels.data, size);
         const ptr = wasm.hs_tex_ptr(id);
         const view = new Uint8Array(wasm.memory.buffer, ptr, size * size * 4);

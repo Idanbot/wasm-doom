@@ -16,7 +16,7 @@ import { join, dirname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const KNOWN_KINDS = new Set(["EK_HUSK", "EK_BRUTE", "EK_WRAITH", "EK_BOSS", "EK_BARREL"]);
-const ATLAS_SLOTS = 29; // TEX_N; slots >= this need a one-line engine extension
+const ATLAS_SLOTS = 120; // TEX_N; includes the 13 × 7 enemy animation layers
 const STATUSES = new Set(["planned", "ready"]);
 
 export function isSnakePng(name) {
@@ -82,7 +82,7 @@ export function validateManifest(manifest) {
     if (seenId.has(e.specId)) errors.push(`duplicate specId: ${e.specId}`);
     seenId.add(e.specId);
     if (!STATUSES.has(e.status)) errors.push(`${tag}: bad status ${e.status}`);
-    const files = e.file ? [e.file] : (e.files ?? []);
+    const files = e.animationFiles ?? (e.file ? [e.file] : (e.files ?? []));
     if (files.length === 0) errors.push(`${tag}: no files listed`);
     for (const f of files) {
       if (!isSnakePng(basename(f))) errors.push(`${tag}: file not snake_case PNG: ${f}`);
@@ -127,7 +127,11 @@ export function validateReadyFiles(manifest, gameDir, atlasesDir) {
   let checked = 0;
   for (const e of eachEntry(manifest)) {
     if (e.status !== "ready") continue;
-    const files = e.file ? [{ name: e.file, min: e.size ?? 256, exact: e.kind !== "weapon" }] : (e.files ?? []).map((name) => ({ name, min: 512, exact: false }));
+    const files = e.animationFiles
+      ? e.animationFiles.map((name) => ({ name, min: e.size ?? 256, exact: true }))
+      : e.file
+        ? [{ name: e.file, min: e.size ?? 256, exact: e.kind !== "weapon" }]
+        : (e.files ?? []).map((name) => ({ name, min: 512, exact: false }));
     for (const { name, min, exact } of files) {
       const full = join(gameDir, basename(name));
       if (!existsSync(full)) {

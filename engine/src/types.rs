@@ -10,6 +10,12 @@ pub(crate) struct Ent {
     pub(crate) hp: i32,
     pub(crate) timer: f32,
     pub(crate) frame: f32,
+    /// Animation group and elapsed time for the BLACKSITE enemy sheets.
+    pub(crate) anim: u8,
+    pub(crate) anim_time: f32,
+    pub(crate) anim_lock: f32,
+    /// Presentation skin. `SKIN_NONE` keeps the legacy effect/prop texture.
+    pub(crate) skin: u8,
     pub(crate) radius: f32,
     pub(crate) flash: f32,
     pub(crate) stun: f32,

@@ -3,9 +3,9 @@
 //! Every spawnable entity kind has exactly one row in [`ENEMY_DEFS`].
 //! Adding a new enemy is a table edit, not a code hunt:
 //!
-//! 1. Author the sprite sheet per `docs/monster-sprite-design.md`
-//!    (256x256 atlas, 2x2 cells of 128x128) and register the PNG in
-//!    `TEX_FILES` in `src/game/runtime.ts` under a new `T_*` id.
+//! 1. Author the seven BLACKSITE animation layers per
+//!    `docs/monster-sprite-design.md` (256x256, 2x2 cells of 128x128) and
+//!    register the files in `TEX_FILES` in `src/game/runtime.ts`.
 //! 2. Add an `EK_*` kind constant in `consts.rs`.
 //! 3. Add one `EnemyDef` row below (copy the TEMPLATE row).
 //! 4. Place it in `map.rs` (`place_hub_spoke`, a spawn group, or an ambush).
@@ -13,7 +13,7 @@
 //!    hostile flags, and zero-size entries.
 //!
 //! The sim never matches on kinds directly: `spawn()` reads hp/radius/zoff,
-//! the renderer reads texture/scale/sheet4, and wave cleanup reads
+//! the renderer reads the skin animation layers, and wave cleanup reads
 //! `hostile`/`cleared_on_wave`. See `docs/enemy-authoring.md`.
 
 use crate::consts::*;
@@ -50,6 +50,52 @@ pub(crate) struct EnemyDef {
     pub cleared_on_wave: bool,
 }
 
+/// Presentation-only BLACKSITE skin. Combat behavior remains attached to the
+/// legacy archetype in `EnemyDef`; each skin owns seven atlas layers in the
+/// order idle, move, pain, fire, reload/charge, dead, special.
+#[derive(Clone, Copy)]
+pub(crate) struct EnemySkin {
+    pub id: u8,
+    #[allow(dead_code)]
+    pub name: &'static str,
+    pub texture: usize,
+    pub scale: f32,
+    pub zoff: f32,
+    #[allow(dead_code)]
+    pub special: &'static str,
+}
+
+pub(crate) const ENEMY_SKINS: &[EnemySkin] = &[
+    EnemySkin { id: SKIN_RIFLEMAN, name: "Directorate Rifleman", texture: ENEMY_TEX_BASE, scale: 0.95, zoff: 0.0, special: "tactical brace" },
+    EnemySkin { id: SKIN_BREACHER, name: "Breacher", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT, scale: 1.0, zoff: 0.0, special: "breach rush" },
+    EnemySkin { id: SKIN_SUBJECT, name: "Failed Augment Subject", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 2, scale: 0.94, zoff: 0.0, special: "augment surge" },
+    EnemySkin { id: SKIN_HAZMAT, name: "Hazmat Security", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 3, scale: 1.08, zoff: 0.0, special: "purge charge" },
+    EnemySkin { id: SKIN_GUNNER, name: "Heavy Gunner", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 4, scale: 1.18, zoff: 0.0, special: "stabilized burst" },
+    EnemySkin { id: SKIN_LOADER, name: "Industrial Loader", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 5, scale: 1.24, zoff: 0.0, special: "hydraulic slam" },
+    EnemySkin { id: SKIN_VATBRUTE, name: "Vat-grown Brute", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 6, scale: 1.3, zoff: 0.0, special: "bio-rage" },
+    EnemySkin { id: SKIN_MARKSMAN, name: "Marksman", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 7, scale: 0.86, zoff: -18.0, special: "optic lock" },
+    EnemySkin { id: SKIN_HORNET, name: "Hornet Drone", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 8, scale: 0.66, zoff: -70.0, special: "attack vector" },
+    EnemySkin { id: SKIN_HOUND, name: "Hound", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 9, scale: 0.76, zoff: 22.0, special: "pounce" },
+    EnemySkin { id: SKIN_SPITTER, name: "Spitter", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 10, scale: 0.84, zoff: -8.0, special: "acid sac" },
+    EnemySkin { id: SKIN_MARTYR, name: "Martyr Drone", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 11, scale: 0.72, zoff: 78.0, special: "detonation" },
+    EnemySkin { id: SKIN_VEYRAN, name: "VEYRAN // MALIK", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 12, scale: 2.45, zoff: 8.0, special: "seal rupture" },
+];
+
+pub(crate) fn skin_def(id: u8) -> Option<&'static EnemySkin> {
+    ENEMY_SKINS.iter().find(|skin| skin.id == id)
+}
+
+pub(crate) fn default_skin(kind: u8) -> u8 {
+    match kind {
+        EK_HUSK => SKIN_RIFLEMAN,
+        EK_BRUTE => SKIN_HAZMAT,
+        EK_WRAITH => SKIN_MARKSMAN,
+        EK_BOSS => SKIN_VEYRAN,
+        EK_BARREL => SKIN_MARTYR,
+        _ => SKIN_NONE,
+    }
+}
+
 // TEMPLATE — copy this row to add a new enemy:
 //
 // EnemyDef {
@@ -60,8 +106,8 @@ pub(crate) struct EnemyDef {
 //     radius: 0.28,  // ~player scale; brutes 0.38, boss 0.62
 //     zoff: 0.0,     // 0 = feet on floor; floats use negative lift
 //     scale: 0.95,   // world-height multiplier, see renderer
-//     texture: T_HUSK, // 2. new T_* slot + TEX_FILES art
-//     sheet4: true,   // animated enemies ship 4 frames
+//     texture: T_HUSK, // legacy fallback slot for non-BLACKSITE entities
+//     sheet4: true,   // legacy 2x2 animation fallback
 //     hostile: true,
 //     cleared_on_wave: true,
 // },

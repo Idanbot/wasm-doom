@@ -8,22 +8,26 @@ Do not treat monsters as independent illustrations. Every sheet must look as if 
 
 ## 1. Runtime contract (do not violate)
 
-Inspected from `public/game/spr_{husk,brute,wraith}.png`, `src/game/runtime.ts` (`TEX_FILES`, `keySpriteAlpha`), and `engine/src/lib.rs` (`T_HUSK/T_BRUTE/T_WRAITH`, `sheet4` sampling).
+Inspected from the BLACKSITE layers in `public/game/enemy_<skin>_<animation>.png`,
+`src/game/runtime.ts` (`TEX_FILES`, `keySpriteAlpha`), and
+`engine/src/lib.rs` (`EnemySkin`, animation state selection).
 
 | Fact | Value |
 |------|--------|
-| Atlas | 256×256 PNG, RGBA |
-| Layout | 2×2 (`sheet4`) |
+| Atlas | 256×256 PNG, RGBA per animation layer |
+| Layout | 2×2 cells per layer; seven layers per enemy skin |
 | Cell | 128×128 |
-| Frame index | `fr = (frame * 4) rem 4` → cell `(fr & 1, fr >> 1)` |
-| Frame order | 0 TL, 1 TR, 2 BL, 3 BR |
+| Frame index | idle 2, move 4, pain 2, fire 2, reload/charge 2, dead 2, special 2 |
+| Frame order | TL, TR, BL, BR; two-frame groups duplicate TR into the lower cells |
 | Sampling | nearest, square billboard, `sprite_w = sprite_h` |
-| World scale | Husk 0.95, Brute 1.25, Wraith 0.7, Vault Master = Brute × 2.45 + red tint |
-| Wraith lift | `zoff ≈ -70` |
-| Transparency | flood-fill from atlas edge: alpha &lt; 16, magenta `R&gt;220 B&gt;220 G&lt;40`, or near-black `max(R,G,B) &lt; 28` |
+| World scale | Per-skin table in `engine/src/enemies.rs`; legacy archetype tuning remains shared |
+| Vertical lift | Per-skin `zoff` (flying identities use a negative lift) |
+| Transparency | deterministic edge flood plus enclosed neon-magenta key; final PNGs are RGBA |
 | Upload | stretched to `TEX=256` with image smoothing **off** |
 
-**Keep this format.** 128×128 cells are enough if pixels are authored, not smeared. Do not raise atlas size unless a later review proves 128px cells fail readability.
+**Keep this format.** 128×128 cells are enough if the 1024px source is aligned
+and downsampled deterministically. Do not raise atlas size unless a later
+review proves 128px cells fail readability.
 
 ### Current-sheet audit (256×256 after Scale2x)
 
@@ -118,19 +122,23 @@ Apply to Husk, Brute, and Wraith (Wraith outline follows skull + outer flame env
 
 ---
 
-## 7. Animation language (4 frames)
+## 7. Animation language (16 gameplay frames)
 
 Alive, not a flipbook of new designs.
 
-| | Translation | Bob | Limbs | Silhouette delta |
-|--|-------------|-----|-------|------------------|
-| Husk | 1–2 px | none | visible walk, knees/shoulders | small |
-| Brute | 0–1 px | none | weight shift, tiny stride | tiny |
-| Wraith | 0 px body | ±2 px allowed in flame only | none | flame envelope only |
+| Set | Frames | Direction |
+|--|--:|--|
+| Idle | 2 | restrained breathing and equipment sway |
+| Move | 4 | readable weight shift or locomotion; flying units bob |
+| Pain | 2 | recoil and red hit response |
+| Fire | 2 | attack pose plus muzzle or energy cue |
+| Reload/charge | 2 | weapon reset, charge-up or stance preparation |
+| Dead | 2 | collapse and settled body |
+| Special | 2 | identity-specific action (pounce, slam, detonation, optic lock, etc.) |
 
 - Anatomy lock: head size, torso width, limb length constant across frames.
 - No yaw/turn. Billboard is always “toward player.”
-- Wraith must not gain legs, a ground contact, or a walk cycle.
+- Keep the same origin and lighting direction across every group.
 
 ---
 
@@ -225,8 +233,6 @@ A sheet is accepted only if:
 ## 13. Pipeline (from-scratch gothic pass)
 
 1. Lock this document. Live sheets are identity/gameplay references only.
-2. Generate **gothic demonic billboards** with Grok Imagine (`imagine_text_to_image`): solid `#FF00FF` background, 2×2 grid, same scale per cell, front-facing Doom-like creatures — not geometric primitives, not photo-quantize.
+2. Generate **gothic demonic billboards** with the approved image-generation service: solid `#FF00FF` background, 2×2 grid, same scale per cell, front-facing retro-FPS creatures — not geometric primitives, not photo-quantize.
 3. Chroma-key magenta, snap to the 64-grid / 128 cell, assemble `sheet4`.
-4. Do **not** accept capsule/ellipse programmer art. If Imagine is unavailable, leave live sheets unchanged rather than shipping placeholders.
-
-
+4. Do **not** accept capsule/ellipse programmer art. If the image-generation service is unavailable, leave live sheets unchanged rather than shipping placeholders.

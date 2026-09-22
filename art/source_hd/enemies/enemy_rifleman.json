@@ -1,0 +1,17 @@
+{
+  "model": "@cf/black-forest-labs/flux-1-schnell",
+  "steps": 4,
+  "requestedSeed": 4130,
+  "seedApplied": false,
+  "requestedReviewSize": "512x512",
+  "usage": {
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "neurons": 172.8000030517578
+  },
+  "prompt": "A complete armored security soldier character for a retro FPS game, centered and facing the camera, carrying a compact firearm, neutral ready stance, charcoal armor, olive vest, tan uniform, enclosed helmet with amber visor, isolated studio render, clear silhouette. Use a completely flat neon magenta background #FF00FF with no other background detail. No text, no logo, no border, no scenery."
+}

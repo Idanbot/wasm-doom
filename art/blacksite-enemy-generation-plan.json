@@ -1,0 +1,31 @@
+{
+  "model": "@cf/black-forest-labs/flux-1-schnell",
+  "sourceSize": "1024x1024",
+  "steps": 4,
+  "background": "flat neon magenta #FF00FF filling the canvas and every open gap in the silhouette",
+  "sharedStyle": "dark military sci-fi, underground special-weapons facility, industrial realism, retro FPS pre-rendered sprite, neutral studio key light with a restrained rim light, straight-on orthographic camera, centered readable silhouette, no scenery, no floor, no shadow outside the character, no text, no logo, no border",
+  "animations": {
+    "idle": 2,
+    "move": 4,
+    "pain": 2,
+    "fire": 2,
+    "reload": 2,
+    "dead": 2,
+    "special": 2
+  },
+  "enemies": [
+    { "specId": "enemy_rifleman", "slug": "rifleman", "description": "charcoal armored Directorate rifleman with olive load-bearing vest, tan uniform panels, enclosed helmet and amber visor, compact service rifle" },
+    { "specId": "enemy_breacher", "slug": "breacher", "description": "heavy Directorate breacher in dark composite armor, reinforced shoulder plates, breaching shotgun and bright hazard tape accents" },
+    { "specId": "enemy_subject", "slug": "subject", "description": "failed augment subject in torn black containment harness, asymmetrical biotech braces, pale ceramic mask and restrained red warning lights" },
+    { "specId": "enemy_hazmat", "slug": "hazmat", "description": "bulky armored facility guard in an olive sealed suit, charcoal helmet, amber canisters and a compact firearm" },
+    { "specId": "enemy_gunner", "slug": "gunner", "description": "large armored soldier with broad gunmetal shoulder plates, heavy utility pack, reinforced knees and a narrow amber visor" },
+    { "specId": "enemy_loader", "slug": "loader", "description": "industrial walking machine with hydraulic forearms, compact tracked feet, yellow-black safety markings and a recessed sensor head" },
+    { "specId": "enemy_vatbrute", "slug": "vatbrute", "description": "large armored laboratory test subject with broad bio-armor plates, ceramic collar and dim amber implants" },
+    { "specId": "enemy_marksman", "slug": "marksman", "description": "lean armored scout with a long optical sensor, hooded composite helmet, slate plates and a small amber scope glow" },
+    { "specId": "enemy_hornet", "slug": "hornet", "description": "compact hovering quad rotor machine with four guarded rotors, charcoal shell and amber sensor eye" },
+    { "specId": "enemy_hound", "slug": "hound", "description": "low four-legged security machine with an armored body, articulated legs, amber optical strip and exposed hydraulic joints" },
+    { "specId": "enemy_spitter", "slug": "spitter", "description": "bio-industrial containment creature with hunched armored torso, sealed respirator, translucent reservoir and dark restraints" },
+    { "specId": "enemy_martyr", "slug": "martyr", "description": "small one-way drone with compact armored chassis, central red reactor core, four stabilizer fins and amber status lights" },
+    { "specId": "enemy_veyran", "slug": "veyran", "description": "tall armored commander in ceremonial gunmetal plates, segmented cloak panels, sealed crown-like helmet and controlled amber reactor glow" }
+  ]
+}

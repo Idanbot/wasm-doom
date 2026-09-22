@@ -6,7 +6,7 @@ mod map;
 mod types;
 
 use consts::*;
-use enemies::{enemy_def, is_hostile_kind};
+use enemies::{default_skin, enemy_def, is_hostile_kind, skin_def};
 use events::*;
 pub use hud::{Hud, HUD_OFFSETS, HUD_SIZE};
 use types::{AmbushTrigger, Ent, FxCmd};
@@ -111,7 +111,59 @@ fn clamp_i(v: i32, a: i32, b: i32) -> i32 {
     }
 }
 fn solid_kind(k: u8) -> bool {
-    matches!(k, EK_HUSK | EK_BRUTE | EK_WRAITH | EK_BARREL | EK_BOSS)
+    k == EK_BARREL || is_hostile_kind(k)
+}
+
+fn set_anim(e: &mut Ent, state: u8, lock: f32) {
+    if e.anim != state {
+        e.anim = state;
+        e.anim_time = 0.0;
+    }
+    e.anim_lock = e.anim_lock.max(lock);
+}
+
+fn advance_anim(e: &mut Ent, dt: f32) {
+    e.anim_time += dt;
+    if e.anim_lock > 0.0 {
+        e.anim_lock = (e.anim_lock - dt).max(0.0);
+    }
+    if e.hp <= 0 {
+        if e.anim_lock <= 0.0 {
+            e.kind = EK_NONE;
+        }
+    } else if e.anim_lock <= 0.0 && matches!(e.anim, ANIM_PAIN | ANIM_FIRE | ANIM_RELOAD | ANIM_SPECIAL) {
+        e.anim = ANIM_IDLE;
+        e.anim_time = 0.0;
+    }
+}
+
+fn anim_frame(e: &Ent) -> i32 {
+    let state = (e.anim as usize).min(ANIM_FRAME_COUNTS.len() - 1);
+    let count = ANIM_FRAME_COUNTS[state].max(1) as i32;
+    let fps = match e.anim {
+        ANIM_IDLE => 2.2,
+        ANIM_MOVE => 8.0,
+        ANIM_PAIN => 7.0,
+        ANIM_FIRE => 9.0,
+        ANIM_RELOAD => 5.5,
+        ANIM_DEAD => 3.2,
+        ANIM_SPECIAL => 5.0,
+        _ => 4.0,
+    };
+    ((e.anim_time * fps) as i32).rem_euclid(count)
+}
+
+fn sprite_style(e: &Ent) -> (usize, f32, bool, i32) {
+    if let Some(skin) = skin_def(e.skin) {
+        return (skin.texture + (e.anim as usize).min(ENEMY_ANIM_COUNT - 1), skin.scale, true, anim_frame(e));
+    }
+    match enemy_def(e.kind) {
+        Some(d) => {
+            let frame = if d.sheet4 { ((e.frame * 4.0) as i32).rem_euclid(4) } else { 0 };
+            (d.texture, d.scale, d.sheet4, frame)
+        }
+        None => (T_SPLAT, 0.3, false, 0),
+    }
 }
 
 fn is_pickup(k: u8) -> bool {
@@ -157,6 +209,10 @@ impl Engine {
                 hp: 0,
                 timer: 0.0,
                 frame: 0.0,
+                anim: ANIM_IDLE,
+                anim_time: 0.0,
+                anim_lock: 0.0,
+                skin: SKIN_NONE,
                 radius: 0.25,
                 flash: 0.0,
                 stun: 0.0,
@@ -702,11 +758,16 @@ impl Engine {
     }
 
     fn spawn(&mut self, kind: u8, x: f32, y: f32) -> Option<usize> {
+        self.spawn_with_skin(kind, default_skin(kind), x, y)
+    }
+
+    fn spawn_with_skin(&mut self, kind: u8, skin: u8, x: f32, y: f32) -> Option<usize> {
         // Stats come from the roster table so new enemies need no code here.
         let (hp, radius, zoff) = match enemy_def(kind) {
             Some(d) => (d.hp, d.radius, d.zoff),
             None => (1, 0.2, 0.0),
         };
+        let zoff = skin_def(skin).map(|d| d.zoff).unwrap_or(zoff);
         for (i, e) in self.ents.iter_mut().enumerate() {
             if e.kind == 0 {
                 *e = Ent {
@@ -718,6 +779,10 @@ impl Engine {
                     hp,
                     timer: 0.4,
                     frame: 0.0,
+                    anim: ANIM_IDLE,
+                    anim_time: 0.0,
+                    anim_lock: 0.0,
+                    skin,
                     radius,
                     flash: 0.0,
                     stun: 0.0,
@@ -791,6 +856,10 @@ impl Engine {
                 hp,
                 timer: f.timer,
                 frame: 0.0,
+                anim: ANIM_IDLE,
+                anim_time: 0.0,
+                anim_lock: 0.0,
+                skin: SKIN_NONE,
                 radius,
                 flash: 0.0,
                 stun: 0.0,
@@ -874,16 +943,17 @@ impl Engine {
     fn spawn_hostiles(&mut self, mult: i32) {
         let copies = mult.max(1);
         for n in 0..copies {
-            for &(k, x, y) in &HOSTILES {
+            for (slot, &(k, x, y)) in HOSTILES.iter().enumerate() {
                 let jx = if n == 0 { 0.0 } else { (self.rnd() - 0.5) * 2.2 };
                 let jy = if n == 0 { 0.0 } else { (self.rnd() - 0.5) * 2.2 };
                 let nx = x + jx;
                 let ny = y + jy;
+                let skin = HOSTILE_SKINS[slot % HOSTILE_SKINS.len()];
                 if !self.blocked(nx.floor() as i32, ny.floor() as i32) {
-                    if self.spawn(k, nx, ny).is_none() {
+                    if self.spawn_with_skin(k, skin, nx, ny).is_none() {
                         return;
                     }
-                } else if self.spawn(k, x, y).is_none() {
+                } else if self.spawn_with_skin(k, skin, x, y).is_none() {
                     return;
                 }
             }
@@ -958,7 +1028,7 @@ impl Engine {
             if self.blocked(x.floor() as i32, y.floor() as i32) {
                 continue;
             }
-            if let Some(i) = self.spawn(EK_BOSS, x, y) {
+            if let Some(i) = self.spawn_with_skin(EK_BOSS, SKIN_VEYRAN, x, y) {
                 self.ents[i].hp = hp;
                 break;
             }
@@ -1312,7 +1382,7 @@ impl Engine {
         }
         let mut hits: Vec<(usize, i32)> = Vec::new();
         for (i, e) in self.ents.iter().enumerate() {
-            if !solid_kind(e.kind) {
+            if e.hp <= 0 || !solid_kind(e.kind) {
                 continue;
             }
             let d = ((e.x - x).powi(2) + (e.y - y).powi(2)).sqrt();
@@ -1341,7 +1411,7 @@ impl Engine {
         let y;
         {
             let e = &mut self.ents[i];
-            if e.kind == 0 {
+            if e.kind == 0 || e.hp <= 0 {
                 return;
             }
             e.hp -= dmg;
@@ -1355,11 +1425,15 @@ impl Engine {
             x = e.x;
             y = e.y;
             if e.hp > 0 {
+                set_anim(e, ANIM_PAIN, 0.24);
                 self.hitmarker = 1.0;
                 self.events |= EV_HIT;
                 return;
             }
-            e.kind = 0;
+            e.hp = 0;
+            e.vx = 0.0;
+            e.vy = 0.0;
+            set_anim(e, ANIM_DEAD, 0.62);
         }
         self.hitmarker = 1.0;
         self.events |= EV_KILL;
@@ -1387,7 +1461,7 @@ impl Engine {
         let mut best_t = maxd;
         let mut best_e: Option<usize> = None;
         for (i, e) in self.ents.iter().enumerate() {
-            if e.kind == 0 || !solid_kind(e.kind) {
+            if e.kind == 0 || e.hp <= 0 || !solid_kind(e.kind) {
                 continue;
             }
             let ex = e.x - self.px;
@@ -1468,7 +1542,7 @@ impl Engine {
         let mut hits = [(0.0f32, 0usize); ENT_N];
         let mut count = 0;
         for (i, e) in self.ents.iter().enumerate() {
-            if !solid_kind(e.kind) { continue; }
+            if e.hp <= 0 || !solid_kind(e.kind) { continue; }
             let ex = e.x - self.px;
             let ey = e.y - self.py;
             let t = ex * dx + ey * dy;
@@ -1642,6 +1716,7 @@ impl Engine {
 
     fn enemy_shoot(&mut self, i: usize) {
         let (x, y, kind) = (self.ents[i].x, self.ents[i].y, self.ents[i].kind);
+        set_anim(&mut self.ents[i], ANIM_FIRE, 0.24);
         let a = (self.py - y).atan2(self.px - x);
         let sp = if kind == EK_WRAITH { 7.2 } else { 5.4 };
         let zoff = if kind == EK_WRAITH { -50.0 } else { -8.0 };
@@ -1919,6 +1994,10 @@ impl Engine {
             }
             let e = &mut self.ents[i];
             e.flash = (e.flash - dt).max(0.0);
+            advance_anim(e, dt);
+            if e.kind == EK_NONE || e.hp <= 0 {
+                continue;
+            }
             if !is_hostile_kind(e.kind) {
                 e.frame += dt;
             }
@@ -1989,14 +2068,29 @@ impl Engine {
                     }
                     let moved = ((e.x - ex0).powi(2) + (e.y - ey0).powi(2)).sqrt();
                     e.frame += dt * 1.4 + moved * 6.5;
+                    if e.anim_lock <= 0.0 {
+                        if moved > 0.001 {
+                            set_anim(e, ANIM_MOVE, 0.0);
+                        } else if e.anim == ANIM_MOVE {
+                            set_anim(e, ANIM_IDLE, 0.0);
+                        }
+                        // The charge/reload beat happens in the quiet tail of
+                        // a ranged cooldown, giving every shooter a readable
+                        // two-frame preparation before its next attack.
+                        if e.timer > 0.0 && e.timer < 0.34 && kind != EK_BRUTE && kind != EK_BOSS {
+                            set_anim(e, ANIM_RELOAD, 0.28);
+                        }
+                    }
                     if kind == EK_BRUTE && clear && dist < 1.15 && e.timer <= 0.0 {
                         melee.push((i, 14));
                         e.timer = 0.75;
+                        set_anim(e, ANIM_SPECIAL, 0.38);
                     }
                     if kind == EK_BOSS && clear && dist < 1.5 && e.timer <= 0.0 {
                         let bd = (22.0 * 1.2f32.powi((self.wave - 1).max(0))).round().max(1.0) as i32;
                         melee.push((i, bd));
                         e.timer = 0.7;
+                        set_anim(e, ANIM_SPECIAL, 0.46);
                     }
                     if kind != EK_BRUTE && kind != EK_BOSS && clear && dist < 10.0 && e.timer <= 0.0 {
                         shots.push(i);
@@ -2053,7 +2147,7 @@ impl Engine {
                     if pulse && pstate == 0 {
                         for j in 0..ENT_N {
                             let target = self.ents[j];
-                            if !solid_kind(target.kind) { continue; }
+                            if target.hp <= 0 || !solid_kind(target.kind) { continue; }
                             let range = target.radius + 0.7;
                             if (target.x - x).powi(2) + (target.y - y).powi(2) < range * range
                                 && self.los(x, y, target.x, target.y) {
@@ -2098,7 +2192,7 @@ impl Engine {
                     } else {
                         let mut hit = None;
                         for (j, o) in self.ents.iter().enumerate() {
-                            if j == i || !solid_kind(o.kind) {
+                            if j == i || o.hp <= 0 || !solid_kind(o.kind) {
                                 continue;
                             }
                             let d2 = (o.x - ex).powi(2) + (o.y - ey).powi(2);
@@ -2174,7 +2268,7 @@ impl Engine {
 
         let mut living = 0;
         for e in self.ents.iter() {
-            if is_hostile_kind(e.kind) {
+            if e.hp > 0 && is_hostile_kind(e.kind) {
                 living += 1;
             }
         }
@@ -2720,17 +2814,14 @@ impl Engine {
         let mut n = 0usize;
         for e in &self.ents {
             if e.kind == 0 || n >= ENT_N { continue; }
-            let (tex, scale, sheet4) = match enemy_def(e.kind) {
-                Some(d) => (d.texture as f32, d.scale, d.sheet4),
-                None => (T_SPLAT as f32, 0.3, false),
-            };
-            let frame = if sheet4 { ((e.frame * 4.0) as i32).rem_euclid(4) as f32 } else { -1.0 };
+            let (tex, scale, sheet4, frame_i) = sprite_style(e);
+            let frame = if sheet4 { frame_i as f32 } else { -1.0 };
             scratch.sprites[n] = GpuSprite {
                 x: e.x,
                 y: e.y,
                 zoff: e.zoff,
                 scale,
-                tex,
+                tex: tex as f32,
                 frame,
                 flash: if e.flash > 0.0 { 1.0 } else { 0.0 },
                 kind: e.kind as f32,
@@ -2977,10 +3068,7 @@ impl Engine {
             }
             // Presentation comes from the roster table: texture slot,
             // world scale and sheet layout per kind (see enemies.rs).
-            let (tid, scale, sheet4) = match enemy_def(e.kind) {
-                Some(d) => (d.texture, d.scale, d.sheet4),
-                None => (T_SPLAT, 0.3, false),
-            };
+            let (tid, scale, sheet4, fr) = sprite_style(&e);
             let sprite_h = (h as f32 / ty * scale).abs();
             let voff = e.zoff / ty;
             let ds_y = (-sprite_h * 0.5 + horizon + voff) as i32;
@@ -2990,11 +3078,6 @@ impl Engine {
             let ds_x = (-sprite_w / 2.0 + screen_x) as i32;
             let de_x = (sprite_w / 2.0 + screen_x) as i32;
             let flash = e.flash > 0.0;
-            let fr = if sheet4 {
-                ((e.frame * 4.0) as i32).rem_euclid(4)
-            } else {
-                0
-            };
             let half = TEX as i32 / 2;
             let ou = if sheet4 { (fr & 1) * half } else { 0 };
             let ov = if sheet4 { ((fr >> 1) & 1) * half } else { 0 };
@@ -3746,9 +3829,11 @@ mod tests {
         let boss = e.spawn(EK_BOSS, 6.5, 4.5).unwrap();
         e.ents[boss].hp = 1;
         e.hurt_ent(boss, 5, e.px, e.py);
-        assert_eq!(e.ents[boss].kind, EK_NONE);
+        assert_eq!(e.ents[boss].anim, ANIM_DEAD);
         assert_eq!(e.state, 2, "the vault master is the win");
         assert_eq!(e.kills, 1);
+        for _ in 0..45 { e.tick(1.0 / 60.0); }
+        assert_eq!(e.ents[boss].kind, EK_NONE);
 
         let mut e = arena();
         let a = e.spawn(EK_BARREL, 5.0, 4.5).unwrap();
@@ -3756,11 +3841,14 @@ mod tests {
         e.ents[a].hp = 1;
         e.ents[b].hp = 1;
         e.hurt_ent(a, 5, 4.0, 4.5);
-        assert_eq!(e.ents[a].kind, EK_NONE);
-        assert_eq!(e.ents[b].kind, EK_NONE, "a barrel blast chains");
+        assert_eq!(e.ents[a].anim, ANIM_DEAD);
+        assert_eq!(e.ents[b].anim, ANIM_DEAD, "a barrel blast chains");
         assert_eq!(e.kills, 0, "props are not kills");
         assert_eq!(e.state, 0);
         assert!(e.health > 0, "a single chain must not delete the player");
+        for _ in 0..45 { e.tick(1.0 / 60.0); }
+        assert_eq!(e.ents[a].kind, EK_NONE);
+        assert_eq!(e.ents[b].kind, EK_NONE);
     }
 
     #[test]

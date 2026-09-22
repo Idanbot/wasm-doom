@@ -1,0 +1,17 @@
+{
+  "specId": "enemy_breacher",
+  "slug": "breacher",
+  "model": "@cf/black-forest-labs/flux-1-schnell",
+  "steps": 4,
+  "requestedSize": "1024x1024",
+  "prompt": "Create one complete isolated game character render. heavy Directorate breacher in dark composite armor, reinforced shoulder plates, breaching shotgun and bright hazard tape accents. dark military sci-fi, industrial realism, retro FPS pre-rendered sprite, neutral studio light, straight-on camera, clear silhouette. Use a completely flat neon magenta background #FF00FF with no other background detail. No room, no floor, no scenery, no cast shadow, no text, no logo, no border. Keep the subject fully inside the square frame, with magenta visible in every open area between limbs and equipment.",
+  "usage": {
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "neurons": 172.8000030517578
+  }
+}

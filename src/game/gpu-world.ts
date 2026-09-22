@@ -5,7 +5,10 @@ export const COL_FLOATS = 16;
 export const SPR_FLOATS = 8;
 export const MAP_W = 48;
 export const MAP_H = 32;
-export const TEX_N = 29;
+export const ENEMY_ANIM_COUNT = 7;
+export const ENEMY_SKIN_COUNT = 13;
+export const ENEMY_TEX_BASE = 29;
+export const TEX_N = ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT;
 export const TEX = 256;
 
 export type WorldFrame = {
@@ -50,7 +53,7 @@ fn vs(@builtin(vertex_index) i: u32) -> VSOut {
 }
 
 fn sample_atlas(id: i32, u: f32, v: f32) -> vec4<f32> {
-  return textureSampleLevel(atlas, atlas_samp, vec2<f32>(fract(u), fract(v)), clamp(id, 0, 28), 0.0);
+  return textureSampleLevel(atlas, atlas_samp, vec2<f32>(fract(u), fract(v)), clamp(id, 0, ${TEX_N - 1}), 0.0);
 }
 
 fn light_at(wx: f32, wy: f32) -> vec3<f32> {
@@ -212,7 +215,7 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
     rgb = vec3<f32>(40.0 + core * 215.0, 170.0 + core * 85.0, 255.0) / 255.0;
     a = 1.0;
   } else {
-    let tex = textureSampleLevel(atlas, atlas_samp, uv, clamp(i32(inp.info.x), 0, 28), 0.0);
+    let tex = textureSampleLevel(atlas, atlas_samp, uv, clamp(i32(inp.info.x), 0, ${TEX_N - 1}), 0.0);
     a = tex.a;
     if (a < 16.0 / 255.0) { discard; }
     rgb = tex.rgb;
@@ -411,7 +414,7 @@ uniform sampler2D lightTex;
 uniform sampler2D cols;
 uniform vec4 view0, view1, view2;
 vec4 sampleAtlas(int id, vec2 uv) {
-  return texture(atlas, vec3(fract(uv), float(clamp(id, 0, 28))));
+  return texture(atlas, vec3(fract(uv), float(clamp(id, 0, ${TEX_N - 1}))));
 }
 vec3 lightAt(vec2 w) {
   vec2 p = clamp(w - 0.5, vec2(0.0), vec2(46.0, 30.0));
@@ -535,7 +538,7 @@ void main() {
     float core = pow(1.0 - rad, 1.7);
     rgb = vec3(40.0 + core * 215.0, 170.0 + core * 85.0, 255.0) / 255.0;
   } else {
-    vec4 tex = texture(atlas, vec3(uv, clamp(texId, 0.0, 28.0)));
+    vec4 tex = texture(atlas, vec3(uv, clamp(texId, 0.0, ${TEX_N - 1}.0)));
     if (tex.a < 16.0 / 255.0) discard;
     rgb = flash > 0.5 ? vec3(1.0, 0.86, 0.86) : tex.rgb;
     if (int(kind) == 23) rgb = mix(rgb, vec3(1.0, 0.14, 0.09), 0.42);

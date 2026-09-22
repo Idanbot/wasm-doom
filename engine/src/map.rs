@@ -158,6 +158,10 @@ pub(crate) fn place_hub_spoke(e: &mut Engine) {
         hp: 0,
         timer: 0.0,
         frame: 0.0,
+        anim: ANIM_IDLE,
+        anim_time: 0.0,
+        anim_lock: 0.0,
+        skin: SKIN_NONE,
         radius: 0.25,
         flash: 0.0,
         stun: 0.0,
@@ -263,7 +267,7 @@ pub(crate) fn check_ambushes(e: &mut Engine) {
 /// Count live hostiles (test + tuning helper over the table flag).
 #[allow(dead_code)]
 pub(crate) fn living_hostiles(e: &Engine) -> usize {
-    e.ents.iter().filter(|x| is_hostile_kind(x.kind)).count()
+    e.ents.iter().filter(|x| x.hp > 0 && is_hostile_kind(x.kind)).count()
 }
 
 #[cfg(test)]

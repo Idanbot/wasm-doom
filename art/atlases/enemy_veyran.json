@@ -1,0 +1,57 @@
+{
+  "id": "enemy_veyran",
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "origin": {
+    "x": 64,
+    "y": 118
+  },
+  "animations": {
+    "idle": {
+      "start": 0,
+      "frames": 2,
+      "fps": 4
+    },
+    "move": {
+      "start": 2,
+      "frames": 4,
+      "fps": 8
+    },
+    "pain": {
+      "start": 6,
+      "frames": 2,
+      "fps": 4
+    },
+    "fire": {
+      "start": 8,
+      "frames": 2,
+      "fps": 4
+    },
+    "reload": {
+      "start": 10,
+      "frames": 2,
+      "fps": 4
+    },
+    "dead": {
+      "start": 12,
+      "frames": 2,
+      "fps": 4
+    },
+    "special": {
+      "start": 14,
+      "frames": 2,
+      "fps": 4
+    }
+  },
+  "layers": [
+    "enemy_veyran_idle.png",
+    "enemy_veyran_move.png",
+    "enemy_veyran_pain.png",
+    "enemy_veyran_fire.png",
+    "enemy_veyran_reload.png",
+    "enemy_veyran_dead.png",
+    "enemy_veyran_special.png"
+  ],
+  "background": "transparent after deterministic #ff00ff key",
+  "source": "art/source_hd/enemies/enemy_veyran.png"
+}
