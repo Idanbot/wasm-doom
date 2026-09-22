@@ -1,0 +1,132 @@
+{
+  "weapon_mk23s": {
+    "idle": {
+      "source": "art/source_hd/weapons/mk23s_idle.png",
+      "runtime": "public/game/weap_mk23s.png",
+      "runtimeSize": [
+        640,
+        640
+      ]
+    },
+    "fire": {
+      "source": "art/source_hd/weapons/mk23s_fire.png",
+      "runtime": "public/game/weap_mk23s_fire.png",
+      "runtimeSize": [
+        1024,
+        1024
+      ]
+    },
+    "reload": {
+      "source": "art/source_hd/weapons/mk23s_reload.png",
+      "runtime": "public/game/weap_mk23s_reload.png",
+      "runtimeSize": [
+        1024,
+        1024
+      ]
+    }
+  },
+  "weapon_m870k": {
+    "idle": {
+      "source": "art/source_hd/weapons/m870k_idle.png",
+      "runtime": "public/game/weap_m870k.png",
+      "runtimeSize": [
+        640,
+        640
+      ]
+    },
+    "fire": {
+      "source": "art/source_hd/weapons/m870k_fire.png",
+      "runtime": "public/game/weap_m870k_fire.png",
+      "runtimeSize": [
+        1024,
+        1024
+      ]
+    },
+    "reload": {
+      "source": "art/source_hd/weapons/m870k_reload.png",
+      "runtime": "public/game/weap_m870k_reload.png",
+      "runtimeSize": [
+        1024,
+        1024
+      ]
+    }
+  },
+  "weapon_vx9": {
+    "idle": {
+      "source": "art/source_hd/weapons/vx9_idle.png",
+      "runtime": "public/game/weap_vx9.png",
+      "runtimeSize": [
+        640,
+        640
+      ]
+    },
+    "fire": {
+      "source": "art/source_hd/weapons/vx9_fire.png",
+      "runtime": "public/game/weap_vx9_fire.png",
+      "runtimeSize": [
+        1024,
+        1024
+      ]
+    },
+    "reload": {
+      "source": "art/source_hd/weapons/vx9_reload.png",
+      "runtime": "public/game/weap_vx9_reload.png",
+      "runtimeSize": [
+        1024,
+        1024
+      ]
+    }
+  },
+  "weapon_shrike": {
+    "idle": {
+      "source": "art/source_hd/weapons/shrike_idle.png",
+      "runtime": "public/game/weap_shrike.png",
+      "runtimeSize": [
+        640,
+        640
+      ]
+    },
+    "fire": {
+      "source": "art/source_hd/weapons/shrike_fire.png",
+      "runtime": "public/game/weap_shrike_fire.png",
+      "runtimeSize": [
+        1024,
+        1024
+      ]
+    },
+    "reload": {
+      "source": "art/source_hd/weapons/shrike_reload.png",
+      "runtime": "public/game/weap_shrike_reload.png",
+      "runtimeSize": [
+        1024,
+        1024
+      ]
+    }
+  },
+  "weapon_raven": {
+    "idle": {
+      "source": "art/source_hd/weapons/raven_idle.png",
+      "runtime": "public/game/weap_raven.png",
+      "runtimeSize": [
+        640,
+        640
+      ]
+    },
+    "fire": {
+      "source": "art/source_hd/weapons/raven_fire.png",
+      "runtime": "public/game/weap_raven_fire.png",
+      "runtimeSize": [
+        1024,
+        1024
+      ]
+    },
+    "reload": {
+      "source": "art/source_hd/weapons/raven_reload.png",
+      "runtime": "public/game/weap_raven_reload.png",
+      "runtimeSize": [
+        1024,
+        1024
+      ]
+    }
+  }
+}

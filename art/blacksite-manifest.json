@@ -17,11 +17,11 @@
     { "specId": "enemy_veyran", "engineKind": "EK_BOSS", "archetype": "boss", "textureSlot": 113, "file": "enemy_veyran_idle.png", "animationFiles": ["enemy_veyran_idle.png", "enemy_veyran_move.png", "enemy_veyran_pain.png", "enemy_veyran_fire.png", "enemy_veyran_reload.png", "enemy_veyran_dead.png", "enemy_veyran_special.png"], "sheet": "2x2", "size": 256, "status": "ready" }
   ],
   "weapons": [
-    { "specId": "weapon_mk23s", "engineSlot": 0, "files": ["weap_mk23s.png", "weap_mk23s_fire.png", "weap_mk23s_reload.png"], "status": "planned" },
-    { "specId": "weapon_m870k", "engineSlot": 1, "files": ["weap_m870k.png", "weap_m870k_fire.png", "weap_m870k_reload.png"], "status": "planned" },
-    { "specId": "weapon_vx9", "engineSlot": 2, "files": ["weap_vx9.png", "weap_vx9_fire.png", "weap_vx9_reload.png"], "status": "planned" },
-    { "specId": "weapon_shrike", "engineSlot": 3, "files": ["weap_shrike.png", "weap_shrike_fire.png", "weap_shrike_reload.png"], "status": "planned" },
-    { "specId": "weapon_raven", "engineSlot": 4, "files": ["weap_raven.png", "weap_raven_fire.png", "weap_raven_reload.png"], "status": "planned" }
+    { "specId": "weapon_mk23s", "engineSlot": 0, "files": ["weap_mk23s.png", "weap_mk23s_fire.png", "weap_mk23s_reload.png"], "sheet": "2x2", "status": "ready" },
+    { "specId": "weapon_m870k", "engineSlot": 1, "files": ["weap_m870k.png", "weap_m870k_fire.png", "weap_m870k_reload.png"], "sheet": "2x2", "status": "ready" },
+    { "specId": "weapon_vx9", "engineSlot": 2, "files": ["weap_vx9.png", "weap_vx9_fire.png", "weap_vx9_reload.png"], "sheet": "2x2", "status": "ready" },
+    { "specId": "weapon_shrike", "engineSlot": 3, "files": ["weap_shrike.png", "weap_shrike_fire.png", "weap_shrike_reload.png"], "sheet": "2x2", "status": "ready" },
+    { "specId": "weapon_raven", "engineSlot": 4, "files": ["weap_raven.png", "weap_raven_fire.png", "weap_raven_reload.png"], "sheet": "2x2", "status": "ready" }
   ],
   "textures": [
     { "specId": "tex_concrete_bunker", "textureSlot": 0, "file": "wall_concrete.png", "size": 256, "status": "ready" },

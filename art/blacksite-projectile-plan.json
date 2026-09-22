@@ -1,0 +1,18 @@
+{
+  "$schema": "blacksite-projectile-plan v1",
+  "sourceSize": 1024,
+  "runtimeCellSize": 256,
+  "source": "art/source_hd/projectiles/projectile_effects_4x4.png",
+  "cells": [
+    "plasma_bolt", "incendiary_projectile", "lance_beam", "acid_seeker",
+    "pistol_muzzle", "shotgun_muzzle", "smg_muzzle", "rifle_muzzle",
+    "metal_impact", "plasma_impact", "explosive_impact", "acid_impact",
+    "fire_patch", "smoke_puff", "electric_sparks", "casing_burst"
+  ],
+  "runtime": {
+    "spr_ball.png": { "engineTextureSlot": 15, "sheet": "1x1", "cells": ["plasma_bolt"] },
+    "spr_impact.png": { "engineTextureSlot": 22, "sheet": "2x2", "cells": ["metal_impact", "plasma_impact", "explosive_impact", "acid_impact"] },
+    "spr_muzzle.png": { "engineTextureSlot": 23, "sheet": "2x2", "cells": ["pistol_muzzle", "shotgun_muzzle", "smg_muzzle", "rifle_muzzle"] },
+    "spr_flame.png": { "engineTextureSlot": 24, "sheet": "2x2", "cells": ["fire_patch", "smoke_puff", "electric_sparks", "explosive_impact"] }
+  }
+}

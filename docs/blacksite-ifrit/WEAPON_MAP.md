@@ -5,7 +5,7 @@ W1–W5, HUD index 0–4). Same logic: each spec weapon below inherits a
 slot's magazine, spread, pellets, reload and place in the progression.
 Five spec weapons ship v1; five need new mechanics (named, deferred).
 
-## v1 (reskin, no code)
+## v1 (delivered)
 
 | Slot | Engine behavior | Spec weapon | Why it fits |
 |---|---|---|---|
@@ -18,7 +18,15 @@ Five spec weapons ship v1; five need new mechanics (named, deferred).
 Placement mirrors the current progression: MK23-S (start) → VX-9 (lab) →
 SHRIKE (chapel) → RAVEN (pit); Ripper-slot secret becomes a VX-9 cache.
 Magazine sizes stay engine-side (`MAG_SZ = [12, 6, 32, 4, 40]`) until
-live balance passes say otherwise.
+live balance passes say otherwise. The five delivered art sets now use the
+spec IDs in the runtime HUD (`weap_mk23s`, `weap_m870k`, `weap_vx9`,
+`weap_shrike`, `weap_raven`) with idle, four-cell fire, and four-cell reload
+renders. The old short filenames remain only as source aliases for rollback.
+
+Projectile and weapon VFX are sourced from the 1024px master at
+`art/source_hd/projectiles/projectile_effects_4x4.png`. The runtime keeps the
+engine's existing slots: hostile plasma (`T_BALL`), impact (`T_IMPACT`),
+muzzle (`T_MUZZLEFX`), and the 2x2 fire/smoke sheet (`T_FLAME`).
 
 ## DEFERRED (needs new mechanics)
 

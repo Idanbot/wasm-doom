@@ -41,6 +41,7 @@ art/
 │   ├── enemies/
 │   ├── weapons/
 │   ├── props/
+│   ├── projectiles/
 │   ├── textures/
 │   ├── decals/
 │   └── ui/
@@ -928,16 +929,23 @@ enemy_hound
 enemy_janissary
 enemy_brute
 
-weapon_pistol
-weapon_smg
-weapon_shotgun
-weapon_rifle
-weapon_grenade
+weapon_mk23s
+weapon_vx9
+weapon_m870k
 weapon_shrike
+weapon_raven
 weapon_rotary
 weapon_arc
 weapon_biodisruptor
 weapon_sunhammer
+
+projectile_plasma_bolt
+projectile_incendiary
+projectile_lance_beam
+projectile_acid_seeker
+vfx_muzzle_flash
+vfx_impact
+vfx_fire_patch
 ```
 
 ---

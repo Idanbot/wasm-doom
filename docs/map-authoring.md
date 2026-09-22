@@ -8,14 +8,14 @@ map with generic carvers (`room`, `hall_h`, `hall_v`, `pillar`,
 
 ```
 y  1 ┌─────────────┐
-     │  TECH LAB   │  Scattergun · brute+wraith · A-north closet
+     │  TECH LAB   │  M870K · brute+wraith · A-north closet
      │  x16-28     │
 y  6 └──────╳──────┘  north lane x22-23 (door y8)
 y  7       ║
 y 10 ┌─────╨──────────────┐  ┌─────────┐
-     │                    │  │ CHAPEL  │  Lance · brute line
+     │                    │  │ CHAPEL  │  SHRIKE · brute line
      │  CENTRAL PLAZA     ├──┤ x33-41  │
-y 12 │  x16-29 · med/ammo │S2│    ║    │  S2 secret vent (Ripper)
+y 12 │  x16-29 · med/ammo │S2│    ║    │  S2 secret vent (VX-9)
      │  bait, pipe block  │  └────╨────┘  east lane y15-16 (door x31)
 y 15 ═╬═══════╬═══════════╬════╬══  ═════
 y 19 │HANGAR   ║  VAULT DOORS (36-37,18-19, seal texture)
@@ -23,7 +23,7 @@ y 19 │HANGAR   ║  VAULT DOORS (36-37,18-19, seal texture)
 y 21 └─────────╨──╨─────────────┘  south lane x22-23 (door y22)
 y 23 ┌─────────╨────────┐ ┌──────────────┐
      │   FLESH PIT      │ │    VAULT     │  seal x38-45/y19-27
-     │   x16-28 · Pyre  │ │    x33-45    │  boss arena · crypt S3
+     │   x16-28 · RAVEN │ │    x33-45    │  boss arena · crypt S3
 y 29 └──────────────────┘ └──────────────┘
      S1 cache (armor) under hangar · S3 crypt west of vault
 ```
@@ -31,7 +31,7 @@ y 29 └──────────────────┘ └───�
 Zones and their jobs: **hangar** (safe start, 1 medkit), **plaza**
 (vista + bait that commits the player mid-arena), **lab/chapel/pit**
 (one weapon each behind a fight), **vault** (seal ritual → boss),
-**lanes** (warm-up + ambush thresholds), **secrets** (armor / Ripper /
+**lanes** (warm-up + ambush thresholds), **secrets** (armor / VX-9 /
 crypt stock).
 
 ## 2. Building blocks
@@ -68,8 +68,8 @@ e.set_cell(x, y, v);               // raw codes: 0 open, 1-7 walls, 8 door, 9 se
    coordinate inside a pillar traps the monster forever.
 3. **Never spawn on a door cell** — the monster would sit inside a closed
    door until the player opens it.
-4. **One weapon per zone**, escalating: Sidearm (start) → Scattergun
-   (lab) → Lance (chapel) → Pyre (pit); Ripper hides in secret S2.
+4. **One weapon per zone**, escalating: MK23-S (start) → M870K
+   (lab) → SHRIKE (chapel) → RAVEN (pit); VX-9 hides in secret S2.
 5. **Tough fight ⇒ better gun or escape route nearby** (Romero's rule);
    lanes are always the retreat path.
 6. **Secrets ≥ 2, stocked** with something worth the detour.

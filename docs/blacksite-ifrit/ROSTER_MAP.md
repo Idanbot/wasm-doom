@@ -15,7 +15,7 @@ Units needing new AI are marked DEFERRED with the missing system named.
 | boss | EK_BOSS | 520 (×1.5/wave) | 1.28, barrage | seal ritual |
 | volatile prop | EK_BARREL | 14, explodes | — | area denial |
 
-## v1 cast (reskin, no code)
+## v1 cast (delivered art, shared AI)
 
 | Spec unit | Archetype | Notes |
 |---|---|---|

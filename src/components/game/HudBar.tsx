@@ -55,7 +55,7 @@ export function HudBar({
             </span>
           ) : (
             <p className="font-mono text-[10px] text-muted">
-              {WEAPONS[hud.weapon]?.name ?? "Sidearm"}
+              {WEAPONS[hud.weapon]?.name ?? "MK23-S"}
             </p>
           )}
           <p className="weapon-role">{WEAPONS[hud.weapon]?.role}</p>

@@ -118,6 +118,7 @@ const TEX_FILES: { id: number; src: string }[] = [
   { id: 12, src: "/game/spr_ammo.png" },
   { id: 13, src: "/game/spr_armor.png" },
   { id: 14, src: "/game/spr_barrel.png" },
+  { id: 15, src: "/game/spr_ball.png" },
   { id: 18, src: "/game/wall_tech_tile2x2.png" },
   { id: 19, src: "/game/wall_hazard_tile2x2.png" },
   { id: 20, src: "/game/spr_lamp.png" },
@@ -138,25 +139,25 @@ const TEX_FILES: { id: number; src: string }[] = [
 ];
 
 const UI_CRITICAL = [
-  "/game/weap_pistol.png",
-  "/game/weap_pistol_fire.png",
+  "/game/weap_mk23s.png",
+  "/game/weap_mk23s_fire.png",
   "/game/menu.jpg",
 ];
 
 const UI_DEFERRED = [
-  "/game/weap_pistol_reload.png",
-  "/game/weap_shotgun.png",
-  "/game/weap_shotgun_fire.png",
-  "/game/weap_shotgun_reload.png",
-  "/game/weap_ripper.png",
-  "/game/weap_ripper_fire.png",
-  "/game/weap_ripper_reload.png",
-  "/game/weap_lance.png",
-  "/game/weap_lance_fire.png",
-  "/game/weap_lance_reload.png",
-  "/game/weap_pyre.png",
-  "/game/weap_pyre_fire.png",
-  "/game/weap_pyre_reload.png",
+  "/game/weap_mk23s_reload.png",
+  "/game/weap_m870k.png",
+  "/game/weap_m870k_fire.png",
+  "/game/weap_m870k_reload.png",
+  "/game/weap_vx9.png",
+  "/game/weap_vx9_fire.png",
+  "/game/weap_vx9_reload.png",
+  "/game/weap_shrike.png",
+  "/game/weap_shrike_fire.png",
+  "/game/weap_shrike_reload.png",
+  "/game/weap_raven.png",
+  "/game/weap_raven_fire.png",
+  "/game/weap_raven_reload.png",
 ];
 
 function decodeImage(src: string): Promise<HTMLImageElement | null> {
@@ -466,8 +467,12 @@ export class HellscanRuntime {
         }
 
         const pixels = ctx.getImageData(0, 0, size, size);
-        const sprite = id === 27 || (id >= 8 && id <= 14) || (id >= 20 && id <= 25) || id >= ENEMY_TEX_BASE;
-        if (sprite) keySpriteAlpha(pixels.data, size, id >= ENEMY_TEX_BASE);
+        const sprite = id === 15 || id === 27 || (id >= 8 && id <= 14) || (id >= 20 && id <= 25) || id >= ENEMY_TEX_BASE;
+        if (sprite) {
+          // Generated VFX use intentional dark cores and smoke; preserve
+          // those pixels instead of applying the legacy black-key cleanup.
+          keySpriteAlpha(pixels.data, size, id === 15 || (id >= 22 && id <= 24) || id >= ENEMY_TEX_BASE);
+        }
         const ptr = wasm.hs_tex_ptr(id);
         const view = new Uint8Array(wasm.memory.buffer, ptr, size * size * 4);
         view.set(pixels.data);

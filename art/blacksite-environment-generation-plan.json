@@ -1,6 +1,7 @@
 {
   "$schema": "blacksite-environment-plan v1",
   "version": 1,
+  "notes": "Eight map themes share a 1024px source contract. Each theme has a seamless tile, a 4x4 environmental object sheet with 16 families, and 16 collectibles are split from four 4x4 item sheets. Projectile VFX owns the engine's spr_flame slot; themed flame vents remain in the namespaced environment props catalog.",
   "sourceSize": 1024,
   "runtimeTileSize": 256,
   "seamlessTextures": {

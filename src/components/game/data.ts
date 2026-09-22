@@ -7,11 +7,11 @@ export type Score = { name: string; wave: number; kills: number; time: number };
 export type Vol = { master: number; music: number; sfx: number };
 
 export const WEAPONS = [
-  { id: 0, name: "Sidearm", role: "Precision · conserve ammo", idle: "/game/weap_pistol.png", fire: "/game/weap_pistol_fire.png", reload: "/game/weap_pistol_reload.png" },
-  { id: 1, name: "Scattergun", role: "Close range · stagger", idle: "/game/weap_shotgun.png", fire: "/game/weap_shotgun_fire.png", reload: "/game/weap_shotgun_reload.png" },
-  { id: 2, name: "Ripper", role: "Short bursts · control spread", idle: "/game/weap_ripper.png", fire: "/game/weap_ripper_fire.png", reload: "/game/weap_ripper_reload.png" },
-  { id: 3, name: "Lance", role: "Pierces 3 · line them up", idle: "/game/weap_lance.png", fire: "/game/weap_lance_fire.png", reload: "/game/weap_lance_reload.png" },
-  { id: 4, name: "Pyre", role: "Lingering fire · hold doors", idle: "/game/weap_pyre.png", fire: "/game/weap_pyre_fire.png", reload: "/game/weap_pyre_reload.png" },
+  { id: 0, name: "MK23-S", role: "Suppressed precision · 12 rounds", idle: "/game/weap_mk23s.png", fire: "/game/weap_mk23s_fire.png", reload: "/game/weap_mk23s_reload.png" },
+  { id: 1, name: "M870K", role: "Close range · stagger", idle: "/game/weap_m870k.png", fire: "/game/weap_m870k_fire.png", reload: "/game/weap_m870k_reload.png" },
+  { id: 2, name: "VX-9", role: "Short bursts · control spread", idle: "/game/weap_vx9.png", fire: "/game/weap_vx9_fire.png", reload: "/game/weap_vx9_reload.png" },
+  { id: 3, name: "SHRIKE", role: "Pierces 3 · line them up", idle: "/game/weap_shrike.png", fire: "/game/weap_shrike_fire.png", reload: "/game/weap_shrike_reload.png" },
+  { id: 4, name: "RAVEN", role: "Lingering fire · hold doors", idle: "/game/weap_raven.png", fire: "/game/weap_raven_fire.png", reload: "/game/weap_raven_reload.png" },
 ];
 
 export function sheetPos(cell: number) {

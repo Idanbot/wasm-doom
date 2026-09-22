@@ -68,7 +68,6 @@ PROMOTIONS = {
     "spr_armor.png": "combat_armor_plate.png",
     "spr_crate.png": "hangar_breakable_supply_crate.png",
     "spr_lamp.png": "hangar_warning_lamp.png",
-    "spr_flame.png": "hangar_flame_vent.png",
     "spr_chain.png": "hangar_cargo_hook.png",
 }
 

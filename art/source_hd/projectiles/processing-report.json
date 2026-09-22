@@ -1,0 +1,177 @@
+{
+  "source": "art/source_hd/projectiles/projectile_effects_4x4.png",
+  "sourceSize": [
+    1024,
+    1024
+  ],
+  "cellSize": [
+    256,
+    256
+  ],
+  "cells": {
+    "plasma_bolt": {
+      "source": "art/source_hd/projectiles/cells/plasma_bolt.png",
+      "size": [
+        256,
+        256
+      ]
+    },
+    "incendiary_projectile": {
+      "source": "art/source_hd/projectiles/cells/incendiary_projectile.png",
+      "size": [
+        256,
+        256
+      ]
+    },
+    "lance_beam": {
+      "source": "art/source_hd/projectiles/cells/lance_beam.png",
+      "size": [
+        256,
+        256
+      ]
+    },
+    "acid_seeker": {
+      "source": "art/source_hd/projectiles/cells/acid_seeker.png",
+      "size": [
+        256,
+        256
+      ]
+    },
+    "pistol_muzzle": {
+      "source": "art/source_hd/projectiles/cells/pistol_muzzle.png",
+      "size": [
+        256,
+        256
+      ]
+    },
+    "shotgun_muzzle": {
+      "source": "art/source_hd/projectiles/cells/shotgun_muzzle.png",
+      "size": [
+        256,
+        256
+      ]
+    },
+    "smg_muzzle": {
+      "source": "art/source_hd/projectiles/cells/smg_muzzle.png",
+      "size": [
+        256,
+        256
+      ]
+    },
+    "rifle_muzzle": {
+      "source": "art/source_hd/projectiles/cells/rifle_muzzle.png",
+      "size": [
+        256,
+        256
+      ]
+    },
+    "metal_impact": {
+      "source": "art/source_hd/projectiles/cells/metal_impact.png",
+      "size": [
+        256,
+        256
+      ]
+    },
+    "plasma_impact": {
+      "source": "art/source_hd/projectiles/cells/plasma_impact.png",
+      "size": [
+        256,
+        256
+      ]
+    },
+    "explosive_impact": {
+      "source": "art/source_hd/projectiles/cells/explosive_impact.png",
+      "size": [
+        256,
+        256
+      ]
+    },
+    "acid_impact": {
+      "source": "art/source_hd/projectiles/cells/acid_impact.png",
+      "size": [
+        256,
+        256
+      ]
+    },
+    "fire_patch": {
+      "source": "art/source_hd/projectiles/cells/fire_patch.png",
+      "size": [
+        256,
+        256
+      ]
+    },
+    "smoke_puff": {
+      "source": "art/source_hd/projectiles/cells/smoke_puff.png",
+      "size": [
+        256,
+        256
+      ]
+    },
+    "electric_sparks": {
+      "source": "art/source_hd/projectiles/cells/electric_sparks.png",
+      "size": [
+        256,
+        256
+      ]
+    },
+    "casing_burst": {
+      "source": "art/source_hd/projectiles/cells/casing_burst.png",
+      "size": [
+        256,
+        256
+      ]
+    }
+  },
+  "runtime": {
+    "spr_ball.png": {
+      "cells": [
+        "plasma_bolt"
+      ],
+      "size": [
+        256,
+        256
+      ],
+      "sheet": "1x1"
+    },
+    "spr_muzzle.png": {
+      "cells": [
+        "pistol_muzzle",
+        "shotgun_muzzle",
+        "smg_muzzle",
+        "rifle_muzzle"
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "sheet": "2x2"
+    },
+    "spr_impact.png": {
+      "cells": [
+        "metal_impact",
+        "plasma_impact",
+        "explosive_impact",
+        "acid_impact"
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "sheet": "2x2"
+    },
+    "spr_flame.png": {
+      "cells": [
+        "fire_patch",
+        "smoke_puff",
+        "electric_sparks",
+        "explosive_impact"
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "sheet": "2x2"
+    }
+  },
+  "alpha": "true RGBA transparency preserved from the generated master"
+}
