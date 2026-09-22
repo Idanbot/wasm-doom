@@ -19,6 +19,8 @@
     "check:auth": "node scripts/check-auth-invariant.mjs",
     "check:wasm": "node scripts/check-wasm-sync.mjs",
     "check:assets": "node scripts/check-assets.mjs",
+    "check:environment": "node scripts/check-environment-assets.mjs",
+    "assets:environment": "python3 scripts/process-blacksite-environment-assets.py",
     "test": "node --test 'scripts/**/*.test.mjs' && node --experimental-strip-types --test src/lib/app-data/app-data.test.ts src/lib/app-data/readiness-schedule.test.ts src/lib/auth/gate-identity.test.ts src/lib/auth/sign-in-gate.test.ts src/components/game/data.test.ts src/game/hud-abi.test.ts src/game/runtime.test.ts",
     "lint": "eslint .",
     "format": "prettier --write ."

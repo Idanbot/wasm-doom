@@ -2,9 +2,10 @@
 
 The engine has **8 wall kinds + 3 floor kinds** (`wall_tex` in lib.rs).
 Same logic: sector identity comes from which kinds paint each zone,
-plus props, lighting and signage — not new geometry code. Deliver final
-textures at **256×256** (engine atlas slot size; keep 512/2K sources
-archived per the asset spec pipeline).
+plus props, lighting and signage — not new geometry code. The generated
+masters are **1024×1024** and the runtime atlas receives one repaired
+**256×256 RGBA** reduction per slot. The per-theme object and collectible
+catalog is in `art/blacksite-environment-generation-plan.json`.
 
 ## Wall slot remap
 
@@ -56,3 +57,7 @@ Walls/floors (one file per atlas slot): `wall_concrete.png` (0),
 need atlas-slot extension first. Decals (`decal_scorch_*`,
 `decal_warning_*`, `decal_propaganda_*`) ship as separate transparent
 PNGs when their sector lands.
+
+The eight generated theme masters map onto the live slots through those
+runtime aliases. Seam checks and the exact source/runtime dimensions are
+recorded in `art/source_hd/environment/processing-report.json`.

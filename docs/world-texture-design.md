@@ -17,7 +17,8 @@ The map is **one 48×32 layout**, replayed every wave. Art must fight repetition
 | Hash variants | metal→hazard (`hash%7==0`), brick→skull (`hash%5==0`) |
 | Hell | metal/brick/tech/pipes/door → flesh; grate/conc/hazard/ceil/secret → skull |
 | Ceiling | always `T_CEIL` (pipes) except hell skull |
-| Current PNG size | **128×128 photos**, bilinear-stretched to 256 — blur + seam fatigue |
+| Source PNG size | **1024×1024 generated masters**, reduced once to the 256px atlas |
+| Runtime PNG size | **256×256 RGBA tiles**, repaired for exact horizontal and vertical wrapping |
 
 Rooms (unchanged topology):
 
@@ -125,4 +126,10 @@ Do **not** rebuild rooms. Reduce fatigue with:
 
 ## 7. This pass
 
-Replace live world PNGs in `public/game/` with authored 256 tiles. Optional masters in `art/world-texture-masters/`. Small engine tweaks: extra hash variants + floor style 2/3. No new map topology.
+The current live set is generated in `art/source_hd/environment/` and processed by
+`scripts/process-blacksite-environment-assets.py`. That script writes the eight
+runtime tiles in `public/game/` and records edge checks in
+`art/source_hd/environment/processing-report.json`. The per-theme object and
+collectible sheets are cataloged in
+`art/blacksite-environment-generation-plan.json`; each sheet is a 1024px master
+split into 256px runtime cells. No new map topology is required for this art pass.

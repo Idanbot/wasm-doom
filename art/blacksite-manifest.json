@@ -1,6 +1,6 @@
 {
   "$schema": "blacksite-manifest v1",
-  "notes": "Single source of truth for the BLACKSITE IFRIT asset conversion. Each enemy owns seven 2x2 animation layers (idle 2, move 4, pain 2, fire 2, reload/charge 2, dead 2, special 2). Sources are 1024px renders; runtime layers are deterministic 256px sheets. See docs/blacksite-ifrit/ROSTER_MAP.md, WEAPON_MAP.md, TEXTURE_MAP.md.",
+  "notes": "Single source of truth for the BLACKSITE IFRIT asset conversion. Each enemy owns seven 2x2 animation layers (idle 2, move 4, pain 2, fire 2, reload/charge 2, dead 2, special 2). Sources are 1024px renders; runtime layers are deterministic 256px sheets. Environment source sheets and per-theme object/collectible catalogs live in art/blacksite-environment-generation-plan.json.",
   "enemies": [
     { "specId": "enemy_rifleman", "engineKind": "EK_HUSK", "archetype": "grunt", "textureSlot": 29, "file": "enemy_rifleman_idle.png", "animationFiles": ["enemy_rifleman_idle.png", "enemy_rifleman_move.png", "enemy_rifleman_pain.png", "enemy_rifleman_fire.png", "enemy_rifleman_reload.png", "enemy_rifleman_dead.png", "enemy_rifleman_special.png"], "sheet": "2x2", "size": 256, "status": "ready" },
     { "specId": "enemy_breacher", "engineKind": "EK_HUSK", "archetype": "grunt", "textureSlot": 36, "file": "enemy_breacher_idle.png", "animationFiles": ["enemy_breacher_idle.png", "enemy_breacher_move.png", "enemy_breacher_pain.png", "enemy_breacher_fire.png", "enemy_breacher_reload.png", "enemy_breacher_dead.png", "enemy_breacher_special.png"], "sheet": "2x2", "size": 256, "status": "ready" },
@@ -24,21 +24,21 @@
     { "specId": "weapon_raven", "engineSlot": 4, "files": ["weap_raven.png", "weap_raven_fire.png", "weap_raven_reload.png"], "status": "planned" }
   ],
   "textures": [
-    { "specId": "tex_concrete_bunker", "textureSlot": 0, "file": "wall_concrete.png", "size": 256, "status": "planned" },
-    { "specId": "tex_gunmetal_panel", "textureSlot": 1, "file": "wall_gunmetal.png", "size": 256, "status": "planned" },
-    { "specId": "tex_tissue_vat", "textureSlot": 2, "file": "wall_tissue.png", "size": 256, "status": "planned" },
-    { "specId": "tex_server_cladding", "textureSlot": 3, "file": "wall_serverclad.png", "size": 256, "status": "planned" },
-    { "specId": "tex_blast_door", "textureSlot": 4, "file": "wall_blastdoor.png", "size": 256, "status": "planned" },
-    { "specId": "tex_grate_floor", "textureSlot": 5, "file": "floor_grate_bi.png", "size": 256, "status": "planned" },
-    { "specId": "tex_bunker_floor", "textureSlot": 6, "file": "floor_bunker.png", "size": 256, "status": "planned" },
-    { "specId": "tex_maintenance_hatch", "textureSlot": 17, "file": "wall_hatch.png", "size": 256, "status": "planned" },
-    { "specId": "tex_server_rack", "textureSlot": 18, "file": "wall_server.png", "size": 256, "status": "planned" },
-    { "specId": "tex_hazard_stripe", "textureSlot": 19, "file": "wall_hazard_bi.png", "size": 256, "status": "planned" },
-    { "specId": "tex_cable_tray", "textureSlot": 26, "file": "wall_cables.png", "size": 256, "status": "planned" }
+    { "specId": "tex_concrete_bunker", "textureSlot": 0, "file": "wall_concrete.png", "size": 256, "status": "ready" },
+    { "specId": "tex_gunmetal_panel", "textureSlot": 1, "file": "wall_gunmetal.png", "size": 256, "status": "ready" },
+    { "specId": "tex_tissue_vat", "textureSlot": 2, "file": "wall_tissue.png", "size": 256, "status": "ready" },
+    { "specId": "tex_server_cladding", "textureSlot": 3, "file": "wall_serverclad.png", "size": 256, "status": "ready" },
+    { "specId": "tex_blast_door", "textureSlot": 4, "file": "wall_blastdoor.png", "size": 256, "status": "ready" },
+    { "specId": "tex_grate_floor", "textureSlot": 5, "file": "floor_grate_bi.png", "size": 256, "status": "ready" },
+    { "specId": "tex_bunker_floor", "textureSlot": 6, "file": "floor_bunker.png", "size": 256, "status": "ready" },
+    { "specId": "tex_maintenance_hatch", "textureSlot": 17, "file": "wall_hatch.png", "size": 256, "status": "ready" },
+    { "specId": "tex_server_rack", "textureSlot": 18, "file": "wall_server.png", "size": 256, "status": "ready" },
+    { "specId": "tex_hazard_stripe", "textureSlot": 19, "file": "wall_hazard_bi.png", "size": 256, "status": "ready" },
+    { "specId": "tex_cable_tray", "textureSlot": 26, "file": "wall_cables.png", "size": 256, "status": "ready" }
   ],
   "props": [
-    { "specId": "prop_ammo_crate", "textureSlot": 21, "file": "spr_crate_bi.png", "size": 256, "status": "planned" },
-    { "specId": "prop_medkit", "textureSlot": 11, "file": "spr_medkit_bi.png", "size": 256, "status": "planned" },
+    { "specId": "prop_ammo_crate", "textureSlot": 21, "file": "spr_crate_bi.png", "size": 256, "status": "ready" },
+    { "specId": "prop_medkit", "textureSlot": 11, "file": "spr_medkit_bi.png", "size": 256, "status": "ready" },
     { "specId": "prop_server_rack", "textureSlot": null, "file": "spr_serverrack.png", "size": 256, "status": "planned", "needsSlotExtension": true },
     { "specId": "prop_specimen_tank", "textureSlot": null, "file": "spr_spectank.png", "size": 512, "status": "planned", "needsSlotExtension": true }
   ]

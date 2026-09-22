@@ -1,0 +1,159 @@
+{
+  "$schema": "blacksite-environment-plan v1",
+  "version": 1,
+  "sourceSize": 1024,
+  "runtimeTileSize": 256,
+  "seamlessTextures": {
+    "required": true,
+    "method": "32px feathered opposite-edge blend at source resolution, 8px blend after runtime reduction",
+    "validation": "the first and last pixel columns and rows must match exactly; 2x2 and 3x3 repeats are reviewed",
+    "style": "Nadir-7 industrial occult: steel, rust, wine, bone, caution amber, acid green, upper-left light"
+  },
+  "research": [
+    {
+      "topic": "damaging floors and liquids",
+      "url": "https://doom.fandom.com/wiki/Damaging_floor",
+      "application": "acid spills, bio-slime, coolant channels, flame vents"
+    },
+    {
+      "topic": "explosive barrels and chain reactions",
+      "url": "https://doom.fandom.com/wiki/Barrel",
+      "application": "explosive barrels and pressurized fuel canisters"
+    },
+    {
+      "topic": "classic environmental hazards",
+      "url": "https://gamefaqs.gamespot.com/ps4/270132-doom-1993/faqs/80222/doom-basics",
+      "application": "damaging liquids, heated floors, crushers and environmental readability"
+    }
+  ],
+  "objectFamilies": [
+    { "id": "explosive_barrel", "type": "explosive", "motion": "static", "walkableHazard": false, "chainReaction": true },
+    { "id": "fuel_canister", "type": "explosive", "motion": "static", "walkableHazard": false, "chainReaction": true },
+    { "id": "flame_vent", "type": "damage_floor", "motion": "animated", "walkableHazard": true, "damage": "fire" },
+    { "id": "acid_spill", "type": "damage_floor", "motion": "animated", "walkableHazard": true, "damage": "corrosive" },
+    { "id": "electric_arc_coil", "type": "damage_contact", "motion": "animated", "walkableHazard": true, "damage": "shock" },
+    { "id": "toxic_gas_emitter", "type": "damage_area", "motion": "animated", "walkableHazard": true, "damage": "toxin" },
+    { "id": "security_turret", "type": "enemy_hazard", "motion": "animated", "walkableHazard": false, "targeting": true },
+    { "id": "hydraulic_crusher", "type": "damage_mechanical", "motion": "animated", "walkableHazard": true, "damage": "crush" },
+    { "id": "laser_barrier", "type": "damage_contact", "motion": "animated", "walkableHazard": true, "damage": "plasma" },
+    { "id": "cargo_hook", "type": "moving_obstacle", "motion": "animated", "walkableHazard": false, "damage": "impact" },
+    { "id": "pressure_airlock", "type": "interactive_door", "motion": "animated", "walkableHazard": false, "requiresUse": true },
+    { "id": "breakable_supply_crate", "type": "destructible", "motion": "static", "walkableHazard": false, "dropsLoot": true },
+    { "id": "terminal_console", "type": "interactive", "motion": "static", "walkableHazard": false, "requiresUse": true },
+    { "id": "specimen_reactor_tank", "type": "landmark", "motion": "animated", "walkableHazard": false, "breakable": true },
+    { "id": "cable_pipe_manifold", "type": "static_dressing", "motion": "static", "walkableHazard": false },
+    { "id": "warning_lamp", "type": "signaling", "motion": "animated", "walkableHazard": false }
+  ],
+  "themes": [
+    {
+      "id": "hangar",
+      "mapZones": ["hangar", "start"],
+      "texture": { "source": "art/source_hd/environment/textures/tex_hangar_gunmetal.png", "runtime": "public/game/wall_metal.png", "role": "wall" },
+      "floor": { "runtime": "public/game/floor_grate.png", "role": "diamond plate" },
+      "objectSheet": "art/source_hd/environment/sheets/objects_hangar_4x4.png",
+      "runtimeObjectPrefix": "public/game/environment/props/hangar_",
+      "environmentObjectCount": 16,
+      "objects": ["explosive_barrel", "fuel_canister", "flame_vent", "acid_spill", "electric_arc_coil", "toxic_gas_emitter", "security_turret", "hydraulic_crusher", "laser_barrier", "cargo_hook", "pressure_airlock", "breakable_supply_crate", "terminal_console", "specimen_reactor_tank", "cable_pipe_manifold", "warning_lamp"]
+    },
+    {
+      "id": "plaza",
+      "mapZones": ["plaza", "chapel", "secret"],
+      "texture": { "source": "art/source_hd/environment/textures/tex_plaza_masonry.png", "runtime": "public/game/wall_brick.png", "role": "masonry wall" },
+      "floor": { "runtime": "public/game/floor_concrete.png", "role": "stone slab" },
+      "objectSheet": "art/source_hd/environment/sheets/objects_plaza_4x4.png",
+      "runtimeObjectPrefix": "public/game/environment/props/plaza_",
+      "environmentObjectCount": 16,
+      "objects": ["explosive_barrel", "fuel_canister", "flame_vent", "acid_spill", "electric_arc_coil", "toxic_gas_emitter", "security_turret", "hydraulic_crusher", "laser_barrier", "cargo_hook", "pressure_airlock", "breakable_supply_crate", "terminal_console", "specimen_reactor_tank", "cable_pipe_manifold", "warning_lamp"]
+    },
+    {
+      "id": "security",
+      "mapZones": ["security", "barracks"],
+      "texture": { "source": "art/source_hd/environment/textures/tex_security_bulkhead.png", "runtime": "public/game/wall_hazard_tile2x2.png", "role": "hazard bulkhead" },
+      "floor": { "runtime": "public/game/floor_concrete.png", "role": "reinforced concrete" },
+      "objectSheet": "art/source_hd/environment/sheets/objects_security_4x4.png",
+      "runtimeObjectPrefix": "public/game/environment/props/security_",
+      "environmentObjectCount": 16,
+      "objects": ["explosive_barrel", "fuel_canister", "flame_vent", "acid_spill", "electric_arc_coil", "toxic_gas_emitter", "security_turret", "hydraulic_crusher", "laser_barrier", "cargo_hook", "pressure_airlock", "breakable_supply_crate", "terminal_console", "specimen_reactor_tank", "cable_pipe_manifold", "warning_lamp"]
+    },
+    {
+      "id": "datacenter",
+      "mapZones": ["lab", "data_center"],
+      "texture": { "source": "art/source_hd/environment/textures/tex_datacenter_server.png", "runtime": "public/game/wall_tech_tile2x2.png", "role": "server cladding" },
+      "floor": { "runtime": "public/game/floor_grate.png", "role": "raised rack floor" },
+      "objectSheet": "art/source_hd/environment/sheets/objects_datacenter_4x4.png",
+      "runtimeObjectPrefix": "public/game/environment/props/datacenter_",
+      "environmentObjectCount": 16,
+      "objects": ["explosive_barrel", "fuel_canister", "flame_vent", "acid_spill", "electric_arc_coil", "toxic_gas_emitter", "security_turret", "hydraulic_crusher", "laser_barrier", "cargo_hook", "pressure_airlock", "breakable_supply_crate", "terminal_console", "specimen_reactor_tank", "cable_pipe_manifold", "warning_lamp"]
+    },
+    {
+      "id": "foundry",
+      "mapZones": ["robotics", "foundry"],
+      "texture": { "source": "art/source_hd/environment/textures/tex_foundry_diamond.png", "runtime": "public/game/floor_grate.png", "role": "heated floor" },
+      "floor": { "runtime": "public/game/floor_grate.png", "role": "diamond plate" },
+      "objectSheet": "art/source_hd/environment/sheets/objects_foundry_4x4.png",
+      "runtimeObjectPrefix": "public/game/environment/props/foundry_",
+      "environmentObjectCount": 16,
+      "objects": ["explosive_barrel", "fuel_canister", "flame_vent", "acid_spill", "electric_arc_coil", "toxic_gas_emitter", "security_turret", "hydraulic_crusher", "laser_barrier", "cargo_hook", "pressure_airlock", "breakable_supply_crate", "terminal_console", "specimen_reactor_tank", "cable_pipe_manifold", "warning_lamp"]
+    },
+    {
+      "id": "biotech",
+      "mapZones": ["lab", "flesh_pit", "janus"],
+      "texture": { "source": "art/source_hd/environment/textures/tex_biotech_janus.png", "runtime": "public/game/wall_flesh.png", "role": "containment wall" },
+      "floor": { "runtime": "public/game/floor_grate.png", "role": "drain grate" },
+      "objectSheet": "art/source_hd/environment/sheets/objects_biotech_4x4.png",
+      "runtimeObjectPrefix": "public/game/environment/props/biotech_",
+      "environmentObjectCount": 16,
+      "objects": ["explosive_barrel", "fuel_canister", "flame_vent", "acid_spill", "electric_arc_coil", "toxic_gas_emitter", "security_turret", "hydraulic_crusher", "laser_barrier", "cargo_hook", "pressure_airlock", "breakable_supply_crate", "terminal_console", "specimen_reactor_tank", "cable_pipe_manifold", "warning_lamp"]
+    },
+    {
+      "id": "nuclear",
+      "mapZones": ["reactor", "nuclear"],
+      "texture": { "source": "art/source_hd/environment/textures/tex_nuclear_floor.png", "runtime": "public/game/floor_concrete.png", "role": "coolant service floor" },
+      "floor": { "runtime": "public/game/floor_concrete.png", "role": "lead ceramic" },
+      "objectSheet": "art/source_hd/environment/sheets/objects_nuclear_4x4.png",
+      "runtimeObjectPrefix": "public/game/environment/props/nuclear_",
+      "environmentObjectCount": 16,
+      "objects": ["explosive_barrel", "fuel_canister", "flame_vent", "acid_spill", "electric_arc_coil", "toxic_gas_emitter", "security_turret", "hydraulic_crusher", "laser_barrier", "cargo_hook", "pressure_airlock", "breakable_supply_crate", "terminal_console", "specimen_reactor_tank", "cable_pipe_manifold", "warning_lamp"]
+    },
+    {
+      "id": "vault",
+      "mapZones": ["vault", "core"],
+      "texture": { "source": "art/source_hd/environment/textures/tex_vault_ossuary.png", "runtime": "public/game/wall_bone.png", "role": "ossuary wall" },
+      "floor": { "runtime": "public/game/floor_concrete.png", "role": "sealed stone" },
+      "objectSheet": "art/source_hd/environment/sheets/objects_vault_4x4.png",
+      "runtimeObjectPrefix": "public/game/environment/props/vault_",
+      "environmentObjectCount": 16,
+      "objects": ["explosive_barrel", "fuel_canister", "flame_vent", "acid_spill", "electric_arc_coil", "toxic_gas_emitter", "security_turret", "hydraulic_crusher", "laser_barrier", "cargo_hook", "pressure_airlock", "breakable_supply_crate", "terminal_console", "specimen_reactor_tank", "cable_pipe_manifold", "warning_lamp"]
+    }
+  ],
+  "itemsAndCollectibles": {
+    "sourceSize": 1024,
+    "runtimeCellSize": 256,
+    "sheets": [
+      { "id": "combat", "source": "art/source_hd/environment/sheets/items_combat_4x4.png", "runtimePrefix": "public/game/environment/items/combat_", "count": 16 },
+      { "id": "security", "source": "art/source_hd/environment/sheets/items_security_4x4.png", "runtimePrefix": "public/game/environment/items/security_", "count": 16 },
+      { "id": "science", "source": "art/source_hd/environment/sheets/items_science_4x4.png", "runtimePrefix": "public/game/environment/items/science_", "count": 16 },
+      { "id": "occult", "source": "art/source_hd/environment/sheets/items_occult_4x4.png", "runtimePrefix": "public/game/environment/items/occult_", "count": 16 }
+    ],
+    "themeLoadout": {
+      "hangar": ["combat", "security"],
+      "plaza": ["security", "occult"],
+      "security": ["combat", "security"],
+      "datacenter": ["security", "science"],
+      "foundry": ["combat", "science"],
+      "biotech": ["science", "security"],
+      "nuclear": ["science", "combat"],
+      "vault": ["occult", "science"]
+    }
+  },
+  "deliverables": {
+    "textureMasters": 8,
+    "themeObjectSheets": 8,
+    "environmentObjectsPerTheme": 16,
+    "collectibleSheets": 4,
+    "collectibleVariants": 64,
+    "runtimeTextureTiles": 8,
+    "runtimeObjectCells": 128,
+    "runtimeCollectibleCells": 64
+  }
+}

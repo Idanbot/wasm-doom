@@ -1,0 +1,163 @@
+{
+  "sourceSize": 1024,
+  "runtimeTextureSize": 256,
+  "seamMethod": "32px feathered opposite-edge blend, exact boundary equality",
+  "textures": {
+    "wall_metal.png": {
+      "source": "art/source_hd/environment/textures/tex_hangar_gunmetal.png",
+      "runtime": "public/game/wall_metal.png",
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "maxWrapEdgeDelta": 0
+    },
+    "wall_flesh.png": {
+      "source": "art/source_hd/environment/textures/tex_biotech_janus.png",
+      "runtime": "public/game/wall_flesh.png",
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "maxWrapEdgeDelta": 0
+    },
+    "wall_tech_tile2x2.png": {
+      "source": "art/source_hd/environment/textures/tex_datacenter_server.png",
+      "runtime": "public/game/wall_tech_tile2x2.png",
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "maxWrapEdgeDelta": 0
+    },
+    "wall_hazard_tile2x2.png": {
+      "source": "art/source_hd/environment/textures/tex_security_bulkhead.png",
+      "runtime": "public/game/wall_hazard_tile2x2.png",
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "maxWrapEdgeDelta": 0
+    },
+    "floor_grate.png": {
+      "source": "art/source_hd/environment/textures/tex_foundry_diamond.png",
+      "runtime": "public/game/floor_grate.png",
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "maxWrapEdgeDelta": 0
+    },
+    "wall_brick.png": {
+      "source": "art/source_hd/environment/textures/tex_plaza_masonry.png",
+      "runtime": "public/game/wall_brick.png",
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "maxWrapEdgeDelta": 0
+    },
+    "floor_concrete.png": {
+      "source": "art/source_hd/environment/textures/tex_nuclear_floor.png",
+      "runtime": "public/game/floor_concrete.png",
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "maxWrapEdgeDelta": 0
+    },
+    "wall_bone.png": {
+      "source": "art/source_hd/environment/textures/tex_vault_ossuary.png",
+      "runtime": "public/game/wall_bone.png",
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "runtimeSize": [
+        256,
+        256
+      ],
+      "maxWrapEdgeDelta": 0
+    }
+  },
+  "objectSheets": {
+    "hangar": {
+      "sheet": "art/source_hd/environment/sheets/objects_hangar_4x4.png",
+      "objects": 16
+    },
+    "plaza": {
+      "sheet": "art/source_hd/environment/sheets/objects_plaza_4x4.png",
+      "objects": 16
+    },
+    "security": {
+      "sheet": "art/source_hd/environment/sheets/objects_security_4x4.png",
+      "objects": 16
+    },
+    "datacenter": {
+      "sheet": "art/source_hd/environment/sheets/objects_datacenter_4x4.png",
+      "objects": 16
+    },
+    "foundry": {
+      "sheet": "art/source_hd/environment/sheets/objects_foundry_4x4.png",
+      "objects": 16
+    },
+    "biotech": {
+      "sheet": "art/source_hd/environment/sheets/objects_biotech_4x4.png",
+      "objects": 16
+    },
+    "nuclear": {
+      "sheet": "art/source_hd/environment/sheets/objects_nuclear_4x4.png",
+      "objects": 16
+    },
+    "vault": {
+      "sheet": "art/source_hd/environment/sheets/objects_vault_4x4.png",
+      "objects": 16
+    }
+  },
+  "itemSheets": {
+    "combat": {
+      "sheet": "art/source_hd/environment/sheets/items_combat_4x4.png",
+      "count": 16
+    },
+    "security": {
+      "sheet": "art/source_hd/environment/sheets/items_security_4x4.png",
+      "count": 16
+    },
+    "science": {
+      "sheet": "art/source_hd/environment/sheets/items_science_4x4.png",
+      "count": 16
+    },
+    "occult": {
+      "sheet": "art/source_hd/environment/sheets/items_occult_4x4.png",
+      "count": 16
+    }
+  }
+}
