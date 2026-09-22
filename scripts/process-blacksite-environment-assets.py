@@ -57,6 +57,21 @@ ITEM_SHEETS = {
     "occult": "item_occult.png",
 }
 
+# Existing engine slots that can consume the new art without growing TEX_N.
+# The complete per-theme cells remain in public/game/environment for the next
+# object/atlas expansion; these promotions make the current map visibly use
+# the new set right away.
+PROMOTIONS = {
+    "spr_barrel.png": "hangar_explosive_barrel.png",
+    "spr_med.png": "combat_compact_medkit.png",
+    "spr_ammo.png": "combat_shotgun_shell_bundle.png",
+    "spr_armor.png": "combat_armor_plate.png",
+    "spr_crate.png": "hangar_breakable_supply_crate.png",
+    "spr_lamp.png": "hangar_warning_lamp.png",
+    "spr_flame.png": "hangar_flame_vent.png",
+    "spr_chain.png": "hangar_cargo_hook.png",
+}
+
 OBJECT_FAMILIES = (
     "explosive_barrel",
     "fuel_canister",
@@ -195,8 +210,15 @@ def edge_delta(image: Image.Image) -> int:
 
 
 def save_texture(raw_name: str, source_name: str, runtime_name: str) -> dict[str, object]:
-    raw = generated_or_canonical(raw_name, SOURCE_TEXTURES / source_name)
-    source = repair_wrap(opaque_texture(rgba_resized(raw, (1024, 1024))))
+    canonical = SOURCE_TEXTURES / source_name
+    raw = RAW / raw_name
+    # A committed canonical master has already been resized and seam-repaired.
+    # Reading it directly keeps repeated `assets:environment` runs idempotent.
+    source = (
+        repair_wrap(opaque_texture(rgba_resized(raw, (1024, 1024))))
+        if raw.exists()
+        else Image.open(canonical).convert("RGB")
+    )
     source_path = SOURCE_TEXTURES / source_name
     source.save(source_path, format="PNG", optimize=False)
     runtime = repair_wrap(source.resize((256, 256), Image.Resampling.LANCZOS), band=8)
@@ -234,6 +256,16 @@ def split_sheet(sheet_name: str, source_name: str, families: Iterable[str], out_
         cell.save(out_runtime / f"{out_source.name}_{family}.png", format="PNG", optimize=False)
 
 
+def promote_existing_slots() -> None:
+    props = RUNTIME / "environment" / "props"
+    items = RUNTIME / "environment" / "items"
+    for destination, source_name in PROMOTIONS.items():
+        source = props / source_name if source_name.startswith("hangar_") else items / source_name
+        if not source.exists():
+            raise FileNotFoundError(f"promotion source missing: {source}")
+        Image.open(source).convert("RGBA").save(RUNTIME / destination, format="PNG", optimize=False)
+
+
 def main() -> None:
     ensure_dirs()
     texture_records = {}
@@ -247,6 +279,7 @@ def main() -> None:
     for group, raw_name in ITEM_SHEETS.items():
         split_sheet(raw_name, f"items_{group}_4x4.png", ITEM_FAMILIES[group], SOURCE_ITEMS / group, RUNTIME / "environment" / "items")
         item_records[group] = {"sheet": str((SOURCE_SHEETS / f"items_{group}_4x4.png").relative_to(ROOT)), "count": len(ITEM_FAMILIES[group])}
+    promote_existing_slots()
 
     report = {
         "sourceSize": 1024,
