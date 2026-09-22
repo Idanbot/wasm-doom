@@ -11,20 +11,21 @@ try {
   await page.goto("http://127.0.0.1:8080/");
   const result = await page.evaluate(async () => {
     const { createBlitter } = await import("/src/game/blit.ts");
+    const { TEX, TEX_N } = await import("/src/game/gpu-world.ts");
     const canvas = document.createElement("canvas");
     canvas.style.cssText = "width:64px;height:64px";
     document.body.append(canvas);
     const blit = await createBlitter(canvas);
     blit.setGfx({ crt: false, bloom: false, fog: false });
-    const atlas = new Uint8Array(29 * 256 * 256 * 4);
-    for (let y = 0; y < 256; y++)
-      for (let x = 0; x < 256; x++) {
-        const i = (y * 256 + x) * 4;
-        atlas[i + (y < 128 ? 0 : 2)] = 255;
+    const atlas = new Uint8Array(TEX_N * TEX * TEX * 4);
+    for (let y = 0; y < TEX; y++)
+      for (let x = 0; x < TEX; x++) {
+        const i = (y * TEX + x) * 4;
+        atlas[i + (y < TEX / 2 ? 0 : 2)] = 255;
         atlas[i + 3] = 255;
       }
     // A green world landmark makes horizontal camera motion observable in pixels.
-    for (let i = 256 * 256 * 4; i < 2 * 256 * 256 * 4; i += 4) {
+    for (let i = TEX * TEX * 4; i < 2 * TEX * TEX * 4; i += 4) {
       atlas[i + 1] = 255;
       atlas[i + 3] = 255;
     }

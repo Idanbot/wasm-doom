@@ -66,19 +66,22 @@ pub(crate) struct EnemySkin {
 }
 
 pub(crate) const ENEMY_SKINS: &[EnemySkin] = &[
-    EnemySkin { id: SKIN_RIFLEMAN, name: "Directorate Rifleman", texture: ENEMY_TEX_BASE, scale: 0.95, zoff: 0.0, special: "tactical brace" },
-    EnemySkin { id: SKIN_BREACHER, name: "Breacher", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT, scale: 1.0, zoff: 0.0, special: "breach rush" },
-    EnemySkin { id: SKIN_SUBJECT, name: "Failed Augment Subject", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 2, scale: 0.94, zoff: 0.0, special: "augment surge" },
-    EnemySkin { id: SKIN_HAZMAT, name: "Hazmat Security", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 3, scale: 1.08, zoff: 0.0, special: "purge charge" },
-    EnemySkin { id: SKIN_GUNNER, name: "Heavy Gunner", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 4, scale: 1.18, zoff: 0.0, special: "stabilized burst" },
-    EnemySkin { id: SKIN_LOADER, name: "Industrial Loader", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 5, scale: 1.24, zoff: 0.0, special: "hydraulic slam" },
-    EnemySkin { id: SKIN_VATBRUTE, name: "Vat-grown Brute", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 6, scale: 1.3, zoff: 0.0, special: "bio-rage" },
-    EnemySkin { id: SKIN_MARKSMAN, name: "Marksman", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 7, scale: 0.86, zoff: -18.0, special: "optic lock" },
-    EnemySkin { id: SKIN_HORNET, name: "Hornet Drone", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 8, scale: 0.66, zoff: -70.0, special: "attack vector" },
-    EnemySkin { id: SKIN_HOUND, name: "Hound", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 9, scale: 0.76, zoff: 22.0, special: "pounce" },
-    EnemySkin { id: SKIN_SPITTER, name: "Spitter", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 10, scale: 0.84, zoff: -8.0, special: "acid sac" },
-    EnemySkin { id: SKIN_MARTYR, name: "Martyr Drone", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 11, scale: 0.72, zoff: 78.0, special: "detonation" },
-    EnemySkin { id: SKIN_VEYRAN, name: "VEYRAN // MALIK", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 12, scale: 2.45, zoff: 8.0, special: "seal rupture" },
+    // The source renders are normalized to a 216px subject height before
+    // packing. These scales keep the old world-space silhouette sizes while
+    // leaving enough depth for the new high-resolution silhouettes.
+    EnemySkin { id: SKIN_RIFLEMAN, name: "Directorate Rifleman", texture: ENEMY_TEX_BASE, scale: 0.90, zoff: 0.0, special: "tactical brace" },
+    EnemySkin { id: SKIN_BREACHER, name: "Breacher", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT, scale: 0.95, zoff: 0.0, special: "breach rush" },
+    EnemySkin { id: SKIN_SUBJECT, name: "Failed Augment Subject", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 2, scale: 0.90, zoff: 0.0, special: "augment surge" },
+    EnemySkin { id: SKIN_HAZMAT, name: "Hazmat Security", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 3, scale: 1.12, zoff: 0.0, special: "purge charge" },
+    EnemySkin { id: SKIN_GUNNER, name: "Heavy Gunner", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 4, scale: 1.14, zoff: 0.0, special: "stabilized burst" },
+    EnemySkin { id: SKIN_LOADER, name: "Industrial Loader", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 5, scale: 1.18, zoff: 0.0, special: "hydraulic slam" },
+    EnemySkin { id: SKIN_VATBRUTE, name: "Vat-grown Brute", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 6, scale: 1.22, zoff: 0.0, special: "bio-rage" },
+    EnemySkin { id: SKIN_MARKSMAN, name: "Marksman", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 7, scale: 0.78, zoff: -18.0, special: "optic lock" },
+    EnemySkin { id: SKIN_HORNET, name: "Hornet Drone", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 8, scale: 0.72, zoff: -70.0, special: "attack vector" },
+    EnemySkin { id: SKIN_HOUND, name: "Hound", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 9, scale: 0.72, zoff: 22.0, special: "pounce" },
+    EnemySkin { id: SKIN_SPITTER, name: "Spitter", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 10, scale: 0.76, zoff: -8.0, special: "acid sac" },
+    EnemySkin { id: SKIN_MARTYR, name: "Martyr Drone", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 11, scale: 0.70, zoff: 78.0, special: "detonation" },
+    EnemySkin { id: SKIN_VEYRAN, name: "VEYRAN // MALIK", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 12, scale: 2.00, zoff: 8.0, special: "seal rupture" },
 ];
 
 pub(crate) fn skin_def(id: u8) -> Option<&'static EnemySkin> {
