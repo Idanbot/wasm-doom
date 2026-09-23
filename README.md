@@ -64,4 +64,9 @@ cargo test --manifest-path engine/Cargo.toml
 - 60fps at 640×400 on the CPU raycaster; 1280 holds 60 when WebGPU or WebGL2 fills the frame
 - WebGPU with automatic WebGL2/Canvas2D fallback; renderer switchable without restarting the sim
 - 5 delivered BLACKSITE weapon sets, 13 enemy skins with seven animation states each, projectile/effect atlas, wave system, local leaderboard
-- 43 Rust tests, 75 TS tests, script integration tests; CI runs typecheck, wasm-sync, and build
+- 49 Rust tests plus TS and script integration tests; CI runs typecheck, wasm-sync, asset validation, and build
+
+Combat roles, attack windups, incendiary grenades and effect rendering are
+documented in [the BLACKSITE combat notes](docs/blacksite-ifrit/COMBAT.md).
+With the game running, `node scripts/combat-smoke.mjs` checks all five guns,
+reloads and strafe direction in a real browser.

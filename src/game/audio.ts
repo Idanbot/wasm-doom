@@ -592,6 +592,14 @@ export function createAudio(): GameAudio {
     fire(weapon) {
       resume();
       const jitter = 0.94 + Math.random() * 0.12;
+      if (weapon === 4) {
+        // The launcher needs a short mechanical thump, not the old looping
+        // flamethrower sample. Detonation has its own spatially later event.
+        beep(90, 0.16, "sine", 0.22, -55);
+        burst(0.11, 0.34 * jitter, 0.7, 550, "lowpass");
+        metallic(650, 0.055, 0.08);
+        return;
+      }
       // File OR synth, never both — the sample already carries the transient.
       if (sample(`fire${weapon}`, weapon === 1 ? 1.35 : 1.2, jitter)) return;
       if (weapon === 1) {
@@ -604,9 +612,6 @@ export function createAudio(): GameAudio {
       } else if (weapon === 3) {
         beep(620, 0.22, "sawtooth", 0.07, -280);
         burst(0.18, 0.2, 1.1, 2200, "bandpass");
-      } else if (weapon === 4) {
-        burst(0.12, 0.26 * jitter, 0.7, 400, "lowpass");
-        burst(0.08, 0.14, 2.2, 3000, "highpass");
       } else {
         burst(0.07, 0.24 * jitter, 2.1, 1100, "bandpass");
         beep(380, 0.05, "square", 0.07, -160);

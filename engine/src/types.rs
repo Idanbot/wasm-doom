@@ -20,11 +20,14 @@ pub(crate) struct Ent {
     pub(crate) flash: f32,
     pub(crate) stun: f32,
     pub(crate) effect_tick: f32,
+    /// Target angle committed at the start of an attack windup.
+    pub(crate) aim: f32,
     pub(crate) zoff: f32,
 }
 
 #[derive(Clone, Copy)]
 pub(crate) struct FxCmd {
+    pub(crate) variant: u8,
     pub(crate) kind: u8,
     pub(crate) x: f32,
     pub(crate) y: f32,

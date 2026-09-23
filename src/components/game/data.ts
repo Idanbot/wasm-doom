@@ -11,7 +11,7 @@ export const WEAPONS = [
   { id: 1, name: "M870K", role: "Close range · stagger", idle: "/game/weap_m870k.png", fire: "/game/weap_m870k_fire.png", reload: "/game/weap_m870k_reload.png" },
   { id: 2, name: "VX-9", role: "Short bursts · control spread", idle: "/game/weap_vx9.png", fire: "/game/weap_vx9_fire.png", reload: "/game/weap_vx9_reload.png" },
   { id: 3, name: "SHRIKE", role: "Pierces 3 · line them up", idle: "/game/weap_shrike.png", fire: "/game/weap_shrike_fire.png", reload: "/game/weap_shrike_reload.png" },
-  { id: 4, name: "RAVEN", role: "Lingering fire · hold doors", idle: "/game/weap_raven.png", fire: "/game/weap_raven_fire.png", reload: "/game/weap_raven_reload.png" },
+  { id: 4, name: "RAVEN", role: "Incendiary grenades · keep your distance", idle: "/game/weap_raven.png", fire: "/game/weap_raven_fire.png", reload: "/game/weap_raven_reload.png" },
 ];
 
 export function sheetPos(cell: number) {

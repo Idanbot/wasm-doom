@@ -110,6 +110,24 @@
   .weapon-role { max-width: 8rem; font-size: 9px; }
 }
 .crosshair { filter: drop-shadow(0 1px 1px var(--color-bg)); }
+.hit-confirm {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font: 24px/1 var(--font-mono);
+  color: var(--color-fg);
+}
+.hit-confirm-kill { color: var(--color-danger); font-size: 32px; }
+.kill-confirm {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  font: 10px/1 var(--font-mono);
+  letter-spacing: 0.16em;
+  color: var(--color-danger);
+}
 @media (prefers-reduced-motion: reduce) {
   .vital-fill { transition: none; }
 }

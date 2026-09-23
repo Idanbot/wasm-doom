@@ -45,9 +45,10 @@ CELL_COORDS = {
 
 
 SHEETS = {
+    "spr_ordnance.png": ("plasma_bolt", "incendiary_projectile", "lance_beam", "acid_seeker"),
     "spr_muzzle.png": ("pistol_muzzle", "shotgun_muzzle", "smg_muzzle", "rifle_muzzle"),
     "spr_impact.png": ("metal_impact", "plasma_impact", "explosive_impact", "acid_impact"),
-    "spr_flame.png": ("fire_patch", "smoke_puff", "electric_sparks", "explosive_impact"),
+    "spr_flame.png": ("fire_patch", "smoke_puff", "electric_sparks", "casing_burst"),
 }
 
 

@@ -16,7 +16,7 @@ import { join, dirname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const KNOWN_KINDS = new Set(["EK_HUSK", "EK_BRUTE", "EK_WRAITH", "EK_BOSS", "EK_BARREL"]);
-const ATLAS_SLOTS = 120; // TEX_N; includes the 13 × 7 enemy animation layers
+const ATLAS_SLOTS = 121; // World + 13 × 7 enemy animation layers + ordnance
 const STATUSES = new Set(["planned", "ready"]);
 
 export function isSnakePng(name) {

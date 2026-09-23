@@ -1,35 +1,36 @@
 # BLACKSITE IFRIT — roster mapping (spec → engine v1)
 
 The engine ships **4 hostile archetypes + danger props** (`engine/src/enemies.rs`).
-Same logic, new cast: every spec unit below maps onto one archetype row
-(stats, hitbox, behavior identical — only art, name and placement change).
+Each spec unit maps onto an archetype for HP and hitbox. Skin-specific
+movement, range, windup, damage and attacks live in `engine/src/combat.rs`.
+See [COMBAT.md](COMBAT.md) for the attack and counterplay rules.
 Units needing new AI are marked DEFERRED with the missing system named.
 
 ## Archetypes (unchanged stats)
 
-| Archetype | Engine rows | HP | Speed | Role |
-|---|---|---|---|---|
-| grunt | EK_HUSK | 28 | 1.7, melee | chaser |
-| tank | EK_BRUTE | 78 | 2.15, melee + spread | bruiser |
-| skirmisher | EK_WRAITH | 20 | 2.7, ranged bolt, floats | harasser |
-| boss | EK_BOSS | 520 (×1.5/wave) | 1.28, barrage | seal ritual |
-| volatile prop | EK_BARREL | 14, explodes | — | area denial |
+| Archetype | Engine rows | Base HP |
+|---|---|---|
+| grunt | EK_HUSK | 28 |
+| tank | EK_BRUTE | 78 |
+| skirmisher | EK_WRAITH | 20 |
+| boss | EK_BOSS | 520 (scaled by wave) |
+| volatile prop | EK_BARREL | 14 |
 
-## v1 cast (delivered art, shared AI)
+## v1 cast (delivered art and combat roles)
 
 | Spec unit | Archetype | Notes |
 |---|---|---|
-| Directorate Rifleman | grunt | mid-map ranged fantasy; engine chases to melee — place in lanes so it reads as patrol |
-| Breacher | grunt | close-range fantasy matches the chase; shotgun role told through art + placement |
-| Subject (failed augment) | grunt | JANUS flavor, ambush closets |
-| Hazmat Security | tank | armored radiation guard; slow-bruiser stats fit |
-| Heavy Gunner | tank | oversized weapon silhouette per spec §20 |
+| Directorate Rifleman | grunt | medium-range single shots, 0.45s windup |
+| Breacher | grunt | closes to 2.8 units, three-projectile spread |
+| Subject (failed augment) | grunt | fast melee chaser |
+| Hazmat Security | tank | slow ranged guard, 0.65s windup |
+| Heavy Gunner | tank | three-projectile spread, 0.8s windup |
 | Loader (industrial mech) | tank | heavy melee fantasy ✓ |
 | Vat-grown Brute | tank | 1:1 with current Brute role |
 | Marksman | skirmisher | long-range pressure via fast ranged bolt; narrow profile + optic per spec |
 | Hornet (attack quadcopter) | skirmisher | flying attacker ✓ (float zoff) |
-| Hound (quadruped robot) | skirmisher | fast melee-ish harasser |
-| Spitter (bio ranged) | skirmisher | biological bolt flavor |
+| Hound (quadruped robot) | skirmisher | fast melee with a dodgeable 0.3s windup |
+| Spitter (bio ranged) | skirmisher | green acid bolts, medium-range strafing |
 | Martyr Drone | volatile prop | explosive one-way drone = barrel behavior exactly |
 | VEYRAN // MALIK (final) | boss | single-phase v1; 3-phase design (§bosses) needs phase system (deferred) |
 

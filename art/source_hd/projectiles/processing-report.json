@@ -133,6 +133,19 @@
       ],
       "sheet": "1x1"
     },
+    "spr_ordnance.png": {
+      "cells": [
+        "plasma_bolt",
+        "incendiary_projectile",
+        "lance_beam",
+        "acid_seeker"
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "sheet": "2x2"
+    },
     "spr_muzzle.png": {
       "cells": [
         "pistol_muzzle",
@@ -164,7 +177,7 @@
         "fire_patch",
         "smoke_puff",
         "electric_sparks",
-        "explosive_impact"
+        "casing_burst"
       ],
       "size": [
         512,

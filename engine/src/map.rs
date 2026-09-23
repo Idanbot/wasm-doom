@@ -150,6 +150,7 @@ pub(crate) fn build_hub_spoke(e: &mut Engine) {
 /// passes read like a playlist: hangar calm, lanes warm, zones hot.
 pub(crate) fn place_hub_spoke(e: &mut Engine) {
     e.ents = [crate::types::Ent {
+        aim: 0.0,
         kind: 0,
         x: 0.0,
         y: 0.0,

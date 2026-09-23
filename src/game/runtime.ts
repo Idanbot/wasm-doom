@@ -1,6 +1,6 @@
 import { createAudio, type GameAudio } from "./audio";
 import { createBlitter, type BlitKind, type Blitter } from "./blit";
-import { ENEMY_ANIM_COUNT, ENEMY_TEX_BASE, readWorldFrame, TEX_N } from "./gpu-world";
+import { ENEMY_ANIM_COUNT, ENEMY_TEX_BASE, readWorldFrame, TEX_N, T_ORDNANCE } from "./gpu-world";
 import { HUD_SIZE } from "./hud-abi";
 import { keySpriteAlpha } from "./sprite-alpha";
 import { DEFAULT_GFX, DEFAULT_HUD, type GfxOpts, type HudState, type ResMode } from "./types";
@@ -119,6 +119,7 @@ const TEX_FILES: { id: number; src: string }[] = [
   { id: 13, src: "/game/spr_armor.png" },
   { id: 14, src: "/game/spr_barrel.png" },
   { id: 15, src: "/game/spr_ball.png" },
+  { id: T_ORDNANCE, src: "/game/spr_ordnance.png" },
   { id: 18, src: "/game/wall_tech_tile2x2.png" },
   { id: 19, src: "/game/wall_hazard_tile2x2.png" },
   { id: 20, src: "/game/spr_lamp.png" },
@@ -272,12 +273,12 @@ export class HellscanRuntime {
     this.running = true;
     this.last = performance.now();
     this.loop(this.last);
-    await this.uploadTextures();
-    // Critical weapon/menu art blocks readiness; the rest streams in during
-    // idle time so first paint isn't held hostage by ~8MB of weapon sheets.
-    await preloadImages(UI_CRITICAL);
-    const idle = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 1500));
-    idle(() => void preloadImages(UI_DEFERRED));
+    // Every firing/reload sheet must be cached before play: switching a CSS
+    // background to an unloaded sheet otherwise hides the weapon mid-shot.
+    await Promise.all([
+      this.uploadTextures(),
+      preloadImages([...UI_CRITICAL, ...UI_DEFERRED]),
+    ]);
     if (this.aborted) {
       this.running = false;
       cancelAnimationFrame(this.raf);

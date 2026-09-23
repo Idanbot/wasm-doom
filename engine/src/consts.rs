@@ -11,7 +11,8 @@ pub(crate) const TEXM: i32 = (TEX as i32) - 1;
 pub(crate) const ENEMY_ANIM_COUNT: usize = 7;
 pub(crate) const ENEMY_SKIN_COUNT: usize = 13;
 pub(crate) const ENEMY_TEX_BASE: usize = 29;
-pub(crate) const TEX_N: usize = ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT;
+pub(crate) const T_ORDNANCE: usize = ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT;
+pub(crate) const TEX_N: usize = T_ORDNANCE + 1;
 pub(crate) const ENT_N: usize = 192;
 pub(crate) const T_BRICK: usize = 0;
 pub(crate) const T_METAL: usize = 1;
@@ -156,7 +157,7 @@ pub(crate) const IN_RELOAD: u32 = 4096;
 pub(crate) const IN_W4: u32 = 8192;
 pub(crate) const IN_W5: u32 = 16384;
 
-pub(crate) const MAG_SZ: [i32; 5] = [12, 6, 32, 4, 40];
+pub(crate) const MAG_SZ: [i32; 5] = [12, 6, 32, 4, 6];
 pub(crate) const RELOAD_T: [f32; 5] = [0.95, 1.55, 1.35, 1.45, 1.8];
 pub(crate) const MAP_CELLS: usize = MAP_W * MAP_H;
 pub(crate) const FX_CAP: usize = 64;
@@ -200,7 +201,7 @@ mod tests {
 
     #[test]
     fn texture_slots_cover_the_known_atlas() {
-        assert_eq!(TEX_N, ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT);
+        assert_eq!(TEX_N, ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT + 1);
         assert_eq!(TEX, 256);
         assert_eq!(TEXM, 255);
         assert_eq!(T_SEAL, 28);

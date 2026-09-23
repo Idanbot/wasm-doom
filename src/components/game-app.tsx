@@ -52,16 +52,20 @@ export function GameApp() {
     setIsCoarse(window.matchMedia("(pointer: coarse)").matches);
     const canvas = canvasRef.current;
     if (!canvas) return;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const rt = new HellscanRuntime(canvas, {
       onHud: (h, f, resolution) => {
         const weapEl = weaponRef.current;
         if (weapEl) {
           const reloadDip = h.reloading > 0.01 ? 32 + Math.sin(h.reloading * Math.PI) * 18 : 0;
-          const bobY = h.bob * 10 + h.kick * 18 + reloadDip;
-          const bobX = h.kick * -8 + (h.reloading > 0.01 ? 20 : 0);
-          weapEl.style.transform = `translate(-50%, ${bobY}px) translateX(${bobX}px)`;
-          weapEl.style.filter = "";
+          const weight = [0.65, 1.25, 0.5, 1.1, 1.4][h.weapon] ?? 1;
+          const motion = reducedMotion.matches ? 0.2 : 1;
+          const bobY = (h.bob * 7 + h.kick * 18 * weight + reloadDip) * motion;
+          const bobX = (h.kick * -6 * weight + (h.reloading > 0.01 ? 20 : 0)) * motion;
+          const roll = h.kick * -1.8 * weight * motion;
+          weapEl.style.transform = `translate(-50%, ${bobY}px) translateX(${bobX}px) rotate(${roll}deg)`;
+          weapEl.style.filter = h.muzzle > 0.05 ? `brightness(${1 + h.muzzle * 0.22})` : "";
           weapEl.style.setProperty("--flash-s", "1");
           weapEl.style.setProperty("--flash-x", "62%");
           weapEl.style.setProperty("--flash-y", "46%");
@@ -72,12 +76,11 @@ export function GameApp() {
 
           const wpn = WEAPONS[h.weapon] ?? WEAPONS[0]!;
           const fr = h.weapFrame | 0;
-          const mini = h.weapon === 2;
           if (fr >= 5) {
             weapEl.style.backgroundImage = `url(${wpn.reload})`;
             weapEl.style.backgroundSize = "200% 200%";
             weapEl.style.backgroundPosition = sheetPos(Math.min(3, fr - 5));
-          } else if (fr >= 1 && !mini) {
+          } else if (fr >= 1) {
             weapEl.style.backgroundImage = `url(${wpn.fire})`;
             weapEl.style.backgroundSize = "200% 200%";
             weapEl.style.backgroundPosition = sheetPos(Math.min(3, fr - 1));
@@ -286,7 +289,7 @@ export function GameApp() {
       {screen === "play" && (
         <>
           <WeaponView hud={hud} weaponRef={weaponRef} />
-          <Crosshair flash={hud.hitmarker} spread={hud.weapon === 2 ? hud.spread : 0} />
+          <Crosshair flash={hud.hitmarker} spread={(hud.weapon === 2 ? hud.spread : hud.weapon === 1 ? 0.10 : 0) + hud.kick * 0.04} />
           <HudBar hud={hud} fps={fps} resolution={renderResolution} renderer={renderer} />
           {hud.prompt === 1 && (
             <p className="pointer-events-none absolute bottom-28 left-1/2 -translate-x-1/2 font-display text-sm tracking-[0.2em] text-steel">

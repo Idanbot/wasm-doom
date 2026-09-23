@@ -26,7 +26,7 @@ function checkPng(relative, width, height, alpha = true) {
 
 checkPng("art/source_hd/projectiles/projectile_effects_4x4.png", 1024, 1024);
 checkPng("public/game/spr_ball.png", 256, 256);
-for (const filename of ["spr_muzzle.png", "spr_impact.png", "spr_flame.png"]) {
+for (const filename of ["spr_muzzle.png", "spr_impact.png", "spr_flame.png", "spr_ordnance.png"]) {
   checkPng(`public/game/${filename}`, 512, 512);
 }
 for (const name of [
@@ -44,4 +44,4 @@ if (errors.length) {
   for (const error of errors) console.error(`[check:projectiles] ${error}`);
   process.exit(1);
 }
-console.log("[check:projectiles] 1024px master, 16 cells, and four runtime effect slots are valid.");
+console.log("[check:projectiles] 1024px master, 16 cells, and five runtime effect slots are valid.");

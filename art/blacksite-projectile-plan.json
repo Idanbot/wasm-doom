@@ -10,9 +10,10 @@
     "fire_patch", "smoke_puff", "electric_sparks", "casing_burst"
   ],
   "runtime": {
+    "spr_ordnance.png": { "engineTextureSlot": 120, "sheet": "2x2", "cells": ["plasma_bolt", "incendiary_projectile", "lance_beam", "acid_seeker"] },
     "spr_ball.png": { "engineTextureSlot": 15, "sheet": "1x1", "cells": ["plasma_bolt"] },
     "spr_impact.png": { "engineTextureSlot": 22, "sheet": "2x2", "cells": ["metal_impact", "plasma_impact", "explosive_impact", "acid_impact"] },
     "spr_muzzle.png": { "engineTextureSlot": 23, "sheet": "2x2", "cells": ["pistol_muzzle", "shotgun_muzzle", "smg_muzzle", "rifle_muzzle"] },
-    "spr_flame.png": { "engineTextureSlot": 24, "sheet": "2x2", "cells": ["fire_patch", "smoke_puff", "electric_sparks", "explosive_impact"] }
+    "spr_flame.png": { "engineTextureSlot": 24, "sheet": "2x2", "cells": ["fire_patch", "smoke_puff", "electric_sparks", "casing_burst"] }
   }
 }

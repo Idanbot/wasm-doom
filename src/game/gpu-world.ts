@@ -8,7 +8,8 @@ export const MAP_H = 32;
 export const ENEMY_ANIM_COUNT = 7;
 export const ENEMY_SKIN_COUNT = 13;
 export const ENEMY_TEX_BASE = 29;
-export const TEX_N = ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT;
+export const T_ORDNANCE = ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT;
+export const TEX_N = T_ORDNANCE + 1;
 export const TEX = 256;
 
 export type WorldFrame = {
@@ -218,9 +219,15 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
     let tex = textureSampleLevel(atlas, atlas_samp, uv, clamp(i32(inp.info.x), 0, ${TEX_N - 1}), 0.0);
     a = tex.a;
     if (a < 16.0 / 255.0) { discard; }
+    // Alpha in the render target stores scene depth. Screen-door coverage
+    // preserves soft sprite edges without corrupting that depth channel.
+    let parity = vec2<i32>(inp.pos.xy) & vec2<i32>(1);
+    let coverage = (f32((parity.x ^ parity.y) * 2 + parity.y) + 0.5) / 4.0;
+    if (a < coverage) { discard; }
     rgb = tex.rgb;
-    if (inp.info.z > 0.5) { rgb = vec3<f32>(1.0, 0.86, 0.86); }
     if (kind == 23) { rgb = mix(rgb, vec3<f32>(1.0, 0.14, 0.09), 0.42); }
+    if (inp.info.z > 1.5) { rgb = mix(rgb, vec3<f32>(1.0, 0.72, 0.24), 0.32); }
+    else if (inp.info.z > 0.5) { rgb = vec3<f32>(1.0, 0.86, 0.86); }
   }
   return vec4<f32>(rgb, clamp(inp.depth / 28.0, 0.0, 1.0));
 }
@@ -540,8 +547,13 @@ void main() {
   } else {
     vec4 tex = texture(atlas, vec3(uv, clamp(texId, 0.0, ${TEX_N - 1}.0)));
     if (tex.a < 16.0 / 255.0) discard;
-    rgb = flash > 0.5 ? vec3(1.0, 0.86, 0.86) : tex.rgb;
+    ivec2 parity = ivec2(gl_FragCoord.xy) & ivec2(1);
+    float coverage = (float((parity.x ^ parity.y) * 2 + parity.y) + 0.5) / 4.0;
+    if (tex.a < coverage) discard;
+    rgb = tex.rgb;
     if (int(kind) == 23) rgb = mix(rgb, vec3(1.0, 0.14, 0.09), 0.42);
+    rgb = flash > 1.5 ? mix(rgb, vec3(1.0, 0.72, 0.24), 0.32)
+        : flash > 0.5 ? vec3(1.0, 0.86, 0.86) : rgb;
   }
   outColor = vec4(rgb, clamp(depth / 28.0, 0.0, 1.0));
 }
