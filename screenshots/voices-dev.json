@@ -1,5 +1,5 @@
 {
-  "url": "http://127.0.0.1:8081/",
+  "url": "http://127.0.0.1:8080",
   "viewports": {
     "desktop": {
       "width": 1280,
@@ -13,7 +13,7 @@
       "horizontalOverflow": false,
       "consoleErrors": [],
       "pageErrors": [],
-      "screenshot": "/home/idan/Code/github/wasm-doom/screenshots/built.png"
+      "screenshot": "/home/idan/Code/github/wasm-doom/screenshots/voices-dev.png"
     },
     "mobile": {
       "width": 390,
@@ -21,16 +21,16 @@
       "status": 200,
       "title": "BLACKSITE",
       "hasCanvas": true,
-      "bodyTextLen": 360,
-      "bodyTextHash": "010c6c8e28b30c100e74b4bfcf305cae2248d0fbd66088650e269405d8a55347",
+      "bodyTextLen": 330,
+      "bodyTextHash": "fd17f1637c3595f9b947dda48e032cce0376f7f739d9eeae031c28f007cf0aef",
       "bodyTextPrefix": "NADIR–7 CONNECTION LOST TACTICAL CONTAINMENT / 07 BLACKSITE P R ",
       "horizontalOverflow": false,
       "consoleErrors": [],
       "pageErrors": [],
-      "screenshot": "/home/idan/Code/github/wasm-doom/screenshots/built-mobile.png"
+      "screenshot": "/home/idan/Code/github/wasm-doom/screenshots/voices-dev-mobile.png"
     }
   },
   "brandWarnings": [],
   "authWarnings": [],
-  "verdictFile": "/home/idan/Code/github/wasm-doom/screenshots/built.json"
+  "verdictFile": "/home/idan/Code/github/wasm-doom/screenshots/voices-dev.json"
 }
