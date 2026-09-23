@@ -57,11 +57,11 @@ describe("sheetPos", () => {
 });
 
 describe("WEAPONS", () => {
-  it("has five entries with unique ids and art paths", () => {
-    assert.equal(WEAPONS.length, 5);
+  it("has seven entries with unique ids and art paths", () => {
+    assert.equal(WEAPONS.length, 7);
     assert.deepEqual(
       WEAPONS.map((w) => w.id),
-      [0, 1, 2, 3, 4],
+      [0, 1, 2, 3, 4, 5, 6],
     );
     for (const w of WEAPONS) {
       assert.ok(w.name.length > 0);

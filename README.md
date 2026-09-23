@@ -4,16 +4,16 @@ A Doom-style raycaster that runs entirely in the browser. The simulation is writ
 
 ## Play
 
-| Input | Action |
-|---|---|
-| `W A S D` / arrows | Move + turn |
-| Mouse (pointer lock) | Look |
-| Click / `Space` / `Ctrl` | Fire |
-| `1`–`5` | Weapons: MK23-S, M870K, VX-9, SHRIKE, RAVEN |
-| `R` | Reload |
-| `E` | Use doors / pickups |
-| `Shift` | Sprint |
-| `P` / `Esc` | Pause |
+| Input                    | Action                                                   |
+| ------------------------ | -------------------------------------------------------- |
+| `W A S D` / arrows       | Move + turn                                              |
+| Mouse (pointer lock)     | Look                                                     |
+| Click / `Space` / `Ctrl` | Fire                                                     |
+| `1`–`7`                  | Weapons: MK23-S, M870K, VX-9, SHRIKE, RAVEN, ARC-12, M56 |
+| `R`                      | Reload                                                   |
+| `E`                      | Use doors / pickups                                      |
+| `Shift`                  | Sprint                                                   |
+| `P` / `Esc`              | Pause                                                    |
 
 Touch controls appear automatically on coarse-pointer devices. Add `?qa=1` to the URL for autoplay QA mode.
 
@@ -64,11 +64,11 @@ cargo test --manifest-path engine/Cargo.toml
 - 60fps at 640×400 on the CPU raycaster; 1280 holds 60 when WebGPU or WebGL2 fills the frame
 - WebGPU with automatic WebGL2/Canvas2D fallback; renderer switchable without restarting the sim
 - 5 delivered BLACKSITE weapon sets, 13 enemy skins with seven animation states each, projectile/effect atlas, wave system, local leaderboard
-- 50 Rust tests plus TS and script integration tests; CI runs typecheck, wasm-sync, asset validation, and build
+- 56 Rust tests plus TS and script integration tests; CI runs typecheck, wasm-sync, asset validation, and build
 
 Combat roles, attack windups, incendiary grenades and effect rendering are
 documented in [the BLACKSITE combat notes](docs/blacksite-ifrit/COMBAT.md).
-With the game running, `node scripts/combat-smoke.mjs` checks all five guns,
+With the game running, `node scripts/combat-smoke.mjs` checks all seven guns,
 reloads and strafe direction in a real browser.
 
 The [voice and interface notes](docs/blacksite-ifrit/VOICES_AND_UI.md) cover

@@ -1,0 +1,14 @@
+{
+  "model": "@cf/black-forest-labs/flux-1-schnell",
+  "steps": 8,
+  "prompt": "First-person FPS viewmodel of a experimental arc caster, split copper induction prongs around a glowing cyan capacitor, insulated gunmetal body. Centered lower-screen weapon held in two black tactical gloves, barrel points toward the exact top center, strong readable silhouette and believable mechanical construction. BLACKSITE industrial military science-fiction style, worn gunmetal, restrained amber and cyan indicators, realistic hard-surface game render, orthographic game asset lighting. Solid flat neon magenta #FF00FF background including gaps around hands and weapon. No room, floor, smoke, flame, muzzle flash, projectile, text, logo, border, cropped muzzle or cropped hands.",
+  "usage": {
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "neurons": 326.4000244140625
+  }
+}

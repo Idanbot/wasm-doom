@@ -186,7 +186,7 @@ pub(crate) fn place_hub_spoke(e: &mut Engine) {
     e.spawn(EK_LAMP, 8.5, 13.5);
     e.spawn(EK_CRATE, 6.5, 17.5);
     e.spawn(EK_CRATE, 9.5, 16.5);
-    e.spawn(EK_FLAME, 5.5, 13.2);
+    e.spawn(EK_BARREL, 5.5, 13.5);
     // West lane dressing.
     e.spawn(EK_CHAIN, 13.5, 14.2);
     e.spawn(EK_LAMP, 15.5, 15.5);
@@ -220,15 +220,16 @@ pub(crate) fn place_hub_spoke(e: &mut Engine) {
     e.spawn(EK_BARREL, 42.5, 21.5);
     e.spawn(EK_LAMP, 40.5, 21.5);
     e.spawn(EK_CHAIN, 38.5, 24.5);
-    // South lane + flesh pit: Pyre earns its doorway-holding fantasy.
-    e.spawn(EK_FLAME, 22.5, 22.5);
+    // South lane + flesh pit: leaking machinery and explosive canisters
+    // replace the old floating flame decorations.
+    e.spawn(EK_CRATE, 22.5, 22.5);
     e.spawn(EK_GUN5, 22.5, 26.5);
     e.spawn(EK_BARREL, 18.5, 25.5);
     e.spawn(EK_BARREL, 20.5, 27.5);
     e.spawn(EK_MED, 26.5, 24.5);
     e.spawn(EK_AMMO, 19.5, 27.5);
     e.spawn(EK_LAMP, 22.5, 24.5);
-    e.spawn(EK_FLAME, 26.5, 25.5);
+    e.spawn(EK_BARREL, 26.5, 25.5);
     // Secrets reward the curious: armor cache, Ripper vent, vault crypt.
     e.spawn(EK_ARMOR, 4.5, 20.5);
     e.spawn(EK_GUN3, 30.5, 12.5);

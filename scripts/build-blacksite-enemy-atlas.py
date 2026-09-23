@@ -111,6 +111,30 @@ def translate(image: Image.Image, dx: int, dy: int) -> Image.Image:
     )
 
 
+def deform(image: Image.Image, sx: float = 1.0, sy: float = 1.0, shear: float = 0.0, dx: int = 0, dy: int = 0) -> Image.Image:
+    """Pose the isolated body around its bottom-center gameplay anchor."""
+    scaled = image.resize((max(1, round(256 * sx)), max(1, round(256 * sy))), Image.Resampling.BICUBIC)
+    canvas = Image.new("RGBA", (320, 320), (0, 0, 0, 0))
+    canvas.alpha_composite(scaled, ((320 - scaled.width) // 2 + dx, 300 - scaled.height + dy))
+    warped = canvas.transform(
+        canvas.size,
+        Image.Transform.AFFINE,
+        (1, shear, -shear * 210, 0, 1, 0),
+        resample=Image.Resampling.BICUBIC,
+        fillcolor=(0, 0, 0, 0),
+    )
+    return warped.crop((32, 44, 288, 300))
+
+
+def recoil_pose(base: Image.Image, amount: int) -> Image.Image:
+    """Move the torso independently from planted legs for a readable recoil."""
+    out = base.copy()
+    upper = base.crop((0, 0, 256, 184))
+    out.paste((0, 0, 0, 0), (0, 0, 256, 176))
+    out.alpha_composite(upper.rotate(-amount * 0.45, Image.Resampling.BICUBIC, center=(128, 178), fillcolor=(0, 0, 0, 0)), (-amount, amount // 2))
+    return out
+
+
 def fit_source(source: Image.Image, spec: str) -> Image.Image:
     source = key_magenta(source)
     alpha = source.getchannel("A")
@@ -154,22 +178,26 @@ def add_special_glow(image: Image.Image, spec: str) -> Image.Image:
 
 def frames_for(base: Image.Image, spec: str, animation: str) -> list[Image.Image]:
     if animation == "idle":
-        return [translate(base, -1, 0), translate(base, 1, 1)]
+        return [deform(base, 1.0, 0.99, -0.008, -1, 2), deform(base, 1.008, 1.0, 0.008, 1, 0)]
     if animation == "move":
-        return [translate(base, -3, 1), translate(base, -1, -1), translate(base, 1, 1), translate(base, 3, -1)]
+        return [deform(base, 0.94, 1.02, -0.055, -5, -1), deform(base, 1.05, 0.96, 0.02, -2, 5),
+                deform(base, 0.94, 1.02, 0.055, 5, -1), deform(base, 1.05, 0.96, -0.02, 2, 5)]
     if animation == "pain":
         red = Image.new("RGBA", base.size, (224, 38, 34, 0))
         red.putalpha(base.getchannel("A").point(lambda p: int(p * 0.42)))
-        return [Image.alpha_composite(translate(base, -2, 0), red), Image.alpha_composite(translate(base, 2, 1), red)]
+        return [Image.alpha_composite(deform(base, 0.86, 1.02, -0.09, -9, 0), red),
+                Image.alpha_composite(deform(base, 1.04, 0.94, 0.06, 7, 8), red)]
     if animation == "fire":
-        return [add_fire_flash(translate(base, -2, 0), 1), add_fire_flash(translate(base, 1, 1), -1)]
+        return [recoil_pose(base, 4), add_fire_flash(recoil_pose(base, 11), 1)]
     if animation == "reload":
-        return [translate(base, 0, 1), translate(base, 0, -1)]
+        return [recoil_pose(deform(base, 0.98, 0.98, -0.04, -5, 5), -4),
+                recoil_pose(deform(base, 1.02, 0.97, 0.05, 6, 7), 5)]
     if animation == "dead":
         return [base.rotate(7, resample=Image.Resampling.BICUBIC, center=(128, 236), fillcolor=(0, 0, 0, 0)),
                 base.rotate(16, resample=Image.Resampling.BICUBIC, center=(128, 236), fillcolor=(0, 0, 0, 0)).transform(base.size, Image.Transform.AFFINE, (1, 0, 5, 0, 1, -4), fillcolor=(0, 0, 0, 0))]
     if animation == "special":
-        return [add_special_glow(translate(base, -1, 0), spec), add_special_glow(translate(base, 1, -1), spec)]
+        return [add_special_glow(deform(base, 0.92, 0.98, -0.04, -4, 5), spec),
+                add_special_glow(deform(base, 1.09, 1.04, 0.04, 4, -8), spec)]
     raise ValueError(animation)
 
 
@@ -209,6 +237,7 @@ def build(spec: str, source_dir: Path, output_dir: Path, atlas_dir: Path) -> Non
         "layers": [f"enemy_{spec}_{name}.png" for name in ANIMATIONS],
         "background": "transparent after deterministic #ff00ff key",
         "source": str(source_path),
+        "motion": "segmented pose rig with anchored deformation and torso recoil",
     }
     (atlas_dir / f"enemy_{spec}.json").write_text(json.dumps(metadata, indent=2) + "\n")
 

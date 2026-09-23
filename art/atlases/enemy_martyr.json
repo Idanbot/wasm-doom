@@ -53,5 +53,6 @@
     "enemy_martyr_special.png"
   ],
   "background": "transparent after deterministic #ff00ff key",
-  "source": "art/source_hd/enemies/enemy_martyr.png"
+  "source": "art/source_hd/enemies/enemy_martyr.png",
+  "motion": "segmented pose rig with anchored deformation and torso recoil"
 }

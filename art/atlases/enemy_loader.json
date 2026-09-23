@@ -53,5 +53,6 @@
     "enemy_loader_special.png"
   ],
   "background": "transparent after deterministic #ff00ff key",
-  "source": "art/source_hd/enemies/enemy_loader.png"
+  "source": "art/source_hd/enemies/enemy_loader.png",
+  "motion": "segmented pose rig with anchored deformation and torso recoil"
 }

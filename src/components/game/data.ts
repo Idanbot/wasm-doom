@@ -7,11 +7,62 @@ export type Score = { name: string; wave: number; kills: number; time: number };
 export type Vol = { master: number; music: number; sfx: number };
 
 export const WEAPONS = [
-  { id: 0, name: "MK23-S", role: "Suppressed precision · 12 rounds", idle: "/game/weap_mk23s.png", fire: "/game/weap_mk23s_fire.png", reload: "/game/weap_mk23s_reload.png" },
-  { id: 1, name: "M870K", role: "Close range · stagger", idle: "/game/weap_m870k.png", fire: "/game/weap_m870k_fire.png", reload: "/game/weap_m870k_reload.png" },
-  { id: 2, name: "VX-9", role: "Short bursts · control spread", idle: "/game/weap_vx9.png", fire: "/game/weap_vx9_fire.png", reload: "/game/weap_vx9_reload.png" },
-  { id: 3, name: "SHRIKE", role: "Pierces 3 · line them up", idle: "/game/weap_shrike.png", fire: "/game/weap_shrike_fire.png", reload: "/game/weap_shrike_reload.png" },
-  { id: 4, name: "RAVEN", role: "Incendiary grenades · keep your distance", idle: "/game/weap_raven.png", fire: "/game/weap_raven_fire.png", reload: "/game/weap_raven_reload.png" },
+  {
+    id: 0,
+    name: "MK23-S",
+    role: "Suppressed precision · 12 rounds",
+    idle: "/game/weap_mk23s.png",
+    fire: "/game/weap_mk23s_fire.png",
+    reload: "/game/weap_mk23s_reload.png",
+  },
+  {
+    id: 1,
+    name: "M870K",
+    role: "Close range · stagger",
+    idle: "/game/weap_m870k.png",
+    fire: "/game/weap_m870k_fire.png",
+    reload: "/game/weap_m870k_reload.png",
+  },
+  {
+    id: 2,
+    name: "VX-9",
+    role: "Short bursts · control spread",
+    idle: "/game/weap_vx9.png",
+    fire: "/game/weap_vx9_fire.png",
+    reload: "/game/weap_vx9_reload.png",
+  },
+  {
+    id: 3,
+    name: "SHRIKE",
+    role: "Pierces 3 · line them up",
+    idle: "/game/weap_shrike.png",
+    fire: "/game/weap_shrike_fire.png",
+    reload: "/game/weap_shrike_reload.png",
+  },
+  {
+    id: 4,
+    name: "RAVEN",
+    role: "Guided missile · explosive payload",
+    idle: "/game/weap_raven.png",
+    fire: "/game/weap_raven_fire.png",
+    reload: "/game/weap_raven_reload.png",
+  },
+  {
+    id: 5,
+    name: "ARC-12",
+    role: "Arc discharge · precision shock",
+    idle: "/game/weap_arc12.png",
+    fire: "/game/weap_arc12_fire.png",
+    reload: "/game/weap_arc12_reload.png",
+  },
+  {
+    id: 6,
+    name: "M56",
+    role: "Rotary cannon · sustained suppression",
+    idle: "/game/weap_m56.png",
+    fire: "/game/weap_m56_fire.png",
+    reload: "/game/weap_m56_reload.png",
+  },
 ];
 
 export function sheetPos(cell: number) {
@@ -19,7 +70,7 @@ export function sheetPos(cell: number) {
 }
 
 /** Magazine capacities per engine slot. Must match MAG_SZ in engine/src/consts.rs. */
-export const MAG_SIZES = [12, 6, 32, 4, 6];
+export const MAG_SIZES = [12, 6, 32, 4, 6, 8, 80];
 
 export function loadVol(): Vol {
   try {
@@ -97,7 +148,11 @@ export function loadGfx(): GfxOpts {
     const raw = localStorage.getItem("hellscan-gfx");
     if (raw) {
       const v = JSON.parse(raw) as Partial<GfxOpts>;
-      return { crt: v.crt ?? DEFAULT_GFX.crt, bloom: v.bloom ?? DEFAULT_GFX.bloom, fog: v.fog ?? DEFAULT_GFX.fog };
+      return {
+        crt: v.crt ?? DEFAULT_GFX.crt,
+        bloom: v.bloom ?? DEFAULT_GFX.bloom,
+        fog: v.fog ?? DEFAULT_GFX.fog,
+      };
     }
   } catch {
     /* ignore */

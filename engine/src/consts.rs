@@ -159,9 +159,11 @@ pub(crate) const IN_TURNR: u32 = 2048;
 pub(crate) const IN_RELOAD: u32 = 4096;
 pub(crate) const IN_W4: u32 = 8192;
 pub(crate) const IN_W5: u32 = 16384;
+pub(crate) const IN_W6: u32 = 32768;
+pub(crate) const IN_W7: u32 = 65536;
 
-pub(crate) const MAG_SZ: [i32; 5] = [12, 6, 32, 4, 6];
-pub(crate) const RELOAD_T: [f32; 5] = [0.95, 1.55, 1.35, 1.45, 1.8];
+pub(crate) const MAG_SZ: [i32; 7] = [12, 6, 32, 4, 6, 8, 80];
+pub(crate) const RELOAD_T: [f32; 7] = [0.95, 1.55, 1.35, 1.45, 1.8, 1.65, 2.25];
 pub(crate) const MAP_CELLS: usize = MAP_W * MAP_H;
 pub(crate) const FX_CAP: usize = 64;
 
@@ -176,9 +178,9 @@ mod tests {
     }
 
     #[test]
-    fn weapon_tables_cover_all_five_guns() {
-        assert_eq!(MAG_SZ.len(), 5);
-        assert_eq!(RELOAD_T.len(), 5);
+    fn weapon_tables_cover_all_seven_guns() {
+        assert_eq!(MAG_SZ.len(), 7);
+        assert_eq!(RELOAD_T.len(), 7);
         for m in MAG_SZ {
             assert!(m > 0);
         }
@@ -191,7 +193,7 @@ mod tests {
     fn input_bits_are_unique_powers_of_two() {
         let bits = [
             IN_W, IN_S, IN_A, IN_D, IN_FIRE, IN_SPRINT, IN_USE, IN_W1, IN_W2, IN_W3,
-            IN_TURNL, IN_TURNR, IN_RELOAD, IN_W4, IN_W5,
+            IN_TURNL, IN_TURNR, IN_RELOAD, IN_W4, IN_W5, IN_W6, IN_W7,
         ];
         for (i, a) in bits.iter().enumerate() {
             assert_ne!(*a, 0);

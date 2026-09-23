@@ -59,7 +59,10 @@ function writePannerPosition(panner: PannerNode, x: number, y: number, z: number
   }
 }
 
-function readPannerCoord(panner: PannerNode, axis: "positionX" | "positionY" | "positionZ"): number {
+function readPannerCoord(
+  panner: PannerNode,
+  axis: "positionX" | "positionY" | "positionZ",
+): number {
   const param = panner[axis];
   return param ? param.value : 0;
 }
@@ -111,7 +114,11 @@ export class EnemyAudio {
   }
   configure(options: EnemyOptions) {
     this.options = { ...options };
-    this.voiceBus.gain.setTargetAtTime(options.voices ** 2, this.ctx.currentTime, 0.02);
+    this.voiceBus.gain.setTargetAtTime(
+      Math.min(1.3, options.voices * 1.25),
+      this.ctx.currentTime,
+      0.02,
+    );
     if (!options.subtitles) this.subtitles = [];
   }
   captions() {
@@ -246,7 +253,16 @@ export class EnemyAudio {
     if (!buffer || this.active.some((s) => s.line)) return;
     const source = this.ctx.createBufferSource();
     source.buffer = buffer;
-    this.connect(source, enemy, buffer.duration, line, profile);
+    // Slower machines and commander delivery improve intelligibility, while
+    // small human variation keeps the roster from sharing one cadence.
+    const rate =
+      enemy.skin === 12
+        ? 0.88
+        : [5, 8, 11].includes(enemy.skin)
+          ? 0.93
+          : 0.96 + (enemy.skin % 3) * 0.025;
+    source.playbackRate.value = rate;
+    this.connect(source, enemy, buffer.duration / rate, line, profile);
   }
   private enemySound(enemy: EnemyCue, pain: boolean) {
     if (this.active.filter((s) => !s.line).length >= 6 || enemy.distance > 16) return;

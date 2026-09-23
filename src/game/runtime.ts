@@ -3,7 +3,12 @@ import { createBlitter, type BlitKind, type Blitter } from "./blit";
 import { ENEMY_ANIM_COUNT, ENEMY_TEX_BASE, readWorldFrame, TEX_N, T_ORDNANCE } from "./gpu-world";
 import { HUD_SIZE } from "./hud-abi";
 import { keySpriteAlpha } from "./sprite-alpha";
-import { readEnemyCues, type EnemyCue, type EnemyOptions, type EnemySubtitle } from "./enemy-presentation";
+import {
+  readEnemyCues,
+  type EnemyCue,
+  type EnemyOptions,
+  type EnemySubtitle,
+} from "./enemy-presentation";
 import { DEFAULT_GFX, DEFAULT_HUD, type GfxOpts, type HudState, type ResMode } from "./types";
 
 export { HUD_SIZE };
@@ -44,6 +49,7 @@ type WasmExports = {
   hs_y: () => number;
   hs_prepare_enemies: () => number;
   hs_enemy_cues: () => number;
+  hs_qa_end: (state: number) => void;
 };
 
 const IN = {
@@ -62,6 +68,8 @@ const IN = {
   RELOAD: 4096,
   W4: 8192,
   W5: 16384,
+  W6: 32768,
+  W7: 65536,
 };
 
 const CODE_BITS: Record<string, number> = {
@@ -82,6 +90,8 @@ const CODE_BITS: Record<string, number> = {
   Digit3: IN.W3,
   Digit4: IN.W4,
   Digit5: IN.W5,
+  Digit6: IN.W6,
+  Digit7: IN.W7,
   ArrowLeft: IN.TURNL,
   KeyQ: IN.TURNL,
   ArrowRight: IN.TURNR,
@@ -142,11 +152,7 @@ const TEX_FILES: { id: number; src: string }[] = [
   ),
 ];
 
-const UI_CRITICAL = [
-  "/game/weap_mk23s.png",
-  "/game/weap_mk23s_fire.png",
-  "/game/menu.jpg",
-];
+const UI_CRITICAL = ["/game/weap_mk23s.png", "/game/weap_mk23s_fire.png", "/game/menu.jpg"];
 
 const UI_DEFERRED = [
   "/game/weap_mk23s_reload.png",
@@ -162,6 +168,12 @@ const UI_DEFERRED = [
   "/game/weap_raven.png",
   "/game/weap_raven_fire.png",
   "/game/weap_raven_reload.png",
+  "/game/weap_arc12.png",
+  "/game/weap_arc12_fire.png",
+  "/game/weap_arc12_reload.png",
+  "/game/weap_m56.png",
+  "/game/weap_m56_fire.png",
+  "/game/weap_m56_reload.png",
 ];
 
 function decodeImage(src: string): Promise<HTMLImageElement | null> {
@@ -269,7 +281,10 @@ export class HellscanRuntime {
       );
     }
     this.blit = await createBlitter(this.canvas, { requireGpu: this.requireGpu });
-    if (this.aborted) { this.blit.dispose(); return; }
+    if (this.aborted) {
+      this.blit.dispose();
+      return;
+    }
     this.renderer = this.blit.kind;
     this.blit.setGfx(this.gfx);
     this.setResolution(res);
@@ -329,8 +344,13 @@ export class HellscanRuntime {
     this.sens = v;
   }
 
-  setEnemyOptions(options: EnemyOptions) { this.audio.setEnemyOptions(options); if (!options.subtitles) this.hooks.onSubtitles?.([]); }
-  previewEnemy(skin: number) { this.audio.previewEnemy(skin); }
+  setEnemyOptions(options: EnemyOptions) {
+    this.audio.setEnemyOptions(options);
+    if (!options.subtitles) this.hooks.onSubtitles?.([]);
+  }
+  previewEnemy(skin: number) {
+    this.audio.previewEnemy(skin);
+  }
 
   setMuted(v: boolean) {
     this.muted = v;
@@ -402,16 +422,26 @@ export class HellscanRuntime {
     this.lookX = 0;
     this.lookY = 0;
     const el = this.canvas;
-    const req = el.requestPointerLock as (opts?: { unadjustedMovement?: boolean }) => Promise<void> | void;
+    const req = el.requestPointerLock as (opts?: {
+      unadjustedMovement?: boolean;
+    }) => Promise<void> | void;
     try {
       const p = req.call(el, { unadjustedMovement: true });
       if (p && typeof (p as Promise<void>).catch === "function") {
         (p as Promise<void>).catch(() => {
-          try { void Promise.resolve(el.requestPointerLock()).catch(() => {}); } catch { /* unavailable */ }
+          try {
+            void Promise.resolve(el.requestPointerLock()).catch(() => {});
+          } catch {
+            /* unavailable */
+          }
         });
       }
     } catch {
-      try { void Promise.resolve(el.requestPointerLock()).catch(() => {}); } catch { /* unavailable */ }
+      try {
+        void Promise.resolve(el.requestPointerLock()).catch(() => {});
+      } catch {
+        /* unavailable */
+      }
     }
   }
 
@@ -439,12 +469,20 @@ export class HellscanRuntime {
 
   /** Cycle owned weapons. dir = +1 (wheel down / touch) or -1 (wheel up). */
   cycleWeapon(dir = 1) {
-    const owned = [true, this.hud.hasW2, this.hud.hasW3, this.hud.hasW4, this.hud.hasW5];
-    const step = dir >= 0 ? 1 : 4;
-    for (let n = 1; n <= 5; n++) {
-      const next = (this.hud.weapon + step * n) % 5;
+    const owned = [
+      true,
+      this.hud.hasW2,
+      this.hud.hasW3,
+      this.hud.hasW4,
+      this.hud.hasW5,
+      true,
+      true,
+    ];
+    const step = dir >= 0 ? 1 : 6;
+    for (let n = 1; n <= 7; n++) {
+      const next = (this.hud.weapon + step * n) % 7;
       if (owned[next]) {
-        this.weaponPulse = [IN.W1, IN.W2, IN.W3, IN.W4, IN.W5][next]!;
+        this.weaponPulse = [IN.W1, IN.W2, IN.W3, IN.W4, IN.W5, IN.W6, IN.W7][next]!;
         return;
       }
     }
@@ -470,7 +508,10 @@ export class HellscanRuntime {
     // Enemy animation layers are independent 256px files; decode them in a
     // wider batch so the first playable frame is not gated by four-at-a-time
     // image loads.
-    const loaded = await preloadImages(TEX_FILES.map((t) => t.src), 12);
+    const loaded = await preloadImages(
+      TEX_FILES.map((t) => t.src),
+      12,
+    );
     for (let i = 0; i < TEX_FILES.length; i++) {
       const img = loaded[i];
       const id = TEX_FILES[i]!.id;
@@ -492,11 +533,20 @@ export class HellscanRuntime {
         }
 
         const pixels = ctx.getImageData(0, 0, size, size);
-        const sprite = id === 15 || id === 27 || (id >= 8 && id <= 14) || (id >= 20 && id <= 25) || id >= ENEMY_TEX_BASE;
+        const sprite =
+          id === 15 ||
+          id === 27 ||
+          (id >= 8 && id <= 14) ||
+          (id >= 20 && id <= 25) ||
+          id >= ENEMY_TEX_BASE;
         if (sprite) {
           // Generated VFX use intentional dark cores and smoke; preserve
           // those pixels instead of applying the legacy black-key cleanup.
-          keySpriteAlpha(pixels.data, size, id === 15 || (id >= 22 && id <= 24) || id >= ENEMY_TEX_BASE);
+          keySpriteAlpha(
+            pixels.data,
+            size,
+            id === 15 || (id >= 22 && id <= 24) || id >= ENEMY_TEX_BASE,
+          );
         }
         const ptr = wasm.hs_tex_ptr(id);
         const view = new Uint8Array(wasm.memory.buffer, ptr, size * size * 4);
@@ -532,8 +582,12 @@ export class HellscanRuntime {
   }
 
   private onKeyDown = (e: KeyboardEvent) => {
-    if (!this.playing || (e.target instanceof HTMLElement &&
-      (e.target.isContentEditable || /^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)))) return;
+    if (
+      !this.playing ||
+      (e.target instanceof HTMLElement &&
+        (e.target.isContentEditable || /^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)))
+    )
+      return;
     if (e.repeat) return;
     if (CODE_BITS[e.code] !== undefined) e.preventDefault();
     this.keys.add(e.code);
@@ -706,8 +760,11 @@ export class HellscanRuntime {
     this.accumulator += dt;
     while (this.accumulator >= step) {
       const bits = this.qaOn ? this.qaBits : this.bitsFromKeys();
-      wasm.hs_input(bits, (this.lookX + this.touchLookX) * this.sens,
-        (this.lookY + this.touchLookY) * this.sens);
+      wasm.hs_input(
+        bits,
+        (this.lookX + this.touchLookX) * this.sens,
+        (this.lookY + this.touchLookY) * this.sens,
+      );
       this.lookX = this.lookY = this.touchLookX = this.touchLookY = 0;
       wasm.hs_tick(step);
       // Lightweight event drain per substep: avoids decoding the full HUD
@@ -762,7 +819,7 @@ export class HellscanRuntime {
     this.hooks.onHud(hud, this.fps, `${w} × ${h}`);
     if (hud.state !== this.prevHud.state) this.hooks.onState(hud.state);
     this.prevHud = hud;
-  };
+  }
   private pushAtlas() {
     const wasm = this.wasm;
     if (!wasm || !this.blit?.uploadAtlas) return;
@@ -775,7 +832,6 @@ export class HellscanRuntime {
     this.blit.uploadAtlas(layers);
     this.gpuReady = true;
   }
-
 
   private sfxFromEvents(events: number, evWeapon: number) {
     try {
@@ -843,6 +899,7 @@ export class HellscanRuntime {
         this.wasm?.hs_qa_armory();
         this.wasm?.hs_qa(this.qaBits, this.qaOn ? 1 : 0);
       },
+      triggerEnd: (state: 1 | 2) => this.wasm?.hs_qa_end(state),
     };
   }
 }
@@ -856,7 +913,10 @@ async function loadWasm(): Promise<WasmExports> {
       const res = await fetch("/hellscan.wasm", { cache: "no-cache" });
       if (!res.ok) throw new Error(`Unable to load engine (${res.status})`);
       return WebAssembly.compile(await res.arrayBuffer());
-    })().catch((error) => { wasmModule = null; throw error; });
+    })().catch((error) => {
+      wasmModule = null;
+      throw error;
+    });
   }
   const instance = await WebAssembly.instantiate(await wasmModule, {});
   return instance.exports as unknown as WasmExports;
@@ -881,6 +941,7 @@ declare global {
       getSpread?: () => number;
       getFirePatches?: () => number;
       grantWeapons?: () => void;
+      triggerEnd?: (state: 1 | 2) => void;
     };
   }
 }

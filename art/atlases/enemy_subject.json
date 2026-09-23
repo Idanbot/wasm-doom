@@ -53,5 +53,6 @@
     "enemy_subject_special.png"
   ],
   "background": "transparent after deterministic #ff00ff key",
-  "source": "art/source_hd/enemies/enemy_subject.png"
+  "source": "art/source_hd/enemies/enemy_subject.png",
+  "motion": "segmented pose rig with anchored deformation and torso recoil"
 }

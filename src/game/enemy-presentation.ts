@@ -30,7 +30,7 @@ export type EnemyOptions = {
 export const DEFAULT_ENEMY_OPTIONS: EnemyOptions = {
   subtitles: true,
   subtitleSize: 1,
-  voices: 0.85,
+  voices: 1,
   spatial: true,
   showStats: false,
 };
@@ -89,7 +89,7 @@ export function loadEnemyOptions(): EnemyOptions {
       spatial: typeof data.spatial === "boolean" ? data.spatial : true,
       showStats: data.showStats === true,
       subtitleSize: finite(data.subtitleSize, 1, 0.85, 1.4),
-      voices: finite(data.voices, 0.85, 0, 1),
+      voices: finite(data.voices, 1, 0, 1),
     };
   } catch {
     return { ...DEFAULT_ENEMY_OPTIONS };

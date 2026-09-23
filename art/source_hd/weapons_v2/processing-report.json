@@ -1,0 +1,44 @@
+{
+  "mk23s": {
+    "source": "art/source_hd/weapons_v2/mk23s.jpg",
+    "idle": "public/game/weap_mk23s.png",
+    "fireFrames": 4,
+    "reloadFrames": 4
+  },
+  "m870k": {
+    "source": "art/source_hd/weapons_v2/m870k.jpg",
+    "idle": "public/game/weap_m870k.png",
+    "fireFrames": 4,
+    "reloadFrames": 4
+  },
+  "vx9": {
+    "source": "art/source_hd/weapons_v2/vx9.jpg",
+    "idle": "public/game/weap_vx9.png",
+    "fireFrames": 4,
+    "reloadFrames": 4
+  },
+  "shrike": {
+    "source": "art/source_hd/weapons_v2/shrike.jpg",
+    "idle": "public/game/weap_shrike.png",
+    "fireFrames": 4,
+    "reloadFrames": 4
+  },
+  "raven": {
+    "source": "art/source_hd/weapons_v2/raven.jpg",
+    "idle": "public/game/weap_raven.png",
+    "fireFrames": 4,
+    "reloadFrames": 4
+  },
+  "arc12": {
+    "source": "art/source_hd/weapons_v2/arc12.jpg",
+    "idle": "public/game/weap_arc12.png",
+    "fireFrames": 4,
+    "reloadFrames": 4
+  },
+  "m56": {
+    "source": "art/source_hd/weapons_v2/m56.jpg",
+    "idle": "public/game/weap_m56.png",
+    "fireFrames": 4,
+    "reloadFrames": 4
+  }
+}

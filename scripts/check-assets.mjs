@@ -15,7 +15,14 @@ import { readFileSync, existsSync } from "node:fs";
 import { join, dirname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const KNOWN_KINDS = new Set(["EK_HUSK", "EK_BRUTE", "EK_WRAITH", "EK_BOSS", "EK_BARREL", "EK_MARTYR"]);
+const KNOWN_KINDS = new Set([
+  "EK_HUSK",
+  "EK_BRUTE",
+  "EK_WRAITH",
+  "EK_BOSS",
+  "EK_BARREL",
+  "EK_MARTYR",
+]);
 const ATLAS_SLOTS = 121; // World + 13 × 7 enemy animation layers + ordnance
 const STATUSES = new Set(["planned", "ready"]);
 
@@ -35,7 +42,12 @@ export function readPngInfo(buf) {
   const height = buf.readUInt32BE(20);
   const colorType = buf[25];
   // 3 = palette (alpha via tRNS), 4 = gray+alpha, 6 = RGBA.
-  return { width, height, colorType, hasAlpha: colorType === 3 || colorType === 4 || colorType === 6 };
+  return {
+    width,
+    height,
+    colorType,
+    hasAlpha: colorType === 3 || colorType === 4 || colorType === 6,
+  };
 }
 
 export function validateMetadataSchema(meta) {
@@ -43,7 +55,8 @@ export function validateMetadataSchema(meta) {
   if (typeof meta !== "object" || meta === null) return ["metadata is not an object"];
   if (typeof meta.id !== "string") errors.push("metadata.id must be a string");
   for (const k of ["frameWidth", "frameHeight"]) {
-    if (!Number.isInteger(meta[k]) || meta[k] <= 0) errors.push(`metadata.${k} must be a positive int`);
+    if (!Number.isInteger(meta[k]) || meta[k] <= 0)
+      errors.push(`metadata.${k} must be a positive int`);
   }
   if (typeof meta.origin?.x !== "number" || typeof meta.origin?.y !== "number") {
     errors.push("metadata.origin must be {x, y} numbers");
@@ -52,9 +65,12 @@ export function validateMetadataSchema(meta) {
     errors.push("metadata.animations must be an object");
   } else {
     for (const [name, a] of Object.entries(meta.animations)) {
-      if (!Number.isInteger(a?.start) || a.start < 0) errors.push(`animations.${name}.start must be >= 0`);
-      if (!Number.isInteger(a?.frames) || a.frames <= 0) errors.push(`animations.${name}.frames must be > 0`);
-      if (typeof a?.fps !== "number" || a.fps <= 0) errors.push(`animations.${name}.fps must be > 0`);
+      if (!Number.isInteger(a?.start) || a.start < 0)
+        errors.push(`animations.${name}.start must be >= 0`);
+      if (!Number.isInteger(a?.frames) || a.frames <= 0)
+        errors.push(`animations.${name}.frames must be > 0`);
+      if (typeof a?.fps !== "number" || a.fps <= 0)
+        errors.push(`animations.${name}.fps must be > 0`);
     }
   }
   return errors;
@@ -62,7 +78,12 @@ export function validateMetadataSchema(meta) {
 
 function eachEntry(manifest) {
   const out = [];
-  for (const [section, kind] of [["enemies", "enemy"], ["weapons", "weapon"], ["textures", "texture"], ["props", "prop"]]) {
+  for (const [section, kind] of [
+    ["enemies", "enemy"],
+    ["weapons", "weapon"],
+    ["textures", "texture"],
+    ["props", "prop"],
+  ]) {
     for (const e of manifest[section] ?? []) out.push({ section, kind, ...e });
   }
   return out;
@@ -90,7 +111,7 @@ export function validateManifest(manifest) {
       seenFile.add(f);
     }
     if (e.section === "weapons") {
-      if (e.engineSlot == null) errors.push(`${tag}: weapons need engineSlot 0-4`);
+      if (e.engineSlot == null) errors.push(`${tag}: weapons need engineSlot 0-6`);
     } else if (e.textureSlot != null) {
       if (!Number.isInteger(e.textureSlot) || e.textureSlot < 0) {
         errors.push(`${tag}: bad textureSlot ${e.textureSlot}`);
@@ -104,18 +125,23 @@ export function validateManifest(manifest) {
     } else if (!e.needsSlotExtension) {
       errors.push(`${tag}: null textureSlot without needsSlotExtension`);
     }
-    if (e.engineKind && !KNOWN_KINDS.has(e.engineKind)) errors.push(`${tag}: unknown engineKind ${e.engineKind}`);
-    if (e.engineSlot != null && (!Number.isInteger(e.engineSlot) || e.engineSlot < 0 || e.engineSlot > 4)) {
+    if (e.engineKind && !KNOWN_KINDS.has(e.engineKind))
+      errors.push(`${tag}: unknown engineKind ${e.engineKind}`);
+    if (
+      e.engineSlot != null &&
+      (!Number.isInteger(e.engineSlot) || e.engineSlot < 0 || e.engineSlot > 6)
+    ) {
       errors.push(`${tag}: bad engineSlot ${e.engineSlot}`);
     }
-    if (e.sheet && e.sheet !== "1x1" && e.sheet !== "2x2") errors.push(`${tag}: bad sheet ${e.sheet}`);
+    if (e.sheet && e.sheet !== "1x1" && e.sheet !== "2x2")
+      errors.push(`${tag}: bad sheet ${e.sheet}`);
   }
-  // Engine weapon slots 0-4 must be covered exactly once when any weapon is ready.
+  // Engine weapon slots 0-6 must be covered exactly once when any weapon is ready.
   const readyWeapons = entries.filter((e) => e.section === "weapons" && e.status === "ready");
   if (readyWeapons.length > 0) {
     const slots = readyWeapons.map((e) => e.engineSlot).sort();
-    if (JSON.stringify(slots) !== JSON.stringify([0, 1, 2, 3, 4].slice(0, slots.length))) {
-      warnings.push("ready weapons should fill engine slots 0..4 in order");
+    if (JSON.stringify(slots) !== JSON.stringify([0, 1, 2, 3, 4, 5, 6].slice(0, slots.length))) {
+      warnings.push("ready weapons should fill engine slots 0..6 in order");
     }
   }
   return { errors, warnings };
@@ -146,9 +172,12 @@ export function validateReadyFiles(manifest, gameDir, atlasesDir) {
         continue;
       }
       checked += 1;
-      if (info.width !== info.height) errors.push(`${e.specId}: ${name} must be square, got ${info.width}x${info.height}`);
-      if (exact && info.width !== min) errors.push(`${e.specId}: ${name} must be ${min}x${min}, got ${info.width}x${info.height}`);
-      if (!exact && info.width < min) errors.push(`${e.specId}: ${name} must be at least ${min}px, got ${info.width}`);
+      if (info.width !== info.height)
+        errors.push(`${e.specId}: ${name} must be square, got ${info.width}x${info.height}`);
+      if (exact && info.width !== min)
+        errors.push(`${e.specId}: ${name} must be ${min}x${min}, got ${info.width}x${info.height}`);
+      if (!exact && info.width < min)
+        errors.push(`${e.specId}: ${name} must be at least ${min}px, got ${info.width}`);
       if (!info.hasAlpha) errors.push(`${e.specId}: ${name} has no alpha channel (spec §11)`);
     }
     const metaPath = join(atlasesDir, `${e.specId}.json`);
@@ -175,10 +204,19 @@ export function checkAssets(root) {
   try {
     manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
   } catch (err) {
-    return { ok: false, errors: [`cannot read manifest: ${err.message}`], warnings: [], checked: 0 };
+    return {
+      ok: false,
+      errors: [`cannot read manifest: ${err.message}`],
+      warnings: [],
+      checked: 0,
+    };
   }
   const m = validateManifest(manifest);
-  const f = validateReadyFiles(manifest, join(root, "public", "game"), join(root, "art", "atlases"));
+  const f = validateReadyFiles(
+    manifest,
+    join(root, "public", "game"),
+    join(root, "art", "atlases"),
+  );
   return {
     ok: m.errors.length === 0 && f.errors.length === 0,
     errors: [...m.errors, ...f.errors],
@@ -194,7 +232,9 @@ if (isMain) {
   for (const w of result.warnings) console.warn(`[check:assets] warn: ${w}`);
   if (!result.ok) {
     for (const e of result.errors) console.error(`[check:assets] ${e}`);
-    console.error(`[check:assets] ${result.errors.length} error(s). See art/blacksite-manifest.json + docs/blacksite-ifrit/.`);
+    console.error(
+      `[check:assets] ${result.errors.length} error(s). See art/blacksite-manifest.json + docs/blacksite-ifrit/.`,
+    );
     process.exit(1);
   }
   console.log(`[check:assets] manifest ok (${result.checked} delivered file(s) checked).`);

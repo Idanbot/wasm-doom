@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Activity, ChevronRight, Crosshair, RotateCcw, Timer, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { HudState } from "@/game/types";
 import { fmtTime, type Score } from "./data";
@@ -13,6 +14,7 @@ export function EndCard({
   onAgain,
   onMenu,
   onSave,
+  variant,
 }: {
   title: string;
   body: string;
@@ -23,6 +25,7 @@ export function EndCard({
   onAgain: () => void;
   onMenu: () => void;
   onSave?: (name: string) => void;
+  variant: "dead" | "win";
 }) {
   const [name, setName] = useState("");
   const [saved, setSaved] = useState(false);
@@ -32,16 +35,42 @@ export function EndCard({
     setSaved(true);
   };
   return (
-    <div>
-      <h2 className="font-display text-4xl tracking-[0.08em]">{title}</h2>
-      <p className="mt-3 text-sm text-muted">{body}</p>
-      <p className="mt-4 font-mono text-sm text-steel">
-        Wave {hud.wave || 1} · {fmtTime(hud.elapsedMs)} · {hud.kills} kills
-      </p>
+    <div className={`end-screen end-screen-${variant}`}>
+      <header className="end-header">
+        <span className="eyebrow">
+          {variant === "win" ? "OPERATION COMPLETE" : "BIOSIGNAL LOST"}
+        </span>
+        <span className="end-status">
+          <i /> {variant === "win" ? "SITE SECURED" : "UNIT OFFLINE"}
+        </span>
+      </header>
+      <div className="end-title-row">
+        {variant === "win" ? <Trophy aria-hidden /> : <Activity aria-hidden />}
+        <div>
+          <h2>{title}</h2>
+          <p>{body}</p>
+        </div>
+      </div>
+      <div className="end-stats" aria-label="Run statistics">
+        <div>
+          <span>LEVEL</span>
+          <strong>{String(hud.wave || 1).padStart(2, "0")}</strong>
+        </div>
+        <div>
+          <Timer aria-hidden />
+          <span>TIME</span>
+          <strong>{fmtTime(hud.elapsedMs)}</strong>
+        </div>
+        <div>
+          <Crosshair aria-hidden />
+          <span>ELIMINATED</span>
+          <strong>{hud.kills}</strong>
+        </div>
+      </div>
       {showBoard && (
         <>
           <form
-            className="mt-4 flex gap-2"
+            className="end-log-form"
             onSubmit={(e) => {
               e.preventDefault();
               submit();
@@ -53,20 +82,20 @@ export function EndCard({
               maxLength={12}
               placeholder="YOUR NAME"
               disabled={saved}
-              className="min-h-11 flex-1 rounded-sm border border-border bg-bg px-3 font-mono text-sm uppercase tracking-[0.16em] text-fg outline-none focus:border-steel"
+              className="end-name-input"
             />
             <Button type="submit" size="lg" variant="ghost" disabled={saved}>
               {saved ? "Logged" : "Log run"}
             </Button>
           </form>
-          <div className="mt-5">
-            <p className="font-display text-[10px] tracking-[0.22em] text-muted">LEADERBOARD</p>
-            <ol className="mt-2 space-y-1 font-mono text-xs text-muted">
+          <div className="end-board">
+            <p>FIELD RECORDS</p>
+            <ol>
               {board.length === 0 && <li>No runs recorded</li>}
               {board.map((row, i) => (
                 <li
                   key={`${row.name}-${row.wave}-${row.kills}-${row.time}-${i}`}
-                  className="flex justify-between gap-3"
+                  className="end-board-row"
                 >
                   <span className="text-fg">
                     {i + 1}. {row.name} · WAVE {row.wave}
@@ -80,8 +109,13 @@ export function EndCard({
           </div>
         </>
       )}
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-        <Button size="lg" className="flex-1" onClick={onAgain}>
+      <div className="end-actions">
+        <Button
+          size="lg"
+          className={variant === "win" ? "flex-1 border-primary bg-primary text-bg" : "flex-1"}
+          onClick={onAgain}
+        >
+          {variant === "win" ? <ChevronRight aria-hidden /> : <RotateCcw aria-hidden />}
           {nextLabel}
         </Button>
         <Button size="lg" variant="ghost" onClick={onMenu}>

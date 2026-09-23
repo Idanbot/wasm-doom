@@ -1,12 +1,20 @@
 import { EnemyAudio } from "./enemy-audio";
-import { DEFAULT_ENEMY_OPTIONS, type EnemyCue, type EnemyOptions, type EnemySubtitle } from "./enemy-presentation";
+import {
+  DEFAULT_ENEMY_OPTIONS,
+  type EnemyCue,
+  type EnemyOptions,
+  type EnemySubtitle,
+} from "./enemy-presentation";
 
 export type GameAudio = {
   previewEnemy: (skin: number) => void;
   enemyDiagnostics: () => ReturnType<EnemyAudio["diagnostics"]> | null;
   prepareEnemies: () => Promise<void>;
   setEnemyOptions: (options: EnemyOptions) => void;
-  updateEnemies: (enemies: EnemyCue[], player: { x: number; y: number; yaw: number }) => EnemySubtitle[];
+  updateEnemies: (
+    enemies: EnemyCue[],
+    player: { x: number; y: number; yaw: number },
+  ) => EnemySubtitle[];
   clearEnemies: (reset?: boolean) => void;
   dispose: () => void;
   unlock: () => void;
@@ -202,7 +210,14 @@ export function createAudio(): GameAudio {
     return playFile(name, vol, rate);
   }
 
-  function beep(freq: number, dur: number, type: OscillatorType, vol: number, slide = 0, dest?: GainNode) {
+  function beep(
+    freq: number,
+    dur: number,
+    type: OscillatorType,
+    vol: number,
+    slide = 0,
+    dest?: GainNode,
+  ) {
     if (!ctx || muted) return;
     const bus = dest ?? sfx;
     if (!bus) return;
@@ -221,7 +236,13 @@ export function createAudio(): GameAudio {
     o.stop(t + dur + 0.03);
   }
 
-  function burst(dur: number, vol: number, rate = 1, freq = 900, type: BiquadFilterType = "bandpass") {
+  function burst(
+    dur: number,
+    vol: number,
+    rate = 1,
+    freq = 900,
+    type: BiquadFilterType = "bandpass",
+  ) {
     if (!ctx || !sfx || !noise || muted) return;
     const t = ctx.currentTime;
     const src = ctx.createBufferSource();
@@ -271,7 +292,15 @@ export function createAudio(): GameAudio {
     o.stop(when + dur + 0.04);
   }
 
-  function noiseAt(dest: GainNode, when: number, dur: number, vol: number, freq: number, type: BiquadFilterType, rate = 1) {
+  function noiseAt(
+    dest: GainNode,
+    when: number,
+    dur: number,
+    vol: number,
+    freq: number,
+    type: BiquadFilterType,
+    rate = 1,
+  ) {
     if (!ctx || !noise) return;
     const src = ctx.createBufferSource();
     src.buffer = noise;
@@ -308,7 +337,15 @@ export function createAudio(): GameAudio {
   }
 
   function hat(dest: GainNode, when: number, open: boolean) {
-    noiseAt(dest, when, open ? 0.08 : 0.03, open ? 0.07 : 0.045, open ? 7000 : 9000, "highpass", 2.4);
+    noiseAt(
+      dest,
+      when,
+      open ? 0.08 : 0.03,
+      open ? 0.07 : 0.045,
+      open ? 7000 : 9000,
+      "highpass",
+      2.4,
+    );
   }
 
   function lead(dest: GainNode, when: number, freq: number, dur: number) {
@@ -546,13 +583,32 @@ export function createAudio(): GameAudio {
   }
 
   return {
-    previewEnemy(skin) { resume(); enemies?.preview(skin); },
+    previewEnemy(skin) {
+      resume();
+      enemies?.preview(skin);
+    },
     enemyDiagnostics: () => enemies?.diagnostics() ?? null,
-    async prepareEnemies() { ensure(); await enemies?.load(); },
-    setEnemyOptions(options) { enemyOptions = { ...options }; enemies?.configure(options); },
-    updateEnemies(cues, player) { enemies?.update(cues, player); return enemies?.captions() ?? []; },
-    clearEnemies(reset = false) { enemies?.silence(reset); },
-    dispose() { musicOn = false; stopGate(); enemies?.close(); if (ctx) void ctx.close(); },
+    async prepareEnemies() {
+      ensure();
+      await enemies?.load();
+    },
+    setEnemyOptions(options) {
+      enemyOptions = { ...options };
+      enemies?.configure(options);
+    },
+    updateEnemies(cues, player) {
+      enemies?.update(cues, player);
+      return enemies?.captions() ?? [];
+    },
+    clearEnemies(reset = false) {
+      enemies?.silence(reset);
+    },
+    dispose() {
+      musicOn = false;
+      stopGate();
+      enemies?.close();
+      if (ctx) void ctx.close();
+    },
     unlock() {
       resume();
     },
@@ -619,6 +675,17 @@ export function createAudio(): GameAudio {
         beep(90, 0.16, "sine", 0.22, -55);
         burst(0.11, 0.34 * jitter, 0.7, 550, "lowpass");
         metallic(650, 0.055, 0.08);
+        return;
+      }
+      if (weapon === 5) {
+        beep(920, 0.2, "sawtooth", 0.11, -520);
+        beep(180, 0.16, "sine", 0.09, 120);
+        burst(0.09, 0.2, 2.2, 2800, "bandpass");
+        return;
+      }
+      if (weapon === 6) {
+        burst(0.055, 0.34 * jitter, 1.5, 900, "bandpass");
+        beep(105, 0.06, "square", 0.08, -35);
         return;
       }
       // File OR synth, never both — the sample already carries the transient.

@@ -35,8 +35,8 @@ struct Engine {
     pr: f32,
     health: i32,
     armor: i32,
-    ammo: [i32; 5],
-    mag: [i32; 5],
+    ammo: [i32; 7],
+    mag: [i32; 7],
     weapon: i32,
     has_w2: bool,
     has_w3: bool,
@@ -81,6 +81,7 @@ struct Engine {
     hell: bool,
     boss_spawned: bool,
     boss_intro: f32,
+    boss_phase: u8,
     ambush: Vec<AmbushTrigger>,
 }
 
@@ -251,8 +252,8 @@ impl Engine {
             pr: 0.22,
             health: 100,
             armor: 0,
-            ammo: [36, 0, 0, 0, 0],
-            mag: [12, 0, 0, 0, 0],
+            ammo: [36, 0, 0, 0, 0, 32, 240],
+            mag: [12, 0, 0, 0, 0, 8, 80],
             weapon: 0,
             has_w2: false,
             has_w3: false,
@@ -337,6 +338,7 @@ impl Engine {
             hell: false,
             boss_spawned: false,
             boss_intro: 0.0,
+            boss_phase: 0,
             ambush: Vec::new(),
         };
         e.build_map();
@@ -1040,6 +1042,10 @@ impl Engine {
             self.mag[4] = MAG_SZ[4];
             self.ammo[4] = self.ammo[4].max(12);
         }
+        self.mag[5] = MAG_SZ[5];
+        self.ammo[5] = self.ammo[5].max(16);
+        self.mag[6] = MAG_SZ[6];
+        self.ammo[6] = self.ammo[6].max(160);
         for e in self.ents.iter_mut() {
             if e.kind != 0 && enemy_def(e.kind).is_some_and(|d| d.cleared_on_wave) {
                 e.kind = 0;
@@ -1049,6 +1055,7 @@ impl Engine {
         self.light_dirty = true;
         self.boss_spawned = false;
         self.boss_intro = 0.0;
+        self.boss_phase = 0;
         self.spawn_hostiles(mult);
     }
 
@@ -1079,16 +1086,32 @@ impl Engine {
                 break;
             }
         }
+        // Malik is a machine-augmented commander: his arrival discharges
+        // electrical fragments and calls a mixed escort instead of summoning
+        // floating magical fire.
         for _ in 0..14 {
             let a = self.rnd() * core::f32::consts::TAU;
             let r = 0.5 + self.rnd() * 1.9;
             self.spawn_timed(
-                EK_FLAME,
+                EK_SPARK,
                 self.px + a.cos() * r,
                 self.py + a.sin() * r,
-                2.4,
-                18.0,
+                0.7,
+                -16.0,
             );
+        }
+        let escorts = [
+            (EK_WRAITH, SKIN_HORNET, -2.4, -1.6),
+            (EK_WRAITH, SKIN_MARKSMAN, 2.4, -1.6),
+            (EK_HUSK, SKIN_RIFLEMAN, -2.8, 1.8),
+            (EK_BRUTE, SKIN_LOADER, 2.8, 1.8),
+        ];
+        for &(kind, skin, ox, oy) in &escorts[..(2 + self.wave.min(2) as usize)] {
+            let x = self.px + fx * 5.4 + ox;
+            let y = self.py + fy * 5.4 + oy;
+            if !self.blocked(x.floor() as i32, y.floor() as i32) {
+                let _ = self.spawn_with_skin(kind, skin, x, y);
+            }
         }
     }
 
@@ -1723,7 +1746,7 @@ impl Engine {
                 self.shake = (self.shake + 0.22).min(1.0);
                 self.fire_lance();
             }
-            _ => {
+            4 => {
                 self.cooldown = 0.65;
                 self.muzzle = 1.0;
                 self.kick = 1.5;
@@ -1735,6 +1758,29 @@ impl Engine {
                     self.ents[i].timer = 1.15;
                     self.ents[i].zoff = 10.0;
                 }
+            }
+            5 => {
+                self.cooldown = 0.48;
+                self.muzzle = 1.0;
+                self.kick = 0.9;
+                self.shake = (self.shake + 0.18).min(1.0);
+                let a = self.pa + (self.rnd() - 0.5) * 0.018;
+                let hit = self.hitscan(a, 34, 18.0);
+                let length = if hit { 9 } else { 15 };
+                for n in 1..length {
+                    let t = n as f32 * 0.55;
+                    self.spawn_timed(EK_RAY, self.px + a.cos() * t, self.py + a.sin() * t, 0.1, 4.0);
+                }
+            }
+            _ => {
+                self.cooldown = 0.052;
+                self.muzzle = 1.0;
+                self.kick = 0.52;
+                self.shake = (self.shake + 0.055).min(1.0);
+                self.spread = (self.spread + 0.014).min(0.17);
+                let a = self.pa + (self.rnd() - 0.5) * (0.035 + self.spread);
+                self.hitscan(a, 6, 24.0);
+                if (self.rng & 3) == 0 { self.eject_casing(); }
             }
         }
     }
@@ -1932,7 +1978,15 @@ impl Engine {
                 self.weapon = 4;
                 self.reload_t = 0.0;
             }
-            self.wpn_latched = bits & (IN_W1 | IN_W2 | IN_W3 | IN_W4 | IN_W5);
+            if bits & IN_W6 != 0 && self.wpn_latched & IN_W6 == 0 {
+                self.weapon = 5;
+                self.reload_t = 0.0;
+            }
+            if bits & IN_W7 != 0 && self.wpn_latched & IN_W7 == 0 {
+                self.weapon = 6;
+                self.reload_t = 0.0;
+            }
+            self.wpn_latched = bits & (IN_W1 | IN_W2 | IN_W3 | IN_W4 | IN_W5 | IN_W6 | IN_W7);
 
             if bits & IN_RELOAD != 0 {
                 if !self.reload_latched {
@@ -2247,7 +2301,6 @@ impl Engine {
                     if dead || !self.los(old_x, old_y, ex, ey) {
                         self.ents[i].kind = 0;
                         self.explode(old_x, old_y, 2.4, 65.0);
-                        self.ignite(old_x, old_y);
                     } else {
                         let mut hit = None;
                         for (j, o) in self.ents.iter().enumerate() {
@@ -2264,7 +2317,6 @@ impl Engine {
                             self.ents[i].kind = 0;
                             self.hurt_ent(j, 24, ex, ey);
                             self.explode(ex, ey, 2.4, 65.0);
-                            self.ignite(ex, ey);
                         }
                     }
                 }
@@ -2360,6 +2412,32 @@ impl Engine {
                     self.maybe_spawn_boss();
                 }
                 living = 1;
+            }
+        }
+
+        if self.boss_spawned && self.state == 0 {
+            let max_hp = (480.0 * 1.5f32.powi((self.wave - 1).max(0))).min(2200.0).round() as i32;
+            let boss_hp = self.ents.iter().find(|e| e.kind == EK_BOSS && e.hp > 0).map(|e| e.hp).unwrap_or(0);
+            let phase = if boss_hp > 0 && boss_hp * 3 <= max_hp { 2 } else if boss_hp > 0 && boss_hp * 3 <= max_hp * 2 { 1 } else { 0 };
+            if phase > self.boss_phase {
+                self.boss_phase = phase;
+                self.shake = (self.shake + 0.5).min(1.0);
+                self.events |= EV_EXPLODE;
+                let support = if phase == 1 {
+                    [(EK_WRAITH, SKIN_HORNET), (EK_HUSK, SKIN_RIFLEMAN)]
+                } else {
+                    [(EK_MARTYR, SKIN_MARTYR), (EK_BRUTE, SKIN_LOADER)]
+                };
+                for (index, &(kind, skin)) in support.iter().enumerate() {
+                    let (x, y) = map::BOSS_SPOTS[(phase as usize + index) % map::BOSS_SPOTS.len()];
+                    if !self.blocked(x.floor() as i32, y.floor() as i32) {
+                        let _ = self.spawn_with_skin(kind, skin, x, y);
+                    }
+                    for n in 0..6 {
+                        let a = n as f32 * core::f32::consts::TAU / 6.0;
+                        self.spawn_timed(EK_SPARK, x + a.cos() * 0.35, y + a.sin() * 0.35, 0.55, -12.0);
+                    }
+                }
             }
         }
 
@@ -3494,7 +3572,13 @@ pub extern "C" fn hs_qa_armory() {
     e.has_w4 = true;
     e.has_w5 = true;
     e.mag = MAG_SZ;
-    e.ammo = [120, 40, 200, 16, 24];
+    e.ammo = [120, 40, 200, 16, 24, 48, 320];
+}
+
+#[no_mangle]
+pub extern "C" fn hs_qa_end(state: i32) {
+    let e = eng();
+    if matches!(state, 1 | 2) { e.state = state; }
 }
 
 #[no_mangle]
@@ -3719,7 +3803,7 @@ mod tests {
         for _ in 0..24 { e.tick(1.0 / 60.0); }
         assert!(e.ents[exposed].hp < 78);
         assert_eq!(e.ents[covered].hp, 78);
-        assert!(e.ents.iter().any(|p| p.kind == EK_FIREPATCH));
+        assert!(!e.ents.iter().any(|p| p.kind == EK_FIREPATCH), "missiles no longer leave floating flame patches");
         assert!(e.ents.iter().any(|p| p.kind == EK_IMPACT && p.effect_tick == 2.0));
     }
 
@@ -4180,6 +4264,19 @@ mod tests {
         assert!(e.events & EV_BOSS_DROP != 0);
         e.tick(1.0 / 60.0);
         assert_eq!(e.ents.iter().filter(|en| en.kind == EK_BOSS).count(), 1);
+    }
+
+    #[test]
+    fn boss_health_phases_call_support_with_electrical_entry_fx() {
+        let mut e = arena();
+        e.boss_spawned = true;
+        let boss = e.spawn_with_skin(EK_BOSS, SKIN_VEYRAN, 9.5, 4.5).unwrap();
+        e.ents[boss].hp = 300;
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.boss_phase, 1);
+        e.tick(1.0 / 60.0);
+        assert!(e.ents.iter().any(|x| x.kind == EK_SPARK));
+        assert!(e.ents.iter().any(|x| is_hostile_kind(x.kind) && x.kind != EK_BOSS));
     }
 
     #[test]

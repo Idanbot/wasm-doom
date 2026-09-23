@@ -77,7 +77,7 @@ export function HudBar({
                 className={cn(
                   "weapon-slot",
                   hud.weapon === i && "selected",
-                  i > 0 && ![true, hud.hasW2, hud.hasW3, hud.hasW4, hud.hasW5][i] && "locked",
+                  i > 0 && ![true, hud.hasW2, hud.hasW3, hud.hasW4, hud.hasW5, true, true][i] && "locked",
                 )}
               >
                 <b>{i + 1}</b>

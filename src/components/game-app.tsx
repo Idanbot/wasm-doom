@@ -90,7 +90,7 @@ export function GameApp() {
           const swapDip = swapAge < 1 ? Math.sin(swapAge * Math.PI) * 30 : 0;
           const reloading = h.reloading > 0.001;
           const reloadDip = reloading ? 32 + Math.sin(Math.min(1, h.reloading) * Math.PI) * 18 : 0;
-          const weight = [0.65, 1.25, 0.5, 1.1, 1.4][h.weapon] ?? 1;
+          const weight = [0.65, 1.25, 0.5, 1.1, 1.4, 0.9, 1.45][h.weapon] ?? 1;
           const motion = reducedMotion.matches ? 0.2 : 1;
           const bobY = (h.bob * 7 + h.kick * 18 * weight + reloadDip + swapDip) * motion;
           const bobX = (h.kick * -6 * weight + (reloading ? 20 : 0)) * motion;
@@ -127,9 +127,22 @@ export function GameApp() {
         // syncs immediately so the HUD never lags the gun; the running
         // timer/fps still throttle to 10Hz to avoid re-rendering 60/s.
         const key = [
-          h.health, h.armor, h.ammo, h.reserve, h.weapon, h.kills, h.living,
-          h.state, h.prompt, h.secrets, h.hasW2, h.hasW3, h.hasW4, h.hasW5,
-          h.reloading > 0.001, h.reloading === 0,
+          h.health,
+          h.armor,
+          h.ammo,
+          h.reserve,
+          h.weapon,
+          h.kills,
+          h.living,
+          h.state,
+          h.prompt,
+          h.secrets,
+          h.hasW2,
+          h.hasW3,
+          h.hasW4,
+          h.hasW5,
+          h.reloading > 0.001,
+          h.reloading === 0,
         ].join("|");
         if (now - lastHudAt.current > 100 || key !== lastHudKey.current) {
           lastHudAt.current = now;
@@ -477,6 +490,7 @@ export function GameApp() {
             )}
             {screen === "dead" && (
               <EndCard
+                variant="dead"
                 title="FLATLINED"
                 body={`Wave ${hud.wave || 1} is over. The scanline ends here.`}
                 hud={hud}
@@ -498,6 +512,7 @@ export function GameApp() {
             )}
             {screen === "win" && (
               <EndCard
+                variant="win"
                 title="SITE CLEARED"
                 body="The vault's master is dead. The pit goes quiet."
                 hud={hud}

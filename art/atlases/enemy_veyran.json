@@ -53,5 +53,6 @@
     "enemy_veyran_special.png"
   ],
   "background": "transparent after deterministic #ff00ff key",
-  "source": "art/source_hd/enemies/enemy_veyran.png"
+  "source": "art/source_hd/enemies/enemy_veyran.png",
+  "motion": "segmented pose rig with anchored deformation and torso recoil"
 }

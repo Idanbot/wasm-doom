@@ -53,5 +53,6 @@
     "enemy_vatbrute_special.png"
   ],
   "background": "transparent after deterministic #ff00ff key",
-  "source": "art/source_hd/enemies/enemy_vatbrute.png"
+  "source": "art/source_hd/enemies/enemy_vatbrute.png",
+  "motion": "segmented pose rig with anchored deformation and torso recoil"
 }

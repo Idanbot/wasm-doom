@@ -12,10 +12,11 @@ windup; stepping out of melee reach or behind cover cancels its hit. Ranged
 enemies retreat when crowded, and skirmishers alternate strafe direction.
 Opening attacks are staggered so starting a game allows time to orient.
 
-RAVEN fires one incendiary grenade every 0.65 seconds from a six-round
-magazine. Impacts cause splash damage and bounded fire patches; walls block
-blast damage and nearby blasts can hurt the player. Projectiles sweep their
-travel segment to detect hits between simulation steps.
+RAVEN fires one guided missile every 0.65 seconds from a six-round magazine.
+Impacts cause splash damage; walls block the blast and nearby detonations can
+hurt the player. Projectiles sweep their travel segment to detect hits between
+simulation steps. ARC-12 fires a precise electrical discharge, while M56 adds
+an 80-round sustained rotary stream with growing spread.
 
 All guns use their firing sheets, including VX-9. Weapon sheets preload
 alongside world textures before play. Recoil weight varies by

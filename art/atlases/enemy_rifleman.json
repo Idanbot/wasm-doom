@@ -53,5 +53,6 @@
     "enemy_rifleman_special.png"
   ],
   "background": "transparent after deterministic #ff00ff key",
-  "source": "art/source_hd/enemies/enemy_rifleman.png"
+  "source": "art/source_hd/enemies/enemy_rifleman.png",
+  "motion": "segmented pose rig with anchored deformation and torso recoil"
 }
