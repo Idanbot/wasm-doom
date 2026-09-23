@@ -1,0 +1,14 @@
+{
+  "signature": "e1227221cb643fde0ed908aa0398e18366476785f33d9cbc6aabfd23143d0050",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Meet the heavy end.",
+    "speaker": "zeus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "American, deep heavy-weapons veteran",
+  "effect": "asetrate=22080,aresample=24000,atempo=1.04,highpass=f=110,lowpass=f=5200",
+  "generatedAt": "2026-09-23T13:31:38.784Z"
+}

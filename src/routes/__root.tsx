@@ -3,7 +3,7 @@ import { AuthProvider } from "@/lib/auth/provider";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import appCss from "../styles.css?url";
 
-const APP_NAME = "HELLSCAN";
+const APP_NAME = "BLACKSITE";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -11,10 +11,10 @@ export const Route = createRootRoute({
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: APP_NAME },
-      { name: "theme-color", content: "#0a0908" },
+      { name: "theme-color", content: "#080d11" },
       {
         name: "description",
-        content: "High-FPS WASM raycaster. Sweep Site Nadir-7.",
+        content: "BLACKSITE: Project Ifrit. Enter Nadir-7. Break containment. Eliminate the signal.",
       },
     ],
     links: [

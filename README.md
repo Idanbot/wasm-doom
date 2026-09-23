@@ -64,9 +64,14 @@ cargo test --manifest-path engine/Cargo.toml
 - 60fps at 640×400 on the CPU raycaster; 1280 holds 60 when WebGPU or WebGL2 fills the frame
 - WebGPU with automatic WebGL2/Canvas2D fallback; renderer switchable without restarting the sim
 - 5 delivered BLACKSITE weapon sets, 13 enemy skins with seven animation states each, projectile/effect atlas, wave system, local leaderboard
-- 49 Rust tests plus TS and script integration tests; CI runs typecheck, wasm-sync, asset validation, and build
+- 50 Rust tests plus TS and script integration tests; CI runs typecheck, wasm-sync, asset validation, and build
 
 Combat roles, attack windups, incendiary grenades and effect rendering are
 documented in [the BLACKSITE combat notes](docs/blacksite-ifrit/COMBAT.md).
 With the game running, `node scripts/combat-smoke.mjs` checks all five guns,
 reloads and strafe direction in a real browser.
+
+The [voice and interface notes](docs/blacksite-ifrit/VOICES_AND_UI.md) cover
+54 Cloudflare Aura-2 lines, positional enemy audio, subtitles, the generated
+HUD artwork, and saved settings. Run `npm run check:voices` and
+`npm run test:voices`; `node scripts/voices-smoke.mjs` verifies them in-game.

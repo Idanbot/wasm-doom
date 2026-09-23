@@ -1,0 +1,14 @@
+{
+  "signature": "4f5e3f4c7d1039fbcb816e9ca2773277edf67581d9845fec9f4c8606903d9a9b",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Airspace violation.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Bright synthetic targeting computer",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-09-23T13:31:55.478Z"
+}

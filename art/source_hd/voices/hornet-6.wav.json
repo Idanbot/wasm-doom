@@ -1,0 +1,14 @@
+{
+  "signature": "f7aa35d09ee7d8b56f6fe302e89c58b76d71208b7ac2d2521b16737811db5ca9",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Your trajectory is inefficient.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Bright synthetic targeting computer",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-09-23T13:31:59.818Z"
+}

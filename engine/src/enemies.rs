@@ -80,7 +80,7 @@ pub(crate) const ENEMY_SKINS: &[EnemySkin] = &[
     EnemySkin { id: SKIN_HORNET, name: "Hornet Drone", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 8, scale: 0.72, zoff: -70.0, special: "attack vector" },
     EnemySkin { id: SKIN_HOUND, name: "Hound", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 9, scale: 0.72, zoff: 22.0, special: "pounce" },
     EnemySkin { id: SKIN_SPITTER, name: "Spitter", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 10, scale: 0.76, zoff: -8.0, special: "acid sac" },
-    EnemySkin { id: SKIN_MARTYR, name: "Martyr Drone", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 11, scale: 0.70, zoff: 78.0, special: "detonation" },
+    EnemySkin { id: SKIN_MARTYR, name: "Martyr Drone", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 11, scale: 0.70, zoff: -48.0, special: "detonation" },
     EnemySkin { id: SKIN_VEYRAN, name: "VEYRAN // MALIK", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 12, scale: 2.00, zoff: 8.0, special: "seal rupture" },
 ];
 
@@ -94,7 +94,8 @@ pub(crate) fn default_skin(kind: u8) -> u8 {
         EK_BRUTE => SKIN_HAZMAT,
         EK_WRAITH => SKIN_MARKSMAN,
         EK_BOSS => SKIN_VEYRAN,
-        EK_BARREL => SKIN_MARTYR,
+        EK_MARTYR => SKIN_MARTYR,
+        EK_BARREL => SKIN_NONE,
         _ => SKIN_NONE,
     }
 }
@@ -140,6 +141,7 @@ pub(crate) const ENEMY_DEFS: &[EnemyDef] = &[
     EnemyDef { kind: EK_SMOKE, name: "Smoke", role: "fx", hp: 1, radius: 0.1, zoff: -4.0, scale: 0.28, texture: T_FLAME, sheet4: true, hostile: false, cleared_on_wave: false },
     EnemyDef { kind: EK_FLAME, name: "Flame", role: "fx", hp: 1, radius: 0.14, zoff: 42.0, scale: 0.82, texture: T_FLAME, sheet4: true, hostile: false, cleared_on_wave: false },
     EnemyDef { kind: EK_FIREPATCH, name: "Fire patch", role: "fx", hp: 1, radius: 0.2, zoff: 0.0, scale: 0.60, texture: T_FLAME, sheet4: true, hostile: false, cleared_on_wave: true },
+    EnemyDef { kind: EK_MARTYR, name: "Martyr", role: "skirmisher", hp: 18, radius: 0.26, zoff: -48.0, scale: 0.70, texture: T_BALL, sheet4: false, hostile: true, cleared_on_wave: true },
 ];
 
 /// Look up a kind's row. Returns `None` for kind 0 (empty slot).
@@ -172,10 +174,10 @@ mod tests {
     }
 
     #[test]
-    fn hostile_set_is_the_four_chasers() {
+    fn hostile_set_is_the_chasers() {
         let hostiles: Vec<u8> = ENEMY_DEFS.iter().filter(|d| d.hostile).map(|d| d.kind).collect();
-        assert_eq!(hostiles, vec![EK_HUSK, EK_BRUTE, EK_WRAITH, EK_BOSS]);
-        for k in [EK_HUSK, EK_BRUTE, EK_WRAITH, EK_BOSS] {
+        assert_eq!(hostiles, vec![EK_HUSK, EK_BRUTE, EK_WRAITH, EK_BOSS, EK_MARTYR]);
+        for k in [EK_HUSK, EK_BRUTE, EK_WRAITH, EK_BOSS, EK_MARTYR] {
             assert!(is_hostile_kind(k));
             assert!(enemy_def(k).unwrap().cleared_on_wave);
         }

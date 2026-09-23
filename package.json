@@ -24,6 +24,9 @@
     "assets:weapons": "python3 scripts/process-blacksite-weapons.py",
     "assets:projectiles": "python3 scripts/process-blacksite-projectile-assets.py",
     "check:projectiles": "node scripts/check-projectile-assets.mjs",
+    "check:voices": "node scripts/check-voice-assets.mjs",
+    "assets:voices": "node scripts/generate-blacksite-voices.mjs",
+    "test:voices": "node --experimental-strip-types --test src/game/enemy-presentation.test.ts",
     "test": "node --test 'scripts/**/*.test.mjs' && node --experimental-strip-types --test src/lib/app-data/app-data.test.ts src/lib/app-data/readiness-schedule.test.ts src/lib/auth/gate-identity.test.ts src/lib/auth/sign-in-gate.test.ts src/components/game/data.test.ts src/game/hud-abi.test.ts src/game/runtime.test.ts",
     "lint": "eslint .",
     "format": "prettier --write ."

@@ -1,0 +1,14 @@
+{
+  "signature": "bfe3cef291c8c3b32d3b34f53130e4f7f10819c6a5c2e05ae28c799ed0459cfb",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You cannot outrun a sightline.",
+    "speaker": "draco",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "British, measured quiet baritone",
+  "effect": "highpass=f=190,lowpass=f=4800",
+  "generatedAt": "2026-09-23T13:31:52.978Z"
+}

@@ -1,0 +1,14 @@
+{
+  "signature": "4cc19c581e8f5f7eb439e10465a70b34fa2d0799e35cccfbcc857423e594b349",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Stabiliser fault.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Bright synthetic targeting computer",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-09-23T13:31:58.541Z"
+}

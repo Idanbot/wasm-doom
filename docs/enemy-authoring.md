@@ -68,9 +68,11 @@ last frame into the unused cells; move uses all four cells. The simulation
 selects groups from hit reaction, movement, firing, reload/charge timing,
 melee specials and the two-frame death hold.
 
-`Ent.skin` selects the roster identity while the existing four archetypes keep
+`Ent.skin` selects the roster identity while the existing archetypes keep
 combat tuning shared. Add a skin entry and seven atlas files together; do not
-make the model produce a packed sheet.
+make the model produce a packed sheet. Melee-role skins chase into range and
+detonate-or-strike on windup end; the Martyr (`EK_MARTYR`) explodes instead of
+dealing contact damage, and explodes when shot like a barrel.
 
 ## 3. Template: add a row
 
@@ -96,7 +98,7 @@ EnemyDef {
 1. **Source art**: generate a 1024px render using the roster plan → `art/source_hd/enemies/enemy_<slug>.png` (the Cloudflare batch script may leave the native JPEG as `.jpg`).
 2. **Pack**: run `python3 scripts/build-blacksite-enemy-atlas.py --spec <slug>`; it creates all seven `public/game/enemy_<slug>_<animation>.png` layers and metadata.
 3. **`TEX_FILES`** in `src/game/runtime.ts`: add the seven generated files when the roster list changes.
-4. **`EK_*`** const in `engine/src/consts.rs` (next free `u8`: 25+).
+4. **`EK_*`** const in `engine/src/consts.rs` (next free `u8`: 26+).
 5. **`EnemyDef` row** in `engine/src/enemies.rs` (copy the TEMPLATE comment there).
 6. **Placement** in `engine/src/map.rs`: `place_hub_spoke`, a spawn group, or an `AMBUSH_DEFS` entry.
 7. **Tests**: `cargo test` pins roster uniqueness, hostile set, legacy tuning and map connectivity — extend them if you add zones.

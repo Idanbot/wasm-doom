@@ -73,6 +73,9 @@ pub(crate) const EK_RAY: u8 = 21;
 pub(crate) const EK_BOLT: u8 = 22;
 pub(crate) const EK_BOSS: u8 = 23;
 pub(crate) const EK_FIREPATCH: u8 = 24;
+/// Suicide-chaser drone. Floats at the player, runs a visible detonation
+/// windup (`ANIM_SPECIAL`), then explodes instead of dealing melee damage.
+pub(crate) const EK_MARTYR: u8 = 25;
 
 // BLACKSITE animation groups. Each group is one 2x2 atlas layer; two-frame
 // groups duplicate their last frame into the unused cells during packing.

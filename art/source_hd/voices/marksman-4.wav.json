@@ -1,0 +1,14 @@
+{
+  "signature": "7f745ec387afcb479148bc9ff025702d1c5b06d01eccae789281406d49a04be1",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Sight picture. Perfect.",
+    "speaker": "draco",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "British, measured quiet baritone",
+  "effect": "highpass=f=190,lowpass=f=4800",
+  "generatedAt": "2026-09-23T13:31:50.918Z"
+}

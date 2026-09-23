@@ -1,0 +1,14 @@
+{
+  "signature": "c8461826f4c5749f654463c3a249a0ab56d96a42c2ef62cac296be4817480e38",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Repositioning.",
+    "speaker": "draco",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "British, measured quiet baritone",
+  "effect": "highpass=f=190,lowpass=f=4800",
+  "generatedAt": "2026-09-23T13:31:51.717Z"
+}

@@ -1,0 +1,14 @@
+{
+  "signature": "3664616cd539407326d1636a533f51ed5fbf2d8d962785e02887ffb82c14683f",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Payload ready for delivery.",
+    "speaker": "luna",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Unsettling calm synthetic warning",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-09-23T13:32:01.880Z"
+}

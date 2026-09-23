@@ -3,6 +3,7 @@ import { createBlitter, type BlitKind, type Blitter } from "./blit";
 import { ENEMY_ANIM_COUNT, ENEMY_TEX_BASE, readWorldFrame, TEX_N, T_ORDNANCE } from "./gpu-world";
 import { HUD_SIZE } from "./hud-abi";
 import { keySpriteAlpha } from "./sprite-alpha";
+import { readEnemyCues, type EnemyCue, type EnemyOptions, type EnemySubtitle } from "./enemy-presentation";
 import { DEFAULT_GFX, DEFAULT_HUD, type GfxOpts, type HudState, type ResMode } from "./types";
 
 export { HUD_SIZE };
@@ -41,6 +42,8 @@ type WasmExports = {
   hs_spread: () => number;
   hs_x: () => number;
   hs_y: () => number;
+  hs_prepare_enemies: () => number;
+  hs_enemy_cues: () => number;
 };
 
 const IN = {
@@ -193,8 +196,13 @@ async function preloadImages(urls: string[], limit = 4) {
 }
 
 export type RuntimeHooks = {
+  onSubtitles?: (subtitles: EnemySubtitle[]) => void;
   onHud: (hud: HudState, fps: number, resolution: string) => void;
   onState: (state: number) => void;
+  /** Fired once when the frame loop throws (e.g. a WASM trap from a
+   * version-skewed binary). Without this the game would freeze silently
+   * on a stale HUD with no game-over ever arriving. */
+  onError?: (message: string) => void;
 };
 
 export class HellscanRuntime {
@@ -226,6 +234,7 @@ export class HellscanRuntime {
   private fpsFrames = 0;
   private hud: HudState = { ...DEFAULT_HUD };
   private prevHud = { ...DEFAULT_HUD };
+  private lastEnemies: EnemyCue[] = [];
   private qaBits = 0;
   private qaOn = false;
   private sens = 1;
@@ -278,6 +287,7 @@ export class HellscanRuntime {
     await Promise.all([
       this.uploadTextures(),
       preloadImages([...UI_CRITICAL, ...UI_DEFERRED]),
+      this.audio.prepareEnemies(),
     ]);
     if (this.aborted) {
       this.running = false;
@@ -310,12 +320,17 @@ export class HellscanRuntime {
       this.audio.setMusic(true);
     } else {
       this.audio.setMusic(false);
+      this.audio.clearEnemies();
+      this.hooks.onSubtitles?.([]);
     }
   }
 
   setSens(v: number) {
     this.sens = v;
   }
+
+  setEnemyOptions(options: EnemyOptions) { this.audio.setEnemyOptions(options); if (!options.subtitles) this.hooks.onSubtitles?.([]); }
+  previewEnemy(skin: number) { this.audio.previewEnemy(skin); }
 
   setMuted(v: boolean) {
     this.muted = v;
@@ -354,6 +369,7 @@ export class HellscanRuntime {
     return this.renderer;
   }
   restart() {
+    this.audio.clearEnemies(true);
     this.clearInput();
     this.accumulator = 0;
     this.wasm?.hs_restart();
@@ -363,6 +379,7 @@ export class HellscanRuntime {
   }
 
   nextWave() {
+    this.audio.clearEnemies(true);
     this.wasm?.hs_next_wave();
     this.audio.setBoss(false);
   }
@@ -376,6 +393,7 @@ export class HellscanRuntime {
     this.blit?.dispose();
     this.audio.setMusic(false);
     this.audio.setBoss(false);
+    this.audio.dispose();
   }
 
   requestLock() {
@@ -419,15 +437,21 @@ export class HellscanRuntime {
     this.reloadPulse = 10;
   }
 
-  nextWeapon() {
+  /** Cycle owned weapons. dir = +1 (wheel down / touch) or -1 (wheel up). */
+  cycleWeapon(dir = 1) {
     const owned = [true, this.hud.hasW2, this.hud.hasW3, this.hud.hasW4, this.hud.hasW5];
-    for (let offset = 1; offset <= 5; offset++) {
-      const next = (this.hud.weapon + offset) % 5;
+    const step = dir >= 0 ? 1 : 4;
+    for (let n = 1; n <= 5; n++) {
+      const next = (this.hud.weapon + step * n) % 5;
       if (owned[next]) {
-        this.weaponPulse = [IN.W1, IN.W2, IN.W3, IN.W4, IN.W5][next];
+        this.weaponPulse = [IN.W1, IN.W2, IN.W3, IN.W4, IN.W5][next]!;
         return;
       }
     }
+  }
+
+  nextWeapon() {
+    this.cycleWeapon(1);
   }
 
   getHud() {
@@ -633,6 +657,32 @@ export class HellscanRuntime {
   private loop = (t: number) => {
     if (!this.running || !this.wasm || !this.blit) return;
     this.raf = requestAnimationFrame(this.loop);
+    try {
+      this.frame(t);
+    } catch (err) {
+      // Never freeze silently on a stale HUD: stop the loop and surface
+      // the fault so the player gets an error screen, not a dead game
+      // with no game-over.
+      this.running = false;
+      cancelAnimationFrame(this.raf);
+      this.hooks.onError?.(err instanceof Error ? err.message : String(err));
+    }
+  };
+
+  /** Restart the rAF loop after a fault (used when re-entering play). No-op while running. */
+  kick() {
+    if (this.running || !this.wasm || !this.blit || this.aborted) return;
+    this.running = true;
+    this.accumulator = 0;
+    this.last = performance.now();
+    this.raf = requestAnimationFrame(this.loop);
+  }
+
+  private frame(t: number) {
+    // Re-narrowed here because loop() delegates across a method boundary.
+    const wasm = this.wasm;
+    const blit = this.blit;
+    if (!wasm || !blit) return;
     if (typeof document !== "undefined" && document.hidden) return;
 
     const live = this.playing || this.qaOn;
@@ -656,39 +706,39 @@ export class HellscanRuntime {
     this.accumulator += dt;
     while (this.accumulator >= step) {
       const bits = this.qaOn ? this.qaBits : this.bitsFromKeys();
-      this.wasm.hs_input(bits, (this.lookX + this.touchLookX) * this.sens,
+      wasm.hs_input(bits, (this.lookX + this.touchLookX) * this.sens,
         (this.lookY + this.touchLookY) * this.sens);
       this.lookX = this.lookY = this.touchLookX = this.touchLookY = 0;
-      this.wasm.hs_tick(step);
+      wasm.hs_tick(step);
       // Lightweight event drain per substep: avoids decoding the full HUD
       // struct N times per frame. Full HUD is decoded once below.
-      this.sfxFromEvents(this.wasm.hs_events(), this.wasm.hs_ev_weapon());
+      this.sfxFromEvents(wasm.hs_events(), wasm.hs_ev_weapon());
       this.accumulator -= step;
     }
     const hud = this.readHud();
     const fx = { muzzle: hud.muzzle, hurt: hud.hurt, time: t * 0.001 };
-    const w = this.wasm.hs_fb_w();
-    const h = this.wasm.hs_fb_h();
+    const w = wasm.hs_fb_w();
+    const h = wasm.hs_fb_h();
     let presented = false;
-    if (this.gpuReady && this.blit.drawWorld) {
-      this.wasm.hs_prepare_gpu();
-      const mem = this.wasm.memory.buffer;
+    if (this.gpuReady && blit.drawWorld) {
+      wasm.hs_prepare_gpu();
+      const mem = wasm.memory.buffer;
       const frame = readWorldFrame(
         mem,
-        this.wasm.hs_gpu_view(),
-        this.wasm.hs_gpu_cols(),
-        this.wasm.hs_gpu_sprites(),
-        this.wasm.hs_gpu_sprite_count(),
-        this.wasm.hs_floor_ptr(),
-        this.wasm.hs_light_ptr(),
+        wasm.hs_gpu_view(),
+        wasm.hs_gpu_cols(),
+        wasm.hs_gpu_sprites(),
+        wasm.hs_gpu_sprite_count(),
+        wasm.hs_floor_ptr(),
+        wasm.hs_light_ptr(),
         w,
       );
-      presented = this.blit.drawWorld(frame, fx);
+      presented = blit.drawWorld(frame, fx);
     }
     if (!presented) {
-      this.wasm.hs_render();
-      const ptr = this.wasm.hs_fb_ptr();
-      const buf = this.wasm.memory.buffer;
+      wasm.hs_render();
+      const ptr = wasm.hs_fb_ptr();
+      const buf = wasm.memory.buffer;
       const len = w * h * 4;
       if (!this.fbView || this.fbBuf !== buf || this.fbLen !== len) {
         this.fbView = new Uint8Array(buf, ptr, len);
@@ -698,10 +748,17 @@ export class HellscanRuntime {
         this.fbView = new Uint8Array(buf, ptr, len);
         this.fbLen = len;
       }
-      this.blit.draw(this.fbView as Uint8Array, w, h, fx);
+      blit.draw(this.fbView as Uint8Array, w, h, fx);
     }
 
     this.hud = hud;
+    const count = wasm.hs_prepare_enemies();
+    // Cached for the QA probe (`getEnemies`) so browser tests can assert
+    // move/fire animation states without touching WASM memory.
+    const enemies = readEnemyCues(wasm.memory.buffer, wasm.hs_enemy_cues(), count);
+    this.lastEnemies = enemies;
+    const subtitles = this.audio.updateEnemies(enemies, hud);
+    this.hooks.onSubtitles?.(subtitles);
     this.hooks.onHud(hud, this.fps, `${w} × ${h}`);
     if (hud.state !== this.prevHud.state) this.hooks.onState(hud.state);
     this.prevHud = hud;
@@ -753,6 +810,8 @@ export class HellscanRuntime {
       return bits;
     };
     window.__controlsTest = {
+      getEnemyAudio: () => this.audio.enemyDiagnostics(),
+      getEnemies: () => this.lastEnemies.map((e) => ({ ...e })),
       getYaw: () => this.wasm?.hs_yaw() ?? 0,
       getSpeed: () => this.wasm?.hs_speed() ?? 0,
       getX: () => this.wasm?.hs_x() ?? 0,
@@ -806,6 +865,8 @@ async function loadWasm(): Promise<WasmExports> {
 declare global {
   interface Window {
     __controlsTest?: {
+      getEnemyAudio: () => ReturnType<GameAudio["enemyDiagnostics"]>;
+      getEnemies?: () => EnemyCue[];
       getYaw: () => number;
       getSpeed: () => number;
       getX?: () => number;

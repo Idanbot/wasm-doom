@@ -1,0 +1,14 @@
+{
+  "signature": "779a83c3a44baf96a6be1d2014ca68d71ab7450c99659a6fcf3bc4074a3040bf",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Target signature acquired.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Bright synthetic targeting computer",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-09-23T13:31:54.382Z"
+}

@@ -1,0 +1,14 @@
+{
+  "signature": "1da3c0634e6633114c75d9960f98fe5fcbf8df1033abdb44caef1fbdb566f4c5",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Evasion predicted.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Bright synthetic targeting computer",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-09-23T13:31:57.579Z"
+}

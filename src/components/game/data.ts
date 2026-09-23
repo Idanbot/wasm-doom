@@ -18,6 +18,9 @@ export function sheetPos(cell: number) {
   return `${(cell & 1) * 100}% ${((cell >> 1) & 1) * 100}%`;
 }
 
+/** Magazine capacities per engine slot. Must match MAG_SZ in engine/src/consts.rs. */
+export const MAG_SIZES = [12, 6, 32, 4, 6];
+
 export function loadVol(): Vol {
   try {
     const raw = localStorage.getItem("hellscan-vol");

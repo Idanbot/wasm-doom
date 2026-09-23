@@ -24,6 +24,7 @@ pub(crate) fn profile(skin: u8, kind: u8) -> Combat {
         SKIN_MARKSMAN => Combat { speed: 1.5, range: 8.0, windup: 0.9, cooldown: 2.0, damage: 24, ..rifle },
         SKIN_HORNET => Combat { speed: 2.7, range: 4.0, windup: 0.4, cooldown: 1.0, damage: 7, ..rifle },
         SKIN_HOUND => Combat { speed: 3.0, range: 0.95, windup: 0.3, cooldown: 0.8, damage: 10, melee: true, ..rifle },
+        SKIN_MARTYR => Combat { speed: 3.2, range: 1.1, windup: 0.5, cooldown: 1.0, damage: 0, melee: true, ..rifle },
         SKIN_SPITTER => Combat { speed: 1.7, range: 4.0, windup: 0.65, cooldown: 1.5, damage: 14, ..rifle },
         SKIN_VEYRAN => Combat { speed: 1.28, range: 5.0, windup: 1.0, cooldown: 1.4, damage: 18, pellets: 5, spread: 0.16, ..rifle },
         _ if kind == EK_BRUTE => Combat { speed: 2.15, range: 1.1, windup: 0.6, cooldown: 0.9, damage: 14, melee: true, ..rifle },

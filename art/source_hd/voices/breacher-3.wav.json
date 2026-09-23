@@ -1,0 +1,14 @@
+{
+  "signature": "5e393cb08c317652c58a43cae8657080dfdbfbd3c65a4993321d75b003a2d355",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Too close. Bad choice.",
+    "speaker": "hyperion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Australian, close-range enforcer",
+  "effect": "highpass=f=240,lowpass=f=4400",
+  "generatedAt": "2026-09-23T13:31:25.355Z"
+}

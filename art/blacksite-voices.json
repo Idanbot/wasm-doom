@@ -1,0 +1,172 @@
+{
+  "model": "@cf/deepgram/aura-2-en",
+  "source": "https://developers.cloudflare.com/workers-ai/models/aura-2-en/",
+  "enemies": [
+    {
+      "skin": 0,
+      "id": "rifleman",
+      "name": "Directorate Rifleman",
+      "speaker": "orion",
+      "style": "American, clipped tactical radio",
+      "effect": "radio",
+      "lines": [
+        ["alert", "Contact! Lock this sector."],
+        ["alert", "Intruder. Weapons free."],
+        ["attack", "Hold still!"],
+        ["attack", "You're out of cover."],
+        ["pain", "I'm hit. Still in the fight."],
+        ["taunt", "Command wants you erased."]
+      ]
+    },
+    {
+      "skin": 1,
+      "id": "breacher",
+      "name": "Breacher",
+      "speaker": "hyperion",
+      "style": "Australian, close-range enforcer",
+      "effect": "radio",
+      "lines": [
+        ["alert", "There you are, mate."],
+        ["alert", "Seal the exits!"],
+        ["attack", "Too close. Bad choice."],
+        ["attack", "Knock, knock!"],
+        ["pain", "That all you've got?"],
+        ["taunt", "I'm coming through."]
+      ]
+    },
+    {
+      "skin": 2,
+      "id": "subject",
+      "name": "Subject",
+      "style": "Nonverbal, strained biological growl",
+      "lines": []
+    },
+    {
+      "skin": 3,
+      "id": "hazmat",
+      "name": "Hazmat Security",
+      "speaker": "pandora",
+      "style": "British, cold containment officer behind respirator",
+      "effect": "respirator",
+      "lines": [
+        ["alert", "Containment breach confirmed."],
+        ["alert", "Unclean. Do not approach."],
+        ["attack", "Begin sterilisation."],
+        ["attack", "Remain inside the burn zone."],
+        ["pain", "Suit integrity failing."],
+        ["taunt", "No samples leave this facility."]
+      ]
+    },
+    {
+      "skin": 4,
+      "id": "gunner",
+      "name": "Heavy Gunner",
+      "speaker": "zeus",
+      "style": "American, deep heavy-weapons veteran",
+      "effect": "heavy",
+      "lines": [
+        ["alert", "I've got the whole corridor."],
+        ["alert", "Come on. Make it interesting."],
+        ["attack", "Suppressing!"],
+        ["attack", "Meet the heavy end."],
+        ["pain", "Armour took it."],
+        ["taunt", "I've got rounds to spare."]
+      ]
+    },
+    {
+      "skin": 5,
+      "id": "loader",
+      "name": "Loader",
+      "speaker": "neptune",
+      "style": "Industrial machine, low metallic service voice",
+      "effect": "robot-low",
+      "lines": [
+        ["alert", "Organic obstruction detected."],
+        ["alert", "Work area. Restricted."],
+        ["attack", "Applying crushing force."],
+        ["attack", "Clearance denied."],
+        ["pain", "Hydraulic pressure critical."],
+        ["taunt", "Safety interlocks disabled."]
+      ]
+    },
+    {
+      "skin": 6,
+      "id": "vatbrute",
+      "name": "Vat-grown Brute",
+      "style": "Nonverbal, low wet roar",
+      "lines": []
+    },
+    {
+      "skin": 7,
+      "id": "marksman",
+      "name": "Marksman",
+      "speaker": "draco",
+      "style": "British, measured quiet baritone",
+      "effect": "comms",
+      "lines": [
+        ["alert", "Visual confirmed."],
+        ["alert", "One target. One correction."],
+        ["attack", "Exhale."],
+        ["attack", "Sight picture. Perfect."],
+        ["pain", "Repositioning."],
+        ["taunt", "You cannot outrun a sightline."]
+      ]
+    },
+    {
+      "skin": 8,
+      "id": "hornet",
+      "name": "Hornet",
+      "speaker": "electra",
+      "style": "Bright synthetic targeting computer",
+      "effect": "robot-high",
+      "lines": [
+        ["alert", "Target signature acquired."],
+        ["alert", "Airspace violation."],
+        ["attack", "Firing solution locked."],
+        ["attack", "Evasion predicted."],
+        ["pain", "Stabiliser fault."],
+        ["taunt", "Your trajectory is inefficient."]
+      ]
+    },
+    { "skin": 9, "id": "hound", "name": "Hound", "style": "Nonverbal, servo snarl", "lines": [] },
+    {
+      "skin": 10,
+      "id": "spitter",
+      "name": "Spitter",
+      "style": "Nonverbal, acidic hiss",
+      "lines": []
+    },
+    {
+      "skin": 11,
+      "id": "martyr",
+      "name": "Martyr Drone",
+      "speaker": "luna",
+      "style": "Unsettling calm synthetic warning",
+      "effect": "robot-high",
+      "lines": [
+        ["alert", "Please remain nearby."],
+        ["alert", "Payload ready for delivery."],
+        ["attack", "Minimum safe distance. Zero."],
+        ["attack", "Thank you for your proximity."],
+        ["pain", "Casing compromised."],
+        ["taunt", "Your safety is not our priority."]
+      ]
+    },
+    {
+      "skin": 12,
+      "id": "veyran",
+      "name": "VEYRAN // MALIK",
+      "speaker": "saturn",
+      "style": "Augmented commander, dark layered baritone",
+      "effect": "overlord",
+      "lines": [
+        ["alert", "You have entered my nervous system."],
+        ["alert", "Nadir belongs to me."],
+        ["attack", "Kneel before the signal."],
+        ["attack", "I will rewrite your bones."],
+        ["pain", "Pain is obsolete."],
+        ["taunt", "There is no outside. Only me."]
+      ]
+    }
+  ]
+}

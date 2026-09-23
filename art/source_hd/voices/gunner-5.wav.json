@@ -1,0 +1,14 @@
+{
+  "signature": "9219f1d4b783336389988d8e5fe07b5b40879b9990dd44913abb2a0ec968a664",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Armour took it.",
+    "speaker": "zeus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "American, deep heavy-weapons veteran",
+  "effect": "asetrate=22080,aresample=24000,atempo=1.04,highpass=f=110,lowpass=f=5200",
+  "generatedAt": "2026-09-23T13:31:39.624Z"
+}

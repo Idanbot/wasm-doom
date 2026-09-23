@@ -1,0 +1,14 @@
+{
+  "signature": "562821370dd73256e290de308cdeec1e9f2d2c0387db40d9d77cb83bc9bb1e6b",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Suppressing!",
+    "speaker": "zeus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "American, deep heavy-weapons veteran",
+  "effect": "asetrate=22080,aresample=24000,atempo=1.04,highpass=f=110,lowpass=f=5200",
+  "generatedAt": "2026-09-23T13:31:37.858Z"
+}

@@ -1,0 +1,14 @@
+{
+  "signature": "9d9db330752b6e9a1141c55fadcf6bedd2ff66289000ef58f97604c8d65c5d7d",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Command wants you erased.",
+    "speaker": "orion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "American, clipped tactical radio",
+  "effect": "highpass=f=240,lowpass=f=4400",
+  "generatedAt": "2026-09-23T13:31:22.164Z"
+}

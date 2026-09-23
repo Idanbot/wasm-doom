@@ -1,0 +1,14 @@
+{
+  "signature": "bc989b89b856b79ecaf2765560feb8d81c7f5ed9b6608b9696bbfe6e739314ae",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Knock, knock!",
+    "speaker": "hyperion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Australian, close-range enforcer",
+  "effect": "highpass=f=240,lowpass=f=4400",
+  "generatedAt": "2026-09-23T13:31:26.197Z"
+}

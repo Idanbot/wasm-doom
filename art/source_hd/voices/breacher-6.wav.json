@@ -1,0 +1,14 @@
+{
+  "signature": "3bb5b1ac05155e1d2fb7938341d2a3d9d27692717cb0ac1a283bc54a8239c617",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "I'm coming through.",
+    "speaker": "hyperion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Australian, close-range enforcer",
+  "effect": "highpass=f=240,lowpass=f=4400",
+  "generatedAt": "2026-09-23T13:31:27.971Z"
+}

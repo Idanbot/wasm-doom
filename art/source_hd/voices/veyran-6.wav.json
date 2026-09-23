@@ -1,0 +1,14 @@
+{
+  "signature": "3bb5f7a757b2e1ca7fd93c18ba4fe51f6b0695403697840a2bd0dd7c0b4ca1ff",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "There is no outside. Only me.",
+    "speaker": "saturn",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Augmented commander, dark layered baritone",
+  "effect": "asetrate=21120,aresample=24000,atempo=1.05,aecho=0.8:0.6:44:0.18,highpass=f=100,lowpass=f=5200",
+  "generatedAt": "2026-09-23T13:32:13.578Z"
+}

@@ -1,0 +1,14 @@
+{
+  "signature": "74475656ba5d6be1e3fef52cdc36aeaebca8fcb18244b7733b586386735ee569",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Please remain nearby.",
+    "speaker": "luna",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Unsettling calm synthetic warning",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-09-23T13:32:00.798Z"
+}

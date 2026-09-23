@@ -20,6 +20,8 @@ import { Menu } from "./game/Menu";
 import { Pause } from "./game/Pause";
 import { TouchLayer } from "./game/TouchLayer";
 import { WeaponView } from "./game/WeaponView";
+import { EnemySubtitles } from "./game/EnemySubtitles";
+import { loadEnemyOptions, type EnemySubtitle } from "@/game/enemy-presentation";
 
 export function GameApp() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -28,12 +30,25 @@ export function GameApp() {
   const movePtr = useRef<number | null>(null);
   const weaponRef = useRef<HTMLDivElement>(null);
   const lastHudAt = useRef(0);
+  const lastHudKey = useRef("");
+  const lastSubtitleAt = useRef(0);
+  const lastWeapon = useRef(-1);
+  const swapAt = useRef(-1e9);
+  const [enemyOptions, setEnemyOptions] = useState(loadEnemyOptions);
+  const [subtitles, setSubtitles] = useState<EnemySubtitle[]>([]);
   const [screen, setScreen] = useState<Screen>("menu");
   const [hud, setHud] = useState<HudState>(DEFAULT_HUD);
   const [fps, setFps] = useState(0);
   const [renderResolution, setRenderResolution] = useState("");
   const [res, setRes] = useState<ResMode>(loadRes);
-  const [sens, setSens] = useState(1.4);
+  const [sens, setSens] = useState(() => {
+    try {
+      const n = Number(localStorage.getItem("blacksite-sensitivity"));
+      return n >= 0.5 && n <= 3.5 ? n : 1.4;
+    } catch {
+      return 1.4;
+    }
+  });
   const [muted, setMuted] = useState(false);
   const [vol, setVol] = useState(loadVol);
   const [requireGpu, setRequireGpu] = useState(gpuEnabled);
@@ -55,14 +70,30 @@ export function GameApp() {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const rt = new HellscanRuntime(canvas, {
+      onSubtitles: (lines) => {
+        const now = performance.now();
+        if (!lines.length || now - lastSubtitleAt.current > 50) {
+          lastSubtitleAt.current = now;
+          setSubtitles((previous) => (!lines.length && !previous.length ? previous : lines));
+        }
+      },
       onHud: (h, f, resolution) => {
         const weapEl = weaponRef.current;
         if (weapEl) {
-          const reloadDip = h.reloading > 0.01 ? 32 + Math.sin(h.reloading * Math.PI) * 18 : 0;
+          if (h.weapon !== lastWeapon.current) {
+            lastWeapon.current = h.weapon;
+            swapAt.current = performance.now();
+          }
+          // Swap raise/lower dip so weapon changes read as an animation,
+          // not an instant cut. 200ms, eased with a sine hump.
+          const swapAge = (performance.now() - swapAt.current) / 200;
+          const swapDip = swapAge < 1 ? Math.sin(swapAge * Math.PI) * 30 : 0;
+          const reloading = h.reloading > 0.001;
+          const reloadDip = reloading ? 32 + Math.sin(Math.min(1, h.reloading) * Math.PI) * 18 : 0;
           const weight = [0.65, 1.25, 0.5, 1.1, 1.4][h.weapon] ?? 1;
           const motion = reducedMotion.matches ? 0.2 : 1;
-          const bobY = (h.bob * 7 + h.kick * 18 * weight + reloadDip) * motion;
-          const bobX = (h.kick * -6 * weight + (h.reloading > 0.01 ? 20 : 0)) * motion;
+          const bobY = (h.bob * 7 + h.kick * 18 * weight + reloadDip + swapDip) * motion;
+          const bobX = (h.kick * -6 * weight + (reloading ? 20 : 0)) * motion;
           const roll = h.kick * -1.8 * weight * motion;
           weapEl.style.transform = `translate(-50%, ${bobY}px) translateX(${bobX}px) rotate(${roll}deg)`;
           weapEl.style.filter = h.muzzle > 0.05 ? `brightness(${1 + h.muzzle * 0.22})` : "";
@@ -71,7 +102,7 @@ export function GameApp() {
           weapEl.style.setProperty("--flash-y", "46%");
           weapEl.style.setProperty(
             "--muzzle",
-            h.muzzle > 0.04 && h.reloading < 0.01 ? String(Math.min(1, h.muzzle)) : "0",
+            h.muzzle > 0.04 && !reloading ? String(Math.min(1, h.muzzle)) : "0",
           );
 
           const wpn = WEAPONS[h.weapon] ?? WEAPONS[0]!;
@@ -92,8 +123,17 @@ export function GameApp() {
           weapEl.style.backgroundRepeat = "no-repeat";
         }
         const now = performance.now();
-        if (now - lastHudAt.current > 100) {
+        // Discrete combat state (ammo, health, weapon, kills, prompts)
+        // syncs immediately so the HUD never lags the gun; the running
+        // timer/fps still throttle to 10Hz to avoid re-rendering 60/s.
+        const key = [
+          h.health, h.armor, h.ammo, h.reserve, h.weapon, h.kills, h.living,
+          h.state, h.prompt, h.secrets, h.hasW2, h.hasW3, h.hasW4, h.hasW5,
+          h.reloading > 0.001, h.reloading === 0,
+        ].join("|");
+        if (now - lastHudAt.current > 100 || key !== lastHudKey.current) {
           lastHudAt.current = now;
+          lastHudKey.current = key;
           setHud({ ...h });
           setFps(f);
           setRenderResolution(resolution);
@@ -109,8 +149,14 @@ export function GameApp() {
           setScreen("win");
         }
       },
+      onError: (msg) => {
+        rt.setPlaying(false);
+        setErr(`Engine fault: ${msg}. Reload the page and deploy again.`);
+        setScreen("menu");
+      },
     });
     rtRef.current = rt;
+    rt.setEnemyOptions(loadEnemyOptions());
     rt.setGfx(loadGfx());
     let dead = false;
     setErr(null);
@@ -172,6 +218,7 @@ export function GameApp() {
   const start = useCallback(() => {
     const rt = rtRef.current;
     if (!rt) return;
+    rt.kick();
     rt.setPlaying(true);
     rt.setSens(sens);
     rt.setMuted(muted);
@@ -208,6 +255,11 @@ export function GameApp() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (
+        document.querySelector('[role="dialog"]') ||
+        /INPUT|SELECT|TEXTAREA/.test((e.target as HTMLElement)?.tagName)
+      )
+        return;
       if (e.code === "Escape" || e.code === "KeyP") {
         if (screen === "play") {
           e.preventDefault();
@@ -216,11 +268,17 @@ export function GameApp() {
           resume();
         }
       }
-      if (e.code === "Enter" && screen === "menu") start();
+      if (
+        e.code === "Enter" &&
+        screen === "menu" &&
+        ready &&
+        (e.target === document.body || e.target === document.documentElement)
+      )
+        start();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [screen, pause, start, resume]);
+  }, [screen, pause, start, resume, ready]);
 
   useEffect(() => {
     if (screen !== "play" && document.pointerLockElement) {
@@ -259,7 +317,17 @@ export function GameApp() {
 
   useEffect(() => {
     rtRef.current?.setSens(sens);
+    try {
+      localStorage.setItem("blacksite-sensitivity", String(sens));
+    } catch {}
   }, [sens]);
+
+  useEffect(() => {
+    rtRef.current?.setEnemyOptions(enemyOptions);
+    try {
+      localStorage.setItem("blacksite-enemy-options", JSON.stringify(enemyOptions));
+    } catch {}
+  }, [enemyOptions]);
 
   useEffect(() => {
     rtRef.current?.setMuted(muted);
@@ -284,13 +352,28 @@ export function GameApp() {
         onClick={() => {
           if (screen === "play") rtRef.current?.requestLock();
         }}
+        onWheel={(e) => {
+          if (screen === "play") rtRef.current?.cycleWeapon(e.deltaY >= 0 ? 1 : -1);
+        }}
       />
 
       {screen === "play" && (
         <>
-          <WeaponView hud={hud} weaponRef={weaponRef} />
-          <Crosshair flash={hud.hitmarker} spread={(hud.weapon === 2 ? hud.spread : hud.weapon === 1 ? 0.10 : 0) + hud.kick * 0.04} />
-          <HudBar hud={hud} fps={fps} resolution={renderResolution} renderer={renderer} />
+          <WeaponView weaponRef={weaponRef} />
+          <Crosshair
+            flash={hud.hitmarker}
+            spread={(hud.weapon === 2 ? hud.spread : hud.weapon === 1 ? 0.1 : 0) + hud.kick * 0.04}
+          />
+          <HudBar
+            hud={hud}
+            fps={fps}
+            resolution={renderResolution}
+            renderer={renderer}
+            showStats={enemyOptions.showStats}
+          />
+          {enemyOptions.subtitles && (
+            <EnemySubtitles lines={subtitles} size={enemyOptions.subtitleSize} />
+          )}
           {hud.prompt === 1 && (
             <p className="pointer-events-none absolute bottom-28 left-1/2 -translate-x-1/2 font-display text-sm tracking-[0.2em] text-steel">
               USE E
@@ -328,26 +411,25 @@ export function GameApp() {
               movePtr={movePtr}
             />
           )}
-          <button
-            type="button"
-            className="absolute right-4 top-28 z-10 h-11 rounded-md border border-border bg-bg/70 px-3 font-display text-xs tracking-[0.18em] text-muted"
-            onClick={pause}
-          >
+          <button type="button" className="hud-pause" onClick={pause}>
             Pause
           </button>
         </>
       )}
 
       {overlay && (
-        <div className="absolute inset-0 z-20 flex items-center justify-center bg-bg/75">
+        <div className={`operation-overlay ${screen === "menu" ? "operation-home" : ""}`}>
           <div
-            className="absolute inset-0 bg-cover bg-center opacity-55"
-            style={{ backgroundImage: "url(/game/menu.jpg)" }}
+            className="operation-backdrop"
+            style={{ backgroundImage: "url(/game/ui/menu-reactor.webp)" }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/75 to-bg/45" />
-          <section className="doom-panel relative z-10 mx-4 w-full max-w-md p-5">
+          <div className="operation-shade" />
+          <section className={`operation-content ${screen !== "menu" ? "operation-card" : ""}`}>
             {screen === "menu" && (
               <Menu
+                enemyOptions={enemyOptions}
+                setEnemyOptions={setEnemyOptions}
+                onPreviewVoice={(skin) => rtRef.current?.previewEnemy(skin)}
                 ready={ready}
                 err={err}
                 board={board}
@@ -369,6 +451,9 @@ export function GameApp() {
 
             {screen === "pause" && (
               <Pause
+                enemyOptions={enemyOptions}
+                setEnemyOptions={setEnemyOptions}
+                onPreviewVoice={(skin) => rtRef.current?.previewEnemy(skin)}
                 res={res}
                 setRes={setRes}
                 sens={sens}

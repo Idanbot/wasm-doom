@@ -1,0 +1,14 @@
+{
+  "signature": "0d53a61291b7b1a1084a0680f49c36e27c3ba2685f51682cf33cc248b8ede023",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "I've got rounds to spare.",
+    "speaker": "zeus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "American, deep heavy-weapons veteran",
+  "effect": "asetrate=22080,aresample=24000,atempo=1.04,highpass=f=110,lowpass=f=5200",
+  "generatedAt": "2026-09-23T13:31:40.639Z"
+}

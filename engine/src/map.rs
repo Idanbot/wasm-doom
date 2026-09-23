@@ -42,10 +42,16 @@ pub(crate) const AMBUSH_DEFS: &[AmbushDef] = &[
         zone: (29.0, 14.5, 33.5, 16.5),
         group: &[(EK_BRUTE, 31.5, 17.5), (EK_HUSK, 30.5, 17.5)],
     },
-    // Pit rise: wraiths lift off the far flesh while the Pyre sits center.
+    // Pit rise: wraiths lift off the far flesh while the Pyre sits center,
+    // with Martyr drones floating up behind them.
     AmbushDef {
         zone: (20.5, 23.0, 24.5, 25.5),
-        group: &[(EK_WRAITH, 23.5, 27.5), (EK_WRAITH, 20.5, 27.5)],
+        group: &[
+            (EK_WRAITH, 23.5, 27.5),
+            (EK_WRAITH, 20.5, 27.5),
+            (EK_MARTYR, 21.5, 27.5),
+            (EK_MARTYR, 22.5, 26.5),
+        ],
     },
 ];
 

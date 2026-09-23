@@ -1,0 +1,14 @@
+{
+  "signature": "4ff38cf4bbdec4a38143dd75a73f093ee43f26fe0efd011e5db72fbcad029ab3",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Nadir belongs to me.",
+    "speaker": "saturn",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Augmented commander, dark layered baritone",
+  "effect": "asetrate=21120,aresample=24000,atempo=1.05,aecho=0.8:0.6:44:0.18,highpass=f=100,lowpass=f=5200",
+  "generatedAt": "2026-09-23T13:32:09.123Z"
+}

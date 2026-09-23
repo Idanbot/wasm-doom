@@ -1,0 +1,14 @@
+{
+  "signature": "302d9dc7c15c91c1aecec71661fcb4a2b7d8e105a16f2a3cd75cd4b2659ae67d",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Your safety is not our priority.",
+    "speaker": "luna",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Unsettling calm synthetic warning",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-09-23T13:32:06.871Z"
+}

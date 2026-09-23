@@ -1,0 +1,14 @@
+{
+  "signature": "1e345502e77fd1dae94cc58a49b32f7fc3073c48c72de2ffd92a7e4c70403a87",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Work area. Restricted.",
+    "speaker": "neptune",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Industrial machine, low metallic service voice",
+  "effect": "asetrate=20400,aresample=24000,atempo=1.12,aeval=val(0)*(0.72+0.28*sin(2*PI*48*t)),highpass=f=120,lowpass=f=3600",
+  "generatedAt": "2026-09-23T13:31:42.887Z"
+}

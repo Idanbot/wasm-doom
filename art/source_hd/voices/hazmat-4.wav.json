@@ -1,0 +1,14 @@
+{
+  "signature": "20d9f815c72d8fb0d2a138ff560802f38b5f3a456b4b8ea667e3576693bc543d",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Remain inside the burn zone.",
+    "speaker": "pandora",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "British, cold containment officer behind respirator",
+  "effect": "highpass=f=380,lowpass=f=2600,aecho=0.8:0.6:18:0.16",
+  "generatedAt": "2026-09-23T13:31:32.435Z"
+}

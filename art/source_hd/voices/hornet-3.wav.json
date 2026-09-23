@@ -1,0 +1,14 @@
+{
+  "signature": "e9d8ec20371ba82bcb6fd80a41e46c818f1d7996ca79fbe52ed21330acc53b82",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Firing solution locked.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Bright synthetic targeting computer",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-09-23T13:31:56.597Z"
+}

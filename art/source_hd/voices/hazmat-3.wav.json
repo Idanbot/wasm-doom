@@ -1,0 +1,14 @@
+{
+  "signature": "9c81dda23b18b58a8acdf3d0eb883de1972862747f586092060a0d7dcd89f223",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Begin sterilisation.",
+    "speaker": "pandora",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "British, cold containment officer behind respirator",
+  "effect": "highpass=f=380,lowpass=f=2600,aecho=0.8:0.6:18:0.16",
+  "generatedAt": "2026-09-23T13:31:31.316Z"
+}

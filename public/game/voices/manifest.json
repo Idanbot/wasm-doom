@@ -1,0 +1,496 @@
+{
+  "model": "@cf/deepgram/aura-2-en",
+  "enemies": [
+    {
+      "skin": 0,
+      "id": "rifleman",
+      "name": "Directorate Rifleman",
+      "style": "American, clipped tactical radio",
+      "speaker": "orion",
+      "lines": [
+        {
+          "id": "rifleman-1",
+          "cue": "alert",
+          "text": "Contact! Lock this sector.",
+          "url": "/game/voices/rifleman-1.mp3",
+          "duration": 2.424
+        },
+        {
+          "id": "rifleman-2",
+          "cue": "alert",
+          "text": "Intruder. Weapons free.",
+          "url": "/game/voices/rifleman-2.mp3",
+          "duration": 2.184
+        },
+        {
+          "id": "rifleman-3",
+          "cue": "attack",
+          "text": "Hold still!",
+          "url": "/game/voices/rifleman-3.mp3",
+          "duration": 1.344
+        },
+        {
+          "id": "rifleman-4",
+          "cue": "attack",
+          "text": "You're out of cover.",
+          "url": "/game/voices/rifleman-4.mp3",
+          "duration": 1.056
+        },
+        {
+          "id": "rifleman-5",
+          "cue": "pain",
+          "text": "I'm hit. Still in the fight.",
+          "url": "/game/voices/rifleman-5.mp3",
+          "duration": 2.256
+        },
+        {
+          "id": "rifleman-6",
+          "cue": "taunt",
+          "text": "Command wants you erased.",
+          "url": "/game/voices/rifleman-6.mp3",
+          "duration": 1.776
+        }
+      ]
+    },
+    {
+      "skin": 1,
+      "id": "breacher",
+      "name": "Breacher",
+      "style": "Australian, close-range enforcer",
+      "speaker": "hyperion",
+      "lines": [
+        {
+          "id": "breacher-1",
+          "cue": "alert",
+          "text": "There you are, mate.",
+          "url": "/game/voices/breacher-1.mp3",
+          "duration": 1.248
+        },
+        {
+          "id": "breacher-2",
+          "cue": "alert",
+          "text": "Seal the exits!",
+          "url": "/game/voices/breacher-2.mp3",
+          "duration": 1.416
+        },
+        {
+          "id": "breacher-3",
+          "cue": "attack",
+          "text": "Too close. Bad choice.",
+          "url": "/game/voices/breacher-3.mp3",
+          "duration": 2.376
+        },
+        {
+          "id": "breacher-4",
+          "cue": "attack",
+          "text": "Knock, knock!",
+          "url": "/game/voices/breacher-4.mp3",
+          "duration": 0.984
+        },
+        {
+          "id": "breacher-5",
+          "cue": "pain",
+          "text": "That all you've got?",
+          "url": "/game/voices/breacher-5.mp3",
+          "duration": 1.248
+        },
+        {
+          "id": "breacher-6",
+          "cue": "taunt",
+          "text": "I'm coming through.",
+          "url": "/game/voices/breacher-6.mp3",
+          "duration": 1.176
+        }
+      ]
+    },
+    {
+      "skin": 2,
+      "id": "subject",
+      "name": "Subject",
+      "style": "Nonverbal, strained biological growl",
+      "speaker": null,
+      "lines": []
+    },
+    {
+      "skin": 3,
+      "id": "hazmat",
+      "name": "Hazmat Security",
+      "style": "British, cold containment officer behind respirator",
+      "speaker": "pandora",
+      "lines": [
+        {
+          "id": "hazmat-1",
+          "cue": "alert",
+          "text": "Containment breach confirmed.",
+          "url": "/game/voices/hazmat-1.mp3",
+          "duration": 1.632
+        },
+        {
+          "id": "hazmat-2",
+          "cue": "alert",
+          "text": "Unclean. Do not approach.",
+          "url": "/game/voices/hazmat-2.mp3",
+          "duration": 1.968
+        },
+        {
+          "id": "hazmat-3",
+          "cue": "attack",
+          "text": "Begin sterilisation.",
+          "url": "/game/voices/hazmat-3.mp3",
+          "duration": 1.752
+        },
+        {
+          "id": "hazmat-4",
+          "cue": "attack",
+          "text": "Remain inside the burn zone.",
+          "url": "/game/voices/hazmat-4.mp3",
+          "duration": 1.848
+        },
+        {
+          "id": "hazmat-5",
+          "cue": "pain",
+          "text": "Suit integrity failing.",
+          "url": "/game/voices/hazmat-5.mp3",
+          "duration": 1.848
+        },
+        {
+          "id": "hazmat-6",
+          "cue": "taunt",
+          "text": "No samples leave this facility.",
+          "url": "/game/voices/hazmat-6.mp3",
+          "duration": 2.232
+        }
+      ]
+    },
+    {
+      "skin": 4,
+      "id": "gunner",
+      "name": "Heavy Gunner",
+      "style": "American, deep heavy-weapons veteran",
+      "speaker": "zeus",
+      "lines": [
+        {
+          "id": "gunner-1",
+          "cue": "alert",
+          "text": "I've got the whole corridor.",
+          "url": "/game/voices/gunner-1.mp3",
+          "duration": 1.92
+        },
+        {
+          "id": "gunner-2",
+          "cue": "alert",
+          "text": "Come on. Make it interesting.",
+          "url": "/game/voices/gunner-2.mp3",
+          "duration": 1.776
+        },
+        {
+          "id": "gunner-3",
+          "cue": "attack",
+          "text": "Suppressing!",
+          "url": "/game/voices/gunner-3.mp3",
+          "duration": 1.104
+        },
+        {
+          "id": "gunner-4",
+          "cue": "attack",
+          "text": "Meet the heavy end.",
+          "url": "/game/voices/gunner-4.mp3",
+          "duration": 1.392
+        },
+        {
+          "id": "gunner-5",
+          "cue": "pain",
+          "text": "Armour took it.",
+          "url": "/game/voices/gunner-5.mp3",
+          "duration": 1.248
+        },
+        {
+          "id": "gunner-6",
+          "cue": "taunt",
+          "text": "I've got rounds to spare.",
+          "url": "/game/voices/gunner-6.mp3",
+          "duration": 1.8
+        }
+      ]
+    },
+    {
+      "skin": 5,
+      "id": "loader",
+      "name": "Loader",
+      "style": "Industrial machine, low metallic service voice",
+      "speaker": "neptune",
+      "lines": [
+        {
+          "id": "loader-1",
+          "cue": "alert",
+          "text": "Organic obstruction detected.",
+          "url": "/game/voices/loader-1.mp3",
+          "duration": 1.992
+        },
+        {
+          "id": "loader-2",
+          "cue": "alert",
+          "text": "Work area. Restricted.",
+          "url": "/game/voices/loader-2.mp3",
+          "duration": 1.608
+        },
+        {
+          "id": "loader-3",
+          "cue": "attack",
+          "text": "Applying crushing force.",
+          "url": "/game/voices/loader-3.mp3",
+          "duration": 1.752
+        },
+        {
+          "id": "loader-4",
+          "cue": "attack",
+          "text": "Clearance denied.",
+          "url": "/game/voices/loader-4.mp3",
+          "duration": 1.296
+        },
+        {
+          "id": "loader-5",
+          "cue": "pain",
+          "text": "Hydraulic pressure critical.",
+          "url": "/game/voices/loader-5.mp3",
+          "duration": 1.704
+        },
+        {
+          "id": "loader-6",
+          "cue": "taunt",
+          "text": "Safety interlocks disabled.",
+          "url": "/game/voices/loader-6.mp3",
+          "duration": 1.872
+        }
+      ]
+    },
+    {
+      "skin": 6,
+      "id": "vatbrute",
+      "name": "Vat-grown Brute",
+      "style": "Nonverbal, low wet roar",
+      "speaker": null,
+      "lines": []
+    },
+    {
+      "skin": 7,
+      "id": "marksman",
+      "name": "Marksman",
+      "style": "British, measured quiet baritone",
+      "speaker": "draco",
+      "lines": [
+        {
+          "id": "marksman-1",
+          "cue": "alert",
+          "text": "Visual confirmed.",
+          "url": "/game/voices/marksman-1.mp3",
+          "duration": 1.464
+        },
+        {
+          "id": "marksman-2",
+          "cue": "alert",
+          "text": "One target. One correction.",
+          "url": "/game/voices/marksman-2.mp3",
+          "duration": 1.968
+        },
+        {
+          "id": "marksman-3",
+          "cue": "attack",
+          "text": "Exhale.",
+          "url": "/game/voices/marksman-3.mp3",
+          "duration": 0.888
+        },
+        {
+          "id": "marksman-4",
+          "cue": "attack",
+          "text": "Sight picture. Perfect.",
+          "url": "/game/voices/marksman-4.mp3",
+          "duration": 2.184
+        },
+        {
+          "id": "marksman-5",
+          "cue": "pain",
+          "text": "Repositioning.",
+          "url": "/game/voices/marksman-5.mp3",
+          "duration": 1.056
+        },
+        {
+          "id": "marksman-6",
+          "cue": "taunt",
+          "text": "You cannot outrun a sightline.",
+          "url": "/game/voices/marksman-6.mp3",
+          "duration": 2.376
+        }
+      ]
+    },
+    {
+      "skin": 8,
+      "id": "hornet",
+      "name": "Hornet",
+      "style": "Bright synthetic targeting computer",
+      "speaker": "electra",
+      "lines": [
+        {
+          "id": "hornet-1",
+          "cue": "alert",
+          "text": "Target signature acquired.",
+          "url": "/game/voices/hornet-1.mp3",
+          "duration": 2.616
+        },
+        {
+          "id": "hornet-2",
+          "cue": "alert",
+          "text": "Airspace violation.",
+          "url": "/game/voices/hornet-2.mp3",
+          "duration": 1.704
+        },
+        {
+          "id": "hornet-3",
+          "cue": "attack",
+          "text": "Firing solution locked.",
+          "url": "/game/voices/hornet-3.mp3",
+          "duration": 1.824
+        },
+        {
+          "id": "hornet-4",
+          "cue": "attack",
+          "text": "Evasion predicted.",
+          "url": "/game/voices/hornet-4.mp3",
+          "duration": 1.584
+        },
+        {
+          "id": "hornet-5",
+          "cue": "pain",
+          "text": "Stabiliser fault.",
+          "url": "/game/voices/hornet-5.mp3",
+          "duration": 1.488
+        },
+        {
+          "id": "hornet-6",
+          "cue": "taunt",
+          "text": "Your trajectory is inefficient.",
+          "url": "/game/voices/hornet-6.mp3",
+          "duration": 2.304
+        }
+      ]
+    },
+    {
+      "skin": 9,
+      "id": "hound",
+      "name": "Hound",
+      "style": "Nonverbal, servo snarl",
+      "speaker": null,
+      "lines": []
+    },
+    {
+      "skin": 10,
+      "id": "spitter",
+      "name": "Spitter",
+      "style": "Nonverbal, acidic hiss",
+      "speaker": null,
+      "lines": []
+    },
+    {
+      "skin": 11,
+      "id": "martyr",
+      "name": "Martyr Drone",
+      "style": "Unsettling calm synthetic warning",
+      "speaker": "luna",
+      "lines": [
+        {
+          "id": "martyr-1",
+          "cue": "alert",
+          "text": "Please remain nearby.",
+          "url": "/game/voices/martyr-1.mp3",
+          "duration": 1.536
+        },
+        {
+          "id": "martyr-2",
+          "cue": "alert",
+          "text": "Payload ready for delivery.",
+          "url": "/game/voices/martyr-2.mp3",
+          "duration": 1.776
+        },
+        {
+          "id": "martyr-3",
+          "cue": "attack",
+          "text": "Minimum safe distance. Zero.",
+          "url": "/game/voices/martyr-3.mp3",
+          "duration": 2.904
+        },
+        {
+          "id": "martyr-4",
+          "cue": "attack",
+          "text": "Thank you for your proximity.",
+          "url": "/game/voices/martyr-4.mp3",
+          "duration": 1.848
+        },
+        {
+          "id": "martyr-5",
+          "cue": "pain",
+          "text": "Casing compromised.",
+          "url": "/game/voices/martyr-5.mp3",
+          "duration": 1.656
+        },
+        {
+          "id": "martyr-6",
+          "cue": "taunt",
+          "text": "Your safety is not our priority.",
+          "url": "/game/voices/martyr-6.mp3",
+          "duration": 2.304
+        }
+      ]
+    },
+    {
+      "skin": 12,
+      "id": "veyran",
+      "name": "VEYRAN // MALIK",
+      "style": "Augmented commander, dark layered baritone",
+      "speaker": "saturn",
+      "lines": [
+        {
+          "id": "veyran-1",
+          "cue": "alert",
+          "text": "You have entered my nervous system.",
+          "url": "/game/voices/veyran-1.mp3",
+          "duration": 2.256
+        },
+        {
+          "id": "veyran-2",
+          "cue": "alert",
+          "text": "Nadir belongs to me.",
+          "url": "/game/voices/veyran-2.mp3",
+          "duration": 1.848
+        },
+        {
+          "id": "veyran-3",
+          "cue": "attack",
+          "text": "Kneel before the signal.",
+          "url": "/game/voices/veyran-3.mp3",
+          "duration": 1.632
+        },
+        {
+          "id": "veyran-4",
+          "cue": "attack",
+          "text": "I will rewrite your bones.",
+          "url": "/game/voices/veyran-4.mp3",
+          "duration": 2.112
+        },
+        {
+          "id": "veyran-5",
+          "cue": "pain",
+          "text": "Pain is obsolete.",
+          "url": "/game/voices/veyran-5.mp3",
+          "duration": 1.632
+        },
+        {
+          "id": "veyran-6",
+          "cue": "taunt",
+          "text": "There is no outside. Only me.",
+          "url": "/game/voices/veyran-6.mp3",
+          "duration": 2.832
+        }
+      ]
+    }
+  ]
+}

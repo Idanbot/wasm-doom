@@ -1,4 +1,5 @@
 mod combat;
+mod voices;
 mod consts;
 mod enemies;
 mod events;
@@ -1004,7 +1005,9 @@ impl Engine {
 
     fn next_wave(&mut self) {
         self.wave = (self.wave + 1).min(12);
-        let shift = (self.wave - 1).clamp(0, 8);
+        // Capped at 4x (56 hostiles + ambushes): the uncapped 1<<8 shift
+        // filled all 192 entity slots with hostiles and starved FX.
+        let shift = (self.wave - 1).clamp(0, 2);
         let mult = 1i32 << shift;
         self.health = 100;
         self.iframes = 1.4;
@@ -1057,7 +1060,8 @@ impl Engine {
         self.hell = true;
         self.shake = 1.0;
         self.events |= EV_EXPLODE | EV_BOSS_DROP;
-        let hp = (480.0 * 1.5f32.powi((self.wave - 1).max(0))).round() as i32;
+        // Capped so late waves stay killable: 480 / 720 / 1080 / 1620, then 2200.
+        let hp = (480.0 * 1.5f32.powi((self.wave - 1).max(0))).min(2200.0).round() as i32;
         let fx = self.pa.cos();
         let fy = self.pa.sin();
         let spots = [
@@ -1494,7 +1498,7 @@ impl Engine {
                 self.queue_fx(EK_GIB, x, y, a.cos() * sp, a.sin() * sp, life, 0.0);
             }
         }
-        if kind == EK_BARREL {
+        if kind == EK_BARREL || kind == EK_MARTYR {
             self.light_dirty = true;
             self.explode(x, y, 2.6, 55.0);
         }
@@ -2043,7 +2047,7 @@ impl Engine {
                 e.frame += dt;
             }
             match e.kind {
-                EK_HUSK | EK_BRUTE | EK_WRAITH | EK_BOSS => {
+                EK_HUSK | EK_BRUTE | EK_WRAITH | EK_BOSS | EK_MARTYR => {
                     if pstate != 0 {
                         continue;
                     }
@@ -2126,6 +2130,17 @@ impl Engine {
                     }
                     let moved = ((e.x - ex0).powi(2) + (e.y - ey0).powi(2)).sqrt();
                     e.frame += dt * 1.4 + moved * 6.5;
+                    // Locomotion bob so chasers read as moving, not sliding:
+                    // floaters hover, ground units step. Assigned, never
+                    // accumulated, from the skin's base height.
+                    let base_z = skin_def(e.skin).map(|s| s.zoff).unwrap_or(0.0);
+                    if e.skin == SKIN_HORNET || e.kind == EK_MARTYR {
+                        e.zoff = base_z + (self.time * 5.0 + i as f32 * 1.7).sin() * 7.0;
+                    } else if moved > 0.001 {
+                        e.zoff = base_z + (e.frame * 9.0).sin() * 2.0;
+                    } else {
+                        e.zoff = base_z;
+                    }
                     if e.anim_lock <= 0.0 {
                         if moved > 0.001 {
                             set_anim(e, ANIM_MOVE, 0.0);
@@ -2284,7 +2299,17 @@ impl Engine {
                 self.enemy_shoot(i);
             }
         }
-        for (_i, dmg) in melee {
+        for (i, dmg) in melee {
+            // Martyrs detonate instead of dealing contact damage. The blast
+            // can hurt the player and other hostiles; the drone is consumed.
+            if self.ents.get(i).is_some_and(|e| e.kind == EK_MARTYR && e.hp > 0) {
+                let (x, y) = (self.ents[i].x, self.ents[i].y);
+                self.ents[i].hp = 0;
+                self.ents[i].kind = EK_NONE;
+                self.light_dirty = true;
+                self.explode(x, y, 2.4, 55.0);
+                continue;
+            }
             self.damage_player(dmg);
         }
 
@@ -3276,6 +3301,7 @@ struct GpuSprite {
 }
 
 struct GpuScratch {
+    enemy_cues: [voices::EnemyCue; ENT_N],
     cols: Vec<GpuCol>,
     sprites: Vec<GpuSprite>,
     sprite_n: usize,
@@ -3287,6 +3313,7 @@ fn gpu_scratch() -> &'static mut GpuScratch {
     unsafe {
         if G.is_none() {
             G = Some(GpuScratch {
+                enemy_cues: [voices::EnemyCue::default(); ENT_N],
                 cols: vec![GpuCol {
                     perp: 0.0, tex_x: 0.0, light_r: 0.0, light_g: 0.0,
                     light_b: 0.0, draw0: 0.0, draw1: -1.0, line_h: 1.0,
@@ -3308,6 +3335,16 @@ fn gpu_scratch() -> &'static mut GpuScratch {
         }
         G.as_mut().unwrap_unchecked()
     }
+}
+
+#[no_mangle]
+pub extern "C" fn hs_prepare_enemies() -> i32 {
+    voices::snapshot(eng(), &mut gpu_scratch().enemy_cues) as i32
+}
+
+#[no_mangle]
+pub extern "C" fn hs_enemy_cues() -> *const voices::EnemyCue {
+    gpu_scratch().enemy_cues.as_ptr()
 }
 
 #[no_mangle]
@@ -3551,6 +3588,25 @@ mod tests {
     }
 
     #[test]
+    fn enemy_cues_project_above_sprites_and_respect_cover() {
+        let mut e = arena();
+        e.pa = 0.0;
+        e.spawn_with_skin(EK_HUSK, SKIN_RIFLEMAN, 8.5, 4.5);
+        let mut cues = [voices::EnemyCue::default(); ENT_N];
+        assert_eq!(voices::snapshot(&e, &mut cues), 1);
+        assert_eq!(std::mem::size_of::<voices::EnemyCue>(), 40);
+        assert!((cues[0].screen_x - 0.5).abs() < 0.001);
+        assert!(cues[0].screen_y < 0.5);
+        assert_eq!(cues[0].sight, 1.0);
+        e.set_cell(6, 4, 1);
+        voices::snapshot(&e, &mut cues);
+        assert_eq!(cues[0].sight, 0.0);
+        e.pa = std::f32::consts::PI;
+        voices::snapshot(&e, &mut cues);
+        assert!(cues[0].screen_x < 0.0);
+    }
+
+    #[test]
     fn ranged_windup_commits_aim_and_damage() {
         let mut e = arena();
         let i = e.spawn_with_skin(EK_HUSK, SKIN_MARKSMAN, 9.5, 4.5).unwrap();
@@ -3595,6 +3651,55 @@ mod tests {
         for _ in 0..20 { e.tick(1.0 / 60.0); }
         assert_eq!(e.health, 100);
         assert!(!e.ents.iter().any(|p| p.kind == EK_PROJ));
+    }
+
+    #[test]
+    fn martyr_chases_with_move_anim_then_detonates() {
+        let mut e = arena();
+        let i = e.spawn(EK_MARTYR, 6.5, 4.5).unwrap();
+        assert_eq!(e.ents[i].skin, SKIN_MARTYR);
+        for _ in 0..10 { e.tick(1.0 / 60.0); }
+        assert_eq!(e.ents[i].anim, ANIM_MOVE, "chaser must play its move sheet");
+        assert!(e.ents[i].x < 6.5, "martyr must float toward the player");
+        e.ents[i].timer = 0.0;
+        for _ in 0..120 {
+            e.tick(1.0 / 60.0);
+            // Break on the detonation tick itself: the blast FX reuses the
+            // drone's freed slot, so slot state alone cannot mark the moment.
+            if e.health < 100 { break; }
+        }
+        assert!(e.health < 100, "point-blank detonation must hurt");
+        assert!(e.ents.iter().any(|p| p.kind == EK_IMPACT), "detonation leaves a blast mark");
+        assert_ne!(e.ents[i].kind, EK_MARTYR, "detonation consumes the drone");
+    }
+
+    #[test]
+    fn martyr_gunfire_death_explodes_like_a_barrel() {
+        let mut e = arena();
+        let i = e.spawn(EK_MARTYR, 6.5, 4.5).unwrap();
+        e.hurt_ent(i, 500, e.px, e.py);
+        e.tick(1.0 / 60.0);
+        assert!(e.ents.iter().any(|p| p.kind == EK_IMPACT));
+    }
+
+    #[test]
+    fn barrels_render_as_props_not_martyr_sheets() {
+        let mut e = arena();
+        let i = e.spawn(EK_BARREL, 6.5, 4.5).unwrap();
+        assert_eq!(e.ents[i].skin, SKIN_NONE);
+        let (tex, _, sheet4, _) = sprite_style(&e.ents[i]);
+        assert_eq!((tex, sheet4), (T_BARREL, false));
+    }
+
+    #[test]
+    fn next_wave_stays_within_entity_budget() {
+        let mut e = Engine::new(160, 100);
+        for _ in 0..11 { e.next_wave(); }
+        assert_eq!(e.wave, 12);
+        assert!(map::living_hostiles(&e) <= 60, "wave spawn must leave FX slots free");
+        e.maybe_spawn_boss();
+        let boss = e.ents.iter().find(|x| x.kind == EK_BOSS).expect("boss spawns");
+        assert!(boss.hp <= 2200, "late-wave boss must stay killable");
     }
 
     #[test]
@@ -3986,6 +4091,19 @@ mod tests {
         for _ in 0..45 { e.tick(1.0 / 60.0); }
         assert_eq!(e.ents[a].kind, EK_NONE);
         assert_eq!(e.ents[b].kind, EK_NONE);
+    }
+
+    #[test]
+    fn boss_kill_ends_the_level_and_next_wave_restarts_the_hunt() {
+        let mut e = arena();
+        let boss = e.spawn(EK_BOSS, 6.5, 4.5).unwrap();
+        e.ents[boss].hp = 1;
+        e.hurt_ent(boss, 5, e.px, e.py);
+        assert_eq!(e.state, 2, "killing the boss ends the level");
+        e.next_wave();
+        assert_eq!((e.state, e.wave), (0, 2));
+        assert!(!e.boss_spawned && !e.hell);
+        assert!(map::living_hostiles(&e) > 0, "the next level spawns its cast");
     }
 
     #[test]

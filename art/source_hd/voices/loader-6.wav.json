@@ -1,0 +1,14 @@
+{
+  "signature": "ab046a2fe3a112ce68ab577fdef2602a71dbd9cf8b28228f600e6935fed292a6",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Safety interlocks disabled.",
+    "speaker": "neptune",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Industrial machine, low metallic service voice",
+  "effect": "asetrate=20400,aresample=24000,atempo=1.12,aeval=val(0)*(0.72+0.28*sin(2*PI*48*t)),highpass=f=120,lowpass=f=3600",
+  "generatedAt": "2026-09-23T13:31:46.817Z"
+}

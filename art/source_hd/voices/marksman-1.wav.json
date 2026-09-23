@@ -1,0 +1,14 @@
+{
+  "signature": "110f91b1824cf98babd7eb2253bd77cc768c2b9bd8157293a6992e07858f6583",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Visual confirmed.",
+    "speaker": "draco",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "British, measured quiet baritone",
+  "effect": "highpass=f=190,lowpass=f=4800",
+  "generatedAt": "2026-09-23T13:31:47.816Z"
+}

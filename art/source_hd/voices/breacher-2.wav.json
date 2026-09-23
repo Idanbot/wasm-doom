@@ -1,0 +1,14 @@
+{
+  "signature": "14dbe2834efadf313ffa3946f797a331137935e6024a33835609924c11149731",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Seal the exits!",
+    "speaker": "hyperion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Australian, close-range enforcer",
+  "effect": "highpass=f=240,lowpass=f=4400",
+  "generatedAt": "2026-09-23T13:31:24.017Z"
+}

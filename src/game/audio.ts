@@ -1,4 +1,14 @@
+import { EnemyAudio } from "./enemy-audio";
+import { DEFAULT_ENEMY_OPTIONS, type EnemyCue, type EnemyOptions, type EnemySubtitle } from "./enemy-presentation";
+
 export type GameAudio = {
+  previewEnemy: (skin: number) => void;
+  enemyDiagnostics: () => ReturnType<EnemyAudio["diagnostics"]> | null;
+  prepareEnemies: () => Promise<void>;
+  setEnemyOptions: (options: EnemyOptions) => void;
+  updateEnemies: (enemies: EnemyCue[], player: { x: number; y: number; yaw: number }) => EnemySubtitle[];
+  clearEnemies: (reset?: boolean) => void;
+  dispose: () => void;
   unlock: () => void;
   setMuted: (m: boolean) => void;
   setVolumes: (master: number, music: number, sfx: number) => void;
@@ -24,6 +34,8 @@ const BEAT = 60 / BPM;
 
 export function createAudio(): GameAudio {
   let ctx: AudioContext | null = null;
+  let enemies: EnemyAudio | null = null;
+  let enemyOptions = { ...DEFAULT_ENEMY_OPTIONS };
   let master: GainNode | null = null;
   let sfx: GainNode | null = null;
   let music: GainNode | null = null;
@@ -82,6 +94,8 @@ export function createAudio(): GameAudio {
     sfx.connect(master);
     music.connect(master);
     master.connect(ctx.destination);
+    enemies = new EnemyAudio(ctx, master, sfx);
+    enemies.configure(enemyOptions);
     applyGains();
     const data = new Float32Array(ctx.sampleRate * 1.2);
     for (let i = 0; i < data.length; i++) {
@@ -101,9 +115,9 @@ export function createAudio(): GameAudio {
   function applyGains() {
     if (!ctx || !master || !sfx || !music) return;
     const t = ctx.currentTime;
-    master.gain.setTargetAtTime(muted ? 0 : Math.max(0.0001, masterV), t, 0.04);
-    sfx.gain.setTargetAtTime(muted ? 0 : Math.max(0.0001, sfxV * 1.25), t, 0.04);
-    const mv = muted || !musicOn ? 0 : Math.max(0.0001, musicV * 0.55);
+    master.gain.setTargetAtTime(muted ? 0 : masterV, t, 0.04);
+    sfx.gain.setTargetAtTime(muted ? 0 : sfxV * 1.25, t, 0.04);
+    const mv = muted || !musicOn ? 0 : musicV * 0.55;
     music.gain.setTargetAtTime(mv, t, 0.08);
     if (bed) bed.volume = muted || !musicOn ? 0 : 0.85;
     if (bossBed) bossBed.volume = muted || !musicOn ? 0 : bossVol;
@@ -532,6 +546,13 @@ export function createAudio(): GameAudio {
   }
 
   return {
+    previewEnemy(skin) { resume(); enemies?.preview(skin); },
+    enemyDiagnostics: () => enemies?.diagnostics() ?? null,
+    async prepareEnemies() { ensure(); await enemies?.load(); },
+    setEnemyOptions(options) { enemyOptions = { ...options }; enemies?.configure(options); },
+    updateEnemies(cues, player) { enemies?.update(cues, player); return enemies?.captions() ?? []; },
+    clearEnemies(reset = false) { enemies?.silence(reset); },
+    dispose() { musicOn = false; stopGate(); enemies?.close(); if (ctx) void ctx.close(); },
     unlock() {
       resume();
     },

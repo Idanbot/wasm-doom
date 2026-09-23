@@ -1,97 +1,113 @@
+import { HeartPulse, Shield, Crosshair, Radio } from "lucide-react";
 import type { HudState } from "@/game/types";
 import { cn } from "@/lib/utils";
-import { WEAPONS, fmtTime } from "./data";
+import { WEAPONS, MAG_SIZES, fmtTime } from "./data";
 
 export function HudBar({
   hud,
   fps,
   resolution,
   renderer,
+  showStats = false,
 }: {
   hud: HudState;
   fps: number;
   resolution: string;
   renderer: string;
+  showStats?: boolean;
 }) {
+  const weapon = WEAPONS[hud.weapon] ?? WEAPONS[0]!;
   return (
-    <div className="pointer-events-none absolute inset-0 z-20 p-4 sm:p-5">
-      <div className="flex items-start justify-between">
-        <div className="rounded-md border border-border bg-bg/70 px-3 py-2">
-          <p className="font-display text-[10px] tracking-[0.22em] text-muted">HEALTH</p>
-          <p className={cn("hud-num text-2xl", hud.health < 30 ? "text-danger" : "text-fg")}>
-            {hud.health}
-          </p>
-          <p className="font-display text-[10px] tracking-[0.22em] text-muted">ARMOR {hud.armor}</p>
-          <div className="vital-track" aria-hidden="true">
+    <div className="field-hud">
+      <div className="hud-mission">
+        <Radio size={15} />
+        <div>
+          <span>NADIR–7 / WAVE {hud.wave || 1}</span>
+          <strong>{hud.prompt === 6 ? "ACTIVATE THE SEAL" : "ELIMINATE THE SIGNAL"}</strong>
+        </div>
+      </div>
+      <div className="hud-threat">
+        <Crosshair size={15} />
+        <b>{hud.living}</b>
+        <span>HOSTILES</span>
+        <i /> <span>{fmtTime(hud.elapsedMs)}</span>
+        <i /> <span className="hud-fps">{Math.round(fps)} FPS</span>
+      </div>
+      {showStats && (
+        <div className="hud-performance">
+          {Math.round(fps)} FPS · {renderer.toUpperCase()} · {resolution}
+        </div>
+      )}
+      <div className="hud-bottom">
+        <section
+          className={cn("hud-plate hud-vitals", hud.health < 30 && "hud-critical")}
+          aria-label="Vitals"
+        >
+          <div className="hud-health">
+            <HeartPulse size={18} />
+            <div>
+              <span className="hud-label">HEALTH</span>
+              <strong>
+                {hud.health}
+                <small> / 100</small>
+              </strong>
+            </div>
+          </div>
+          <div className="vital-track">
             <span
               className={cn("vital-fill", hud.health < 30 && "vital-critical")}
               style={{ width: `${Math.max(0, Math.min(100, hud.health))}%` }}
             />
           </div>
-        </div>
-        <div className="rounded-md border border-border bg-bg/70 px-3 py-2 text-right">
-          <p className="font-display text-[10px] tracking-[0.22em] text-steel">
-            {renderer === "webgpu" ? "WEBGPU" : renderer === "webgl2" ? "WEBGL2" : "2D"}
-          </p>
-          <p className="hud-num text-2xl text-fg">{Math.round(fps)}</p>
-          <p className="font-mono text-[10px] text-muted">FPS · {resolution}</p>
-        </div>
-      </div>
-      <div className="absolute inset-x-4 bottom-4 flex items-end justify-between sm:inset-x-5 sm:bottom-5">
-        <div className="rounded-md border border-border bg-bg/70 px-3 py-2">
-          <p className="font-display text-[10px] tracking-[0.22em] text-muted">
-            {hud.reloading > 0.01 ? "RELOADING" : "AMMO"}
-          </p>
-          <p className={cn("hud-num text-2xl", hud.ammo <= 0 ? "text-danger" : "text-fg")}>
-            {hud.ammo}
-            <span className="ml-1 font-mono text-sm text-muted">/{hud.reserve}</span>
-          </p>
-          {hud.reloading > 0.01 ? (
-            <span className="mt-1 block h-1 overflow-hidden rounded-sm bg-elevated">
-              <span
-                className="block h-full bg-steel"
-                style={{ width: `${Math.round(hud.reloading * 100)}%` }}
-              />
+          <div className="hud-armour">
+            <Shield size={13} />
+            <span>ARMOR</span>
+            <b>{hud.armor}</b>
+            <span className="armour-track">
+              <i style={{ width: `${Math.min(100, hud.armor)}%` }} />
             </span>
-          ) : (
-            <p className="font-mono text-[10px] text-muted">
-              {WEAPONS[hud.weapon]?.name ?? "MK23-S"}
-            </p>
-          )}
-          <p className="weapon-role">{WEAPONS[hud.weapon]?.role}</p>
-          {hud.weapon === 2 && (
-            <div className="vital-track" aria-label="Weapon spread">
+          </div>
+        </section>
+        <div className="hud-loadout">
+          <span>ARSENAL</span>
+          <div>
+            {WEAPONS.map((w, i) => (
               <span
-                className="vital-fill vital-critical"
-                style={{ width: `${(hud.spread / 0.24) * 100}%` }}
-              />
-            </div>
-          )}
+                key={i}
+                className={cn(
+                  "weapon-slot",
+                  hud.weapon === i && "selected",
+                  i > 0 && ![true, hud.hasW2, hud.hasW3, hud.hasW4, hud.hasW5][i] && "locked",
+                )}
+              >
+                <b>{i + 1}</b>
+                <small>{w.name}</small>
+              </span>
+            ))}
+          </div>
+          <p>
+            {hud.kills} ELIMINATED · {hud.secrets} SECRETS
+          </p>
         </div>
-        <div className="hidden gap-1 sm:flex">
-          {[0, 1, 2, 3, 4].map((i) => (
+        <section className="hud-plate hud-ammo" aria-label="Weapon ammunition">
+          <div className="hud-ammo-heading">
+            <span>{weapon.name}</span>
+            <span>{hud.reloading > 0.001 ? "RELOADING" : "AMMO"}</span>
+          </div>
+          <strong className={hud.ammo === 0 ? "text-danger" : ""}>
+            {String(hud.ammo).padStart(2, "0")}
+            <small> / {hud.reserve}</small>
+          </strong>
+          <div className="vital-track">
             <span
-              key={i}
-              className={cn(
-                "rounded-sm border px-2 py-1 font-mono text-[11px]",
-                hud.weapon === i ? "border-steel text-fg" : "border-border text-muted",
-                i === 1 && !hud.hasW2 && "opacity-30",
-                i === 2 && !hud.hasW3 && "opacity-30",
-                i === 3 && !hud.hasW4 && "opacity-30",
-                i === 4 && !hud.hasW5 && "opacity-30",
-              )}
-            >
-              {i + 1}
-            </span>
-          ))}
-        </div>
-        <div className="rounded-md border border-border bg-bg/70 px-3 py-2 text-right">
-          <p className="font-display text-[10px] tracking-[0.22em] text-muted">HOSTILES</p>
-          <p className="hud-num text-2xl">{hud.living}</p>
-          <p className="font-mono text-[10px] text-muted">
-            {hud.kills} down · {fmtTime(hud.elapsedMs)} · W{hud.wave || 1}
-          </p>
-        </div>
+              className="vital-fill"
+              style={{
+                width: `${hud.reloading > 0.001 ? hud.reloading * 100 : (hud.ammo / (MAG_SIZES[hud.weapon] ?? 12)) * 100}%`,
+              }}
+            />
+          </div>
+          <p>{hud.reloading > 0.001 ? "CHANGING MAGAZINE" : weapon.role}</p>
+        </section>
       </div>
     </div>
   );

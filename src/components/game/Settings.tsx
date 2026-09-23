@@ -1,21 +1,11 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import type { GfxOpts, ResMode } from "@/game/types";
-import { RES_MODES } from "@/game/types";
+import * as Dialog from "@radix-ui/react-dialog";
+import { SlidersHorizontal, X, Volume2, Monitor, Mouse, Captions, RotateCcw } from "lucide-react";
+import { DEFAULT_GFX, RES_MODES, type GfxOpts, type ResMode } from "@/game/types";
+import { DEFAULT_ENEMY_OPTIONS, type EnemyOptions } from "@/game/enemy-presentation";
 import type { Vol } from "./data";
 
-export function Settings({
-  res,
-  setRes,
-  sens,
-  setSens,
-  vol,
-  setVol,
-  requireGpu,
-  setRequireGpu,
-  gfx,
-  setGfx,
-}: {
+export type SettingsProps = {
   res: ResMode;
   setRes: (r: ResMode) => void;
   sens: number;
@@ -26,110 +16,298 @@ export function Settings({
   setRequireGpu: (v: boolean) => void;
   gfx: GfxOpts;
   setGfx: (g: GfxOpts) => void;
+  enemyOptions: EnemyOptions;
+  setEnemyOptions: (v: EnemyOptions) => void;
+  onPreviewVoice: (skin: number) => void;
+};
+function Slider({
+  label,
+  description,
+  value,
+  min = 0,
+  max = 1,
+  step = 0.01,
+  display,
+  onChange,
+}: {
+  label: string;
+  description?: string;
+  value: number;
+  min?: number;
+  max?: number;
+  step?: number;
+  display?: string;
+  onChange: (v: number) => void;
 }) {
-  const [open, setOpen] = useState(false);
   return (
-    <div className="mt-4">
-      <Button
-        type="button"
-        variant="ghost"
-        size="lg"
-        className="w-full"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-      >
-        {open ? "Hide options" : "Options"}
-      </Button>
-      {open && (
-        <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2">
-          <label className="col-span-2 block text-[10px] tracking-[0.18em] text-muted uppercase">
-            Resolution
-            <select
-              className="mt-1 h-10 w-full rounded-sm border border-border bg-elevated px-2 font-mono text-sm text-fg"
-              value={res.id}
-              onChange={(e) => {
-                const next = RES_MODES.find((r) => r.id === e.target.value);
-                if (next) setRes(next);
-              }}
-            >
-              {RES_MODES.map((r) => (
-                <option key={r.id} value={r.id}>
-                  {r.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="col-span-2 block text-[10px] tracking-[0.18em] text-muted uppercase">
-            Look {sens.toFixed(2)}
-            <input
-              type="range"
-              min={0.5}
-              max={3.5}
-              step={0.05}
-              value={sens}
-              onChange={(e) => setSens(Number(e.target.value))}
-              className="mt-1 w-full accent-danger"
-            />
-          </label>
-          {(
-            [
-              ["master", "Master"],
-              ["music", "Music"],
-              ["sfx", "FX"],
-            ] as const
-          ).map(([key, label]) => (
-            <label key={key} className="block text-[10px] tracking-[0.18em] text-muted uppercase">
-              {label} {Math.round(vol[key] * 100)}
-              <input
-                type="range"
-                min={0}
-                max={1}
-                step={0.01}
-                value={vol[key]}
-                onChange={(e) => setVol({ ...vol, [key]: Number(e.target.value) })}
-                className="mt-1 w-full accent-danger"
-              />
-            </label>
-          ))}
-          {(
-            [
-              ["crt", "CRT"],
-              ["bloom", "Bloom"],
-              ["fog", "Fog"],
-            ] as const
-          ).map(([key, label]) => (
-            <label
-              key={key}
-              className="flex h-10 cursor-pointer items-center gap-2 text-[10px] tracking-[0.18em] text-muted uppercase"
-            >
-              <input
-                type="checkbox"
-                checked={gfx[key]}
-                onChange={(e) => setGfx({ ...gfx, [key]: e.target.checked })}
-                className="size-4 accent-danger"
-              />
-              {label}
-            </label>
-          ))}
-          <label className="flex h-10 cursor-pointer items-center gap-2 text-[10px] tracking-[0.18em] text-muted uppercase">
-            <input
-              type="checkbox"
-              checked={requireGpu}
-              onChange={(e) => {
-                const on = e.target.checked;
-                setRequireGpu(on);
-                try {
-                  localStorage.setItem("hellscan-gpu", on ? "1" : "0");
-                } catch {
-                  /* ignore */
-                }
-              }}
-              className="size-4 accent-danger"
-            />
-            WebGPU
-          </label>
-        </div>
-      )}
-    </div>
+    <label className="setting-row setting-slider">
+      <span>
+        <strong>{label}</strong>
+        {description && <small>{description}</small>}
+      </span>
+      <output>{display ?? `${Math.round(value * 100)}%`}</output>
+      <input
+        aria-label={label}
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
+      />
+    </label>
+  );
+}
+function Toggle({
+  label,
+  description,
+  checked,
+  onChange,
+}: {
+  label: string;
+  description: string;
+  checked: boolean;
+  onChange: (v: boolean) => void;
+}) {
+  return (
+    <label className="setting-row">
+      <span>
+        <strong>{label}</strong>
+        <small>{description}</small>
+      </span>
+      <input
+        className="setting-toggle"
+        type="checkbox"
+        aria-label={label}
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+      />
+    </label>
+  );
+}
+const tabs = [
+  { id: "audio", name: "Audio", icon: Volume2 },
+  { id: "display", name: "Display", icon: Monitor },
+  { id: "controls", name: "Controls", icon: Mouse },
+  { id: "access", name: "Accessibility", icon: Captions },
+] as const;
+
+export function Settings(p: SettingsProps) {
+  const [tab, setTab] = useState<string>("audio");
+  const reset = () => {
+    p.setVol({ master: 0.85, music: 0.42, sfx: 0.75 });
+    p.setSens(1.4);
+    p.setGfx({ ...DEFAULT_GFX });
+    p.setRes(RES_MODES[1]!);
+    p.setRequireGpu(false);
+    p.setEnemyOptions({ ...DEFAULT_ENEMY_OPTIONS });
+  };
+  return (
+    <Dialog.Root>
+      <Dialog.Trigger className="menu-secondary">
+        <SlidersHorizontal size={17} />
+        Settings<span>Configure your loadout</span>
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <Dialog.Overlay className="settings-scrim" />
+        <Dialog.Content className="settings-dialog" aria-describedby="settings-description">
+          <header className="settings-heading">
+            <div>
+              <p className="eyebrow">FIELD CONFIGURATION</p>
+              <Dialog.Title>Settings</Dialog.Title>
+              <Dialog.Description id="settings-description">
+                Changes apply immediately and save on this device.
+              </Dialog.Description>
+            </div>
+            <Dialog.Close className="icon-button" aria-label="Close settings">
+              <X size={20} />
+            </Dialog.Close>
+          </header>
+          <nav className="settings-tabs" aria-label="Settings categories">
+            {tabs.map((t) => (
+              <button
+                type="button"
+                key={t.id}
+                aria-pressed={tab === t.id}
+                onClick={() => setTab(t.id)}
+              >
+                <t.icon size={17} />
+                {t.name}
+              </button>
+            ))}
+          </nav>
+          <div className="settings-body">
+            {tab === "audio" && (
+              <>
+                <p className="section-note">
+                  Headphones recommended. Enemy voices follow their position in the world.
+                </p>
+                {(
+                  [
+                    ["master", "Master volume"],
+                    ["music", "Music"],
+                    ["sfx", "Effects"],
+                  ] as const
+                ).map(([key, label]) => (
+                  <Slider
+                    key={key}
+                    label={label}
+                    value={p.vol[key]}
+                    onChange={(v) => p.setVol({ ...p.vol, [key]: v })}
+                  />
+                ))}
+                <Slider
+                  label="Enemy voices"
+                  description="Independent dialogue volume. Subtitles remain available at zero."
+                  value={p.enemyOptions.voices}
+                  onChange={(voices) => p.setEnemyOptions({ ...p.enemyOptions, voices })}
+                />
+                <Toggle
+                  label="Spatial enemy audio"
+                  description="Directional voices and enemy sounds, with distance and wall muffling."
+                  checked={p.enemyOptions.spatial}
+                  onChange={(spatial) => p.setEnemyOptions({ ...p.enemyOptions, spatial })}
+                />
+                <div className="voice-preview">
+                  <span>Voice check</span>
+                  {[
+                    [0, "Soldier"],
+                    [5, "Machine"],
+                    [12, "Commander"],
+                  ].map(([skin, label]) => (
+                    <button type="button" key={skin} onClick={() => p.onPreviewVoice(Number(skin))}>
+                      <Volume2 size={14} />
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+            {tab === "display" && (
+              <>
+                <label className="setting-row">
+                  <span>
+                    <strong>Render resolution</strong>
+                    <small>
+                      Lower values improve performance; higher values sharpen the world.
+                    </small>
+                  </span>
+                  <select
+                    aria-label="Render resolution"
+                    value={p.res.id}
+                    onChange={(e) => p.setRes(RES_MODES.find((r) => r.id === e.target.value)!)}
+                  >
+                    {RES_MODES.map((r) => (
+                      <option key={r.id} value={r.id}>
+                        {r.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {(
+                  [
+                    ["crt", "CRT texture", "Scanlines and retro screen treatment."],
+                    ["bloom", "Light bloom", "Glow around bright lights and weapon effects."],
+                    ["fog", "Distance fog", "Atmosphere and depth across the facility."],
+                  ] as const
+                ).map(([key, label, description]) => (
+                  <Toggle
+                    key={key}
+                    label={label}
+                    description={description}
+                    checked={p.gfx[key]}
+                    onChange={(v) => p.setGfx({ ...p.gfx, [key]: v })}
+                  />
+                ))}
+                <Toggle
+                  label="Enforce WebGPU"
+                  description="Use WebGPU when supported. Automatic fallback is the default."
+                  checked={p.requireGpu}
+                  onChange={p.setRequireGpu}
+                />
+                <Toggle
+                  label="Performance overlay"
+                  description="Show frame rate, renderer and resolution during play."
+                  checked={p.enemyOptions.showStats}
+                  onChange={(showStats) => p.setEnemyOptions({ ...p.enemyOptions, showStats })}
+                />
+              </>
+            )}
+            {tab === "controls" && (
+              <>
+                <Slider
+                  label="Look sensitivity"
+                  value={p.sens}
+                  min={0.5}
+                  max={3.5}
+                  step={0.05}
+                  display={`${p.sens.toFixed(2)}×`}
+                  onChange={p.setSens}
+                />
+                <dl className="control-reference">
+                  {[
+                    ["Move", "W A S D"],
+                    ["Look / fire", "Mouse / left click"],
+                    ["Reload", "R"],
+                    ["Interact", "E"],
+                    ["Sprint", "Shift"],
+                    ["Switch weapon", "1 – 5 / wheel"],
+                    ["Pause", "Esc / P"],
+                  ].map(([action, key]) => (
+                    <div key={action}>
+                      <dt>{action}</dt>
+                      <dd>{key}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <p className="section-note">
+                  Touch: drag the left side to move, the right side to look. Use the on-screen
+                  action buttons.
+                </p>
+              </>
+            )}
+            {tab === "access" && (
+              <>
+                <Toggle
+                  label="Enemy subtitles"
+                  description="Show spoken lines above the visible enemy. Hidden enemies never reveal their position."
+                  checked={p.enemyOptions.subtitles}
+                  onChange={(subtitles) => p.setEnemyOptions({ ...p.enemyOptions, subtitles })}
+                />
+                <Slider
+                  label="Subtitle size"
+                  value={p.enemyOptions.subtitleSize}
+                  min={0.85}
+                  max={1.4}
+                  step={0.05}
+                  display={`${Math.round(p.enemyOptions.subtitleSize * 100)}%`}
+                  onChange={(subtitleSize) =>
+                    p.setEnemyOptions({ ...p.enemyOptions, subtitleSize })
+                  }
+                />
+                <div
+                  className="subtitle-preview"
+                  style={{ fontSize: `${p.enemyOptions.subtitleSize}rem` }}
+                >
+                  <span className="caption-speaker">DIRECTORATE RIFLEMAN</span>Contact! Lock this
+                  sector.
+                </div>
+                <p className="section-note">
+                  Weapon motion follows your system’s reduced-motion preference. Turn off CRT
+                  texture and light bloom in Display for a calmer image.
+                </p>
+              </>
+            )}
+          </div>
+          <footer className="settings-footer">
+            <button type="button" onClick={reset}>
+              <RotateCcw size={14} />
+              Restore defaults
+            </button>
+            <Dialog.Close className="action-primary">Done</Dialog.Close>
+          </footer>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }

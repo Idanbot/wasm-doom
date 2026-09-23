@@ -1,0 +1,14 @@
+{
+  "signature": "df3e2a81d7a99304f7a54ee8753ee1fc5013d458b858da4c78fa5ca2044bec30",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Kneel before the signal.",
+    "speaker": "saturn",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Augmented commander, dark layered baritone",
+  "effect": "asetrate=21120,aresample=24000,atempo=1.05,aecho=0.8:0.6:44:0.18,highpass=f=100,lowpass=f=5200",
+  "generatedAt": "2026-09-23T13:32:10.086Z"
+}

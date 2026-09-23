@@ -15,7 +15,7 @@ import { readFileSync, existsSync } from "node:fs";
 import { join, dirname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const KNOWN_KINDS = new Set(["EK_HUSK", "EK_BRUTE", "EK_WRAITH", "EK_BOSS", "EK_BARREL"]);
+const KNOWN_KINDS = new Set(["EK_HUSK", "EK_BRUTE", "EK_WRAITH", "EK_BOSS", "EK_BARREL", "EK_MARTYR"]);
 const ATLAS_SLOTS = 121; // World + 13 × 7 enemy animation layers + ordnance
 const STATUSES = new Set(["planned", "ready"]);
 

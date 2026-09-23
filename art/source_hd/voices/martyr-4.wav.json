@@ -1,0 +1,14 @@
+{
+  "signature": "5b7e8f96ea11ce37209da80c3fd447e38d7e53ffc4d4c3288c8deb3bea9e820d",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Thank you for your proximity.",
+    "speaker": "luna",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Unsettling calm synthetic warning",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-09-23T13:32:04.497Z"
+}
