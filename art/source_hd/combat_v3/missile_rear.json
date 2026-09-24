@@ -1,0 +1,14 @@
+{
+  "model": "@cf/black-forest-labs/flux-1-schnell",
+  "steps": 8,
+  "prompt": "Isolated compact guided missile already in flight, viewed from directly behind as it travels away from the player toward the upper-center vanishing point. Circular rear engine nozzle faces the viewer, four readable stabilizer fins around a foreshortened dark gunmetal missile body, small hot amber-white exhaust core with a tight short blue-orange plume trailing downward toward the viewer. Military science-fiction projectile, realistic hard-surface game VFX, centered, compact silhouette, no launcher and no fireball. Solid perfectly flat neon magenta #FF00FF background across the entire image including all holes and gaps. No room, floor, scenery, text, logo, frame, border, cropped subject, or extra objects.",
+  "usage": {
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "neurons": 326.4000244140625
+  }
+}

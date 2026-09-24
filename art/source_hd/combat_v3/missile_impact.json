@@ -1,0 +1,14 @@
+{
+  "model": "@cf/black-forest-labs/flux-1-schnell",
+  "steps": 8,
+  "prompt": "Isolated guided missile impact explosion at the instant of detonation. Dense compact orange-white blast core, angular metal fragments, pressure ring, dark grey smoke and restrained cyan electrical sparks. Radial groundless game VFX with a clear edge and no lingering flames. Realistic military science-fiction game effect, centered, no environment, no weapon and no text. Solid perfectly flat neon magenta #FF00FF background across the entire image including all holes and gaps. No room, floor, scenery, text, logo, frame, border, cropped subject, or extra objects.",
+  "usage": {
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "neurons": 326.4000244140625
+  }
+}

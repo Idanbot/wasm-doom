@@ -186,5 +186,10 @@
       "sheet": "2x2"
     }
   },
-  "alpha": "true RGBA transparency preserved from the generated master"
+  "alpha": "true RGBA transparency preserved from the generated master",
+  "replacedFromCombatV3": [
+    "explosive_impact",
+    "incendiary_projectile",
+    "pistol_muzzle"
+  ]
 }

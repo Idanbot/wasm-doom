@@ -5,10 +5,11 @@ from __future__ import annotations
 import json
 from collections import deque
 from pathlib import Path
-from PIL import Image, ImageDraw, ImageEnhance
+from PIL import Image, ImageEnhance
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "art/source_hd/weapons_v2"
+COMBAT_V3 = ROOT / "art/source_hd/combat_v3"
 OUT = ROOT / "public/game"
 ATLAS = ROOT / "art/atlases"
 WEAPONS = ("mk23s", "m870k", "vx9", "shrike", "raven", "arc12", "m56")
@@ -64,14 +65,24 @@ def shifted(base: Image.Image, dx=0, dy=0, angle=0, bright=1.0) -> Image.Image:
     if bright != 1: frame=ImageEnhance.Brightness(frame).enhance(bright)
     out=Image.new("RGBA",base.size,(0,0,0,0)); out.alpha_composite(frame,(dx,dy)); return out
 
-def flash(frame: Image.Image, slug: str, power: float) -> Image.Image:
-    out=frame.copy(); glow=Image.new("RGBA",out.size,(0,0,0,0)); d=ImageDraw.Draw(glow)
+def effect_cutout(path: Path) -> Image.Image:
+    image=decontaminate(key(Image.open(path)))
+    bbox=image.getchannel("A").getbbox()
+    if not bbox: raise ValueError(f"effect vanished during chroma key: {path}")
+    return image.crop(bbox)
+
+def flash(frame: Image.Image, slug: str, power: float, muzzle: Image.Image) -> Image.Image:
+    out=frame.copy()
     cx,cy=(512,120 if slug in {"raven","shrike"} else 170)
-    color=(110,225,255) if slug in {"arc12","shrike"} else (255,175,66)
-    radius=round(50+power*45)
-    d.ellipse((cx-radius,cy-radius,cx+radius,cy+radius),fill=(*color,round(45+power*55)))
-    d.polygon(((cx,cy-radius-45),(cx-22,cy+22),(cx+22,cy+22)),fill=(*color,220))
-    return Image.alpha_composite(out,glow)
+    size=round((190 if slug in {"mk23s","vx9","arc12"} else 250)*(0.82+power*0.18))
+    aspect=muzzle.height/max(1,muzzle.width)
+    burst=muzzle.resize((size,max(1,round(size*aspect))),Image.Resampling.LANCZOS)
+    if slug in {"arc12","shrike"}:
+        tint=Image.new("RGBA",burst.size,(105,225,255,0)); tint.putalpha(burst.getchannel("A"))
+        burst=Image.blend(burst,tint,0.48)
+    burst=ImageEnhance.Brightness(burst).enhance(0.9+power*0.18)
+    out.alpha_composite(burst,(cx-burst.width//2,cy-burst.height//2))
+    return out
 
 def sheet(frames: list[Image.Image]) -> Image.Image:
     out=Image.new("RGBA",(1024,1024),(0,0,0,0))
@@ -80,13 +91,14 @@ def sheet(frames: list[Image.Image]) -> Image.Image:
 
 def main():
     ATLAS.mkdir(parents=True, exist_ok=True)
+    muzzle=effect_cutout(COMBAT_V3/"muzzle_flash_front.jpg")
     report={}
     for slug in WEAPONS:
-        path=SOURCE/f"{slug}.jpg"
+        path=COMBAT_V3/"mk23s_pov.png" if slug == "mk23s" else SOURCE/f"{slug}.jpg"
         if not path.exists(): raise FileNotFoundError(path)
         base=decontaminate(key(fitted(key(Image.open(path)))))
         base.resize((640,640),Image.Resampling.LANCZOS).save(OUT/f"weap_{slug}.png",optimize=True)
-        recoil=[shifted(base,0,0),flash(shifted(base,-4,32,-1.2,1.08),slug,.55),flash(shifted(base,4,58,1.6,1.14),slug,1),shifted(base,0,20,0,.96)]
+        recoil=[shifted(base,0,0),flash(shifted(base,-4,32,-1.2,1.08),slug,.55,muzzle),flash(shifted(base,4,58,1.6,1.14),slug,1,muzzle),shifted(base,0,20,0,.96)]
         reload=[shifted(base,0,25,0),shifted(base,-55,85,-7),shifted(base,48,95,6),shifted(base,0,35,0)]
         sheet(recoil).save(OUT/f"weap_{slug}_fire.png",optimize=True)
         sheet(reload).save(OUT/f"weap_{slug}_reload.png",optimize=True)

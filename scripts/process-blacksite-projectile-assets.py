@@ -17,6 +17,7 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "art" / "source_hd" / "projectiles"
+COMBAT_V3 = ROOT / "art" / "source_hd" / "combat_v3"
 MASTER = SOURCE / "projectile_effects_4x4.png"
 CELLS = SOURCE / "cells"
 RUNTIME = ROOT / "public" / "game"
@@ -52,6 +53,46 @@ SHEETS = {
 }
 
 
+def key_magenta(image: Image.Image) -> Image.Image:
+    image = image.convert("RGBA")
+    pixels = image.load()
+    for y in range(image.height):
+        for x in range(image.width):
+            red, green, blue, alpha = pixels[x, y]
+            magenta = red > 125 and blue > 70 and red - green > 38 and blue - green > 22
+            if magenta:
+                pixels[x, y] = (red, green, blue, 0)
+            elif alpha < 40:
+                pixels[x, y] = (0, 0, 0, 0)
+    return image
+
+
+def generated_cell(filename: str, padding: int = 10) -> Image.Image:
+    source = key_magenta(Image.open(COMBAT_V3 / filename))
+    bbox = source.getchannel("A").getbbox()
+    if not bbox:
+        raise ValueError(f"generated effect vanished during chroma key: {filename}")
+    source = source.crop(bbox)
+    limit = 256 - padding * 2
+    scale = min(limit / source.width, limit / source.height)
+    source = source.resize(
+        (max(1, round(source.width * scale)), max(1, round(source.height * scale))),
+        Image.Resampling.LANCZOS,
+    )
+    if filename == "missile_rear.jpg":
+        # The missile itself contains no pink. Remove chroma spill that can
+        # survive as a one-pixel fringe after the keyed cutout is downscaled.
+        pixels = source.load()
+        for y in range(source.height):
+            for x in range(source.width):
+                red, green, blue, alpha = pixels[x, y]
+                if alpha < 24 or (red - green > 20 and blue - green > 10 and blue > 40):
+                    pixels[x, y] = (0, 0, 0, 0)
+    out = Image.new("RGBA", (256, 256), (0, 0, 0, 0))
+    out.alpha_composite(source, ((256 - source.width) // 2, (256 - source.height) // 2))
+    return out
+
+
 def cell(master: Image.Image, name: str) -> Image.Image:
     column, row = CELL_COORDS[name]
     return master.crop((column * 256, row * 256, (column + 1) * 256, (row + 1) * 256)).copy()
@@ -72,6 +113,21 @@ def main() -> None:
     master = Image.open(MASTER).convert("RGBA")
     if master.size != (1024, 1024):
         raise ValueError(f"projectile master must be 1024x1024, got {master.size}")
+
+    replacements = {
+        "incendiary_projectile": generated_cell("missile_rear.jpg", 18),
+        "pistol_muzzle": generated_cell("muzzle_flash_front.jpg", 30),
+        "explosive_impact": generated_cell("missile_impact.jpg", 5),
+    }
+    for name, replacement in replacements.items():
+        column, row = CELL_COORDS[name]
+        target = (column * 256, row * 256)
+        # Clear the old cell before compositing. Pasting only through the new
+        # alpha channel leaves remnants of the previous effect around the
+        # transparent silhouette and creates coloured halos in the atlas.
+        master.paste((0, 0, 0, 0), (*target, target[0] + 256, target[1] + 256))
+        master.alpha_composite(replacement, target)
+    master.save(MASTER, format="PNG", optimize=False)
 
     cell_records: dict[str, dict[str, object]] = {}
     for name in CELL_COORDS:
@@ -95,6 +151,7 @@ def main() -> None:
         "cells": cell_records,
         "runtime": runtime_records,
         "alpha": "true RGBA transparency preserved from the generated master",
+        "replacedFromCombatV3": sorted(replacements),
     }
     (SOURCE / "processing-report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, indent=2))

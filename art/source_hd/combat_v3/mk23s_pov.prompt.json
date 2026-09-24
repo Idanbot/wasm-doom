@@ -1,0 +1,7 @@
+{
+  "generator": "built-in image generation",
+  "useCase": "stylized-concept",
+  "prompt": "Transparent first-person shooter viewmodel of a compact suppressed science-fiction handgun in a correct two-handed tactical grip. Camera directly behind and slightly above the weapon; long axis from bottom center to upper center; aligned iron sights; top of slide visible; barrel strongly foreshortened toward the exact upper-center vanishing point. Black tactical gloves and forearms, worn matte gunmetal, restrained amber light, realistic modern competitive FPS render. Avoid side profile, horizontal weapon, text, scenery, muzzle flash, projectile and cropped hands.",
+  "sourceSize": [1223, 1286],
+  "background": "transparent"
+}

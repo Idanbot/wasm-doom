@@ -171,7 +171,9 @@ fn sprite_style(e: &Ent) -> (usize, f32, bool, i32) {
     // over lifetime without cycling flames into smoke or muzzle flashes.
     match e.kind {
         EK_PROJ => return (T_ORDNANCE, 0.24, true, if e.effect_tick == 3.0 { 3 } else { 0 }),
-        EK_BOLT => return (T_ORDNANCE, 0.30, true, 1),
+        // The generated rear-view missile has a narrower silhouette than the
+        // old fireball, so give it enough projected size to read in motion.
+        EK_BOLT => return (T_ORDNANCE, 0.42, true, 1),
         EK_SMOKE => return (T_FLAME, 0.22 + e.frame.min(0.8) * 0.4, true, 1),
         EK_FLAME | EK_FIREPATCH => return (T_FLAME, 0.58 + (e.frame * 7.0).sin() * 0.035, true, 0),
         EK_SPARK => return if e.effect_tick < 4.0 {

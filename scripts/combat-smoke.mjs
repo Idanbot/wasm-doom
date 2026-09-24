@@ -12,6 +12,27 @@ await mkdir("screenshots", { recursive: true });
 const browser = await chromium.launch({ headless: true });
 const errors = [];
 const results = [];
+const assertHudTextContained = async (page, label) => {
+  const escaped = await page.evaluate(() =>
+    [...document.querySelectorAll(".hud-plate")].flatMap((plate) => {
+      const outer = plate.getBoundingClientRect();
+      return [...plate.querySelectorAll("span, strong, small, b, p")]
+        .filter((node) => node.textContent?.trim() && node.getClientRects().length)
+        .flatMap((node) => {
+          const inner = node.getBoundingClientRect();
+          const outside =
+            inner.left < outer.left + 3 ||
+            inner.right > outer.right - 3 ||
+            inner.top < outer.top + 3 ||
+            inner.bottom > outer.bottom - 3;
+          return outside
+            ? [{ text: node.textContent.trim(), outer: outer.toJSON(), inner: inner.toJSON() }]
+            : [];
+        });
+    }),
+  );
+  assert.deepEqual(escaped, [], `${label} HUD text escaped its panel`);
+};
 try {
   const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
   page.on("pageerror", (error) => errors.push(error.message));
@@ -111,6 +132,7 @@ try {
   assert.match(await page.locator(".hud-ammo-heading").innerText(), /LOW AMMO/);
   await page.evaluate(() => window.__controlsTest.setKeys([]));
   await page.screenshot({ path: "screenshots/combat-low-ammo.png" });
+  await assertHudTextContained(page, "desktop");
 
   const mobile = await browser.newPage({
     viewport: { width: 390, height: 844 },
@@ -133,7 +155,21 @@ try {
   });
   await mobile.waitForFunction(() => document.body.innerText.includes("PHASE 1 / 3"));
   assert.ok(await mobile.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+  await assertHudTextContained(mobile, "mobile");
   await mobile.screenshot({ path: "screenshots/combat-boss-hud-mobile.png" });
+
+  const narrow = await browser.newPage({ viewport: { width: 320, height: 700 } });
+  narrow.on("pageerror", (error) => errors.push(error.message));
+  narrow.on("console", (message) => {
+    if (message.type() === "error") errors.push(message.text());
+  });
+  await narrow.goto(url.href);
+  await narrow.waitForFunction(
+    () => !!window.__controlsTest && document.body.innerText.includes("HEALTH"),
+  );
+  assert.ok(await narrow.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+  await assertHudTextContained(narrow, "320px");
+  await narrow.screenshot({ path: "screenshots/combat-hud-320.png" });
   assert.deepEqual(errors, []);
   console.log(
     JSON.stringify(

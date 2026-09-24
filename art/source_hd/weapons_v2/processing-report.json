@@ -1,6 +1,6 @@
 {
   "mk23s": {
-    "source": "art/source_hd/weapons_v2/mk23s.jpg",
+    "source": "art/source_hd/combat_v3/mk23s_pov.png",
     "idle": "public/game/weap_mk23s.png",
     "fireFrames": 4,
     "reloadFrames": 4

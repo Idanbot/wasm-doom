@@ -1,0 +1,14 @@
+{
+  "model": "@cf/black-forest-labs/flux-1-schnell",
+  "steps": 8,
+  "prompt": "Isolated compact radial amber light-burst VFX icon, centered and seen straight-on. Small bright ivory core, six short irregular amber rays, a few tiny sparks and one faint grey smoke ring. Tight restrained silhouette suitable for a modern action game. Crisp realistic game effect, no weapon, no characters, no giant circular glow. Solid perfectly flat neon magenta #FF00FF background across the entire image including all holes and gaps. No room, floor, scenery, text, logo, frame, border, cropped subject, or extra objects.",
+  "usage": {
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "neurons": 326.4000244140625
+  }
+}

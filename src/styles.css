@@ -765,6 +765,8 @@ select:focus-visible {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
+  max-width: calc(100% - 390px);
   color: var(--color-steel);
   text-shadow: 0 2px 4px var(--color-bg);
 }
@@ -778,6 +780,14 @@ select:focus-visible {
   color: var(--color-muted);
   font-size: 8px;
 }
+.hud-mission > div {
+  min-width: 0;
+}
+.hud-mission strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .hud-threat {
   position: absolute;
   top: 22px;
@@ -790,6 +800,7 @@ select:focus-visible {
   background: color-mix(in srgb, var(--color-bg) 85%, transparent);
   border-bottom: 1px solid var(--color-primary);
   font: 700 9px var(--font-display);
+  white-space: nowrap;
 }
 .hud-threat svg,
 .hud-threat b {
@@ -901,13 +912,19 @@ select:focus-visible {
   background: url("/game/ui/hud-panel.webp") center / 100% 100% no-repeat;
   width: 300px;
   padding: 28px 36px 26px;
+  box-sizing: border-box;
   flex-shrink: 0;
+  min-width: 0;
   text-shadow: 0 1px 3px var(--color-bg);
 }
 .hud-health {
   display: flex;
   gap: 12px;
   align-items: center;
+  min-width: 0;
+}
+.hud-health > div {
+  min-width: 0;
 }
 .hud-health > svg {
   color: var(--color-steel);
@@ -928,6 +945,7 @@ select:focus-visible {
   font: 700 38px/1.1 var(--font-display);
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.04em;
+  white-space: nowrap;
 }
 .hud-health strong small,
 .hud-ammo > strong small {
@@ -941,6 +959,8 @@ select:focus-visible {
   gap: 7px;
   color: var(--color-steel);
   margin-top: 8px;
+  min-width: 0;
+  white-space: nowrap;
 }
 .hud-armour b {
   font: 700 13px var(--font-display);
@@ -963,8 +983,14 @@ select:focus-visible {
 .hud-ammo-heading {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
   color: var(--color-primary);
   margin-bottom: 7px;
+}
+.hud-ammo-heading > span {
+  min-width: 0;
+  white-space: nowrap;
 }
 .hud-ammo-heading > span:last-child {
   color: var(--color-muted);
@@ -994,6 +1020,8 @@ select:focus-visible {
   color: var(--color-muted);
   margin-top: 8px;
   letter-spacing: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 .hud-loadout {
   text-align: center;
@@ -1162,6 +1190,7 @@ select:focus-visible {
   }
   .hud-mission {
     gap: 6px;
+    max-width: calc(100% - 78px);
   }
   .hud-mission strong {
     font-size: 8px;
@@ -1206,8 +1235,8 @@ select:focus-visible {
     gap: 0;
   }
   .hud-plate {
-    width: 49.5%;
-    padding: 21px 21px 20px;
+    width: calc(50% - 2px);
+    padding: 21px clamp(16px, 4.8vw, 20px) 20px;
   }
   .hud-health {
     gap: 6px;
@@ -1217,7 +1246,7 @@ select:focus-visible {
   }
   .hud-health strong,
   .hud-ammo > strong {
-    font-size: 28px;
+    font-size: clamp(23px, 7vw, 28px);
   }
   .hud-health strong small,
   .hud-ammo > strong small {
@@ -1235,9 +1264,11 @@ select:focus-visible {
   }
   .hud-ammo-heading {
     margin-bottom: 6px;
+    gap: 5px;
   }
   .hud-ammo-heading > span:last-child {
     font-size: 6px;
+    letter-spacing: 0.04em;
   }
   .armour-track {
     display: none;
