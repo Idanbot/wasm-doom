@@ -10,8 +10,7 @@ import { HUD_OFFSETS, HUD_SIZE } from "./hud-abi.ts";
  */
 describe("HUD ABI", () => {
   it("struct size matches the Rust repr(C) layout", () => {
-    // 12 x i32 (48B) + 10 x f32 (40B) + i32 + f32 + i32 x3 + u32 + i32 x2 = 120.
-    assert.equal(HUD_SIZE, 120);
+    assert.equal(HUD_SIZE, 132);
   });
 
   it("field offsets match engine/src/hud.rs HUD_OFFSETS", () => {
@@ -23,6 +22,9 @@ describe("HUD ABI", () => {
       events: 108,
       evWeapon: 112,
       wave: 116,
+      bossHealth: 120,
+      bossMaxHealth: 124,
+      bossPhase: 128,
     });
   });
 

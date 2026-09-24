@@ -305,6 +305,9 @@ impl Engine {
                 events: 0,
                 ev_weapon: 0,
                 wave: 1,
+                boss_health: 0,
+                boss_max_health: 0,
+                boss_phase: 0,
             },
             rng: 0xC0FFEE,
             shake: 0.0,
@@ -1068,7 +1071,7 @@ impl Engine {
         self.shake = 1.0;
         self.events |= EV_EXPLODE | EV_BOSS_DROP;
         // Capped so late waves stay killable: 480 / 720 / 1080 / 1620, then 2200.
-        let hp = (480.0 * 1.5f32.powi((self.wave - 1).max(0))).min(2200.0).round() as i32;
+        let hp = self.boss_max_health();
         let fx = self.pa.cos();
         let fy = self.pa.sin();
         let spots = [
@@ -1113,6 +1116,10 @@ impl Engine {
                 let _ = self.spawn_with_skin(kind, skin, x, y);
             }
         }
+    }
+
+    fn boss_max_health(&self) -> i32 {
+        (480.0 * 1.5f32.powi((self.wave - 1).max(0))).min(2200.0).round() as i32
     }
 
     fn sample(&self, id: usize, u: i32, v: i32) -> u32 {
@@ -1841,6 +1848,8 @@ impl Engine {
                 if self.has_w5 {
                     self.ammo[4] = (self.ammo[4] + 3).min(24);
                 }
+                self.ammo[5] = (self.ammo[5] + 12).min(64);
+                self.ammo[6] = (self.ammo[6] + 80).min(400);
                 self.events |= EV_PICK_SILVER;
             }
             EK_ARMOR => {
@@ -1899,7 +1908,9 @@ impl Engine {
                 || (self.has_w2 && self.ammo[1] < 40)
                 || (self.has_w3 && self.ammo[2] < 200)
                 || (self.has_w4 && self.ammo[3] < 16)
-                || (self.has_w5 && self.ammo[4] < 24),
+                || (self.has_w5 && self.ammo[4] < 24)
+                || self.ammo[5] < 64
+                || self.ammo[6] < 400,
             _ => true,
         }
     }
@@ -2416,7 +2427,7 @@ impl Engine {
         }
 
         if self.boss_spawned && self.state == 0 {
-            let max_hp = (480.0 * 1.5f32.powi((self.wave - 1).max(0))).min(2200.0).round() as i32;
+            let max_hp = self.boss_max_health();
             let boss_hp = self.ents.iter().find(|e| e.kind == EK_BOSS && e.hp > 0).map(|e| e.hp).unwrap_or(0);
             let phase = if boss_hp > 0 && boss_hp * 3 <= max_hp { 2 } else if boss_hp > 0 && boss_hp * 3 <= max_hp * 2 { 1 } else { 0 };
             if phase > self.boss_phase {
@@ -2488,6 +2499,10 @@ impl Engine {
             0
         };
 
+        let boss_health = self.ents.iter()
+            .find(|e| e.kind == EK_BOSS && e.hp > 0)
+            .map(|e| e.hp)
+            .unwrap_or(0);
         self.hud = Hud {
             health: self.health,
             armor: self.armor,
@@ -2523,6 +2538,9 @@ impl Engine {
             events: self.events,
             ev_weapon: self.ev_weapon,
             wave: self.wave,
+            boss_health,
+            boss_max_health: if boss_health > 0 { self.boss_max_health() } else { 0 },
+            boss_phase: if boss_health > 0 { self.boss_phase as i32 } else { 0 },
         };
     }
 
@@ -3582,6 +3600,23 @@ pub extern "C" fn hs_qa_end(state: i32) {
 }
 
 #[no_mangle]
+pub extern "C" fn hs_qa_boss(phase: i32) {
+    let e = eng();
+    if !e.qa { return; }
+    e.boss_spawned = false;
+    e.boss_phase = 0;
+    e.maybe_spawn_boss();
+    let max_hp = e.boss_max_health();
+    if let Some(boss) = e.ents.iter_mut().find(|enemy| enemy.kind == EK_BOSS && enemy.hp > 0) {
+        boss.hp = match phase.clamp(0, 2) {
+            1 => max_hp * 2 / 3,
+            2 => max_hp / 3,
+            _ => max_hp,
+        };
+    }
+}
+
+#[no_mangle]
 pub extern "C" fn hs_fire_patches() -> i32 {
     eng().ents.iter().filter(|e| e.kind == EK_FIREPATCH).count() as i32
 }
@@ -4118,6 +4153,25 @@ mod tests {
     }
 
     #[test]
+    fn number_keys_select_every_available_weapon_once_per_press() {
+        let mut e = arena();
+        e.has_w2 = true;
+        e.has_w3 = true;
+        e.has_w4 = true;
+        e.has_w5 = true;
+        for (expected, bit) in [IN_W1, IN_W2, IN_W3, IN_W4, IN_W5, IN_W6, IN_W7]
+            .into_iter()
+            .enumerate()
+        {
+            e.bits = 0;
+            e.tick(1.0 / 60.0);
+            e.bits = bit;
+            e.tick(1.0 / 60.0);
+            assert_eq!(e.weapon, expected as i32, "key {} selects its weapon", expected + 1);
+        }
+    }
+
+    #[test]
     fn approach_opens_doors_but_secrets_need_use() {
         let mut e = arena();
         e.pa = 0.0;
@@ -4251,6 +4305,21 @@ mod tests {
     }
 
     #[test]
+    fn ammo_crates_restock_the_complete_seven_weapon_arsenal() {
+        let mut e = arena();
+        e.ammo = [0; 7];
+        let item = e.spawn(EK_AMMO, e.px, e.py).unwrap();
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.ents[item].kind, EK_NONE, "a useful ammo crate is collected");
+        assert_eq!(e.ammo, [18, 0, 0, 0, 0, 12, 80]);
+
+        e.ammo = [120, 0, 0, 0, 0, 64, 400];
+        let full = e.spawn(EK_AMMO, e.px, e.py).unwrap();
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.ents[full].kind, EK_AMMO, "a full arsenal leaves supplies available");
+    }
+
+    #[test]
     fn the_seal_spawns_one_boss_scaled_to_the_wave() {
         let mut e = arena();
         e.wave = 2;
@@ -4276,7 +4345,39 @@ mod tests {
         assert_eq!(e.boss_phase, 1);
         e.tick(1.0 / 60.0);
         assert!(e.ents.iter().any(|x| x.kind == EK_SPARK));
-        assert!(e.ents.iter().any(|x| is_hostile_kind(x.kind) && x.kind != EK_BOSS));
+        assert!(e.ents.iter().any(|x| x.skin == SKIN_HORNET && x.hp > 0));
+        assert!(e.ents.iter().any(|x| x.skin == SKIN_RIFLEMAN && x.hp > 0));
+
+        let phase_one_support = e.ents.iter().filter(|x| is_hostile_kind(x.kind) && x.kind != EK_BOSS).count();
+        e.ents[boss].hp = 150;
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.boss_phase, 2);
+        assert!(e.ents.iter().any(|x| x.skin == SKIN_MARTYR && x.hp > 0));
+        assert!(e.ents.iter().any(|x| x.skin == SKIN_LOADER && x.hp > 0));
+        let phase_two_support = e.ents.iter().filter(|x| is_hostile_kind(x.kind) && x.kind != EK_BOSS).count();
+        assert!(phase_two_support > phase_one_support);
+        e.tick(1.0 / 60.0);
+        assert_eq!(
+            e.ents.iter().filter(|x| is_hostile_kind(x.kind) && x.kind != EK_BOSS).count(),
+            phase_two_support,
+            "a phase summons its support squad only once",
+        );
+    }
+
+    #[test]
+    fn boss_fight_reports_health_and_phase_to_the_hud() {
+        let mut e = arena();
+        e.boss_spawned = true;
+        let boss = e.spawn_with_skin(EK_BOSS, SKIN_VEYRAN, 9.5, 4.5).unwrap();
+        e.ents[boss].hp = 300;
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.hud.boss_health, 300);
+        assert_eq!(e.hud.boss_max_health, 480);
+        assert_eq!(e.hud.boss_phase, 1);
+
+        e.ents[boss].hp = 0;
+        e.tick(1.0 / 60.0);
+        assert_eq!((e.hud.boss_health, e.hud.boss_max_health, e.hud.boss_phase), (0, 0, 0));
     }
 
     #[test]

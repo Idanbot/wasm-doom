@@ -154,8 +154,10 @@
   color: var(--color-danger);
 }
 @media (prefers-reduced-motion: reduce) {
-  .vital-fill {
+  .vital-fill,
+  .hud-low-ammo .vital-fill {
     transition: none;
+    animation: none;
   }
 }
 
@@ -823,6 +825,68 @@ select:focus-visible {
   background: var(--color-bg);
   color: var(--color-muted);
 }
+.hud-boss {
+  position: absolute;
+  top: 82px;
+  left: 50%;
+  width: min(470px, calc(100% - 48px));
+  transform: translateX(-50%);
+  padding: 11px 14px 10px;
+  color: var(--color-fg);
+  background: linear-gradient(90deg, transparent, rgb(6 13 17 / 92%) 9% 91%, transparent);
+  text-shadow: 0 2px 4px var(--color-bg);
+  animation: boss-lock 420ms ease-out both;
+}
+.hud-boss > div:first-child {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-family: var(--font-display);
+  letter-spacing: 0.09em;
+}
+.hud-boss span,
+.hud-boss em,
+.hud-boss small {
+  font: 700 8px/1.3 var(--font-display);
+  letter-spacing: 0.11em;
+}
+.hud-boss span {
+  color: var(--color-steel);
+}
+.hud-boss strong {
+  font-size: 13px;
+}
+.hud-boss em {
+  margin-left: auto;
+  color: var(--color-primary);
+  font-style: normal;
+}
+.hud-boss-track {
+  height: 5px;
+  margin-top: 7px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-primary) 55%, var(--color-border));
+  background: rgb(0 0 0 / 65%);
+}
+.hud-boss-track i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #d44b31, var(--color-primary));
+  box-shadow: 0 0 12px color-mix(in srgb, var(--color-primary) 65%, transparent);
+  transition: width 180ms ease-out;
+}
+.hud-boss small {
+  display: block;
+  margin-top: 4px;
+  color: var(--color-muted);
+  text-align: right;
+}
+@keyframes boss-lock {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -8px);
+  }
+}
 .hud-bottom {
   position: absolute;
   left: 24px;
@@ -911,6 +975,19 @@ select:focus-visible {
 }
 .hud-ammo .vital-fill {
   background: var(--color-primary);
+}
+.hud-low-ammo .hud-ammo-heading > span:last-child,
+.hud-low-ammo > strong {
+  color: var(--color-danger);
+}
+.hud-low-ammo .vital-fill {
+  background: var(--color-danger);
+  animation: ammo-alert 700ms ease-in-out infinite alternate;
+}
+@keyframes ammo-alert {
+  to {
+    opacity: 0.42;
+  }
 }
 .hud-ammo p {
   font-size: 8px;
@@ -1107,6 +1184,20 @@ select:focus-visible {
     right: 15px;
     max-width: 180px;
     text-align: right;
+  }
+  .hud-boss {
+    top: 112px;
+    width: calc(100% - 30px);
+    padding-inline: 10px;
+  }
+  .hud-boss > div:first-child {
+    gap: 6px;
+  }
+  .hud-boss strong {
+    font-size: 10px;
+  }
+  .hud-boss span {
+    display: none;
   }
   .hud-bottom {
     left: 2px;

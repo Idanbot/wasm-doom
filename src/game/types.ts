@@ -30,6 +30,9 @@ export type HudState = {
   events: number;
   evWeapon: number;
   wave: number;
+  bossHealth: number;
+  bossMaxHealth: number;
+  bossPhase: number;
 };
 
 export type ResMode = {
@@ -92,4 +95,7 @@ export const DEFAULT_HUD: HudState = {
   events: 0,
   evWeapon: 0,
   wave: 1,
+  bossHealth: 0,
+  bossMaxHealth: 0,
+  bossPhase: 0,
 };

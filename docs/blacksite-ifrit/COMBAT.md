@@ -18,6 +18,10 @@ hurt the player. Projectiles sweep their travel segment to detect hits between
 simulation steps. ARC-12 fires a precise electrical discharge, while M56 adds
 an 80-round sustained rotary stream with growing spread.
 
+Ammo crates replenish every weapon in the seven-gun arsenal. The field HUD
+warns when the active magazine runs low, and boss encounters expose Veyran's
+health and reinforcement phase so each escalation is readable during combat.
+
 All guns use their firing sheets, including VX-9. Weapon sheets preload
 alongside world textures before play. Recoil weight varies by
 weapon and respects reduced motion. The crosshair expands with recoil and

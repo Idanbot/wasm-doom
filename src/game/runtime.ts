@@ -50,6 +50,7 @@ type WasmExports = {
   hs_prepare_enemies: () => number;
   hs_enemy_cues: () => number;
   hs_qa_end: (state: number) => void;
+  hs_qa_boss: (phase: number) => void;
 };
 
 const IN = {
@@ -705,6 +706,9 @@ export class HellscanRuntime {
       events: dv.getUint32(108, true),
       evWeapon: dv.getInt32(112, true),
       wave: dv.getInt32(116, true),
+      bossHealth: dv.getInt32(120, true),
+      bossMaxHealth: dv.getInt32(124, true),
+      bossPhase: dv.getInt32(128, true),
     };
   }
 
@@ -900,6 +904,7 @@ export class HellscanRuntime {
         this.wasm?.hs_qa(this.qaBits, this.qaOn ? 1 : 0);
       },
       triggerEnd: (state: 1 | 2) => this.wasm?.hs_qa_end(state),
+      triggerBoss: (phase = 0) => this.wasm?.hs_qa_boss(phase),
     };
   }
 }
@@ -942,6 +947,7 @@ declare global {
       getFirePatches?: () => number;
       grantWeapons?: () => void;
       triggerEnd?: (state: 1 | 2) => void;
+      triggerBoss?: (phase?: number) => void;
     };
   }
 }

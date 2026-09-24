@@ -1,7 +1,7 @@
 import { HeartPulse, Shield, Crosshair, Radio } from "lucide-react";
 import type { HudState } from "@/game/types";
 import { cn } from "@/lib/utils";
-import { WEAPONS, MAG_SIZES, fmtTime } from "./data";
+import { WEAPONS, fmtTime } from "./data";
 
 export function HudBar({
   hud,
@@ -17,6 +17,7 @@ export function HudBar({
   showStats?: boolean;
 }) {
   const weapon = WEAPONS[hud.weapon] ?? WEAPONS[0]!;
+  const lowAmmo = hud.ammo > 0 && hud.ammo <= weapon.lowAmmoAt && hud.reloading <= 0.001;
   return (
     <div className="field-hud">
       <div className="hud-mission">
@@ -37,6 +38,25 @@ export function HudBar({
         <div className="hud-performance">
           {Math.round(fps)} FPS · {renderer.toUpperCase()} · {resolution}
         </div>
+      )}
+      {hud.bossHealth > 0 && hud.bossMaxHealth > 0 && (
+        <section className="hud-boss" aria-label="Vault master health">
+          <div>
+            <span>VAULT MASTER</span>
+            <strong>MALIK VEYRAN</strong>
+            <em>PHASE {hud.bossPhase + 1} / 3</em>
+          </div>
+          <div className="hud-boss-track">
+            <i
+              style={{
+                width: `${Math.max(0, Math.min(100, (hud.bossHealth / hud.bossMaxHealth) * 100))}%`,
+              }}
+            />
+          </div>
+          <small>
+            {hud.bossHealth} / {hud.bossMaxHealth}
+          </small>
+        </section>
       )}
       <div className="hud-bottom">
         <section
@@ -77,7 +97,9 @@ export function HudBar({
                 className={cn(
                   "weapon-slot",
                   hud.weapon === i && "selected",
-                  i > 0 && ![true, hud.hasW2, hud.hasW3, hud.hasW4, hud.hasW5, true, true][i] && "locked",
+                  i > 0 &&
+                    ![true, hud.hasW2, hud.hasW3, hud.hasW4, hud.hasW5, true, true][i] &&
+                    "locked",
                 )}
               >
                 <b>{i + 1}</b>
@@ -89,10 +111,13 @@ export function HudBar({
             {hud.kills} ELIMINATED · {hud.secrets} SECRETS
           </p>
         </div>
-        <section className="hud-plate hud-ammo" aria-label="Weapon ammunition">
+        <section
+          className={cn("hud-plate hud-ammo", lowAmmo && "hud-low-ammo")}
+          aria-label="Weapon ammunition"
+        >
           <div className="hud-ammo-heading">
             <span>{weapon.name}</span>
-            <span>{hud.reloading > 0.001 ? "RELOADING" : "AMMO"}</span>
+            <span>{hud.reloading > 0.001 ? "RELOADING" : lowAmmo ? "LOW AMMO" : "AMMO"}</span>
           </div>
           <strong className={hud.ammo === 0 ? "text-danger" : ""}>
             {String(hud.ammo).padStart(2, "0")}
@@ -102,7 +127,7 @@ export function HudBar({
             <span
               className="vital-fill"
               style={{
-                width: `${hud.reloading > 0.001 ? hud.reloading * 100 : (hud.ammo / (MAG_SIZES[hud.weapon] ?? 12)) * 100}%`,
+                width: `${hud.reloading > 0.001 ? hud.reloading * 100 : (hud.ammo / weapon.magSize) * 100}%`,
               }}
             />
           </div>

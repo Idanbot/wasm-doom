@@ -75,8 +75,73 @@ try {
     return { left, right };
   });
   assert.ok(controls.left < -0.03 && controls.right > 0.03, JSON.stringify(controls));
+
+  await page.evaluate(() => {
+    const t = window.__controlsTest;
+    t.setKeys(["KeyW"]);
+    t.grantWeapons();
+    t.triggerBoss(0);
+    t.setKeys([]);
+  });
+  await page.waitForFunction(
+    () =>
+      document.body.innerText.includes("MALIK VEYRAN") &&
+      document.body.innerText.includes("PHASE 1 / 3"),
+  );
+  const boss = await page.evaluate(() => ({
+    label: document.querySelector(".hud-boss")?.textContent ?? "",
+    width: document.querySelector(".hud-boss-track i")?.getBoundingClientRect().width ?? 0,
+  }));
+  assert.match(boss.label, /480\s*\/\s*480/);
+  assert.ok(boss.width > 200, "the full boss health track should be visible");
+  await page.screenshot({ path: "screenshots/combat-boss-hud.png" });
+
+  await page.goto(url.href);
+  await page.waitForFunction(
+    () => !!window.__controlsTest && document.body.innerText.includes("HEALTH"),
+  );
+  await page.evaluate(() => {
+    const t = window.__controlsTest;
+    t.grantWeapons();
+    t.setKeys(["Digit1"]);
+  });
+  await page.waitForFunction(() => window.__controlsTest.getWeapon() === 0);
+  await page.evaluate(() => window.__controlsTest.setKeys(["Space"]));
+  await page.waitForFunction(() => window.__controlsTest.getAmmo() <= 3);
+  assert.match(await page.locator(".hud-ammo-heading").innerText(), /LOW AMMO/);
+  await page.evaluate(() => window.__controlsTest.setKeys([]));
+  await page.screenshot({ path: "screenshots/combat-low-ammo.png" });
+
+  const mobile = await browser.newPage({
+    viewport: { width: 390, height: 844 },
+    isMobile: true,
+    hasTouch: true,
+  });
+  mobile.on("pageerror", (error) => errors.push(error.message));
+  mobile.on("console", (message) => {
+    if (message.type() === "error") errors.push(message.text());
+  });
+  await mobile.goto(url.href);
+  await mobile.waitForFunction(
+    () => !!window.__controlsTest && document.body.innerText.includes("HEALTH"),
+  );
+  await mobile.evaluate(() => {
+    const t = window.__controlsTest;
+    t.setKeys(["KeyW"]);
+    t.triggerBoss(0);
+    t.setKeys([]);
+  });
+  await mobile.waitForFunction(() => document.body.innerText.includes("PHASE 1 / 3"));
+  assert.ok(await mobile.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+  await mobile.screenshot({ path: "screenshots/combat-boss-hud-mobile.png" });
   assert.deepEqual(errors, []);
-  console.log(JSON.stringify({ weapons: results, controls, errors }, null, 2));
+  console.log(
+    JSON.stringify(
+      { weapons: results, controls, boss: true, mobileBoss: true, lowAmmo: true, errors },
+      null,
+      2,
+    ),
+  );
 } finally {
   await browser.close();
 }

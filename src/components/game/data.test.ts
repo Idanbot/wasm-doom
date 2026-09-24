@@ -68,7 +68,13 @@ describe("WEAPONS", () => {
       for (const art of [w.idle, w.fire, w.reload]) {
         assert.match(art, /^\/game\/weap_.+\.png$/);
       }
+      assert.ok(w.magSize > 0);
+      assert.ok(w.lowAmmoAt > 0 && w.lowAmmoAt < w.magSize);
     }
+    assert.deepEqual(
+      WEAPONS.map((w) => w.magSize),
+      [12, 6, 32, 4, 6, 8, 80],
+    );
   });
 });
 

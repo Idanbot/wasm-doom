@@ -11,6 +11,8 @@ export const WEAPONS = [
     id: 0,
     name: "MK23-S",
     role: "Suppressed precision · 12 rounds",
+    magSize: 12,
+    lowAmmoAt: 3,
     idle: "/game/weap_mk23s.png",
     fire: "/game/weap_mk23s_fire.png",
     reload: "/game/weap_mk23s_reload.png",
@@ -19,6 +21,8 @@ export const WEAPONS = [
     id: 1,
     name: "M870K",
     role: "Close range · stagger",
+    magSize: 6,
+    lowAmmoAt: 2,
     idle: "/game/weap_m870k.png",
     fire: "/game/weap_m870k_fire.png",
     reload: "/game/weap_m870k_reload.png",
@@ -27,6 +31,8 @@ export const WEAPONS = [
     id: 2,
     name: "VX-9",
     role: "Short bursts · control spread",
+    magSize: 32,
+    lowAmmoAt: 8,
     idle: "/game/weap_vx9.png",
     fire: "/game/weap_vx9_fire.png",
     reload: "/game/weap_vx9_reload.png",
@@ -35,6 +41,8 @@ export const WEAPONS = [
     id: 3,
     name: "SHRIKE",
     role: "Pierces 3 · line them up",
+    magSize: 4,
+    lowAmmoAt: 1,
     idle: "/game/weap_shrike.png",
     fire: "/game/weap_shrike_fire.png",
     reload: "/game/weap_shrike_reload.png",
@@ -43,6 +51,8 @@ export const WEAPONS = [
     id: 4,
     name: "RAVEN",
     role: "Guided missile · explosive payload",
+    magSize: 6,
+    lowAmmoAt: 2,
     idle: "/game/weap_raven.png",
     fire: "/game/weap_raven_fire.png",
     reload: "/game/weap_raven_reload.png",
@@ -51,6 +61,8 @@ export const WEAPONS = [
     id: 5,
     name: "ARC-12",
     role: "Arc discharge · precision shock",
+    magSize: 8,
+    lowAmmoAt: 2,
     idle: "/game/weap_arc12.png",
     fire: "/game/weap_arc12_fire.png",
     reload: "/game/weap_arc12_reload.png",
@@ -59,6 +71,8 @@ export const WEAPONS = [
     id: 6,
     name: "M56",
     role: "Rotary cannon · sustained suppression",
+    magSize: 80,
+    lowAmmoAt: 20,
     idle: "/game/weap_m56.png",
     fire: "/game/weap_m56_fire.png",
     reload: "/game/weap_m56_reload.png",
@@ -68,9 +82,6 @@ export const WEAPONS = [
 export function sheetPos(cell: number) {
   return `${(cell & 1) * 100}% ${((cell >> 1) & 1) * 100}%`;
 }
-
-/** Magazine capacities per engine slot. Must match MAG_SZ in engine/src/consts.rs. */
-export const MAG_SIZES = [12, 6, 32, 4, 6, 8, 80];
 
 export function loadVol(): Vol {
   try {

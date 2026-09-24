@@ -6,9 +6,9 @@ import { fileURLToPath } from "node:url";
 import test from "node:test";
 import {
   appNameFromHost,
-  createHeadInjector,
+  createHeadInjector as createHeadInjectorRaw,
   grokXCreatorHeadTags,
-  injectGrokPwaHead,
+  injectGrokPwaHead as injectGrokPwaHeadRaw,
   isDocumentPath,
   isInstallQuery,
   publicAppHost,
@@ -20,6 +20,17 @@ import {
 import { renderInstallPage } from "./grok-pwa-plugin.mjs";
 
 const TEMPLATE_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const EMPTY_SITE_ROOT = mkdtempSync(join(tmpdir(), "grok-pwa-test-root-"));
+
+// Generic middleware tests must not inherit the current app's checked-in
+// branding. Individual cases can still override cwd/site explicitly.
+function injectGrokPwaHead(html, ctx = {}) {
+  return injectGrokPwaHeadRaw(html, { cwd: EMPTY_SITE_ROOT, site: {}, ...ctx });
+}
+
+function createHeadInjector(ctx = {}) {
+  return createHeadInjectorRaw({ cwd: EMPTY_SITE_ROOT, site: {}, ...ctx });
+}
 
 test("injects before </head>", () => {
   const out = injectGrokPwaHead("<html><head><title>x</title></head><body></body></html>");
@@ -503,4 +514,3 @@ test("vite plugin bakes og identity as a virtual module", () => {
   assert.match(plugin, /virtual:grok-og-identity/);
   assert.match(plugin, /snapshotOgIdentity/);
 });
-

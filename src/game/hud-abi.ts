@@ -9,7 +9,7 @@
  */
 
 /** Byte size of the Hud struct. Must match `HUD_SIZE` in engine/src/hud.rs. */
-export const HUD_SIZE = 120;
+export const HUD_SIZE = 132;
 
 /** Byte offsets of key fields inside the HUD struct. */
 export const HUD_OFFSETS = {
@@ -20,4 +20,7 @@ export const HUD_OFFSETS = {
   events: 108,
   evWeapon: 112,
   wave: 116,
+  bossHealth: 120,
+  bossMaxHealth: 124,
+  bossPhase: 128,
 } as const;
