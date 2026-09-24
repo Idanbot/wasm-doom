@@ -12,7 +12,12 @@ pub(crate) const ENEMY_ANIM_COUNT: usize = 7;
 pub(crate) const ENEMY_SKIN_COUNT: usize = 13;
 pub(crate) const ENEMY_TEX_BASE: usize = 29;
 pub(crate) const T_ORDNANCE: usize = ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT;
-pub(crate) const TEX_N: usize = T_ORDNANCE + 1;
+pub(crate) const T_GUN3: usize = T_ORDNANCE + 1;
+pub(crate) const T_GUN4: usize = T_ORDNANCE + 2;
+pub(crate) const T_GUN5: usize = T_ORDNANCE + 3;
+pub(crate) const T_GUN6: usize = T_ORDNANCE + 4;
+pub(crate) const T_GUN7: usize = T_ORDNANCE + 5;
+pub(crate) const TEX_N: usize = T_GUN7 + 1;
 pub(crate) const ENT_N: usize = 192;
 pub(crate) const T_BRICK: usize = 0;
 pub(crate) const T_METAL: usize = 1;
@@ -41,7 +46,7 @@ pub(crate) const T_MUZZLEFX: usize = 23;
 pub(crate) const T_FLAME: usize = 24;
 pub(crate) const T_CHAIN: usize = 25;
 pub(crate) const T_PIPES: usize = 26;
-pub(crate) const T_GUN: usize = 27;
+pub(crate) const T_GUN2: usize = 27;
 pub(crate) const T_SEAL: usize = 28;
 pub(crate) const SEAL_X: i32 = 38;
 pub(crate) const SEAL_Y: i32 = 19;
@@ -76,9 +81,11 @@ pub(crate) const EK_FIREPATCH: u8 = 24;
 /// Suicide-chaser drone. Floats at the player, runs a visible detonation
 /// windup (`ANIM_SPECIAL`), then explodes instead of dealing melee damage.
 pub(crate) const EK_MARTYR: u8 = 25;
+pub(crate) const EK_GUN6: u8 = 26;
+pub(crate) const EK_GUN7: u8 = 27;
 
-// BLACKSITE animation groups. Each group is one 2x2 atlas layer; two-frame
-// groups duplicate their last frame into the unused cells during packing.
+// BLACKSITE animation groups. Each group is one 2x2 atlas layer with four
+// distinct motion frames.
 pub(crate) const ANIM_IDLE: u8 = 0;
 pub(crate) const ANIM_MOVE: u8 = 1;
 pub(crate) const ANIM_PAIN: u8 = 2;
@@ -86,7 +93,7 @@ pub(crate) const ANIM_FIRE: u8 = 3;
 pub(crate) const ANIM_RELOAD: u8 = 4;
 pub(crate) const ANIM_DEAD: u8 = 5;
 pub(crate) const ANIM_SPECIAL: u8 = 6;
-pub(crate) const ANIM_FRAME_COUNTS: [u8; ENEMY_ANIM_COUNT] = [2, 4, 2, 2, 2, 2, 2];
+pub(crate) const ANIM_FRAME_COUNTS: [u8; ENEMY_ANIM_COUNT] = [4, 4, 4, 4, 4, 4, 4];
 pub(crate) const SKIN_NONE: u8 = 255;
 
 pub(crate) const SKIN_RIFLEMAN: u8 = 0;
@@ -206,7 +213,7 @@ mod tests {
 
     #[test]
     fn texture_slots_cover_the_known_atlas() {
-        assert_eq!(TEX_N, ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT + 1);
+        assert_eq!(TEX_N, ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT + 6);
         assert_eq!(TEX, 256);
         assert_eq!(TEXM, 255);
         assert_eq!(T_SEAL, 28);

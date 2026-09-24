@@ -9,7 +9,12 @@ export const ENEMY_ANIM_COUNT = 7;
 export const ENEMY_SKIN_COUNT = 13;
 export const ENEMY_TEX_BASE = 29;
 export const T_ORDNANCE = ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT;
-export const TEX_N = T_ORDNANCE + 1;
+export const T_GUN3 = T_ORDNANCE + 1;
+export const T_GUN4 = T_ORDNANCE + 2;
+export const T_GUN5 = T_ORDNANCE + 3;
+export const T_GUN6 = T_ORDNANCE + 4;
+export const T_GUN7 = T_ORDNANCE + 5;
+export const TEX_N = T_GUN7 + 1;
 export const TEX = 256;
 
 export type WorldFrame = {

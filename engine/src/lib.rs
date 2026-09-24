@@ -42,6 +42,8 @@ struct Engine {
     has_w3: bool,
     has_w4: bool,
     has_w5: bool,
+    has_w6: bool,
+    has_w7: bool,
     cooldown: f32,
     reload_t: f32,
     reload_dur: f32,
@@ -196,12 +198,12 @@ fn sprite_style(e: &Ent) -> (usize, f32, bool, i32) {
 fn is_pickup(k: u8) -> bool {
     matches!(
         k,
-        EK_MED | EK_AMMO | EK_ARMOR | EK_GUN2 | EK_GUN3 | EK_GUN4 | EK_GUN5
+        EK_MED | EK_AMMO | EK_ARMOR | EK_GUN2 | EK_GUN3 | EK_GUN4 | EK_GUN5 | EK_GUN6 | EK_GUN7
     )
 }
 
 fn is_weapon_item(k: u8) -> bool {
-    matches!(k, EK_GUN2 | EK_GUN3 | EK_GUN4 | EK_GUN5)
+    matches!(k, EK_GUN2 | EK_GUN3 | EK_GUN4 | EK_GUN5 | EK_GUN6 | EK_GUN7)
 }
 
 impl Engine {
@@ -254,13 +256,15 @@ impl Engine {
             pr: 0.22,
             health: 100,
             armor: 0,
-            ammo: [36, 0, 0, 0, 0, 32, 240],
-            mag: [12, 0, 0, 0, 0, 8, 80],
+            ammo: [36, 0, 0, 0, 0, 0, 0],
+            mag: [12, 0, 0, 0, 0, 0, 0],
             weapon: 0,
             has_w2: false,
             has_w3: false,
             has_w4: false,
             has_w5: false,
+            has_w6: false,
+            has_w7: false,
             cooldown: 0.0,
             reload_t: 0.0,
             reload_dur: 1.0,
@@ -310,6 +314,8 @@ impl Engine {
                 boss_health: 0,
                 boss_max_health: 0,
                 boss_phase: 0,
+                has_w6: 0,
+                has_w7: 0,
             },
             rng: 0xC0FFEE,
             shake: 0.0,
@@ -762,7 +768,7 @@ impl Engine {
                                 Self::pack(22, 18, 16, 255)
                             }
                         }
-                        T_GUN => {
+                        T_GUN2 => {
                             let body = x > 36 && x < 92 && y > 22 && y < 118;
                             let barrel = x > 88 && x < 118 && y > 52 && y < 70;
                             if barrel {
@@ -1047,10 +1053,14 @@ impl Engine {
             self.mag[4] = MAG_SZ[4];
             self.ammo[4] = self.ammo[4].max(12);
         }
-        self.mag[5] = MAG_SZ[5];
-        self.ammo[5] = self.ammo[5].max(16);
-        self.mag[6] = MAG_SZ[6];
-        self.ammo[6] = self.ammo[6].max(160);
+        if self.has_w6 {
+            self.mag[5] = MAG_SZ[5];
+            self.ammo[5] = self.ammo[5].max(16);
+        }
+        if self.has_w7 {
+            self.mag[6] = MAG_SZ[6];
+            self.ammo[6] = self.ammo[6].max(160);
+        }
         for e in self.ents.iter_mut() {
             if e.kind != 0 && enemy_def(e.kind).is_some_and(|d| d.cleared_on_wave) {
                 e.kind = 0;
@@ -1850,8 +1860,12 @@ impl Engine {
                 if self.has_w5 {
                     self.ammo[4] = (self.ammo[4] + 3).min(24);
                 }
-                self.ammo[5] = (self.ammo[5] + 12).min(64);
-                self.ammo[6] = (self.ammo[6] + 80).min(400);
+                if self.has_w6 {
+                    self.ammo[5] = (self.ammo[5] + 12).min(64);
+                }
+                if self.has_w7 {
+                    self.ammo[6] = (self.ammo[6] + 80).min(400);
+                }
                 self.events |= EV_PICK_SILVER;
             }
             EK_ARMOR => {
@@ -1898,6 +1912,22 @@ impl Engine {
                 self.reload_t = 0.0;
                 self.events |= EV_PICK_GOLD;
             }
+            EK_GUN6 => {
+                self.has_w6 = true;
+                self.ammo[5] = (self.ammo[5] + 16).min(64);
+                if self.mag[5] <= 0 { self.mag[5] = MAG_SZ[5]; }
+                self.weapon = 5;
+                self.reload_t = 0.0;
+                self.events |= EV_PICK_GOLD;
+            }
+            EK_GUN7 => {
+                self.has_w7 = true;
+                self.ammo[6] = (self.ammo[6] + 160).min(400);
+                if self.mag[6] <= 0 { self.mag[6] = MAG_SZ[6]; }
+                self.weapon = 6;
+                self.reload_t = 0.0;
+                self.events |= EV_PICK_GOLD;
+            }
             _ => {}
         }
     }
@@ -1911,8 +1941,8 @@ impl Engine {
                 || (self.has_w3 && self.ammo[2] < 200)
                 || (self.has_w4 && self.ammo[3] < 16)
                 || (self.has_w5 && self.ammo[4] < 24)
-                || self.ammo[5] < 64
-                || self.ammo[6] < 400,
+                || (self.has_w6 && self.ammo[5] < 64)
+                || (self.has_w7 && self.ammo[6] < 400),
             _ => true,
         }
     }
@@ -1991,11 +2021,11 @@ impl Engine {
                 self.weapon = 4;
                 self.reload_t = 0.0;
             }
-            if bits & IN_W6 != 0 && self.wpn_latched & IN_W6 == 0 {
+            if bits & IN_W6 != 0 && self.has_w6 && self.wpn_latched & IN_W6 == 0 {
                 self.weapon = 5;
                 self.reload_t = 0.0;
             }
-            if bits & IN_W7 != 0 && self.wpn_latched & IN_W7 == 0 {
+            if bits & IN_W7 != 0 && self.has_w7 && self.wpn_latched & IN_W7 == 0 {
                 self.weapon = 6;
                 self.reload_t = 0.0;
             }
@@ -2543,6 +2573,8 @@ impl Engine {
             boss_health,
             boss_max_health: if boss_health > 0 { self.boss_max_health() } else { 0 },
             boss_phase: if boss_health > 0 { self.boss_phase as i32 } else { 0 },
+            has_w6: if self.has_w6 { 1 } else { 0 },
+            has_w7: if self.has_w7 { 1 } else { 0 },
         };
     }
 
@@ -3591,6 +3623,8 @@ pub extern "C" fn hs_qa_armory() {
     e.has_w3 = true;
     e.has_w4 = true;
     e.has_w5 = true;
+    e.has_w6 = true;
+    e.has_w7 = true;
     e.mag = MAG_SZ;
     e.ammo = [120, 40, 200, 16, 24, 48, 320];
 }
@@ -4161,6 +4195,8 @@ mod tests {
         e.has_w3 = true;
         e.has_w4 = true;
         e.has_w5 = true;
+        e.has_w6 = true;
+        e.has_w7 = true;
         for (expected, bit) in [IN_W1, IN_W2, IN_W3, IN_W4, IN_W5, IN_W6, IN_W7]
             .into_iter()
             .enumerate()
@@ -4171,6 +4207,24 @@ mod tests {
             e.tick(1.0 / 60.0);
             assert_eq!(e.weapon, expected as i32, "key {} selects its weapon", expected + 1);
         }
+    }
+
+    #[test]
+    fn arc_and_rotary_stay_locked_until_their_cases_are_picked_up() {
+        let mut e = arena();
+        for bit in [IN_W6, IN_W7] {
+            e.bits = bit;
+            e.tick(1.0 / 60.0);
+            assert_eq!(e.weapon, 0, "locked late-game weapons must not switch");
+            e.bits = 0;
+            e.tick(1.0 / 60.0);
+        }
+        e.pickup(EK_GUN6);
+        assert!(e.has_w6);
+        assert_eq!(e.weapon, 5);
+        e.pickup(EK_GUN7);
+        assert!(e.has_w7);
+        assert_eq!(e.weapon, 6);
     }
 
     #[test]
@@ -4309,13 +4363,19 @@ mod tests {
     #[test]
     fn ammo_crates_restock_the_complete_seven_weapon_arsenal() {
         let mut e = arena();
+        e.has_w2 = true;
+        e.has_w3 = true;
+        e.has_w4 = true;
+        e.has_w5 = true;
+        e.has_w6 = true;
+        e.has_w7 = true;
         e.ammo = [0; 7];
         let item = e.spawn(EK_AMMO, e.px, e.py).unwrap();
         e.tick(1.0 / 60.0);
         assert_eq!(e.ents[item].kind, EK_NONE, "a useful ammo crate is collected");
-        assert_eq!(e.ammo, [18, 0, 0, 0, 0, 12, 80]);
+        assert_eq!(e.ammo, [18, 8, 40, 4, 3, 12, 80]);
 
-        e.ammo = [120, 0, 0, 0, 0, 64, 400];
+        e.ammo = [120, 40, 200, 16, 24, 64, 400];
         let full = e.spawn(EK_AMMO, e.px, e.py).unwrap();
         e.tick(1.0 / 60.0);
         assert_eq!(e.ents[full].kind, EK_AMMO, "a full arsenal leaves supplies available");

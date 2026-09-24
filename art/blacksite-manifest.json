@@ -255,6 +255,7 @@
       "specId": "weapon_mk23s",
       "engineSlot": 0,
       "files": ["weap_mk23s.png", "weap_mk23s_fire.png", "weap_mk23s_reload.png"],
+      "pickupFile": "spr_gun_mk23s.png",
       "sheet": "2x2",
       "status": "ready"
     },
@@ -262,6 +263,7 @@
       "specId": "weapon_m870k",
       "engineSlot": 1,
       "files": ["weap_m870k.png", "weap_m870k_fire.png", "weap_m870k_reload.png"],
+      "pickupFile": "spr_gun_m870k.png",
       "sheet": "2x2",
       "status": "ready"
     },
@@ -269,6 +271,7 @@
       "specId": "weapon_vx9",
       "engineSlot": 2,
       "files": ["weap_vx9.png", "weap_vx9_fire.png", "weap_vx9_reload.png"],
+      "pickupFile": "spr_gun_vx9.png",
       "sheet": "2x2",
       "status": "ready"
     },
@@ -276,6 +279,7 @@
       "specId": "weapon_shrike",
       "engineSlot": 3,
       "files": ["weap_shrike.png", "weap_shrike_fire.png", "weap_shrike_reload.png"],
+      "pickupFile": "spr_gun_shrike.png",
       "sheet": "2x2",
       "status": "ready"
     },
@@ -283,6 +287,7 @@
       "specId": "weapon_raven",
       "engineSlot": 4,
       "files": ["weap_raven.png", "weap_raven_fire.png", "weap_raven_reload.png"],
+      "pickupFile": "spr_gun_raven.png",
       "sheet": "2x2",
       "status": "ready"
     },
@@ -290,6 +295,7 @@
       "specId": "weapon_arc12",
       "engineSlot": 5,
       "files": ["weap_arc12.png", "weap_arc12_fire.png", "weap_arc12_reload.png"],
+      "pickupFile": "spr_gun_arc12.png",
       "sheet": "2x2",
       "status": "ready"
     },
@@ -297,6 +303,7 @@
       "specId": "weapon_m56",
       "engineSlot": 6,
       "files": ["weap_m56.png", "weap_m56_fire.png", "weap_m56_reload.png"],
+      "pickupFile": "spr_gun_m56.png",
       "sheet": "2x2",
       "status": "ready"
     }

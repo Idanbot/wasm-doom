@@ -27,6 +27,8 @@ export type HudState = {
   weapFrame: number;
   hasW4: boolean;
   hasW5: boolean;
+  hasW6: boolean;
+  hasW7: boolean;
   events: number;
   evWeapon: number;
   wave: number;
@@ -92,6 +94,8 @@ export const DEFAULT_HUD: HudState = {
   weapFrame: 0,
   hasW4: false,
   hasW5: false,
+  hasW6: false,
+  hasW7: false,
   events: 0,
   evWeapon: 0,
   wave: 1,

@@ -231,11 +231,15 @@ pub(crate) fn place_hub_spoke(e: &mut Engine) {
     e.spawn(EK_LAMP, 22.5, 24.5);
     e.spawn(EK_BARREL, 26.5, 25.5);
     // Secrets reward the curious: armor cache, Ripper vent, vault crypt.
-    e.spawn(EK_ARMOR, 4.5, 20.5);
+    e.spawn(EK_ARMOR, 5.5, 20.5);
     e.spawn(EK_GUN3, 30.5, 12.5);
     e.spawn(EK_AMMO, 31.5, 13.5);
     e.spawn(EK_ARMOR, 31.5, 24.5);
     e.spawn(EK_MED, 32.5, 25.5);
+    // Late-game arsenals: the ARC-12 rewards the vault approach while the
+    // M56 waits in the deepest secret cache rather than being owned at spawn.
+    e.spawn(EK_GUN6, 41.5, 24.5);
+    e.spawn(EK_GUN7, 4.5, 20.5);
 
     e.spawn_hostiles(1);
 }
@@ -328,6 +332,8 @@ mod tests {
             (22.5, 3.5, "Scattergun"),
             (37.5, 12.5, "Lance"),
             (22.5, 26.5, "Pyre"),
+            (41.5, 24.5, "ARC-12"),
+            (4.5, 20.5, "M56"),
             (41.5, 24.5, "seal arena"),
             (4.5, 20.5, "secret cache"),
             (30.5, 12.5, "secret vent"),

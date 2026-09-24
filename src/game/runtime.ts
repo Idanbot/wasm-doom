@@ -1,6 +1,17 @@
 import { createAudio, type GameAudio } from "./audio";
 import { createBlitter, type BlitKind, type Blitter } from "./blit";
-import { ENEMY_ANIM_COUNT, ENEMY_TEX_BASE, readWorldFrame, TEX_N, T_ORDNANCE } from "./gpu-world";
+import {
+  ENEMY_ANIM_COUNT,
+  ENEMY_TEX_BASE,
+  readWorldFrame,
+  TEX_N,
+  T_GUN3,
+  T_GUN4,
+  T_GUN5,
+  T_GUN6,
+  T_GUN7,
+  T_ORDNANCE,
+} from "./gpu-world";
 import { HUD_SIZE } from "./hud-abi";
 import { keySpriteAlpha } from "./sprite-alpha";
 import {
@@ -143,8 +154,13 @@ const TEX_FILES: { id: number; src: string }[] = [
   { id: 24, src: "/game/spr_flame.png" },
   { id: 25, src: "/game/spr_chain.png" },
   { id: 26, src: "/game/wall_pipes.png" },
-  { id: 27, src: "/game/spr_gun.png" },
+  { id: 27, src: "/game/spr_gun_m870k.png" },
   { id: 28, src: "/game/floor_seal.png" },
+  { id: T_GUN3, src: "/game/spr_gun_vx9.png" },
+  { id: T_GUN4, src: "/game/spr_gun_shrike.png" },
+  { id: T_GUN5, src: "/game/spr_gun_raven.png" },
+  { id: T_GUN6, src: "/game/spr_gun_arc12.png" },
+  { id: T_GUN7, src: "/game/spr_gun_m56.png" },
   ...ENEMY_SKINS.flatMap((skin, skinIndex) =>
     ENEMY_ANIMATIONS.map((animation, animationIndex) => ({
       id: ENEMY_TEX_BASE + skinIndex * ENEMY_ANIM_COUNT + animationIndex,
@@ -476,8 +492,8 @@ export class HellscanRuntime {
       this.hud.hasW3,
       this.hud.hasW4,
       this.hud.hasW5,
-      true,
-      true,
+      this.hud.hasW6,
+      this.hud.hasW7,
     ];
     const step = dir >= 0 ? 1 : 6;
     for (let n = 1; n <= 7; n++) {
@@ -709,6 +725,8 @@ export class HellscanRuntime {
       bossHealth: dv.getInt32(120, true),
       bossMaxHealth: dv.getInt32(124, true),
       bossPhase: dv.getInt32(128, true),
+      hasW6: dv.getInt32(132, true) !== 0,
+      hasW7: dv.getInt32(136, true) !== 0,
     };
   }
 

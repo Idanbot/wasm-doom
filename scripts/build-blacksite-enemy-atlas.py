@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministically turn 1024px enemy renders into seven 2x2 runtime sheets.
+"""Deterministically turn 1024px enemy renders into seven 4-frame runtime sheets.
 
 The image model supplies one clean, high-resolution design render per enemy.
 This script owns the repeatable work the model should not do: magenta keying,
@@ -17,7 +17,7 @@ from PIL import Image, ImageDraw
 
 
 ANIMATIONS = ("idle", "move", "pain", "fire", "reload", "dead", "special")
-FRAME_COUNTS = {"idle": 2, "move": 4, "pain": 2, "fire": 2, "reload": 2, "dead": 2, "special": 2}
+FRAME_COUNTS = {name: 4 for name in ANIMATIONS}
 SPECS = (
     "rifleman",
     "breacher",
@@ -167,37 +167,55 @@ def add_fire_flash(image: Image.Image, side: int) -> Image.Image:
     return Image.alpha_composite(out, glow)
 
 
-def add_special_glow(image: Image.Image, spec: str) -> Image.Image:
+def add_special_glow(image: Image.Image, spec: str, strength: float = 1.0) -> Image.Image:
     out = image.copy()
     glow = Image.new("RGBA", out.size, (0, 0, 0, 0))
     draw = ImageDraw.Draw(glow)
     color = (224, 154, 54, 66) if spec in {"rifleman", "breacher", "hazmat", "gunner", "loader"} else (69, 186, 177, 62)
-    draw.ellipse((40, 26, 216, 244), outline=(*color[:3], 44), width=5)
+    draw.ellipse((40, 26, 216, 244), outline=(*color[:3], round(32 + 44 * strength)), width=max(3, round(3 + 4 * strength)))
     return Image.alpha_composite(out, glow)
+
+
+def pain_tint(image: Image.Image, strength: float) -> Image.Image:
+    red = Image.new("RGBA", image.size, (224, 38, 34, 0))
+    red.putalpha(image.getchannel("A").point(lambda p: int(p * strength)))
+    return Image.alpha_composite(image, red)
 
 
 def frames_for(base: Image.Image, spec: str, animation: str) -> list[Image.Image]:
     if animation == "idle":
-        return [deform(base, 1.0, 0.99, -0.008, -1, 2), deform(base, 1.008, 1.0, 0.008, 1, 0)]
+        return [deform(base, 0.992, 1.008, -0.018, -2, -1), deform(base, 1.008, 0.992, -0.006, -1, 2),
+                deform(base, 1.016, 0.985, 0.018, 2, 4), deform(base, 1.004, 0.998, 0.006, 1, 1)]
     if animation == "move":
         return [deform(base, 0.94, 1.02, -0.055, -5, -1), deform(base, 1.05, 0.96, 0.02, -2, 5),
                 deform(base, 0.94, 1.02, 0.055, 5, -1), deform(base, 1.05, 0.96, -0.02, 2, 5)]
     if animation == "pain":
-        red = Image.new("RGBA", base.size, (224, 38, 34, 0))
-        red.putalpha(base.getchannel("A").point(lambda p: int(p * 0.42)))
-        return [Image.alpha_composite(deform(base, 0.86, 1.02, -0.09, -9, 0), red),
-                Image.alpha_composite(deform(base, 1.04, 0.94, 0.06, 7, 8), red)]
+        return [pain_tint(deform(base, 0.92, 1.0, -0.12, -13, 1), 0.52),
+                pain_tint(deform(base, 0.84, 0.96, -0.07, -8, 8), 0.62),
+                pain_tint(deform(base, 1.04, 0.93, 0.08, 8, 11), 0.46),
+                pain_tint(deform(base, 1.01, 0.98, 0.025, 3, 4), 0.24)]
     if animation == "fire":
-        return [recoil_pose(base, 4), add_fire_flash(recoil_pose(base, 11), 1)]
+        return [recoil_pose(base, 2), add_fire_flash(recoil_pose(base, 8), 1),
+                add_fire_flash(recoil_pose(base, 14), 1), recoil_pose(deform(base, 1.01, 0.98, 0.015, 2, 4), 5)]
     if animation == "reload":
-        return [recoil_pose(deform(base, 0.98, 0.98, -0.04, -5, 5), -4),
-                recoil_pose(deform(base, 1.02, 0.97, 0.05, 6, 7), 5)]
+        return [recoil_pose(deform(base, 0.98, 0.99, -0.075, -8, 3), -5),
+                recoil_pose(deform(base, 0.94, 0.96, -0.035, -4, 10), -2),
+                recoil_pose(deform(base, 1.04, 0.94, 0.065, 8, 12), 7),
+                recoil_pose(deform(base, 1.01, 0.98, 0.025, 3, 5), 3)]
     if animation == "dead":
-        return [base.rotate(7, resample=Image.Resampling.BICUBIC, center=(128, 236), fillcolor=(0, 0, 0, 0)),
-                base.rotate(16, resample=Image.Resampling.BICUBIC, center=(128, 236), fillcolor=(0, 0, 0, 0)).transform(base.size, Image.Transform.AFFINE, (1, 0, 5, 0, 1, -4), fillcolor=(0, 0, 0, 0))]
+        fall = [
+            deform(base, 0.98, 1.0, -0.04, -4, 1),
+            deform(base, 0.94, 0.96, -0.10, -9, 8),
+            deform(base, 0.88, 0.88, -0.16, -13, 18),
+            deform(base, 0.82, 0.72, -0.22, -16, 42),
+        ]
+        return [frame.rotate(angle, resample=Image.Resampling.BICUBIC, center=(128, 224), fillcolor=(0, 0, 0, 0))
+                for frame, angle in zip(fall, (5, 18, 38, 62))]
     if animation == "special":
-        return [add_special_glow(deform(base, 0.92, 0.98, -0.04, -4, 5), spec),
-                add_special_glow(deform(base, 1.09, 1.04, 0.04, 4, -8), spec)]
+        return [add_special_glow(deform(base, 0.91, 0.97, -0.055, -5, 7), spec, 0.35),
+                add_special_glow(deform(base, 1.02, 1.01, -0.015, -1, -1), spec, 0.7),
+                add_special_glow(deform(base, 1.10, 1.05, 0.045, 5, -10), spec, 1.0),
+                add_special_glow(deform(base, 1.01, 0.99, 0.015, 2, 2), spec, 0.55)]
     raise ValueError(animation)
 
 
@@ -231,7 +249,7 @@ def build(spec: str, source_dir: Path, output_dir: Path, atlas_dir: Path) -> Non
         "frameHeight": 128,
         "origin": {"x": 64, "y": 118},
         "animations": {
-            name: {"start": sum(FRAME_COUNTS[a] for a in ANIMATIONS[:i]), "frames": FRAME_COUNTS[name], "fps": 8 if name == "move" else 4}
+            name: {"start": sum(FRAME_COUNTS[a] for a in ANIMATIONS[:i]), "frames": FRAME_COUNTS[name], "fps": 8 if name == "move" else 6}
             for i, name in enumerate(ANIMATIONS)
         },
         "layers": [f"enemy_{spec}_{name}.png" for name in ANIMATIONS],

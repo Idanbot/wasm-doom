@@ -1,0 +1,9 @@
+{
+  "generator": "built-in image generation",
+  "useCase": "stylized-concept",
+  "reference": "art/source_hd/combat_v3/mk23s_pov.png",
+  "prompt": "Transparent 2x2 sheet preserving the exact MK23-S FPS viewmodel and showing four sequential reload stages: support hand reaches, magazine removed, fresh magazine inserted, firing grip restored.",
+  "sourceSize": [1223, 1286],
+  "frames": 4,
+  "background": "transparent"
+}

@@ -1,0 +1,58 @@
+{
+  "mk23s": {
+    "source": "art/source_hd/weapon_cases/mk23s.jpg",
+    "runtime": "public/game/spr_gun_mk23s.png",
+    "size": [
+      256,
+      256
+    ]
+  },
+  "m870k": {
+    "source": "art/source_hd/weapon_cases/m870k.jpg",
+    "runtime": "public/game/spr_gun_m870k.png",
+    "size": [
+      256,
+      256
+    ]
+  },
+  "vx9": {
+    "source": "art/source_hd/weapon_cases/vx9.jpg",
+    "runtime": "public/game/spr_gun_vx9.png",
+    "size": [
+      256,
+      256
+    ]
+  },
+  "shrike": {
+    "source": "art/source_hd/weapon_cases/shrike.jpg",
+    "runtime": "public/game/spr_gun_shrike.png",
+    "size": [
+      256,
+      256
+    ]
+  },
+  "raven": {
+    "source": "art/source_hd/weapon_cases/raven.jpg",
+    "runtime": "public/game/spr_gun_raven.png",
+    "size": [
+      256,
+      256
+    ]
+  },
+  "arc12": {
+    "source": "art/source_hd/weapon_cases/arc12.jpg",
+    "runtime": "public/game/spr_gun_arc12.png",
+    "size": [
+      256,
+      256
+    ]
+  },
+  "m56": {
+    "source": "art/source_hd/weapon_cases/m56.png",
+    "runtime": "public/game/spr_gun_m56.png",
+    "size": [
+      256,
+      256
+    ]
+  }
+}

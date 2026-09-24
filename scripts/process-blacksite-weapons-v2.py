@@ -71,9 +71,14 @@ def effect_cutout(path: Path) -> Image.Image:
     if not bbox: raise ValueError(f"effect vanished during chroma key: {path}")
     return image.crop(bbox)
 
-def flash(frame: Image.Image, slug: str, power: float, muzzle: Image.Image) -> Image.Image:
+def flash(frame: Image.Image, slug: str, power: float, muzzle: Image.Image, pistol_muzzle: Image.Image) -> Image.Image:
     out=frame.copy()
     cx,cy=(512,120 if slug in {"raven","shrike"} else 170)
+    if slug == "mk23s":
+        burst=pistol_muzzle.resize((72,110),Image.Resampling.LANCZOS)
+        burst=ImageEnhance.Brightness(burst).enhance(0.9+power*0.2)
+        out.alpha_composite(burst,(cx-burst.width//2,cy+115-burst.height))
+        return out
     size=round((190 if slug in {"mk23s","vx9","arc12"} else 250)*(0.82+power*0.18))
     aspect=muzzle.height/max(1,muzzle.width)
     burst=muzzle.resize((size,max(1,round(size*aspect))),Image.Resampling.LANCZOS)
@@ -92,16 +97,21 @@ def sheet(frames: list[Image.Image]) -> Image.Image:
 def main():
     ATLAS.mkdir(parents=True, exist_ok=True)
     muzzle=effect_cutout(COMBAT_V3/"muzzle_flash_front.jpg")
+    pistol_muzzle=effect_cutout(COMBAT_V3/"mk23s_muzzle.png")
     report={}
     for slug in WEAPONS:
         path=COMBAT_V3/"mk23s_pov.png" if slug == "mk23s" else SOURCE/f"{slug}.jpg"
         if not path.exists(): raise FileNotFoundError(path)
         base=decontaminate(key(fitted(key(Image.open(path)))))
         base.resize((640,640),Image.Resampling.LANCZOS).save(OUT/f"weap_{slug}.png",optimize=True)
-        recoil=[shifted(base,0,0),flash(shifted(base,-4,32,-1.2,1.08),slug,.55,muzzle),flash(shifted(base,4,58,1.6,1.14),slug,1,muzzle),shifted(base,0,20,0,.96)]
+        recoil=[shifted(base,0,0),flash(shifted(base,-4,32,-1.2,1.08),slug,.55,muzzle,pistol_muzzle),flash(shifted(base,4,58,1.6,1.14),slug,1,muzzle,pistol_muzzle),shifted(base,0,20,0,.96)]
         reload=[shifted(base,0,25,0),shifted(base,-55,85,-7),shifted(base,48,95,6),shifted(base,0,35,0)]
         sheet(recoil).save(OUT/f"weap_{slug}_fire.png",optimize=True)
-        sheet(reload).save(OUT/f"weap_{slug}_reload.png",optimize=True)
+        if slug == "mk23s":
+            generated_reload=Image.open(COMBAT_V3/"mk23s_reload_2x2.png").convert("RGBA")
+            generated_reload.resize((1024,1024),Image.Resampling.LANCZOS).save(OUT/f"weap_{slug}_reload.png",optimize=True)
+        else:
+            sheet(reload).save(OUT/f"weap_{slug}_reload.png",optimize=True)
         report[slug]={"source":str(path.relative_to(ROOT)),"idle":f"public/game/weap_{slug}.png","fireFrames":4,"reloadFrames":4}
         metadata={"id":f"weapon_{slug}","frameWidth":512,"frameHeight":512,"origin":{"x":256,"y":480},"animations":{"idle":{"start":0,"frames":1,"fps":1},"fire":{"start":0,"frames":4,"fps":10},"reload":{"start":0,"frames":4,"fps":7}}}
         (ATLAS/f"weapon_{slug}.json").write_text(json.dumps(metadata,indent=2)+"\n")

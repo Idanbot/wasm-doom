@@ -1,0 +1,8 @@
+{
+  "generator": "built-in image generation",
+  "useCase": "stylized-concept",
+  "reference": "art/source_hd/weapons_v2/m56.jpg",
+  "prompt": "Open extra-heavy weapon case containing the exact same M56 multi-tube weapon from the reference, preserving its circular central housing, four barrel tubes, modules, dark gunmetal and red-orange accents; transparent background.",
+  "sourceSize": [1223, 1223],
+  "background": "transparent"
+}

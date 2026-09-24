@@ -21,10 +21,10 @@ const assertHudTextContained = async (page, label) => {
         .flatMap((node) => {
           const inner = node.getBoundingClientRect();
           const outside =
-            inner.left < outer.left + 3 ||
-            inner.right > outer.right - 3 ||
-            inner.top < outer.top + 3 ||
-            inner.bottom > outer.bottom - 3;
+            inner.left < outer.left + 12 ||
+            inner.right > outer.right - 12 ||
+            inner.top < outer.top + 12 ||
+            inner.bottom > outer.bottom - 16;
           return outside
             ? [{ text: node.textContent.trim(), outer: outer.toJSON(), inner: inner.toJSON() }]
             : [];
@@ -52,6 +52,15 @@ try {
     await page.waitForFunction(
       () => !!window.__controlsTest && document.body.innerText.includes("HEALTH"),
     );
+    if (slot === 0) {
+      const locked = await page.locator(".weapon-slot.locked").allTextContents();
+      assert.ok(locked.some((text) => text.includes("6") && text.includes("ARC-12")));
+      assert.ok(locked.some((text) => text.includes("7") && text.includes("M56")));
+      await page.evaluate(() => window.__controlsTest.setKeys(["Digit6"]));
+      await page.waitForTimeout(80);
+      assert.equal(await page.evaluate(() => window.__controlsTest.getWeapon()), 0);
+      await page.evaluate(() => window.__controlsTest.setKeys([]));
+    }
     await page.evaluate((slot) => {
       const t = window.__controlsTest;
       t.grantWeapons();
@@ -62,11 +71,23 @@ try {
     assert.equal(await page.evaluate(() => window.__controlsTest.getAmmo()), magazine);
     await page.waitForFunction((name) => document.body.innerText.includes(name), name);
     await page.evaluate(() => window.__controlsTest.setKeys(["Space"]));
-    await page.waitForFunction((mag) => window.__controlsTest.getAmmo() < mag, magazine);
-    // Capture the live firing sheet before releasing the trigger.
+    await page.waitForFunction(() => {
+      const weapon = document.querySelector(".weapon-view");
+      return (
+        weapon?.style.backgroundImage.includes("_fire.png") &&
+        ["100% 0%", "0% 100%"].includes(weapon.style.backgroundPosition)
+      );
+    });
+    // Capture an actual recoil/flash frame rather than the settled tail of
+    // the shot, which can already be back on the idle sheet after ammo drops.
     await page.screenshot({ path: `screenshots/combat-weapon-${slot}.png` });
+    await page.waitForFunction((mag) => window.__controlsTest.getAmmo() < mag, magazine);
     await page.evaluate(() => window.__controlsTest.setKeys(["KeyR"]));
     await page.waitForFunction(() => window.__controlsTest.getReloading() > 0);
+    if (slot === 0) {
+      await page.waitForFunction(() => window.__controlsTest.getReloading() > 0.34);
+      await page.screenshot({ path: "screenshots/combat-weapon-0-reload.png" });
+    }
     await page.evaluate(() => window.__controlsTest.setKeys([]));
     await page.waitForFunction(
       (mag) =>

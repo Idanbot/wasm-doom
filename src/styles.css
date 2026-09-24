@@ -74,28 +74,6 @@
   height: min(50vw, 480px);
 }
 
-.weapon-view::after {
-  content: "";
-  position: absolute;
-  left: var(--flash-x, 58%);
-  bottom: var(--flash-y, 44%);
-  width: calc(34px * var(--flash-s, 1));
-  height: calc(26px * var(--flash-s, 1));
-  transform: translate(-30%, 20%);
-  background: radial-gradient(
-    circle,
-    rgba(255, 250, 220, 1) 0%,
-    rgba(255, 170, 40, 0.85) 28%,
-    rgba(255, 80, 10, 0.35) 58%,
-    transparent 74%
-  );
-  box-shadow: 0 0 calc(22px * var(--flash-s, 1)) calc(8px * var(--flash-s, 1))
-    rgba(255, 186, 64, 0.55);
-  opacity: var(--muzzle, 0);
-  mix-blend-mode: screen;
-  pointer-events: none;
-}
-
 .hud-num {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
@@ -911,7 +889,7 @@ select:focus-visible {
 .hud-plate {
   background: url("/game/ui/hud-panel.webp") center / 100% 100% no-repeat;
   width: 300px;
-  padding: 28px 36px 26px;
+  padding: 28px 36px 36px;
   box-sizing: border-box;
   flex-shrink: 0;
   min-width: 0;
@@ -1089,7 +1067,7 @@ select:focus-visible {
   }
   .hud-plate {
     width: 265px;
-    padding: 25px 31px 24px;
+    padding: 25px 31px 34px;
   }
 }
 @media (max-width: 600px) {
@@ -1236,7 +1214,7 @@ select:focus-visible {
   }
   .hud-plate {
     width: calc(50% - 2px);
-    padding: 21px clamp(16px, 4.8vw, 20px) 20px;
+    padding: 21px clamp(16px, 4.8vw, 20px) 29px;
   }
   .hud-health {
     gap: 6px;
@@ -1309,7 +1287,7 @@ select:focus-visible {
   }
   .hud-plate {
     padding-top: 22px;
-    padding-bottom: 20px;
+    padding-bottom: 30px;
   }
   .hud-health strong,
   .hud-ammo > strong {

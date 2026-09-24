@@ -9,38 +9,38 @@
   "animations": {
     "idle": {
       "start": 0,
-      "frames": 2,
-      "fps": 4
+      "frames": 4,
+      "fps": 6
     },
     "move": {
-      "start": 2,
+      "start": 4,
       "frames": 4,
       "fps": 8
     },
     "pain": {
-      "start": 6,
-      "frames": 2,
-      "fps": 4
+      "start": 8,
+      "frames": 4,
+      "fps": 6
     },
     "fire": {
-      "start": 8,
-      "frames": 2,
-      "fps": 4
+      "start": 12,
+      "frames": 4,
+      "fps": 6
     },
     "reload": {
-      "start": 10,
-      "frames": 2,
-      "fps": 4
+      "start": 16,
+      "frames": 4,
+      "fps": 6
     },
     "dead": {
-      "start": 12,
-      "frames": 2,
-      "fps": 4
+      "start": 20,
+      "frames": 4,
+      "fps": 6
     },
     "special": {
-      "start": 14,
-      "frames": 2,
-      "fps": 4
+      "start": 24,
+      "frames": 4,
+      "fps": 6
     }
   },
   "layers": [

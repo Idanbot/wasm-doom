@@ -12,9 +12,9 @@ for skin in SKINS:
     for animation in ANIMATIONS:
         image = Image.open(ROOT / "public/game" / f"enemy_{skin}_{animation}.png").convert("RGBA")
         frames = [image.crop(((i & 1) * 128, (i >> 1) * 128, (i & 1) * 128 + 128, (i >> 1) * 128 + 128)) for i in range(4)]
-        required = 4 if animation == "move" else 2
+        required = 4
         for i in range(1, required):
-            diff = ImageChops.difference(frames[0], frames[i])
+            diff = ImageChops.difference(frames[i - 1], frames[i])
             mean = sum(ImageStat.Stat(diff).mean) / 4
             if mean < 0.45:
                 raise SystemExit(f"{skin}/{animation}: frame {i} is effectively static ({mean:.3f})")

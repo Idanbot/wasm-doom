@@ -1,0 +1,7 @@
+{
+  "generator": "built-in image generation",
+  "useCase": "stylized-concept",
+  "prompt": "Compact realistic suppressed-pistol muzzle flash viewed along the muzzle axis: narrow pale amber-white gas cone, tiny hot core, short sparks, faint smoke, transparent background.",
+  "sourceSize": [1024, 1536],
+  "background": "transparent"
+}

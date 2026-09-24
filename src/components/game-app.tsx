@@ -97,14 +97,6 @@ export function GameApp() {
           const roll = h.kick * -1.8 * weight * motion;
           weapEl.style.transform = `translate(-50%, ${bobY}px) translateX(${bobX}px) rotate(${roll}deg)`;
           weapEl.style.filter = h.muzzle > 0.05 ? `brightness(${1 + h.muzzle * 0.22})` : "";
-          weapEl.style.setProperty("--flash-s", "1");
-          weapEl.style.setProperty("--flash-x", "62%");
-          weapEl.style.setProperty("--flash-y", "46%");
-          weapEl.style.setProperty(
-            "--muzzle",
-            h.muzzle > 0.04 && !reloading ? String(Math.min(1, h.muzzle)) : "0",
-          );
-
           const wpn = WEAPONS[h.weapon] ?? WEAPONS[0]!;
           const fr = h.weapFrame | 0;
           if (fr >= 5) {
@@ -141,6 +133,8 @@ export function GameApp() {
           h.hasW3,
           h.hasW4,
           h.hasW5,
+          h.hasW6,
+          h.hasW7,
           h.reloading > 0.001,
           h.reloading === 0,
         ].join("|");
