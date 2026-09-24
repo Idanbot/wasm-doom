@@ -13,7 +13,7 @@ import json
 from collections import deque
 from pathlib import Path
 
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFilter
 
 
 ANIMATIONS = ("idle", "move", "pain", "fire", "reload", "dead", "special")
@@ -53,6 +53,11 @@ def is_studio_pink(r: int, g: int, b: int) -> bool:
 def key_magenta(image: Image.Image) -> Image.Image:
     """Remove edge-connected studio background and enclosed magenta islands."""
     image = image.convert("RGBA")
+    # Current master art is generated with real transparency. Chroma-keying a
+    # transparent image by its hidden RGB values can eat dark armor connected
+    # to the canvas edge, so transparent sources only need alpha cleanup.
+    if image.getchannel("A").getextrema()[0] < 250:
+        return clean_alpha_noise(image)
     pixels = image.load()
     w, h = image.size
     corner = pixels[0, 0]
@@ -98,6 +103,52 @@ def key_magenta(image: Image.Image) -> Image.Image:
             r, g, b, _ = pixels[x, y]
             if is_magenta(r, g, b):
                 pixels[x, y] = (r, g, b, 0)
+    return image
+
+
+def clean_alpha_noise(image: Image.Image) -> Image.Image:
+    """Drop isolated generation specks without damaging the main silhouette."""
+    image = image.convert("RGBA")
+    alpha = image.getchannel("A")
+    w, h = image.size
+    mask = alpha.point(lambda value: 255 if value > 8 else 0)
+    pixels = mask.load()
+    seen = bytearray(w * h)
+    components: list[list[tuple[int, int]]] = []
+
+    for sy in range(h):
+        for sx in range(w):
+            index = sy * w + sx
+            if seen[index] or not pixels[sx, sy]:
+                continue
+            seen[index] = 1
+            queue = deque([(sx, sy)])
+            component: list[tuple[int, int]] = []
+            while queue:
+                x, y = queue.popleft()
+                component.append((x, y))
+                for nx, ny in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)):
+                    if nx < 0 or nx >= w or ny < 0 or ny >= h:
+                        continue
+                    ni = ny * w + nx
+                    if seen[ni] or not pixels[nx, ny]:
+                        continue
+                    seen[ni] = 1
+                    queue.append((nx, ny))
+            components.append(component)
+
+    if not components:
+        return image
+    largest = max(len(component) for component in components)
+    minimum = max(48, round(largest * 0.0005))
+    cleaned = alpha.copy()
+    cleaned_pixels = cleaned.load()
+    for component in components:
+        if len(component) >= minimum:
+            continue
+        for x, y in component:
+            cleaned_pixels[x, y] = 0
+    image.putalpha(cleaned)
     return image
 
 
@@ -226,6 +277,10 @@ def pack_sheet(frames: list[Image.Image]) -> Image.Image:
         cells.append(cells[-1])
     for i, frame in enumerate(cells[:4]):
         frame = frame.resize((128, 128), Image.Resampling.LANCZOS)
+        # Restore edge definition lost in the 1024px -> 128px reduction. The
+        # restrained radius sharpens plates, seams and optics without adding
+        # a halo around the transparent silhouette.
+        frame = frame.filter(ImageFilter.UnsharpMask(radius=0.7, percent=115, threshold=3))
         sheet.alpha_composite(frame, ((i & 1) * 128, (i >> 1) * 128))
     return sheet
 
@@ -253,9 +308,9 @@ def build(spec: str, source_dir: Path, output_dir: Path, atlas_dir: Path) -> Non
             for i, name in enumerate(ANIMATIONS)
         },
         "layers": [f"enemy_{spec}_{name}.png" for name in ANIMATIONS],
-        "background": "transparent after deterministic #ff00ff key",
+        "background": "native transparency with deterministic alpha cleanup; legacy #ff00ff key supported",
         "source": str(source_path),
-        "motion": "segmented pose rig with anchored deformation and torso recoil",
+        "motion": "four-frame anchored deformation with independent torso recoil",
     }
     (atlas_dir / f"enemy_{spec}.json").write_text(json.dumps(metadata, indent=2) + "\n")
 

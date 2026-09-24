@@ -1,0 +1,87 @@
+{
+  "version": 2,
+  "generated": "2026-09-24",
+  "generator": "OpenAI built-in image generation",
+  "globalPrompt": {
+    "useCase": "stylized-concept",
+    "assetType": "high-resolution enemy master sprite for a retro first-person shooter",
+    "style": "premium pre-rendered late-1990s retro FPS sprite remastered in crisp realistic industrial 3D; chunky readable silhouette with fine material detail",
+    "view": "straight-on orthographic-like game sprite view",
+    "lighting": "cool industrial overhead key, restrained warm role-color rim, strong value separation at 128px",
+    "framing": "complete subject, centered, nothing cropped, transparent margin on every side",
+    "constraints": [
+      "genuine transparent background and internal gaps",
+      "one subject only",
+      "no floor or cast shadow",
+      "no scenery, text, logo or border",
+      "no detached effects, smoke or particles"
+    ]
+  },
+  "enemies": [
+    {
+      "slug": "rifleman",
+      "subject": "Grounded Directorate rifleman; compact carbine, amber visor, charcoal/olive layered armor, pouches and worn field kit.",
+      "file": "enemy_rifleman.png"
+    },
+    {
+      "slug": "breacher",
+      "subject": "Wide heavy breacher; short shotgun, blast collar, oversized shoulders, shell loops, forearm protection and orange hazard tabs.",
+      "file": "enemy_breacher.png"
+    },
+    {
+      "slug": "gunner",
+      "subject": "Massive support gunner; rotary cannon, visible ammunition feed and power pack, broad plates and narrow amber visor.",
+      "file": "enemy_gunner.png"
+    },
+    {
+      "slug": "marksman",
+      "subject": "Lean hooded scout; long suppressed rifle, asymmetric slate armor, compact cloak panels and elongated amber monocular optic.",
+      "file": "enemy_marksman.png"
+    },
+    {
+      "slug": "hazmat",
+      "subject": "Sealed chemical-response trooper; respirator hoses, twin tanks, taped contamination suit, reagent canisters and toxic-green status lights.",
+      "file": "enemy_hazmat.png"
+    },
+    {
+      "slug": "loader",
+      "subject": "Repurposed factory robot; rectangular torso, clamp forearms, pistons, hoses, faded construction yellow and tracked feet.",
+      "file": "enemy_loader.png"
+    },
+    {
+      "slug": "hound",
+      "subject": "Low quadruped security machine; predatory sensor head, amber optic strip, exposed shocks, hydraulic tendons and clawed feet.",
+      "file": "enemy_hound.png"
+    },
+    {
+      "slug": "hornet",
+      "subject": "Compact attack drone; guarded ducted rotors, amber camera eye, underslung microgun, gimbals and landing prongs.",
+      "file": "enemy_hornet.png"
+    },
+    {
+      "slug": "martyr",
+      "subject": "One-way detonation drone; caged red reactor, compact stabilizers, blast panels, arming pistons and redundant warning lamps.",
+      "file": "enemy_martyr.png"
+    },
+    {
+      "slug": "spitter",
+      "subject": "Bio-industrial ranged creature; hunched altered body, respirator, restraint harness, acid reservoir, hoses and jaw nozzle.",
+      "file": "enemy_spitter.png"
+    },
+    {
+      "slug": "subject",
+      "subject": "Asymmetric failed augment; ceramic half-mask, one enlarged cybernetic arm, torn restraints, surgical hardware and red implant.",
+      "file": "enemy_subject.png"
+    },
+    {
+      "slug": "vatbrute",
+      "subject": "Hulking vat-grown melee tank; broad altered anatomy, segmented bio-armor, restraint collar, injector lines and oversized hands.",
+      "file": "enemy_vatbrute.png"
+    },
+    {
+      "slug": "veyran",
+      "subject": "Towering machine-assisted commander; crown helmet, articulated mantle, armored coat panels, forearm weapons and amber reactor core.",
+      "file": "enemy_veyran.png"
+    }
+  ]
+}

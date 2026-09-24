@@ -1,17 +1,9 @@
 {
   "specId": "enemy_hound",
   "slug": "hound",
-  "model": "@cf/black-forest-labs/flux-1-schnell",
-  "steps": 4,
-  "requestedSize": "1024x1024",
-  "prompt": "Create one complete isolated game character render. low four-legged security machine with an armored body, articulated legs, amber optical strip and exposed hydraulic joints. dark military sci-fi, industrial realism, retro FPS pre-rendered sprite, neutral studio light, straight-on camera, clear silhouette. Use a completely flat neon magenta background #FF00FF with no other background detail. No room, no floor, no scenery, no cast shadow, no text, no logo, no border. Keep the subject fully inside the square frame, with magenta visible in every open area between limbs and equipment.",
-  "usage": {
-    "prompt_tokens": 0,
-    "completion_tokens": 0,
-    "total_tokens": 0,
-    "prompt_tokens_details": {
-      "cached_tokens": 0
-    },
-    "neurons": 172.8000030517578
-  }
+  "generator": "OpenAI built-in image generation",
+  "reference": "art/source_hd/enemies/enemy_hound.png (previous revision)",
+  "promptSet": "art/source_hd/enemies/generation-v2.json",
+  "subjectBrief": "Low quadruped security machine; predatory sensor head, amber optic strip, exposed shocks, hydraulic tendons and clawed feet.",
+  "output": "native transparent PNG"
 }

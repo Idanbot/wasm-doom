@@ -52,7 +52,7 @@
     "enemy_martyr_dead.png",
     "enemy_martyr_special.png"
   ],
-  "background": "transparent after deterministic #ff00ff key",
+  "background": "native transparency with deterministic alpha cleanup; legacy #ff00ff key supported",
   "source": "art/source_hd/enemies/enemy_martyr.png",
-  "motion": "segmented pose rig with anchored deformation and torso recoil"
+  "motion": "four-frame anchored deformation with independent torso recoil"
 }

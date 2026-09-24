@@ -52,7 +52,7 @@
     "enemy_subject_dead.png",
     "enemy_subject_special.png"
   ],
-  "background": "transparent after deterministic #ff00ff key",
+  "background": "native transparency with deterministic alpha cleanup; legacy #ff00ff key supported",
   "source": "art/source_hd/enemies/enemy_subject.png",
-  "motion": "segmented pose rig with anchored deformation and torso recoil"
+  "motion": "four-frame anchored deformation with independent torso recoil"
 }
