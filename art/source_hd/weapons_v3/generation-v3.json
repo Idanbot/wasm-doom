@@ -1,0 +1,42 @@
+{
+  "generator": "OpenAI imagegen",
+  "sourceFormat": "RGBA 1536x1024",
+  "runtimeFrame": [
+    800,
+    480
+  ],
+  "globalPrompt": "Detailed modern or near-future first-person FPS weapon viewmodel held in black tactical gloves, exact centered sightline toward top center, coherent worn gunmetal BLACKSITE military styling, restrained amber/cyan accents, isolated on transparent background, no text, logo, muzzle flash, smoke or scenery.",
+  "reloadPrompt": "Eight sequential readable reload poses in an exact 4-column by 2-row grid, fixed camera and weapon design, transparent background, clear mechanical continuity from loaded through service motion back to ready.",
+  "weapons": {
+    "br12": {
+      "name": "BR-12 BREAKER",
+      "role": "box-mag combat shotgun",
+      "reload": "remove reinforced box magazine, insert fresh magazine, seat it, cycle action"
+    },
+    "kx9": {
+      "name": "KX-9 VECTOR",
+      "role": "compact reflex-sight PDW",
+      "reload": "drop compact magazine, insert full magazine, operate charging control"
+    },
+    "mr4": {
+      "name": "MR-4 LONGBOW",
+      "role": "magnetic penetrator rifle",
+      "reload": "remove power cell, insert charged cell, cycle accelerator"
+    },
+    "vlk6": {
+      "name": "VLK-6 WARDEN",
+      "role": "four-cell guided micro-missile launcher",
+      "reload": "remove four-cell cassette, insert replacement cassette, lock breech"
+    },
+    "ax12": {
+      "name": "AX-12 VOLT",
+      "role": "electrical carbine with copper induction rails",
+      "reload": "remove cyan power cell, insert charged cell, engage power control"
+    },
+    "m91": {
+      "name": "M91 CYCLONE",
+      "role": "six-barrel rotary cannon with side feed",
+      "reload": "release feed, replace ammunition drum, reconnect and lock feed"
+    }
+  }
+}

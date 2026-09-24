@@ -795,154 +795,42 @@ The final phase should feel violent, unstable, and desperate.
 
 # 9. Weapon Roster
 
-Weapons should feel heavy, immediate, mechanical, and readable.
-
-The player's arsenal begins grounded and becomes increasingly experimental.
+Weapons feel heavy, immediate, mechanical, and readable. Every first-person
+model sits on the center sightline and has a distinct eight-step reload.
 
 ## 1. MK23-S Suppressed Pistol
 
-Role:
-starter precision weapon.
+Accurate 12-round starter sidearm with low recoil and a suppressed report.
 
-Traits:
+## 2. BR-12 BREAKER
 
-- low recoil
-- accurate
-- useful against guards
-- suppressed aesthetic
+Eight-shot box-fed combat shotgun with a wide close-range spread and heavy
+stagger. The reload swaps a reinforced magazine rather than feeding shells.
 
----
+## 3. KX-9 VECTOR
 
-## 2. VX-9 Compact SMG
+Compact 36-round PDW for controlled bursts. Its reflex sight and short receiver
+keep the sightline clear while spread grows under sustained fire.
 
-Role:
-close-range automatic weapon.
+## 4. MR-4 LONGBOW
 
-Traits:
+Five-shot magnetic penetrator rifle. A shot can pass through three targets; its
+reload replaces the power cell and cycles the accelerator.
 
-- high fire rate
-- low per-shot damage
-- strong against light enemies
+## 5. VLK-6 WARDEN
 
----
+Four-cell guided micro-missile launcher with a clear launch aperture, side
+optic and blast damage. Its silhouette must never resemble a flamethrower.
 
-## 3. M870K Combat Shotgun
+## 6. AX-12 VOLT
 
-Role:
-primary close-range weapon.
+Ten-charge electrical carbine with copper induction rails and restrained cyan
+energy details. It fires accurate shock discharges against priority targets.
 
-Traits:
+## 7. M91 CYCLONE
 
-- extremely powerful
-- wide spread
-- heavy pump animation
-- strong knockback impression
-
----
-
-## 4. CAR-11 Assault Rifle
-
-Role:
-general-purpose rifle.
-
-Traits:
-
-- controllable automatic fire
-- reliable mid-range damage
-- military workhorse
-
----
-
-## 5. RAVEN Grenade Launcher
-
-Role:
-area damage.
-
-Traits:
-
-- bouncing grenades
-- explosive crowd control
-- useful against robots
-
----
-
-## 6. SHRIKE Anti-Materiel Rifle
-
-Role:
-high-damage precision weapon.
-
-Traits:
-
-- slow firing
-- armor penetration
-- effective against weak points
-
----
-
-## 7. KSDD M91 Rotary Cannon
-
-Role:
-late-game bullet hose.
-
-Acquired from the weapons program.
-
-Traits:
-
-- spin-up
-- huge DPS
-- consumes ammunition quickly
-- dramatic muzzle flash
-
----
-
-## 8. ARC-4 Discharge Rifle
-
-Role:
-experimental anti-machine weapon.
-
-Traits:
-
-- electrical arcs
-- chains between nearby robotic targets
-- can temporarily disable machines
-
-Visual theme:
-
-industrial capacitor weapon.
-
----
-
-## 9. JANUS Bio-Disruptor
-
-Role:
-experimental biotech weapon.
-
-Traits:
-
-- organic-looking ammunition cartridge
-- devastating against biological enemies
-- causes unstable tissue reaction
-
-Should look disturbing rather than magical.
-
----
-
-## 10. SUNHAMMER
-
-The BFG-equivalent.
-
-A prototype compact directed-energy weapon originally intended for hardened strategic targets.
-
-Traits:
-
-- enormous charge effect
-- devastating energy projectile
-- secondary electrical discharge
-- extremely limited ammunition
-
-Visual identity:
-
-brutalist military engineering rather than alien technology.
+Heavy 90-round six-barrel rotary cannon for late-game suppression. The reload
+services its side feed and drum while preserving the central barrel cluster.
 
 ---
 

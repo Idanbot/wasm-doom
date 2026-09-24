@@ -1,0 +1,11 @@
+{
+  "generator": "built-in image generation",
+  "useCase": "stylized-concept",
+  "reference": "art/source_hd/weapons_v3/m91.png",
+  "prompt": "Open extra-heavy weapon case containing the M91 CYCLONE six-barrel rotary cannon from the reference, preserving its central barrel cluster, side feed, dark gunmetal construction, amber indicators and black tactical finish; transparent background.",
+  "sourceSize": [
+    1223,
+    1223
+  ],
+  "background": "transparent"
+}

@@ -1736,22 +1736,22 @@ impl Engine {
                 self.eject_casing();
             }
             1 => {
-                self.cooldown = 0.62;
+                self.cooldown = 0.56;
                 self.muzzle = 1.0;
                 self.kick = 1.4;
                 self.shake = (self.shake + 0.38).min(1.0);
                 for _ in 0..8 {
-                    let a = self.pa + (self.rnd() - 0.5) * 0.22;
+                    let a = self.pa + (self.rnd() - 0.5) * 0.19;
                     self.hitscan(a, 7, 11.0);
                 }
                 self.eject_casing();
             }
             2 => {
-                self.cooldown = 0.065;
+                self.cooldown = 0.075;
                 self.muzzle = 1.0;
                 self.kick = 0.7;
                 self.shake = (self.shake + 0.08).min(1.0);
-                self.spread = (self.spread + 0.028).min(0.24);
+                self.spread = (self.spread + 0.020).min(0.18);
                 let a = self.pa + (self.rnd() - 0.5) * (0.03 + self.spread);
                 self.hitscan(a, 8, 20.0);
                 if (self.rng & 1) == 0 {
@@ -1759,27 +1759,27 @@ impl Engine {
                 }
             }
             3 => {
-                self.cooldown = 0.85;
+                self.cooldown = 0.78;
                 self.muzzle = 1.0;
                 self.kick = 1.1;
                 self.shake = (self.shake + 0.22).min(1.0);
                 self.fire_lance();
             }
             4 => {
-                self.cooldown = 0.65;
+                self.cooldown = 0.78;
                 self.muzzle = 1.0;
                 self.kick = 1.5;
                 self.shake = (self.shake + 0.28).min(1.0);
                 let a = self.pa;
                 if let Some(i) = self.spawn(EK_BOLT, self.px, self.py) {
-                    self.ents[i].vx = a.cos() * 10.0;
-                    self.ents[i].vy = a.sin() * 10.0;
-                    self.ents[i].timer = 1.15;
+                    self.ents[i].vx = a.cos() * 11.0;
+                    self.ents[i].vy = a.sin() * 11.0;
+                    self.ents[i].timer = 1.25;
                     self.ents[i].zoff = 10.0;
                 }
             }
             5 => {
-                self.cooldown = 0.48;
+                self.cooldown = 0.42;
                 self.muzzle = 1.0;
                 self.kick = 0.9;
                 self.shake = (self.shake + 0.18).min(1.0);
@@ -1792,13 +1792,13 @@ impl Engine {
                 }
             }
             _ => {
-                self.cooldown = 0.052;
+                self.cooldown = 0.058;
                 self.muzzle = 1.0;
                 self.kick = 0.52;
                 self.shake = (self.shake + 0.055).min(1.0);
                 self.spread = (self.spread + 0.014).min(0.17);
                 let a = self.pa + (self.rnd() - 0.5) * (0.035 + self.spread);
-                self.hitscan(a, 6, 24.0);
+                self.hitscan(a, 7, 24.0);
                 if (self.rng & 3) == 0 { self.eject_casing(); }
             }
         }
@@ -1849,22 +1849,22 @@ impl Engine {
             EK_AMMO => {
                 self.ammo[0] = (self.ammo[0] + 18).min(120);
                 if self.has_w2 {
-                    self.ammo[1] = (self.ammo[1] + 8).min(40);
+                    self.ammo[1] = (self.ammo[1] + 10).min(48);
                 }
                 if self.has_w3 {
-                    self.ammo[2] = (self.ammo[2] + 40).min(200);
+                    self.ammo[2] = (self.ammo[2] + 45).min(216);
                 }
                 if self.has_w4 {
-                    self.ammo[3] = (self.ammo[3] + 4).min(16);
+                    self.ammo[3] = (self.ammo[3] + 5).min(20);
                 }
                 if self.has_w5 {
-                    self.ammo[4] = (self.ammo[4] + 3).min(24);
+                    self.ammo[4] = (self.ammo[4] + 2).min(16);
                 }
                 if self.has_w6 {
-                    self.ammo[5] = (self.ammo[5] + 12).min(64);
+                    self.ammo[5] = (self.ammo[5] + 15).min(80);
                 }
                 if self.has_w7 {
-                    self.ammo[6] = (self.ammo[6] + 80).min(400);
+                    self.ammo[6] = (self.ammo[6] + 90).min(450);
                 }
                 self.events |= EV_PICK_SILVER;
             }
@@ -1874,7 +1874,7 @@ impl Engine {
             }
             EK_GUN2 => {
                 self.has_w2 = true;
-                self.ammo[1] = (self.ammo[1] + 6).min(40);
+                self.ammo[1] = (self.ammo[1] + 8).min(48);
                 if self.mag[1] <= 0 {
                     self.mag[1] = MAG_SZ[1];
                 }
@@ -1884,7 +1884,7 @@ impl Engine {
             }
             EK_GUN3 => {
                 self.has_w3 = true;
-                self.ammo[2] = (self.ammo[2] + 48).min(200);
+                self.ammo[2] = (self.ammo[2] + 54).min(216);
                 if self.mag[2] <= 0 {
                     self.mag[2] = MAG_SZ[2];
                 }
@@ -1894,7 +1894,7 @@ impl Engine {
             }
             EK_GUN4 => {
                 self.has_w4 = true;
-                self.ammo[3] = (self.ammo[3] + 6).min(16);
+                self.ammo[3] = (self.ammo[3] + 7).min(20);
                 if self.mag[3] <= 0 {
                     self.mag[3] = MAG_SZ[3];
                 }
@@ -1904,7 +1904,7 @@ impl Engine {
             }
             EK_GUN5 => {
                 self.has_w5 = true;
-                self.ammo[4] = (self.ammo[4] + 6).min(24);
+                self.ammo[4] = (self.ammo[4] + 4).min(16);
                 if self.mag[4] <= 0 {
                     self.mag[4] = MAG_SZ[4];
                 }
@@ -1914,7 +1914,7 @@ impl Engine {
             }
             EK_GUN6 => {
                 self.has_w6 = true;
-                self.ammo[5] = (self.ammo[5] + 16).min(64);
+                self.ammo[5] = (self.ammo[5] + 20).min(80);
                 if self.mag[5] <= 0 { self.mag[5] = MAG_SZ[5]; }
                 self.weapon = 5;
                 self.reload_t = 0.0;
@@ -1922,7 +1922,7 @@ impl Engine {
             }
             EK_GUN7 => {
                 self.has_w7 = true;
-                self.ammo[6] = (self.ammo[6] + 160).min(400);
+                self.ammo[6] = (self.ammo[6] + 180).min(450);
                 if self.mag[6] <= 0 { self.mag[6] = MAG_SZ[6]; }
                 self.weapon = 6;
                 self.reload_t = 0.0;
@@ -1937,12 +1937,12 @@ impl Engine {
             EK_MED => self.health < 100,
             EK_ARMOR => self.armor < 100,
             EK_AMMO => self.ammo[0] < 120
-                || (self.has_w2 && self.ammo[1] < 40)
-                || (self.has_w3 && self.ammo[2] < 200)
-                || (self.has_w4 && self.ammo[3] < 16)
-                || (self.has_w5 && self.ammo[4] < 24)
-                || (self.has_w6 && self.ammo[5] < 64)
-                || (self.has_w7 && self.ammo[6] < 400),
+                || (self.has_w2 && self.ammo[1] < 48)
+                || (self.has_w3 && self.ammo[2] < 216)
+                || (self.has_w4 && self.ammo[3] < 20)
+                || (self.has_w5 && self.ammo[4] < 16)
+                || (self.has_w6 && self.ammo[5] < 80)
+                || (self.has_w7 && self.ammo[6] < 450),
             _ => true,
         }
     }
@@ -2514,7 +2514,7 @@ impl Engine {
 
         let weap_frame = if self.reload_t > 0.0 {
             let p = (1.0 - self.reload_t / self.reload_dur.max(0.05)).clamp(0.0, 0.999);
-            5 + (p * 4.0) as i32
+            5 + (p * if self.weapon == 0 { 4.0 } else { 8.0 }) as i32
         } else if self.muzzle > 0.08 {
             if self.weapon == 2 {
                 1 + ((self.time * 18.0) as i32).rem_euclid(4)
@@ -3858,7 +3858,7 @@ mod tests {
     }
 
     #[test]
-    fn raven_fires_one_round_and_blast_respects_wall() {
+    fn warden_fires_one_round_and_blast_respects_wall() {
         let mut e = arena();
         e.weapon = 4;
         e.mag[4] = MAG_SZ[4];
@@ -3869,7 +3869,7 @@ mod tests {
         for i in [exposed, covered] { e.ents[i].stun = 5.0; }
         e.fire();
         e.fire();
-        assert_eq!(e.mag[4], 5, "cooldown must prevent a second shot");
+        assert_eq!(e.mag[4], MAG_SZ[4] - 1, "cooldown must prevent a second shot");
         assert_eq!(e.ents.iter().filter(|p| p.kind == EK_BOLT).count(), 1);
         for _ in 0..24 { e.tick(1.0 / 60.0); }
         assert!(e.ents[exposed].hp < 78);
@@ -4373,9 +4373,9 @@ mod tests {
         let item = e.spawn(EK_AMMO, e.px, e.py).unwrap();
         e.tick(1.0 / 60.0);
         assert_eq!(e.ents[item].kind, EK_NONE, "a useful ammo crate is collected");
-        assert_eq!(e.ammo, [18, 8, 40, 4, 3, 12, 80]);
+        assert_eq!(e.ammo, [18, 10, 45, 5, 2, 15, 90]);
 
-        e.ammo = [120, 40, 200, 16, 24, 64, 400];
+        e.ammo = [120, 48, 216, 20, 16, 80, 450];
         let full = e.spawn(EK_AMMO, e.px, e.py).unwrap();
         e.tick(1.0 / 60.0);
         assert_eq!(e.ents[full].kind, EK_AMMO, "a full arsenal leaves supplies available");

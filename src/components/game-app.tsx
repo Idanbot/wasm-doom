@@ -9,6 +9,7 @@ import {
   loadRes,
   loadVol,
   saveBoard,
+  gridPos,
   sheetPos,
   WEAPONS,
   type Score,
@@ -101,8 +102,11 @@ export function GameApp() {
           const fr = h.weapFrame | 0;
           if (fr >= 5) {
             weapEl.style.backgroundImage = `url(${wpn.reload})`;
-            weapEl.style.backgroundSize = "200% 200%";
-            weapEl.style.backgroundPosition = sheetPos(Math.min(3, fr - 5));
+            const pistolReload = h.weapon === 0;
+            weapEl.style.backgroundSize = pistolReload ? "200% 200%" : "400% 200%";
+            weapEl.style.backgroundPosition = pistolReload
+              ? sheetPos(Math.min(3, fr - 5))
+              : gridPos(Math.min(7, fr - 5), 4, 2);
           } else if (fr >= 1) {
             weapEl.style.backgroundImage = `url(${wpn.fire})`;
             weapEl.style.backgroundSize = "200% 200%";

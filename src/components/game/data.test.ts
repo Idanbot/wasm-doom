@@ -10,6 +10,7 @@ import {
   saveBoard,
   sheetPos,
   WEAPONS,
+  gridPos,
 } from "./data.ts";
 import { DEFAULT_GFX, RES_MODES } from "../../game/types.ts";
 
@@ -56,6 +57,15 @@ describe("sheetPos", () => {
   });
 });
 
+describe("gridPos", () => {
+  it("addresses all eight cells in a four-by-two reload sheet", () => {
+    assert.equal(gridPos(0, 4, 2), "0% 0%");
+    assert.equal(gridPos(3, 4, 2), "100% 0%");
+    assert.equal(gridPos(4, 4, 2), "0% 100%");
+    assert.equal(gridPos(7, 4, 2), "100% 100%");
+  });
+});
+
 describe("WEAPONS", () => {
   it("has seven entries with unique ids and art paths", () => {
     assert.equal(WEAPONS.length, 7);
@@ -73,7 +83,7 @@ describe("WEAPONS", () => {
     }
     assert.deepEqual(
       WEAPONS.map((w) => w.magSize),
-      [12, 6, 32, 4, 6, 8, 80],
+      [12, 8, 36, 5, 4, 10, 90],
     );
   });
 });

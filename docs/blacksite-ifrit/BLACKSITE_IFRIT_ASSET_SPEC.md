@@ -930,10 +930,10 @@ enemy_janissary
 enemy_brute
 
 weapon_mk23s
-weapon_vx9
-weapon_m870k
-weapon_shrike
-weapon_raven
+weapon_kx9
+weapon_br12
+weapon_mr4
+weapon_vlk6
 weapon_rotary
 weapon_arc
 weapon_biodisruptor

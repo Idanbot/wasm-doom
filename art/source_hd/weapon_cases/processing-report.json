@@ -7,49 +7,49 @@
       256
     ]
   },
-  "m870k": {
-    "source": "art/source_hd/weapon_cases/m870k.jpg",
-    "runtime": "public/game/spr_gun_m870k.png",
+  "br12": {
+    "source": "art/source_hd/weapon_cases/br12.jpg",
+    "runtime": "public/game/spr_gun_br12.png",
     "size": [
       256,
       256
     ]
   },
-  "vx9": {
-    "source": "art/source_hd/weapon_cases/vx9.jpg",
-    "runtime": "public/game/spr_gun_vx9.png",
+  "kx9": {
+    "source": "art/source_hd/weapon_cases/kx9.jpg",
+    "runtime": "public/game/spr_gun_kx9.png",
     "size": [
       256,
       256
     ]
   },
-  "shrike": {
-    "source": "art/source_hd/weapon_cases/shrike.jpg",
-    "runtime": "public/game/spr_gun_shrike.png",
+  "mr4": {
+    "source": "art/source_hd/weapon_cases/mr4.jpg",
+    "runtime": "public/game/spr_gun_mr4.png",
     "size": [
       256,
       256
     ]
   },
-  "raven": {
-    "source": "art/source_hd/weapon_cases/raven.jpg",
-    "runtime": "public/game/spr_gun_raven.png",
+  "vlk6": {
+    "source": "art/source_hd/weapon_cases/vlk6.jpg",
+    "runtime": "public/game/spr_gun_vlk6.png",
     "size": [
       256,
       256
     ]
   },
-  "arc12": {
-    "source": "art/source_hd/weapon_cases/arc12.jpg",
-    "runtime": "public/game/spr_gun_arc12.png",
+  "ax12": {
+    "source": "art/source_hd/weapon_cases/ax12.jpg",
+    "runtime": "public/game/spr_gun_ax12.png",
     "size": [
       256,
       256
     ]
   },
-  "m56": {
-    "source": "art/source_hd/weapon_cases/m56.png",
-    "runtime": "public/game/spr_gun_m56.png",
+  "m91": {
+    "source": "art/source_hd/weapon_cases/m91.png",
+    "runtime": "public/game/spr_gun_m91.png",
     "size": [
       256,
       256

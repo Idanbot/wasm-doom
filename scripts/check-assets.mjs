@@ -172,11 +172,24 @@ export function validateReadyFiles(manifest, gameDir, atlasesDir) {
         continue;
       }
       checked += 1;
-      if (info.width !== info.height)
+      const wideReloadWeapon = e.kind === "weapon" && e.reloadSheet === "4x2";
+      if (wideReloadWeapon) {
+        const expected = name.endsWith("_reload.png")
+          ? [3200, 960]
+          : name.endsWith("_fire.png")
+            ? [1600, 960]
+            : [800, 480];
+        if (info.width !== expected[0] || info.height !== expected[1]) {
+          errors.push(
+            `${e.specId}: ${name} must be ${expected[0]}x${expected[1]}, got ${info.width}x${info.height}`,
+          );
+        }
+      } else if (info.width !== info.height) {
         errors.push(`${e.specId}: ${name} must be square, got ${info.width}x${info.height}`);
-      if (exact && info.width !== min)
+      }
+      if (!wideReloadWeapon && exact && info.width !== min)
         errors.push(`${e.specId}: ${name} must be ${min}x${min}, got ${info.width}x${info.height}`);
-      if (!exact && info.width < min)
+      if (!wideReloadWeapon && !exact && info.width < min)
         errors.push(`${e.specId}: ${name} must be at least ${min}px, got ${info.width}`);
       if (!info.hasAlpha) errors.push(`${e.specId}: ${name} has no alpha channel (spec §11)`);
     }

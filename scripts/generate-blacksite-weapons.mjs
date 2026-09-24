@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** Generate consistent first-person weapon masters with Cloudflare Workers AI. */
+/** Generate fallback first-person concept masters with Cloudflare Workers AI. */
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
@@ -11,24 +11,24 @@ const WEAPONS = [
     "compact suppressed military pistol, squared slide, long integral suppressor, amber status diode",
   ],
   [
-    "m870k",
+    "br12",
     "short brutal pump shotgun, thick barrel shroud, visible pump grip, industrial breaching teeth",
   ],
-  ["vx9", "compact bullpup machine carbine, short barrel, box magazine, cyan ammunition counter"],
+  ["kx9", "compact bullpup machine carbine, short barrel, box magazine, cyan ammunition counter"],
   [
-    "shrike",
+    "mr4",
     "heavy electromagnetic precision rifle, twin acceleration rails, narrow cyan charge channel, angular stock",
   ],
   [
-    "raven",
+    "vlk6",
     "unmistakable shoulder-fired guided missile launcher, large rectangular launch tube, wide hollow muzzle, side targeting optic, top carry rail; absolutely not a flamethrower",
   ],
   [
-    "arc12",
+    "ax12",
     "experimental arc caster, split copper induction prongs around a glowing cyan capacitor, insulated gunmetal body",
   ],
   [
-    "m56",
+    "m91",
     "heavy rotary cannon with a clearly visible cluster of six barrels, armored motor housing, belt-feed box and amber heat vents",
   ],
 ];
@@ -38,7 +38,9 @@ if (!key) throw new Error("CF_API_KEY is missing from the ignored .env file");
 const only = process.argv.includes("--spec")
   ? process.argv[process.argv.indexOf("--spec") + 1]
   : "";
-const outputDir = resolve("art/source_hd/weapons_v2");
+// Keep lossy Cloudflare concepts separate from the transparent imagegen masters
+// and their eight-frame reload grids consumed by the runtime processor.
+const outputDir = resolve("art/source_hd/weapons_cloudflare");
 await mkdir(outputDir, { recursive: true });
 
 for (const [slug, description] of WEAPONS) {

@@ -41,12 +41,12 @@ try {
   });
   for (const [slot, name, magazine] of [
     [0, "MK23-S", 12],
-    [1, "M870K", 6],
-    [2, "VX-9", 32],
-    [3, "SHRIKE", 4],
-    [4, "RAVEN", 6],
-    [5, "ARC-12", 8],
-    [6, "M56", 80],
+    [1, "BR-12 BREAKER", 8],
+    [2, "KX-9 VECTOR", 36],
+    [3, "MR-4 LONGBOW", 5],
+    [4, "VLK-6 WARDEN", 4],
+    [5, "AX-12 VOLT", 10],
+    [6, "M91 CYCLONE", 90],
   ]) {
     await page.goto(url.href);
     await page.waitForFunction(
@@ -54,8 +54,8 @@ try {
     );
     if (slot === 0) {
       const locked = await page.locator(".weapon-slot.locked").allTextContents();
-      assert.ok(locked.some((text) => text.includes("6") && text.includes("ARC-12")));
-      assert.ok(locked.some((text) => text.includes("7") && text.includes("M56")));
+      assert.ok(locked.some((text) => text.includes("6") && text.includes("AX-12 VOLT")));
+      assert.ok(locked.some((text) => text.includes("7") && text.includes("M91 CYCLONE")));
       await page.evaluate(() => window.__controlsTest.setKeys(["Digit6"]));
       await page.waitForTimeout(80);
       assert.equal(await page.evaluate(() => window.__controlsTest.getWeapon()), 0);
@@ -84,10 +84,18 @@ try {
     await page.waitForFunction((mag) => window.__controlsTest.getAmmo() < mag, magazine);
     await page.evaluate(() => window.__controlsTest.setKeys(["KeyR"]));
     await page.waitForFunction(() => window.__controlsTest.getReloading() > 0);
-    if (slot === 0) {
-      await page.waitForFunction(() => window.__controlsTest.getReloading() > 0.34);
-      await page.screenshot({ path: "screenshots/combat-weapon-0-reload.png" });
-    }
+    await page.waitForFunction(
+      (slot) => {
+        const weapon = document.querySelector(".weapon-view");
+        if (!weapon?.style.backgroundImage.includes("_reload.png")) return false;
+        return slot === 0
+          ? weapon.style.backgroundSize === "200% 200%"
+          : weapon.style.backgroundSize === "400% 200%";
+      },
+      slot,
+    );
+    await page.waitForTimeout(220);
+    await page.screenshot({ path: `screenshots/combat-weapon-${slot}-reload.png` });
     await page.evaluate(() => window.__controlsTest.setKeys([]));
     await page.waitForFunction(
       (mag) =>

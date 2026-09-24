@@ -260,51 +260,57 @@
       "status": "ready"
     },
     {
-      "specId": "weapon_m870k",
+      "specId": "weapon_br12",
       "engineSlot": 1,
-      "files": ["weap_m870k.png", "weap_m870k_fire.png", "weap_m870k_reload.png"],
-      "pickupFile": "spr_gun_m870k.png",
+      "files": ["weap_br12.png", "weap_br12_fire.png", "weap_br12_reload.png"],
+      "pickupFile": "spr_gun_br12.png",
       "sheet": "2x2",
+      "reloadSheet": "4x2",
       "status": "ready"
     },
     {
-      "specId": "weapon_vx9",
+      "specId": "weapon_kx9",
       "engineSlot": 2,
-      "files": ["weap_vx9.png", "weap_vx9_fire.png", "weap_vx9_reload.png"],
-      "pickupFile": "spr_gun_vx9.png",
+      "files": ["weap_kx9.png", "weap_kx9_fire.png", "weap_kx9_reload.png"],
+      "pickupFile": "spr_gun_kx9.png",
       "sheet": "2x2",
+      "reloadSheet": "4x2",
       "status": "ready"
     },
     {
-      "specId": "weapon_shrike",
+      "specId": "weapon_mr4",
       "engineSlot": 3,
-      "files": ["weap_shrike.png", "weap_shrike_fire.png", "weap_shrike_reload.png"],
-      "pickupFile": "spr_gun_shrike.png",
+      "files": ["weap_mr4.png", "weap_mr4_fire.png", "weap_mr4_reload.png"],
+      "pickupFile": "spr_gun_mr4.png",
       "sheet": "2x2",
+      "reloadSheet": "4x2",
       "status": "ready"
     },
     {
-      "specId": "weapon_raven",
+      "specId": "weapon_vlk6",
       "engineSlot": 4,
-      "files": ["weap_raven.png", "weap_raven_fire.png", "weap_raven_reload.png"],
-      "pickupFile": "spr_gun_raven.png",
+      "files": ["weap_vlk6.png", "weap_vlk6_fire.png", "weap_vlk6_reload.png"],
+      "pickupFile": "spr_gun_vlk6.png",
       "sheet": "2x2",
+      "reloadSheet": "4x2",
       "status": "ready"
     },
     {
-      "specId": "weapon_arc12",
+      "specId": "weapon_ax12",
       "engineSlot": 5,
-      "files": ["weap_arc12.png", "weap_arc12_fire.png", "weap_arc12_reload.png"],
-      "pickupFile": "spr_gun_arc12.png",
+      "files": ["weap_ax12.png", "weap_ax12_fire.png", "weap_ax12_reload.png"],
+      "pickupFile": "spr_gun_ax12.png",
       "sheet": "2x2",
+      "reloadSheet": "4x2",
       "status": "ready"
     },
     {
-      "specId": "weapon_m56",
+      "specId": "weapon_m91",
       "engineSlot": 6,
-      "files": ["weap_m56.png", "weap_m56_fire.png", "weap_m56_reload.png"],
-      "pickupFile": "spr_gun_m56.png",
+      "files": ["weap_m91.png", "weap_m91_fire.png", "weap_m91_reload.png"],
+      "pickupFile": "spr_gun_m91.png",
       "sheet": "2x2",
+      "reloadSheet": "4x2",
       "status": "ready"
     }
   ],

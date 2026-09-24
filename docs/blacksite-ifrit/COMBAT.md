@@ -12,17 +12,17 @@ windup; stepping out of melee reach or behind cover cancels its hit. Ranged
 enemies retreat when crowded, and skirmishers alternate strafe direction.
 Opening attacks are staggered so starting a game allows time to orient.
 
-RAVEN fires one guided missile every 0.65 seconds from a six-round magazine.
+VLK-6 fires one guided missile every 0.78 seconds from a four-cell cassette.
 Impacts cause splash damage; walls block the blast and nearby detonations can
 hurt the player. Projectiles sweep their travel segment to detect hits between
-simulation steps. ARC-12 fires a precise electrical discharge, while M56 adds
-an 80-round sustained rotary stream with growing spread.
+simulation steps. AX-12 fires a precise electrical discharge, while M91 adds
+a 90-round sustained rotary stream with growing spread.
 
 Ammo crates replenish every weapon in the seven-gun arsenal. The field HUD
 warns when the active magazine runs low, and boss encounters expose Veyran's
 health and reinforcement phase so each escalation is readable during combat.
 
-All guns use their firing sheets, including VX-9. Weapon sheets preload
+All guns use their firing sheets, including KX-9. Weapon sheets preload
 alongside world textures before play. Recoil weight varies by
 weapon and respects reduced motion. The crosshair expands with recoil and
 SMG spread, while a red KILL marker distinguishes kills from hits. Muzzle

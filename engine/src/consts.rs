@@ -169,8 +169,8 @@ pub(crate) const IN_W5: u32 = 16384;
 pub(crate) const IN_W6: u32 = 32768;
 pub(crate) const IN_W7: u32 = 65536;
 
-pub(crate) const MAG_SZ: [i32; 7] = [12, 6, 32, 4, 6, 8, 80];
-pub(crate) const RELOAD_T: [f32; 7] = [0.95, 1.55, 1.35, 1.45, 1.8, 1.65, 2.25];
+pub(crate) const MAG_SZ: [i32; 7] = [12, 8, 36, 5, 4, 10, 90];
+pub(crate) const RELOAD_T: [f32; 7] = [0.95, 1.75, 1.30, 1.60, 1.95, 1.55, 2.45];
 pub(crate) const MAP_CELLS: usize = MAP_W * MAP_H;
 pub(crate) const FX_CAP: usize = 64;
 

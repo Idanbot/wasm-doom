@@ -137,6 +137,34 @@ test("ready entries require real 256px alpha PNGs", () => {
   assert.equal(good.checked, 1);
 });
 
+test("ready viewmodel weapons accept 800x480 frames and 4x2 reload sheets", () => {
+  const root = makeRoot();
+  const files = ["weap_test.png", "weap_test_fire.png", "weap_test_reload.png"];
+  writeManifest(root, {
+    weapons: [
+      {
+        specId: "weapon_test",
+        engineSlot: 0,
+        files,
+        sheet: "2x2",
+        reloadSheet: "4x2",
+        status: "ready",
+      },
+    ],
+  });
+  const gameDir = join(root, "public", "game");
+  writeFileSync(join(gameDir, files[0]), makePng(800, 480));
+  writeFileSync(join(gameDir, files[1]), makePng(1600, 960));
+  writeFileSync(join(gameDir, files[2]), makePng(3200, 960));
+  const result = validateReadyFiles(
+    JSON.parse(readFileSync(join(root, "art", "blacksite-manifest.json"), "utf8")),
+    gameDir,
+    join(root, "art", "atlases"),
+  );
+  assert.deepEqual(result.errors, []);
+  assert.equal(result.checked, 3);
+});
+
 test("cli passes against the real repo (all planned)", async () => {
   const { stdout } = await execFileAsync(process.execPath, [scriptPath]);
   assert.match(stdout, /manifest ok/);

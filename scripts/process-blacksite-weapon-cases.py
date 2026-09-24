@@ -12,7 +12,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "art" / "source_hd" / "weapon_cases"
 OUT = ROOT / "public" / "game"
-WEAPONS = ("mk23s", "m870k", "vx9", "shrike", "raven", "arc12", "m56")
+WEAPONS = ("mk23s", "br12", "kx9", "mr4", "vlk6", "ax12", "m91")
 
 
 def key_magenta(image: Image.Image) -> Image.Image:
@@ -79,7 +79,7 @@ def main() -> None:
             "runtime": str(target.relative_to(ROOT)),
             "size": [256, 256],
         }
-        if slug == "m870k":
+        if slug == "br12":
             sprite.save(OUT / "spr_gun.png", "PNG", optimize=True)
     (SOURCE / "processing-report.json").write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps(report, indent=2))

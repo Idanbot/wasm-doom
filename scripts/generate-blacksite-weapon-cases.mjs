@@ -7,13 +7,15 @@ const ACCOUNT = "CF_ACCOUNT_ID_FROM_ENV";
 const MODEL = "@cf/black-forest-labs/flux-1-schnell";
 const WEAPONS = {
   mk23s: "compact suppressed black tactical pistol in a short narrow charcoal pistol case",
-  m870k: "compact breaching shotgun in a medium wide dark steel shotgun case",
-  vx9: "angular compact submachine gun in a medium rectangular graphite weapon case",
-  shrike: "long slim cyan-accented electromagnetic marksman rifle in an elongated narrow gun case",
-  raven:
+  br12: "compact breaching shotgun in a medium wide dark steel shotgun case",
+  kx9: "angular compact submachine gun in a medium rectangular graphite weapon case",
+  mr4: "long slim cyan-accented electromagnetic marksman rifle in an elongated narrow gun case",
+  vlk6:
     "bulky short guided-missile launcher with a large round optic in a deep heavy weapons case",
-  arc12:
-    "wide futuristic electric arc shotgun with restrained cyan coils in a broad reinforced case",
+  ax12:
+    "modern electrical carbine with restrained cyan coils and copper induction rails in a reinforced case",
+  m91:
+    "heavy six-barrel rotary cannon with feed drum and amber heat vents in an oversized reinforced case",
 };
 
 const envText = await readFile(resolve(".env"), "utf8");
