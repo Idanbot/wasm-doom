@@ -43,6 +43,15 @@ export async function createBlitter(
   return createCanvas2dBlit(canvas);
 }
 
+function padRows(pixels: Uint8Array, w: number, h: number) {
+  const row = w * 4;
+  const stride = Math.ceil(row / 256) * 256;
+  if (stride === row) return { data: pixels, stride };
+  const data = new Uint8Array(stride * h);
+  for (let y = 0; y < h; y++) data.set(pixels.subarray(y * row, y * row + row), y * stride);
+  return { data, stride };
+}
+
 function syncDisplay(canvas: HTMLCanvasElement) {
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   const dw = Math.max(1, Math.round((canvas.clientWidth || 320) * dpr));
@@ -135,25 +144,6 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
     let luma = dot(s.rgb, vec3<f32>(0.26, 0.45, 0.12));
     let open = smoothstep(0.12, 0.0, s.a - depth);
     ray += s.rgb * max(0.0, luma - 0.32) * open * 0.18;
-  }
-  // Screen-space reflection. Depth is already in alpha, so this is a short
-  // reflected ray in the shader. No vendor raytracing API.
-  let luma0 = dot(c.rgb, vec3<f32>(0.26, 0.45, 0.12));
-  if (depth < 0.82 && luma0 > 0.16) {
-    let n = normalize(vec3<f32>(-dFdx(depth), -dFdy(depth), 0.08));
-    let r = reflect(normalize(vec3<f32>(uv * 2.0 - 1.0, 0.85)), n).xy;
-    var refl = vec3<f32>(0.0);
-    var wsum = 0.0;
-    for (var s = 1; s <= 4; s++) {
-      let p = uv + r * f32(s) * 0.011;
-      let hit = sample_near(p);
-      let agree = smoothstep(0.1, 0.0, abs(hit.a - depth - f32(s) * 0.018));
-      refl += hit.rgb * agree;
-      wsum += agree;
-    }
-    if (wsum > 0.2) {
-      ray += refl / wsum * 0.26;
-    }
   }
   c = vec4<f32>(c.rgb + ray, depth);
 
@@ -478,10 +468,11 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
       ping ^= 1;
       if (!tex[i] || !bind[i] || !bloomView) return;
       try {
+        const upload = padRows(pixels, w, h);
         device.queue.writeTexture(
           { texture: tex[i] },
-          pixels as unknown as BufferSource,
-          { bytesPerRow: w * 4, rowsPerImage: h },
+          upload.data,
+          { bytesPerRow: upload.stride, rowsPerImage: h },
           { width: w, height: h },
         );
         writeUni(w, h, dw, dh, fx);

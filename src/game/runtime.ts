@@ -402,7 +402,8 @@ export class HellscanRuntime {
     this.resolution = res;
     if (!this.wasm || !this.blit) return;
     const aspect = (this.canvas.clientWidth || res.w) / (this.canvas.clientHeight || res.h);
-    const w = Math.max(160, Math.round(Math.min(res.w, res.h * aspect)));
+    const raw = Math.max(192, Math.round(Math.min(res.w, res.h * aspect)));
+    const w = raw - (raw % 64);
     const h = Math.max(100, Math.round(w / aspect));
     this.wasm.hs_resize(w, h);
     this.fbView = null;
