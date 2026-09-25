@@ -1,4 +1,4 @@
-import { createWebGlWorld, createWebGpuWorld, type GpuWorld, type WorldFrame } from "./gpu-world";
+import { compileShader, createWebGlWorld, createWebGpuWorld, type GpuWorld, type WorldFrame } from "./gpu-world";
 import { DEFAULT_GFX, type GfxOpts } from "./types";
 
 export type BlitKind = "webgpu" | "webgl2" | "canvas2d";
@@ -331,11 +331,14 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
         return;
       }
       device = dev;
+      dev.addEventListener("uncapturederror", () => {
+        ready = false;
+      });
       format = gpuApi.getPreferredCanvasFormat();
       ctx = canvas.getContext("webgpu") as GPUCanvasContext | null;
       if (!ctx) return;
       configure();
-      const shader = dev.createShaderModule({ code: POST_WGSL });
+      const shader = await compileShader(dev, POST_WGSL, "present");
       const layout: GPUBindGroupLayout = dev.createBindGroupLayout({
         entries: [
           { binding: 0, visibility: GPUShaderStage.FRAGMENT, texture: { sampleType: "float" } },
@@ -365,7 +368,7 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
         usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
       });
       world?.dispose();
-      try { world = createWebGpuWorld(dev); } catch { world = null; }
+      try { world = await createWebGpuWorld(dev); } catch { world = null; }
       ready = true;
       void dev.lost.then(() => {
         if (my !== gen) return;

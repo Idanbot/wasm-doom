@@ -97,7 +97,6 @@ fn through_smoke(rgb: vec3<f32>, ax: f32, ay: f32, bx: f32, by: f32) -> vec3<f32
   let k = 1.0 - exp(-tau * 1.8);
   return mix(rgb, vec3<f32>(0.58, 0.60, 0.62), clamp(k, 0.0, 0.92));
 }
-}
 
 fn sigil_center(level: i32) -> vec2<f32> {
   if (level == 1) { return vec2<f32>(43.5, 27.5); }
@@ -325,9 +324,18 @@ function f16(n: number): number {
 }
 
 
-export function createWebGpuWorld(device: GPUDevice): GpuWorld {
-  const fillMod = device.createShaderModule({ code: FILL_WGSL });
-  const sprMod = device.createShaderModule({ code: SPRITE_WGSL });
+export async function compileShader(device: GPUDevice, code: string, label: string): Promise<GPUShaderModule> {
+  device.pushErrorScope("validation");
+  const module = device.createShaderModule({ label, code });
+  const [err, info] = await Promise.all([device.popErrorScope(), module.getCompilationInfo()]);
+  const messages = info.messages.filter((m) => m.type === "error").map((m) => m.message);
+  if (err || messages.length) throw new Error(messages.join("\n") || err?.message || "shader failed");
+  return module;
+}
+
+export async function createWebGpuWorld(device: GPUDevice): Promise<GpuWorld> {
+  const fillMod = await compileShader(device, FILL_WGSL, "world-fill");
+  const sprMod = await compileShader(device, SPRITE_WGSL, "world-sprite");
   const bgl = device.createBindGroupLayout({
     entries: [
       { binding: 0, visibility: GPUShaderStage.FRAGMENT | GPUShaderStage.VERTEX, buffer: { type: "uniform" } },
