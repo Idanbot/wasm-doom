@@ -3,7 +3,6 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
-const ACCOUNT = "CF_ACCOUNT_ID_FROM_ENV";
 const MODEL = "@cf/black-forest-labs/flux-1-schnell";
 const WEAPONS = {
   mk23s: "compact suppressed black tactical pistol in a short narrow charcoal pistol case",
@@ -21,6 +20,10 @@ const WEAPONS = {
 const envText = await readFile(resolve(".env"), "utf8");
 const key = envText.match(/^CF_API_KEY=(.+)$/m)?.[1]?.trim();
 if (!key) throw new Error("CF_API_KEY is missing from the ignored .env file");
+const account =
+  process.env.CF_ACCOUNT_ID ?? envText.match(/^CF_ACCOUNT_ID=(.+)$/m)?.[1]?.trim();
+if (!account || !/^[a-f0-9]{32}$/i.test(account))
+  throw new Error("CF_ACCOUNT_ID is missing from the ignored .env file");
 const only = process.argv.includes("--spec")
   ? process.argv[process.argv.indexOf("--spec") + 1]
   : "";
@@ -36,7 +39,7 @@ for (const [slug, weapon] of Object.entries(WEAPONS)) {
     "Solid perfectly flat neon magenta #FF00FF background including every gap and hole. No floor, room, scenery, people, hands, text, lettering, logo, border, shadow outside the case, or extra objects.",
   ].join(" ");
   const response = await fetch(
-    `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT}/ai/run/${MODEL}`,
+    `https://api.cloudflare.com/client/v4/accounts/${account}/ai/run/${MODEL}`,
     {
       method: "POST",
       headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
