@@ -17,7 +17,10 @@ pub(crate) const T_GUN4: usize = T_ORDNANCE + 2;
 pub(crate) const T_GUN5: usize = T_ORDNANCE + 3;
 pub(crate) const T_GUN6: usize = T_ORDNANCE + 4;
 pub(crate) const T_GUN7: usize = T_ORDNANCE + 5;
-pub(crate) const TEX_N: usize = T_GUN7 + 1;
+pub(crate) const T_CONSOLE_UPPER: usize = T_GUN7 + 1;
+pub(crate) const T_CONSOLE_FOUNDRY: usize = T_GUN7 + 2;
+pub(crate) const T_CONSOLE_BIOFORGE: usize = T_GUN7 + 3;
+pub(crate) const TEX_N: usize = T_CONSOLE_BIOFORGE + 1;
 pub(crate) const ENT_N: usize = 192;
 pub(crate) const T_BRICK: usize = 0;
 pub(crate) const T_METAL: usize = 1;
@@ -81,6 +84,10 @@ pub(crate) const EK_FIREPATCH: u8 = 24;
 pub(crate) const EK_MARTYR: u8 = 25;
 pub(crate) const EK_GUN6: u8 = 26;
 pub(crate) const EK_GUN7: u8 = 27;
+pub(crate) const EK_OVERRIDE_CONSOLE: u8 = 28;
+pub(crate) const SKIN_CONSOLE_UPPER: u8 = 240;
+pub(crate) const SKIN_CONSOLE_FOUNDRY: u8 = 241;
+pub(crate) const SKIN_CONSOLE_BIOFORGE: u8 = 242;
 
 // BLACKSITE animation groups. Each group is one 2x2 atlas layer with four
 // distinct motion frames.
@@ -172,7 +179,7 @@ mod tests {
     fn texture_slots_cover_the_known_atlas() {
         assert_eq!(
             TEX_N,
-            ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT + 6
+            ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT + 9
         );
         assert_eq!(TEX, 256);
         assert_eq!(TEXM, 255);

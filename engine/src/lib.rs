@@ -166,6 +166,14 @@ fn anim_frame(e: &Ent) -> i32 {
 }
 
 fn sprite_style(e: &Ent) -> (usize, f32, bool, i32) {
+    if e.kind == EK_OVERRIDE_CONSOLE {
+        let texture = match e.skin {
+            SKIN_CONSOLE_FOUNDRY => T_CONSOLE_FOUNDRY,
+            SKIN_CONSOLE_BIOFORGE => T_CONSOLE_BIOFORGE,
+            _ => T_CONSOLE_UPPER,
+        };
+        return (texture, 0.95, false, 0);
+    }
     if let Some(skin) = skin_def(e.skin) {
         return (skin.texture + (e.anim as usize).min(ENEMY_ANIM_COUNT - 1), if e.kind == EK_BOSS { skin.scale.max(1.9) } else { skin.scale }, true, anim_frame(e));
     }
@@ -392,7 +400,41 @@ impl Engine {
 
     fn near_override(&self) -> bool {
         let (x, y) = map::override_point(self.wave);
-        (self.px - x).powi(2) + (self.py - y).powi(2) < 2.35 * 2.35
+        let distance = (self.px - x).powi(2) + (self.py - y).powi(2);
+        distance < 1.7 * 1.7 && self.los(self.px, self.py, x, y)
+    }
+
+    fn boss_intro_duration(&self) -> f32 {
+        [4.0, 5.2, 4.6][map::level_index(self.wave)]
+    }
+
+    fn boss_intro_effect(&mut self, stage: u8) {
+        let sector = map::level_index(self.wave);
+        let (x, y) = map::boss_spots(self.wave)[0];
+        match sector {
+            0 => {
+                self.shake = (self.shake + if stage == 1 { 0.32 } else { 0.17 }).min(1.0);
+                for n in 0..8 {
+                    let a = n as f32 * core::f32::consts::TAU / 8.0;
+                    self.spawn_timed(EK_SPARK, x + a.cos() * 1.2, y + a.sin() * 1.2, 0.55, -16.0);
+                }
+            }
+            1 => {
+                self.shake = (self.shake + 0.22).min(1.0);
+                for n in 0..12 {
+                    let a = n as f32 * core::f32::consts::TAU / 12.0;
+                    self.spawn_timed(EK_SPARK, x + a.cos() * 1.8, y + a.sin() * 1.8, 0.65, -30.0);
+                }
+            }
+            _ => {
+                self.shake = (self.shake + 0.15).min(1.0);
+                for n in 0..9 {
+                    let a = n as f32 * core::f32::consts::TAU / 9.0;
+                    self.spawn_timed(EK_SMOKE, x + a.cos() * 1.2, y + a.sin() * 1.2, 0.9, -5.0);
+                }
+            }
+        }
+        if stage == 1 { self.events |= EV_BOSS_HUSH; } else { self.events |= EV_DOOR; }
     }
 
     fn room(&mut self, x: i32, y: i32, w: i32, h: i32, wall: u8, fl: u8) {
@@ -1100,18 +1142,18 @@ impl Engine {
                 break;
             }
         }
-        // Malik is a machine-augmented commander: his arrival discharges
-        // electrical fragments and calls a mixed escort instead of summoning
-        // floating magical fire.
-        for _ in 0..14 {
+        let sector = map::level_index(self.wave);
+        let entry = map::boss_spots(self.wave)[0];
+        let burst = [14, 22, 10][sector];
+        for _ in 0..burst {
             let a = self.rnd() * core::f32::consts::TAU;
-            let r = 0.5 + self.rnd() * 1.9;
+            let r = 0.5 + self.rnd() * 1.6;
             self.spawn_timed(
-                EK_SPARK,
-                self.px + a.cos() * r,
-                self.py + a.sin() * r,
-                0.7,
-                -16.0,
+                if sector == 2 { EK_SMOKE } else { EK_SPARK },
+                entry.0 + a.cos() * r,
+                entry.1 + a.sin() * r,
+                if sector == 2 { 1.1 } else { 0.7 },
+                if sector == 1 { -32.0 } else { -16.0 },
             );
         }
         let escorts = match map::level_index(self.wave) {
@@ -1120,8 +1162,8 @@ impl Engine {
             _ => [(EK_WRAITH, SKIN_HORNET, -2.4, -1.6), (EK_WRAITH, SKIN_MARKSMAN, 2.4, -1.6), (EK_HUSK, SKIN_RIFLEMAN, -2.8, 1.8), (EK_BRUTE, SKIN_LOADER, 2.8, 1.8)],
         };
         for &(kind, skin, ox, oy) in &escorts[..(2 + self.wave.min(2) as usize)] {
-            let x = self.px + fx * 5.4 + ox;
-            let y = self.py + fy * 5.4 + oy;
+            let x = entry.0 + ox;
+            let y = entry.1 + oy;
             if !self.blocked(x.floor() as i32, y.floor() as i32) {
                 let _ = self.spawn_with_skin(kind, skin, x, y);
             }
@@ -2078,7 +2120,7 @@ impl Engine {
                     self.open_nearby_doors(true);
                     let clear = !self.ents.iter().any(|e| e.hp > 0 && is_hostile_kind(e.kind));
                     if clear && self.near_override() && !self.boss_spawned && self.boss_intro <= 0.0 {
-                        self.boss_intro = 6.0;
+                        self.boss_intro = self.boss_intro_duration();
                         self.events |= EV_BOSS;
                     }
                 }
@@ -2433,10 +2475,11 @@ impl Engine {
             if self.boss_intro > 0.0 {
                 let prev = self.boss_intro;
                 self.boss_intro -= dt;
+                let half = self.boss_intro_duration() * 0.5;
+                if prev > half && self.boss_intro <= half { self.boss_intro_effect(0); }
                 if prev > 1.0 && self.boss_intro <= 1.0 {
                     self.hell = true;
-                    self.shake = (self.shake + 0.35).min(1.0);
-                    self.events |= EV_BOSS_HUSH;
+                    self.boss_intro_effect(1);
                 }
                 if self.boss_intro <= 0.0 {
                     self.boss_intro = 0.0;
@@ -2520,6 +2563,10 @@ impl Engine {
         }
         if living == 0 && self.near_override() && !self.boss_spawned && self.boss_intro <= 0.0 {
             prompt = 3;
+        }
+        if self.boss_intro > 0.0 {
+            prompt = 7 + map::level_index(self.wave) as i32 * 2
+                + if self.boss_intro <= self.boss_intro_duration() * 0.5 { 1 } else { 0 };
         }
 
         let weap_frame = if self.reload_t > 0.0 {
@@ -3661,6 +3708,19 @@ pub extern "C" fn hs_qa_boss(phase: i32) {
 }
 
 #[no_mangle]
+pub extern "C" fn hs_qa_objective() {
+    let e = eng();
+    if !e.qa { return; }
+    let (x, y) = map::override_point(e.wave);
+    e.px = x - 1.2;
+    e.py = y;
+    e.pa = 0.0;
+    for ent in &mut e.ents {
+        if is_hostile_kind(ent.kind) { ent.kind = EK_NONE; }
+    }
+}
+
+#[no_mangle]
 pub extern "C" fn hs_fire_patches() -> i32 {
     eng().ents.iter().filter(|e| e.kind == EK_FIREPATCH).count() as i32
 }
@@ -4409,6 +4469,39 @@ mod tests {
         assert!(e.hell);
         e.tick(1.0 / 60.0);
         assert_eq!(e.ents.iter().filter(|en| en.kind == EK_BOSS).count(), 1);
+    }
+
+    #[test]
+    fn override_use_requires_a_clear_path_to_the_console() {
+        let mut e = arena();
+        e.wave = 1;
+        e.px = 38.9;
+        e.py = 21.5;
+        e.set_cell(39, 21, 1);
+        e.bits = IN_USE;
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.boss_intro, 0.0);
+        e.set_cell(39, 21, 0);
+        e.bits = 0;
+        e.tick(1.0 / 60.0);
+        e.bits = IN_USE;
+        e.tick(1.0 / 60.0);
+        assert!(e.boss_intro > 0.0);
+    }
+
+    #[test]
+    fn boss_sequences_have_distinct_timing_and_entry_effects() {
+        let mut e = arena();
+        assert_eq!(e.boss_intro_duration(), 4.0);
+        e.wave = 2;
+        assert_eq!(e.boss_intro_duration(), 5.2);
+        e.boss_intro_effect(0);
+        assert!(e.fx_q[..e.fx_n].iter().any(|fx| fx.kind == EK_SPARK));
+        e.fx_n = 0;
+        e.wave = 3;
+        assert_eq!(e.boss_intro_duration(), 4.6);
+        e.boss_intro_effect(0);
+        assert!(e.fx_q[..e.fx_n].iter().any(|fx| fx.kind == EK_SMOKE));
     }
 
     #[test]

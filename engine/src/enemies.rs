@@ -144,6 +144,7 @@ pub(crate) const ENEMY_DEFS: &[EnemyDef] = &[
     EnemyDef { kind: EK_FLAME, name: "Flame", role: "fx", hp: 1, radius: 0.14, zoff: 42.0, scale: 0.82, texture: T_FLAME, sheet4: true, hostile: false, cleared_on_wave: false },
     EnemyDef { kind: EK_FIREPATCH, name: "Fire patch", role: "fx", hp: 1, radius: 0.2, zoff: 0.0, scale: 0.60, texture: T_FLAME, sheet4: true, hostile: false, cleared_on_wave: true },
     EnemyDef { kind: EK_MARTYR, name: "Martyr", role: "skirmisher", hp: 18, radius: 0.26, zoff: -48.0, scale: 0.70, texture: T_BALL, sheet4: false, hostile: true, cleared_on_wave: true },
+    EnemyDef { kind: EK_OVERRIDE_CONSOLE, name: "Override console", role: "objective", hp: 1, radius: 0.22, zoff: 18.0, scale: 0.95, texture: T_CONSOLE_UPPER, sheet4: false, hostile: false, cleared_on_wave: false },
 ];
 
 /// Look up a kind's row. Returns `None` for kind 0 (empty slot).

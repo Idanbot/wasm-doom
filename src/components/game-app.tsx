@@ -416,6 +416,18 @@ export function GameApp() {
               USE E — INITIATE OVERRIDE
             </p>
           )}
+          {hud.prompt >= 7 && hud.prompt <= 12 && (
+            <p className="pointer-events-none absolute left-1/2 top-1/4 -translate-x-1/2 border border-danger bg-bg/90 px-6 py-4 text-center font-display text-sm tracking-[0.2em] text-danger">
+              {[
+                "VAULT LOCKDOWN · COMMAND SIGNAL DETECTED",
+                "VEYRAN INBOUND · BRACE FOR CONTACT",
+                "FOUNDRY POWER SURGE · DRONES ONLINE",
+                "HECATE–9 ACTIVATING · AVOID THE ARC",
+                "CONTAINMENT BREACH · BIOLOCK FAILED",
+                "CHIMERA–9 RELEASED · KEEP MOVING",
+              ][hud.prompt - 7]}
+            </p>
+          )}
           {isCoarse && (
             <TouchLayer
               onMove={(x, y) => rtRef.current?.setTouchMove(x, y)}

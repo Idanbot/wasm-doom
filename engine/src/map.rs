@@ -401,7 +401,7 @@ pub(crate) fn place_hub_spoke(e: &mut Engine) {
     e.spawn(EK_AMMO, 39.5, 22.5);
     e.spawn(EK_BARREL, 35.5, 26.5);
     e.spawn(EK_BARREL, 42.5, 21.5);
-    e.spawn(EK_LAMP, 40.5, 21.5);
+    e.spawn(EK_LAMP, 39.5, 20.5);
     e.spawn(EK_CHAIN, 38.5, 24.5);
     // South lane + flesh pit.
     e.spawn(EK_CRATE, 22.5, 22.5);
@@ -514,6 +514,9 @@ pub(crate) fn place_level(e: &mut Engine) {
         2 => place_bioforge(e),
         _ => place_hub_spoke(e),
     }
+    let (x, y) = override_point(e.wave);
+    let skin = [SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_BIOFORGE][level_index(e.wave)];
+    e.spawn_with_skin(EK_OVERRIDE_CONSOLE, skin, x, y);
 }
 
 /// Fire each ambush once when the player crosses its zone. Called from
@@ -689,5 +692,20 @@ mod tests {
         assert!(hostiles(1).len() > 10 && hostiles(2).len() > 10 && hostiles(3).len() > 10);
         assert_ne!(hostiles(1), hostiles(2));
         assert_ne!(hostiles(2), hostiles(3));
+    }
+
+    #[test]
+    fn each_sector_places_one_visible_console_away_from_its_boss() {
+        let mut e = Engine::new(160, 100);
+        for wave in 1..=3 {
+            e.wave = wave;
+            build_level(&mut e);
+            place_level(&mut e);
+            let consoles: Vec<_> = e.ents.iter().filter(|ent| ent.kind == EK_OVERRIDE_CONSOLE).collect();
+            assert_eq!(consoles.len(), 1);
+            assert_eq!((consoles[0].x, consoles[0].y), override_point(wave));
+            assert_eq!(consoles[0].skin, [SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_BIOFORGE][level_index(wave)]);
+            assert!(boss_spots(wave).iter().all(|spot| *spot != override_point(wave)));
+        }
     }
 }

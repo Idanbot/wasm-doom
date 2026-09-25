@@ -14,7 +14,7 @@ export const T_GUN4 = T_ORDNANCE + 2;
 export const T_GUN5 = T_ORDNANCE + 3;
 export const T_GUN6 = T_ORDNANCE + 4;
 export const T_GUN7 = T_ORDNANCE + 5;
-export const TEX_N = T_GUN7 + 1;
+export const TEX_N = T_GUN7 + 4;
 export const TEX = 256;
 
 export type WorldFrame = {

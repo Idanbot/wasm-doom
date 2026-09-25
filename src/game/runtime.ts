@@ -62,6 +62,7 @@ type WasmExports = {
   hs_enemy_cues: () => number;
   hs_qa_end: (state: number) => void;
   hs_qa_boss: (phase: number) => void;
+  hs_qa_objective: () => void;
 };
 
 const IN = {
@@ -161,6 +162,9 @@ const TEX_FILES: { id: number; src: string }[] = [
   { id: T_GUN5, src: "/game/spr_gun_vlk6.png" },
   { id: T_GUN6, src: "/game/spr_gun_ax12.png" },
   { id: T_GUN7, src: "/game/spr_gun_m91.png" },
+  { id: T_GUN7 + 1, src: "/game/environment/props/datacenter_terminal_console.png" },
+  { id: T_GUN7 + 2, src: "/game/environment/props/nuclear_terminal_console.png" },
+  { id: T_GUN7 + 3, src: "/game/environment/props/biotech_terminal_console.png" },
   ...ENEMY_SKINS.flatMap((skin, skinIndex) =>
     ENEMY_ANIMATIONS.map((animation, animationIndex) => ({
       id: ENEMY_TEX_BASE + skinIndex * ENEMY_ANIM_COUNT + animationIndex,
@@ -923,6 +927,7 @@ export class HellscanRuntime {
       },
       triggerEnd: (state: 1 | 2) => this.wasm?.hs_qa_end(state),
       triggerBoss: (phase = 0) => this.wasm?.hs_qa_boss(phase),
+      visitObjective: () => this.wasm?.hs_qa_objective(),
       nextWave: () => this.nextWave(),
     };
   }
@@ -967,6 +972,7 @@ declare global {
       grantWeapons?: () => void;
       triggerEnd?: (state: 1 | 2) => void;
       triggerBoss?: (phase?: number) => void;
+      visitObjective?: () => void;
       nextWave?: () => void;
     };
   }
