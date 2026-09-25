@@ -1,18 +1,17 @@
 @import "tailwindcss";
-
 @font-face {
   font-family: "Oxanium";
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url("/fonts/oxanium-700.ttf") format("truetype");
+  src: url("../public/fonts/oxanium-700.ttf") format("truetype");
 }
 @font-face {
   font-family: "Rajdhani";
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url("/fonts/rajdhani-600.ttf") format("truetype");
+  src: url("../public/fonts/rajdhani-600.ttf") format("truetype");
 }
 
 @theme {
@@ -143,7 +142,7 @@
   background-color: var(--color-surface);
   background-image:
     linear-gradient(180deg, color-mix(in oklab, var(--color-fg) 8%, transparent), transparent 28%),
-    url("/game/ui-plaque.svg");
+    var(--ui-plaque, url("../public/game/ui-plaque.svg"));
   background-size: cover;
   border: 2px solid color-mix(in oklab, var(--color-fg) 22%, transparent);
   box-shadow:
@@ -438,6 +437,19 @@ select:focus-visible {
 .deploy-button:disabled {
   opacity: 0.55;
   cursor: wait;
+}
+.load-meter {
+  height: 6px;
+  margin: 0 0 12px;
+  border: 1px solid color-mix(in oklab, var(--color-primary) 55%, transparent);
+  background: color-mix(in oklab, var(--color-bg) 70%, transparent);
+  overflow: hidden;
+}
+.load-meter > span {
+  display: block;
+  height: 100%;
+  background: var(--color-primary);
+  transition: width 160ms var(--ease-out);
 }
 .deploy-button > span {
   flex: 1;
@@ -940,7 +952,7 @@ select:focus-visible {
   gap: 12px;
 }
 .hud-plate {
-  background: url("/game/ui/hud-panel.webp") center / 100% 100% no-repeat;
+  background: var(--hud-panel, url("../public/game/ui/hud-panel.webp")) center / 100% 100% no-repeat;
   width: 300px;
   padding: 28px 36px 36px;
   box-sizing: border-box;

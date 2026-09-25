@@ -1,3 +1,4 @@
+import { asset } from "@/lib/asset";
 import {
   DEFAULT_ENEMY_OPTIONS,
   VoiceDirector,
@@ -90,22 +91,26 @@ export class EnemyAudio {
     this.voiceBus.connect(master);
     this.configure(this.options);
   }
-  async load() {
+  async load(onProgress?: (done: number, total: number) => void) {
     this.loaded ??= (async () => {
-      const response = await fetch("/game/voices/manifest.json");
+      const response = await fetch(asset("/game/voices/manifest.json"));
       if (!response.ok) throw new Error("Enemy voice manifest could not load");
       const manifest = (await response.json()) as { enemies: VoiceProfile[] };
       for (const p of manifest.enemies) this.profiles.set(p.skin, p);
       const lines = manifest.enemies.flatMap((p) => p.lines);
       let index = 0;
+      let done = 0;
+      onProgress?.(0, lines.length);
       await Promise.all(
         Array.from({ length: 4 }, async () => {
           while (index < lines.length && !this.closed) {
             const line = lines[index++]!;
-            const r = await fetch(line.url);
+            const r = await fetch(asset(line.url));
             if (!r.ok) throw new Error(`Enemy voice missing: ${line.id}`);
             const decoded = await this.ctx.decodeAudioData(await r.arrayBuffer());
             this.buffers.set(line.id, decoded);
+            done += 1;
+            onProgress?.(done, lines.length);
           }
         }),
       );

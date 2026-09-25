@@ -4,6 +4,7 @@ art/blacksite/review/
 .tanstack/
 .vercel/
 dist/
+dist-pages/
 .engine/
 engine/target/
 .grok/dev.log

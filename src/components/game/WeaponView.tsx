@@ -1,3 +1,4 @@
+import { asset } from "@/lib/asset";
 import { WEAPONS } from "./data";
 
 export function WeaponView({
@@ -14,7 +15,7 @@ export function WeaponView({
       ref={weaponRef}
       className="weapon-view pointer-events-none absolute bottom-[-2%] left-1/2 origin-bottom select-none"
       style={{
-        backgroundImage: `url(${WEAPONS[0]!.idle})`,
+        backgroundImage: `url(${asset(WEAPONS[0]!.idle)})`,
         backgroundSize: "contain",
         backgroundPosition: "center bottom",
         backgroundRepeat: "no-repeat",

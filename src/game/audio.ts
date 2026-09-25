@@ -1,3 +1,4 @@
+import { asset } from "@/lib/asset";
 import { EnemyAudio } from "./enemy-audio";
 import {
   DEFAULT_ENEMY_OPTIONS,
@@ -9,7 +10,7 @@ import {
 export type GameAudio = {
   previewEnemy: (skin: number) => void;
   enemyDiagnostics: () => ReturnType<EnemyAudio["diagnostics"]> | null;
-  prepareEnemies: () => Promise<void>;
+  prepareEnemies: (onProgress?: (done: number, total: number) => void) => Promise<void>;
   setEnemyOptions: (options: EnemyOptions) => void;
   updateEnemies: (
     enemies: EnemyCue[],
@@ -70,24 +71,24 @@ export function createAudio(): GameAudio {
   const buffers: Record<string, AudioBuffer> = {};
   let sfxLoadStarted = false;
   const SFX_URLS: Record<string, string> = {
-    fire0: "/game/sfx/fire0.ogg",
-    fire1: "/game/sfx/fire1.ogg",
-    fire2: "/game/sfx/fire2.ogg",
-    fire3: "/game/sfx/fire3.ogg",
-    fire4: "/game/sfx/fire4.ogg",
-    reload: "/game/sfx/reload.ogg",
-    empty: "/game/sfx/empty.ogg",
-    empty1: "/game/sfx/empty1.ogg",
-    empty2: "/game/sfx/empty2.ogg",
-    hit: "/game/sfx/hit.ogg",
-    hitFlesh: "/game/sfx/hit_flesh.ogg",
-    death: "/game/sfx/death.ogg",
-    deathThud: "/game/sfx/death_thud.ogg",
-    pickup: "/game/sfx/pickup.ogg",
-    pickupGold: "/game/sfx/pickup_gold.ogg",
-    boom: "/game/sfx/boom.ogg",
-    door: "/game/sfx/door.ogg?v=2",
-    hurt: "/game/sfx/hurt.ogg",
+    fire0: asset("/game/sfx/fire0.ogg"),
+    fire1: asset("/game/sfx/fire1.ogg"),
+    fire2: asset("/game/sfx/fire2.ogg"),
+    fire3: asset("/game/sfx/fire3.ogg"),
+    fire4: asset("/game/sfx/fire4.ogg"),
+    reload: asset("/game/sfx/reload.ogg"),
+    empty: asset("/game/sfx/empty.ogg"),
+    empty1: asset("/game/sfx/empty1.ogg"),
+    empty2: asset("/game/sfx/empty2.ogg"),
+    hit: asset("/game/sfx/hit.ogg"),
+    hitFlesh: asset("/game/sfx/hit_flesh.ogg"),
+    death: asset("/game/sfx/death.ogg"),
+    deathThud: asset("/game/sfx/death_thud.ogg"),
+    pickup: asset("/game/sfx/pickup.ogg"),
+    pickupGold: asset("/game/sfx/pickup_gold.ogg"),
+    boom: asset("/game/sfx/boom.ogg"),
+    door: asset("/game/sfx/door.ogg?v=2"),
+    hurt: asset("/game/sfx/hurt.ogg"),
   };
 
   function ensure() {
@@ -457,8 +458,8 @@ export function createAudio(): GameAudio {
 
   function ensureBed() {
     if (!ctx || !music || bedFailed) return;
-    if (!bed) bed = hookBed("/game/music/bgm-remix.ogg");
-    if (!bossBed) bossBed = hookBed("/game/music/boss.ogg");
+    if (!bed) bed = hookBed(asset("/game/music/bgm-remix.ogg"));
+    if (!bossBed) bossBed = hookBed(asset("/game/music/boss.ogg"));
     if (!bed && !bossBed) bedFailed = true;
   }
 
@@ -603,9 +604,9 @@ export function createAudio(): GameAudio {
       enemies?.preview(skin);
     },
     enemyDiagnostics: () => enemies?.diagnostics() ?? null,
-    async prepareEnemies() {
+    async prepareEnemies(onProgress?: (done: number, total: number) => void) {
       ensure();
-      await enemies?.load();
+      await enemies?.load(onProgress);
     },
     setEnemyOptions(options) {
       enemyOptions = { ...options };

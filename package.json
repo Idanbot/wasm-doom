@@ -1,5 +1,5 @@
 {
-  "name": "app-builder-workspace",
+  "name": "blacksite",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -10,6 +10,7 @@
     "dev": "node scripts/with-app-env.mjs vite dev --host 0.0.0.0 --port 8080",
     "build:wasm": "PATH=\"$HOME/.cargo/bin:$PATH\" rustup target add wasm32-unknown-unknown && PATH=\"$HOME/.cargo/bin:$PATH\" cargo build --manifest-path engine/Cargo.toml --target wasm32-unknown-unknown --release && cp engine/target/wasm32-unknown-unknown/release/hellscan.wasm public/hellscan.wasm && node scripts/check-wasm-sync.mjs --update",
     "build": "node scripts/with-app-env.mjs vite build && npm run db:migrate",
+    "build:pages": "vite build --config vite.pages.config.ts && node scripts/pages-finish.mjs",
     "db:migrate": "node scripts/migrate.mjs",
     "build:dev": "node scripts/with-app-env.mjs vite build --mode development",
     "preview": "node scripts/with-app-env.mjs vite preview",

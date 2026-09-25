@@ -6,6 +6,7 @@ export function Menu(
   p: SettingsProps & {
     ready: boolean;
     err: string | null;
+    load?: { ratio: number; label: string };
     board: Score[];
     muted: boolean;
     setMuted: (v: boolean) => void;
@@ -45,11 +46,27 @@ export function Menu(
           {p.err}
         </p>
       )}
+      {!p.ready && (
+        <div
+          className="load-meter"
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={Math.round((p.load?.ratio ?? 0) * 100)}
+          aria-label={p.load?.label ?? "Loading"}
+        >
+          <span style={{ width: `${Math.round((p.load?.ratio ?? 0) * 100)}%` }} />
+        </div>
+      )}
       <button type="button" className="deploy-button" disabled={!p.ready} onClick={p.onStart}>
         <Crosshair size={22} />
         <span>
           {p.ready ? "Enter blacksite" : "Preparing deployment…"}
-          <small>{p.ready ? "Begin operation" : "Loading world, arsenal and enemy voices"}</small>
+          <small>
+            {p.ready
+              ? "Begin operation"
+              : `${p.load?.label ?? "Loading"} · ${Math.round((p.load?.ratio ?? 0) * 100)}%`}
+          </small>
         </span>
         <ArrowUpRight size={24} />
       </button>

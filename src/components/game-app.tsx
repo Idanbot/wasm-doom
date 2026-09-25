@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { asset } from "@/lib/asset";
 import { HellscanRuntime } from "@/game/runtime";
 import { DEFAULT_HUD, type GfxOpts, type HudState, type ResMode } from "@/game/types";
 import { Crosshair } from "./game/Crosshair";
@@ -67,6 +68,7 @@ export function GameApp() {
   const [board, setBoard] = useState<Score[]>([]);
   const [err, setErr] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
+  const [load, setLoad] = useState({ ratio: 0, label: "Engine" });
   const [isCoarse, setIsCoarse] = useState(false);
   const [renderer, setRenderer] = useState("webgl2");
   const [checkpoint, setCheckpoint] = useState<RunSave | null>(loadCheckpoint);
@@ -87,6 +89,7 @@ export function GameApp() {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const rt = new HellscanRuntime(canvas, {
+      onLoad: (progress) => setLoad(progress),
       onSubtitles: (lines) => {
         const now = performance.now();
         if (!lines.length || now - lastSubtitleAt.current > 50) {
@@ -117,18 +120,18 @@ export function GameApp() {
           const wpn = WEAPONS[h.weapon] ?? WEAPONS[0]!;
           const fr = h.weapFrame | 0;
           if (fr >= 5) {
-            weapEl.style.backgroundImage = `url(${wpn.reload})`;
+            weapEl.style.backgroundImage = `url(${asset(wpn.reload)})`;
             const pistolReload = h.weapon === 0;
             weapEl.style.backgroundSize = pistolReload ? "200% 200%" : "400% 200%";
             weapEl.style.backgroundPosition = pistolReload
               ? sheetPos(Math.min(3, fr - 5))
               : gridPos(Math.min(7, fr - 5), 4, 2);
           } else if (fr >= 1) {
-            weapEl.style.backgroundImage = `url(${wpn.fire})`;
+            weapEl.style.backgroundImage = `url(${asset(wpn.fire)})`;
             weapEl.style.backgroundSize = "200% 200%";
             weapEl.style.backgroundPosition = sheetPos(Math.min(3, fr - 1));
           } else {
-            weapEl.style.backgroundImage = `url(${wpn.idle})`;
+            weapEl.style.backgroundImage = `url(${asset(wpn.idle)})`;
             weapEl.style.backgroundSize = "contain";
             weapEl.style.backgroundPosition = "center bottom";
           }
@@ -243,6 +246,12 @@ export function GameApp() {
       dead = true;
       rt.stop();
     };
+  }, []);
+
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty("--ui-plaque", `url("${asset("/game/ui-plaque.svg")}")`);
+    root.style.setProperty("--hud-panel", `url("${asset("/game/ui/hud-panel.webp")}")`);
   }, []);
 
   const handleRequireGpu = useCallback(async (on: boolean) => {
@@ -543,7 +552,7 @@ export function GameApp() {
         <div className={`operation-overlay ${screen === "menu" ? "operation-home" : ""}`}>
           <div
             className="operation-backdrop"
-            style={{ backgroundImage: "url(/game/ui/menu-reactor.webp)" }}
+            style={{ backgroundImage: `url(${asset("/game/ui/menu-reactor.webp")})` }}
           />
           <div className="operation-shade" />
           <section className={`operation-content ${screen !== "menu" ? "operation-card" : ""}`}>
@@ -555,6 +564,7 @@ export function GameApp() {
                 onStart={start}
                 onContinue={checkpoint ? continueRun : undefined}
                 ready={ready}
+                load={load}
                 err={err}
                 board={board}
                 res={res}

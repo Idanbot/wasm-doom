@@ -17,6 +17,13 @@ A Doom-style raycaster that runs entirely in the browser. The simulation is writ
 
 Touch controls appear automatically on coarse-pointer devices. Add `?qa=1` to the URL for autoplay QA mode.
 
+## Deploy
+
+The game is entirely in the browser: simulation, weapons, voices, music, settings, and the local leaderboard. GitHub Pages can serve that. It cannot run the TanStack/Nitro server build, and it does not need to — nothing in play calls a server.
+
+`npm run build:pages` writes `dist-pages/` for `https://<user>.github.io/wasm-doom/`. Leave the Pages custom-domain field empty. `.github/workflows/pages.yml` publishes that folder on push to `main` once the repo's Pages source is set to GitHub Actions.
+
+
 ## Architecture
 
 ```

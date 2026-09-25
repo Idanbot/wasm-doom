@@ -1,3 +1,4 @@
+import { asset } from "@/lib/asset";
 import { createAudio, type GameAudio } from "./audio";
 import { createBlitter, type BlitKind, type Blitter } from "./blit";
 import {
@@ -250,18 +251,26 @@ function decodeImage(src: string): Promise<HTMLImageElement | null> {
     const timer = window.setTimeout(() => finish(null), 8000);
     img.onload = () => finish(img);
     img.onerror = () => finish(null);
-    img.src = src;
+    img.src = asset(src);
   });
 }
 
-async function preloadImages(urls: string[], limit = 4) {
+async function preloadImages(
+  urls: string[],
+  limit = 4,
+  onItem?: (done: number, total: number) => void,
+) {
   const out: (HTMLImageElement | null)[] = new Array(urls.length);
   let cursor = 0;
+  let done = 0;
+  onItem?.(0, urls.length);
   async function worker() {
     while (cursor < urls.length) {
       const i = cursor;
       cursor += 1;
       out[i] = await decodeImage(urls[i]!);
+      done += 1;
+      onItem?.(done, urls.length);
     }
   }
   await Promise.all(Array.from({ length: Math.min(limit, urls.length) }, () => worker()));
@@ -276,6 +285,7 @@ export type RuntimeHooks = {
    * version-skewed binary). Without this the game would freeze silently
    * on a stale HUD with no game-over ever arriving. */
   onError?: (message: string) => void;
+  onLoad?: (progress: { ratio: number; label: string }) => void;
 };
 
 export class HellscanRuntime {
@@ -331,6 +341,8 @@ export class HellscanRuntime {
     this.audio = createAudio();
   }
   async boot(res: ResMode, opts?: { requireGpu?: boolean }) {
+    const report = (ratio: number, label: string) => this.hooks.onLoad?.({ ratio, label });
+    report(0.02, "Engine");
     const wasm = await loadWasm();
     if (this.aborted) return;
     this.wasm = wasm;
@@ -342,6 +354,7 @@ export class HellscanRuntime {
         `HUD ABI mismatch: WASM reports ${hudSize} bytes, TS expects ${HUD_SIZE}. Rebuild both sides.`,
       );
     }
+    report(0.1, "Renderer");
     this.blit = await createBlitter(this.canvas, { requireGpu: this.requireGpu });
     if (this.aborted) {
       this.blit.dispose();
@@ -359,13 +372,25 @@ export class HellscanRuntime {
     this.running = true;
     this.last = performance.now();
     this.loop(this.last);
-    // Every firing/reload sheet must be cached before play: switching a CSS
-    // background to an unloaded sheet otherwise hides the weapon mid-shot.
+    const slices = { tex: 0, ui: 0, voice: 0 };
+    const paint = (label: string) => {
+      report(Math.min(0.99, 0.12 + 0.48 * slices.tex + 0.18 * slices.ui + 0.22 * slices.voice), label);
+    };
     await Promise.all([
-      this.uploadTextures(),
-      preloadImages([...UI_CRITICAL, ...UI_DEFERRED]),
-      this.audio.prepareEnemies(),
+      this.uploadTextures((done, total) => {
+        slices.tex = total ? done / total : 1;
+        paint("World textures");
+      }),
+      preloadImages([...UI_CRITICAL, ...UI_DEFERRED], 4, (done, total) => {
+        slices.ui = total ? done / total : 1;
+        paint("Arsenal");
+      }),
+      this.audio.prepareEnemies((done, total) => {
+        slices.voice = total ? done / total : 1;
+        paint("Enemy voices");
+      }),
     ]);
+    report(1, "Ready");
     if (this.aborted) {
       this.running = false;
       cancelAnimationFrame(this.raf);
@@ -616,7 +641,7 @@ export class HellscanRuntime {
     return this.hud;
   }
 
-  private async uploadTextures() {
+  private async uploadTextures(onItem?: (done: number, total: number) => void) {
     const wasm = this.wasm;
     if (!wasm) return;
     const size = wasm.hs_tex_size();
@@ -631,6 +656,7 @@ export class HellscanRuntime {
     const loaded = await preloadImages(
       TEX_FILES.map((t) => t.src),
       12,
+      onItem,
     );
     for (let i = 0; i < TEX_FILES.length; i++) {
       const img = loaded[i];
@@ -1051,7 +1077,7 @@ async function loadWasm(): Promise<WasmExports> {
   // Share compiled code, never mutable memory between runtime mounts.
   if (!wasmModule) {
     wasmModule = (async () => {
-      const res = await fetch("/hellscan.wasm", { cache: "no-cache" });
+      const res = await fetch(asset("/hellscan.wasm"), { cache: "no-cache" });
       if (!res.ok) throw new Error(`Unable to load engine (${res.status})`);
       return WebAssembly.compile(await res.arrayBuffer());
     })().catch((error) => {
