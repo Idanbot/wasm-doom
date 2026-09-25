@@ -27,7 +27,7 @@ Doors (`8`) auto-open on approach. Secret doors (`9`) require USE and increment 
 
 ## Boss override
 
-Each sector ends at `override_point(wave)`, marked by floor style `2` and a visible sector-specific control console. Clearing ordinary hostiles is not enough: the player must also USE the sector node (`field::node_point`) with a clear path before the override will arm. Walking across the floor or using through a wall cannot start the encounter. Upper Works has a four-second command lockdown, Foundry has a 5.2-second power surge, and Bioforge has a 4.6-second containment breach. Each buildup telegraphs at its midpoint and final second before the sector boss arrives at `boss_spots(wave)`.
+Each sector ends at `override_point(wave)`, marked by floor style `2` and a visible sector-specific control console. Clearing ordinary hostiles is not enough: the player must also USE the sector node (`field::node_point`) with a clear path before the override will arm. Walking across the floor or using through a wall cannot start the encounter. Upper Works has a four-second command lockdown, Foundry has a 5.2-second power surge, and Bioforge has a 4.6-second containment breach. The seal slams those doors shut from the arena side. Approaching from outside still opens them, so a player who stepped out can walk back in.
 
 ## Validation rules
 

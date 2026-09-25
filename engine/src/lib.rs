@@ -1075,11 +1075,18 @@ impl Engine {
 
     fn seal_lockdown(&mut self) {
         self.lockdown = true;
+        // Slam the leaves shut, but leave them as doors. A wall would trap
+        // anyone who stepped out before the seal.
         for &(x, y) in field::lockdown_doors(self.wave) {
-            if self.cell(x, y) == 8 {
-                self.set_cell(x, y, 1);
+            if self.cell(x, y) != 8 || x < 0 || y < 0 {
+                continue;
+            }
+            let idx = y as usize * MAP_W + x as usize;
+            if idx < self.door.len() {
+                self.door[idx] = 0.0;
             }
         }
+        self.light_dirty = true;
         match map::level_index(self.wave) {
             1 => {
                 if let Some((bx, by)) = self.boss_pos() {
@@ -1297,6 +1304,40 @@ impl Engine {
     fn place_ents(&mut self) {
         map::place_level(self);
         self.spawn_hostiles(1);
+    }
+
+    /// Map guns the player already owns become a supply drop instead.
+    pub(crate) fn replace_owned_weapon_drops(&mut self) {
+        let owned = [
+            self.has_w2, self.has_w3, self.has_w4, self.has_w5, self.has_w6,
+            self.has_w7, self.has_w8, self.has_w9, self.has_w10, self.has_w11,
+        ];
+        let slot = |kind: u8| match kind {
+            EK_GUN2 => Some(0),
+            EK_GUN3 => Some(1),
+            EK_GUN4 => Some(2),
+            EK_GUN5 => Some(3),
+            EK_GUN6 => Some(4),
+            EK_GUN7 => Some(5),
+            EK_GUN8 => Some(6),
+            EK_GUN9 => Some(7),
+            EK_GUN10 => Some(8),
+            EK_GUN11 => Some(9),
+            _ => None,
+        };
+        let mut n = 0i32;
+        for e in self.ents.iter_mut() {
+            let Some(i) = slot(e.kind) else { continue; };
+            if !owned[i] { continue; }
+            let kind = if n % 2 == 0 { EK_AMMO } else { EK_MED };
+            n += 1;
+            e.kind = kind;
+            e.skin = SKIN_NONE;
+            if let Some(d) = enemy_def(kind) {
+                e.hp = d.hp;
+                e.radius = d.radius;
+            }
+        }
     }
 
     fn spawn_hostiles(&mut self, mult: i32) {
@@ -1728,7 +1769,32 @@ impl Engine {
         }
     }
 
+    /// True when this leaf is a sealed boss door and the player is on the
+    /// arena side. The outside face still opens so they can walk back in.
+    fn lockdown_refuses(&self, cx: i32, cy: i32) -> bool {
+        if !self.lockdown || !field::lockdown_doors(self.wave).contains(&(cx, cy)) {
+            return false;
+        }
+        !self.outside_lock(cx, cy)
+    }
+
+    fn outside_lock(&self, dx: i32, dy: i32) -> bool {
+        let (bx, by) = self.boss_pos().unwrap_or_else(|| {
+            let spots = map::boss_spots(self.wave);
+            ((spots[0].0 + spots[1].0) * 0.5, (spots[0].1 + spots[1].1) * 0.5)
+        });
+        let ix = bx - (dx as f32 + 0.5);
+        let iy = by - (dy as f32 + 0.5);
+        let px = self.px - (dx as f32 + 0.5);
+        let py = self.py - (dy as f32 + 0.5);
+        // Opposite side of the boss, with slack so the threshold still opens.
+        px * ix + py * iy < 0.4
+    }
+
     fn open_door_at(&mut self, cx: i32, cy: i32, force: bool) -> bool {
+        if self.lockdown_refuses(cx, cy) {
+            return false;
+        }
         let c = self.cell(cx, cy);
         if c != 8 && !(c == 9 && force) {
             return false;
@@ -2317,7 +2383,11 @@ impl Engine {
         self.shake = (self.shake + 0.22).min(1.0);
         for n in 0..5 {
             let a = self.pa + (n as f32 - 2.0) * 0.07;
-            if let Some(i) = self.spawn(EK_PROJ, self.px + a.cos() * 0.45, self.py + a.sin() * 0.45) {
+            // Clear of the player. Spawning on the muzzle made the first
+            // step count as a self-hit and the burst killed the shooter.
+            let x = self.px + a.cos() * 1.15;
+            let y = self.py + a.sin() * 1.15;
+            if let Some(i) = self.spawn(EK_PROJ, x, y) {
                 let e = &mut self.ents[i];
                 e.vx = a.cos() * 9.5;
                 e.vy = a.sin() * 9.5;
@@ -2330,7 +2400,22 @@ impl Engine {
     }
 
     fn chimera_burst(&mut self, x: f32, y: f32) {
-        self.explode(x, y, 2.6, 80.0);
+        // Allied blast: enemies only. The pool is the same.
+        self.effect(EK_IMPACT, 3, x, y, 0.38, 10.0);
+        self.spawn_timed(EK_SMOKE, x, y, 0.5, 8.0);
+        self.events |= EV_EXPLODE;
+        let mut hits = Vec::new();
+        for (i, e) in self.ents.iter().enumerate() {
+            if e.hp <= 0 || !solid_kind(e.kind) { continue; }
+            let d = ((e.x - x).powi(2) + (e.y - y).powi(2)).sqrt();
+            if d < 2.6 && self.los(x, y, e.x, e.y) {
+                let fall = 1.0 - d / 2.6;
+                hits.push((i, (80.0 * fall) as i32));
+            }
+        }
+        for (i, dmg) in hits {
+            self.hurt_ent(i, dmg.max(1), x, y);
+        }
         self.scorch(x, y, 4.0);
     }
 
@@ -2351,9 +2436,9 @@ impl Engine {
     }
 
     /// Damage the player and hostiles standing in a live flame.
-    fn burn_at(&mut self, x: f32, y: f32, dmg: i32) {
+    fn burn_at(&mut self, x: f32, y: f32, dmg: i32, hurt_player: bool) {
         let pd = (self.px - x).powi(2) + (self.py - y).powi(2);
-        if pd < 0.9 * 0.9 && self.los(x, y, self.px, self.py) {
+        if hurt_player && pd < 0.9 * 0.9 && self.los(x, y, self.px, self.py) {
             self.damage_player(dmg);
         }
         let mut hits = Vec::new();
@@ -2933,9 +3018,10 @@ impl Engine {
                     } else if pstate == 0 {
                         let d = segment_distance_sq(px, py, old_x, old_y, ex, ey);
                         if d < 0.22 {
-                            self.ents[i].kind = 0;
-                            if variant == 4.0 { self.chimera_burst(ex, ey); }
-                            else { melee.push((i, damage)); }
+                            if variant != 4.0 {
+                                self.ents[i].kind = 0;
+                                melee.push((i, damage));
+                            }
                         } else if variant == 4.0 {
                             let mut hit = None;
                             for (j, o) in self.ents.iter().enumerate() {
@@ -2959,13 +3045,13 @@ impl Engine {
                     e.timer -= dt;
                     e.effect_tick -= dt;
                     e.frame += dt * 3.0;
-                    let (x, y, pulse) = (e.x, e.y, e.effect_tick <= 0.0);
+                    let (x, y, pulse, acid) = (e.x, e.y, e.effect_tick <= 0.0, e.skin == 2);
                     if e.timer <= 0.0 { e.kind = EK_NONE; continue; }
                     if pulse { e.effect_tick = 0.25; }
                     let _ = e;
                     if pulse && pstate == 0 {
                         let _ = e;
-                        self.burn_at(x, y, 8);
+                        self.burn_at(x, y, 8, !acid);
                     }
                 }
                 EK_GIB => {
@@ -3034,7 +3120,7 @@ impl Engine {
                     if e.effect_tick > 0.0 { continue; }
                     e.effect_tick = 0.25;
                     let _ = e;
-                    self.burn_at(x, y, 6);
+                    self.burn_at(x, y, 6, true);
                 }
                 EK_CHAIN => {
                     e.zoff = -104.0 + (self.time * 2.2 + e.x).sin() * 6.0;
@@ -5650,5 +5736,68 @@ mod tests {
         e.fire();
         assert!(e.ents[a].hp <= 0 || e.ents[a].hp < 28 - 80);
         assert!(e.ents[b].hp <= 0 || e.ents[b].hp < 28 - 80, "the rail does not stop at the first body");
+    }
+
+    #[test]
+    fn lockdown_opens_from_outside_and_stays_shut_from_inside() {
+        let mut e = Engine::new(160, 100);
+        let cases = [
+            (1, 36.5, 17.5, 36.5, 20.5, 36i32, 18i32),
+            (2, 27.5, 23.5, 29.5, 23.5, 28, 23),
+            (3, 29.5, 15.5, 31.5, 15.5, 30, 15),
+        ];
+        for (wave, ox, oy, ix, iy, dx, dy) in cases {
+            e.wave = wave;
+            e.build_map();
+            e.door.fill(0.0);
+            let spot = map::boss_spots(wave)[0];
+            let _ = e.spawn(EK_BOSS, spot.0, spot.1);
+            e.seal_lockdown();
+            assert_eq!(e.cell(dx, dy), 8, "wave {wave} door must stay a door");
+            let idx = dy as usize * MAP_W + dx as usize;
+            assert_eq!(e.door[idx], 0.0);
+            e.px = ix;
+            e.py = iy;
+            e.bits = 0;
+            e.state = 0;
+            e.tick(1.0 / 60.0);
+            assert_eq!(e.door[idx], 0.0, "wave {wave} stays shut from inside");
+            e.door.fill(0.0);
+            e.px = ox;
+            e.py = oy;
+            e.tick(1.0 / 60.0);
+            assert!(e.door[idx] > 0.0, "wave {wave} opens from outside");
+            for ent in e.ents.iter_mut() { ent.kind = 0; }
+        }
+    }
+
+    #[test]
+    fn owned_map_guns_become_supplies_on_the_next_sector() {
+        let mut e = Engine::new(160, 100);
+        e.has_w2 = true;
+        e.has_w8 = true;
+        e.wave = 1;
+        e.build_map();
+        map::place_level(&mut e);
+        assert!(!e.ents.iter().any(|en| en.kind == EK_GUN2), "an owned breaker case must not return");
+        assert!(!e.ents.iter().any(|en| en.kind == EK_GUN8), "an owned pyre case must not return");
+        assert!(e.ents.iter().any(|en| en.kind == EK_GUN4), "an unowned gun still drops");
+        assert!(e.ents.iter().any(|en| matches!(en.kind, EK_AMMO | EK_MED)));
+    }
+
+    #[test]
+    fn chimera_bolts_hurt_enemies_and_not_the_shooter() {
+        let mut e = arena();
+        e.has_w11 = true;
+        e.weapon = 10;
+        e.mag[10] = 5;
+        e.health = 100;
+        let target = e.spawn(EK_HUSK, 7.5, 4.5).unwrap();
+        e.ents[target].hp = 80;
+        e.ents[target].stun = 3.0;
+        e.fire();
+        for _ in 0..40 { e.tick(1.0 / 60.0); }
+        assert_eq!(e.health, 100, "the specimen fan must not kill its owner");
+        assert!(e.ents[target].hp < 80, "the fan still damages the target");
     }
 }

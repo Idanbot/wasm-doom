@@ -541,6 +541,7 @@ pub(crate) fn place_level(e: &mut Engine) {
     e.spawn(EK_POWER, px, py);
     e.announce_sector();
     split_barrels(e);
+    e.replace_owned_weapon_drops();
 }
 
 /// Alternate drums are fuel: they burn in place instead of detonating.

@@ -106,7 +106,7 @@ export function Settings(p: SettingsProps) {
     <Dialog.Root>
       <Dialog.Trigger className="menu-secondary">
         <SlidersHorizontal size={17} />
-        Settings<span>Configure your loadout</span>
+        Settings
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="settings-scrim" />
