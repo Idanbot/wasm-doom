@@ -195,23 +195,63 @@ fn anim_frame(e: &Ent) -> i32 {
     ((e.anim_time * fps) as i32).rem_euclid(count)
 }
 
-fn sprite_style(e: &Ent) -> (usize, f32, bool, i32) {
-    if matches!(e.kind, EK_OVERRIDE_CONSOLE | EK_NODE | EK_TERMINAL) {
-        let texture = match e.skin {
-            SKIN_CONSOLE_FOUNDRY => T_CONSOLE_FOUNDRY,
-            SKIN_CONSOLE_BIOFORGE => T_CONSOLE_BIOFORGE,
-            _ => T_CONSOLE_UPPER,
-        };
-        let scale = if e.kind == EK_TERMINAL { 0.62 } else if e.kind == EK_NODE { 0.82 } else { 0.95 };
-        return (texture, scale, false, 0);
+fn sigil_rgba(level: usize, u: f32, v: f32) -> [u32; 4] {
+    let d = (u * u + v * v).sqrt();
+    if d > 1.02 {
+        return [0, 0, 0, 0];
     }
-    if let Some(skin) = skin_def(e.skin) {
-        return (skin.texture + (e.anim as usize).min(ENEMY_ANIM_COUNT - 1), if e.kind == EK_BOSS { skin.scale.max(1.9) } else { skin.scale }, true, anim_frame(e));
+    let ring: f32 = if (d - 0.72).abs() < 0.04 { 1.0 } else { 0.0 };
+    let (r, g, b, cover) = match level {
+        1 => {
+            let chev = if (u.abs() * 0.7 + v * 0.45 - 0.15).abs() < 0.035 { 1.0 } else { 0.0 };
+            let bar = if (v + 0.35).abs() < 0.03 && u.abs() < 0.55 { 1.0 } else { 0.0 };
+            (255, 107, 31, ring.max(chev).max(bar))
+        }
+        2 => {
+            let hex = ((v.atan2(u) / 1.047).fract() - 0.5).abs();
+            let edge = if (d - 0.62).abs() < 0.035 && hex < 0.2 { 1.0 } else { 0.0 };
+            let mote = if ((u - 0.28).powi(2) + (v - 0.1).powi(2)).sqrt() < 0.07 { 1.0 } else { 0.0 };
+            (89, 242, 107, ring.max(edge).max(mote))
+        }
+        _ => {
+            let slit = if u.abs() < 0.035 && v.abs() < 0.36 { 1.0 } else { 0.0 };
+            let iris = if ((u * 1.4).powi(2) + v * v).sqrt() < 0.15 { 0.85 } else { 0.0 };
+            (242, 158, 56, ring.max(slit).max(iris))
+        }
+    };
+    if cover <= 0.0 || d > 0.98 {
+        return [0, 0, 0, 0];
+    }
+    [r, g, b, (cover * 210.0) as u32]
+}
+
+fn sprite_style(e: &Ent) -> (usize, f32, bool, i32) {
+    let fx = matches!(
+        e.kind,
+        EK_PROJ | EK_RAY | EK_BOLT | EK_SMOKE | EK_FLAME | EK_FIREPATCH | EK_SPARK | EK_IMPACT | EK_GIB
+    );
+    if !fx {
+        if matches!(e.kind, EK_OVERRIDE_CONSOLE | EK_NODE | EK_TERMINAL) {
+            let texture = match e.skin {
+                SKIN_CONSOLE_FOUNDRY => T_CONSOLE_FOUNDRY,
+                SKIN_CONSOLE_BIOFORGE => T_CONSOLE_BIOFORGE,
+                _ => T_CONSOLE_UPPER,
+            };
+            let scale = if e.kind == EK_TERMINAL { 0.62 } else if e.kind == EK_NODE { 0.82 } else { 0.95 };
+            return (texture, scale, false, 0);
+        }
+        if let Some(skin) = skin_def(e.skin) {
+            return (skin.texture + (e.anim as usize).min(ENEMY_ANIM_COUNT - 1), if e.kind == EK_BOSS { skin.scale.max(1.9) } else { skin.scale }, true, anim_frame(e));
+        }
     }
     // VFX cells are distinct effects, not animation frames. Animate scale
     // over lifetime without cycling flames into smoke or muzzle flashes.
     match e.kind {
-        EK_PROJ => return (T_ORDNANCE, 0.24, true, if e.effect_tick == 3.0 { 3 } else { 0 }),
+        EK_PROJ => {
+            // 3 and 4 are the acid seeker. 4 stays allied so it never hits the shooter.
+            let acid = e.effect_tick == 3.0 || e.effect_tick == 4.0;
+            return (T_ORDNANCE, 0.28, true, if acid { 3 } else { 0 });
+        }
         // The generated rear-view missile has a narrower silhouette than the
         // old fireball, so give it enough projected size to read in motion.
         EK_BOLT => return (T_ORDNANCE, 0.42, true, 1),
@@ -2353,7 +2393,7 @@ impl Engine {
 
     /// HECATE's cutter. A wide beam that splashes at the strike.
     fn fire_forge(&mut self) {
-        self.cooldown = 0.12;
+        self.cooldown = 0.24;
         self.muzzle = 1.0;
         self.kick = 0.7;
         self.shake = (self.shake + 0.16).min(1.0);
@@ -3408,7 +3448,7 @@ impl Engine {
                 let d2 = (wx - x).powi(2) + (wy - y).powi(2);
                 if d2 >= radius * radius || self.blocked(cx as i32, cy as i32)
                     || !self.los(x, y, wx, wy) { continue; }
-                let falloff = (1.0 - d2 / (radius * radius)).powi(2) / (1.0 + d2 * 0.3);
+                let falloff = (1.0 - d2 / (radius * radius)).powi(2) / (1.0 + d2 * 0.08);
                 for channel in 0..3 { grid[cy * MAP_W + cx][channel] += rgb[channel] * falloff; }
             }
         }
@@ -3419,7 +3459,6 @@ impl Engine {
             let mut grid = vec![[0.0; 3]; MAP_CELLS];
             for y in 1..MAP_H - 1 {
                 for x in 1..MAP_W - 1 {
-                    // Broad contact shading around room edges, retained under local lights.
                     let neighbors = [(1, 0), (-1, 0), (0, 1), (0, -1)].iter()
                         .filter(|&&(dx, dy)| self.blocked(x as i32 + dx, y as i32 + dy)).count();
                     grid[y * MAP_W + x] = [-0.045 * neighbors as f32; 3];
@@ -3427,9 +3466,11 @@ impl Engine {
             }
             for e in &self.ents {
                 if e.kind == EK_LAMP && e.timer >= 0.0 {
-                    self.add_light(&mut grid, e.x, e.y, 4.5, [0.70, 0.36, 0.12]);
+                    self.add_light(&mut grid, e.x, e.y, 8.2, [0.78, 0.40, 0.14]);
                 } else if e.kind == EK_FLAME {
-                    self.add_light(&mut grid, e.x, e.y, 3.0, [0.55, 0.16, 0.035]);
+                    self.add_light(&mut grid, e.x, e.y, 5.4, [0.62, 0.18, 0.04]);
+                } else if matches!(e.kind, EK_TERMINAL | EK_NODE | EK_OVERRIDE_CONSOLE) {
+                    self.add_light(&mut grid, e.x, e.y, 6.4, [0.16, 0.42, 0.62]);
                 } else if matches!(e.kind, EK_CRATE | EK_BARREL) {
                     let i = (e.y.floor() as usize).min(MAP_H - 1) * MAP_W
                         + (e.x.floor() as usize).min(MAP_W - 1);
@@ -3442,7 +3483,7 @@ impl Engine {
                     for (dx, dy) in [(1, 0), (-1, 0), (0, 1), (0, -1)] {
                         if !self.blocked(x as i32 + dx, y as i32 + dy) {
                             self.add_light(&mut grid, x as f32 + 0.5 + dx as f32 * 0.6,
-                                y as f32 + 0.5 + dy as f32 * 0.6, 3.5, [0.08, 0.35, 0.52]);
+                                y as f32 + 0.5 + dy as f32 * 0.6, 6.4, [0.10, 0.42, 0.62]);
                         }
                     }
                 }
@@ -3454,18 +3495,29 @@ impl Engine {
         grid.copy_from_slice(&self.static_light);
         let mut count = 0;
         for e in &self.ents {
-            if !matches!(e.kind, EK_PROJ | EK_RAY | EK_BOLT | EK_FIREPATCH | EK_IMPACT)
-                || (e.x - self.px).powi(2) + (e.y - self.py).powi(2) > 100.0 { continue; }
-            let rgb = if e.kind == EK_PROJ && e.effect_tick == 3.0 { [0.12, 0.45, 0.025] }
-                else if matches!(e.kind, EK_RAY | EK_PROJ) { [0.06, 0.38, 0.65] }
-                else { [0.36, 0.10, 0.02] };
-            self.add_light(&mut grid, e.x, e.y, 2.4, rgb);
+            if !matches!(e.kind, EK_PROJ | EK_RAY | EK_BOLT | EK_FIREPATCH | EK_IMPACT | EK_BOSS)
+                || (e.x - self.px).powi(2) + (e.y - self.py).powi(2) > 324.0 { continue; }
+            let rgb = if e.kind == EK_BOSS {
+                match map::level_index(self.wave) {
+                    1 => [0.55, 0.22, 0.05],
+                    2 => [0.12, 0.48, 0.16],
+                    _ => [0.55, 0.28, 0.08],
+                }
+            } else if e.kind == EK_PROJ && (e.effect_tick == 3.0 || e.effect_tick == 4.0) {
+                [0.12, 0.55, 0.08]
+            } else if matches!(e.kind, EK_RAY | EK_PROJ) {
+                [0.08, 0.42, 0.72]
+            } else {
+                [0.42, 0.12, 0.03]
+            };
+            let radius = if e.kind == EK_BOSS { 9.5 } else { 5.2 };
+            self.add_light(&mut grid, e.x, e.y, radius, rgb);
             count += 1;
-            if count == 12 { break; }
+            if count == 28 { break; }
         }
         if self.muzzle > 0.05 {
-            let power = self.muzzle * if self.weapon == 0 { 0.2 } else { 0.55 };
-            self.add_light(&mut grid, self.px, self.py, 3.0, [power, power * 0.55, power * 0.18]);
+            let power = self.muzzle * if self.weapon == 0 { 0.28 } else { 0.72 };
+            self.add_light(&mut grid, self.px, self.py, 5.2, [power, power * 0.55, power * 0.18]);
         }
         self.light_grid = grid;
     }
@@ -3599,14 +3651,40 @@ impl Engine {
             0
         };
         if style == 2 {
-            return (T_OVERRIDE, tx, ty, level.saturating_sub(2));
+            return (T_CONC, tx, ty, level);
         }
         (if style == 1 { T_CONC } else { T_GRATE }, tx, ty, level)
     }
 
+    fn sigil_uv(&self, fx: f32, fy: f32) -> Option<(f32, f32, usize)> {
+        let mx = fx.floor() as i32;
+        let my = fy.floor() as i32;
+        if mx < 0 || my < 0 || mx >= MAP_W as i32 || my >= MAP_H as i32 { return None; }
+        if self.floor[my as usize * MAP_W + mx as usize] != 2 { return None; }
+        let level = map::level_index(self.wave);
+        let (cx, cy) = map::override_point(self.wave);
+        let u = (fx - cx) / 1.55;
+        let v = (fy - cy) / 1.55;
+        if u.abs() > 1.15 || v.abs() > 1.15 { return None; }
+        Some((u, v, level))
+    }
+
+    fn blend_sigil(&self, base: u32, fx: f32, fy: f32) -> u32 {
+        let Some((u, v, level)) = self.sigil_uv(fx, fy) else { return base; };
+        let mark = sigil_rgba(level, u, v);
+        if mark[3] == 0 { return base; }
+        let a = mark[3] as u32;
+        let inv = 255 - a;
+        let ch = |shift: u32, src: u32| {
+            (((base >> shift) & 255) * inv + src * a) / 255
+        };
+        ch(0, mark[0]) | (ch(8, mark[1]) << 8) | (ch(16, mark[2]) << 16) | (base & 0xFF00_0000)
+    }
+
     fn plane_texel(&self, floor: bool, fx: f32, fy: f32, level: usize, mix: u32) -> u32 {
         let (id, u, v, lvl) = self.plane_sample(floor, fx, fy, level);
-        self.sample_mip(id, u, v, lvl, mix)
+        let base = self.sample_mip(id, u, v, lvl, mix);
+        if floor { self.blend_sigil(base, fx, fy) } else { base }
     }
 
 
@@ -3732,8 +3810,8 @@ impl Engine {
             h: h as f32,
             plane_len,
             sprite_n: 0.0,
-            _p1: 0.0,
-            _p2: 0.0,
+            _p1: map::level_index(self.wave) as f32,
+            _p2: if self.ents.iter().any(|e| e.kind == EK_BOSS && e.hp > 0) { 1.0 } else { 0.0 },
         };
         for x in 0..w {
             let cam = 2.0 * (x as f32 + 0.5) / w as f32 - 1.0;
@@ -4816,6 +4894,21 @@ mod tests {
         assert_eq!(e.ents[i].skin, SKIN_NONE);
         let (tex, _, sheet4, _) = sprite_style(&e.ents[i]);
         assert_eq!((tex, sheet4), (T_BARREL, false));
+    }
+
+    #[test]
+    fn chimera_bolts_are_acid_and_pools_are_not_enemies() {
+        let mut e = arena();
+        let bolt = e.spawn(EK_PROJ, 4.0, 4.0).unwrap();
+        e.ents[bolt].effect_tick = 4.0;
+        e.ents[bolt].skin = SKIN_SUBJECT;
+        let (tex, _, _, frame) = sprite_style(&e.ents[bolt]);
+        assert_eq!((tex, frame), (T_ORDNANCE, 3));
+        let pool = e.spawn(EK_FIREPATCH, 5.0, 4.0).unwrap();
+        e.ents[pool].skin = 2;
+        let (tex, _, sheet, _) = sprite_style(&e.ents[pool]);
+        assert_eq!((tex, sheet), (T_FLAME, true));
+        assert!(tex < ENEMY_TEX_BASE);
     }
 
     #[test]

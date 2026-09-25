@@ -152,15 +152,15 @@ describe("gpuEnabled", () => {
 });
 
 describe("loadRes", () => {
-  it("defaults to the 640x400 mode", () => {
-    assert.equal(loadRes().id, "640");
+  it("defaults to 1080p", () => {
+    assert.equal(loadRes().id, "1080");
   });
 
   it("restores a stored mode and rejects unknown ids", () => {
     installMemoryStorage({ "hellscan-res": "1280" });
     assert.equal(loadRes().id, "1280");
     installMemoryStorage({ "hellscan-res": "bogus" });
-    assert.equal(loadRes().id, "640");
+    assert.equal(loadRes().id, "1080");
   });
 
   it("only offers widths that keep WebGPU rows 256-byte aligned", () => {

@@ -1,4 +1,4 @@
-import { DEFAULT_GFX, RES_MODES, type GfxOpts, type ResMode } from "../../game/types.ts";
+import { DEFAULT_GFX, DEFAULT_RES, RES_MODES, type GfxOpts, type ResMode } from "../../game/types.ts";
 
 export type Screen = "menu" | "play" | "pause" | "dead" | "win";
 
@@ -266,7 +266,7 @@ export function loadRes(): ResMode {
   } catch {
     /* ignore */
   }
-  return RES_MODES[1]!;
+  return DEFAULT_RES;
 }
 
 export function loadGfx(): GfxOpts {

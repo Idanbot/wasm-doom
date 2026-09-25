@@ -7,6 +7,7 @@ export type BlitFx = {
   muzzle: number;
   hurt: number;
   time: number;
+  boss: number;
 };
 
 export type Blitter = {
@@ -64,7 +65,7 @@ struct Uni {
   crt: f32,
   bloom: f32,
   fog: f32,
-  _pad: f32,
+  boss: f32,
 };
 @group(0) @binding(0) var fb: texture_2d<f32>;
 @group(0) @binding(1) var bloomTex: texture_2d<f32>;
@@ -123,6 +124,19 @@ fn fs_bloom(inp: VSOut) -> @location(0) vec4<f32> {
 fn fs(inp: VSOut) -> @location(0) vec4<f32> {
   let uv = inp.uv;
   var c = sample_sharp(uv);
+  let depth = c.a;
+  // Screen-space light march. Alpha is view depth, so a short ray along the
+  // view gathers light that the column caster already ray-tested into the frame.
+  var ray = vec3<f32>(0.0);
+  let dir = normalize(vec2<f32>(0.5 - uv.x, 0.18 - uv.y) + vec2<f32>(0.001));
+  for (var i = 1; i <= 5; i++) {
+    let p = uv + dir * (f32(i) * (0.0035 + depth * 0.006));
+    let s = sample_near(p);
+    let luma = dot(s.rgb, vec3<f32>(0.26, 0.45, 0.12));
+    let open = smoothstep(0.12, 0.0, s.a - depth);
+    ray += s.rgb * max(0.0, luma - 0.32) * open * 0.18;
+  }
+  c = vec4<f32>(c.rgb + ray, depth);
 
 
   if (u.fog > 0.5) {
@@ -164,6 +178,23 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
     c = vec4<f32>(c.rgb + bl * 0.42, 1.0);
   }
 
+  if (u.boss >= 0.0) {
+    let t = u.time;
+    let floorish = smoothstep(0.42, 0.72, uv.y);
+    if (u.boss < 0.5) {
+      let arc = abs(sin(uv.x * 46.0 + t * 9.0) * sin(uv.y * 18.0 - t * 4.0));
+      let bolt = smoothstep(0.92, 1.0, arc) * floorish;
+      c = vec4<f32>(c.rgb + vec3<f32>(0.55, 0.82, 1.0) * bolt * 0.85, 1.0);
+    } else if (u.boss < 1.5) {
+      let smoke = sin(uv.x * 7.0 + t * 0.6) * sin(uv.y * 5.0 - t * 0.35);
+      let haze = (0.5 + 0.5 * smoke) * floorish * 0.28;
+      c = vec4<f32>(mix(c.rgb, vec3<f32>(0.16, 0.09, 0.06), haze), 1.0);
+    } else {
+      let cell = fract(uv * vec2<f32>(90.0, 54.0) + vec2<f32>(t * 0.15, -t * 0.08));
+      let mote = smoothstep(0.08, 0.0, length(cell - 0.5));
+      c = vec4<f32>(c.rgb + vec3<f32>(0.25, 0.9, 0.35) * mote * 0.55, 1.0);
+    }
+  }
   if (u.crt > 0.5) {
     let scan = 1.0 - 0.14 * abs(sin(uv.y * u.res.y * 3.14159265));
     c = vec4<f32>(c.rgb * scan, 1.0);
@@ -360,6 +391,7 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
     uniData[7] = gfx.crt ? 1 : 0;
     uniData[8] = gfx.bloom ? 1 : 0;
     uniData[9] = gfx.fog ? 1 : 0;
+    uniData[10] = fx?.boss ?? -1;
 
     device.queue.writeBuffer(uniBuf, 0, uniData);
   };
@@ -379,9 +411,10 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
     setGfx(g) {
       gfx = { ...g };
     },
-    resize() {
+    resize(w: number, h: number) {
       const { changed } = syncDisplay(canvas);
       if (changed) configure();
+      ensureTex(w, h);
     },
     uploadAtlas(layers) {
       world?.uploadAtlas(layers);
@@ -500,6 +533,8 @@ uniform float hurt;
 uniform float crt;
 uniform float bloom;
 uniform float fog;
+uniform float boss;
+uniform float time;
 in vec2 v;
 out vec4 o;
 
@@ -541,6 +576,28 @@ void main(){
   if (crt > 0.5) {
     rgb *= 1.0 - 0.14 * abs(sin(uv.y * res.y * 3.14159265));
   }
+  vec2 dir = normalize(vec2(0.5 - uv.x, 0.18 - uv.y) + vec2(0.001));
+  vec3 ray = vec3(0.0);
+  for (int i = 1; i <= 4; i++) {
+    vec2 p = uv + dir * (float(i) * (0.0035 + raw.a * 0.006));
+    vec3 s = texture(t, p).rgb;
+    float luma = dot(s, vec3(0.26, 0.45, 0.12));
+    ray += s * max(0.0, luma - 0.32) * 0.16;
+  }
+  rgb += ray;
+  if (boss >= 0.0) {
+    float floorish = smoothstep(0.42, 0.72, uv.y);
+    if (boss < 0.5) {
+      float arc = abs(sin(uv.x * 46.0 + time * 9.0) * sin(uv.y * 18.0 - time * 4.0));
+      rgb += vec3(0.55, 0.82, 1.0) * smoothstep(0.92, 1.0, arc) * floorish * 0.85;
+    } else if (boss < 1.5) {
+      float smoke = sin(uv.x * 7.0 + time * 0.6) * sin(uv.y * 5.0 - time * 0.35);
+      rgb = mix(rgb, vec3(0.16, 0.09, 0.06), (0.5 + 0.5 * smoke) * floorish * 0.28);
+    } else {
+      vec2 cell = fract(uv * vec2(90.0, 54.0) + vec2(time * 0.15, -time * 0.08));
+      rgb += vec3(0.25, 0.9, 0.35) * smoothstep(0.08, 0.0, length(cell - 0.5)) * 0.55;
+    }
+  }
   o = vec4(rgb, 1.0);
 }
 `;
@@ -577,6 +634,8 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
   const locCrt = gl.getUniformLocation(prog, "crt");
   const locBloom = gl.getUniformLocation(prog, "bloom");
   const locFog = gl.getUniformLocation(prog, "fog");
+  const locBoss = gl.getUniformLocation(prog, "boss");
+  const locTime = gl.getUniformLocation(prog, "time");
 
   const vao = gl.createVertexArray();
   gl.bindVertexArray(vao);
@@ -629,6 +688,8 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
       gl.uniform1f(locCrt, gfx.crt ? 1 : 0);
       gl.uniform1f(locBloom, gfx.bloom ? 1 : 0);
       gl.uniform1f(locFog, gfx.fog ? 1 : 0);
+      gl.uniform1f(locBoss, fx?.boss ?? -1);
+      gl.uniform1f(locTime, fx?.time ?? 0);
       gl.bindVertexArray(vao);
       gl.viewport(0, 0, dw, dh);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
@@ -656,6 +717,8 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
       gl.uniform1f(locCrt, gfx.crt ? 1 : 0);
       gl.uniform1f(locBloom, gfx.bloom ? 1 : 0);
       gl.uniform1f(locFog, gfx.fog ? 1 : 0);
+      gl.uniform1f(locBoss, fx?.boss ?? -1);
+      gl.uniform1f(locTime, fx?.time ?? 0);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
 
     },

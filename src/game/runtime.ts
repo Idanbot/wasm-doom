@@ -404,7 +404,12 @@ export class HellscanRuntime {
     const w = Math.max(160, Math.round(Math.min(res.w, res.h * aspect)));
     const h = Math.max(100, Math.round(w / aspect));
     this.wasm.hs_resize(w, h);
+    this.fbView = null;
     this.blit.resize(w, h);
+    // Mips and the GPU atlas are the assets that depend on a fresh framebuffer.
+    // The simulation itself is not restarted.
+    this.wasm.hs_textures_ready();
+    this.pushAtlas();
     this.canvas.dataset.resolution = `${w} × ${h}`;
   }
 
@@ -934,7 +939,8 @@ export class HellscanRuntime {
       this.accumulator -= step;
     }
     const hud = this.readHud();
-    const fx = { muzzle: hud.muzzle, hurt: hud.hurt, time: t * 0.001 };
+    const boss = hud.bossHealth > 0 ? ((hud.wave - 1) % 3 + 3) % 3 : -1;
+    const fx = { muzzle: hud.muzzle, hurt: hud.hurt, time: t * 0.001, boss };
     const w = wasm.hs_fb_w();
     const h = wasm.hs_fb_h();
     let presented = false;

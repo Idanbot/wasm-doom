@@ -2,8 +2,8 @@
 
 pub(crate) const MAP_W: usize = 48;
 pub(crate) const MAP_H: usize = 32;
-pub(crate) const MAX_W: usize = 1920;
-pub(crate) const MAX_H: usize = 1200;
+pub(crate) const MAX_W: usize = 3840;
+pub(crate) const MAX_H: usize = 2160;
 pub(crate) const TEX: usize = 256;
 pub(crate) const TEXM: i32 = (TEX as i32) - 1;
 /// Atlas layers: the original 29 world layers plus seven animation sheets

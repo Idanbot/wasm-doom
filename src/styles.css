@@ -746,7 +746,7 @@ select:focus-visible {
 }
 .automap {
   position: absolute;
-  top: 5.6rem;
+  top: 8.4rem;
   right: 0.8rem;
   width: 16rem;
   height: auto;
@@ -1248,7 +1248,7 @@ select:focus-visible {
     font-size: 8px;
   }
   .automap {
-    top: 7.4rem;
+    top: 10.6rem;
     right: 0.45rem;
     width: 11.5rem;
   }

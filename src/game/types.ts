@@ -61,7 +61,12 @@ export const RES_MODES: ResMode[] = [
   { id: "960", label: "960 x 600", w: 960, h: 600 },
   { id: "1280", label: "1280 x 800", w: 1280, h: 800 },
   { id: "1600", label: "1600 x 1000", w: 1600, h: 1000 },
+  { id: "1080", label: "1080p", w: 1920, h: 1080 },
+  { id: "1440", label: "1440p", w: 2560, h: 1440 },
+  { id: "2160", label: "2160p", w: 3840, h: 2160 },
 ];
+
+export const DEFAULT_RES = RES_MODES.find((r) => r.id === "1080") ?? RES_MODES[0]!;
 
 export type GfxOpts = {
   crt: boolean;

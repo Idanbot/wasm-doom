@@ -19,6 +19,7 @@ export const T_GUN9 = T_GUN8 + 1;
 export const T_GUN10 = T_GUN8 + 2;
 export const T_GUN11 = T_GUN8 + 3;
 export const TEX_N = T_GUN11 + 1;
+export const MAX_COLS = 3840;
 export const TEX = 256;
 
 export type WorldFrame = {
@@ -79,6 +80,32 @@ fn light_at(wx: f32, wy: f32) -> vec3<f32> {
   return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
 }
 
+fn sigil_center(level: i32) -> vec2<f32> {
+  if (level == 1) { return vec2<f32>(43.5, 27.5); }
+  if (level == 2) { return vec2<f32>(43.5, 15.5); }
+  return vec2<f32>(40.5, 21.5);
+}
+
+fn sigil(level: i32, u: f32, v: f32) -> vec4<f32> {
+  let d = length(vec2<f32>(u, v));
+  if (d > 1.02) { return vec4<f32>(0.0); }
+  let ring = smoothstep(0.045, 0.0, abs(d - 0.72));
+  if (level == 1) {
+    let chev = smoothstep(0.04, 0.0, abs(abs(u) * 0.7 + v * 0.45 - 0.15));
+    let bar = smoothstep(0.035, 0.0, abs(v + 0.35)) * step(abs(u), 0.55);
+    return vec4<f32>(1.0, 0.42, 0.12, max(ring, max(chev, bar)));
+  }
+  if (level == 2) {
+    let hex = abs(fract(atan2(v, u) / 1.047) - 0.5);
+    let edge = smoothstep(0.04, 0.0, abs(d - 0.62)) * step(hex, 0.2);
+    let mote = smoothstep(0.07, 0.0, length(vec2<f32>(u - 0.28, v - 0.1)));
+    return vec4<f32>(0.35, 0.95, 0.42, max(ring, max(edge, mote)));
+  }
+  let slit = smoothstep(0.04, 0.0, abs(u)) * step(abs(v), 0.36);
+  let iris = smoothstep(0.15, 0.0, length(vec2<f32>(u * 1.4, v)));
+  return vec4<f32>(0.95, 0.62, 0.22, max(ring, max(slit, iris * 0.85)));
+}
+
 @fragment
 fn fs(inp: VSOut) -> @location(0) vec4<f32> {
   let w = max(view.v[2].z, 1.0);
@@ -133,9 +160,18 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
       style = textureLoad(floor_tex, vec2<i32>(mx, my), 0).r * 255.0;
     }
     if (style > 1.5) {
-      id = 28;
-      u = (fx - 38.0) / 8.0;
-      v = (fy - 19.0) / 9.0;
+      let level = i32(view.v[3].z);
+      let c = sigil_center(level);
+      let mark = sigil(level, (fx - c.x) / 1.55, (fy - c.y) / 1.55);
+      id = 6;
+      u = fx;
+      v = fy;
+      var rgb = sample_atlas(id, u, v).rgb;
+      rgb = mix(rgb, mark.rgb, mark.a * (1.0 - smoothstep(0.92, 1.02, length((vec2<f32>(fx, fy) - c) / 1.55))));
+      let shade_k = 0.72 + 0.2 / (1.0 + dist * 0.2) + muzzle * 0.45 / (1.0 + dist * dist);
+      let lit = light_at(fx, fy) * 1.35;
+      rgb = clamp(rgb * clamp(vec3<f32>(shade_k) + lit, vec3<f32>(0.16), vec3<f32>(2.2)), vec3<f32>(0.0), vec3<f32>(1.0));
+      return vec4<f32>(rgb, clamp(dist / 28.0, 0.0, 1.0));
     } else if (style > 0.5) {
       id = 6;
     }
@@ -285,7 +321,7 @@ export function createWebGpuWorld(device: GPUDevice): GpuWorld {
     primitive: { topology: "triangle-list" },
   });
   const viewBuf = device.createBuffer({ size: 64, usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST });
-  const colBuf = device.createBuffer({ size: 1920 * COL_FLOATS * 4, usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST });
+  const colBuf = device.createBuffer({ size: MAX_COLS * COL_FLOATS * 4, usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST });
   const sprBuf = device.createBuffer({ size: 192 * SPR_FLOATS * 4, usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST });
   const atlas = device.createTexture({
     size: { width: TEX, height: TEX, depthOrArrayLayers: TEX_N },
@@ -429,7 +465,26 @@ uniform sampler2DArray atlas;
 uniform sampler2D floorTex;
 uniform sampler2D lightTex;
 uniform sampler2D cols;
-uniform vec4 view0, view1, view2;
+uniform vec4 view0, view1, view2, view3;
+vec4 sigilMark(int level, vec2 p) {
+  float d = length(p);
+  if (d > 1.02) return vec4(0.0);
+  float ring = smoothstep(0.045, 0.0, abs(d - 0.72));
+  if (level == 1) {
+    float chev = smoothstep(0.04, 0.0, abs(abs(p.x) * 0.7 + p.y * 0.45 - 0.15));
+    float bar = smoothstep(0.035, 0.0, abs(p.y + 0.35)) * step(abs(p.x), 0.55);
+    return vec4(1.0, 0.42, 0.12, max(ring, max(chev, bar)));
+  }
+  if (level == 2) {
+    float hex = abs(fract(atan(p.y, p.x) / 1.047) - 0.5);
+    float edge = smoothstep(0.04, 0.0, abs(d - 0.62)) * step(hex, 0.2);
+    float mote = smoothstep(0.07, 0.0, length(p - vec2(0.28, 0.1)));
+    return vec4(0.35, 0.95, 0.42, max(ring, max(edge, mote)));
+  }
+  float slit = smoothstep(0.04, 0.0, abs(p.x)) * step(abs(p.y), 0.36);
+  float iris = smoothstep(0.15, 0.0, length(vec2(p.x * 1.4, p.y)));
+  return vec4(0.95, 0.62, 0.22, max(ring, max(slit, iris * 0.85)));
+}
 vec4 sampleAtlas(int id, vec2 uv) {
   return texture(atlas, vec3(fract(uv), float(clamp(id, 0, ${TEX_N - 1}))));
 }
@@ -482,8 +537,18 @@ void main() {
     ivec2 m = ivec2(floor(fx), floor(fy));
     float style = 0.0;
     if (m.x >= 0 && m.y >= 0 && m.x < 48 && m.y < 32) style = texelFetch(floorTex, m, 0).r * 255.0;
-    if (style > 1.5) { id = 28; uv = vec2((fx - 38.0) / 8.0, (fy - 19.0) / 9.0); }
-    else if (style > 0.5) id = 6;
+    if (style > 1.5) {
+      int level = int(view3.z);
+      vec2 c = level == 1 ? vec2(43.5, 27.5) : level == 2 ? vec2(43.5, 15.5) : vec2(40.5, 21.5);
+      vec2 p = (vec2(fx, fy) - c) / 1.55;
+      vec4 mark = sigilMark(level, p);
+      vec3 sealed = sampleAtlas(6, vec2(fx, fy)).rgb;
+      sealed = mix(sealed, mark.rgb, mark.a * (1.0 - smoothstep(0.92, 1.02, length(p))));
+      float shadeK = 0.72 + 0.2 / (1.0 + dist * 0.2) + view2.y * 0.45 / (1.0 + dist * dist);
+      sealed = clamp(sealed * clamp(vec3(shadeK) + lightAt(vec2(fx, fy)) * 1.35, vec3(0.16), vec3(2.2)), vec3(0.0), vec3(1.0));
+      outColor = vec4(sealed, clamp(dist / 28.0, 0.0, 1.0));
+      return;
+    } else if (style > 0.5) id = 6;
   } else {
     id = view2.x > 0.5 ? 3 : 7;
   }
@@ -583,7 +648,7 @@ export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
   const sprVao = gl.createVertexArray();
   const fillVao = gl.createVertexArray();
   if (!colsTex || !floorTex || !lightTex || !atlas || !fbo || !sprBuf || !sprVao || !fillVao) return null;
-  const colsImg = new Float32Array(1920 * 4 * 4);
+  const colsImg = new Float32Array(MAX_COLS * 4 * 4);
   let atlasReady = false;
   gl.bindTexture(gl.TEXTURE_2D_ARRAY, atlas);
   gl.texParameteri(gl.TEXTURE_2D_ARRAY, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
@@ -654,6 +719,7 @@ export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
       gl.uniform4fv(gl.getUniformLocation(prog, "view0"), frame.view.subarray(0, 4));
       gl.uniform4fv(gl.getUniformLocation(prog, "view1"), frame.view.subarray(4, 8));
       gl.uniform4fv(gl.getUniformLocation(prog, "view2"), frame.view.subarray(8, 12));
+      gl.uniform4fv(gl.getUniformLocation(prog, "view3"), frame.view.subarray(12, 16));
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       const v = frame.view;
       const invDet = 1 / (v[4]! * v[3]! - v[2]! * v[5]!);

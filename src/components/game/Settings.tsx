@@ -1,7 +1,7 @@
 import { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { SlidersHorizontal, X, Volume2, Monitor, Mouse, Captions, RotateCcw } from "lucide-react";
-import { DEFAULT_GFX, RES_MODES, type GfxOpts, type ResMode } from "@/game/types";
+import { DEFAULT_GFX, DEFAULT_RES, RES_MODES, type GfxOpts, type ResMode } from "@/game/types";
 import { DEFAULT_ENEMY_OPTIONS, type EnemyOptions } from "@/game/enemy-presentation";
 import type { Vol } from "./data";
 
@@ -98,7 +98,7 @@ export function Settings(p: SettingsProps) {
     p.setVol({ master: 0.85, music: 0.42, sfx: 0.75 });
     p.setSens(1.4);
     p.setGfx({ ...DEFAULT_GFX });
-    p.setRes(RES_MODES[1]!);
+    p.setRes(DEFAULT_RES);
     p.setRequireGpu(false);
     p.setEnemyOptions({ ...DEFAULT_ENEMY_OPTIONS });
   };
