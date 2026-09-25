@@ -45,10 +45,10 @@ The HUD struct is `#[repr(C)]` and read from WASM memory with a DataView. The la
 
 ## Develop
 
-Prerequisites: Node 22, Rust with the `wasm32-unknown-unknown` target.
+Prerequisites: Node 24, Rust stable with the `wasm32-unknown-unknown` target.
 
 ```sh
-npm install
+npm ci
 npm run build:wasm   # compile engine → public/hellscan.wasm (+ source hash)
 npm run dev          # serve on http://127.0.0.1:8080
 ```
@@ -66,12 +66,30 @@ npm run build        # production build
 cargo test --manifest-path engine/Cargo.toml
 ```
 
+Push and pull request runs [`.github/workflows/ci.yml`](.github/workflows/ci.yml): typecheck, wasm sync, asset checks, the production build, the game unit tests, and `cargo test`. It uses Node 24.
+
+## Deploy
+
+The game is entirely in the browser: simulation, weapons, voices, music, settings, and the local leaderboard. A static host can serve that. It does not need the TanStack/Nitro server.
+
+It is published at [idanbot.me/wasm-doom](https://idanbot.me/wasm-doom/). `npm run build:pages` writes `dist-pages/` with base `/wasm-doom/`. The user site already owns `idanbot.me`, so this project is served on that path. Do not set a separate custom domain on this repo.
+
+[`.github/workflows/pages.yml`](.github/workflows/pages.yml) publishes that folder on every push to `main`. Action pins, verified 2026-09-25:
+
+| Step | Pin |
+| ---- | --- |
+| `actions/checkout` | `v7.0.1` |
+| `actions/setup-node` | `v7.0.0` (Node 24) |
+| `actions/upload-pages-artifact` | `v5.0.0` (`include-hidden-files` so `.nojekyll` ships) |
+| `actions/deploy-pages` | `v5.0.1` |
+| `dtolnay/rust-toolchain` | `master` + `toolchain: stable` (only release tag is `v1`, 2022) |
+
 ## Project status
 
-- 60fps at 640×400 on the CPU raycaster; 1280 holds 60 when WebGPU or WebGL2 fills the frame
+- Default render size is 1080p, with 1440p and 2160p available. 640×400 still holds 60 on the CPU raycaster; higher sizes rely on WebGPU or WebGL2
 - WebGPU with automatic WebGL2/Canvas2D fallback; renderer switchable without restarting the sim
-- 8 delivered BLACKSITE weapon sets, 13 enemy skins with seven animation states each, projectile/effect atlas, wave system, local leaderboard
-- 59 Rust tests plus TS and script integration tests; CI runs typecheck, wasm-sync, asset validation, and build
+- 11 weapons, 13 enemy skins with seven animation states each, projectile/effect atlas, three boss sigils, wave system, local leaderboard
+- 83 Rust tests plus TS and script tests. CI runs typecheck, wasm-sync, asset validation, the production build, and both test suites
 
 Combat roles, attack windups, guided missiles and effect rendering are
 documented in [the BLACKSITE combat notes](docs/blacksite-ifrit/COMBAT.md).

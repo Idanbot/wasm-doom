@@ -2,15 +2,19 @@ name: ci
 on:
   push:
   pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.0.0
         with:
-          # Must match the local toolchain (npm 11): npm 10 resolves
-          # optional peer deps differently and rejects this lockfile.
+          # npm 11 (Node 24). npm 10 rejects this lockfile.
           node-version: 24
           cache: npm
       - run: npm ci
@@ -21,5 +25,9 @@ jobs:
       - run: npm run check:projectiles
       - run: npm run build
       - run: node --experimental-strip-types --test src/components/game/data.test.ts src/game/hud-abi.test.ts
-      - uses: dtolnay/rust-toolchain@stable
+      # Latest action commit is master (2026-09-12). The only release tag is v1 from 2022.
+      # toolchain: stable installs the current stable Rust channel.
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: stable
       - run: cargo test --manifest-path engine/Cargo.toml
