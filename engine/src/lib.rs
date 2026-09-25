@@ -511,19 +511,19 @@ impl Engine {
             x,
             y,
             age: 0.0,
-            vx: drift.cos() * 0.55,
-            vy: drift.sin() * 0.55,
+            vx: drift.cos() * 0.22,
+            vy: drift.sin() * 0.22,
         };
         for n in 0..7 {
             let a = n as f32 * core::f32::consts::TAU / 7.0 + drift;
-            let r = 0.4 + (n % 3) as f32 * 0.35;
+            let r = 0.35 + (n % 3) as f32 * 0.25;
             if let Some(i) = self.spawn(EK_SMOKE, x + a.cos() * r, y + a.sin() * r) {
                 let e = &mut self.ents[i];
-                e.timer = 10.0;
-                e.effect_tick = 10.0;
-                e.vx = a.cos() * 0.35;
-                e.vy = a.sin() * 0.35;
-                e.zoff = -20.0 - (n % 3) as f32 * 22.0;
+                e.timer = 2.6;
+                e.effect_tick = 2.6;
+                e.vx = a.cos() * 0.22;
+                e.vy = a.sin() * 0.22;
+                e.zoff = -12.0 - (n % 3) as f32 * 10.0;
             }
         }
     }
@@ -532,7 +532,7 @@ impl Engine {
         for i in 0..self.smokes.len() {
             if self.smokes[i].age < 0.0 { continue; }
             self.smokes[i].age += dt;
-            if self.smokes[i].age >= 10.0 {
+            if self.smokes[i].age >= 4.0 {
                 self.smokes[i] = Smoke::DEAD;
                 continue;
             }
@@ -553,13 +553,13 @@ impl Engine {
     }
 
     fn smoke_radius(age: f32) -> f32 {
-        1.15 + (age / 2.6).clamp(0.0, 1.0) * 2.35
+        0.85 + (age / 2.0).clamp(0.0, 1.0) * 1.25
     }
 
     fn smoke_strength(age: f32) -> f32 {
         if age < 0.0 { return 0.0; }
-        let bloom = 0.55 + 0.45 * (age / 0.45).clamp(0.0, 1.0);
-        let fade = if age > 8.0 { ((10.0 - age) / 2.0).clamp(0.0, 1.0) } else { 1.0 };
+        let bloom = 0.28 + 0.20 * (age / 0.4).clamp(0.0, 1.0);
+        let fade = if age > 2.4 { ((4.0 - age) / 1.6).clamp(0.0, 1.0) } else { 1.0 };
         bloom * fade
     }
 
@@ -577,7 +577,7 @@ impl Engine {
                 let sy = (y as f32 + 0.5 - gy * 0.55).clamp(0.0, (MAP_H - 1) as f32);
                 if self.blocked(sx.floor() as i32, sy.floor() as i32) { continue; }
                 let dest = sy as usize * MAP_W + sx as usize;
-                next[dest] = (next[dest] + here * 0.94).min(1.6);
+                next[dest] = (next[dest] + here * 0.80).min(0.55);
             }
         }
         self.smoke_grid.copy_from_slice(&next);
@@ -594,9 +594,10 @@ impl Engine {
                     if self.blocked(cx as i32, cy as i32) { continue; }
                     let d = ((cx as f32 + 0.5 - s.x).powi(2) + (cy as f32 + 0.5 - s.y).powi(2)).sqrt();
                     if d >= radius { continue; }
-                    let cover = (1.0 - d / radius).powi(2) * strength;
+                    let f = 1.0 - d / radius;
+                    let cover = f * f * (3.0 - 2.0 * f) * strength;
                     let i = cy * MAP_W + cx;
-                    self.smoke_grid[i] = (self.smoke_grid[i] + cover).min(1.6);
+                    self.smoke_grid[i] = (self.smoke_grid[i] + cover).min(0.55);
                 }
             }
         }
@@ -604,21 +605,21 @@ impl Engine {
 
     fn smoke_tau(&self, x0: f32, y0: f32, x1: f32, y1: f32) -> f32 {
         let mut tau = 0.0f32;
-        for i in 1..=6 {
-            let t = i as f32 / 6.0;
+        for i in 1..=8 {
+            let t = i as f32 / 8.0;
             let x = x0 + (x1 - x0) * t;
             let y = y0 + (y1 - y0) * t;
             let ix = x.floor().clamp(0.0, (MAP_W - 1) as f32) as usize;
             let iy = y.floor().clamp(0.0, (MAP_H - 1) as f32) as usize;
             tau += self.smoke_grid[iy * MAP_W + ix];
         }
-        tau * ((x1 - x0).powi(2) + (y1 - y0).powi(2)).sqrt() / 6.0
+        tau * ((x1 - x0).powi(2) + (y1 - y0).powi(2)).sqrt() / 8.0
     }
 
     fn apply_smoke(&self, color: u32, x0: f32, y0: f32, x1: f32, y1: f32) -> u32 {
         let tau = self.smoke_tau(x0, y0, x1, y1);
-        if tau < 0.04 { return color; }
-        let k = (1.0 - (-tau * 1.7).exp()).clamp(0.0, 0.92);
+        if tau < 0.06 { return color; }
+        let k = (1.0 - (-tau * 0.75).exp()).clamp(0.0, 0.35);
         let mix = |src: u32, dst: u32| ((src as f32) * (1.0 - k) + dst as f32 * k) as u32;
         mix(color & 255, 148)
             | (mix((color >> 8) & 255, 152) << 8)
@@ -1562,7 +1563,10 @@ impl Engine {
         // filled all 192 entity slots with hostiles and starved FX.
         let shift = (self.wave - 1).clamp(0, 2);
         let mult = 1i32 << shift;
+        // Winning keeps every unlocked weapon, restores full health and full
+        // ammo, and preserves armor clamped to [0, 100].
         self.health = 100;
+        self.armor = self.armor.clamp(0, 100);
         self.iframes = 1.4;
         let start = map::player_start(self.wave);
         self.px = start.0;
@@ -1577,46 +1581,46 @@ impl Engine {
         self.kick = 0.0;
         self.shake = 0.0;
         self.mag[0] = MAG_SZ[0];
-        self.ammo[0] = self.ammo[0].max(36);
+        self.ammo[0] = 120;
         if self.has_w2 {
             self.mag[1] = MAG_SZ[1];
-            self.ammo[1] = self.ammo[1].max(12);
+            self.ammo[1] = 48;
         }
         if self.has_w3 {
             self.mag[2] = MAG_SZ[2];
-            self.ammo[2] = self.ammo[2].max(48);
+            self.ammo[2] = 216;
         }
         if self.has_w4 {
             self.mag[3] = MAG_SZ[3];
-            self.ammo[3] = self.ammo[3].max(8);
+            self.ammo[3] = 20;
         }
         if self.has_w5 {
             self.mag[4] = MAG_SZ[4];
-            self.ammo[4] = self.ammo[4].max(12);
+            self.ammo[4] = 16;
         }
         if self.has_w6 {
             self.mag[5] = MAG_SZ[5];
-            self.ammo[5] = self.ammo[5].max(16);
+            self.ammo[5] = 80;
         }
         if self.has_w7 {
             self.mag[6] = MAG_SZ[6];
-            self.ammo[6] = self.ammo[6].max(160);
+            self.ammo[6] = 450;
         }
         if self.has_w8 {
             self.mag[7] = MAG_SZ[7];
-            self.ammo[7] = self.ammo[7].max(18);
+            self.ammo[7] = 36;
         }
         if self.has_w9 {
             self.mag[8] = MAG_SZ[8];
-            self.ammo[8] = self.ammo[8].max(8);
+            self.ammo[8] = MAG_SZ[8] * 6;
         }
         if self.has_w10 {
             self.mag[9] = MAG_SZ[9];
-            self.ammo[9] = self.ammo[9].max(28);
+            self.ammo[9] = MAG_SZ[9] * 6;
         }
         if self.has_w11 {
             self.mag[10] = MAG_SZ[10];
-            self.ammo[10] = self.ammo[10].max(10);
+            self.ammo[10] = MAG_SZ[10] * 6;
         }
         self.node_done = false;
         self.lockdown = false;
@@ -5123,6 +5127,7 @@ mod tests {
         e.spawn_smoke_cloud(e.px, e.py);
         e.rebuild_smoke_grid();
         assert!(e.smoke_grid.iter().any(|d| *d > 0.2), "a fresh cloud must occupy the cell");
+        assert!(e.smoke_grid.iter().all(|d| *d <= 0.56), "thin smoke must never block the view");
         for _ in 0..700 { e.age_smoke(1.0 / 60.0); }
         assert!(e.smokes.iter().all(|s| s.age < 0.0), "smoke must be gone after 10 seconds");
     }

@@ -306,20 +306,24 @@ export function loadCheckpoint(): RunSave | null {
     const raw = localStorage.getItem(CHECK_KEY);
     if (!raw) return null;
     const v = JSON.parse(raw) as Partial<RunSave>;
-    if (!v || !Array.isArray(v.ammo) || v.ammo.length !== 8 || !Array.isArray(v.mag) || v.mag.length !== 8) {
+    if (!v || !Array.isArray(v.ammo) || !Array.isArray(v.mag)) {
       return null;
     }
+    // Current saves hold 11 weapons; legacy 8-slot saves are padded.
+    if (v.ammo.length !== 8 && v.ammo.length !== 11) return null;
+    if (v.mag.length !== 8 && v.mag.length !== 11) return null;
+    const pad11 = (a: number[]) => [...a, ...Array(11).fill(0)].slice(0, 11);
     return {
       wave: Math.min(12, Math.max(1, v.wave || 1)),
       health: v.health || 100,
-      armor: v.armor || 0,
+      armor: Math.min(100, Math.max(0, v.armor || 0)),
       weapon: v.weapon || 0,
       flags: v.flags || 0,
       kills: v.kills || 0,
       secrets: v.secrets || 0,
       elapsedMs: v.elapsedMs || 0,
-      ammo: v.ammo,
-      mag: v.mag,
+      ammo: pad11(v.ammo),
+      mag: pad11(v.mag),
     };
   } catch {
     return null;

@@ -597,6 +597,11 @@ export class HellscanRuntime {
     if (!wasm) return null;
     const ptr = wasm.hs_save_ptr();
     const dv = new DataView(wasm.memory.buffer, ptr, wasm.hs_save_size());
+    const size = wasm.hs_save_size();
+    // Engine RunSave holds 11 weapons: ammo at 32, mag at 32 + 11*4.
+    // Legacy 8-slot checkpoints (mag at 64) are still readable via loadSave.
+    const slots = size >= 120 ? 11 : 8;
+    const magBase = 32 + slots * 4;
     return {
       wave: dv.getInt32(0, true),
       health: dv.getInt32(4, true),
@@ -606,8 +611,12 @@ export class HellscanRuntime {
       kills: dv.getInt32(20, true),
       secrets: dv.getInt32(24, true),
       elapsedMs: dv.getInt32(28, true),
-      ammo: Array.from({ length: 8 }, (_, i) => dv.getInt32(32 + i * 4, true)),
-      mag: Array.from({ length: 8 }, (_, i) => dv.getInt32(64 + i * 4, true)),
+      ammo: Array.from({ length: 11 }, (_, i) =>
+        i < slots ? dv.getInt32(32 + i * 4, true) : 0,
+      ),
+      mag: Array.from({ length: 11 }, (_, i) =>
+        i < slots ? dv.getInt32(magBase + i * 4, true) : 0,
+      ),
     };
   }
 
@@ -616,6 +625,11 @@ export class HellscanRuntime {
     if (!wasm) return;
     const ptr = wasm.hs_load_ptr();
     const dv = new DataView(wasm.memory.buffer, ptr, wasm.hs_save_size());
+    const size = wasm.hs_save_size();
+    const slots = size >= 120 ? 11 : 8;
+    const magBase = 32 + slots * 4;
+    const ammo = [...save.ammo, ...Array(11).fill(0)].slice(0, slots);
+    const mag = [...save.mag, ...Array(11).fill(0)].slice(0, slots);
     dv.setInt32(0, save.wave, true);
     dv.setInt32(4, save.health, true);
     dv.setInt32(8, save.armor, true);
@@ -624,8 +638,8 @@ export class HellscanRuntime {
     dv.setInt32(20, save.kills, true);
     dv.setInt32(24, save.secrets, true);
     dv.setInt32(28, save.elapsedMs, true);
-    save.ammo.forEach((n, i) => dv.setInt32(32 + i * 4, n, true));
-    save.mag.forEach((n, i) => dv.setInt32(64 + i * 4, n, true));
+    ammo.forEach((n, i) => dv.setInt32(32 + i * 4, n, true));
+    mag.forEach((n, i) => dv.setInt32(magBase + i * 4, n, true));
     wasm.hs_load_run();
     this.hud = this.readHud();
   }
@@ -941,7 +955,7 @@ export class HellscanRuntime {
       this.accumulator -= step;
     }
     const hud = this.readHud();
-    const boss = hud.bossHealth > 0 ? ((hud.wave - 1) % 3 + 3) % 3 : -1;
+    const boss = -1;
     const fx = { muzzle: hud.muzzle, hurt: hud.hurt, time: t * 0.001, boss };
     const w = wasm.hs_fb_w();
     const h = wasm.hs_fb_h();

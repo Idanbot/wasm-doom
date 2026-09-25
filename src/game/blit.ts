@@ -187,19 +187,6 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
     c = vec4<f32>(c.rgb + bl * 0.42, 1.0);
   }
 
-  if (u.boss >= 0.0) {
-    let t = u.time;
-    let floorish = smoothstep(0.42, 0.72, uv.y);
-    if (u.boss < 0.5) {
-      let arc = abs(sin(uv.x * 46.0 + t * 9.0) * sin(uv.y * 18.0 - t * 4.0));
-      let bolt = smoothstep(0.92, 1.0, arc) * floorish;
-      c = vec4<f32>(c.rgb + vec3<f32>(0.55, 0.82, 1.0) * bolt * 0.85, 1.0);
-    } else if (u.boss >= 1.5) {
-      let cell = fract(uv * vec2<f32>(90.0, 54.0) + vec2<f32>(t * 0.15, -t * 0.08));
-      let mote = smoothstep(0.08, 0.0, length(cell - 0.5));
-      c = vec4<f32>(c.rgb + vec3<f32>(0.25, 0.9, 0.35) * mote * 0.55, 1.0);
-    }
-  }
   if (u.crt > 0.5) {
     let scan = 1.0 - 0.14 * abs(sin(uv.y * u.res.y * 3.14159265));
     c = vec4<f32>(c.rgb * scan, 1.0);
@@ -594,16 +581,6 @@ void main(){
     ray += s * max(0.0, luma - 0.32) * 0.16;
   }
   rgb += ray;
-  if (boss >= 0.0) {
-    float floorish = smoothstep(0.42, 0.72, uv.y);
-    if (boss < 0.5) {
-      float arc = abs(sin(uv.x * 46.0 + time * 9.0) * sin(uv.y * 18.0 - time * 4.0));
-      rgb += vec3(0.55, 0.82, 1.0) * smoothstep(0.92, 1.0, arc) * floorish * 0.85;
-    } else if (boss >= 1.5) {
-      vec2 cell = fract(uv * vec2(90.0, 54.0) + vec2(time * 0.15, -time * 0.08));
-      rgb += vec3(0.25, 0.9, 0.35) * smoothstep(0.08, 0.0, length(cell - 0.5)) * 0.55;
-    }
-  }
   o = vec4(rgb, 1.0);
 }
 `;

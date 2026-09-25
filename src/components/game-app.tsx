@@ -184,22 +184,25 @@ export function GameApp() {
           if (!qaRef.current) {
             const save = rt.exportSave();
             if (save) {
-              const sizes = [12, 8, 36, 5, 4, 10, 90, 6];
-              const floors = [36, 12, 48, 8, 12, 16, 160, 18];
-              const mag = save.mag.slice();
-              const ammo = save.ammo.slice();
+              // Winning keeps every unlocked weapon, restores full health
+              // and full ammo, and preserves armor clamped to [0, 100].
+              const sizes = [12, 8, 36, 5, 4, 10, 90, 6, 4, 14, 5];
+              const full = [120, 48, 216, 20, 16, 80, 450, 36, 24, 84, 30];
+              const mag = [...save.mag, ...Array(11).fill(0)].slice(0, 11);
+              const ammo = [...save.ammo, ...Array(11).fill(0)].slice(0, 11);
               mag[0] = sizes[0]!;
-              ammo[0] = Math.max(ammo[0]!, floors[0]!);
-              for (let i = 1; i < 8; i++) {
+              ammo[0] = full[0]!;
+              for (let i = 1; i < 11; i++) {
                 if (save.flags & (1 << (i - 1))) {
                   mag[i] = sizes[i]!;
-                  ammo[i] = Math.max(ammo[i]!, floors[i]!);
+                  ammo[i] = full[i]!;
                 }
               }
               persistRef.current({
                 ...save,
                 wave: Math.min(12, save.wave + 1),
                 health: 100,
+                armor: Math.min(100, Math.max(0, save.armor)),
                 mag,
                 ammo,
               });

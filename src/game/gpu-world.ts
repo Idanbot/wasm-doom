@@ -82,20 +82,28 @@ fn light_at(wx: f32, wy: f32) -> vec3<f32> {
 }
 
 fn smoke_at(wx: f32, wy: f32) -> f32 {
-  let x = i32(clamp(floor(wx), 0.0, 47.0));
-  let y = i32(clamp(floor(wy), 0.0, 31.0));
-  return textureLoad(light_tex, vec2<i32>(x, y), 0).a;
+  let x = clamp(wx - 0.5, 0.0, 46.0);
+  let y = clamp(wy - 0.5, 0.0, 30.0);
+  let ix = i32(floor(x));
+  let iy = i32(floor(y));
+  let f = vec2<f32>(fract(x), fract(y));
+  let a = textureLoad(light_tex, vec2<i32>(ix, iy), 0).a;
+  let b = textureLoad(light_tex, vec2<i32>(ix + 1, iy), 0).a;
+  let c = textureLoad(light_tex, vec2<i32>(ix, iy + 1), 0).a;
+  let d = textureLoad(light_tex, vec2<i32>(ix + 1, iy + 1), 0).a;
+  return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
 }
 
 fn through_smoke(rgb: vec3<f32>, ax: f32, ay: f32, bx: f32, by: f32) -> vec3<f32> {
   var tau = 0.0;
-  for (var i = 1; i <= 6; i++) {
-    let t = f32(i) / 6.0;
+  for (var i = 1; i <= 8; i++) {
+    let t = f32(i) / 8.0;
     tau += smoke_at(mix(ax, bx, t), mix(ay, by, t));
   }
-  tau *= length(vec2<f32>(bx - ax, by - ay)) / 6.0;
-  let k = 1.0 - exp(-tau * 1.8);
-  return mix(rgb, vec3<f32>(0.58, 0.60, 0.62), clamp(k, 0.0, 0.92));
+  tau *= length(vec2<f32>(bx - ax, by - ay)) / 8.0;
+  if (tau < 0.06) { return rgb; }
+  let k = 1.0 - exp(-tau * 0.75);
+  return mix(rgb, vec3<f32>(0.58, 0.60, 0.62), clamp(k, 0.0, 0.35));
 }
 
 fn sigil_center(level: i32) -> vec2<f32> {
