@@ -10,17 +10,24 @@ import {
   T_GUN5,
   T_GUN6,
   T_GUN7,
+  T_GUN8,
+  T_GUN9,
+  T_GUN10,
+  T_GUN11,
   T_ORDNANCE,
 } from "./gpu-world";
 import { HUD_SIZE } from "./hud-abi";
 import { keySpriteAlpha } from "./sprite-alpha";
 import {
   readEnemyCues,
+  readBars,
+  type BarCue,
   type EnemyCue,
   type EnemyOptions,
   type EnemySubtitle,
 } from "./enemy-presentation";
 import { DEFAULT_GFX, DEFAULT_HUD, type GfxOpts, type HudState, type ResMode } from "./types";
+import type { RunSave } from "@/components/game/data";
 
 export { HUD_SIZE };
 
@@ -60,9 +67,18 @@ type WasmExports = {
   hs_y: () => number;
   hs_prepare_enemies: () => number;
   hs_enemy_cues: () => number;
+  hs_prepare_bars: () => number;
+  hs_bars: () => number;
   hs_qa_end: (state: number) => void;
   hs_qa_boss: (phase: number) => void;
   hs_qa_objective: () => void;
+  hs_save_ptr: () => number;
+  hs_save_size: () => number;
+  hs_load_ptr: () => number;
+  hs_load_run: () => void;
+  hs_map_ptr: () => number;
+  hs_map_w: () => number;
+  hs_map_h: () => number;
 };
 
 const IN = {
@@ -83,6 +99,10 @@ const IN = {
   W5: 16384,
   W6: 32768,
   W7: 65536,
+  W8: 131072,
+  W9: 262144,
+  W10: 524288,
+  W11: 1048576,
 };
 
 const CODE_BITS: Record<string, number> = {
@@ -105,6 +125,10 @@ const CODE_BITS: Record<string, number> = {
   Digit5: IN.W5,
   Digit6: IN.W6,
   Digit7: IN.W7,
+  Digit8: IN.W8,
+  Digit9: IN.W9,
+  Digit0: IN.W10,
+  Minus: IN.W11,
   ArrowLeft: IN.TURNL,
   KeyQ: IN.TURNL,
   ArrowRight: IN.TURNR,
@@ -162,9 +186,13 @@ const TEX_FILES: { id: number; src: string }[] = [
   { id: T_GUN5, src: "/game/spr_gun_vlk6.png" },
   { id: T_GUN6, src: "/game/spr_gun_ax12.png" },
   { id: T_GUN7, src: "/game/spr_gun_m91.png" },
+  { id: T_GUN8, src: "/game/spr_gun_hx8.png" },
   { id: T_GUN7 + 1, src: "/game/environment/props/datacenter_terminal_console.png" },
-  { id: T_GUN7 + 2, src: "/game/environment/props/nuclear_terminal_console.png" },
+  { id: T_GUN7 + 2, src: "/game/environment/props/foundry_terminal_console.png" },
   { id: T_GUN7 + 3, src: "/game/environment/props/biotech_terminal_console.png" },
+  { id: T_GUN9, src: "/game/spr_gun_vr9.png" },
+  { id: T_GUN10, src: "/game/spr_gun_hc9.png" },
+  { id: T_GUN11, src: "/game/spr_gun_cm9.png" },
   ...ENEMY_SKINS.flatMap((skin, skinIndex) =>
     ENEMY_ANIMATIONS.map((animation, animationIndex) => ({
       id: ENEMY_TEX_BASE + skinIndex * ENEMY_ANIM_COUNT + animationIndex,
@@ -195,6 +223,18 @@ const UI_DEFERRED = [
   "/game/weap_m91.png",
   "/game/weap_m91_fire.png",
   "/game/weap_m91_reload.png",
+  "/game/weap_hx8.png",
+  "/game/weap_hx8_fire.png",
+  "/game/weap_hx8_reload.png",
+  "/game/weap_vr9.png",
+  "/game/weap_vr9_fire.png",
+  "/game/weap_vr9_reload.png",
+  "/game/weap_hc9.png",
+  "/game/weap_hc9_fire.png",
+  "/game/weap_hc9_reload.png",
+  "/game/weap_cm9.png",
+  "/game/weap_cm9_fire.png",
+  "/game/weap_cm9_reload.png",
 ];
 
 function decodeImage(src: string): Promise<HTMLImageElement | null> {
@@ -268,6 +308,7 @@ export class HellscanRuntime {
   private hud: HudState = { ...DEFAULT_HUD };
   private prevHud = { ...DEFAULT_HUD };
   private lastEnemies: EnemyCue[] = [];
+  private lastBars: BarCue[] = [];
   private qaBits = 0;
   private qaOn = false;
   private sens = 1;
@@ -498,12 +539,18 @@ export class HellscanRuntime {
       this.hud.hasW5,
       this.hud.hasW6,
       this.hud.hasW7,
+      this.hud.hasW8,
+      this.hud.hasW9,
+      this.hud.hasW10,
+      this.hud.hasW11,
     ];
-    const step = dir >= 0 ? 1 : 6;
-    for (let n = 1; n <= 7; n++) {
-      const next = (this.hud.weapon + step * n) % 7;
+    const count = owned.length;
+    const step = dir >= 0 ? 1 : count - 1;
+    for (let n = 1; n <= count; n++) {
+      const next = (this.hud.weapon + step * n) % count;
       if (owned[next]) {
-        this.weaponPulse = [IN.W1, IN.W2, IN.W3, IN.W4, IN.W5, IN.W6, IN.W7][next]!;
+        const bit = [IN.W1, IN.W2, IN.W3, IN.W4, IN.W5, IN.W6, IN.W7, IN.W8, IN.W9, IN.W10, IN.W11][next];
+        if (bit) this.weaponPulse = bit;
         return;
       }
     }
@@ -511,6 +558,58 @@ export class HellscanRuntime {
 
   nextWeapon() {
     this.cycleWeapon(1);
+  }
+
+  exportSave(): RunSave | null {
+    const wasm = this.wasm;
+    if (!wasm) return null;
+    const ptr = wasm.hs_save_ptr();
+    const dv = new DataView(wasm.memory.buffer, ptr, wasm.hs_save_size());
+    return {
+      wave: dv.getInt32(0, true),
+      health: dv.getInt32(4, true),
+      armor: dv.getInt32(8, true),
+      weapon: dv.getInt32(12, true),
+      flags: dv.getInt32(16, true),
+      kills: dv.getInt32(20, true),
+      secrets: dv.getInt32(24, true),
+      elapsedMs: dv.getInt32(28, true),
+      ammo: Array.from({ length: 8 }, (_, i) => dv.getInt32(32 + i * 4, true)),
+      mag: Array.from({ length: 8 }, (_, i) => dv.getInt32(64 + i * 4, true)),
+    };
+  }
+
+  loadSave(save: RunSave) {
+    const wasm = this.wasm;
+    if (!wasm) return;
+    const ptr = wasm.hs_load_ptr();
+    const dv = new DataView(wasm.memory.buffer, ptr, wasm.hs_save_size());
+    dv.setInt32(0, save.wave, true);
+    dv.setInt32(4, save.health, true);
+    dv.setInt32(8, save.armor, true);
+    dv.setInt32(12, save.weapon, true);
+    dv.setInt32(16, save.flags, true);
+    dv.setInt32(20, save.kills, true);
+    dv.setInt32(24, save.secrets, true);
+    dv.setInt32(28, save.elapsedMs, true);
+    save.ammo.forEach((n, i) => dv.setInt32(32 + i * 4, n, true));
+    save.mag.forEach((n, i) => dv.setInt32(64 + i * 4, n, true));
+    wasm.hs_load_run();
+    this.hud = this.readHud();
+  }
+
+  readMap(): Uint8Array | null {
+    const wasm = this.wasm;
+    if (!wasm) return null;
+    return new Uint8Array(wasm.memory.buffer, wasm.hs_map_ptr(), wasm.hs_map_w() * wasm.hs_map_h()).slice();
+  }
+
+  getEnemies(): EnemyCue[] {
+    return this.lastEnemies;
+  }
+
+  getBars(): BarCue[] {
+    return this.lastBars;
   }
 
   getHud() {
@@ -731,6 +830,16 @@ export class HellscanRuntime {
       bossPhase: dv.getInt32(128, true),
       hasW6: dv.getInt32(132, true) !== 0,
       hasW7: dv.getInt32(136, true) !== 0,
+      hasW8: dv.getInt32(140, true) !== 0,
+      hasW9: dv.getInt32(168, true) !== 0,
+      hasW10: dv.getInt32(172, true) !== 0,
+      hasW11: dv.getInt32(176, true) !== 0,
+      objective: dv.getInt32(144, true),
+      radioSeq: dv.getInt32(148, true),
+      radioLine: dv.getInt32(152, true),
+      vuln: dv.getFloat32(156, true),
+      nodeX: dv.getFloat32(160, true),
+      nodeY: dv.getFloat32(164, true),
     };
   }
 
@@ -840,6 +949,8 @@ export class HellscanRuntime {
     // move/fire animation states without touching WASM memory.
     const enemies = readEnemyCues(wasm.memory.buffer, wasm.hs_enemy_cues(), count);
     this.lastEnemies = enemies;
+    const barCount = wasm.hs_prepare_bars();
+    this.lastBars = readBars(wasm.memory.buffer, wasm.hs_bars(), barCount);
     const subtitles = this.audio.updateEnemies(enemies, hud);
     this.hooks.onSubtitles?.(subtitles);
     this.hooks.onHud(hud, this.fps, `${w} × ${h}`);
@@ -879,6 +990,7 @@ export class HellscanRuntime {
       if (ev & 4096) this.audio.kill();
       if (ev & 8192) this.audio.hushBoss();
       if (ev & 16384) this.audio.dropBoss();
+      if (ev & 32768) this.audio.radio();
     } catch {
       /* keep the sim running if a sound fails */
     }

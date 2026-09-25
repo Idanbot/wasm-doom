@@ -24,6 +24,7 @@ export type GameAudio = {
   setBoss: (on: boolean) => void;
   hushBoss: () => void;
   dropBoss: () => void;
+  radio: () => void;
   fire: (weapon: number) => void;
   hit: () => void;
   kill: () => void;
@@ -441,11 +442,10 @@ export function createAudio(): GameAudio {
 
   function hookBed(url: string): HTMLAudioElement | null {
     if (!ctx || !music) return null;
-    const el = new Audio(url);
+    const el = new Audio();
     el.loop = true;
-    // Long-form tracks (bgm is ~31min) must stream, never preload fully.
-    el.preload = "none";
-    el.crossOrigin = "anonymous";
+    el.preload = "auto";
+    el.src = url;
     try {
       const node = ctx.createMediaElementSource(el);
       node.connect(music);
@@ -457,16 +457,31 @@ export function createAudio(): GameAudio {
 
   function ensureBed() {
     if (!ctx || !music || bedFailed) return;
-    if (!bed) bed = hookBed("/game/bgm.ogg");
-    if (!bossBed) bossBed = hookBed("/game/boss.ogg");
+    if (!bed) bed = hookBed("/game/music/bgm-remix.ogg");
+    if (!bossBed) bossBed = hookBed("/game/music/boss.ogg");
     if (!bed && !bossBed) bedFailed = true;
   }
 
   function playEl(el: HTMLAudioElement | null, fromStart = false) {
     if (!el) return;
-    if (fromStart) el.currentTime = 0;
-    const play = el.play();
-    if (play && typeof play.catch === "function") void play.catch(() => {});
+    const start = () => {
+      try {
+        if (fromStart && el.readyState >= 1) el.currentTime = 0;
+      } catch {
+        /* metadata not in yet; play from the start anyway */
+      }
+      const play = el.play();
+      if (play && typeof play.catch === "function") {
+        void play.catch(() => {
+          if (el === bossBed && bed && musicOn) playEl(bed);
+        });
+      }
+    };
+    if (el.readyState >= 2) start();
+    else {
+      el.addEventListener("canplay", start, { once: true });
+      try { el.load(); } catch { /* already loading */ }
+    }
   }
 
   function setBossElVol(v: number) {
@@ -647,6 +662,10 @@ export function createAudio(): GameAudio {
       }
       if (!musicOn) return;
       ensureBed();
+      if (!bossBed) {
+        playEl(bed);
+        return;
+      }
       bed?.pause();
       setBossElVol(0);
       playEl(bossBed, true);
@@ -665,6 +684,11 @@ export function createAudio(): GameAudio {
       stopBossFade();
       setBossElVol(1);
       playEl(bossBed, false);
+    },
+    radio() {
+      resume();
+      beep(740, 0.05, "square", 0.04, -80);
+      beep(980, 0.07, "sine", 0.035, 40);
     },
     fire(weapon) {
       resume();
@@ -688,7 +712,12 @@ export function createAudio(): GameAudio {
         beep(105, 0.06, "square", 0.08, -35);
         return;
       }
-      // File OR synth, never both — the sample already carries the transient.
+      if (weapon === 7) {
+        burst(0.16, 0.32 * jitter, 0.55, 220, "lowpass");
+        beep(70, 0.18, "sawtooth", 0.1, -30);
+        burst(0.08, 0.12, 2.4, 2400, "highpass");
+        return;
+      }
       if (sample(`fire${weapon}`, weapon === 1 ? 1.35 : 1.2, jitter)) return;
       if (weapon === 1) {
         burst(0.22, 0.55 * jitter, 0.55, 160, "lowpass");

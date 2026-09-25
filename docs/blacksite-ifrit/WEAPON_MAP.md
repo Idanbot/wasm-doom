@@ -1,7 +1,7 @@
 # BLACKSITE IFRIT — weapon mapping
 
-The engine now carries seven weapon slots. Each has distinct magazine size,
-cadence, recoil, reload animation, audio treatment and first-person silhouette.
+The engine carries eleven weapon slots. Eight are found in the sectors.
+The last three exist only as the case a specific boss drops.
 
 | Slot | Weapon         | Combat identity                                        |
 | ---- | -------------- | ------------------------------------------------------ |
@@ -12,10 +12,15 @@ cadence, recoil, reload animation, audio treatment and first-person silhouette.
 | 4    | VLK-6 WARDEN   | 4-cell guided micro-missile launcher with splash       |
 | 5    | AX-12 VOLT     | 10-charge electrical precision carbine                 |
 | 6    | M91 CYCLONE    | 90-round rotary cannon for sustained suppression       |
+| 7    | HX-8 PYRE      | ground burn lasts 10s; the shot trail fades in a few seconds and damages until then |
+| 8    | VR-9 OVERRIDE  | Veyran only. Pierces the lane for 120, then a 2.8 burst |
+| 9    | HC-9 FORGE     | HECATE-9 only. Wide cutter plus impact splash, no ground fire |
+| 10   | CM-9 CHIMERA   | CHIMERA-9 only. Acid bolts burst and leave a 4s pool |
 
-Magazine sizes are `MAG_SZ = [12, 8, 36, 5, 4, 10, 90]`. Number keys 1–7,
-mouse wheel and the mobile weapon button select owned weapons. Weapons 2–7
-enter the arsenal through their map pickups.
+Magazine sizes are `MAG_SZ = [12, 8, 36, 5, 4, 10, 90, 6, 4, 14, 5]`.
+Number keys 1–8, `9`, `0` and `-` select owned weapons, as does the wheel.
+Weapons 2–8 enter through map pickups. VR-9, HC-9 and CM-9 are never placed
+on the map; picking the dropped case ends the sector.
 
 Weapons 2–7 use transparent high-resolution masters in
 `art/source_hd/weapons_v3/`. The deterministic processor produces one idle

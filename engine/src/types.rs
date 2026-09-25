@@ -22,7 +22,17 @@ pub(crate) struct Ent {
     pub(crate) effect_tick: f32,
     /// Target angle committed at the start of an attack windup.
     pub(crate) aim: f32,
+    /// Front-shield flag. 1 blocks damage from the facing arc.
+    pub(crate) shield: u8,
+    /// Direction the shield and the body are facing.
+    pub(crate) face: f32,
     pub(crate) zoff: f32,
+    /// Seconds left to show the damage bar. Set on any hit, including a shield clang.
+    pub(crate) bar_t: f32,
+    /// Amber pool that depletes before health.
+    pub(crate) armor_hp: i32,
+    /// Cyan front plate. Depletes before armor. 0 means the plate is gone.
+    pub(crate) shield_hp: i32,
 }
 
 #[derive(Clone, Copy)]

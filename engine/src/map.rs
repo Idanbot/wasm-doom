@@ -16,6 +16,7 @@
 
 use crate::consts::*;
 use crate::enemies::is_hostile_kind;
+use crate::field;
 use crate::types::AmbushTrigger;
 use crate::Engine;
 
@@ -69,6 +70,8 @@ const HOSTILES_UPPER: &[HostileSpawn] = &[
     (EK_WRAITH, SKIN_HOUND, 38.5, 26.5),
     (EK_WRAITH, SKIN_SPITTER, 22.5, 26.5),
     (EK_BRUTE, SKIN_HAZMAT, 25.5, 25.5),
+    (EK_HUSK, SKIN_RIFLEMAN | field::SHIELD_BIT, 18.5, 16.5),
+    (EK_BRUTE, SKIN_GUNNER | field::SHIELD_BIT, 28.5, 15.5),
 ];
 const HOSTILES_FOUNDRY: &[HostileSpawn] = &[
     (EK_HUSK, SKIN_HAZMAT, 8.5, 6.5),
@@ -83,6 +86,8 @@ const HOSTILES_FOUNDRY: &[HostileSpawn] = &[
     (EK_BRUTE, SKIN_LOADER, 37.5, 21.5),
     (EK_WRAITH, SKIN_HORNET, 43.5, 20.5),
     (EK_HUSK, SKIN_GUNNER, 41.5, 27.5),
+    (EK_HUSK, SKIN_HAZMAT | field::SHIELD_BIT, 8.5, 7.5),
+    (EK_BRUTE, SKIN_GUNNER | field::SHIELD_BIT, 35.5, 19.5),
 ];
 const HOSTILES_BIOFORGE: &[HostileSpawn] = &[
     (EK_HUSK, SKIN_SUBJECT, 8.5, 14.5),
@@ -97,6 +102,8 @@ const HOSTILES_BIOFORGE: &[HostileSpawn] = &[
     (EK_BRUTE, SKIN_VATBRUTE, 42.5, 25.5),
     (EK_HUSK, SKIN_HOUND, 34.5, 14.5),
     (EK_WRAITH, SKIN_SPITTER, 43.5, 18.5),
+    (EK_HUSK, SKIN_RIFLEMAN | field::SHIELD_BIT, 10.5, 15.5),
+    (EK_BRUTE, SKIN_GUNNER | field::SHIELD_BIT, 39.5, 13.5),
 ];
 
 pub(crate) fn hostiles(wave: i32) -> &'static [HostileSpawn] {
@@ -440,7 +447,12 @@ fn reset_level_entities(e: &mut Engine) {
         flash: 0.0,
         stun: 0.0,
         effect_tick: 0.0,
+        shield: 0,
+        face: 0.0,
         zoff: 0.0,
+        bar_t: 0.0,
+        armor_hp: 0,
+        shield_hp: 0,
     }; ENT_N];
     e.ambush = ambush_defs(e.wave)
         .iter()
@@ -517,6 +529,31 @@ pub(crate) fn place_level(e: &mut Engine) {
     let (x, y) = override_point(e.wave);
     let skin = [SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_BIOFORGE][level_index(e.wave)];
     e.spawn_with_skin(EK_OVERRIDE_CONSOLE, skin, x, y);
+    let (nx, ny) = field::node_point(e.wave);
+    e.spawn_with_skin(EK_NODE, skin, nx, ny);
+    for &(tx, ty) in field::terminals(e.wave) {
+        e.spawn_with_skin(EK_TERMINAL, skin, tx, ty);
+    }
+    for &(kind, sx, sy) in field::resupply(e.wave) {
+        e.spawn(kind, sx, sy);
+    }
+    let (px, py) = field::powerup_point(e.wave);
+    e.spawn(EK_POWER, px, py);
+    e.announce_sector();
+    split_barrels(e);
+}
+
+/// Alternate drums are fuel: they burn in place instead of detonating.
+fn split_barrels(e: &mut Engine) {
+    let mut n = 0;
+    for ent in e.ents.iter_mut() {
+        if ent.kind == EK_BARREL {
+            if n % 2 == 1 {
+                ent.skin = 1;
+            }
+            n += 1;
+        }
+    }
 }
 
 /// Fire each ambush once when the player crosses its zone. Called from
@@ -544,7 +581,7 @@ pub(crate) fn check_ambushes(e: &mut Engine) {
         }
         let mut spawned = false;
         for &(kind, x, y) in group {
-            if e.spawn(kind, x, y).is_some() {
+            if e.spawn_clear(kind, x, y).is_some() {
                 spawned = true;
             }
         }
@@ -655,8 +692,8 @@ mod tests {
     #[test]
     fn opening_cast_matches_the_zone_playlist() {
         let e = Engine::new(160, 100);
-        // 14 HOSTILES plus 3 ambush groups staged (unfired).
-        assert_eq!(living_hostiles(&e), 14);
+        // 14 hostiles plus 2 shield guards, ambushes still staged.
+        assert_eq!(living_hostiles(&e), 16);
         assert!(e.ambush.iter().all(|t| !t.fired));
     }
 
@@ -675,6 +712,14 @@ mod tests {
             }
             for &(_, _, x, y) in hostiles(wave) {
                 assert_reachable(&seen, x, y, "hostile spawn");
+            }
+            let node = crate::field::node_point(wave);
+            assert_reachable(&seen, node.0, node.1, "sector node");
+            for &(x, y) in crate::field::terminals(wave) {
+                assert_reachable(&seen, x, y, "terminal");
+            }
+            for &(_, x, y) in crate::field::resupply(wave) {
+                assert_reachable(&seen, x, y, "resupply");
             }
             let idx = objective.1.floor() as usize * MAP_W + objective.0.floor() as usize;
             assert_eq!(e.floor[idx], 2, "override station needs its floor beacon");

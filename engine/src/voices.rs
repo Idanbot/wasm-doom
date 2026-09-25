@@ -30,3 +30,53 @@ pub(crate) fn snapshot(e: &Engine, out: &mut [EnemyCue; ENT_N]) -> usize {
     }
     n
 }
+
+/// One on-screen damage bar. `layer` is 0 health, 1 armor, 2 shield.
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub(crate) struct BarCue {
+    pub screen_x: f32,
+    pub screen_y: f32,
+    pub frac: f32,
+    pub layer: f32,
+    pub fade: f32,
+}
+
+pub(crate) fn snapshot_bars(e: &Engine, out: &mut [BarCue]) -> usize {
+    let (dx, dy) = (e.pa.cos(), e.pa.sin());
+    let plane = 0.72 * (e.w as f32 / e.h as f32 / 1.6);
+    let horizon = e.h as f32 * (0.5 + e.pitch * 0.9);
+    let mut n = 0;
+    for enemy in e.ents.iter() {
+        if n >= out.len() { break; }
+        if !crate::enemies::is_hostile_kind(enemy.kind) || enemy.hp <= 0 || enemy.bar_t <= 0.0 {
+            continue;
+        }
+        let (sx, sy) = (enemy.x - e.px, enemy.y - e.py);
+        let depth = sx * dx + sy * dy;
+        if depth < 0.2 { continue; }
+        let screen_x = 0.5 * (1.0 + (-dy * sx + dx * sy) / (plane * depth));
+        if !(0.02..0.98).contains(&screen_x) { continue; }
+        let scale = skin_def(crate::field::visual_skin(enemy.skin)).map(|s| s.scale).unwrap_or(0.9);
+        let head = (horizon + enemy.zoff / depth) / e.h as f32 - scale / (2.0 * depth) - 0.02;
+        let (frac, layer) = if enemy.shield_hp > 0 {
+            (enemy.shield_hp as f32 / crate::enemies::SHIELD_CAP as f32, 2.0)
+        } else if enemy.armor_hp > 0 {
+            let cap = crate::enemies::armor_cap(enemy.kind, enemy.skin).max(1) as f32;
+            (enemy.armor_hp as f32 / cap, 1.0)
+        } else {
+            let cap = crate::enemies::health_cap(enemy.kind, enemy.shield != 0).max(1) as f32;
+            (enemy.hp as f32 / cap, 0.0)
+        };
+        let fade = if enemy.bar_t > 0.55 { 1.0 } else { enemy.bar_t / 0.55 };
+        out[n] = BarCue {
+            screen_x,
+            screen_y: head,
+            frac: frac.clamp(0.0, 1.0),
+            layer,
+            fade,
+        };
+        n += 1;
+    }
+    n
+}

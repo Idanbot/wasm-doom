@@ -80,11 +80,11 @@ describe("gridPos", () => {
 });
 
 describe("WEAPONS", () => {
-  it("has seven entries with unique ids and art paths", () => {
-    assert.equal(WEAPONS.length, 7);
+  it("has eleven entries with unique ids and art paths", () => {
+    assert.equal(WEAPONS.length, 11);
     assert.deepEqual(
       WEAPONS.map((w) => w.id),
-      [0, 1, 2, 3, 4, 5, 6],
+      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     );
     for (const w of WEAPONS) {
       assert.ok(w.name.length > 0);
@@ -96,7 +96,7 @@ describe("WEAPONS", () => {
     }
     assert.deepEqual(
       WEAPONS.map((w) => w.magSize),
-      [12, 8, 36, 5, 4, 10, 90],
+      [12, 8, 36, 5, 4, 10, 90, 6, 4, 14, 5],
     );
   });
 });

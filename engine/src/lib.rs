@@ -1,4 +1,5 @@
 mod combat;
+mod field;
 mod voices;
 mod consts;
 mod enemies;
@@ -35,8 +36,8 @@ struct Engine {
     pr: f32,
     health: i32,
     armor: i32,
-    ammo: [i32; 7],
-    mag: [i32; 7],
+    ammo: [i32; WEP_N],
+    mag: [i32; WEP_N],
     weapon: i32,
     has_w2: bool,
     has_w3: bool,
@@ -44,6 +45,13 @@ struct Engine {
     has_w5: bool,
     has_w6: bool,
     has_w7: bool,
+    has_w8: bool,
+    has_w9: bool,
+    has_w10: bool,
+    has_w11: bool,
+    power: u8,
+    power_t: f32,
+    shield_pool: i32,
     cooldown: f32,
     reload_t: f32,
     reload_dur: f32,
@@ -84,6 +92,11 @@ struct Engine {
     boss_spawned: bool,
     boss_intro: f32,
     boss_phase: u8,
+    node_done: bool,
+    lockdown: bool,
+    boss_vuln: f32,
+    radio_seq: i32,
+    radio_line: i32,
     ambush: Vec<AmbushTrigger>,
 }
 
@@ -117,6 +130,23 @@ fn clamp_i(v: i32, a: i32, b: i32) -> i32 {
 }
 fn solid_kind(k: u8) -> bool {
     k == EK_BARREL || is_hostile_kind(k)
+}
+
+/// Hitscan and blasts can break crates and shut lamps. Movement still uses
+/// `solid_kind`, so these props stay walk-through.
+fn target_kind(k: u8) -> bool {
+    solid_kind(k) || k == EK_CRATE || k == EK_LAMP
+}
+
+fn floor_prop(k: u8) -> bool {
+    is_pickup(k) || matches!(k, EK_CRATE | EK_BARREL | EK_OVERRIDE_CONSOLE | EK_NODE | EK_TERMINAL | EK_FLAME | EK_FIREPATCH)
+}
+
+/// Seat a sprite's feet on the floor line. Camera sits at mid-wall, so a
+/// scale-1 sprite is already planted; shorter art needs a downward bias,
+/// plus a pad for the transparent margin under prop masters.
+fn floor_seat(h: f32, scale: f32, bob: f32) -> f32 {
+    (h * 0.5) * (1.0 - scale) + h * 0.14 + bob
 }
 
 fn segment_distance_sq(x: f32, y: f32, ax: f32, ay: f32, bx: f32, by: f32) -> f32 {
@@ -166,13 +196,14 @@ fn anim_frame(e: &Ent) -> i32 {
 }
 
 fn sprite_style(e: &Ent) -> (usize, f32, bool, i32) {
-    if e.kind == EK_OVERRIDE_CONSOLE {
+    if matches!(e.kind, EK_OVERRIDE_CONSOLE | EK_NODE | EK_TERMINAL) {
         let texture = match e.skin {
             SKIN_CONSOLE_FOUNDRY => T_CONSOLE_FOUNDRY,
             SKIN_CONSOLE_BIOFORGE => T_CONSOLE_BIOFORGE,
             _ => T_CONSOLE_UPPER,
         };
-        return (texture, 0.95, false, 0);
+        let scale = if e.kind == EK_TERMINAL { 0.62 } else if e.kind == EK_NODE { 0.82 } else { 0.95 };
+        return (texture, scale, false, 0);
     }
     if let Some(skin) = skin_def(e.skin) {
         return (skin.texture + (e.anim as usize).min(ENEMY_ANIM_COUNT - 1), if e.kind == EK_BOSS { skin.scale.max(1.9) } else { skin.scale }, true, anim_frame(e));
@@ -206,12 +237,12 @@ fn sprite_style(e: &Ent) -> (usize, f32, bool, i32) {
 fn is_pickup(k: u8) -> bool {
     matches!(
         k,
-        EK_MED | EK_AMMO | EK_ARMOR | EK_GUN2 | EK_GUN3 | EK_GUN4 | EK_GUN5 | EK_GUN6 | EK_GUN7
+        EK_MED | EK_AMMO | EK_ARMOR | EK_POWER | EK_GUN2 | EK_GUN3 | EK_GUN4 | EK_GUN5 | EK_GUN6 | EK_GUN7 | EK_GUN8 | EK_GUN9 | EK_GUN10 | EK_GUN11
     )
 }
 
 fn is_weapon_item(k: u8) -> bool {
-    matches!(k, EK_GUN2 | EK_GUN3 | EK_GUN4 | EK_GUN5 | EK_GUN6 | EK_GUN7)
+    matches!(k, EK_GUN2 | EK_GUN3 | EK_GUN4 | EK_GUN5 | EK_GUN6 | EK_GUN7 | EK_GUN8 | EK_GUN9 | EK_GUN10 | EK_GUN11)
 }
 
 impl Engine {
@@ -255,7 +286,12 @@ impl Engine {
                 flash: 0.0,
                 stun: 0.0,
                 effect_tick: 0.0,
+                shield: 0,
+                face: 0.0,
                 zoff: 0.0,
+                bar_t: 0.0,
+                armor_hp: 0,
+                shield_hp: 0,
             }; ENT_N],
             px: map::PLAYER_START.0,
             py: map::PLAYER_START.1,
@@ -264,8 +300,8 @@ impl Engine {
             pr: 0.22,
             health: 100,
             armor: 0,
-            ammo: [36, 0, 0, 0, 0, 0, 0],
-            mag: [12, 0, 0, 0, 0, 0, 0],
+            ammo: [36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            mag: [12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             weapon: 0,
             has_w2: false,
             has_w3: false,
@@ -273,6 +309,13 @@ impl Engine {
             has_w5: false,
             has_w6: false,
             has_w7: false,
+            has_w8: false,
+            has_w9: false,
+            has_w10: false,
+            has_w11: false,
+            power: 0,
+            power_t: 0.0,
+            shield_pool: 0,
             cooldown: 0.0,
             reload_t: 0.0,
             reload_dur: 1.0,
@@ -324,6 +367,18 @@ impl Engine {
                 boss_phase: 0,
                 has_w6: 0,
                 has_w7: 0,
+                has_w8: 0,
+                objective: 0,
+                radio_seq: 0,
+                radio_line: 0,
+                vuln: 0.0,
+                node_x: 0.0,
+                node_y: 0.0,
+                has_w9: 0,
+                has_w10: 0,
+                has_w11: 0,
+                power: 0,
+                power_t: 0.0,
             },
             rng: 0xC0FFEE,
             shake: 0.0,
@@ -358,6 +413,11 @@ impl Engine {
             boss_spawned: false,
             boss_intro: 0.0,
             boss_phase: 0,
+            node_done: false,
+            lockdown: false,
+            boss_vuln: 0.0,
+            radio_seq: 0,
+            radio_line: 0,
             ambush: Vec::new(),
         };
         e.build_map();
@@ -876,12 +936,208 @@ impl Engine {
                     flash: 0.0,
                     stun: 0.0,
                     effect_tick: 0.0,
+                    shield: 0,
+                    face: 0.0,
                     zoff,
+                    bar_t: 0.0,
+                    armor_hp: enemies::armor_cap(kind, skin),
+                    shield_hp: 0,
                 };
                 return Some(i);
             }
         }
         None
+    }
+
+    fn arm_shield(&mut self, i: usize) {
+        let face = (self.py - self.ents[i].y).atan2(self.px - self.ents[i].x);
+        let e = &mut self.ents[i];
+        e.shield = 1;
+        e.hp = (e.hp * 14 / 10).max(e.hp + 8);
+        e.shield_hp = enemies::SHIELD_CAP;
+        e.face = face;
+    }
+
+    fn say(&mut self, line: i32) {
+        self.radio_seq = self.radio_seq.wrapping_add(1);
+        self.radio_line = line;
+        self.events |= EV_RADIO;
+    }
+
+    pub(crate) fn announce_sector(&mut self) {
+        self.node_done = false;
+        self.lockdown = false;
+        self.boss_vuln = 0.0;
+        self.say(field::RADIO_HANDLER);
+    }
+
+    fn near_point(&self, x: f32, y: f32) -> bool {
+        let d = (self.px - x).powi(2) + (self.py - y).powi(2);
+        d < 1.7 * 1.7 && self.los(self.px, self.py, x, y)
+    }
+
+    /// Nearest prop of `kind` in the facing cone, within `reach`.
+    fn facing_prop(&self, kind: u8, reach: f32) -> Option<usize> {
+        let dx = self.pa.cos();
+        let dy = self.pa.sin();
+        let mut best: Option<(usize, f32)> = None;
+        for (i, e) in self.ents.iter().enumerate() {
+            if e.kind != kind || e.hp <= 0 {
+                continue;
+            }
+            let ex = e.x - self.px;
+            let ey = e.y - self.py;
+            let t = ex * dx + ey * dy;
+            if t < 0.25 || t > reach {
+                continue;
+            }
+            if (ex * dy - ey * dx).abs() > 0.75 {
+                continue;
+            }
+            if best.is_none_or(|(_, d)| t < d) {
+                best = Some((i, t));
+            }
+        }
+        best.map(|(i, _)| i)
+    }
+
+    fn use_field(&mut self) {
+        if !self.node_done {
+            let (x, y) = field::node_point(self.wave);
+            if self.near_point(x, y) {
+                self.node_done = true;
+                self.say(field::RADIO_NODE);
+                self.events |= EV_PICK_GOLD;
+                return;
+            }
+        }
+        let sector = map::level_index(self.wave);
+        for (index, &(x, y)) in field::terminals(self.wave).iter().enumerate() {
+            if !self.near_point(x, y) {
+                continue;
+            }
+            let mut unread = false;
+            for e in self.ents.iter_mut() {
+                if e.kind == EK_TERMINAL && (e.x - x).abs() < 0.45 && (e.y - y).abs() < 0.45 {
+                    if e.timer < 0.0 {
+                        return;
+                    }
+                    e.timer = -1.0;
+                    unread = true;
+                }
+            }
+            if unread {
+                self.say(field::radio_terminal(sector, index));
+            }
+            return;
+        }
+        if let Some(i) = self.facing_prop(EK_LAMP, 2.6) {
+            let on = self.ents[i].timer >= 0.0;
+            self.ents[i].timer = if on { -1.0 } else { 0.0 };
+            self.ents[i].flash = 0.15;
+            self.light_dirty = true;
+            self.events |= EV_HIT;
+            return;
+        }
+        if let Some(i) = self.facing_prop(EK_CRATE, 1.8) {
+            let (x, y) = (self.ents[i].x, self.ents[i].y);
+            self.hurt_ent(i, 40, x, y);
+        }
+    }
+
+    fn ensure_drop(&mut self, kind: u8, x: f32, y: f32) {
+        if self.blocked(x.floor() as i32, y.floor() as i32) {
+            return;
+        }
+        let taken = self.ents.iter().any(|e| {
+            e.kind != 0 && (e.x - x).abs() < 0.32 && (e.y - y).abs() < 0.32
+        });
+        if !taken {
+            let _ = self.spawn(kind, x, y);
+        }
+    }
+
+    fn pay_secret(&mut self, cx: i32, cy: i32) {
+        let Some((x, y)) = field::secret_interior(cx, cy) else { return };
+        let before = self.ents.iter().filter(|e| matches!(e.kind, EK_MED | EK_ARMOR | EK_AMMO) && (e.x - x).powi(2) + (e.y - y).powi(2) < 2.2).count();
+        self.ensure_drop(EK_MED, x, y);
+        self.ensure_drop(EK_ARMOR, x + 0.7, y);
+        self.ensure_drop(EK_AMMO, x, y + 0.7);
+        let after = self.ents.iter().filter(|e| matches!(e.kind, EK_MED | EK_ARMOR | EK_AMMO) && (e.x - x).powi(2) + (e.y - y).powi(2) < 2.2).count();
+        if after > before {
+            self.say(field::RADIO_SECRET);
+        }
+    }
+
+    fn boss_pos(&self) -> Option<(f32, f32)> {
+        self.ents.iter().find(|e| e.kind == EK_BOSS && e.hp > 0).map(|e| (e.x, e.y))
+    }
+
+    fn seal_lockdown(&mut self) {
+        self.lockdown = true;
+        for &(x, y) in field::lockdown_doors(self.wave) {
+            if self.cell(x, y) == 8 {
+                self.set_cell(x, y, 1);
+            }
+        }
+        match map::level_index(self.wave) {
+            1 => {
+                if let Some((bx, by)) = self.boss_pos() {
+                    self.ignite(bx + 1.2, by);
+                    self.ignite(bx - 1.1, by + 0.8);
+                    self.ignite(bx, by - 1.3);
+                }
+            }
+            2 => {
+                if let Some((bx, by)) = self.boss_pos() {
+                    self.ignite(bx + 1.4, by);
+                    self.ignite(bx - 1.2, by + 0.9);
+                    self.ignite(bx, by - 1.5);
+                }
+            }
+            _ => {}
+        }
+        self.say(field::RADIO_LOCKDOWN);
+    }
+
+    fn expose_boss(&mut self) {
+        self.boss_vuln = 3.4;
+        self.say(field::RADIO_EXPOSED);
+        for e in self.ents.iter_mut() {
+            if e.kind == EK_BOSS && e.hp > 0 {
+                e.stun = e.stun.max(0.85);
+                e.flash = 0.45;
+            }
+        }
+    }
+
+    fn grant_slot(&mut self, slot: usize) {
+        match slot {
+            8 => self.has_w9 = true,
+            9 => self.has_w10 = true,
+            10 => self.has_w11 = true,
+            _ => return,
+        }
+        let grant = MAG_SZ[slot] * 2;
+        let cap = MAG_SZ[slot] * 6;
+        self.ammo[slot] = (self.ammo[slot] + grant).min(cap);
+        if self.mag[slot] <= 0 {
+            self.mag[slot] = MAG_SZ[slot];
+        }
+        self.weapon = slot as i32;
+        self.reload_t = 0.0;
+        self.events |= EV_PICK_GOLD;
+    }
+
+    fn drop_boss_case(&mut self, x: f32, y: f32) {
+        let kind = field::boss_case(self.wave);
+        if self.spawn(kind, x, y).is_some() {
+            self.say(field::RADIO_BOSS_DROP);
+            self.shake = (self.shake + 0.4).min(1.0);
+        } else {
+            self.grant_slot(field::boss_slot(kind));
+            self.state = 2;
+        }
     }
 
     fn spawn_timed(&mut self, kind: u8, x: f32, y: f32, life: f32, zoff: f32) {
@@ -955,7 +1211,12 @@ impl Engine {
                 flash: 0.0,
                 stun: 0.0,
                 effect_tick: f.variant as f32,
+                shield: 0,
+                face: 0.0,
                 zoff: if f.zoff != 0.0 { f.zoff } else { zdef },
+                bar_t: 0.0,
+                armor_hp: 0,
+                shield_hp: 0,
             };
         }
         self.fx_n = 0;
@@ -1041,17 +1302,20 @@ impl Engine {
     fn spawn_hostiles(&mut self, mult: i32) {
         let copies = mult.max(1);
         for n in 0..copies {
-            for &(k, skin, x, y) in map::hostiles(self.wave) {
+            for &(k, packed, x, y) in map::hostiles(self.wave) {
+                let shielded = field::is_shielded_spawn(packed);
+                let skin = field::visual_skin(packed);
                 let jx = if n == 0 { 0.0 } else { (self.rnd() - 0.5) * 2.2 };
                 let jy = if n == 0 { 0.0 } else { (self.rnd() - 0.5) * 2.2 };
                 let nx = x + jx;
                 let ny = y + jy;
-                if !self.blocked(nx.floor() as i32, ny.floor() as i32) {
-                    if self.spawn_with_skin(k, skin, nx, ny).is_none() {
-                        return;
-                    }
-                } else if self.spawn_with_skin(k, skin, x, y).is_none() {
-                    return;
+                let radius = enemy_def(k).map(|d| d.radius).unwrap_or(0.28);
+                let (sx, sy) = self.nearest_open(nx, ny, radius);
+                let spawned = self.spawn_with_skin(k, skin, sx, sy);
+                match spawned {
+                    Some(i) if shielded => self.arm_shield(i),
+                    Some(_) => {}
+                    None => return,
                 }
             }
         }
@@ -1103,6 +1367,25 @@ impl Engine {
             self.mag[6] = MAG_SZ[6];
             self.ammo[6] = self.ammo[6].max(160);
         }
+        if self.has_w8 {
+            self.mag[7] = MAG_SZ[7];
+            self.ammo[7] = self.ammo[7].max(18);
+        }
+        if self.has_w9 {
+            self.mag[8] = MAG_SZ[8];
+            self.ammo[8] = self.ammo[8].max(8);
+        }
+        if self.has_w10 {
+            self.mag[9] = MAG_SZ[9];
+            self.ammo[9] = self.ammo[9].max(28);
+        }
+        if self.has_w11 {
+            self.mag[10] = MAG_SZ[10];
+            self.ammo[10] = self.ammo[10].max(10);
+        }
+        self.node_done = false;
+        self.lockdown = false;
+        self.boss_vuln = 0.0;
         self.build_map();
         self.door.fill(0.0);
         self.hell = false;
@@ -1371,6 +1654,36 @@ impl Engine {
         false
     }
 
+    /// Nearest point whose radius does not intersect a wall. Spawn and
+    /// unstick both use this so a listed coordinate inside geometry cannot
+    /// leave a hostile embedded.
+    fn nearest_open(&self, x: f32, y: f32, radius: f32) -> (f32, f32) {
+        if !self.circle_blocked(x, y, radius) {
+            return (x, y);
+        }
+        for ring in 1..10 {
+            let step = ring as f32 * 0.45;
+            for n in 0..8 {
+                let a = n as f32 * core::f32::consts::TAU / 8.0;
+                let nx = x + a.cos() * step;
+                let ny = y + a.sin() * step;
+                if nx < 1.2 || ny < 1.2 || nx > MAP_W as f32 - 1.2 || ny > MAP_H as f32 - 1.2 {
+                    continue;
+                }
+                if !self.circle_blocked(nx, ny, radius) {
+                    return (nx, ny);
+                }
+            }
+        }
+        (x, y)
+    }
+
+    pub(crate) fn spawn_clear(&mut self, kind: u8, x: f32, y: f32) -> Option<usize> {
+        let radius = enemy_def(kind).map(|d| d.radius).unwrap_or(0.28);
+        let (nx, ny) = self.nearest_open(x, y, radius);
+        self.spawn(kind, nx, ny)
+    }
+
     fn los(&self, x0: f32, y0: f32, x1: f32, y1: f32) -> bool {
         let dx = x1 - x0;
         let dy = y1 - y0;
@@ -1431,6 +1744,7 @@ impl Engine {
         self.events |= EV_DOOR;
         if c == 9 {
             self.secrets += 1;
+            self.pay_secret(cx, cy);
         }
         true
     }
@@ -1474,7 +1788,20 @@ impl Engine {
         if self.iframes > 0.0 || self.state != 0 {
             return;
         }
+        if self.power == field::POWER_AEGIS && self.power_t > 10.0 {
+            self.events |= EV_HIT;
+            return;
+        }
         let mut d = dmg;
+        if self.shield_pool > 0 {
+            let take = d.min(self.shield_pool);
+            self.shield_pool -= take;
+            d -= take;
+        }
+        if d <= 0 {
+            self.events |= EV_HIT;
+            return;
+        }
         if self.armor > 0 {
             let soak = (d * 2) / 3;
             let take = soak.min(self.armor);
@@ -1505,7 +1832,7 @@ impl Engine {
         }
         let mut hits: Vec<(usize, i32)> = Vec::new();
         for (i, e) in self.ents.iter().enumerate() {
-            if e.hp <= 0 || !solid_kind(e.kind) {
+            if e.hp <= 0 || !target_kind(e.kind) {
                 continue;
             }
             let d = ((e.x - x).powi(2) + (e.y - y).powi(2)).sqrt();
@@ -1525,19 +1852,59 @@ impl Engine {
         }
     }
 
-    fn hurt_ent(&mut self, i: usize, dmg: i32, hx: f32, hy: f32) {
-        if i >= ENT_N {
+    fn hurt_ent(&mut self, i: usize, mut dmg: i32, hx: f32, hy: f32) {
+        if i >= ENT_N || dmg <= 0 {
             return;
         }
+        if self.ents[i].kind == 0 || self.ents[i].hp <= 0 {
+            return;
+        }
+        // A shot or a USE shuts the lamp. It stays in the world, dark.
+        if self.ents[i].kind == EK_LAMP {
+            self.ents[i].timer = -1.0;
+            self.ents[i].flash = 0.2;
+            self.light_dirty = true;
+            self.events |= EV_HIT;
+            return;
+        }
+        if self.ents[i].shield_hp > 0
+            && field::shield_blocks(self.ents[i].face, self.ents[i].x, self.ents[i].y, hx, hy)
+        {
+            let (x, y) = (self.ents[i].x, self.ents[i].y);
+            let soak = dmg.min(self.ents[i].shield_hp);
+            self.ents[i].shield_hp -= soak;
+            dmg -= soak;
+            self.ents[i].bar_t = 2.0;
+            self.ents[i].flash = 0.2;
+            self.events |= EV_HIT;
+            self.burst_fx(x, y, EK_SPARK, 4, 0.14);
+            if dmg <= 0 {
+                return;
+            }
+        }
+        if self.ents[i].armor_hp > 0 {
+            let soak = dmg.min(self.ents[i].armor_hp);
+            self.ents[i].armor_hp -= soak;
+            dmg -= soak;
+            self.ents[i].bar_t = 2.0;
+            self.ents[i].flash = 0.16;
+            if dmg <= 0 {
+                self.hitmarker = 1.0;
+                self.events |= EV_HIT;
+                return;
+            }
+        }
+        if self.ents[i].kind == EK_BOSS && self.boss_vuln > 0.0 {
+            dmg = (dmg * 2).max(2);
+        }
         let kind;
+        let skin;
         let x;
         let y;
         {
             let e = &mut self.ents[i];
-            if e.kind == 0 || e.hp <= 0 {
-                return;
-            }
             e.hp -= dmg;
+            e.bar_t = 2.0;
             e.flash = 0.12;
             let dx = e.x - hx;
             let dy = e.y - hy;
@@ -1545,6 +1912,7 @@ impl Engine {
             e.vx += dx / l * 1.6;
             e.vy += dy / l * 1.6;
             kind = e.kind;
+            skin = e.skin;
             x = e.x;
             y = e.y;
             if e.hp > 0 {
@@ -1573,22 +1941,40 @@ impl Engine {
                 self.queue_fx(EK_GIB, x, y, a.cos() * sp, a.sin() * sp, life, 0.0);
             }
         }
-        if kind == EK_BARREL || kind == EK_MARTYR {
+        if kind == EK_BARREL {
+            self.light_dirty = true;
+            if skin == 1 {
+                // Fuel drum: the blast is the fire it leaves, not a grenade.
+                self.ignite(x, y);
+                self.ignite(x + 0.45, y - 0.2);
+                self.explode(x, y, 1.15, 12.0);
+            } else {
+                self.explode(x, y, 2.6, 55.0);
+            }
+        } else if kind == EK_MARTYR {
             self.light_dirty = true;
             self.explode(x, y, 2.6, 55.0);
         }
+        if kind == EK_CRATE {
+            let roll = (self.rnd() * 3.0) as i32;
+            let drop = [EK_AMMO, EK_MED, EK_ARMOR][roll.clamp(0, 2) as usize];
+            self.ensure_drop(drop, x, y + 0.35);
+        }
         if kind == EK_BOSS {
-            self.state = 2;
+            self.drop_boss_case(x, y);
         }
     }
 
-    fn hitscan(&mut self, ang: f32, dmg: i32, maxd: f32) -> bool {
+    fn hitscan(&mut self, ang: f32, mut dmg: i32, maxd: f32) -> bool {
+        if self.power == field::POWER_OVERDRIVE {
+            dmg = ((dmg as f32) * 1.65).round() as i32;
+        }
         let dx = ang.cos();
         let dy = ang.sin();
         let mut best_t = maxd;
         let mut best_e: Option<usize> = None;
         for (i, e) in self.ents.iter().enumerate() {
-            if e.kind == 0 || e.hp <= 0 || !solid_kind(e.kind) {
+            if e.kind == 0 || e.hp <= 0 || !target_kind(e.kind) {
                 continue;
             }
             let ex = e.x - self.px;
@@ -1669,7 +2055,7 @@ impl Engine {
         let mut hits = [(0.0f32, 0usize); ENT_N];
         let mut count = 0;
         for (i, e) in self.ents.iter().enumerate() {
-            if e.hp <= 0 || !solid_kind(e.kind) { continue; }
+            if e.hp <= 0 || !target_kind(e.kind) { continue; }
             let ex = e.x - self.px;
             let ey = e.y - self.py;
             let t = ex * dx + ey * dy;
@@ -1706,13 +2092,13 @@ impl Engine {
             if e.kind != EK_FIREPATCH { continue; }
             count += 1;
             if (e.x - x).powi(2) + (e.y - y).powi(2) < 0.36 {
-                e.timer = 2.2;
+                e.timer = 10.0;
                 return;
             }
         }
         if count >= 12 { return; }
         if let Some(i) = self.spawn(EK_FIREPATCH, x, y) {
-            self.ents[i].timer = 2.2;
+            self.ents[i].timer = 10.0;
             self.ents[i].radius = 0.7;
             self.ents[i].zoff = 64.0;
         }
@@ -1756,6 +2142,9 @@ impl Engine {
             return;
         }
         self.mag[w] -= 1;
+        if self.power == field::POWER_FEED {
+            self.mag[w] += 1;
+        }
         self.events |= EV_FIRE;
         self.ev_weapon = self.weapon;
         match self.weapon {
@@ -1824,7 +2213,7 @@ impl Engine {
                     self.spawn_timed(EK_RAY, self.px + a.cos() * t, self.py + a.sin() * t, 0.1, 4.0);
                 }
             }
-            _ => {
+            6 => {
                 self.cooldown = 0.058;
                 self.muzzle = 1.0;
                 self.kick = 0.52;
@@ -1834,6 +2223,151 @@ impl Engine {
                 self.hitscan(a, 7, 24.0);
                 if (self.rng & 3) == 0 { self.eject_casing(); }
             }
+            7 => {
+                self.cooldown = 0.62;
+                self.muzzle = 1.0;
+                self.kick = 1.15;
+                self.shake = (self.shake + 0.24).min(1.0);
+                let a = self.pa + (self.rnd() - 0.5) * 0.04;
+                let _hit = self.hitscan(a, 22, 12.0);
+                let dist = self.wall_distance(self.px, self.py, a.cos(), a.sin(), 11.0);
+                let reach = (dist * 0.92).max(0.8);
+                self.ignite(self.px + a.cos() * reach, self.py + a.sin() * reach);
+                for n in 1..6 {
+                    let t = n as f32 * 0.7;
+                    if t >= dist { break; }
+                    self.spawn_timed(EK_FLAME, self.px + a.cos() * t, self.py + a.sin() * t, 2.5, 8.0);
+                }
+            }
+            8 => self.fire_override(),
+            9 => self.fire_forge(),
+            10 => self.fire_chimera(),
+            _ => {}
+        }
+        if self.power == field::POWER_FEED {
+            self.cooldown *= 0.45;
+        }
+    }
+
+    /// Veyran's rail. Pierces every target in the lane, then bursts.
+    fn fire_override(&mut self) {
+        self.cooldown = 0.8;
+        self.muzzle = 1.0;
+        self.kick = 1.5;
+        self.shake = (self.shake + 0.4).min(1.0);
+        let dx = self.pa.cos();
+        let dy = self.pa.sin();
+        let end = self.wall_distance(self.px, self.py, dx, dy, 32.0);
+        let mut hits = [(0.0f32, 0usize); ENT_N];
+        let mut count = 0;
+        for (i, e) in self.ents.iter().enumerate() {
+            if e.hp <= 0 || !target_kind(e.kind) { continue; }
+            let ex = e.x - self.px;
+            let ey = e.y - self.py;
+            let t = ex * dx + ey * dy;
+            let side = ex * dy - ey * dx;
+            let radius = e.radius + 0.12;
+            if t <= 0.2 || side.abs() > radius || t >= end { continue; }
+            hits[count] = (t, i);
+            count += 1;
+        }
+        hits[..count].sort_unstable_by(|a, b| a.0.total_cmp(&b.0));
+        for &(_, i) in &hits[..count] {
+            if self.ents[i].hp <= 0 { continue; }
+            self.hurt_ent(i, 120, self.px, self.py);
+        }
+        let tip = (end - 0.2).max(0.4);
+        let (x, y) = (self.px + dx * tip, self.py + dy * tip);
+        self.explode(x, y, 2.8, 90.0);
+        for n in 0..12 {
+            let t = tip * n as f32 / 12.0;
+            self.spawn_timed(EK_RAY, self.px + dx * t, self.py + dy * t, 0.14, 4.0);
+        }
+    }
+
+    /// HECATE's cutter. A wide beam that splashes at the strike.
+    fn fire_forge(&mut self) {
+        self.cooldown = 0.12;
+        self.muzzle = 1.0;
+        self.kick = 0.7;
+        self.shake = (self.shake + 0.16).min(1.0);
+        let dx = self.pa.cos();
+        let dy = self.pa.sin();
+        let mut strike = self.wall_distance(self.px, self.py, dx, dy, 18.0);
+        for (offset, dmg) in [(0.0, 78), (-0.08, 42), (0.08, 42)] {
+            let a = self.pa + offset;
+            if self.hitscan(a, dmg, 18.0) {
+                strike = strike.min(self.wall_distance(self.px, self.py, a.cos(), a.sin(), 18.0));
+            }
+            for n in 1..8 {
+                let t = n as f32 * 0.4;
+                if t >= strike { break; }
+                self.spawn_timed(EK_RAY, self.px + a.cos() * t, self.py + a.sin() * t, 0.08, -4.0);
+            }
+        }
+        let reach = (strike * 0.92).max(0.6);
+        self.explode(self.px + dx * reach, self.py + dy * reach, 1.8, 48.0);
+    }
+
+    /// CHIMERA's specimen fan. Acid bolts burst and leave a short pool.
+    fn fire_chimera(&mut self) {
+        self.cooldown = 0.62;
+        self.muzzle = 1.0;
+        self.kick = 1.05;
+        self.shake = (self.shake + 0.22).min(1.0);
+        for n in 0..5 {
+            let a = self.pa + (n as f32 - 2.0) * 0.07;
+            if let Some(i) = self.spawn(EK_PROJ, self.px + a.cos() * 0.45, self.py + a.sin() * 0.45) {
+                let e = &mut self.ents[i];
+                e.vx = a.cos() * 9.5;
+                e.vy = a.sin() * 9.5;
+                e.timer = 0.7;
+                e.hp = 42;
+                e.effect_tick = 4.0;
+                e.zoff = -6.0;
+            }
+        }
+    }
+
+    fn chimera_burst(&mut self, x: f32, y: f32) {
+        self.explode(x, y, 2.6, 80.0);
+        self.scorch(x, y, 4.0);
+    }
+
+    fn scorch(&mut self, x: f32, y: f32, life: f32) {
+        if self.blocked(x.floor() as i32, y.floor() as i32) { return; }
+        for e in &mut self.ents {
+            if e.kind != EK_FIREPATCH { continue; }
+            if (e.x - x).powi(2) + (e.y - y).powi(2) < 0.36 {
+                e.timer = e.timer.max(life);
+                return;
+            }
+        }
+        if let Some(i) = self.spawn(EK_FIREPATCH, x, y) {
+            self.ents[i].timer = life;
+            self.ents[i].radius = 0.7;
+            self.ents[i].skin = 2;
+        }
+    }
+
+    /// Damage the player and hostiles standing in a live flame.
+    fn burn_at(&mut self, x: f32, y: f32, dmg: i32) {
+        let pd = (self.px - x).powi(2) + (self.py - y).powi(2);
+        if pd < 0.9 * 0.9 && self.los(x, y, self.px, self.py) {
+            self.damage_player(dmg);
+        }
+        let mut hits = Vec::new();
+        for (j, target) in self.ents.iter().enumerate() {
+            if target.hp <= 0 || !solid_kind(target.kind) { continue; }
+            let range = target.radius + 0.7;
+            if (target.x - x).powi(2) + (target.y - y).powi(2) < range * range
+                && self.los(x, y, target.x, target.y)
+            {
+                hits.push(j);
+            }
+        }
+        for j in hits {
+            self.hurt_ent(j, dmg, x, y);
         }
     }
 
@@ -1871,6 +2405,9 @@ impl Engine {
             }
         }
         self.effect(EK_SPARK, if role.pellets > 1 { 1 } else { 0 }, x, y, 0.12, zoff);
+        if shooter.kind == EK_BOSS && self.boss_phase >= 2 {
+            self.boss_vuln = self.boss_vuln.max(1.15);
+        }
     }
 
     fn pickup(&mut self, kind: u8) {
@@ -1898,6 +2435,9 @@ impl Engine {
                 }
                 if self.has_w7 {
                     self.ammo[6] = (self.ammo[6] + 90).min(450);
+                }
+                if self.has_w8 {
+                    self.ammo[7] = (self.ammo[7] + 6).min(36);
                 }
                 self.events |= EV_PICK_SILVER;
             }
@@ -1961,6 +2501,26 @@ impl Engine {
                 self.reload_t = 0.0;
                 self.events |= EV_PICK_GOLD;
             }
+            EK_GUN8 => {
+                self.has_w8 = true;
+                self.ammo[7] = (self.ammo[7] + 12).min(36);
+                if self.mag[7] <= 0 { self.mag[7] = MAG_SZ[7]; }
+                self.weapon = 7;
+                self.reload_t = 0.0;
+                self.events |= EV_PICK_GOLD;
+            }
+            EK_GUN9 | EK_GUN10 | EK_GUN11 => {
+                self.grant_slot(field::boss_slot(kind));
+                self.state = 2;
+            }
+            EK_POWER => {
+                let boost = field::power_kind(self.wave);
+                self.power = boost;
+                self.power_t = if boost == field::POWER_AEGIS { 14.0 } else if boost == field::POWER_FEED { 10.0 } else { 12.0 };
+                self.shield_pool = if boost == field::POWER_AEGIS { 96 } else { 0 };
+                self.say(field::RADIO_POWER);
+                self.events |= EV_PICK_GOLD;
+            }
             _ => {}
         }
     }
@@ -1975,7 +2535,8 @@ impl Engine {
                 || (self.has_w4 && self.ammo[3] < 20)
                 || (self.has_w5 && self.ammo[4] < 16)
                 || (self.has_w6 && self.ammo[5] < 80)
-                || (self.has_w7 && self.ammo[6] < 450),
+                || (self.has_w7 && self.ammo[6] < 450)
+                || (self.has_w8 && self.ammo[7] < 36),
             _ => true,
         }
     }
@@ -1983,6 +2544,17 @@ impl Engine {
     fn tick(&mut self, dt: f32) {
         let dt = dt.clamp(0.0, 0.08);
         self.time += dt;
+        self.boss_vuln = (self.boss_vuln - dt).max(0.0);
+        if self.power_t > 0.0 {
+            self.power_t = (self.power_t - dt).max(0.0);
+            if self.power == field::POWER_AEGIS {
+                self.shield_pool = ((self.power_t / 14.0) * 96.0) as i32;
+            }
+            if self.power_t <= 0.0 {
+                self.power = 0;
+                self.shield_pool = 0;
+            }
+        }
         self.events = 0;
         self.ev_weapon = 0;
         if self.state == 0 {
@@ -2062,7 +2634,23 @@ impl Engine {
                 self.weapon = 6;
                 self.reload_t = 0.0;
             }
-            self.wpn_latched = bits & (IN_W1 | IN_W2 | IN_W3 | IN_W4 | IN_W5 | IN_W6 | IN_W7);
+            if bits & IN_W8 != 0 && self.has_w8 && self.wpn_latched & IN_W8 == 0 {
+                self.weapon = 7;
+                self.reload_t = 0.0;
+            }
+            if bits & IN_W9 != 0 && self.has_w9 && self.wpn_latched & IN_W9 == 0 {
+                self.weapon = 8;
+                self.reload_t = 0.0;
+            }
+            if bits & IN_W10 != 0 && self.has_w10 && self.wpn_latched & IN_W10 == 0 {
+                self.weapon = 9;
+                self.reload_t = 0.0;
+            }
+            if bits & IN_W11 != 0 && self.has_w11 && self.wpn_latched & IN_W11 == 0 {
+                self.weapon = 10;
+                self.reload_t = 0.0;
+            }
+            self.wpn_latched = bits & (IN_W1 | IN_W2 | IN_W3 | IN_W4 | IN_W5 | IN_W6 | IN_W7 | IN_W8 | IN_W9 | IN_W10 | IN_W11);
 
             if bits & IN_RELOAD != 0 {
                 if !self.reload_latched {
@@ -2097,7 +2685,7 @@ impl Engine {
             }
             let mag = (mx * mx + my * my).sqrt();
             let sprint = if bits & IN_SPRINT != 0 { 1.55 } else { 1.0 };
-            let speed = 3.35 * sprint;
+            let speed = 3.35 * sprint * if self.power == field::POWER_OVERDRIVE { 1.85 } else { 1.0 };
             if mag > 0.001 {
                 mx /= mag;
                 my /= mag;
@@ -2118,8 +2706,9 @@ impl Engine {
             if bits & IN_USE != 0 {
                 if !self.use_latched {
                     self.open_nearby_doors(true);
+                    self.use_field();
                     let clear = !self.ents.iter().any(|e| e.hp > 0 && is_hostile_kind(e.kind));
-                    if clear && self.near_override() && !self.boss_spawned && self.boss_intro <= 0.0 {
+                    if clear && self.node_done && self.near_override() && !self.boss_spawned && self.boss_intro <= 0.0 {
                         self.boss_intro = self.boss_intro_duration();
                         self.events |= EV_BOSS;
                     }
@@ -2171,6 +2760,7 @@ impl Engine {
             }
             let e = &mut self.ents[i];
             e.flash = (e.flash - dt).max(0.0);
+            e.bar_t = (e.bar_t - dt).max(0.0);
             advance_anim(e, dt);
             if e.kind == EK_NONE || e.hp <= 0 {
                 continue;
@@ -2200,7 +2790,7 @@ impl Engine {
                     let dist = (dx * dx + dy * dy).sqrt().max(0.01);
                     e.timer -= dt;
                     let role = combat::profile(e.skin, e.kind);
-                    let spd = role.speed;
+                    let spd = role.speed * if e.shield != 0 { 0.82 } else { 1.0 };
                     let hold = role.range;
                     let (ex, ey, kind) = (e.x, e.y, e.kind);
                     let _ = e;
@@ -2261,6 +2851,22 @@ impl Engine {
                         e.y += dx / dist * spd * dt * side * 0.6;
                     }
                     let moved = ((e.x - ex0).powi(2) + (e.y - ey0).powi(2)).sqrt();
+                    if e.shield != 0 {
+                        let target = if clear {
+                            dy.atan2(dx)
+                        } else if moved > 0.001 {
+                            (e.y - ey0).atan2(e.x - ex0)
+                        } else {
+                            e.face
+                        };
+                        let mut delta = target - e.face;
+                        if delta > core::f32::consts::PI { delta -= core::f32::consts::TAU; }
+                        if delta < -core::f32::consts::PI { delta += core::f32::consts::TAU; }
+                        e.face += delta.clamp(-1.5 * dt, 1.5 * dt);
+                        if field::shield_blocks(e.face, e.x, e.y, px, py) {
+                            e.flash = e.flash.max(0.08);
+                        }
+                    }
                     e.frame += dt * 1.4 + moved * 6.5;
                     // Locomotion bob so chasers read as moving, not sliding:
                     // floaters hover, ground units step. Assigned, never
@@ -2302,6 +2908,13 @@ impl Engine {
                         e.vx = 0.0;
                         e.vy = 0.0;
                     }
+                    if self.circle_blocked(self.ents[i].x, self.ents[i].y, radius) {
+                        let (ux, uy) = self.nearest_open(self.ents[i].x, self.ents[i].y, radius);
+                        self.ents[i].x = ux;
+                        self.ents[i].y = uy;
+                        self.ents[i].vx = 0.0;
+                        self.ents[i].vy = 0.0;
+                    }
                 }
                 EK_PROJ => {
                     let (old_x, old_y) = (e.x, e.y);
@@ -2311,15 +2924,30 @@ impl Engine {
                     let (ex, ey, dead, damage, variant) = (e.x, e.y, e.timer <= 0.0, e.hp, e.effect_tick);
                     let _ = e;
                     if dead || !self.los(old_x, old_y, ex, ey) {
-                        if !dead {
+                        self.ents[i].kind = 0;
+                        if variant == 4.0 {
+                            self.chimera_burst(old_x, old_y);
+                        } else if !dead {
                             self.effect(EK_IMPACT, if variant == 3.0 { 3 } else { 1 }, old_x, old_y, 0.22, -6.0);
                         }
-                        self.ents[i].kind = 0;
                     } else if pstate == 0 {
                         let d = segment_distance_sq(px, py, old_x, old_y, ex, ey);
                         if d < 0.22 {
                             self.ents[i].kind = 0;
-                            melee.push((i, damage));
+                            if variant == 4.0 { self.chimera_burst(ex, ey); }
+                            else { melee.push((i, damage)); }
+                        } else if variant == 4.0 {
+                            let mut hit = None;
+                            for (j, o) in self.ents.iter().enumerate() {
+                                if o.hp <= 0 || !is_hostile_kind(o.kind) { continue; }
+                                let d2 = segment_distance_sq(o.x, o.y, old_x, old_y, ex, ey);
+                                if d2 < (o.radius + 0.25).powi(2) { hit = Some(j); break; }
+                            }
+                            if let Some(j) = hit {
+                                self.ents[i].kind = 0;
+                                self.hurt_ent(j, damage, ex, ey);
+                                self.chimera_burst(ex, ey);
+                            }
                         }
                     }
                 }
@@ -2336,15 +2964,8 @@ impl Engine {
                     if pulse { e.effect_tick = 0.25; }
                     let _ = e;
                     if pulse && pstate == 0 {
-                        for j in 0..ENT_N {
-                            let target = self.ents[j];
-                            if target.hp <= 0 || !solid_kind(target.kind) { continue; }
-                            let range = target.radius + 0.7;
-                            if (target.x - x).powi(2) + (target.y - y).powi(2) < range * range
-                                && self.los(x, y, target.x, target.y) {
-                                self.hurt_ent(j, 5, target.x, target.y);
-                            }
-                        }
+                        let _ = e;
+                        self.burn_at(x, y, 8);
                     }
                 }
                 EK_GIB => {
@@ -2378,11 +2999,11 @@ impl Engine {
                     let _ = e;
                     if dead || !self.los(old_x, old_y, ex, ey) {
                         self.ents[i].kind = 0;
-                        self.explode(old_x, old_y, 2.4, 65.0);
+                        self.explode(old_x, old_y, 4.8, 65.0);
                     } else {
                         let mut hit = None;
                         for (j, o) in self.ents.iter().enumerate() {
-                            if j == i || o.hp <= 0 || !solid_kind(o.kind) {
+                            if j == i || o.hp <= 0 || !target_kind(o.kind) {
                                 continue;
                             }
                             let d2 = segment_distance_sq(o.x, o.y, old_x, old_y, ex, ey);
@@ -2394,7 +3015,7 @@ impl Engine {
                         if let Some(j) = hit {
                             self.ents[i].kind = 0;
                             self.hurt_ent(j, 24, ex, ey);
-                            self.explode(ex, ey, 2.4, 65.0);
+                            self.explode(ex, ey, 4.8, 65.0);
                         }
                     }
                 }
@@ -2402,26 +3023,35 @@ impl Engine {
                     e.zoff = -118.0 + (self.time * 2.6 + e.x).sin() * 5.0;
                 }
                 EK_FLAME => {
-                    e.zoff = 48.0 + (self.time * 14.0 + e.x).sin() * 6.0;
+                    e.timer -= dt;
                     e.frame += dt * 2.0;
+                    let (x, y, live) = (e.x, e.y, e.timer > 0.0);
+                    if !live {
+                        e.kind = EK_NONE;
+                        continue;
+                    }
+                    e.effect_tick -= dt;
+                    if e.effect_tick > 0.0 { continue; }
+                    e.effect_tick = 0.25;
+                    let _ = e;
+                    self.burn_at(x, y, 6);
                 }
                 EK_CHAIN => {
                     e.zoff = -104.0 + (self.time * 2.2 + e.x).sin() * 6.0;
-                }
-                EK_CRATE => {
-                    e.zoff = 86.0;
                 }
                 EK_BARREL => {
                     e.vx *= 0.8;
                     e.vy *= 0.8;
                     e.x += e.vx * dt;
                     e.y += e.vy * dt;
-                    e.zoff = 78.0;
-                }
-                EK_MED | EK_AMMO | EK_ARMOR | EK_GUN2 | EK_GUN3 | EK_GUN4 | EK_GUN5 => {
-                    e.zoff = 32.0 + (self.time * 2.5 + e.x * 1.7).sin() * 9.0;
                 }
                 _ => {}
+            }
+            let seated = self.ents[i].kind;
+            if floor_prop(seated) {
+                let scale = sprite_style(&self.ents[i]).1;
+                let bob = if is_pickup(seated) { (self.time * 2.2 + self.ents[i].x).sin() * 3.0 } else { 0.0 };
+                self.ents[i].zoff = floor_seat(self.h as f32, scale, bob);
             }
         }
         for i in shots {
@@ -2446,7 +3076,7 @@ impl Engine {
         if (self.rng & 31) == 0 {
             let mut puffs: Vec<(f32, f32, f32)> = Vec::new();
             for e in self.ents.iter() {
-                if e.kind == EK_LAMP || e.kind == EK_FLAME {
+                if (e.kind == EK_LAMP && e.timer >= 0.0) || e.kind == EK_FLAME {
                     puffs.push((
                         e.x,
                         e.y,
@@ -2494,9 +3124,12 @@ impl Engine {
             let boss_hp = self.ents.iter().find(|e| e.kind == EK_BOSS && e.hp > 0).map(|e| e.hp).unwrap_or(0);
             let phase = if boss_hp > 0 && boss_hp * 3 <= max_hp { 2 } else if boss_hp > 0 && boss_hp * 3 <= max_hp * 2 { 1 } else { 0 };
             if phase > self.boss_phase {
+                let entered = phase;
                 self.boss_phase = phase;
                 self.shake = (self.shake + 0.5).min(1.0);
                 self.events |= EV_EXPLODE;
+                if entered == 1 { self.seal_lockdown(); }
+                if entered >= 2 { self.expose_boss(); }
                 let support = match (map::level_index(self.wave), phase) {
                     (1, 1) => [(EK_WRAITH, SKIN_HORNET), (EK_HUSK, SKIN_GUNNER)],
                     (1, _) => [(EK_MARTYR, SKIN_MARTYR), (EK_WRAITH, SKIN_HORNET)],
@@ -2545,6 +3178,9 @@ impl Engine {
         if fc == 8 || fc == 9 {
             prompt = 1;
         }
+        if prompt == 0 && (self.facing_prop(EK_LAMP, 2.6).is_some() || self.facing_prop(EK_CRATE, 1.8).is_some()) {
+            prompt = 1;
+        }
         let wpn = self.weapon as usize;
         if self.mag[wpn] <= 0 && self.ammo[wpn] > 0 {
             prompt = 2;
@@ -2558,15 +3194,30 @@ impl Engine {
                 }
             }
         }
-        if living == 0 && !self.boss_spawned && self.boss_intro <= 0.0 && self.state == 0 {
-            prompt = 6;
+        if !self.node_done && self.near_point(field::node_point(self.wave).0, field::node_point(self.wave).1) {
+            prompt = 13;
         }
-        if living == 0 && self.near_override() && !self.boss_spawned && self.boss_intro <= 0.0 {
+        for &(x, y) in field::terminals(self.wave) {
+            let near = self.near_point(x, y);
+            let unread = self.ents.iter().any(|e| {
+                e.kind == EK_TERMINAL && e.timer >= 0.0 && (e.x - x).abs() < 0.45 && (e.y - y).abs() < 0.45
+            });
+            if near && unread {
+                prompt = 14;
+            }
+        }
+        if living == 0 && !self.boss_spawned && self.boss_intro <= 0.0 && self.state == 0 {
+            prompt = if self.node_done { 6 } else { 15 };
+        }
+        if living == 0 && self.node_done && self.near_override() && !self.boss_spawned && self.boss_intro <= 0.0 {
             prompt = 3;
         }
         if self.boss_intro > 0.0 {
             prompt = 7 + map::level_index(self.wave) as i32 * 2
                 + if self.boss_intro <= self.boss_intro_duration() * 0.5 { 1 } else { 0 };
+        }
+        if self.boss_intro <= 0.0 && self.ents.iter().any(|e| field::is_boss_case(e.kind)) {
+            prompt = 16;
         }
 
         let weap_frame = if self.reload_t > 0.0 {
@@ -2632,6 +3283,18 @@ impl Engine {
             boss_phase: if boss_health > 0 { self.boss_phase as i32 } else { 0 },
             has_w6: if self.has_w6 { 1 } else { 0 },
             has_w7: if self.has_w7 { 1 } else { 0 },
+            has_w8: if self.has_w8 { 1 } else { 0 },
+            objective: if self.node_done { 1 } else { 0 },
+            radio_seq: self.radio_seq,
+            radio_line: self.radio_line,
+            vuln: self.boss_vuln,
+            node_x: field::node_point(self.wave).0,
+            node_y: field::node_point(self.wave).1,
+            has_w9: if self.has_w9 { 1 } else { 0 },
+            has_w10: if self.has_w10 { 1 } else { 0 },
+            has_w11: if self.has_w11 { 1 } else { 0 },
+            power: self.power as i32,
+            power_t: self.power_t,
         };
     }
 
@@ -2677,7 +3340,7 @@ impl Engine {
                 }
             }
             for e in &self.ents {
-                if e.kind == EK_LAMP {
+                if e.kind == EK_LAMP && e.timer >= 0.0 {
                     self.add_light(&mut grid, e.x, e.y, 4.5, [0.70, 0.36, 0.12]);
                 } else if e.kind == EK_FLAME {
                     self.add_light(&mut grid, e.x, e.y, 3.0, [0.55, 0.16, 0.035]);
@@ -3083,7 +3746,7 @@ impl Engine {
                 scale,
                 tex: tex as f32,
                 frame,
-                flash: if e.flash > 0.0 { 1.0 } else if is_hostile_kind(e.kind) && e.effect_tick > 0.0 { 2.0 } else { 0.0 },
+                flash: if e.kind == EK_LAMP && e.timer < 0.0 { -1.0 } else if e.flash > 0.0 { 1.0 } else if is_hostile_kind(e.kind) && e.effect_tick > 0.0 { 2.0 } else { 0.0 },
                 kind: e.kind as f32,
             };
             n += 1;
@@ -3342,7 +4005,9 @@ impl Engine {
             let ou = if sheet4 { (fr & 1) * half } else { 0 };
             let ov = if sheet4 { ((fr >> 1) & 1) * half } else { 0 };
             let cell = if sheet4 { half } else { TEX as i32 };
-            let glow = if e.kind == EK_LAMP {
+            let glow = if e.kind == EK_LAMP && e.timer < 0.0 {
+                0.28
+            } else if e.kind == EK_LAMP {
                 1.1 + 0.45 * (tnow * 13.0 + e.x).sin().abs()
             } else if matches!(e.kind, EK_FLAME | EK_BOLT | EK_FIREPATCH) {
                 1.3 + 0.45 * (tnow * 18.0 + e.x).sin().abs()
@@ -3487,6 +4152,7 @@ struct GpuSprite {
 
 struct GpuScratch {
     enemy_cues: [voices::EnemyCue; ENT_N],
+    bar_cues: [voices::BarCue; 48],
     cols: Vec<GpuCol>,
     sprites: Vec<GpuSprite>,
     sprite_n: usize,
@@ -3499,6 +4165,7 @@ fn gpu_scratch() -> &'static mut GpuScratch {
         if G.is_none() {
             G = Some(GpuScratch {
                 enemy_cues: [voices::EnemyCue::default(); ENT_N],
+                bar_cues: [voices::BarCue::default(); 48],
                 cols: vec![GpuCol {
                     perp: 0.0, tex_x: 0.0, light_r: 0.0, light_g: 0.0,
                     light_b: 0.0, draw0: 0.0, draw1: -1.0, line_h: 1.0,
@@ -3530,6 +4197,17 @@ pub extern "C" fn hs_prepare_enemies() -> i32 {
 #[no_mangle]
 pub extern "C" fn hs_enemy_cues() -> *const voices::EnemyCue {
     gpu_scratch().enemy_cues.as_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn hs_prepare_bars() -> i32 {
+    let scratch = gpu_scratch();
+    voices::snapshot_bars(eng(), &mut scratch.bar_cues) as i32
+}
+
+#[no_mangle]
+pub extern "C" fn hs_bars() -> *const voices::BarCue {
+    gpu_scratch().bar_cues.as_ptr()
 }
 
 #[no_mangle]
@@ -3626,6 +4304,142 @@ pub extern "C" fn hs_hud_size() -> i32 {
     HUD_SIZE as i32
 }
 
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct RunSave {
+    pub wave: i32,
+    pub health: i32,
+    pub armor: i32,
+    pub weapon: i32,
+    pub flags: i32,
+    pub kills: i32,
+    pub secrets: i32,
+    pub elapsed_ms: i32,
+    pub ammo: [i32; WEP_N],
+    pub mag: [i32; WEP_N],
+}
+
+fn capture_save(e: &Engine) -> RunSave {
+    let mut flags = 0;
+    if e.has_w2 { flags |= 1; }
+    if e.has_w3 { flags |= 2; }
+    if e.has_w4 { flags |= 4; }
+    if e.has_w5 { flags |= 8; }
+    if e.has_w6 { flags |= 16; }
+    if e.has_w7 { flags |= 32; }
+    if e.has_w8 { flags |= 64; }
+    if e.has_w9 { flags |= 128; }
+    if e.has_w10 { flags |= 256; }
+    if e.has_w11 { flags |= 512; }
+    RunSave {
+        wave: e.wave,
+        health: e.health,
+        armor: e.armor,
+        weapon: e.weapon,
+        flags,
+        kills: e.kills,
+        secrets: e.secrets,
+        elapsed_ms: (e.elapsed * 1000.0) as i32,
+        ammo: e.ammo,
+        mag: e.mag,
+    }
+}
+
+fn apply_save(e: &mut Engine, s: &RunSave) {
+    e.wave = s.wave.clamp(1, 12);
+    e.health = s.health.clamp(1, 100);
+    e.armor = s.armor.clamp(0, 100);
+    e.kills = s.kills.max(0);
+    e.secrets = s.secrets.max(0);
+    e.elapsed = (s.elapsed_ms.max(0) as f32) / 1000.0;
+    e.has_w2 = s.flags & 1 != 0;
+    e.has_w3 = s.flags & 2 != 0;
+    e.has_w4 = s.flags & 4 != 0;
+    e.has_w5 = s.flags & 8 != 0;
+    e.has_w6 = s.flags & 16 != 0;
+    e.has_w7 = s.flags & 32 != 0;
+    e.has_w8 = s.flags & 64 != 0;
+    e.has_w9 = s.flags & 128 != 0;
+    e.has_w10 = s.flags & 256 != 0;
+    e.has_w11 = s.flags & 512 != 0;
+    e.ammo = s.ammo;
+    e.mag = s.mag;
+    let owned = [
+        true, e.has_w2, e.has_w3, e.has_w4, e.has_w5, e.has_w6, e.has_w7, e.has_w8, e.has_w9, e.has_w10, e.has_w11,
+    ];
+    e.weapon = if (0..WEP_N as i32).contains(&s.weapon) && owned[s.weapon as usize] { s.weapon } else { 0 };
+    e.state = 0;
+    e.boss_spawned = false;
+    e.boss_intro = 0.0;
+    e.boss_phase = 0;
+    e.hell = false;
+    e.lockdown = false;
+    e.iframes = 1.2;
+    let start = map::player_start(e.wave);
+    e.px = start.0;
+    e.py = start.1;
+    e.pa = start.2;
+    e.pitch = 0.0;
+    e.build_map();
+    e.door.fill(0.0);
+    e.light_dirty = true;
+    map::place_level(e);
+    let shift = (e.wave - 1).clamp(0, 2);
+    e.spawn_hostiles(1i32 << shift);
+}
+
+fn save_slot() -> &'static mut RunSave {
+    static mut SAVE: RunSave = RunSave {
+        wave: 1, health: 100, armor: 0, weapon: 0, flags: 0, kills: 0, secrets: 0, elapsed_ms: 0,
+        ammo: [0; WEP_N], mag: [0; WEP_N],
+    };
+    #[allow(static_mut_refs)]
+    unsafe { &mut SAVE }
+}
+
+fn load_slot() -> &'static mut RunSave {
+    static mut LOAD: RunSave = RunSave {
+        wave: 1, health: 100, armor: 0, weapon: 0, flags: 0, kills: 0, secrets: 0, elapsed_ms: 0,
+        ammo: [0; WEP_N], mag: [0; WEP_N],
+    };
+    #[allow(static_mut_refs)]
+    unsafe { &mut LOAD }
+}
+
+#[no_mangle]
+pub extern "C" fn hs_save_ptr() -> *const RunSave {
+    let e = eng();
+    let slot = save_slot();
+    *slot = capture_save(e);
+    slot
+}
+
+#[no_mangle]
+pub extern "C" fn hs_save_size() -> i32 {
+    core::mem::size_of::<RunSave>() as i32
+}
+
+#[no_mangle]
+pub extern "C" fn hs_load_ptr() -> *mut RunSave {
+    load_slot()
+}
+
+#[no_mangle]
+pub extern "C" fn hs_load_run() {
+    let save = *load_slot();
+    apply_save(eng(), &save);
+}
+
+#[no_mangle]
+pub extern "C" fn hs_map_ptr() -> *const u8 {
+    eng().map.as_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn hs_map_w() -> i32 { MAP_W as i32 }
+
+#[no_mangle]
+pub extern "C" fn hs_map_h() -> i32 { MAP_H as i32 }
 /// Lightweight event accessors so the frame loop can drain SFX events per
 /// fixed substep without decoding the full HUD struct each time.
 #[no_mangle]
@@ -3680,8 +4494,12 @@ pub extern "C" fn hs_qa_armory() {
     e.has_w5 = true;
     e.has_w6 = true;
     e.has_w7 = true;
+    e.has_w8 = true;
+    e.has_w9 = true;
+    e.has_w10 = true;
+    e.has_w11 = true;
     e.mag = MAG_SZ;
-    e.ammo = [120, 40, 200, 16, 24, 48, 320];
+    e.ammo = [120, 40, 200, 16, 24, 48, 320, 24, 8, 28, 10];
 }
 
 #[no_mangle]
@@ -4119,7 +4937,9 @@ mod tests {
         for _ in 0..30 { e.tick(1.0 / 60.0); }
         assert!(e.ents[target].hp <= 490);
         for _ in 0..120 { e.tick(1.0 / 60.0); }
-        assert_eq!(e.ents.iter().filter(|e| e.kind == EK_FIREPATCH).count(), 0);
+        assert_eq!(e.ents.iter().filter(|en| en.kind == EK_FIREPATCH).count(), 1, "the trail is still burning at two seconds");
+        for _ in 0..500 { e.tick(1.0 / 60.0); }
+        assert_eq!(e.ents.iter().filter(|en| en.kind == EK_FIREPATCH).count(), 0, "the trail is gone after ten seconds");
         for x in 1..30 { e.ignite(x as f32, 10.5); }
         assert_eq!(e.ents.iter().filter(|e| e.kind == EK_FIREPATCH).count(), 12);
     }
@@ -4265,7 +5085,8 @@ mod tests {
         e.has_w5 = true;
         e.has_w6 = true;
         e.has_w7 = true;
-        for (expected, bit) in [IN_W1, IN_W2, IN_W3, IN_W4, IN_W5, IN_W6, IN_W7]
+        e.has_w8 = true;
+        for (expected, bit) in [IN_W1, IN_W2, IN_W3, IN_W4, IN_W5, IN_W6, IN_W7, IN_W8]
             .into_iter()
             .enumerate()
         {
@@ -4280,7 +5101,7 @@ mod tests {
     #[test]
     fn arc_and_rotary_stay_locked_until_their_cases_are_picked_up() {
         let mut e = arena();
-        for bit in [IN_W6, IN_W7] {
+        for bit in [IN_W6, IN_W7, IN_W8] {
             e.bits = bit;
             e.tick(1.0 / 60.0);
             assert_eq!(e.weapon, 0, "locked late-game weapons must not switch");
@@ -4293,6 +5114,9 @@ mod tests {
         e.pickup(EK_GUN7);
         assert!(e.has_w7);
         assert_eq!(e.weapon, 6);
+        e.pickup(EK_GUN8);
+        assert!(e.has_w8);
+        assert_eq!(e.weapon, 7);
     }
 
     #[test]
@@ -4334,7 +5158,8 @@ mod tests {
         e.ents[boss].hp = 1;
         e.hurt_ent(boss, 5, e.px, e.py);
         assert_eq!(e.ents[boss].anim, ANIM_DEAD);
-        assert_eq!(e.state, 2, "the vault master is the win");
+        assert_eq!(e.state, 0, "the boss drops a weapon instead of ending the sector");
+        assert!(e.ents.iter().any(|en| field::is_boss_case(en.kind)));
         assert_eq!(e.kills, 1);
         for _ in 0..45 { e.tick(1.0 / 60.0); }
         assert_eq!(e.ents[boss].kind, EK_NONE);
@@ -4361,7 +5186,11 @@ mod tests {
         let boss = e.spawn(EK_BOSS, 6.5, 4.5).unwrap();
         e.ents[boss].hp = 1;
         e.hurt_ent(boss, 5, e.px, e.py);
-        assert_eq!(e.state, 2, "killing the boss ends the level");
+        assert_eq!(e.state, 0, "killing the boss drops the case");
+        let case = e.ents.iter().position(|en| field::is_boss_case(en.kind)).unwrap();
+        e.pickup(e.ents[case].kind);
+        assert_eq!(e.state, 2, "taking the boss weapon ends the level");
+        assert!(e.has_w9);
         e.next_wave();
         assert_eq!((e.state, e.wave), (0, 2));
         assert!(!e.boss_spawned && !e.hell);
@@ -4429,7 +5258,7 @@ mod tests {
     }
 
     #[test]
-    fn ammo_crates_restock_the_complete_seven_weapon_arsenal() {
+    fn ammo_crates_restock_the_complete_eight_weapon_arsenal() {
         let mut e = arena();
         e.has_w2 = true;
         e.has_w3 = true;
@@ -4437,13 +5266,14 @@ mod tests {
         e.has_w5 = true;
         e.has_w6 = true;
         e.has_w7 = true;
-        e.ammo = [0; 7];
+        e.has_w8 = true;
+        e.ammo = [0; 11];
         let item = e.spawn(EK_AMMO, e.px, e.py).unwrap();
         e.tick(1.0 / 60.0);
         assert_eq!(e.ents[item].kind, EK_NONE, "a useful ammo crate is collected");
-        assert_eq!(e.ammo, [18, 10, 45, 5, 2, 15, 90]);
+        assert_eq!(e.ammo, [18, 10, 45, 5, 2, 15, 90, 6, 0, 0, 0]);
 
-        e.ammo = [120, 48, 216, 20, 16, 80, 450];
+        e.ammo = [120, 48, 216, 20, 16, 80, 450, 36, 0, 0, 0];
         let full = e.spawn(EK_AMMO, e.px, e.py).unwrap();
         e.tick(1.0 / 60.0);
         assert_eq!(e.ents[full].kind, EK_AMMO, "a full arsenal leaves supplies available");
@@ -4452,6 +5282,7 @@ mod tests {
     #[test]
     fn override_requires_use_then_spawns_the_sector_boss() {
         let mut e = arena();
+        e.node_done = true;
         e.wave = 2;
         (e.px, e.py) = map::override_point(e.wave);
         e.tick(1.0 / 60.0);
@@ -4474,6 +5305,7 @@ mod tests {
     #[test]
     fn override_use_requires_a_clear_path_to_the_console() {
         let mut e = arena();
+        e.node_done = true;
         e.wave = 1;
         e.px = 38.9;
         e.py = 21.5;
@@ -4648,5 +5480,175 @@ mod tests {
         assert_eq!(std::mem::size_of::<GpuCol>() / 4, 16);
         assert_eq!(std::mem::size_of::<GpuView>() / 4, 16);
         assert_eq!(std::mem::size_of::<GpuSprite>() / 4, 8);
+    }
+
+    #[test]
+    fn override_stays_dark_until_the_sector_node_is_used() {
+        let mut e = arena();
+        (e.px, e.py) = map::override_point(e.wave);
+        e.bits = IN_USE;
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.boss_intro, 0.0, "the console ignores USE before the node");
+        let (x, y) = field::node_point(e.wave);
+        e.px = x;
+        e.py = y;
+        e.bits = 0;
+        e.tick(1.0 / 60.0);
+        e.bits = IN_USE;
+        e.tick(1.0 / 60.0);
+        assert!(e.node_done);
+        assert_eq!(e.hud.objective, 1);
+    }
+
+    #[test]
+    fn shield_blocks_the_front_and_takes_the_flank() {
+        let mut e = arena();
+        let i = e.spawn_with_skin(EK_HUSK, SKIN_RIFLEMAN, 8.5, 4.5).unwrap();
+        e.arm_shield(i);
+        let hp = e.ents[i].hp;
+        e.ents[i].face = 0.0;
+        e.hurt_ent(i, 12, 10.0, 4.5);
+        assert_eq!(e.ents[i].hp, hp, "the first front hit stays on the plate");
+        assert!(e.ents[i].shield_hp < enemies::SHIELD_CAP, "the plate takes the hit");
+        assert!(e.ents[i].bar_t > 1.0, "a clang shows the bar");
+        e.hurt_ent(i, 12, 6.0, 4.5);
+        assert!(e.ents[i].hp < hp, "a rear hit gets through");
+    }
+
+    #[test]
+    fn pyre_leaves_a_fire_patch() {
+        let mut e = arena();
+        e.has_w8 = true;
+        e.weapon = 7;
+        e.mag[7] = 6;
+        e.fire();
+        assert!(e.ents.iter().any(|en| en.kind == EK_FIREPATCH));
+        assert_eq!(e.mag[7], 5);
+    }
+
+    #[test]
+    fn rifleman_and_gunner_die_from_the_front() {
+        let mut e = arena();
+        let rifle = e.spawn_with_skin(EK_HUSK, SKIN_RIFLEMAN, 8.5, 4.5).unwrap();
+        e.hurt_ent(rifle, 80, 6.0, 4.5);
+        assert_eq!(e.ents[rifle].hp, 0, "an unshielded rifleman dies");
+        let gunner = e.spawn_with_skin(EK_BRUTE, SKIN_GUNNER, 12.5, 4.5).unwrap();
+        e.arm_shield(gunner);
+        e.ents[gunner].face = 0.0;
+        for _ in 0..40 {
+            e.hurt_ent(gunner, 40, 14.0, 4.5);
+        }
+        assert_eq!(e.ents[gunner].hp, 0, "a shield gunner dies once the plate is gone");
+    }
+
+    #[test]
+    fn floor_props_drop_onto_the_floor() {
+        let mut e = arena();
+        e.h = 480;
+        let console = e.spawn(EK_OVERRIDE_CONSOLE, 6.5, 4.5).unwrap();
+        let kit = e.spawn(EK_MED, 7.5, 4.5).unwrap();
+        e.tick(1.0 / 60.0);
+        assert!(e.ents[console].zoff > 50.0, "console zoff {}", e.ents[console].zoff);
+        assert!(e.ents[kit].zoff > 100.0, "pickup zoff {}", e.ents[kit].zoff);
+    }
+
+    #[test]
+    fn use_shuts_a_lamp_and_a_crate_drops_loot() {
+        let mut e = arena();
+        e.px = 4.5;
+        e.py = 4.5;
+        e.pa = 0.0;
+        e.spawn(EK_LAMP, 6.0, 4.5);
+        e.bits = 0;
+        e.tick(1.0 / 60.0);
+        e.bits = IN_USE;
+        e.tick(1.0 / 60.0);
+        let lamp = e.ents.iter().find(|en| en.kind == EK_LAMP).unwrap();
+        assert!(lamp.timer < 0.0, "USE facing a lamp shuts it");
+        let crate_i = e.spawn(EK_CRATE, 6.2, 4.5).unwrap();
+        e.hurt_ent(crate_i, 20, 4.5, 4.5);
+        assert!(e.ents.iter().any(|en| matches!(en.kind, EK_MED | EK_AMMO | EK_ARMOR)));
+    }
+
+    #[test]
+    fn a_fuel_barrel_leaves_fire() {
+        let mut e = arena();
+        let i = e.spawn_with_skin(EK_BARREL, 1, 8.0, 4.5).unwrap();
+        e.hurt_ent(i, 40, 4.5, 4.5);
+        assert!(e.ents.iter().any(|en| en.kind == EK_FIREPATCH || en.kind == EK_FLAME));
+    }
+
+    #[test]
+    fn hostiles_spawn_in_open_space_on_every_sector() {
+        let mut e = Engine::new(160, 100);
+        for wave in 1..=3 {
+            e.wave = wave;
+            e.build_map();
+            e.place_ents();
+            for ent in e.ents.iter().filter(|en| is_hostile_kind(en.kind) && en.hp > 0) {
+                assert!(
+                    !e.circle_blocked(ent.x, ent.y, ent.radius),
+                    "wave {wave} {} stuck at {}, {}",
+                    ent.kind, ent.x, ent.y
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn chimera_fan_does_not_leave_a_pyre() {
+        let mut e = arena();
+        e.has_w11 = true;
+        e.weapon = 10;
+        e.mag[10] = 5;
+        e.fire();
+        assert!(e.ents.iter().any(|en| en.kind == EK_PROJ && en.effect_tick == 4.0));
+        assert!(!e.ents.iter().any(|en| en.kind == EK_FIREPATCH));
+    }
+
+    #[test]
+    fn pyre_shot_flames_burn_then_expire() {
+        let mut e = arena();
+        e.has_w8 = true;
+        e.weapon = 7;
+        e.mag[7] = 6;
+        let target = e.spawn(EK_HUSK, 6.2, 4.5).unwrap();
+        e.ents[target].hp = 200;
+        e.fire();
+        e.tick(1.0 / 60.0);
+        assert!(e.ents.iter().any(|en| en.kind == EK_FLAME));
+        for _ in 0..40 { e.tick(1.0 / 60.0); }
+        assert!(e.ents[target].hp < 200, "shot flames damage while they burn");
+        assert!(e.ents.iter().any(|en| en.kind == EK_FLAME), "flames last more than a blink");
+        for _ in 0..140 { e.tick(1.0 / 60.0); }
+        assert!(!e.ents.iter().any(|en| en.kind == EK_FLAME), "shot flames are gone after a few seconds");
+    }
+
+    #[test]
+    fn warden_blast_reaches_twice_as_far() {
+        let mut e = arena();
+        e.weapon = 4;
+        e.mag[4] = 4;
+        e.pa = 0.0;
+        e.set_cell(8, 4, 1);
+        let far = e.spawn(EK_BRUTE, 6.2, 8.2).unwrap();
+        e.ents[far].hp = 78;
+        e.ents[far].stun = 5.0;
+        e.fire();
+        for _ in 0..30 { e.tick(1.0 / 60.0); }
+        assert!(e.ents[far].hp < 78, "a target about four cells off the impact still takes the blast");
+    }
+
+    #[test]
+    fn override_pierces_the_lane_for_boss_damage() {
+        let mut e = arena();
+        e.has_w9 = true;
+        e.weapon = 8;
+        e.mag[8] = 4;
+        let a = e.spawn(EK_HUSK, 6.5, 4.5).unwrap();
+        let b = e.spawn(EK_HUSK, 8.5, 4.5).unwrap();
+        e.fire();
+        assert!(e.ents[a].hp <= 0 || e.ents[a].hp < 28 - 80);
+        assert!(e.ents[b].hp <= 0 || e.ents[b].hp < 28 - 80, "the rail does not stop at the first body");
     }
 }

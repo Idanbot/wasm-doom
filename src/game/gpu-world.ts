@@ -14,7 +14,11 @@ export const T_GUN4 = T_ORDNANCE + 2;
 export const T_GUN5 = T_ORDNANCE + 3;
 export const T_GUN6 = T_ORDNANCE + 4;
 export const T_GUN7 = T_ORDNANCE + 5;
-export const TEX_N = T_GUN7 + 4;
+export const T_GUN8 = T_GUN7 + 4;
+export const T_GUN9 = T_GUN8 + 1;
+export const T_GUN10 = T_GUN8 + 2;
+export const T_GUN11 = T_GUN8 + 3;
+export const TEX_N = T_GUN11 + 1;
 export const TEX = 256;
 
 export type WorldFrame = {
@@ -233,6 +237,7 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
     if (kind == 23) { rgb = mix(rgb, vec3<f32>(1.0, 0.14, 0.09), 0.42); }
     if (inp.info.z > 1.5) { rgb = mix(rgb, vec3<f32>(1.0, 0.72, 0.24), 0.32); }
     else if (inp.info.z > 0.5) { rgb = vec3<f32>(1.0, 0.86, 0.86); }
+    if (kind == 12 && inp.info.z < 0.0) { rgb *= 0.22; }
   }
   return vec4<f32>(rgb, clamp(inp.depth / 28.0, 0.0, 1.0));
 }
@@ -559,6 +564,7 @@ void main() {
     if (int(kind) == 23) rgb = mix(rgb, vec3(1.0, 0.14, 0.09), 0.42);
     rgb = flash > 1.5 ? mix(rgb, vec3(1.0, 0.72, 0.24), 0.32)
         : flash > 0.5 ? vec3(1.0, 0.86, 0.86) : rgb;
+    if (int(kind) == 12 && flash < 0.0) rgb *= 0.22;
   }
   outColor = vec4(rgb, clamp(depth / 28.0, 0.0, 1.0));
 }

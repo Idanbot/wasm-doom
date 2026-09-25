@@ -133,6 +133,11 @@ pub(crate) const ENEMY_DEFS: &[EnemyDef] = &[
     EnemyDef { kind: EK_GUN5, name: "VLK-6 case", role: "pickup", hp: 1, radius: 0.22, zoff: 34.0, scale: 0.50, texture: T_GUN5, sheet4: false, hostile: false, cleared_on_wave: false },
     EnemyDef { kind: EK_GUN6, name: "AX-12 case", role: "pickup", hp: 1, radius: 0.22, zoff: 34.0, scale: 0.52, texture: T_GUN6, sheet4: false, hostile: false, cleared_on_wave: false },
     EnemyDef { kind: EK_GUN7, name: "M91 case", role: "pickup", hp: 1, radius: 0.24, zoff: 34.0, scale: 0.60, texture: T_GUN7, sheet4: false, hostile: false, cleared_on_wave: false },
+    EnemyDef { kind: EK_GUN8, name: "HX-8 case", role: "pickup", hp: 1, radius: 0.24, zoff: 34.0, scale: 0.56, texture: T_GUN8, sheet4: false, hostile: false, cleared_on_wave: false },
+    EnemyDef { kind: EK_GUN9, name: "VR-9 case", role: "pickup", hp: 1, radius: 0.26, zoff: 30.0, scale: 0.62, texture: T_GUN9, sheet4: false, hostile: false, cleared_on_wave: false },
+    EnemyDef { kind: EK_GUN10, name: "HC-9 case", role: "pickup", hp: 1, radius: 0.26, zoff: 30.0, scale: 0.58, texture: T_GUN10, sheet4: false, hostile: false, cleared_on_wave: false },
+    EnemyDef { kind: EK_GUN11, name: "CM-9 case", role: "pickup", hp: 1, radius: 0.26, zoff: 30.0, scale: 0.60, texture: T_GUN11, sheet4: false, hostile: false, cleared_on_wave: false },
+    EnemyDef { kind: EK_POWER, name: "Power cell", role: "pickup", hp: 1, radius: 0.24, zoff: 28.0, scale: 0.55, texture: T_ARMOR, sheet4: false, hostile: false, cleared_on_wave: false },
     EnemyDef { kind: EK_BARREL, name: "Barrel", role: "prop", hp: 14, radius: 0.3, zoff: 78.0, scale: 0.72, texture: T_BARREL, sheet4: false, hostile: false, cleared_on_wave: false },
     EnemyDef { kind: EK_GIB, name: "Gib", role: "fx", hp: 1, radius: 0.08, zoff: 0.0, scale: 0.18, texture: T_SPLAT, sheet4: false, hostile: false, cleared_on_wave: false },
     EnemyDef { kind: EK_LAMP, name: "Lamp", role: "prop", hp: 1, radius: 0.16, zoff: -118.0, scale: 0.52, texture: T_LAMP, sheet4: false, hostile: false, cleared_on_wave: false },
@@ -145,6 +150,8 @@ pub(crate) const ENEMY_DEFS: &[EnemyDef] = &[
     EnemyDef { kind: EK_FIREPATCH, name: "Fire patch", role: "fx", hp: 1, radius: 0.2, zoff: 0.0, scale: 0.60, texture: T_FLAME, sheet4: true, hostile: false, cleared_on_wave: true },
     EnemyDef { kind: EK_MARTYR, name: "Martyr", role: "skirmisher", hp: 18, radius: 0.26, zoff: -48.0, scale: 0.70, texture: T_BALL, sheet4: false, hostile: true, cleared_on_wave: true },
     EnemyDef { kind: EK_OVERRIDE_CONSOLE, name: "Override console", role: "objective", hp: 1, radius: 0.22, zoff: 18.0, scale: 0.95, texture: T_CONSOLE_UPPER, sheet4: false, hostile: false, cleared_on_wave: false },
+    EnemyDef { kind: EK_NODE, name: "Sector node", role: "objective", hp: 1, radius: 0.22, zoff: 18.0, scale: 0.82, texture: T_CONSOLE_UPPER, sheet4: false, hostile: false, cleared_on_wave: false },
+    EnemyDef { kind: EK_TERMINAL, name: "Terminal", role: "objective", hp: 1, radius: 0.2, zoff: 16.0, scale: 0.62, texture: T_CONSOLE_UPPER, sheet4: false, hostile: false, cleared_on_wave: false },
 ];
 
 /// Look up a kind's row. Returns `None` for kind 0 (empty slot).
@@ -158,6 +165,24 @@ pub(crate) fn enemy_def(kind: u8) -> Option<&'static EnemyDef> {
 /// True for the four chasers counted as living and targeted by AI.
 pub(crate) fn is_hostile_kind(kind: u8) -> bool {
     matches!(kind, v if enemy_def(v).is_some_and(|d| d.hostile))
+}
+
+pub(crate) const SHIELD_CAP: i32 = 22;
+
+/// Outer plate on tanks. Based on the roster HP so the bar fraction stays stable
+/// after damage and after the shield's HP bump.
+pub(crate) fn armor_cap(kind: u8, skin: u8) -> i32 {
+    let base = enemy_def(kind).map(|d| d.hp).unwrap_or(1);
+    let visual = crate::field::visual_skin(skin);
+    match visual {
+        SKIN_GUNNER => (base / 2).max(12),
+        _ => 0,
+    }
+}
+
+pub(crate) fn health_cap(kind: u8, shielded: bool) -> i32 {
+    let base = enemy_def(kind).map(|d| d.hp).unwrap_or(1);
+    if shielded { (base * 14 / 10).max(base + 8) } else { base }
 }
 
 #[cfg(test)]

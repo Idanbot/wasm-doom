@@ -15,7 +15,7 @@ pub(crate) const EV_BOSS: u32 = 2048;
 pub(crate) const EV_KILL: u32 = 4096;
 pub(crate) const EV_BOSS_HUSH: u32 = 8192;
 pub(crate) const EV_BOSS_DROP: u32 = 16384;
-
+pub(crate) const EV_RADIO: u32 = 32768;
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -25,9 +25,9 @@ mod tests {
         let flags = [
             EV_FIRE, EV_EMPTY, EV_RELOAD, EV_HIT, EV_HURT, EV_PICK_SILVER, EV_PICK_GOLD,
             EV_DIE, EV_EXPLODE, EV_FOOT, EV_DOOR, EV_BOSS, EV_KILL, EV_BOSS_HUSH,
-            EV_BOSS_DROP,
+            EV_BOSS_DROP, EV_RADIO,
         ];
-        assert_eq!(flags.len(), 15);
+        assert_eq!(flags.len(), 16);
         for (i, a) in flags.iter().enumerate() {
             assert_ne!(*a, 0);
             assert_eq!(*a & (a - 1), 0, "event flag {i} is not a power of two");

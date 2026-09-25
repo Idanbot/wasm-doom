@@ -10,6 +10,29 @@ export type EnemyCue = {
   sight: boolean;
   distance: number;
 };
+
+export type BarCue = {
+  screenX: number;
+  screenY: number;
+  frac: number;
+  layer: number;
+  fade: number;
+};
+
+export function readBars(memory: ArrayBuffer, ptr: number, count: number): BarCue[] {
+  const n = Math.max(0, Math.min(48, count));
+  const data = new Float32Array(memory, ptr, n * 5);
+  return Array.from({ length: n }, (_, i) => {
+    const o = i * 5;
+    return {
+      screenX: data[o]!,
+      screenY: data[o + 1]!,
+      frac: data[o + 2]!,
+      layer: data[o + 3]!,
+      fade: data[o + 4]!,
+    };
+  });
+}
 export type EnemySubtitle = { id: number; name: string; text: string; x: number; y: number };
 export type VoiceLine = { id: string; cue: string; text: string; url: string; duration: number };
 export type VoiceProfile = {

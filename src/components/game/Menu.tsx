@@ -10,6 +10,7 @@ export function Menu(
     muted: boolean;
     setMuted: (v: boolean) => void;
     onStart: () => void;
+    onContinue?: () => void;
   },
 ) {
   return (
@@ -52,13 +53,21 @@ export function Menu(
         </span>
         <ArrowUpRight size={24} />
       </button>
+      {p.onContinue && (
+        <button type="button" className="menu-secondary" onClick={p.onContinue}>
+          <span>
+            Resume last sector
+            <small>Weapons and supplies carry</small>
+          </span>
+        </button>
+      )}
       <Settings {...p} />
       <div className="menu-footer">
         <button type="button" onClick={() => p.setMuted(!p.muted)}>
           {p.muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
           {p.muted ? "Sound off" : "Sound on"}
         </button>
-        <span>WASD / MOUSE / R TO RELOAD</span>
+        <span>WASD / MOUSE / 9 0 - BOSS GUNS / R TO RELOAD</span>
       </div>
       {p.board[0] && (
         <p className="best-run">

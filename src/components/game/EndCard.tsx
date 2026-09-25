@@ -12,6 +12,7 @@ export function EndCard({
   showBoard,
   nextLabel,
   onAgain,
+  onResume,
   onMenu,
   onSave,
   variant,
@@ -23,6 +24,7 @@ export function EndCard({
   showBoard: boolean;
   nextLabel: string;
   onAgain: () => void;
+  onResume?: () => void;
   onMenu: () => void;
   onSave?: (name: string) => void;
   variant: "dead" | "win";
@@ -118,6 +120,11 @@ export function EndCard({
           {variant === "win" ? <ChevronRight aria-hidden /> : <RotateCcw aria-hidden />}
           {nextLabel}
         </Button>
+        {onResume && (
+          <Button size="lg" variant="ghost" onClick={onResume}>
+            Resume sector
+          </Button>
+        )}
         <Button size="lg" variant="ghost" onClick={onMenu}>
           Menu
         </Button>

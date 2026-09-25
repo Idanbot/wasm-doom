@@ -1,7 +1,7 @@
 import { HeartPulse, Shield, Crosshair, Radio } from "lucide-react";
 import type { HudState } from "@/game/types";
 import { cn } from "@/lib/utils";
-import { WEAPONS, fmtTime, sectorForWave } from "./data";
+import { WEAPONS, fmtTime, missionLine, sectorForWave } from "./data";
 
 export function HudBar({
   hud,
@@ -25,7 +25,7 @@ export function HudBar({
         <Radio size={15} />
         <div>
           <span>{sector.code} / {sector.name}</span>
-          <strong>{hud.prompt === 3 ? "INITIATE OVERRIDE" : hud.prompt === 6 ? "REACH THE OVERRIDE" : "ELIMINATE THE SIGNAL"}</strong>
+          <strong>{missionLine(hud)}</strong>
         </div>
       </div>
       <div className="hud-threat">
@@ -45,7 +45,7 @@ export function HudBar({
           <div>
             <span>{sector.bossTitle}</span>
             <strong>{sector.bossName}</strong>
-            <em>PHASE {hud.bossPhase + 1} / 3</em>
+            <em>{hud.vuln > 0.05 ? "EXPOSED" : `PHASE ${hud.bossPhase + 1} / 3`}</em>
           </div>
           <div className="hud-boss-track">
             <i
@@ -99,7 +99,7 @@ export function HudBar({
                   "weapon-slot",
                   hud.weapon === i && "selected",
                   i > 0 &&
-                    ![true, hud.hasW2, hud.hasW3, hud.hasW4, hud.hasW5, hud.hasW6, hud.hasW7][i] &&
+                    ![true, hud.hasW2, hud.hasW3, hud.hasW4, hud.hasW5, hud.hasW6, hud.hasW7, hud.hasW8, hud.hasW9, hud.hasW10, hud.hasW11][i] &&
                     "locked",
                 )}
               >

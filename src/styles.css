@@ -732,6 +732,59 @@ select:focus-visible {
   border-left: 2px solid var(--color-steel);
   text-align: center;
 }
+.automap {
+  position: absolute;
+  top: 5.6rem;
+  right: 0.8rem;
+  width: 16rem;
+  height: auto;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  opacity: 0.92;
+  pointer-events: none;
+  z-index: 22;
+}
+.enemy-bars {
+  position: absolute;
+  inset: 0;
+  z-index: 18;
+  pointer-events: none;
+}
+.enemy-bar {
+  position: absolute;
+  width: 42px;
+  height: 4px;
+  margin-left: -21px;
+  background: color-mix(in srgb, var(--color-bg) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-fg) 35%, transparent);
+}
+.enemy-bar i {
+  display: block;
+  height: 100%;
+  background: var(--color-danger);
+}
+.enemy-bar-armor i { background: #e0a020; }
+.enemy-bar-shield i { background: #3ec6d8; }
+.radio-card {
+  position: absolute;
+  top: 4.6rem;
+  left: 0.8rem;
+  max-width: 22rem;
+  border: 1px solid var(--color-border);
+  background: color-mix(in oklab, var(--color-bg) 88%, transparent);
+  padding: 0.55rem 0.75rem;
+  pointer-events: none;
+}
+.radio-card span {
+  color: var(--color-steel);
+  font: 700 10px/1 var(--font-display);
+  letter-spacing: 0.16em;
+}
+.radio-card p {
+  margin: 0.3rem 0 0;
+  color: var(--color-fg);
+  font: 600 14px/1.35 var(--font-sans);
+}
 .field-hud {
   position: absolute;
   inset: 0;
@@ -1009,6 +1062,8 @@ select:focus-visible {
 }
 .hud-loadout > div {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 5px;
   margin: 8px 0;
 }
@@ -1179,6 +1234,11 @@ select:focus-visible {
     gap: 6px;
     padding: 6px 8px;
     font-size: 8px;
+  }
+  .automap {
+    top: 7.4rem;
+    right: 0.45rem;
+    width: 11.5rem;
   }
   .hud-pause {
     top: 14px;

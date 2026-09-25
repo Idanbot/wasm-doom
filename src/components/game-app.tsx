@@ -3,16 +3,21 @@ import { HellscanRuntime } from "@/game/runtime";
 import { DEFAULT_HUD, type GfxOpts, type HudState, type ResMode } from "@/game/types";
 import { Crosshair } from "./game/Crosshair";
 import {
+  clearCheckpoint,
   gpuEnabled,
   loadBoard,
+  loadCheckpoint,
   loadGfx,
   loadRes,
   loadVol,
+  radioCopy,
   saveBoard,
+  saveCheckpoint,
   sectorForWave,
   gridPos,
   sheetPos,
   WEAPONS,
+  type RunSave,
   type Score,
   type Screen,
 } from "./game/data";
@@ -23,6 +28,9 @@ import { Pause } from "./game/Pause";
 import { TouchLayer } from "./game/TouchLayer";
 import { WeaponView } from "./game/WeaponView";
 import { EnemySubtitles } from "./game/EnemySubtitles";
+import { Automap } from "./game/Automap";
+import { EnemyBars } from "./game/EnemyBars";
+import { RadioCard } from "./game/RadioCard";
 import { loadEnemyOptions, type EnemySubtitle } from "@/game/enemy-presentation";
 
 export function GameApp() {
@@ -61,6 +69,13 @@ export function GameApp() {
   const [ready, setReady] = useState(false);
   const [isCoarse, setIsCoarse] = useState(false);
   const [renderer, setRenderer] = useState("webgl2");
+  const [checkpoint, setCheckpoint] = useState<RunSave | null>(loadCheckpoint);
+  const [radio, setRadio] = useState<{ speaker: string; text: string } | null>(null);
+  const persistRef = useRef<(save: RunSave) => void>(() => {});
+  persistRef.current = (save) => {
+    saveCheckpoint(save);
+    setCheckpoint(save);
+  };
 
   // Boot once. Renderer switches happen via switchRenderer (no sim restart,
   // no canvas remount) — see handleRequireGpu below.
@@ -92,7 +107,7 @@ export function GameApp() {
           const swapDip = swapAge < 1 ? Math.sin(swapAge * Math.PI) * 30 : 0;
           const reloading = h.reloading > 0.001;
           const reloadDip = reloading ? 32 + Math.sin(Math.min(1, h.reloading) * Math.PI) * 18 : 0;
-          const weight = [0.65, 1.25, 0.5, 1.1, 1.4, 0.9, 1.45][h.weapon] ?? 1;
+          const weight = [0.65, 1.25, 0.5, 1.1, 1.4, 0.9, 1.45, 1.1, 1.5, 0.8, 1.0][h.weapon] ?? 1;
           const motion = reducedMotion.matches ? 0.2 : 1;
           const bobY = (h.bob * 7 + h.kick * 18 * weight + reloadDip + swapDip) * motion;
           const bobX = (h.kick * -6 * weight + (reloading ? 20 : 0)) * motion;
@@ -140,8 +155,14 @@ export function GameApp() {
           h.hasW5,
           h.hasW6,
           h.hasW7,
+          h.hasW8,
+          h.hasW9,
+          h.hasW10,
+          h.hasW11,
+          h.objective,
+          h.radioSeq,
+          h.bossPhase,
           h.reloading > 0.001,
-          h.reloading === 0,
         ].join("|");
         if (now - lastHudAt.current > 100 || key !== lastHudKey.current) {
           lastHudAt.current = now;
@@ -157,6 +178,30 @@ export function GameApp() {
           setScreen("dead");
         }
         if (st === 2) {
+          if (!qaRef.current) {
+            const save = rt.exportSave();
+            if (save) {
+              const sizes = [12, 8, 36, 5, 4, 10, 90, 6];
+              const floors = [36, 12, 48, 8, 12, 16, 160, 18];
+              const mag = save.mag.slice();
+              const ammo = save.ammo.slice();
+              mag[0] = sizes[0]!;
+              ammo[0] = Math.max(ammo[0]!, floors[0]!);
+              for (let i = 1; i < 8; i++) {
+                if (save.flags & (1 << (i - 1))) {
+                  mag[i] = sizes[i]!;
+                  ammo[i] = Math.max(ammo[i]!, floors[i]!);
+                }
+              }
+              persistRef.current({
+                ...save,
+                wave: Math.min(12, save.wave + 1),
+                health: 100,
+                mag,
+                ammo,
+              });
+            }
+          }
           rt.setPlaying(false);
           setScreen("win");
         }
@@ -230,6 +275,9 @@ export function GameApp() {
   const start = useCallback(() => {
     const rt = rtRef.current;
     if (!rt) return;
+    clearCheckpoint();
+    setCheckpoint(null);
+    rt.restart();
     rt.kick();
     rt.setPlaying(true);
     rt.setSens(sens);
@@ -265,6 +313,38 @@ export function GameApp() {
     rtRef.current?.requestLock();
   }, []);
 
+  const continueRun = useCallback(() => {
+    const save = loadCheckpoint();
+    const rt = rtRef.current;
+    if (!save || !rt) return;
+    rt.loadSave(save);
+    rt.kick();
+    rt.setPlaying(true);
+    rt.setSens(sens);
+    rt.setMuted(muted);
+    rt.setVolumes(vol.master, vol.music, vol.sfx);
+    setScreen("play");
+    rt.requestLock();
+  }, [sens, muted, vol]);
+
+  const readMap = useCallback(() => rtRef.current?.readMap() ?? null, []);
+  const getEnemies = useCallback(() => rtRef.current?.getEnemies() ?? [], []);
+  const getBars = useCallback(() => rtRef.current?.getBars() ?? [], []);
+
+  useEffect(() => {
+    if (screen !== "play" || qaRef.current) return;
+    const save = rtRef.current?.exportSave();
+    if (save) persistRef.current(save);
+  }, [hud.wave, screen]);
+
+  useEffect(() => {
+    if (screen !== "play" || !hud.radioSeq) return;
+    const copy = radioCopy(hud.radioLine, hud.wave);
+    if (!copy) return;
+    setRadio(copy);
+    const id = window.setTimeout(() => setRadio(null), 5600);
+    return () => window.clearTimeout(id);
+  }, [hud.radioSeq, hud.radioLine, hud.wave, screen]);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (
@@ -383,6 +463,9 @@ export function GameApp() {
             renderer={renderer}
             showStats={enemyOptions.showStats}
           />
+          <Automap hud={hud} readMap={readMap} getEnemies={getEnemies} />
+          <EnemyBars getBars={getBars} />
+          {radio && <RadioCard speaker={radio.speaker} text={radio.text} />}
           {enemyOptions.subtitles && (
             <EnemySubtitles lines={subtitles} size={enemyOptions.subtitleSize} />
           )}
@@ -409,6 +492,16 @@ export function GameApp() {
           {hud.prompt === 6 && (
             <p className="pointer-events-none absolute bottom-28 left-1/2 -translate-x-1/2 font-display text-sm tracking-[0.2em] text-danger">
               REACH THE OVERRIDE STATION
+            </p>
+          )}
+          {(hud.prompt === 13 || hud.prompt === 15) && (
+            <p className="pointer-events-none absolute bottom-28 left-1/2 -translate-x-1/2 font-display text-sm tracking-[0.2em] text-danger">
+              {hud.prompt === 13 ? "USE E — SECTOR NODE" : "FIND THE SECTOR NODE"}
+            </p>
+          )}
+          {hud.prompt === 14 && (
+            <p className="pointer-events-none absolute bottom-28 left-1/2 -translate-x-1/2 font-display text-sm tracking-[0.2em] text-steel">
+              USE E — READ TERMINAL
             </p>
           )}
           {hud.prompt === 3 && (
@@ -459,6 +552,8 @@ export function GameApp() {
                 enemyOptions={enemyOptions}
                 setEnemyOptions={setEnemyOptions}
                 onPreviewVoice={(skin) => rtRef.current?.previewEnemy(skin)}
+                onStart={start}
+                onContinue={checkpoint ? continueRun : undefined}
                 ready={ready}
                 err={err}
                 board={board}
@@ -474,7 +569,6 @@ export function GameApp() {
                 setRequireGpu={handleRequireGpu}
                 gfx={gfx}
                 setGfx={setGfx}
-                onStart={start}
               />
             )}
 
@@ -514,6 +608,7 @@ export function GameApp() {
                 showBoard
                 nextLabel="Start again"
                 onAgain={restart}
+                onResume={checkpoint ? continueRun : undefined}
                 onMenu={() => {
                   rtRef.current?.restart();
                   rtRef.current?.setPlaying(false);

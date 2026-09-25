@@ -29,6 +29,16 @@ export type HudState = {
   hasW5: boolean;
   hasW6: boolean;
   hasW7: boolean;
+  hasW8: boolean;
+  hasW9: boolean;
+  hasW10: boolean;
+  hasW11: boolean;
+  objective: number;
+  radioSeq: number;
+  radioLine: number;
+  vuln: number;
+  nodeX: number;
+  nodeY: number;
   events: number;
   evWeapon: number;
   wave: number;
@@ -96,6 +106,16 @@ export const DEFAULT_HUD: HudState = {
   hasW5: false,
   hasW6: false,
   hasW7: false,
+  hasW8: false,
+  hasW9: false,
+  hasW10: false,
+  hasW11: false,
+  objective: 0,
+  radioSeq: 0,
+  radioLine: 0,
+  vuln: 0,
+  nodeX: 0,
+  nodeY: 0,
   events: 0,
   evWeapon: 0,
   wave: 1,

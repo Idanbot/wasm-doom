@@ -9,7 +9,7 @@ A Doom-style raycaster that runs entirely in the browser. The simulation is writ
 | `W A S D` / arrows       | Move + turn                                              |
 | Mouse (pointer lock)     | Look                                                     |
 | Click / `Space` / `Ctrl` | Fire                                                     |
-| `1`–`7`                  | Weapons: MK23-S, M870K, VX-9, SHRIKE, RAVEN, ARC-12, M56 |
+| `1`–`8`                  | Weapons: MK23-S, BR-12, KX-9, MR-4, VLK-6, AX-12, M91, HX-8 |
 | `R`                      | Reload                                                   |
 | `E`                      | Use doors / pickups                                      |
 | `Shift`                  | Sprint                                                   |
@@ -63,7 +63,7 @@ cargo test --manifest-path engine/Cargo.toml
 
 - 60fps at 640×400 on the CPU raycaster; 1280 holds 60 when WebGPU or WebGL2 fills the frame
 - WebGPU with automatic WebGL2/Canvas2D fallback; renderer switchable without restarting the sim
-- 7 delivered BLACKSITE weapon sets, 13 enemy skins with seven animation states each, projectile/effect atlas, wave system, local leaderboard
+- 8 delivered BLACKSITE weapon sets, 13 enemy skins with seven animation states each, projectile/effect atlas, wave system, local leaderboard
 - 59 Rust tests plus TS and script integration tests; CI runs typecheck, wasm-sync, asset validation, and build
 
 Combat roles, attack windups, guided missiles and effect rendering are
