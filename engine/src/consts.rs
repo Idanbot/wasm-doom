@@ -47,11 +47,9 @@ pub(crate) const T_FLAME: usize = 24;
 pub(crate) const T_CHAIN: usize = 25;
 pub(crate) const T_PIPES: usize = 26;
 pub(crate) const T_GUN2: usize = 27;
-pub(crate) const T_SEAL: usize = 28;
-pub(crate) const SEAL_X: i32 = 38;
-pub(crate) const SEAL_Y: i32 = 19;
-pub(crate) const SEAL_W: i32 = 8;
-pub(crate) const SEAL_H: i32 = 9;
+/// Sector override floor beacon. This replaced the occult boss seal: the
+/// player now reaches a physical control station and deliberately uses it.
+pub(crate) const T_OVERRIDE: usize = 28;
 
 pub(crate) const EK_NONE: u8 = 0;
 pub(crate) const EK_HUSK: u8 = 1;
@@ -110,47 +108,6 @@ pub(crate) const SKIN_SPITTER: u8 = 10;
 pub(crate) const SKIN_MARTYR: u8 = 11;
 pub(crate) const SKIN_VEYRAN: u8 = 12;
 
-/// Skins assigned to the opening cast in map order. The engine behavior still
-/// comes from the four legacy archetypes; this table changes the presentation
-/// without duplicating combat code.
-pub(crate) const HOSTILE_SKINS: [u8; 14] = [
-    SKIN_RIFLEMAN,
-    SKIN_BREACHER,
-    SKIN_SUBJECT,
-    SKIN_HAZMAT,
-    SKIN_RIFLEMAN,
-    SKIN_GUNNER,
-    SKIN_MARKSMAN,
-    SKIN_SUBJECT,
-    SKIN_LOADER,
-    SKIN_HORNET,
-    SKIN_VATBRUTE,
-    SKIN_HOUND,
-    SKIN_SPITTER,
-    SKIN_HAZMAT,
-];
-
-/// Opening hostile cast for the hub-and-spoke map, west to east then
-/// south: hangar duo, plaza pair, lab guards, chapel line, vault
-/// honor guard, pit pair. Every coordinate must be an open cell —
-/// `map::tests::hub_spoke_zones_are_all_connected` enforces reachability
-/// and `opening_cast_matches_the_zone_playlist` pins the count.
-pub(crate) const HOSTILES: [(u8, f32, f32); 14] = [
-    (EK_HUSK, 7.5, 14.5),
-    (EK_HUSK, 14.5, 15.5),
-    (EK_HUSK, 20.5, 13.5),
-    (EK_BRUTE, 25.5, 17.5),
-    (EK_HUSK, 22.5, 9.5),
-    (EK_BRUTE, 26.5, 3.5),
-    (EK_WRAITH, 19.5, 3.5),
-    (EK_HUSK, 32.5, 15.5),
-    (EK_BRUTE, 37.5, 13.5),
-    (EK_WRAITH, 36.5, 21.5),
-    (EK_BRUTE, 41.5, 25.5),
-    (EK_WRAITH, 38.5, 26.5),
-    (EK_WRAITH, 22.5, 26.5),
-    (EK_BRUTE, 25.5, 25.5),
-];
 pub(crate) const IN_W: u32 = 1;
 pub(crate) const IN_S: u32 = 2;
 pub(crate) const IN_A: u32 = 4;
@@ -199,8 +156,8 @@ mod tests {
     #[test]
     fn input_bits_are_unique_powers_of_two() {
         let bits = [
-            IN_W, IN_S, IN_A, IN_D, IN_FIRE, IN_SPRINT, IN_USE, IN_W1, IN_W2, IN_W3,
-            IN_TURNL, IN_TURNR, IN_RELOAD, IN_W4, IN_W5, IN_W6, IN_W7,
+            IN_W, IN_S, IN_A, IN_D, IN_FIRE, IN_SPRINT, IN_USE, IN_W1, IN_W2, IN_W3, IN_TURNL,
+            IN_TURNR, IN_RELOAD, IN_W4, IN_W5, IN_W6, IN_W7,
         ];
         for (i, a) in bits.iter().enumerate() {
             assert_ne!(*a, 0);
@@ -213,9 +170,12 @@ mod tests {
 
     #[test]
     fn texture_slots_cover_the_known_atlas() {
-        assert_eq!(TEX_N, ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT + 6);
+        assert_eq!(
+            TEX_N,
+            ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT + 6
+        );
         assert_eq!(TEX, 256);
         assert_eq!(TEXM, 255);
-        assert_eq!(T_SEAL, 28);
+        assert_eq!(T_OVERRIDE, 28);
     }
 }

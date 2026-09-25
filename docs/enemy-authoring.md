@@ -19,7 +19,7 @@ touching engine systems. The roster is data: one row per kind in
 
 Wall kinds map to atlas slots in `wall_tex`: `1→METAL, 2→BRICK,
 3→FLESH, 4→PIPES, 5→SKULL, 6→TECH, 7→HAZARD`, `8→DOOR`, `9→SECRET`.
-Floor kinds: `0` normal, `1` alt, `2` seal-flag (under the vault seal).
+Floor kinds: `0` normal, `1` alt, `2` override beacon around each sector control station.
 
 ### Texture atlas (renderer)
 

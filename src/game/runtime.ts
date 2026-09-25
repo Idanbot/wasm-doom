@@ -155,7 +155,7 @@ const TEX_FILES: { id: number; src: string }[] = [
   { id: 25, src: "/game/spr_chain.png" },
   { id: 26, src: "/game/wall_pipes.png" },
   { id: 27, src: "/game/spr_gun_br12.png" },
-  { id: 28, src: "/game/floor_seal.png" },
+  { id: 28, src: "/game/floor_override.png" },
   { id: T_GUN3, src: "/game/spr_gun_kx9.png" },
   { id: T_GUN4, src: "/game/spr_gun_mr4.png" },
   { id: T_GUN5, src: "/game/spr_gun_vlk6.png" },
@@ -923,6 +923,7 @@ export class HellscanRuntime {
       },
       triggerEnd: (state: 1 | 2) => this.wasm?.hs_qa_end(state),
       triggerBoss: (phase = 0) => this.wasm?.hs_qa_boss(phase),
+      nextWave: () => this.nextWave(),
     };
   }
 }
@@ -966,6 +967,7 @@ declare global {
       grantWeapons?: () => void;
       triggerEnd?: (state: 1 | 2) => void;
       triggerBoss?: (phase?: number) => void;
+      nextWave?: () => void;
     };
   }
 }

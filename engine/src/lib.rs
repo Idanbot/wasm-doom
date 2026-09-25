@@ -167,7 +167,7 @@ fn anim_frame(e: &Ent) -> i32 {
 
 fn sprite_style(e: &Ent) -> (usize, f32, bool, i32) {
     if let Some(skin) = skin_def(e.skin) {
-        return (skin.texture + (e.anim as usize).min(ENEMY_ANIM_COUNT - 1), skin.scale, true, anim_frame(e));
+        return (skin.texture + (e.anim as usize).min(ENEMY_ANIM_COUNT - 1), if e.kind == EK_BOSS { skin.scale.max(1.9) } else { skin.scale }, true, anim_frame(e));
     }
     // VFX cells are distinct effects, not animation frames. Animate scale
     // over lifetime without cycling flames into smoke or muzzle flashes.
@@ -390,10 +390,9 @@ impl Engine {
         true
     }
 
-    fn on_seal(&self) -> bool {
-        let x = self.px.floor() as i32;
-        let y = self.py.floor() as i32;
-        x >= SEAL_X && y >= SEAL_Y && x < SEAL_X + SEAL_W && y < SEAL_Y + SEAL_H
+    fn near_override(&self) -> bool {
+        let (x, y) = map::override_point(self.wave);
+        (self.px - x).powi(2) + (self.py - y).powi(2) < 2.35 * 2.35
     }
 
     fn room(&mut self, x: i32, y: i32, w: i32, h: i32, wall: u8, fl: u8) {
@@ -457,7 +456,7 @@ impl Engine {
     }
 
     fn build_map(&mut self) {
-        map::build_hub_spoke(self);
+        map::build_level(self);
     }
 
     fn tex_at_mut(&mut self, id: usize) -> &mut [u32] {
@@ -993,18 +992,18 @@ impl Engine {
     }
 
     fn place_ents(&mut self) {
-        map::place_hub_spoke(self);
+        map::place_level(self);
+        self.spawn_hostiles(1);
     }
 
     fn spawn_hostiles(&mut self, mult: i32) {
         let copies = mult.max(1);
         for n in 0..copies {
-            for (slot, &(k, x, y)) in HOSTILES.iter().enumerate() {
+            for &(k, skin, x, y) in map::hostiles(self.wave) {
                 let jx = if n == 0 { 0.0 } else { (self.rnd() - 0.5) * 2.2 };
                 let jy = if n == 0 { 0.0 } else { (self.rnd() - 0.5) * 2.2 };
                 let nx = x + jx;
                 let ny = y + jy;
-                let skin = HOSTILE_SKINS[slot % HOSTILE_SKINS.len()];
                 if !self.blocked(nx.floor() as i32, ny.floor() as i32) {
                     if self.spawn_with_skin(k, skin, nx, ny).is_none() {
                         return;
@@ -1024,9 +1023,10 @@ impl Engine {
         let mult = 1i32 << shift;
         self.health = 100;
         self.iframes = 1.4;
-        self.px = map::PLAYER_START.0;
-        self.py = map::PLAYER_START.1;
-        self.pa = map::PLAYER_START.2;
+        let start = map::player_start(self.wave);
+        self.px = start.0;
+        self.py = start.1;
+        self.pa = start.2;
         self.pitch = 0.0;
         self.state = 0;
         self.cooldown = 0.0;
@@ -1061,16 +1061,14 @@ impl Engine {
             self.mag[6] = MAG_SZ[6];
             self.ammo[6] = self.ammo[6].max(160);
         }
-        for e in self.ents.iter_mut() {
-            if e.kind != 0 && enemy_def(e.kind).is_some_and(|d| d.cleared_on_wave) {
-                e.kind = 0;
-            }
-        }
+        self.build_map();
+        self.door.fill(0.0);
         self.hell = false;
         self.light_dirty = true;
         self.boss_spawned = false;
         self.boss_intro = 0.0;
         self.boss_phase = 0;
+        map::place_level(self);
         self.spawn_hostiles(mult);
     }
 
@@ -1086,9 +1084,10 @@ impl Engine {
         let hp = self.boss_max_health();
         let fx = self.pa.cos();
         let fy = self.pa.sin();
+        let boss_spots = map::boss_spots(self.wave);
         let spots = [
-            (map::BOSS_SPOTS[0].0, map::BOSS_SPOTS[0].1),
-            (map::BOSS_SPOTS[1].0, map::BOSS_SPOTS[1].1),
+            boss_spots[0],
+            boss_spots[1],
             (self.px + fx * 4.6, self.py + fy * 4.6),
             (self.px + fx * 3.2 - fy * 2.4, self.py + fy * 3.2 + fx * 2.4),
         ];
@@ -1096,7 +1095,7 @@ impl Engine {
             if self.blocked(x.floor() as i32, y.floor() as i32) {
                 continue;
             }
-            if let Some(i) = self.spawn_with_skin(EK_BOSS, SKIN_VEYRAN, x, y) {
+            if let Some(i) = self.spawn_with_skin(EK_BOSS, map::boss_skin(self.wave), x, y) {
                 self.ents[i].hp = hp;
                 break;
             }
@@ -1115,12 +1114,11 @@ impl Engine {
                 -16.0,
             );
         }
-        let escorts = [
-            (EK_WRAITH, SKIN_HORNET, -2.4, -1.6),
-            (EK_WRAITH, SKIN_MARKSMAN, 2.4, -1.6),
-            (EK_HUSK, SKIN_RIFLEMAN, -2.8, 1.8),
-            (EK_BRUTE, SKIN_LOADER, 2.8, 1.8),
-        ];
+        let escorts = match map::level_index(self.wave) {
+            1 => [(EK_WRAITH, SKIN_HORNET, -2.4, -1.6), (EK_MARTYR, SKIN_MARTYR, 2.4, -1.6), (EK_HUSK, SKIN_GUNNER, -2.8, 1.8), (EK_BRUTE, SKIN_HAZMAT, 2.8, 1.8)],
+            2 => [(EK_HUSK, SKIN_HOUND, -2.4, -1.6), (EK_WRAITH, SKIN_SPITTER, 2.4, -1.6), (EK_HUSK, SKIN_SUBJECT, -2.8, 1.8), (EK_BRUTE, SKIN_VATBRUTE, 2.8, 1.8)],
+            _ => [(EK_WRAITH, SKIN_HORNET, -2.4, -1.6), (EK_WRAITH, SKIN_MARKSMAN, 2.4, -1.6), (EK_HUSK, SKIN_RIFLEMAN, -2.8, 1.8), (EK_BRUTE, SKIN_LOADER, 2.8, 1.8)],
+        };
         for &(kind, skin, ox, oy) in &escorts[..(2 + self.wave.min(2) as usize)] {
             let x = self.px + fx * 5.4 + ox;
             let y = self.py + fy * 5.4 + oy;
@@ -1350,14 +1348,7 @@ impl Engine {
         true
     }
 
-    fn is_boss_door(&self, x: i32, y: i32) -> bool {
-        (x == 36 || x == 37) && (y == 18 || y == 19)
-    }
-
-    fn wall_tex(&self, c: u8, x: i32, y: i32) -> usize {
-        if (c == 8 || c == 9) && self.is_boss_door(x, y) {
-            return T_SEAL;
-        }
+    fn wall_tex(&self, c: u8, _x: i32, _y: i32) -> usize {
         let id = match c {
             1 => T_METAL,
             2 => T_BRICK,
@@ -1374,7 +1365,7 @@ impl Engine {
             return id;
         }
         match id {
-            T_SEAL => T_SEAL,
+            T_OVERRIDE => T_OVERRIDE,
             T_BRICK | T_METAL | T_TECH | T_PIPES | T_DOOR => T_FLESH,
             T_GRATE | T_CONC | T_HAZARD => T_SKULL,
             T_CEIL | T_SECRET => T_SKULL,
@@ -2085,6 +2076,11 @@ impl Engine {
             if bits & IN_USE != 0 {
                 if !self.use_latched {
                     self.open_nearby_doors(true);
+                    let clear = !self.ents.iter().any(|e| e.hp > 0 && is_hostile_kind(e.kind));
+                    if clear && self.near_override() && !self.boss_spawned && self.boss_intro <= 0.0 {
+                        self.boss_intro = 6.0;
+                        self.events |= EV_BOSS;
+                    }
                 }
                 self.use_latched = true;
             } else {
@@ -2109,9 +2105,6 @@ impl Engine {
                 let k = self.ents[i].kind;
                 self.ents[i].kind = 0;
                 self.pickup(k);
-            }
-            if self.cell(self.px.floor() as i32, self.py.floor() as i32) == 10 {
-                self.maybe_spawn_boss();
             }
             map::check_ambushes(self);
         } else {
@@ -2437,12 +2430,7 @@ impl Engine {
             }
         }
         if !self.boss_spawned && self.state == 0 {
-            if self.boss_intro <= 0.0 {
-                if living == 0 && self.on_seal() {
-                    self.boss_intro = 6.0;
-                    self.events |= EV_BOSS;
-                }
-            } else {
+            if self.boss_intro > 0.0 {
                 let prev = self.boss_intro;
                 self.boss_intro -= dt;
                 if prev > 1.0 && self.boss_intro <= 1.0 {
@@ -2466,19 +2454,41 @@ impl Engine {
                 self.boss_phase = phase;
                 self.shake = (self.shake + 0.5).min(1.0);
                 self.events |= EV_EXPLODE;
-                let support = if phase == 1 {
-                    [(EK_WRAITH, SKIN_HORNET), (EK_HUSK, SKIN_RIFLEMAN)]
-                } else {
-                    [(EK_MARTYR, SKIN_MARTYR), (EK_BRUTE, SKIN_LOADER)]
+                let support = match (map::level_index(self.wave), phase) {
+                    (1, 1) => [(EK_WRAITH, SKIN_HORNET), (EK_HUSK, SKIN_GUNNER)],
+                    (1, _) => [(EK_MARTYR, SKIN_MARTYR), (EK_WRAITH, SKIN_HORNET)],
+                    (2, 1) => [(EK_HUSK, SKIN_HOUND), (EK_WRAITH, SKIN_SPITTER)],
+                    (2, _) => [(EK_BRUTE, SKIN_VATBRUTE), (EK_HUSK, SKIN_HOUND)],
+                    (_, 1) => [(EK_WRAITH, SKIN_HORNET), (EK_HUSK, SKIN_RIFLEMAN)],
+                    _ => [(EK_MARTYR, SKIN_MARTYR), (EK_BRUTE, SKIN_LOADER)],
                 };
+                let boss_spots = map::boss_spots(self.wave);
                 for (index, &(kind, skin)) in support.iter().enumerate() {
-                    let (x, y) = map::BOSS_SPOTS[(phase as usize + index) % map::BOSS_SPOTS.len()];
+                    let (x, y) = boss_spots[(phase as usize + index) % boss_spots.len()];
                     if !self.blocked(x.floor() as i32, y.floor() as i32) {
                         let _ = self.spawn_with_skin(kind, skin, x, y);
                     }
                     for n in 0..6 {
                         let a = n as f32 * core::f32::consts::TAU / 6.0;
                         self.spawn_timed(EK_SPARK, x + a.cos() * 0.35, y + a.sin() * 0.35, 0.55, -12.0);
+                    }
+                }
+                // HECATE-9 discharges a fast electrical ring; CHIMERA-9
+                // launches a slower corrosive nova before its support closes.
+                if map::level_index(self.wave) > 0 {
+                    if let Some((bx, by)) = self.ents.iter().find(|e| e.kind == EK_BOSS && e.hp > 0).map(|e| (e.x, e.y)) {
+                        let count = if map::level_index(self.wave) == 1 { 8 } else { 6 };
+                        for n in 0..count {
+                            let a = n as f32 * core::f32::consts::TAU / count as f32 + phase as f32 * 0.18;
+                            if let Some(i) = self.spawn(EK_PROJ, bx, by) {
+                                let speed = if map::level_index(self.wave) == 1 { 6.7 } else { 4.1 };
+                                self.ents[i].vx = a.cos() * speed;
+                                self.ents[i].vy = a.sin() * speed;
+                                self.ents[i].timer = 3.2;
+                                self.ents[i].hp = if phase == 2 { 18 } else { 12 };
+                                self.ents[i].effect_tick = if map::level_index(self.wave) == 2 { 3.0 } else { 0.0 };
+                            }
+                        }
                     }
                 }
             }
@@ -2508,7 +2518,7 @@ impl Engine {
         if living == 0 && !self.boss_spawned && self.boss_intro <= 0.0 && self.state == 0 {
             prompt = 6;
         }
-        if self.cell(self.px.floor() as i32, self.py.floor() as i32) == 10 {
+        if living == 0 && self.near_override() && !self.boss_spawned && self.boss_intro <= 0.0 {
             prompt = 3;
         }
 
@@ -2793,9 +2803,7 @@ impl Engine {
             0
         };
         if style == 2 {
-            let u = ((fx - SEAL_X as f32) / SEAL_W as f32 * TEX as f32) as i32;
-            let v = ((fy - SEAL_Y as f32) / SEAL_H as f32 * TEX as f32) as i32;
-            return (T_SEAL, u, v, level.saturating_sub(3));
+            return (T_OVERRIDE, tx, ty, level.saturating_sub(2));
         }
         (if style == 1 { T_CONC } else { T_GRATE }, tx, ty, level)
     }
@@ -4309,7 +4317,7 @@ mod tests {
         e.weapon = 3;
         e.ammo[3] = 1;
         e.mag[3] = 0;
-        let med = e.spawn(EK_MED, 8.5, 8.5).unwrap();
+        let _med = e.spawn(EK_MED, 8.5, 8.5).unwrap();
         e.spawn(EK_HUSK, 9.5, 8.5).unwrap();
         e.next_wave();
         assert_eq!(e.wave, 2);
@@ -4319,16 +4327,16 @@ mod tests {
         assert_eq!(e.weapon, 3, "a found gun stays in hand");
         assert_eq!(e.mag[3], MAG_SZ[3]);
         assert!(e.ammo[3] >= 8);
-        assert_eq!(e.ents[med].kind, EK_MED, "supplies survive the wave");
+        assert!(e.ents.iter().any(|en| en.kind == EK_MED), "the new sector supplies are placed");
         assert_eq!(
             e.ents.iter().filter(|en| is_hostile_kind(en.kind)).count(),
-            28,
-            "the previous cast is cleared, then two copies of the roster spawn",
+            map::hostiles(2).len() * 2,
+            "the previous cast is cleared, then two copies of the sector roster spawn",
         );
         e.wave = 12;
         e.next_wave();
         assert_eq!(e.wave, 12, "waves cap at 12");
-        assert_eq!(e.ents[med].kind, EK_MED);
+        assert!(e.ents.iter().any(|en| en.kind == EK_MED));
     }
 
     #[test]
@@ -4382,17 +4390,23 @@ mod tests {
     }
 
     #[test]
-    fn the_seal_spawns_one_boss_scaled_to_the_wave() {
+    fn override_requires_use_then_spawns_the_sector_boss() {
         let mut e = arena();
         e.wave = 2;
-        e.set_cell(4, 4, 10);
+        (e.px, e.py) = map::override_point(e.wave);
         e.tick(1.0 / 60.0);
+        assert_eq!(e.boss_intro, 0.0, "standing on the beacon is not enough");
+        e.bits = IN_USE;
+        e.tick(1.0 / 60.0);
+        assert!(e.boss_intro > 5.0, "USE begins the override countdown");
+        e.bits = 0;
+        for _ in 0..370 { e.tick(1.0 / 60.0); }
         let bosses: Vec<_> = e.ents.iter().filter(|en| en.kind == EK_BOSS).collect();
         assert_eq!(bosses.len(), 1);
         assert_eq!(bosses[0].hp, 720);
+        assert_eq!(bosses[0].skin, SKIN_GUNNER);
         assert!(e.boss_spawned);
         assert!(e.hell);
-        assert!(e.events & EV_BOSS_DROP != 0);
         e.tick(1.0 / 60.0);
         assert_eq!(e.ents.iter().filter(|en| en.kind == EK_BOSS).count(), 1);
     }
@@ -4427,6 +4441,27 @@ mod tests {
     }
 
     #[test]
+    fn sector_bosses_release_distinct_phase_barrages() {
+        let mut foundry = arena();
+        foundry.wave = 2;
+        foundry.boss_spawned = true;
+        let boss = foundry.spawn_with_skin(EK_BOSS, map::boss_skin(2), 9.5, 4.5).unwrap();
+        foundry.ents[boss].hp = 400;
+        foundry.tick(1.0 / 60.0);
+        assert_eq!(foundry.ents.iter().filter(|e| e.kind == EK_PROJ).count(), 8);
+        assert!(foundry.ents.iter().any(|e| e.skin == SKIN_GUNNER && e.kind == EK_BOSS));
+
+        let mut bioforge = arena();
+        bioforge.wave = 3;
+        bioforge.boss_spawned = true;
+        let boss = bioforge.spawn_with_skin(EK_BOSS, map::boss_skin(3), 9.5, 4.5).unwrap();
+        bioforge.ents[boss].hp = 700;
+        bioforge.tick(1.0 / 60.0);
+        assert_eq!(bioforge.ents.iter().filter(|e| e.kind == EK_PROJ && e.effect_tick == 3.0).count(), 6);
+        assert!(bioforge.ents.iter().any(|e| e.skin == SKIN_VATBRUTE && e.kind == EK_BOSS));
+    }
+
+    #[test]
     fn boss_fight_reports_health_and_phase_to_the_hud() {
         let mut e = arena();
         e.boss_spawned = true;
@@ -4443,17 +4478,17 @@ mod tests {
     }
 
     #[test]
-    fn hell_swaps_walls_but_keeps_the_seal() {
+    fn hell_swaps_walls_and_keeps_override_doors_legible() {
         let mut e = arena();
         assert_eq!(e.wall_tex(2, 1, 1), T_BRICK);
-        assert_eq!(e.wall_tex(8, 36, 18), T_SEAL);
+        assert_eq!(e.wall_tex(8, 36, 18), T_DOOR);
         e.hell = true;
         assert_eq!(e.wall_tex(2, 1, 1), T_FLESH);
         assert_eq!(e.wall_tex(6, 1, 1), T_FLESH, "tech becomes flesh, not skull");
         assert_eq!(e.wall_tex(7, 1, 1), T_SKULL, "hazard striping becomes skull");
         assert_eq!(e.wall_tex(9, 1, 1), T_SKULL);
-        assert_eq!(e.wall_tex(8, 36, 18), T_SEAL);
-        assert_eq!(e.wall_tex(9, 36, 19), T_SEAL);
+        assert_eq!(e.wall_tex(8, 36, 18), T_FLESH);
+        assert_eq!(e.wall_tex(9, 36, 19), T_SKULL);
     }
 
     #[test]

@@ -1,7 +1,7 @@
 import { HeartPulse, Shield, Crosshair, Radio } from "lucide-react";
 import type { HudState } from "@/game/types";
 import { cn } from "@/lib/utils";
-import { WEAPONS, fmtTime } from "./data";
+import { WEAPONS, fmtTime, sectorForWave } from "./data";
 
 export function HudBar({
   hud,
@@ -17,14 +17,15 @@ export function HudBar({
   showStats?: boolean;
 }) {
   const weapon = WEAPONS[hud.weapon] ?? WEAPONS[0]!;
+  const sector = sectorForWave(hud.wave);
   const lowAmmo = hud.ammo > 0 && hud.ammo <= weapon.lowAmmoAt && hud.reloading <= 0.001;
   return (
     <div className="field-hud">
       <div className="hud-mission">
         <Radio size={15} />
         <div>
-          <span>NADIR–7 / WAVE {hud.wave || 1}</span>
-          <strong>{hud.prompt === 6 ? "ACTIVATE THE SEAL" : "ELIMINATE THE SIGNAL"}</strong>
+          <span>{sector.code} / {sector.name}</span>
+          <strong>{hud.prompt === 3 ? "INITIATE OVERRIDE" : hud.prompt === 6 ? "REACH THE OVERRIDE" : "ELIMINATE THE SIGNAL"}</strong>
         </div>
       </div>
       <div className="hud-threat">
@@ -40,10 +41,10 @@ export function HudBar({
         </div>
       )}
       {hud.bossHealth > 0 && hud.bossMaxHealth > 0 && (
-        <section className="hud-boss" aria-label="Vault master health">
+        <section className="hud-boss" aria-label={`${sector.bossName} health`}>
           <div>
-            <span>VAULT MASTER</span>
-            <strong>MALIK VEYRAN</strong>
+            <span>{sector.bossTitle}</span>
+            <strong>{sector.bossName}</strong>
             <em>PHASE {hud.bossPhase + 1} / 3</em>
           </div>
           <div className="hud-boss-track">

@@ -11,6 +11,7 @@ import {
   sheetPos,
   WEAPONS,
   gridPos,
+  sectorForWave,
 } from "./data.ts";
 import { DEFAULT_GFX, RES_MODES } from "../../game/types.ts";
 
@@ -45,6 +46,18 @@ describe("fmtTime", () => {
 
   it("clamps negative input to zero", () => {
     assert.equal(fmtTime(-1_000), "0:00");
+  });
+});
+
+describe("sectorForWave", () => {
+  it("cycles through three distinct sectors and bosses", () => {
+    assert.deepEqual([1, 2, 3].map((wave) => sectorForWave(wave).name), [
+      "UPPER WORKS",
+      "CRYOGENIC FOUNDRY",
+      "BIOFORGE DEPTHS",
+    ]);
+    assert.equal(new Set([1, 2, 3].map((wave) => sectorForWave(wave).bossName)).size, 3);
+    assert.equal(sectorForWave(4).name, "UPPER WORKS");
   });
 });
 

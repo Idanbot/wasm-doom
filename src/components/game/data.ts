@@ -6,6 +6,16 @@ export type Score = { name: string; wave: number; kills: number; time: number };
 
 export type Vol = { master: number; music: number; sfx: number };
 
+export const SECTORS = [
+  { code: "NADIR–7A", name: "UPPER WORKS", bossTitle: "VAULT MASTER", bossName: "MALIK VEYRAN" },
+  { code: "NADIR–7B", name: "CRYOGENIC FOUNDRY", bossTitle: "FORGE WARDEN", bossName: "HECATE–9" },
+  { code: "NADIR–7C", name: "BIOFORGE DEPTHS", bossTitle: "SPECIMEN PRIME", bossName: "CHIMERA–9" },
+] as const;
+
+export function sectorForWave(wave: number) {
+  return SECTORS[(Math.max(1, wave || 1) - 1) % SECTORS.length]!;
+}
+
 export const WEAPONS = [
   {
     id: 0,

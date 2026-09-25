@@ -9,6 +9,7 @@ import {
   loadRes,
   loadVol,
   saveBoard,
+  sectorForWave,
   gridPos,
   sheetPos,
   WEAPONS,
@@ -407,7 +408,12 @@ export function GameApp() {
           )}
           {hud.prompt === 6 && (
             <p className="pointer-events-none absolute bottom-28 left-1/2 -translate-x-1/2 font-display text-sm tracking-[0.2em] text-danger">
-              STEP ON THE SEAL
+              REACH THE OVERRIDE STATION
+            </p>
+          )}
+          {hud.prompt === 3 && (
+            <p className="pointer-events-none absolute bottom-28 left-1/2 -translate-x-1/2 font-display text-sm tracking-[0.2em] text-danger">
+              USE E — INITIATE OVERRIDE
             </p>
           )}
           {isCoarse && (
@@ -490,7 +496,7 @@ export function GameApp() {
               <EndCard
                 variant="dead"
                 title="FLATLINED"
-                body={`Wave ${hud.wave || 1} is over. The scanline ends here.`}
+                body={`${sectorForWave(hud.wave).name} remains hostile. The scanline ends here.`}
                 hud={hud}
                 board={board}
                 showBoard
@@ -511,12 +517,12 @@ export function GameApp() {
             {screen === "win" && (
               <EndCard
                 variant="win"
-                title="SITE CLEARED"
-                body="The vault's master is dead. The pit goes quiet."
+                title={`${sectorForWave(hud.wave).name} CLEARED`}
+                body={`${sectorForWave(hud.wave).bossName} is down. A new sector route is unlocked.`}
                 hud={hud}
                 board={board}
                 showBoard={false}
-                nextLabel="Next wave"
+                nextLabel={`Enter ${sectorForWave(hud.wave + 1).name}`}
                 onAgain={nextWave}
                 onMenu={() => {
                   rtRef.current?.restart();

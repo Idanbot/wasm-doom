@@ -146,6 +146,25 @@ try {
   assert.ok(boss.width > 200, "the full boss health track should be visible");
   await page.screenshot({ path: "screenshots/combat-boss-hud.png" });
 
+  await page.evaluate(() => window.__controlsTest.nextWave());
+  await page.waitForFunction(() => document.body.innerText.includes("CRYOGENIC FOUNDRY"));
+  await page.evaluate(() => {
+    window.__controlsTest.setKeys(["KeyW"]);
+    window.__controlsTest.triggerBoss(0);
+    window.__controlsTest.setKeys([]);
+  });
+  await page.waitForFunction(() => document.body.innerText.includes("HECATE–9"));
+  await page.screenshot({ path: "screenshots/sector-foundry.png" });
+  await page.evaluate(() => window.__controlsTest.nextWave());
+  await page.waitForFunction(() => document.body.innerText.includes("BIOFORGE DEPTHS"));
+  await page.evaluate(() => {
+    window.__controlsTest.setKeys(["KeyW"]);
+    window.__controlsTest.triggerBoss(0);
+    window.__controlsTest.setKeys([]);
+  });
+  await page.waitForFunction(() => document.body.innerText.includes("CHIMERA–9"));
+  await page.screenshot({ path: "screenshots/sector-bioforge.png" });
+
   await page.goto(url.href);
   await page.waitForFunction(
     () => !!window.__controlsTest && document.body.innerText.includes("HEALTH"),

@@ -1,6 +1,6 @@
 # HELLSCAN
 
-A Doom-style raycaster that runs entirely in the browser. The simulation is written in **Rust**, compiled to **WebAssembly**, and presented through **WebGPU** (with WebGL2 / Canvas2D fallbacks). Sweep the corridors of Site Nadir-7, fight through waves, and face the Vault Master.
+A Doom-style raycaster that runs entirely in the browser. The simulation is written in **Rust**, compiled to **WebAssembly**, and presented through **WebGPU** (with WebGL2 / Canvas2D fallbacks). Sweep three distinct sectors of Site Nadir-7 and defeat Malik Veyran, HECATE–9, and CHIMERA–9.
 
 ## Play
 
