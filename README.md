@@ -19,9 +19,9 @@ Touch controls appear automatically on coarse-pointer devices. Add `?qa=1` to th
 
 ## Deploy
 
-The game is entirely in the browser: simulation, weapons, voices, music, settings, and the local leaderboard. GitHub Pages can serve that. It cannot run the TanStack/Nitro server build, and it does not need to — nothing in play calls a server.
+The game is entirely in the browser: simulation, weapons, voices, music, settings, and the local leaderboard. A static host can serve that. It does not need the TanStack/Nitro server.
 
-`npm run build:pages` writes `dist-pages/` for `https://<user>.github.io/wasm-doom/`. Leave the Pages custom-domain field empty. `.github/workflows/pages.yml` publishes that folder on push to `main` once the repo's Pages source is set to GitHub Actions.
+`npm run build:pages` writes `dist-pages/` with base `/wasm-doom/`. This GitHub account cannot publish that folder: the user site owns `idanbot.me`, and GitHub attaches that domain to every Pages site here, including `idanbot.github.io/wasm-doom`. Use an account or organization that has no Pages custom domain.
 
 
 ## Architecture
