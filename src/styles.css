@@ -977,7 +977,7 @@ select:focus-visible {
 .hud-plate {
   background: var(--hud-panel, url("../public/game/ui/hud-panel.webp")) center / 100% 100% no-repeat;
   width: 300px;
-  padding: 24px 28px;
+  padding: 26px 32px 34px;
   box-sizing: border-box;
   flex-shrink: 0;
   min-width: 0;
@@ -1158,7 +1158,7 @@ select:focus-visible {
   }
   .hud-plate {
     width: 265px;
-    padding: 24px 28px;
+    padding: 24px 28px 30px;
   }
 }
 @media (max-width: 600px) {
@@ -1312,7 +1312,7 @@ select:focus-visible {
   }
   .hud-plate {
     width: calc(50% - 4px);
-    padding: 16px;
+    padding: 18px 18px 22px;
   }
   .hud-health {
     gap: 6px;
@@ -1385,7 +1385,7 @@ select:focus-visible {
   }
   .hud-plate {
     padding-top: 20px;
-    padding-bottom: 24px;
+    padding-bottom: 28px;
   }
   .hud-health strong,
   .hud-ammo > strong {
