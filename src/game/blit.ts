@@ -185,11 +185,7 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
       let arc = abs(sin(uv.x * 46.0 + t * 9.0) * sin(uv.y * 18.0 - t * 4.0));
       let bolt = smoothstep(0.92, 1.0, arc) * floorish;
       c = vec4<f32>(c.rgb + vec3<f32>(0.55, 0.82, 1.0) * bolt * 0.85, 1.0);
-    } else if (u.boss < 1.5) {
-      let smoke = sin(uv.x * 7.0 + t * 0.6) * sin(uv.y * 5.0 - t * 0.35);
-      let haze = (0.5 + 0.5 * smoke) * floorish * 0.28;
-      c = vec4<f32>(mix(c.rgb, vec3<f32>(0.16, 0.09, 0.06), haze), 1.0);
-    } else {
+    } else if (u.boss >= 1.5) {
       let cell = fract(uv * vec2<f32>(90.0, 54.0) + vec2<f32>(t * 0.15, -t * 0.08));
       let mote = smoothstep(0.08, 0.0, length(cell - 0.5));
       c = vec4<f32>(c.rgb + vec3<f32>(0.25, 0.9, 0.35) * mote * 0.55, 1.0);
@@ -590,10 +586,7 @@ void main(){
     if (boss < 0.5) {
       float arc = abs(sin(uv.x * 46.0 + time * 9.0) * sin(uv.y * 18.0 - time * 4.0));
       rgb += vec3(0.55, 0.82, 1.0) * smoothstep(0.92, 1.0, arc) * floorish * 0.85;
-    } else if (boss < 1.5) {
-      float smoke = sin(uv.x * 7.0 + time * 0.6) * sin(uv.y * 5.0 - time * 0.35);
-      rgb = mix(rgb, vec3(0.16, 0.09, 0.06), (0.5 + 0.5 * smoke) * floorish * 0.28);
-    } else {
+    } else if (boss >= 1.5) {
       vec2 cell = fract(uv * vec2(90.0, 54.0) + vec2(time * 0.15, -time * 0.08));
       rgb += vec3(0.25, 0.9, 0.35) * smoothstep(0.08, 0.0, length(cell - 0.5)) * 0.55;
     }

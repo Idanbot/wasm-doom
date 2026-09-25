@@ -61,6 +61,7 @@ type WasmExports = {
   hs_gpu_sprite_count: () => number;
   hs_floor_ptr: () => number;
   hs_light_ptr: () => number;
+  hs_smoke_ptr: () => number;
   hs_yaw: () => number;
   hs_speed: () => number;
   hs_spread: () => number;
@@ -955,6 +956,7 @@ export class HellscanRuntime {
         wasm.hs_gpu_sprite_count(),
         wasm.hs_floor_ptr(),
         wasm.hs_light_ptr(),
+        wasm.hs_smoke_ptr(),
         w,
       );
       presented = blit.drawWorld(frame, fx);

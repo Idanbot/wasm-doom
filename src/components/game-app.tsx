@@ -401,7 +401,7 @@ export function GameApp() {
   useEffect(() => {
     rtRef.current?.setResolution(res);
     try {
-      localStorage.setItem("hellscan-res", res.id);
+      localStorage.setItem("blacksite-res", res.id);
     } catch {
       /* ignore */
     }

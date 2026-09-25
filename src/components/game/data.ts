@@ -260,7 +260,7 @@ export function gpuEnabled() {
 
 export function loadRes(): ResMode {
   try {
-    const id = localStorage.getItem("hellscan-res");
+    const id = localStorage.getItem("blacksite-res");
     const hit = RES_MODES.find((r) => r.id === id);
     if (hit) return hit;
   } catch {

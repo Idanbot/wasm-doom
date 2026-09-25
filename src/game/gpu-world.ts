@@ -21,7 +21,6 @@ export const T_GUN11 = T_GUN8 + 3;
 export const TEX_N = T_GUN11 + 1;
 export const MAX_COLS = 3840;
 export const TEX = 256;
-
 export type WorldFrame = {
   w: number;
   h: number;
@@ -31,7 +30,9 @@ export type WorldFrame = {
   spriteCount: number;
   floor: Uint8Array;
   light: Float32Array;
+  smoke: Float32Array;
 };
+
 
 export type GpuWorld = {
   uploadAtlas(layers: Uint8Array): void;
@@ -78,6 +79,24 @@ fn light_at(wx: f32, wy: f32) -> vec3<f32> {
   let c = textureLoad(light_tex, vec2<i32>(ix, iy + 1), 0).rgb;
   let d = textureLoad(light_tex, vec2<i32>(ix + 1, iy + 1), 0).rgb;
   return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+}
+
+fn smoke_at(wx: f32, wy: f32) -> f32 {
+  let x = i32(clamp(floor(wx), 0.0, 47.0));
+  let y = i32(clamp(floor(wy), 0.0, 31.0));
+  return textureLoad(light_tex, vec2<i32>(x, y), 0).a;
+}
+
+fn through_smoke(rgb: vec3<f32>, ax: f32, ay: f32, bx: f32, by: f32) -> vec3<f32> {
+  var tau = 0.0;
+  for (var i = 1; i <= 6; i++) {
+    let t = f32(i) / 6.0;
+    tau += smoke_at(mix(ax, bx, t), mix(ay, by, t));
+  }
+  tau *= length(vec2<f32>(bx - ax, by - ay)) / 6.0;
+  let k = 1.0 - exp(-tau * 1.8);
+  return mix(rgb, vec3<f32>(0.58, 0.60, 0.62), clamp(k, 0.0, 0.92));
+}
 }
 
 fn sigil_center(level: i32) -> vec2<f32> {
@@ -136,6 +155,9 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
     let side_mul = select(1.0, 0.65, c2.z > 0.5);
     let dist = (1.0 / (1.0 + perp * 0.12)) * side_mul + muzzle * 0.55 / (1.0 + perp * perp * 0.3);
     rgb = clamp(rgb * clamp(vec3<f32>(dist) + light, vec3<f32>(0.18), vec3<f32>(1.8)), vec3<f32>(0.0), vec3<f32>(1.0));
+    let cam = 2.0 * (f32(x) + 0.5) / w - 1.0;
+    let ray = view.v[0].zw + view.v[1].xy * cam;
+    rgb = through_smoke(rgb, view.v[0].x, view.v[0].y, view.v[0].x + perp * ray.x, view.v[0].y + perp * ray.y);
     return vec4<f32>(rgb, clamp(perp / 28.0, 0.0, 1.0));
   }
   let p = f32(py) - view.v[1].z;
@@ -171,6 +193,7 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
       let shade_k = 0.72 + 0.2 / (1.0 + dist * 0.2) + muzzle * 0.45 / (1.0 + dist * dist);
       let lit = light_at(fx, fy) * 1.35;
       rgb = clamp(rgb * clamp(vec3<f32>(shade_k) + lit, vec3<f32>(0.16), vec3<f32>(2.2)), vec3<f32>(0.0), vec3<f32>(1.0));
+      rgb = through_smoke(rgb, view.v[0].x, view.v[0].y, fx, fy);
       return vec4<f32>(rgb, clamp(dist / 28.0, 0.0, 1.0));
     } else if (style > 0.5) {
       id = 6;
@@ -181,6 +204,7 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
   var rgb = sample_atlas(id, u, v).rgb;
   let shade_k = select(0.78, 0.72 + 0.2 / (1.0 + dist * 0.2) + muzzle * 0.45 / (1.0 + dist * dist), on_floor);
   rgb = clamp(rgb * clamp(vec3<f32>(shade_k) + light_at(fx, fy), vec3<f32>(0.18), vec3<f32>(1.8)), vec3<f32>(0.0), vec3<f32>(1.0));
+  rgb = through_smoke(rgb, view.v[0].x, view.v[0].y, fx, fy);
   return vec4<f32>(rgb, clamp(dist / 28.0, 0.0, 1.0));
 }
 `;
@@ -192,6 +216,7 @@ struct View { v: array<vec4<f32>, 4> }
 @group(0) @binding(2) var<storage, read> sprites: array<vec4<f32>>;
 @group(0) @binding(3) var atlas: texture_2d_array<f32>;
 @group(0) @binding(4) var atlas_samp: sampler;
+@group(0) @binding(6) var light_tex: texture_2d<f32>;
 
 struct VSOut {
   @builtin(position) pos: vec4<f32>,
@@ -253,7 +278,15 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
   }
   var rgb: vec3<f32>;
   var a: f32;
-  if (kind == 21) {
+  if (kind == 17 && frame < 0.0) {
+    let d = inp.uv * 2.0 - 1.0;
+    let rad = dot(d, d);
+    if (rad >= 1.0) { discard; }
+    let n = sin(d.x * 11.0 + view.v[1].w) * sin(d.y * 8.0 - view.v[1].w * 0.7);
+    let soft = pow(1.0 - rad, 1.6) * (0.7 + 0.2 * n);
+    rgb = mix(vec3<f32>(0.28, 0.29, 0.30), vec3<f32>(0.74, 0.76, 0.78), soft);
+    a = 1.0;
+  } else if (kind == 21) {
     let d = inp.uv * 2.0 - 1.0;
     let rad = dot(d, d);
     if (rad >= 1.0) { discard; }
@@ -264,8 +297,6 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
     let tex = textureSampleLevel(atlas, atlas_samp, uv, clamp(i32(inp.info.x), 0, ${TEX_N - 1}), 0.0);
     a = tex.a;
     if (a < 16.0 / 255.0) { discard; }
-    // Alpha in the render target stores scene depth. Screen-door coverage
-    // preserves soft sprite edges without corrupting that depth channel.
     let parity = vec2<i32>(inp.pos.xy) & vec2<i32>(1);
     let coverage = (f32((parity.x ^ parity.y) * 2 + parity.y) + 0.5) / 4.0;
     if (a < coverage) { discard; }
@@ -391,7 +422,7 @@ export function createWebGpuWorld(device: GPUDevice): GpuWorld {
           lightPad[d] = f16(frame.light[s] ?? 0);
           lightPad[d + 1] = f16(frame.light[s + 1] ?? 0);
           lightPad[d + 2] = f16(frame.light[s + 2] ?? 0);
-          lightPad[d + 3] = f16(1);
+          lightPad[d + 3] = f16(frame.smoke[y * MAP_W + x] ?? 0);
         }
       }
       device.queue.writeTexture(
@@ -431,6 +462,7 @@ export function readWorldFrame(
   spriteCount: number,
   floorPtr: number,
   lightPtr: number,
+  smokePtr: number,
   w: number,
 ): WorldFrame {
   const view = new Float32Array(VIEW_FLOATS);
@@ -443,7 +475,9 @@ export function readWorldFrame(
   floor.set(new Uint8Array(memory, floorPtr, MAP_W * MAP_H));
   const light = new Float32Array(MAP_W * MAP_H * 3);
   light.set(new Float32Array(memory, lightPtr, MAP_W * MAP_H * 3));
-  return { w, h: view[11]!, view, cols, sprites, spriteCount, floor, light };
+  const smoke = new Float32Array(MAP_W * MAP_H);
+  if (smokePtr) smoke.set(new Float32Array(memory, smokePtr, MAP_W * MAP_H));
+  return { w, h: view[11]!, view, cols, sprites, spriteCount, floor, light, smoke };
 }
 
 const GL_FILL_VS = `#version 300 es
@@ -689,7 +723,7 @@ export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
         lightRgba[i * 4] = frame.light[i * 3] ?? 0;
         lightRgba[i * 4 + 1] = frame.light[i * 3 + 1] ?? 0;
         lightRgba[i * 4 + 2] = frame.light[i * 3 + 2] ?? 0;
-        lightRgba[i * 4 + 3] = 1;
+        lightRgba[i * 4 + 3] = frame.smoke[i] ?? 0;
       }
       gl.bindTexture(gl.TEXTURE_2D, lightTex);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);

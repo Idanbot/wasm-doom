@@ -157,9 +157,9 @@ describe("loadRes", () => {
   });
 
   it("restores a stored mode and rejects unknown ids", () => {
-    installMemoryStorage({ "hellscan-res": "1280" });
+    installMemoryStorage({ "blacksite-res": "1280" });
     assert.equal(loadRes().id, "1280");
-    installMemoryStorage({ "hellscan-res": "bogus" });
+    installMemoryStorage({ "blacksite-res": "bogus" });
     assert.equal(loadRes().id, "1080");
   });
 
