@@ -21,7 +21,7 @@ Touch controls appear automatically on coarse-pointer devices. Add `?qa=1` to th
 
 The game is entirely in the browser: simulation, weapons, voices, music, settings, and the local leaderboard. A static host can serve that. It does not need the TanStack/Nitro server.
 
-`npm run build:pages` writes `dist-pages/` with base `/wasm-doom/`. This GitHub account cannot publish that folder: the user site owns `idanbot.me`, and GitHub attaches that domain to every Pages site here, including `idanbot.github.io/wasm-doom`. Use an account or organization that has no Pages custom domain.
+It is published at [idanbot.me/wasm-doom](https://idanbot.me/wasm-doom/). `npm run build:pages` writes `dist-pages/` with base `/wasm-doom/`. The user site already owns `idanbot.me`, so this project is served on that path. Do not set a separate custom domain on this repo.
 
 
 ## Architecture
