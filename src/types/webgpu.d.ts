@@ -10,7 +10,7 @@ interface GPUAdapter {
 type GPUTextureFormat = string;
 
 interface GPUDevice {
-  createShaderModule(desc: { code: string }): GPUShaderModule;
+  createShaderModule(desc: { code: string; label?: string }): GPUShaderModule;
   createRenderPipeline(desc: Record<string, unknown>): GPURenderPipeline;
   createBuffer(desc: { size: number; usage: number }): GPUBuffer;
   createTexture(desc: Record<string, unknown>): GPUTexture;
@@ -19,6 +19,9 @@ interface GPUDevice {
   createBindGroupLayout(desc: Record<string, unknown>): GPUBindGroupLayout;
   createPipelineLayout(desc: Record<string, unknown>): GPUPipelineLayout;
   createCommandEncoder(): GPUCommandEncoder;
+  pushErrorScope(scope: string): void;
+  popErrorScope(): Promise<{ message?: string } | null>;
+  addEventListener(type: string, listener: (e: unknown) => void): void;
   queue: GPUQueue;
   lost: Promise<unknown>;
   destroy(): void;
@@ -26,7 +29,14 @@ interface GPUDevice {
 
 interface GPUSampler {}
 
-interface GPUShaderModule {}
+interface GPUCompilationMessage {
+  type: string;
+  message: string;
+}
+
+interface GPUShaderModule {
+  getCompilationInfo(): Promise<{ messages: GPUCompilationMessage[] }>;
+}
 interface GPURenderPipeline {
   getBindGroupLayout(i: number): GPUBindGroupLayout;
 }
