@@ -1,4 +1,4 @@
-# Hellscan monster sprite design
+# BLACKSITE monster sprite design
 
 Authoritative art specification for the current roster and every future hostile billboard.
 

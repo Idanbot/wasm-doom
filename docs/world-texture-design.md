@@ -1,4 +1,4 @@
-# Hellscan world texture design
+# BLACKSITE world texture design
 
 Source of truth for every wall, floor, ceiling, door, and hazard tile. Same universe as `docs/monster-sprite-design.md` (rust, wine, bone, steel, upper-left light, no painterly smear).
 

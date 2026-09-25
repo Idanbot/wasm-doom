@@ -13,6 +13,18 @@ use enemies::{default_skin, enemy_def, is_hostile_kind, skin_def};
 use events::*;
 pub use hud::{Hud, HUD_OFFSETS, HUD_SIZE};
 use types::{AmbushTrigger, Ent, FxCmd};
+#[derive(Clone, Copy)]
+struct Smoke {
+    x: f32,
+    y: f32,
+    age: f32,
+    vx: f32,
+    vy: f32,
+}
+
+impl Smoke {
+    const DEAD: Self = Self { x: 0.0, y: 0.0, age: -1.0, vx: 0.0, vy: 0.0 };
+}
 
 struct Engine {
     w: usize,
@@ -98,7 +110,7 @@ struct Engine {
     radio_seq: i32,
     radio_line: i32,
     ambush: Vec<AmbushTrigger>,
-    smokes: [(f32, f32, f32); 8],
+    smokes: [Smoke; 8],
     smoke_grid: Vec<f32>,
 }
 
@@ -466,7 +478,7 @@ impl Engine {
             radio_seq: 0,
             radio_line: 0,
             ambush: Vec::new(),
-            smokes: [(-1.0, 0.0, -1.0); 8],
+            smokes: [Smoke::DEAD; 8],
             smoke_grid: vec![0.0; MAP_CELLS],
         };
         e.build_map();
@@ -485,35 +497,58 @@ impl Engine {
         let mut slot = 0usize;
         let mut oldest = -1.0f32;
         for (i, s) in self.smokes.iter().enumerate() {
-            if s.2 < 0.0 {
+            if s.age < 0.0 {
                 slot = i;
                 break;
             }
-            if s.2 > oldest {
-                oldest = s.2;
+            if s.age > oldest {
+                oldest = s.age;
                 slot = i;
             }
         }
-        self.smokes[slot] = (x, y, 0.0);
+        let drift = self.rnd() * core::f32::consts::TAU;
+        self.smokes[slot] = Smoke {
+            x,
+            y,
+            age: 0.0,
+            vx: drift.cos() * 0.55,
+            vy: drift.sin() * 0.55,
+        };
         for n in 0..7 {
-            let a = n as f32 * core::f32::consts::TAU / 7.0;
+            let a = n as f32 * core::f32::consts::TAU / 7.0 + drift;
             let r = 0.4 + (n % 3) as f32 * 0.35;
             if let Some(i) = self.spawn(EK_SMOKE, x + a.cos() * r, y + a.sin() * r) {
                 let e = &mut self.ents[i];
                 e.timer = 10.0;
                 e.effect_tick = 10.0;
-                e.vx = a.cos() * 0.22;
-                e.vy = a.sin() * 0.22;
+                e.vx = a.cos() * 0.35;
+                e.vy = a.sin() * 0.35;
                 e.zoff = -20.0 - (n % 3) as f32 * 22.0;
             }
         }
     }
 
     fn age_smoke(&mut self, dt: f32) {
-        for s in &mut self.smokes {
-            if s.2 < 0.0 { continue; }
-            s.2 += dt;
-            if s.2 >= 10.0 { s.2 = -1.0; }
+        for i in 0..self.smokes.len() {
+            if self.smokes[i].age < 0.0 { continue; }
+            self.smokes[i].age += dt;
+            if self.smokes[i].age >= 10.0 {
+                self.smokes[i] = Smoke::DEAD;
+                continue;
+            }
+            let s = self.smokes[i];
+            let mut vx = s.vx + (s.y * 1.7 + s.age * 3.0).sin() * dt * 1.1;
+            let mut vy = s.vy + (s.x * 1.3 - s.age * 2.4).cos() * dt * 1.1;
+            let nx = s.x + vx * dt;
+            let ny = s.y + vy * dt;
+            let mut x = s.x;
+            let mut y = s.y;
+            if self.blocked(nx.floor() as i32, s.y.floor() as i32) { vx = -vx * 0.45; } else { x = nx; }
+            if self.blocked(x.floor() as i32, ny.floor() as i32) { vy = -vy * 0.45; } else { y = ny; }
+            self.smokes[i].x = x;
+            self.smokes[i].y = y;
+            self.smokes[i].vx = vx * 0.985;
+            self.smokes[i].vy = vy * 0.985;
         }
     }
 
@@ -529,18 +564,35 @@ impl Engine {
     }
 
     fn rebuild_smoke_grid(&mut self) {
-        self.smoke_grid.fill(0.0);
-        for &(x, y, age) in &self.smokes {
-            if age < 0.0 { continue; }
-            let radius = Self::smoke_radius(age);
-            let strength = Self::smoke_strength(age);
-            let x0 = (x - radius).floor().max(0.0) as usize;
-            let y0 = (y - radius).floor().max(0.0) as usize;
-            let x1 = ((x + radius).ceil() as usize).min(MAP_W - 1);
-            let y1 = ((y + radius).ceil() as usize).min(MAP_H - 1);
+        let mut next = vec![0.0f32; MAP_CELLS];
+        for y in 1..MAP_H - 1 {
+            for x in 1..MAP_W - 1 {
+                if self.blocked(x as i32, y as i32) { continue; }
+                let i = y * MAP_W + x;
+                let here = self.smoke_grid[i];
+                if here < 0.015 { continue; }
+                let gx = self.smoke_grid[i - 1] - self.smoke_grid[i + 1];
+                let gy = self.smoke_grid[i - MAP_W] - self.smoke_grid[i + MAP_W];
+                let sx = (x as f32 + 0.5 - gx * 0.55).clamp(0.0, (MAP_W - 1) as f32);
+                let sy = (y as f32 + 0.5 - gy * 0.55).clamp(0.0, (MAP_H - 1) as f32);
+                if self.blocked(sx.floor() as i32, sy.floor() as i32) { continue; }
+                let dest = sy as usize * MAP_W + sx as usize;
+                next[dest] = (next[dest] + here * 0.94).min(1.6);
+            }
+        }
+        self.smoke_grid.copy_from_slice(&next);
+        for s in self.smokes {
+            if s.age < 0.0 { continue; }
+            let radius = Self::smoke_radius(s.age);
+            let strength = Self::smoke_strength(s.age);
+            let x0 = (s.x - radius).floor().max(0.0) as usize;
+            let y0 = (s.y - radius).floor().max(0.0) as usize;
+            let x1 = ((s.x + radius).ceil() as usize).min(MAP_W - 1);
+            let y1 = ((s.y + radius).ceil() as usize).min(MAP_H - 1);
             for cy in y0..=y1 {
                 for cx in x0..=x1 {
-                    let d = ((cx as f32 + 0.5 - x).powi(2) + (cy as f32 + 0.5 - y).powi(2)).sqrt();
+                    if self.blocked(cx as i32, cy as i32) { continue; }
+                    let d = ((cx as f32 + 0.5 - s.x).powi(2) + (cy as f32 + 0.5 - s.y).powi(2)).sqrt();
                     if d >= radius { continue; }
                     let cover = (1.0 - d / radius).powi(2) * strength;
                     let i = cy * MAP_W + cx;
@@ -3633,6 +3685,29 @@ impl Engine {
             self.add_light(&mut grid, self.px, self.py, 5.2, [power, power * 0.55, power * 0.18]);
         }
         self.light_grid = grid;
+        self.bounce_light();
+    }
+
+    fn bounce_light(&mut self) {
+        let src = self.light_grid.clone();
+        for y in 1..MAP_H - 1 {
+            for x in 1..MAP_W - 1 {
+                if self.blocked(x as i32, y as i32) { continue; }
+                let i = y * MAP_W + x;
+                let mut acc = [0.0f32; 3];
+                let mut n = 0.0f32;
+                for (dx, dy) in [(1, 0), (-1, 0), (0, 1), (0, -1)] {
+                    let nx = x as i32 + dx;
+                    let ny = y as i32 + dy;
+                    if self.blocked(nx, ny) { continue; }
+                    let j = ny as usize * MAP_W + nx as usize;
+                    for c in 0..3 { acc[c] += src[j][c].max(0.0); }
+                    n += 1.0;
+                }
+                if n <= 0.0 { continue; }
+                for c in 0..3 { self.light_grid[i][c] += acc[c] / n * 0.22; }
+            }
+        }
     }
 
     fn light_at(&self, x: f32, y: f32) -> [f32; 3] {
@@ -5049,7 +5124,7 @@ mod tests {
         e.rebuild_smoke_grid();
         assert!(e.smoke_grid.iter().any(|d| *d > 0.2), "a fresh cloud must occupy the cell");
         for _ in 0..700 { e.age_smoke(1.0 / 60.0); }
-        assert!(e.smokes.iter().all(|s| s.2 < 0.0), "smoke must be gone after 10 seconds");
+        assert!(e.smokes.iter().all(|s| s.age < 0.0), "smoke must be gone after 10 seconds");
     }
 
     #[test]

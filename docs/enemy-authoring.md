@@ -1,6 +1,6 @@
 # Enemy authoring guide
 
-How to add a new enemy (or prop, pickup, effect) to HELLSCAN without
+How to add a new enemy (or prop, pickup, effect) to BLACKSITE without
 touching engine systems. The roster is data: one row per kind in
 `engine/src/enemies.rs` (`ENEMY_DEFS`). Art spec lives in
 `docs/monster-sprite-design.md`; this doc covers code, grids and sizes.
