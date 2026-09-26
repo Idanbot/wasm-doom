@@ -1,0 +1,4291 @@
+[
+  {
+    "file": "/game/ceil_pipes.png",
+    "name": "ceil_pipes.png",
+    "size": 27256,
+    "hash": "76475077bd10c63ffcd88bc41d080fa461b0ad01256e5cd4e893629bc0abe0d6",
+    "shortHash": "76475077",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "file": "/game/enemy_breacher_dead.png",
+    "name": "enemy_breacher_dead.png",
+    "size": 44996,
+    "hash": "7324cea158f5b360e550ce162db44700654992c5ed30c628e9da67dc428cda1d",
+    "shortHash": "7324cea1",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_breacher_fire.png",
+    "name": "enemy_breacher_fire.png",
+    "size": 56526,
+    "hash": "8f47f12f259ebe58768107fd95ce1a25a6d3bd49c5750a62ed192e1c54df1aa2",
+    "shortHash": "8f47f12f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_breacher_idle.png",
+    "name": "enemy_breacher_idle.png",
+    "size": 55801,
+    "hash": "658cc2b5d176196fa5e89ddcd72a463ecf400887d88a97d0e9e045b9eb43aa70",
+    "shortHash": "658cc2b5",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_breacher_move.png",
+    "name": "enemy_breacher_move.png",
+    "size": 55390,
+    "hash": "ea843e41f7b8e5f037dc376d40bde68021d5fffb2fcfae5cf264df8c9172684a",
+    "shortHash": "ea843e41",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_breacher_pain.png",
+    "name": "enemy_breacher_pain.png",
+    "size": 49931,
+    "hash": "00ad421ba33bfa90e8bff42123db74895cbf40c39459734cadbf88728e226612",
+    "shortHash": "00ad421b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_breacher_reload.png",
+    "name": "enemy_breacher_reload.png",
+    "size": 54590,
+    "hash": "a0c219a1e245bf36c6059ce66a33735532ab5cf4270e78c9f920dc1e3597e7e3",
+    "shortHash": "a0c219a1",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_breacher_special.png",
+    "name": "enemy_breacher_special.png",
+    "size": 71297,
+    "hash": "b89a1c090b761dd513c9c460df6953752db6c22f4d070d47286c4a3152c34751",
+    "shortHash": "b89a1c09",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_chimera_dead.png",
+    "name": "enemy_chimera_dead.png",
+    "size": 88800,
+    "hash": "e40c39393a3a48b37e5167c026a642daa393fe0ac1edaf5364092f4912271de8",
+    "shortHash": "e40c3939",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_chimera_fire.png",
+    "name": "enemy_chimera_fire.png",
+    "size": 112565,
+    "hash": "fcb7b3291e8c5a28be95bfe86de88854919f51da47e4b3416465bfe0cfd5b754",
+    "shortHash": "fcb7b329",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_chimera_idle.png",
+    "name": "enemy_chimera_idle.png",
+    "size": 117553,
+    "hash": "23e344f13b9a34f97da0c4a4cefd7413459db5b4dd9188df4b40989498cfa2af",
+    "shortHash": "23e344f1",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_chimera_move.png",
+    "name": "enemy_chimera_move.png",
+    "size": 116096,
+    "hash": "630f110c8eed00c37a81bcfabc01d5d719386ad65b5d4a973df11a2cc3f30c0e",
+    "shortHash": "630f110c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_chimera_pain.png",
+    "name": "enemy_chimera_pain.png",
+    "size": 105498,
+    "hash": "b2e09a3c42c1b34088c83b9264208213eb33f20d87554f21e9c976f775a74d62",
+    "shortHash": "b2e09a3c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_chimera_reload.png",
+    "name": "enemy_chimera_reload.png",
+    "size": 114312,
+    "hash": "bb2a16511bf0d170bfe11d17059c98197b34f5f16765292efabe70e2ae02e8c5",
+    "shortHash": "bb2a1651",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_chimera_special.png",
+    "name": "enemy_chimera_special.png",
+    "size": 125063,
+    "hash": "ef97609e79a083cf0ac86605fa020bbe66a5f117a9f449c764f750d10fb78649",
+    "shortHash": "ef97609e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_gunner_dead.png",
+    "name": "enemy_gunner_dead.png",
+    "size": 65192,
+    "hash": "964e4d631e1b3edd3bccbbd885372816a28a10bf5f13c3ff67ea35e051281ae6",
+    "shortHash": "964e4d63",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_gunner_fire.png",
+    "name": "enemy_gunner_fire.png",
+    "size": 79299,
+    "hash": "c75b442f622ab29a8a4d408f500107468a1719d3236414dcacfec124a0605c1a",
+    "shortHash": "c75b442f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_gunner_idle.png",
+    "name": "enemy_gunner_idle.png",
+    "size": 80964,
+    "hash": "09e4fc2ac2da1b927734398b597e9746247843bacc33c7cabdb41ed604c08e3b",
+    "shortHash": "09e4fc2a",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_gunner_move.png",
+    "name": "enemy_gunner_move.png",
+    "size": 80258,
+    "hash": "4ec585c8e720f4c7748ff3971803685be42f4797cdf1ec0324ec19821cd70ffd",
+    "shortHash": "4ec585c8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_gunner_pain.png",
+    "name": "enemy_gunner_pain.png",
+    "size": 71266,
+    "hash": "ae1302239880e35d1fd2dcc69d9a2b4ad0015724d540ea41c8dcd481110b2ac5",
+    "shortHash": "ae130223",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_gunner_reload.png",
+    "name": "enemy_gunner_reload.png",
+    "size": 79117,
+    "hash": "61d5d3c4089ba60ee93250dbb81c8060e323927ff960b16d1842abcf954899ba",
+    "shortHash": "61d5d3c4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_gunner_special.png",
+    "name": "enemy_gunner_special.png",
+    "size": 93323,
+    "hash": "9e95c7e51347758aa501a520b6bf546172cd20457bdd0602a9dd30e21adcc6d6",
+    "shortHash": "9e95c7e5",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hazmat_dead.png",
+    "name": "enemy_hazmat_dead.png",
+    "size": 42831,
+    "hash": "c1bf7711fa86dcfe8546bffe7176b4a88fbed3e73bbadfb7ccc86ca112be79fe",
+    "shortHash": "c1bf7711",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hazmat_fire.png",
+    "name": "enemy_hazmat_fire.png",
+    "size": 52418,
+    "hash": "6931e4b083168001efec93e814ffe19907f880af41b15981989364c47a01fffd",
+    "shortHash": "6931e4b0",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hazmat_idle.png",
+    "name": "enemy_hazmat_idle.png",
+    "size": 51876,
+    "hash": "388168df77fc1027edc016d2273c0b3f068c84177b1142f08f3622974ecc940c",
+    "shortHash": "388168df",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hazmat_move.png",
+    "name": "enemy_hazmat_move.png",
+    "size": 51497,
+    "hash": "495912c4f0ad155e3ffdd4dfe6cbbfa503257677ef83707387323f8d42164624",
+    "shortHash": "495912c4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hazmat_pain.png",
+    "name": "enemy_hazmat_pain.png",
+    "size": 46250,
+    "hash": "e09a48fb631af014740e30d6207d894c11edac43236384c4f8abad9a1979b9f7",
+    "shortHash": "e09a48fb",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hazmat_reload.png",
+    "name": "enemy_hazmat_reload.png",
+    "size": 51027,
+    "hash": "9ac9efb7d8fcc9c57bc875ef22603a503a43c292f0a3a2b598146004245d26c7",
+    "shortHash": "9ac9efb7",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hazmat_special.png",
+    "name": "enemy_hazmat_special.png",
+    "size": 68265,
+    "hash": "8ce5d018dc8a322fa2a5da548dfb9316fece6ff562946e6d1ffcd1b2360a0d15",
+    "shortHash": "8ce5d018",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hecate_dead.png",
+    "name": "enemy_hecate_dead.png",
+    "size": 78041,
+    "hash": "fb00a2ed51a59320d4cbe6102a14eaf4354f8b657ad373d0db2888a1b1da87ba",
+    "shortHash": "fb00a2ed",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hecate_fire.png",
+    "name": "enemy_hecate_fire.png",
+    "size": 96887,
+    "hash": "a2e0af6712879de6335b6eddafb989543eb067c9ee32d16f54e91fbe4aab8614",
+    "shortHash": "a2e0af67",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hecate_idle.png",
+    "name": "enemy_hecate_idle.png",
+    "size": 99827,
+    "hash": "1872394953c6ae217bc68ab1abac32b59a896f9b5bac47ebd78d6b3b0f6f97ae",
+    "shortHash": "18723949",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hecate_move.png",
+    "name": "enemy_hecate_move.png",
+    "size": 98621,
+    "hash": "441415787eef1aaee458f7578959e249938e666e1d950130eb2baa63ca8dfd6e",
+    "shortHash": "44141578",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hecate_pain.png",
+    "name": "enemy_hecate_pain.png",
+    "size": 88322,
+    "hash": "0a9a4868036b552672dc5ebaab563715471b17de57dad8566441f8cc25b23cf7",
+    "shortHash": "0a9a4868",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hecate_reload.png",
+    "name": "enemy_hecate_reload.png",
+    "size": 97160,
+    "hash": "e5e1bd816a670e385b695f8b87d84b2ec4e4a69bd4ba1a2c6498dc5ac22b199e",
+    "shortHash": "e5e1bd81",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hecate_special.png",
+    "name": "enemy_hecate_special.png",
+    "size": 109187,
+    "hash": "fc5f26da2af2d9a1906170feb557adc507ffdad3a5d28f6884c5c3a21cc31262",
+    "shortHash": "fc5f26da",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hornet_dead.png",
+    "name": "enemy_hornet_dead.png",
+    "size": 44672,
+    "hash": "7ef8f957c434071235c14d7fe5cc0b53132a58f7ea912915e18db6197e09ce72",
+    "shortHash": "7ef8f957",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hornet_fire.png",
+    "name": "enemy_hornet_fire.png",
+    "size": 56382,
+    "hash": "b7ff5f36af5faa267852b9f518b483dbad46c6e86636b962a16fc69c0c107982",
+    "shortHash": "b7ff5f36",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hornet_idle.png",
+    "name": "enemy_hornet_idle.png",
+    "size": 54596,
+    "hash": "2a781a7bc4c6edccacf825716f2511216e2d2be85b6aaba65773e1585b54159c",
+    "shortHash": "2a781a7b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hornet_move.png",
+    "name": "enemy_hornet_move.png",
+    "size": 53983,
+    "hash": "4940e98e37f9275554e7feef3482d0abc53ea6086cf3affcd39e7b93428d6db9",
+    "shortHash": "4940e98e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hornet_pain.png",
+    "name": "enemy_hornet_pain.png",
+    "size": 50406,
+    "hash": "d5fb72bc81932a65ff0bace7ada4ca42f71844cec77883975b01290ade9b2cb6",
+    "shortHash": "d5fb72bc",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hornet_reload.png",
+    "name": "enemy_hornet_reload.png",
+    "size": 53646,
+    "hash": "c74f5cde547029fd7bca69402b30c981b284e57c3cb3bbe5fd81c2e91a4205ca",
+    "shortHash": "c74f5cde",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hornet_special.png",
+    "name": "enemy_hornet_special.png",
+    "size": 70853,
+    "hash": "0ad0130617f24f82fc2522831ef63b45e510e0918711b7e96b3469f1c7aece4b",
+    "shortHash": "0ad01306",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hound_dead.png",
+    "name": "enemy_hound_dead.png",
+    "size": 44090,
+    "hash": "0965d50d661f7c005b413dcd9c4574361b203b8dde843ae212fbae0889614277",
+    "shortHash": "0965d50d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hound_fire.png",
+    "name": "enemy_hound_fire.png",
+    "size": 54715,
+    "hash": "77a7ae888f0dc4566ac4c87fb98590690eb8082c7c76395cfc5570afa0ee0bb8",
+    "shortHash": "77a7ae88",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hound_idle.png",
+    "name": "enemy_hound_idle.png",
+    "size": 54359,
+    "hash": "30eb2974194be4b6bf5f1b93629fa035425a4736f64fe1483825a95ca79178fc",
+    "shortHash": "30eb2974",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hound_move.png",
+    "name": "enemy_hound_move.png",
+    "size": 54433,
+    "hash": "3a1dacf113c4ac5576d0c9efe97209057b1b7bd34b6b53084acf63c6ecd30aba",
+    "shortHash": "3a1dacf1",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hound_pain.png",
+    "name": "enemy_hound_pain.png",
+    "size": 50082,
+    "hash": "ea07501a84720bd51e9ed316db032d7ae9dad28fcf79d44417e1fd022d3730ef",
+    "shortHash": "ea07501a",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hound_reload.png",
+    "name": "enemy_hound_reload.png",
+    "size": 53950,
+    "hash": "f11c3a4c13b1ffd5b3bc5c8622198cbf0c1b3744c6c8166d248456520719d4fd",
+    "shortHash": "f11c3a4c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_hound_special.png",
+    "name": "enemy_hound_special.png",
+    "size": 70251,
+    "hash": "4d3ad151f000d83fea9cc444c2d1eb8eb5122eea557603f190ba3ffc9da61425",
+    "shortHash": "4d3ad151",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_loader_dead.png",
+    "name": "enemy_loader_dead.png",
+    "size": 70375,
+    "hash": "de681d180373b4d6793b0a2421e0c94caa9bdfa7a00c9882dfed8e48ab33a010",
+    "shortHash": "de681d18",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_loader_fire.png",
+    "name": "enemy_loader_fire.png",
+    "size": 85838,
+    "hash": "50baa984392e92ebc45f1c4576231a9423a2aa67f5b36cd0cf52b4f4811b1a56",
+    "shortHash": "50baa984",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_loader_idle.png",
+    "name": "enemy_loader_idle.png",
+    "size": 87213,
+    "hash": "59341a9041a607ea0d9af918bd010b6218dc8877dc3c8fe327228d42f5500908",
+    "shortHash": "59341a90",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_loader_move.png",
+    "name": "enemy_loader_move.png",
+    "size": 87107,
+    "hash": "b4cc71690ab15190eb8997ec9e366fdd47448ca61d55b50b5d82b72ef7614b45",
+    "shortHash": "b4cc7169",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_loader_pain.png",
+    "name": "enemy_loader_pain.png",
+    "size": 79688,
+    "hash": "f483d9076cb94116231c9b51915b7c0a1cf941ac0fb7c196974ec141be929d29",
+    "shortHash": "f483d907",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_loader_reload.png",
+    "name": "enemy_loader_reload.png",
+    "size": 86582,
+    "hash": "a655173abaa4521c577ab65a8caa58a05178907b6a723b7b583403428586cfbd",
+    "shortHash": "a655173a",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_loader_special.png",
+    "name": "enemy_loader_special.png",
+    "size": 97523,
+    "hash": "2435d11268a9b81e6ab405277589d016fdeccd3ae2df77191d0a9769cb36697f",
+    "shortHash": "2435d112",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_marksman_dead.png",
+    "name": "enemy_marksman_dead.png",
+    "size": 38564,
+    "hash": "1f5584f8ee9de2051de38883d81ae45c8ede186e0ee6ff1a8f219c36241e5e94",
+    "shortHash": "1f5584f8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_marksman_fire.png",
+    "name": "enemy_marksman_fire.png",
+    "size": 48540,
+    "hash": "9294d458d37299ec9a764c76fdcddf380b48bbb5965f28caeebd34a408d8be53",
+    "shortHash": "9294d458",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_marksman_idle.png",
+    "name": "enemy_marksman_idle.png",
+    "size": 47797,
+    "hash": "ecdf02f384bb676fc152a2e90f8c5509c8728760f9b99dbbfebfd53b1e49e6da",
+    "shortHash": "ecdf02f3",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_marksman_move.png",
+    "name": "enemy_marksman_move.png",
+    "size": 47292,
+    "hash": "73ef770b40d57131eaa7c7db939a3605c5629b2017051e3c302df4a498350a6f",
+    "shortHash": "73ef770b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_marksman_pain.png",
+    "name": "enemy_marksman_pain.png",
+    "size": 43090,
+    "hash": "4c24b372d6377e2a440e6417cb015c706d1dbc4838241c4421a7b0848582ec07",
+    "shortHash": "4c24b372",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_marksman_reload.png",
+    "name": "enemy_marksman_reload.png",
+    "size": 46810,
+    "hash": "5921af255067baada07e16bfe0092b2fcca0362b11e722a93ff29f5e277e1b7b",
+    "shortHash": "5921af25",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_marksman_special.png",
+    "name": "enemy_marksman_special.png",
+    "size": 63832,
+    "hash": "e41b6e059822dd404ec28a1a5edc65a03dff61f9de4f16c15dfe702f66763e22",
+    "shortHash": "e41b6e05",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_martyr_dead.png",
+    "name": "enemy_martyr_dead.png",
+    "size": 34147,
+    "hash": "bd1fc880ba6becb2f0b096d9a0839f411ee68ced6095e93c3bc4fd3b113e32d1",
+    "shortHash": "bd1fc880",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_martyr_fire.png",
+    "name": "enemy_martyr_fire.png",
+    "size": 42982,
+    "hash": "47a94cc1b9b864ee6dbd1f224bb86be14397ff6ccbf4d31b8541125db06695a0",
+    "shortHash": "47a94cc1",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_martyr_idle.png",
+    "name": "enemy_martyr_idle.png",
+    "size": 41295,
+    "hash": "7627309acbfb3fe462fc476aa45a9058196eeafae0c6f4e983c47fe7a69d6d5e",
+    "shortHash": "7627309a",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_martyr_move.png",
+    "name": "enemy_martyr_move.png",
+    "size": 40912,
+    "hash": "99a760ad5f12bcc6be739b0c31f9fdd24c0ed277ef35ac1e055eef6d3533c198",
+    "shortHash": "99a760ad",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_martyr_pain.png",
+    "name": "enemy_martyr_pain.png",
+    "size": 37987,
+    "hash": "c8e254cd0c4c31033f31ba1f14b1aa94df11ac7bd2b657572e3b163d243c283e",
+    "shortHash": "c8e254cd",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_martyr_reload.png",
+    "name": "enemy_martyr_reload.png",
+    "size": 40519,
+    "hash": "0e34aeba686df48d42f06f7edaebdc42de3f5c9d449b947424f2900624dde50a",
+    "shortHash": "0e34aeba",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_martyr_special.png",
+    "name": "enemy_martyr_special.png",
+    "size": 58775,
+    "hash": "9399fe03884354bee218c6078fcfb95ce6581195d507c9b55fbac94ab42a3ad4",
+    "shortHash": "9399fe03",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_rifleman_dead.png",
+    "name": "enemy_rifleman_dead.png",
+    "size": 41196,
+    "hash": "d60fcdf4bd4a1a485e52b75224cd227315057a7b7a855ac409e8ef14cd615df8",
+    "shortHash": "d60fcdf4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_rifleman_fire.png",
+    "name": "enemy_rifleman_fire.png",
+    "size": 51273,
+    "hash": "70bf6042ba8dbca1819e55910cd508a0b7bc1bb71ee481fd3ff91beca2b1feb7",
+    "shortHash": "70bf6042",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_rifleman_idle.png",
+    "name": "enemy_rifleman_idle.png",
+    "size": 50168,
+    "hash": "1cd239ed680b2af48d34ea1f4416f476fc45cf3a6ac3c3b55200f263a9c37d5f",
+    "shortHash": "1cd239ed",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_rifleman_move.png",
+    "name": "enemy_rifleman_move.png",
+    "size": 49524,
+    "hash": "0194512d59bda2ca8389810ce62415eecca3521a08c00bce74e0b7fac28f0e5e",
+    "shortHash": "0194512d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_rifleman_pain.png",
+    "name": "enemy_rifleman_pain.png",
+    "size": 44092,
+    "hash": "0d033a9af5cc4d7e032f6ae0b1e8f1e9fc037f6b11fee9a21a6b6c2a4535827e",
+    "shortHash": "0d033a9a",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_rifleman_reload.png",
+    "name": "enemy_rifleman_reload.png",
+    "size": 49198,
+    "hash": "4a79a01e4ee97abc065170addfc97466f1045f9beec59b9bcde3403f39d57f5e",
+    "shortHash": "4a79a01e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_rifleman_special.png",
+    "name": "enemy_rifleman_special.png",
+    "size": 65674,
+    "hash": "2f06edf1a5434c160e4799d5b7be4b4ca90f7e6747d0c06e6a0e4a642b42b25d",
+    "shortHash": "2f06edf1",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_spitter_dead.png",
+    "name": "enemy_spitter_dead.png",
+    "size": 68359,
+    "hash": "f35eebad7a8160fdb4396915fbbe81f9208e21ff6764b86dab27248220a95274",
+    "shortHash": "f35eebad",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_spitter_fire.png",
+    "name": "enemy_spitter_fire.png",
+    "size": 84723,
+    "hash": "70564dc8fe057eb3a1822b098a4dd21a65b986c04da5c80a2fc1a272c6268974",
+    "shortHash": "70564dc8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_spitter_idle.png",
+    "name": "enemy_spitter_idle.png",
+    "size": 87817,
+    "hash": "a17b565253dc926f999d5b39ba1b36d7ac7f6b12f9b9141c4875aebfe4e256fd",
+    "shortHash": "a17b5652",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_spitter_move.png",
+    "name": "enemy_spitter_move.png",
+    "size": 86400,
+    "hash": "cbb92daa30c7ec702631586882cdca9be436d79daffbc979c9563a0060b75c20",
+    "shortHash": "cbb92daa",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_spitter_pain.png",
+    "name": "enemy_spitter_pain.png",
+    "size": 79238,
+    "hash": "01a4ddaee42c87c116ea62dea8363321f8a9adf1e0c9d885749a0cae2c408ee8",
+    "shortHash": "01a4ddae",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_spitter_reload.png",
+    "name": "enemy_spitter_reload.png",
+    "size": 85555,
+    "hash": "94cf12b5e30ef0d66c01f6cecef84a346d19818b8a2ab81295dde8a0af7605f8",
+    "shortHash": "94cf12b5",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_spitter_special.png",
+    "name": "enemy_spitter_special.png",
+    "size": 99182,
+    "hash": "fe4fcdc5c6e2866369e86d7a5cb271dd352c603b3c47f38f9b4154eda29be460",
+    "shortHash": "fe4fcdc5",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_subject_dead.png",
+    "name": "enemy_subject_dead.png",
+    "size": 45102,
+    "hash": "67808118fb9de63344bb414190d659dd7eb2bfaf05b21332b50f15472b705864",
+    "shortHash": "67808118",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_subject_fire.png",
+    "name": "enemy_subject_fire.png",
+    "size": 56460,
+    "hash": "833aaa60ed1bc23ef397f2c21560548f8e2c5a0de23d64bdb931eacd4314b950",
+    "shortHash": "833aaa60",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_subject_idle.png",
+    "name": "enemy_subject_idle.png",
+    "size": 55476,
+    "hash": "82dce534099efca8c62f6018fb81f3df77cb20d2a9c04258f30493d094121adc",
+    "shortHash": "82dce534",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_subject_move.png",
+    "name": "enemy_subject_move.png",
+    "size": 55082,
+    "hash": "2af778f4ca8535954c37732f83b43c9826d20021a5a11e6a2dabc13b263cfebb",
+    "shortHash": "2af778f4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_subject_pain.png",
+    "name": "enemy_subject_pain.png",
+    "size": 50128,
+    "hash": "92b436fc85028eb2985d5f09ec4d83f6068d63c71369239ca938a574d9ec20b1",
+    "shortHash": "92b436fc",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_subject_reload.png",
+    "name": "enemy_subject_reload.png",
+    "size": 54265,
+    "hash": "66ca7e15dbf1bd78457919bcdaf40c5d9952dbaa96937bc66363294ac33c8604",
+    "shortHash": "66ca7e15",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_subject_special.png",
+    "name": "enemy_subject_special.png",
+    "size": 71967,
+    "hash": "13cee183e09a1e591504a8fc9c27a844302a1a36c7a15bf97b07d12d599468ae",
+    "shortHash": "13cee183",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_vatbrute_dead.png",
+    "name": "enemy_vatbrute_dead.png",
+    "size": 83243,
+    "hash": "c5207cd2bdf3758dd0c02ee3c6ee0238f4ff1b31daf6412e9c035d065de9ce87",
+    "shortHash": "c5207cd2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_vatbrute_fire.png",
+    "name": "enemy_vatbrute_fire.png",
+    "size": 103685,
+    "hash": "210e650e6eff86e7bb44d6702f4df9dc7452b785ec3076de09a5d1b69003eca7",
+    "shortHash": "210e650e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_vatbrute_idle.png",
+    "name": "enemy_vatbrute_idle.png",
+    "size": 107781,
+    "hash": "6817856c755de4b66f78db9428a682a2d07c587d473e4db6f2ea1720a5176bda",
+    "shortHash": "6817856c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_vatbrute_move.png",
+    "name": "enemy_vatbrute_move.png",
+    "size": 106513,
+    "hash": "596fd6ae11533e37eefc07d310c2637cd685fb03f4b393691b7dff15f7175fe3",
+    "shortHash": "596fd6ae",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_vatbrute_pain.png",
+    "name": "enemy_vatbrute_pain.png",
+    "size": 94880,
+    "hash": "32563238f1524df2f5459441dd12bab7643c22f1ea8b12cd4fb11c5986a775e3",
+    "shortHash": "32563238",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_vatbrute_reload.png",
+    "name": "enemy_vatbrute_reload.png",
+    "size": 105596,
+    "hash": "3e486f482e898a652c4f7811b2bd656dc1e34df33998b36d8fc0a66780b125b0",
+    "shortHash": "3e486f48",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_vatbrute_special.png",
+    "name": "enemy_vatbrute_special.png",
+    "size": 114676,
+    "hash": "d3372adfe84f398730ac0c431f1ec5d2486873e65f741e1cf7cd8aedbdc20039",
+    "shortHash": "d3372adf",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_veyran_dead.png",
+    "name": "enemy_veyran_dead.png",
+    "size": 50171,
+    "hash": "1d2fe51eb260933892e888981de8835361452ac72e40deeeadc0663dec5b7c81",
+    "shortHash": "1d2fe51e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_veyran_fire.png",
+    "name": "enemy_veyran_fire.png",
+    "size": 61207,
+    "hash": "5def8718fc78c63ec1d43f8073a485d77ed19a43e425a50fe9f387705c873a42",
+    "shortHash": "5def8718",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_veyran_idle.png",
+    "name": "enemy_veyran_idle.png",
+    "size": 61383,
+    "hash": "868516c840a089570b6ca650bc0ea7bcefb2e09a89a8b66cd5ec52398dec611c",
+    "shortHash": "868516c8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_veyran_move.png",
+    "name": "enemy_veyran_move.png",
+    "size": 61033,
+    "hash": "d70802ed3a530623cfbc6880e45abeafb9a780c77a300fe01ab2c31d09778eec",
+    "shortHash": "d70802ed",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_veyran_pain.png",
+    "name": "enemy_veyran_pain.png",
+    "size": 55032,
+    "hash": "8ed0d6ce32483f000a8eeab42363b0c98bad6dc5a50a44a7133ae3756336ed3b",
+    "shortHash": "8ed0d6ce",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_veyran_reload.png",
+    "name": "enemy_veyran_reload.png",
+    "size": 60495,
+    "hash": "e948cfb0981f56464c4840d160ea59110e31086957d410e1e7b90275f6fb941a",
+    "shortHash": "e948cfb0",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_veyran_special.png",
+    "name": "enemy_veyran_special.png",
+    "size": 78171,
+    "hash": "01756bbb259b349ce30c1c06e5427e3ec4ee8222207559d3337142d990eaa1a4",
+    "shortHash": "01756bbb",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/floor_bunker.png",
+    "name": "floor_bunker.png",
+    "size": 150730,
+    "hash": "f768139fdbfc13b7b299b39bf6db336146238eaf9667340e9b511a741f4b1559",
+    "shortHash": "f768139f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/floor_concrete.png",
+    "name": "floor_concrete.png",
+    "size": 150703,
+    "hash": "23e1d931e17d3d6e42ce00ddf4c01bbb32d23952a2c3427acf67f20d714cda5d",
+    "shortHash": "23e1d931",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/floor_grate.png",
+    "name": "floor_grate.png",
+    "size": 166888,
+    "hash": "244f9024d2828015ae2fbcc1dc98cbe8267b07f0e35560a30360653be8724b7b",
+    "shortHash": "244f9024",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/floor_grate_bi.png",
+    "name": "floor_grate_bi.png",
+    "size": 166932,
+    "hash": "01688fbdbb19c0a88c75723fcaf2662be0906dced365f8838367f2e9f2f8fb51",
+    "shortHash": "01688fbd",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/floor_override.png",
+    "name": "floor_override.png",
+    "size": 9296,
+    "hash": "4668f20e82c19c7b0dda1088356f767b6802ccdf6ef4e9169a1a71a3fd3d6554",
+    "shortHash": "4668f20e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/menu.jpg",
+    "name": "menu.jpg",
+    "size": 237807,
+    "hash": "cc5023afd4b69ae15613e5c13d7097c6fe3683dcca547f57a4b9bf94c063eda6",
+    "shortHash": "cc5023af",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "/game/spr_ammo.png",
+    "name": "spr_ammo.png",
+    "size": 72401,
+    "hash": "ef96fde14b7b7f4b0a5e46142b1b4224ea2f585954961f0fe4f49f552579f1db",
+    "shortHash": "ef96fde1",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/spr_armor.png",
+    "name": "spr_armor.png",
+    "size": 111741,
+    "hash": "ddaad135404eba062a46979e009f578f527f46d84f411d9ae6344e1ca27a4191",
+    "shortHash": "ddaad135",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/spr_ball.png",
+    "name": "spr_ball.png",
+    "size": 70983,
+    "hash": "eae07827569aa45daa60825479aa79bfdf2e3aa9f677b2df35abb8c46d98b344",
+    "shortHash": "eae07827",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/spr_barrel.png",
+    "name": "spr_barrel.png",
+    "size": 77010,
+    "hash": "86de148745f528f954faf339704f6190b0b24b978d83524f1eccf0c01af1312a",
+    "shortHash": "86de1487",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/spr_brute.png",
+    "name": "spr_brute.png",
+    "size": 14790,
+    "hash": "d7e2e7b2d4a19191e78d28c849cc64524d5c6668d16098090460a02e344f80f9",
+    "shortHash": "d7e2e7b2",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "file": "/game/spr_chain.png",
+    "name": "spr_chain.png",
+    "size": 51024,
+    "hash": "dc15e23ede107c882913769a8dfbf8118926692641cb62fe0e5ae1065d9718e9",
+    "shortHash": "dc15e23e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/spr_crate.png",
+    "name": "spr_crate.png",
+    "size": 85693,
+    "hash": "2261718673fef6be66fd52c73d05c997052ea2a842e847fafbedbe7f74db5b0e",
+    "shortHash": "22617186",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/spr_crate_bi.png",
+    "name": "spr_crate_bi.png",
+    "size": 108927,
+    "hash": "e0314469bd07732040778776dd5e78d382879de1ee35b668ff2fbf34c925e11a",
+    "shortHash": "e0314469",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/spr_flame.png",
+    "name": "spr_flame.png",
+    "size": 338961,
+    "hash": "9aad12562654ff9dc72dad67fa58d590748d73ba421ec18da70575a167d58500",
+    "shortHash": "9aad1256",
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "/game/spr_gun.png",
+    "name": "spr_gun.png",
+    "size": 74310,
+    "hash": "f7c64495783eb2f41ee3fbe4fc89057e26feaa2f7d3642e76166ace95d759244",
+    "shortHash": "f7c64495",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/spr_gun_ax12.png",
+    "name": "spr_gun_ax12.png",
+    "size": 55598,
+    "hash": "2548590184f5ef443320cc93ba0aa628bc52c445230572a562f9d7af793c7b78",
+    "shortHash": "25485901",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/spr_gun_br12.png",
+    "name": "spr_gun_br12.png",
+    "size": 74310,
+    "hash": "f7c64495783eb2f41ee3fbe4fc89057e26feaa2f7d3642e76166ace95d759244",
+    "shortHash": "f7c64495",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/spr_gun_cm9.png",
+    "name": "spr_gun_cm9.png",
+    "size": 68266,
+    "hash": "c7bd00fdafbe4bcc3c9b85476eff0b4b584caaf96323175b23ac82d290a7ed72",
+    "shortHash": "c7bd00fd",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/spr_gun_hc9.png",
+    "name": "spr_gun_hc9.png",
+    "size": 87943,
+    "hash": "ba03f3714b4e08dbbbdcfe855356e6d4e448d2ed679ef3b5e7746404ad696312",
+    "shortHash": "ba03f371",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/spr_gun_hx8.png",
+    "name": "spr_gun_hx8.png",
+    "size": 76140,
+    "hash": "f6f61827d961adf24b2b7486741e961fbfa99d4701bbbc52be04e30d5cc7b96c",
+    "shortHash": "f6f61827",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/spr_gun_kx9.png",
+    "name": "spr_gun_kx9.png",
+    "size": 72965,
+    "hash": "aafe9e8ef2d3da7ffb58c19206b71bd14729e96d81d1e48b88562617985645ff",
+    "shortHash": "aafe9e8e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/spr_gun_m91.png",
+    "name": "spr_gun_m91.png",
+    "size": 87840,
+    "hash": "23b55ce6f8a2a6a238c7c85e59346bde27f18ae85da255349099976ba3597c63",
+    "shortHash": "23b55ce6",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/spr_gun_mk23s.png",
+    "name": "spr_gun_mk23s.png",
+    "size": 67109,
+    "hash": "72bd8c0c793410e3af94fc9221f0970a1d23502aadab24feb1e62adfb7f1c671",
+    "shortHash": "72bd8c0c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/spr_gun_mr4.png",
+    "name": "spr_gun_mr4.png",
+    "size": 67009,
+    "hash": "e2d9e93226d45133f4a87e796f2808ad45d321c85134cd5e206d7227f4e69a80",
+    "shortHash": "e2d9e932",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/spr_gun_vlk6.png",
+    "name": "spr_gun_vlk6.png",
+    "size": 62767,
+    "hash": "dbde2c80c0e1b5cb06f8b6e9a674285088a36b7d54e172600459591f5b098014",
+    "shortHash": "dbde2c80",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/spr_gun_vr9.png",
+    "name": "spr_gun_vr9.png",
+    "size": 48193,
+    "hash": "570c043a818848ad6d9187c751d9f3743d46741ede2a6b7d864125be767fbd68",
+    "shortHash": "570c043a",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/spr_husk.png",
+    "name": "spr_husk.png",
+    "size": 8688,
+    "hash": "91155792e10b29f4688f974591b238a5ab0e8302cdf9f37d59ff42c449f08f2a",
+    "shortHash": "91155792",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "file": "/game/spr_impact.png",
+    "name": "spr_impact.png",
+    "size": 422966,
+    "hash": "d070aec3a72778c0e1862e1bf7d64c23db3aa411286bcd96e9f5a4f374e90056",
+    "shortHash": "d070aec3",
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "/game/spr_lamp.png",
+    "name": "spr_lamp.png",
+    "size": 47454,
+    "hash": "8245c3701fdce8c4a8d4df3e4a9419e9f16f79dab18a2e7ac53cac43912b42be",
+    "shortHash": "8245c370",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/spr_med.png",
+    "name": "spr_med.png",
+    "size": 100349,
+    "hash": "955ef79de370e9cf39ae3bd20dd2a8ba0c496f0515bd0b321dca40b135d1f252",
+    "shortHash": "955ef79d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/spr_medkit_bi.png",
+    "name": "spr_medkit_bi.png",
+    "size": 100349,
+    "hash": "955ef79de370e9cf39ae3bd20dd2a8ba0c496f0515bd0b321dca40b135d1f252",
+    "shortHash": "955ef79d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/spr_muzzle.png",
+    "name": "spr_muzzle.png",
+    "size": 270867,
+    "hash": "df6398387ad6dc720fc202cc63117aca9b70f754674ec9427003fce2de3b36bf",
+    "shortHash": "df639838",
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "/game/spr_ordnance.png",
+    "name": "spr_ordnance.png",
+    "size": 228272,
+    "hash": "23fa7edb8652c4ae4d8c4becd7fcbc094e690a1821812e24b7ae5d2119e07a37",
+    "shortHash": "23fa7edb",
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "/game/spr_wraith.png",
+    "name": "spr_wraith.png",
+    "size": 13560,
+    "hash": "170cb971da394faeb1fe3b4940e7733bbc365f72a45c8655280c112faa1e8526",
+    "shortHash": "170cb971",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "file": "/game/ui-plaque.svg",
+    "name": "ui-plaque.svg",
+    "size": 1343,
+    "hash": "3403bd80d014ea4b234e09873bdaf5d1d75ad36b71305c2b5ea506517bfddb95",
+    "shortHash": "3403bd80"
+  },
+  {
+    "file": "/game/wall_blastdoor.png",
+    "name": "wall_blastdoor.png",
+    "size": 127877,
+    "hash": "793a4bd89b63adc255fb3929bc86ef1e515a01fc0b7aa9c64f8bf6eed0459b4a",
+    "shortHash": "793a4bd8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/wall_bone.png",
+    "name": "wall_bone.png",
+    "size": 144593,
+    "hash": "2239c0c8c23c81fae80ea2fd520a4369dcc2d03b30c55b6b328c7d423c5cc2b1",
+    "shortHash": "2239c0c8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/wall_brick.png",
+    "name": "wall_brick.png",
+    "size": 138145,
+    "hash": "e92ed20dd28456b3e3be1a059e934b92de1ffd89211f6cd225e7d926319ed521",
+    "shortHash": "e92ed20d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/wall_cables.png",
+    "name": "wall_cables.png",
+    "size": 119939,
+    "hash": "f07b912315ffb6c9c396a404e44e2595091d8041bffa25b3de636572d5a3c744",
+    "shortHash": "f07b9123",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/wall_concrete.png",
+    "name": "wall_concrete.png",
+    "size": 150730,
+    "hash": "f768139fdbfc13b7b299b39bf6db336146238eaf9667340e9b511a741f4b1559",
+    "shortHash": "f768139f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/wall_door.png",
+    "name": "wall_door.png",
+    "size": 26267,
+    "hash": "bad0759405bf108a11e1c8a2ab6bb3db8176154afeed2ef97f708082a8fe55ac",
+    "shortHash": "bad07594",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "file": "/game/wall_flesh.png",
+    "name": "wall_flesh.png",
+    "size": 141090,
+    "hash": "fbd96195d0baba1ffe61563b63ca46386290b940cf4e4db4d4e45b152daeaaae",
+    "shortHash": "fbd96195",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/wall_gunmetal.png",
+    "name": "wall_gunmetal.png",
+    "size": 120812,
+    "hash": "23526f02b7bca54b9ab8249692330b5f4eea490227b35155b5206ec384d2de66",
+    "shortHash": "23526f02",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/wall_hatch.png",
+    "name": "wall_hatch.png",
+    "size": 127877,
+    "hash": "793a4bd89b63adc255fb3929bc86ef1e515a01fc0b7aa9c64f8bf6eed0459b4a",
+    "shortHash": "793a4bd8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/wall_hazard_bi.png",
+    "name": "wall_hazard_bi.png",
+    "size": 127877,
+    "hash": "793a4bd89b63adc255fb3929bc86ef1e515a01fc0b7aa9c64f8bf6eed0459b4a",
+    "shortHash": "793a4bd8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/wall_hazard_tile2x2.png",
+    "name": "wall_hazard_tile2x2.png",
+    "size": 127790,
+    "hash": "68f69982d62c5bad6d7aaadc1b3e2009505564813c36d9c995e398abbb068db9",
+    "shortHash": "68f69982",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/wall_metal.png",
+    "name": "wall_metal.png",
+    "size": 120715,
+    "hash": "e7e8ba36ab08f7e7bc3a6d3526906c444055fdc9dd7c71b15c8b23ff56f4f123",
+    "shortHash": "e7e8ba36",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/wall_pipes.png",
+    "name": "wall_pipes.png",
+    "size": 30204,
+    "hash": "7e3ced28767397ff886c223f7200ca7af2a0f1dc5a1ba467bc2fe5682655e0ba",
+    "shortHash": "7e3ced28",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "file": "/game/wall_server.png",
+    "name": "wall_server.png",
+    "size": 119939,
+    "hash": "f07b912315ffb6c9c396a404e44e2595091d8041bffa25b3de636572d5a3c744",
+    "shortHash": "f07b9123",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/wall_serverclad.png",
+    "name": "wall_serverclad.png",
+    "size": 119939,
+    "hash": "f07b912315ffb6c9c396a404e44e2595091d8041bffa25b3de636572d5a3c744",
+    "shortHash": "f07b9123",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/wall_tech_tile2x2.png",
+    "name": "wall_tech_tile2x2.png",
+    "size": 119974,
+    "hash": "2e782a07695af10a7c1e212687475e439982c062bde9f171a15fa5ec866e7aa6",
+    "shortHash": "2e782a07",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/wall_tissue.png",
+    "name": "wall_tissue.png",
+    "size": 141143,
+    "hash": "29ba449a49020274636478f04a75d42d33c8ee449f3e723f93ca87c10878bd53",
+    "shortHash": "29ba449a",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/weap_ax12.png",
+    "name": "weap_ax12.png",
+    "size": 290509,
+    "hash": "d7ae774d7d29926222d9b16e0ea7c5cd91b4abc0bbfdd37388229b73d1e059da",
+    "shortHash": "d7ae774d",
+    "width": 800,
+    "height": 480
+  },
+  {
+    "file": "/game/weap_ax12_fire.png",
+    "name": "weap_ax12_fire.png",
+    "size": 1094468,
+    "hash": "f7179cdb81e1bdb820ffea2e66ea049d066bd924a012732943b45e2662d00700",
+    "shortHash": "f7179cdb",
+    "width": 1600,
+    "height": 960
+  },
+  {
+    "file": "/game/weap_ax12_reload.png",
+    "name": "weap_ax12_reload.png",
+    "size": 2013819,
+    "hash": "caef16c56453a9f876958216938f6a0e85792d58687770c7294b4ae4d0a7ad6e",
+    "shortHash": "caef16c5",
+    "width": 3200,
+    "height": 960
+  },
+  {
+    "file": "/game/weap_br12.png",
+    "name": "weap_br12.png",
+    "size": 273724,
+    "hash": "65410c15e1acc874aa93b925284a51c3817124481f26dece6794796d4a2f1fca",
+    "shortHash": "65410c15",
+    "width": 800,
+    "height": 480
+  },
+  {
+    "file": "/game/weap_br12_fire.png",
+    "name": "weap_br12_fire.png",
+    "size": 1037232,
+    "hash": "76db9e0e4ef0d85c8b727f2c61017bc316de2b0915bfd5e67ccca99b868b1482",
+    "shortHash": "76db9e0e",
+    "width": 1600,
+    "height": 960
+  },
+  {
+    "file": "/game/weap_br12_reload.png",
+    "name": "weap_br12_reload.png",
+    "size": 1770816,
+    "hash": "f30f043d54340fe7ce9cc126c8a113931162a32456e03d60289db326641bae3d",
+    "shortHash": "f30f043d",
+    "width": 3200,
+    "height": 960
+  },
+  {
+    "file": "/game/weap_cm9.png",
+    "name": "weap_cm9.png",
+    "size": 141458,
+    "hash": "fc05b7277aa805241f45a8d428fcc5fc3f3ee0eb3c10df9190714dc6d096c3fc",
+    "shortHash": "fc05b727",
+    "width": 800,
+    "height": 480
+  },
+  {
+    "file": "/game/weap_cm9_fire.png",
+    "name": "weap_cm9_fire.png",
+    "size": 571673,
+    "hash": "efb6e239952a27566ff015c0dcd120d24dfe2721de03b4a3b90e8dcfe36917f5",
+    "shortHash": "efb6e239",
+    "width": 1600,
+    "height": 960
+  },
+  {
+    "file": "/game/weap_cm9_reload.png",
+    "name": "weap_cm9_reload.png",
+    "size": 1108805,
+    "hash": "7447a2ca654874065cdc2eaf848a0015f414748bcf3ec74f50bdeb296960db2a",
+    "shortHash": "7447a2ca",
+    "width": 3200,
+    "height": 960
+  },
+  {
+    "file": "/game/weap_hc9.png",
+    "name": "weap_hc9.png",
+    "size": 394259,
+    "hash": "4ab26aadb4e2532686805bc7cdc2338cbd530d7f57160126db751da83b5d4083",
+    "shortHash": "4ab26aad",
+    "width": 800,
+    "height": 480
+  },
+  {
+    "file": "/game/weap_hc9_fire.png",
+    "name": "weap_hc9_fire.png",
+    "size": 1584877,
+    "hash": "a0735613488d3befc9a4a657a3dcac3da852e4b20b2ebfc5314095e3a42dcebb",
+    "shortHash": "a0735613",
+    "width": 1600,
+    "height": 960
+  },
+  {
+    "file": "/game/weap_hc9_reload.png",
+    "name": "weap_hc9_reload.png",
+    "size": 3143246,
+    "hash": "225119f5fb67d400988aea60f9e56683cd3cd32a2b4878e2e4ef0328f7e9d580",
+    "shortHash": "225119f5",
+    "width": 3200,
+    "height": 960
+  },
+  {
+    "file": "/game/weap_hx8.png",
+    "name": "weap_hx8.png",
+    "size": 314956,
+    "hash": "96ed07f47f1be94e34593544d4b8c3666fe551b8b44f205658408c6d31943b13",
+    "shortHash": "96ed07f4",
+    "width": 800,
+    "height": 480
+  },
+  {
+    "file": "/game/weap_hx8_fire.png",
+    "name": "weap_hx8_fire.png",
+    "size": 1212034,
+    "hash": "444a1d0e0fbba7623361960ecfa38dfb1fedd1897fc89cccf22a2ba10e531942",
+    "shortHash": "444a1d0e",
+    "width": 1600,
+    "height": 960
+  },
+  {
+    "file": "/game/weap_hx8_reload.png",
+    "name": "weap_hx8_reload.png",
+    "size": 2430966,
+    "hash": "491970d0e749544979b7e195320c00d30abd0c04f3e56842dc23a145607a9bd9",
+    "shortHash": "491970d0",
+    "width": 3200,
+    "height": 960
+  },
+  {
+    "file": "/game/weap_kx9.png",
+    "name": "weap_kx9.png",
+    "size": 307854,
+    "hash": "13b84765457a0a27d7226e6b866c7a8f148911621d46b47b9adfc40d392bbb9b",
+    "shortHash": "13b84765",
+    "width": 800,
+    "height": 480
+  },
+  {
+    "file": "/game/weap_kx9_fire.png",
+    "name": "weap_kx9_fire.png",
+    "size": 1158643,
+    "hash": "06a2b21b2906df792aec9c5f7e82ac6f56e689feebc4600d083aa7cd7c0a43cf",
+    "shortHash": "06a2b21b",
+    "width": 1600,
+    "height": 960
+  },
+  {
+    "file": "/game/weap_kx9_reload.png",
+    "name": "weap_kx9_reload.png",
+    "size": 1809914,
+    "hash": "5263523a22bbc1ff7cee0fa5c7e29b7526234eb7ad4573bf3c3391e5c5a5bd57",
+    "shortHash": "5263523a",
+    "width": 3200,
+    "height": 960
+  },
+  {
+    "file": "/game/weap_lance.png",
+    "name": "weap_lance.png",
+    "size": 185385,
+    "hash": "30aa935f073da952ad5a4d1faf7f43d254479d7eb4fb1c8bcf8c16e31306b338",
+    "shortHash": "30aa935f",
+    "width": 640,
+    "height": 640
+  },
+  {
+    "file": "/game/weap_lance_fire.png",
+    "name": "weap_lance_fire.png",
+    "size": 862565,
+    "hash": "4d6879875bd1986a4b639b62b9c3126b9b6a5890ae2a740ccb1ed61aaa2179c6",
+    "shortHash": "4d687987",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/weap_lance_reload.png",
+    "name": "weap_lance_reload.png",
+    "size": 1083387,
+    "hash": "8ae87b06ed1bb870268e69cccf4bb9e7e99528d0accf205ec1c92b3ef2c844cd",
+    "shortHash": "8ae87b06",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/weap_m91.png",
+    "name": "weap_m91.png",
+    "size": 385446,
+    "hash": "1082dd26598d650564342b53773289d6cb0fa5adabfe374f1ffd4602093f8aca",
+    "shortHash": "1082dd26",
+    "width": 800,
+    "height": 480
+  },
+  {
+    "file": "/game/weap_m91_fire.png",
+    "name": "weap_m91_fire.png",
+    "size": 1463269,
+    "hash": "e4fcf0970636b1643fa41fde8ece3fc24c9e141495ea54f8b3f7bbe522f02c69",
+    "shortHash": "e4fcf097",
+    "width": 1600,
+    "height": 960
+  },
+  {
+    "file": "/game/weap_m91_reload.png",
+    "name": "weap_m91_reload.png",
+    "size": 2344571,
+    "hash": "7fa3bde1ab45b03bc62e07ee0343063c4fe9297bff329b3a7de78544d23384d6",
+    "shortHash": "7fa3bde1",
+    "width": 3200,
+    "height": 960
+  },
+  {
+    "file": "/game/weap_mk23s.png",
+    "name": "weap_mk23s.png",
+    "size": 273306,
+    "hash": "f5ba4233bf9143a16efe0160ce435d2069d20d11f5e75aaf5e420e015b82442d",
+    "shortHash": "f5ba4233",
+    "width": 640,
+    "height": 640
+  },
+  {
+    "file": "/game/weap_mk23s_fire.png",
+    "name": "weap_mk23s_fire.png",
+    "size": 698399,
+    "hash": "83f2bc9ec6a125d2bd39a731578ab322470a1e22c4dc3061a6df17ca72702449",
+    "shortHash": "83f2bc9e",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/weap_mk23s_reload.png",
+    "name": "weap_mk23s_reload.png",
+    "size": 1029763,
+    "hash": "7c528da86be3af90ed588f07de4d82176e720b2155817405daf3ac508c06f07c",
+    "shortHash": "7c528da8",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/weap_mr4.png",
+    "name": "weap_mr4.png",
+    "size": 262093,
+    "hash": "2e461b1b2b952f6423cc61ffca3b01e91a62a42937036a314d8ae5ce260e580f",
+    "shortHash": "2e461b1b",
+    "width": 800,
+    "height": 480
+  },
+  {
+    "file": "/game/weap_mr4_fire.png",
+    "name": "weap_mr4_fire.png",
+    "size": 1005867,
+    "hash": "a5ccd5ea70b2c2bdd7e7aa7551d25f827ada9d890be2323be04b80a3ff143e28",
+    "shortHash": "a5ccd5ea",
+    "width": 1600,
+    "height": 960
+  },
+  {
+    "file": "/game/weap_mr4_reload.png",
+    "name": "weap_mr4_reload.png",
+    "size": 1773013,
+    "hash": "b777abccfef8ec0071ec4611b3f99744c5020b7a49ac88a944056081f9357fc5",
+    "shortHash": "b777abcc",
+    "width": 3200,
+    "height": 960
+  },
+  {
+    "file": "/game/weap_pistol.png",
+    "name": "weap_pistol.png",
+    "size": 133976,
+    "hash": "9eb3b19ae159fe0001b9215833b64044ee6fab7d97d3cccd0e529803db52df93",
+    "shortHash": "9eb3b19a",
+    "width": 640,
+    "height": 640
+  },
+  {
+    "file": "/game/weap_pistol_fire.png",
+    "name": "weap_pistol_fire.png",
+    "size": 608304,
+    "hash": "be7712df59a065fb6395ef658ae0a3fa88dcc90ebe325ba431e6e65f93a52df4",
+    "shortHash": "be7712df",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/weap_pistol_reload.png",
+    "name": "weap_pistol_reload.png",
+    "size": 736857,
+    "hash": "fd0d432246edef3c354c69f65d45f5d213069b203cfbeebe30eb4def231f54bd",
+    "shortHash": "fd0d4322",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/weap_pyre.png",
+    "name": "weap_pyre.png",
+    "size": 185337,
+    "hash": "847b00d3756af04f62885911c9fbda2110c4aa6a76219a73a610bfba43c55505",
+    "shortHash": "847b00d3",
+    "width": 640,
+    "height": 640
+  },
+  {
+    "file": "/game/weap_pyre_fire.png",
+    "name": "weap_pyre_fire.png",
+    "size": 672731,
+    "hash": "088465698ee28b02a4438012da9dfa039c1e5cac64c695455c68f1db2dd610e4",
+    "shortHash": "08846569",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/weap_pyre_reload.png",
+    "name": "weap_pyre_reload.png",
+    "size": 1104285,
+    "hash": "c1bdb3946b17d625d9edef89b82d99a79f2c678bce264b3727ddf03e0e7f52c9",
+    "shortHash": "c1bdb394",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/weap_ripper.png",
+    "name": "weap_ripper.png",
+    "size": 173890,
+    "hash": "0d77151ef3e702dea77968c2e3d3fed25a1817b5a3cb4f57eac43d785a0eacb5",
+    "shortHash": "0d77151e",
+    "width": 640,
+    "height": 640
+  },
+  {
+    "file": "/game/weap_ripper_fire.png",
+    "name": "weap_ripper_fire.png",
+    "size": 607120,
+    "hash": "62bf08ffc9f7ea496b2262ae129605da6a826375a1c054ce2516c6584cf1b0dc",
+    "shortHash": "62bf08ff",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/weap_ripper_reload.png",
+    "name": "weap_ripper_reload.png",
+    "size": 901120,
+    "hash": "8c4632de069425671e5e2bde472c9fb9d66d4d7c7e5b781eeb4bc55168e0b4d8",
+    "shortHash": "8c4632de",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/weap_shotgun.png",
+    "name": "weap_shotgun.png",
+    "size": 181329,
+    "hash": "3ed04f5707fe46e28ef4441d5963915c45e6157eb22156dbd01434ce1ae8d757",
+    "shortHash": "3ed04f57",
+    "width": 640,
+    "height": 640
+  },
+  {
+    "file": "/game/weap_shotgun_fire.png",
+    "name": "weap_shotgun_fire.png",
+    "size": 658619,
+    "hash": "b89accb3a36f070f732c3fc95a649ac6017dd03ccf371281ef9a3db40b162f44",
+    "shortHash": "b89accb3",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/weap_shotgun_reload.png",
+    "name": "weap_shotgun_reload.png",
+    "size": 823618,
+    "hash": "761ca7f04237bb0e60c7aabeeac78505c44e9df83f86e3892749d5d270f6a1a0",
+    "shortHash": "761ca7f0",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/weap_vlk6.png",
+    "name": "weap_vlk6.png",
+    "size": 382438,
+    "hash": "c2ba42b4cb48686f402159de2e677326bfeaf7864f38e44b01f9e4e3419df8ec",
+    "shortHash": "c2ba42b4",
+    "width": 800,
+    "height": 480
+  },
+  {
+    "file": "/game/weap_vlk6_fire.png",
+    "name": "weap_vlk6_fire.png",
+    "size": 1454531,
+    "hash": "b8074e0a7dd8b1202c42f6dbb0af3a5eb62749a905763eaa9eca0f75fbe0f6c7",
+    "shortHash": "b8074e0a",
+    "width": 1600,
+    "height": 960
+  },
+  {
+    "file": "/game/weap_vlk6_reload.png",
+    "name": "weap_vlk6_reload.png",
+    "size": 2574634,
+    "hash": "c14fb68a1104132ad6a71582e926202ebfabd5a3cdbb50022ebc3cf0693b69e3",
+    "shortHash": "c14fb68a",
+    "width": 3200,
+    "height": 960
+  },
+  {
+    "file": "/game/weap_vr9.png",
+    "name": "weap_vr9.png",
+    "size": 255161,
+    "hash": "bf4206cfb14adb25c7fc4c60e92225fd32116c3561e767095785bb1858bdcd0a",
+    "shortHash": "bf4206cf",
+    "width": 800,
+    "height": 480
+  },
+  {
+    "file": "/game/weap_vr9_fire.png",
+    "name": "weap_vr9_fire.png",
+    "size": 987193,
+    "hash": "8b44d868639acf42a31aee2b322cd6ef2cab25b27519f7a288d8012419a6cbce",
+    "shortHash": "8b44d868",
+    "width": 1600,
+    "height": 960
+  },
+  {
+    "file": "/game/weap_vr9_reload.png",
+    "name": "weap_vr9_reload.png",
+    "size": 1938094,
+    "hash": "3d471e3f57a2001820e864e44f2c7aa4a377fad067525a4b9b24bfd057567d12",
+    "shortHash": "3d471e3f",
+    "width": 3200,
+    "height": 960
+  },
+  {
+    "file": "/game/music/bgm-menu.ogg",
+    "name": "bgm-menu.ogg",
+    "size": 2726862,
+    "hash": "e78e4a06cc055ead04d699865dee38a32495b1884d887b47dd50bc13b888fc0e",
+    "shortHash": "e78e4a06"
+  },
+  {
+    "file": "/game/music/bgm-remix.ogg",
+    "name": "bgm-remix.ogg",
+    "size": 2751190,
+    "hash": "0b6d179af18c896391095a2c430ea051d36f6a7735b2fd11cc9328bd4794cfbb",
+    "shortHash": "0b6d179a"
+  },
+  {
+    "file": "/game/music/boss.ogg",
+    "name": "boss.ogg",
+    "size": 2871617,
+    "hash": "a2fc1d64ce9efbaf84dd8497bbe8f2488210230e78d64d50f66c2dad39e63696",
+    "shortHash": "a2fc1d64"
+  },
+  {
+    "file": "/game/environment/items/combat_armor_plate.png",
+    "name": "combat_armor_plate.png",
+    "size": 111741,
+    "hash": "ddaad135404eba062a46979e009f578f527f46d84f411d9ae6344e1ca27a4191",
+    "shortHash": "ddaad135",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/combat_compact_medkit.png",
+    "name": "combat_compact_medkit.png",
+    "size": 100349,
+    "hash": "955ef79de370e9cf39ae3bd20dd2a8ba0c496f0515bd0b321dca40b135d1f252",
+    "shortHash": "955ef79d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/combat_energy_cell.png",
+    "name": "combat_energy_cell.png",
+    "size": 52357,
+    "hash": "844e85eb9debaa237e172e6b2c8e3158573b6c567cb4f141b75468d4082c4f4b",
+    "shortHash": "844e85eb",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/combat_explosive_charge.png",
+    "name": "combat_explosive_charge.png",
+    "size": 83365,
+    "hash": "bd1a1366d093d474e57720136b62343b50d31e172889d0999edc2910b433664c",
+    "shortHash": "bd1a1366",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/combat_flare.png",
+    "name": "combat_flare.png",
+    "size": 44528,
+    "hash": "8a092d80c23d597dd3282ebffc4a4500652f57ab0a415376c84c3f34a8510131",
+    "shortHash": "8a092d80",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/combat_frag_grenade.png",
+    "name": "combat_frag_grenade.png",
+    "size": 76075,
+    "hash": "f6c999e4e73b464417bc717559ccb6ee211636f3130014a743c26f47183d5404",
+    "shortHash": "f6c999e4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/combat_incendiary_charge.png",
+    "name": "combat_incendiary_charge.png",
+    "size": 69226,
+    "hash": "d3459299dacc770c25e5c4ee5ab179cce315ce0975e5fe563298bdf92221c60b",
+    "shortHash": "d3459299",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/combat_pistol_magazine.png",
+    "name": "combat_pistol_magazine.png",
+    "size": 49354,
+    "hash": "4469ec8cc752a60551b5d0b566796c2f7a01cb094437eba4d6cddb917299e7f9",
+    "shortHash": "4469ec8c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/combat_proximity_mine.png",
+    "name": "combat_proximity_mine.png",
+    "size": 69682,
+    "hash": "99f4c4fdc082a16401deeaa05e545feeac65605154531abceedd4805f6adbe42",
+    "shortHash": "99f4c4fd",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/combat_ration_pack.png",
+    "name": "combat_ration_pack.png",
+    "size": 106636,
+    "hash": "d7856d17b5e4ff92fb704774c13e83af0b8290ed366b3fb4388968eadb615204",
+    "shortHash": "d7856d17",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/combat_repair_tool.png",
+    "name": "combat_repair_tool.png",
+    "size": 62525,
+    "hash": "63c815d585f26040a1f6a6e72dd035bef42c65055ed4ef7b8977fa2e2b4c510c",
+    "shortHash": "63c815d5",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/combat_rifle_magazine.png",
+    "name": "combat_rifle_magazine.png",
+    "size": 60228,
+    "hash": "54d664a30581804b6ddd6efef54aee12705884248af3355f68e656bc38b84577",
+    "shortHash": "54d664a3",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/combat_shotgun_shell_bundle.png",
+    "name": "combat_shotgun_shell_bundle.png",
+    "size": 72401,
+    "hash": "ef96fde14b7b7f4b0a5e46142b1b4224ea2f585954961f0fe4f49f552579f1db",
+    "shortHash": "ef96fde1",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/combat_stimulant_ampoule.png",
+    "name": "combat_stimulant_ampoule.png",
+    "size": 32170,
+    "hash": "e6c7b3971e1bde09c69810523b38b3fd3c7db4f452562b11538e83547b37698a",
+    "shortHash": "e6c7b397",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/combat_trauma_injector.png",
+    "name": "combat_trauma_injector.png",
+    "size": 34700,
+    "hash": "1e5ad212e3960977bfc0a277e6468c52c998ecf32cc87bd58edbb475376362bc",
+    "shortHash": "1e5ad212",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/combat_welding_torch.png",
+    "name": "combat_welding_torch.png",
+    "size": 48998,
+    "hash": "242e3f9ee8ec34b74a26a97eb165e765c4b9bd0acbf4b2a64995287797a00348",
+    "shortHash": "242e3f9e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/occult_blood_glass_vial.png",
+    "name": "occult_blood_glass_vial.png",
+    "size": 55842,
+    "hash": "a556cf61e5b49d38ca0151314b2bbc31d1fb5f4851c5203ae78665bbccf6c212",
+    "shortHash": "a556cf61",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/occult_bone_die.png",
+    "name": "occult_bone_die.png",
+    "size": 70090,
+    "hash": "78a14eae36f9d9516580ba02f4b847aab3704b9d35d38c899c5c0b41cab6ba01",
+    "shortHash": "78a14eae",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/occult_bone_seal_shard.png",
+    "name": "occult_bone_seal_shard.png",
+    "size": 60411,
+    "hash": "9179698b0ea7eeb3d8445a18a521a6d0171dc92e5792b2d85a1e805b71a8a24c",
+    "shortHash": "9179698b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/occult_candle_bundle.png",
+    "name": "occult_candle_bundle.png",
+    "size": 67242,
+    "hash": "b9e243aa63e7b8d7e893c8d3c4031674201fb1099a1e6ef22f90f527323eefc1",
+    "shortHash": "b9e243aa",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/occult_chained_heart_relic.png",
+    "name": "occult_chained_heart_relic.png",
+    "size": 84577,
+    "hash": "e9d1933ae683da6b7cfff5f1d4b34b3febab4f9819ff3df5e28bf7bc57d974b5",
+    "shortHash": "e9d1933a",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/occult_chapel_key.png",
+    "name": "occult_chapel_key.png",
+    "size": 43401,
+    "hash": "b4b146d08bd459d6f2438ccbedcd17764bec7251dcfbb49892aff95528e310bc",
+    "shortHash": "b4b146d0",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/occult_crimson_sigil_token.png",
+    "name": "occult_crimson_sigil_token.png",
+    "size": 87432,
+    "hash": "c7e45b3c87db2e9d5fb51d50ab755deb72e0e52823ba08cfe1a64e0a48b037ac",
+    "shortHash": "c7e45b3c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/occult_demon_horn_fragment.png",
+    "name": "occult_demon_horn_fragment.png",
+    "size": 56250,
+    "hash": "f83aa651b5e8581839f737690d96def9d69cdfa691e85922b31869592989b803",
+    "shortHash": "f83aa651",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/occult_iron_reliquary.png",
+    "name": "occult_iron_reliquary.png",
+    "size": 66977,
+    "hash": "ff8923c9a3a4db9f482083712afb0f2964b20d2ba057b4ca2de7aaa1c4fc4b55",
+    "shortHash": "ff8923c9",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/occult_ivory_talisman.png",
+    "name": "occult_ivory_talisman.png",
+    "size": 46753,
+    "hash": "9dfe045ac03a584fc83ca043c4b935ec84e30abb9766e30bffff211f3800f46f",
+    "shortHash": "9dfe045a",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/occult_obsidian_coin.png",
+    "name": "occult_obsidian_coin.png",
+    "size": 90390,
+    "hash": "66e6509bd69fc9bca91e5a15429ac22967151aa3eaf7669f125958ced3c80db7",
+    "shortHash": "66e6509b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/occult_prayer_strip.png",
+    "name": "occult_prayer_strip.png",
+    "size": 50558,
+    "hash": "7681a4e09d6fca5a9ec080efe7df63f8ce14d3f612e2ef5084d578e9f508b347",
+    "shortHash": "7681a4e0",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/occult_red_crystal.png",
+    "name": "occult_red_crystal.png",
+    "size": 59026,
+    "hash": "2c88a6fc831d23a6053a05d3eb0bdcc2cbc3a8107b0ae1bd5f7d618306620211",
+    "shortHash": "2c88a6fc",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/occult_sealed_skull_capsule.png",
+    "name": "occult_sealed_skull_capsule.png",
+    "size": 60407,
+    "hash": "4892dc92114b8efe8cb60ceb7c64ed5b1ec95c7bec6392d44f0f9c22dcbbade8",
+    "shortHash": "4892dc92",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/occult_skull_medallion.png",
+    "name": "occult_skull_medallion.png",
+    "size": 71626,
+    "hash": "5f6ba61e95d8f5e33edbc6525311b1f44f230534f7e15f93fd7682730ea1c900",
+    "shortHash": "5f6ba61e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/occult_vault_crown_fragment.png",
+    "name": "occult_vault_crown_fragment.png",
+    "size": 71204,
+    "hash": "fb7e76d603e6e38ab4c1320c88e9d042840de99bf9022cc0e7a553c53cd2dad1",
+    "shortHash": "fb7e76d6",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/science_bio_sample_canister.png",
+    "name": "science_bio_sample_canister.png",
+    "size": 76637,
+    "hash": "841693ae83bac0345044dc62ef5ed3413f0b17b7450954e5a31328d89adc55da",
+    "shortHash": "841693ae",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/science_coolant_cartridge.png",
+    "name": "science_coolant_cartridge.png",
+    "size": 58293,
+    "hash": "3ebef7faaabd5df34f4115ae020427a8f6b192189fbd9fb09a053bcb61694c6e",
+    "shortHash": "3ebef7fa",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/science_coolant_valve.png",
+    "name": "science_coolant_valve.png",
+    "size": 89150,
+    "hash": "d5b05f51a3b33f10ed0da70f6f1d04f6e0f16a882444ee98cc5a2f206ecac485",
+    "shortHash": "d5b05f51",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/science_cryo_tag.png",
+    "name": "science_cryo_tag.png",
+    "size": 57966,
+    "hash": "def839d008a738246911afdb4ca47585f6dcae150ecd01270e59b07db458505e",
+    "shortHash": "def839d0",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/science_culture_tube.png",
+    "name": "science_culture_tube.png",
+    "size": 56280,
+    "hash": "4586564550ebc60ffb48412828049bed16219f19ffc4682cb54c2c445af94625",
+    "shortHash": "45865645",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/science_emergency_oxygen.png",
+    "name": "science_emergency_oxygen.png",
+    "size": 60062,
+    "hash": "ccad73e25265a7f5334a465c10f90cb17594c1f87bf8f4b0b3b12bb3daf113d0",
+    "shortHash": "ccad73e2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/science_frozen_tissue_sample.png",
+    "name": "science_frozen_tissue_sample.png",
+    "size": 82925,
+    "hash": "82005925fc82863eee538ad4c435c4c6b4a9e8c16793c3a13bb347df7145a93e",
+    "shortHash": "82005925",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/science_green_medgel_syringe.png",
+    "name": "science_green_medgel_syringe.png",
+    "size": 33466,
+    "hash": "569de19bf408908eca9cbc686d4bcac3069b78ce580124e643278a4c57b209f7",
+    "shortHash": "569de19b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/science_hazard_dosimeter.png",
+    "name": "science_hazard_dosimeter.png",
+    "size": 78421,
+    "hash": "7ea8eb37ff2d670fed03564e84ad9c928144995aa096db4055f416896f71faa9",
+    "shortHash": "7ea8eb37",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/science_isotope_capsule.png",
+    "name": "science_isotope_capsule.png",
+    "size": 83907,
+    "hash": "43748ff067bc69a26459ff39892f79969468e11a0a4888c1057f2903cec0888c",
+    "shortHash": "43748ff0",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/science_janus_specimen_vial.png",
+    "name": "science_janus_specimen_vial.png",
+    "size": 68054,
+    "hash": "83203a4732ab4a256921c8a44011b81ffe5e507ac16658b3e36aadf3894603b7",
+    "shortHash": "83203a47",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/science_lead_sample_case.png",
+    "name": "science_lead_sample_case.png",
+    "size": 91109,
+    "hash": "4391e506fcacc7b59295ad3bb85f804be84c4248265a2a97b8c823c5f03e0d55",
+    "shortHash": "4391e506",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/science_microchip_tray.png",
+    "name": "science_microchip_tray.png",
+    "size": 92032,
+    "hash": "dc672a2e85e4107bdbcb57c44e12b61f0d417cf685451b9e558d5ef13a233727",
+    "shortHash": "dc672a2e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/science_pressure_gauge.png",
+    "name": "science_pressure_gauge.png",
+    "size": 83612,
+    "hash": "2dfe65eb6a8dc433cbd1cd268849a39ff9029eadb541bab75a4817c45b16ebc2",
+    "shortHash": "2dfe65eb",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/science_radiation_filter.png",
+    "name": "science_radiation_filter.png",
+    "size": 76593,
+    "hash": "f2bf096299a30f0c6b5a2acf8c3185bbc628eb4bd4810688958044de2cd95f74",
+    "shortHash": "f2bf0962",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/science_reactor_fuel_cell.png",
+    "name": "science_reactor_fuel_cell.png",
+    "size": 64921,
+    "hash": "6765f83ecfc1082b518c8ea655afc9b1bb28dc9f7703a60bb9142affc3988731",
+    "shortHash": "6765f83e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/security_access_badge.png",
+    "name": "security_access_badge.png",
+    "size": 72464,
+    "hash": "fd640b759d3bf832f2ba768da5e3e09e9753e0464137eb72c66553559793330c",
+    "shortHash": "fd640b75",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/security_biometric_chip.png",
+    "name": "security_biometric_chip.png",
+    "size": 79539,
+    "hash": "05abb859a00fb146ba3451a2616c6aabab1771e4854c0e2d2f7e875f14b97791",
+    "shortHash": "05abb859",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/security_blacksite_logbook.png",
+    "name": "security_blacksite_logbook.png",
+    "size": 101118,
+    "hash": "cce4abeb916ce9f835a1b8cf9d7d3d03fdcd21ce5a001910d3852ec58d10e103",
+    "shortHash": "cce4abeb",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/security_camera_module.png",
+    "name": "security_camera_module.png",
+    "size": 78448,
+    "hash": "a9b2a6e2de218f996e8c1dcce1be0120d94ebd42f28695a84899c2ed7774038b",
+    "shortHash": "a9b2a6e2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/security_cipher_coin.png",
+    "name": "security_cipher_coin.png",
+    "size": 103376,
+    "hash": "c891ef1e9637e57a756455b6958f6c35a5f4364ad82577a06235481919fce1e1",
+    "shortHash": "c891ef1e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/security_command_seal.png",
+    "name": "security_command_seal.png",
+    "size": 91424,
+    "hash": "40218bfa1d2b9e6653c8a1e98a65e29ef5c017125f78085f7c9e6fbb5458e061",
+    "shortHash": "40218bfa",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/security_data_crystal.png",
+    "name": "security_data_crystal.png",
+    "size": 64086,
+    "hash": "6ba417033ccba86e2ab1b3f6dec6e23749fdc356df67944421994241fa5962f4",
+    "shortHash": "6ba41703",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/security_drone_core.png",
+    "name": "security_drone_core.png",
+    "size": 90743,
+    "hash": "28cfc11fdeaf8b234b396d945e2d9af83d8c8e0025db3eafa0307518352b3c9b",
+    "shortHash": "28cfc11f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/security_encrypted_data_drive.png",
+    "name": "security_encrypted_data_drive.png",
+    "size": 53270,
+    "hash": "a59718f8af8403f34274ec646e3d32624ac2093568732252166d089f7adb386f",
+    "shortHash": "a59718f8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/security_evidence_cassette.png",
+    "name": "security_evidence_cassette.png",
+    "size": 98445,
+    "hash": "b5abb13d79d8b16cf2dc813e7a4b8cb4b99f8f55aea8806a572cc8fa8812235c",
+    "shortHash": "b5abb13d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/security_evidence_pouch.png",
+    "name": "security_evidence_pouch.png",
+    "size": 115674,
+    "hash": "837916eb77faebd577d8687d764e37aec35a50aa761c563672cbac7fd0fcd0bc",
+    "shortHash": "837916eb",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/security_map_tablet.png",
+    "name": "security_map_tablet.png",
+    "size": 106028,
+    "hash": "e7bcb23008883787fb76e221f1c77413b10601f368762a438121cf009363b01b",
+    "shortHash": "e7bcb230",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/security_master_access_token.png",
+    "name": "security_master_access_token.png",
+    "size": 65457,
+    "hash": "4d94048f4a30ee6bb9b49630ba944bac0a5728fb4dfb3d1dc83388cb03354c0c",
+    "shortHash": "4d94048f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/security_radio_handset.png",
+    "name": "security_radio_handset.png",
+    "size": 58719,
+    "hash": "0cca81736e5119262ca99b58189793803e1de8364885d424468c4568dfe556bc",
+    "shortHash": "0cca8173",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/security_security_keycard.png",
+    "name": "security_security_keycard.png",
+    "size": 78869,
+    "hash": "f56b3804f74c4003514ed22a037f244d59326a3c91979a1467dd796bd4f1f53b",
+    "shortHash": "f56b3804",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/items/security_signal_beacon.png",
+    "name": "security_signal_beacon.png",
+    "size": 55150,
+    "hash": "2e3d9e3985f9f8487e1ea6a6a4edbb516452742b8a33fdc5ba53ee6bc49aef65",
+    "shortHash": "2e3d9e39",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/biotech_acid_spill.png",
+    "name": "biotech_acid_spill.png",
+    "size": 117051,
+    "hash": "d0279ee6c947648eca71ab36234b8a1b30a80ec202e621ce72b75852e7861bba",
+    "shortHash": "d0279ee6",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/biotech_breakable_supply_crate.png",
+    "name": "biotech_breakable_supply_crate.png",
+    "size": 108927,
+    "hash": "e0314469bd07732040778776dd5e78d382879de1ee35b668ff2fbf34c925e11a",
+    "shortHash": "e0314469",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/biotech_cable_pipe_manifold.png",
+    "name": "biotech_cable_pipe_manifold.png",
+    "size": 108204,
+    "hash": "b7c7beb072e3191278571ebf76257414aec1d0fb3f88d126d8220470591abe9a",
+    "shortHash": "b7c7beb0",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/biotech_cargo_hook.png",
+    "name": "biotech_cargo_hook.png",
+    "size": 51944,
+    "hash": "17dd186e875cbf6048d1840886f3f0b6208f1a3ea98a8f16eb9de638601bfc22",
+    "shortHash": "17dd186e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/biotech_electric_arc_coil.png",
+    "name": "biotech_electric_arc_coil.png",
+    "size": 93249,
+    "hash": "ac4866899312da4733d514babc98c389c36276cd55213c98cbb92cba76b10ecc",
+    "shortHash": "ac486689",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/biotech_explosive_barrel.png",
+    "name": "biotech_explosive_barrel.png",
+    "size": 93824,
+    "hash": "9d5560356b9bdc6bd56ba4eab5490881e3d87741b9a2ad6218804c5f55fb0031",
+    "shortHash": "9d556035",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/biotech_flame_vent.png",
+    "name": "biotech_flame_vent.png",
+    "size": 90713,
+    "hash": "cb5369886fdd4c04cb1bae8ad2c5b67507ea2cd1baef6f04fee07c5401cefbc4",
+    "shortHash": "cb536988",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/biotech_fuel_canister.png",
+    "name": "biotech_fuel_canister.png",
+    "size": 87515,
+    "hash": "249ce93ec449053e6e659cf803b4705cc94587d226d80cf3f755a525cae7000a",
+    "shortHash": "249ce93e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/biotech_hydraulic_crusher.png",
+    "name": "biotech_hydraulic_crusher.png",
+    "size": 103896,
+    "hash": "823878a5c54ae6e4a3838fbde8ea9e4ba40d74c5e6a44069e1e9c21aaae9eeb7",
+    "shortHash": "823878a5",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/biotech_laser_barrier.png",
+    "name": "biotech_laser_barrier.png",
+    "size": 102864,
+    "hash": "70b4c8e3ff2f4e5259bb8d234cbafa1372d35ef984e791661dd262e653f0eda7",
+    "shortHash": "70b4c8e3",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/biotech_pressure_airlock.png",
+    "name": "biotech_pressure_airlock.png",
+    "size": 132609,
+    "hash": "84a772faf3669f8957cf37aad203f670ab4e4cd9d82c2502c7cd7190f4cc8ed5",
+    "shortHash": "84a772fa",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/biotech_security_turret.png",
+    "name": "biotech_security_turret.png",
+    "size": 95135,
+    "hash": "a6d413004df2f0d8fb8bd3d52b3895d79da00b9a98c2b93557cf28d2bdbe4202",
+    "shortHash": "a6d41300",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/biotech_specimen_reactor_tank.png",
+    "name": "biotech_specimen_reactor_tank.png",
+    "size": 120369,
+    "hash": "c185af6937fb60518302cc7c693de01605f6aed755876fa13a74c2d19500f930",
+    "shortHash": "c185af69",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/biotech_terminal_console.png",
+    "name": "biotech_terminal_console.png",
+    "size": 105464,
+    "hash": "95ec0d1fa77e050e9004b8ca942924f347296e39ed5a0438fc8278df660e7821",
+    "shortHash": "95ec0d1f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/biotech_toxic_gas_emitter.png",
+    "name": "biotech_toxic_gas_emitter.png",
+    "size": 113668,
+    "hash": "3531ae04020f600d1838382d97fa47140e5467dd0275c542a4bb8bf7edc829b6",
+    "shortHash": "3531ae04",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/biotech_warning_lamp.png",
+    "name": "biotech_warning_lamp.png",
+    "size": 50097,
+    "hash": "08398590415379fe12ff75adf827081b39779131c65d027dbfa8efa0b41c8ac5",
+    "shortHash": "08398590",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/datacenter_acid_spill.png",
+    "name": "datacenter_acid_spill.png",
+    "size": 91274,
+    "hash": "e464eb689d3d5cb14b9a117b49228bdef6c9346842bc8056722545524943d4b3",
+    "shortHash": "e464eb68",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/datacenter_breakable_supply_crate.png",
+    "name": "datacenter_breakable_supply_crate.png",
+    "size": 102580,
+    "hash": "46367a0bd6186c058e728ef6ecd8cc21ed6015694271433fca9d6f566d93d8d0",
+    "shortHash": "46367a0b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/datacenter_cable_pipe_manifold.png",
+    "name": "datacenter_cable_pipe_manifold.png",
+    "size": 113150,
+    "hash": "e3bf393e452830b0244178ee23aff13ef9d4fd6d4c85406dc5302113dbc20901",
+    "shortHash": "e3bf393e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/datacenter_cargo_hook.png",
+    "name": "datacenter_cargo_hook.png",
+    "size": 61061,
+    "hash": "c7c8099327e393e3afb0cbee052ee1ef1da78ec34655b9db58e0bac206b5b302",
+    "shortHash": "c7c80993",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/datacenter_electric_arc_coil.png",
+    "name": "datacenter_electric_arc_coil.png",
+    "size": 107422,
+    "hash": "b288fbe8f5ad50fc2397db16ccbecccfbedbd36f80535629710a43c6987697bb",
+    "shortHash": "b288fbe8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/datacenter_explosive_barrel.png",
+    "name": "datacenter_explosive_barrel.png",
+    "size": 91294,
+    "hash": "e29e676ee31709e290040edbb623b506fb7bd83841cc060ff5505523d32f74af",
+    "shortHash": "e29e676e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/datacenter_flame_vent.png",
+    "name": "datacenter_flame_vent.png",
+    "size": 84715,
+    "hash": "3e6311a6b67a4750903de556a8baeabd329294b0c1023f8bd2380b46e91fc56c",
+    "shortHash": "3e6311a6",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/datacenter_fuel_canister.png",
+    "name": "datacenter_fuel_canister.png",
+    "size": 73263,
+    "hash": "850ce957b6e892fcb35b123970edf069d2c21974222dbe473b5b504db290dda0",
+    "shortHash": "850ce957",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/datacenter_hydraulic_crusher.png",
+    "name": "datacenter_hydraulic_crusher.png",
+    "size": 108624,
+    "hash": "3f7be6c6f05faae08f43fdd6b58562d8955dd9c771c0ac6616ad2a25459b4a22",
+    "shortHash": "3f7be6c6",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/datacenter_laser_barrier.png",
+    "name": "datacenter_laser_barrier.png",
+    "size": 96088,
+    "hash": "b6cd67f29b04887b5c88a623ecd87e2d47af030df8a3e79faea92531203757fb",
+    "shortHash": "b6cd67f2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/datacenter_pressure_airlock.png",
+    "name": "datacenter_pressure_airlock.png",
+    "size": 124424,
+    "hash": "3085888965c47840cb89c6ce93fa8f87038bdeed35b0e9c827dc939e5e7b744b",
+    "shortHash": "30858889",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/datacenter_security_turret.png",
+    "name": "datacenter_security_turret.png",
+    "size": 91454,
+    "hash": "6f3600707dd8560262109cc8859193fbaa222cd556e9c30d2e13e2c677d296c6",
+    "shortHash": "6f360070",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/datacenter_specimen_reactor_tank.png",
+    "name": "datacenter_specimen_reactor_tank.png",
+    "size": 90019,
+    "hash": "f157817ea61057a6d56932d85986311eff20b40397e4efaee9405f3587cfa80c",
+    "shortHash": "f157817e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/datacenter_terminal_console.png",
+    "name": "datacenter_terminal_console.png",
+    "size": 83272,
+    "hash": "327255c7110409a7530e21bf4fc61e542e3137f886d1a1751b478a34561235b7",
+    "shortHash": "327255c7",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/datacenter_toxic_gas_emitter.png",
+    "name": "datacenter_toxic_gas_emitter.png",
+    "size": 98530,
+    "hash": "1786d73e4c1078b4a797f8f2c04cf71d53aa710959eed06e0b59f554fa6a098e",
+    "shortHash": "1786d73e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/datacenter_warning_lamp.png",
+    "name": "datacenter_warning_lamp.png",
+    "size": 41684,
+    "hash": "9c3a8b2d094182da6c8c3dfa4c49f3a22318c27a4d608291fef1ee12f560d4ae",
+    "shortHash": "9c3a8b2d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/foundry_acid_spill.png",
+    "name": "foundry_acid_spill.png",
+    "size": 88123,
+    "hash": "9507942fa88dbb04be3fc6a6c0b2b46cae1796d313e9e94e6f6f088750e42a7a",
+    "shortHash": "9507942f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/foundry_breakable_supply_crate.png",
+    "name": "foundry_breakable_supply_crate.png",
+    "size": 106722,
+    "hash": "0ddd5a646f7c27ebb02192796bdb5a5f42b29332e21565ffdf15dadd2089137b",
+    "shortHash": "0ddd5a64",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/foundry_cable_pipe_manifold.png",
+    "name": "foundry_cable_pipe_manifold.png",
+    "size": 128579,
+    "hash": "32ef310dc7550b6a047d082e08cd360ceb76274087f8f0de919b41ff8adf27d1",
+    "shortHash": "32ef310d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/foundry_cargo_hook.png",
+    "name": "foundry_cargo_hook.png",
+    "size": 59216,
+    "hash": "a993154703df338add14847186e5cda401f280d14f2d9a0f9fb536f73c39f590",
+    "shortHash": "a9931547",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/foundry_electric_arc_coil.png",
+    "name": "foundry_electric_arc_coil.png",
+    "size": 95481,
+    "hash": "d4ce26b4012909dddcde8d85968fd857346a18e88ef9a67a0c6dbc9833b3eaae",
+    "shortHash": "d4ce26b4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/foundry_explosive_barrel.png",
+    "name": "foundry_explosive_barrel.png",
+    "size": 96666,
+    "hash": "7d15b7bae9ed6bf5c17e2ce11ae79a0b9df0af7bdc7e80a9559a54ee0c732e60",
+    "shortHash": "7d15b7ba",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/foundry_flame_vent.png",
+    "name": "foundry_flame_vent.png",
+    "size": 96284,
+    "hash": "704bc2a1e329055721a73895b47592e52b73b9226b90bf3e0d414a78974bd612",
+    "shortHash": "704bc2a1",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/foundry_fuel_canister.png",
+    "name": "foundry_fuel_canister.png",
+    "size": 79266,
+    "hash": "52439f25d509af153e01a0645b7a2ce34920b7f136b4b022564348bad057bdb5",
+    "shortHash": "52439f25",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/foundry_hydraulic_crusher.png",
+    "name": "foundry_hydraulic_crusher.png",
+    "size": 121678,
+    "hash": "b9907c7395f902bdf5a2ee47944b6c9a4435c5d26bd515a54faf8969a7a50ccc",
+    "shortHash": "b9907c73",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/foundry_laser_barrier.png",
+    "name": "foundry_laser_barrier.png",
+    "size": 111594,
+    "hash": "97342b6574e60e6504ddff9fd2c3f4cca5f45f9c5710e3a203ed42e851f8e205",
+    "shortHash": "97342b65",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/foundry_pressure_airlock.png",
+    "name": "foundry_pressure_airlock.png",
+    "size": 135479,
+    "hash": "2925c6d8e7cd78402daa10ea3794cf580ce44ade9e0b114e3ab3ef280c2fe0f4",
+    "shortHash": "2925c6d8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/foundry_security_turret.png",
+    "name": "foundry_security_turret.png",
+    "size": 104102,
+    "hash": "09102ae8b77805b565578ac43a95b59f772498ae85296050f1307017e9345cb7",
+    "shortHash": "09102ae8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/foundry_specimen_reactor_tank.png",
+    "name": "foundry_specimen_reactor_tank.png",
+    "size": 116299,
+    "hash": "ec954465644ae0b8850d56e4619b31b1693a4f9e08042e8dbf381824effa2d7a",
+    "shortHash": "ec954465",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/foundry_terminal_console.png",
+    "name": "foundry_terminal_console.png",
+    "size": 114576,
+    "hash": "781aa5d8e69caf3756a485ab6074704dacdbf9c434d43a3edfd28d9e00cc56f4",
+    "shortHash": "781aa5d8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/foundry_toxic_gas_emitter.png",
+    "name": "foundry_toxic_gas_emitter.png",
+    "size": 99096,
+    "hash": "970d0a736a462b61cd3d5e12a78614706134f2a7be976c6ba5afe6202b7cfde3",
+    "shortHash": "970d0a73",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/foundry_warning_lamp.png",
+    "name": "foundry_warning_lamp.png",
+    "size": 54656,
+    "hash": "31e2215d5c4f31d38fbddae6cb501e06ac4397cf0125a60ea65e1b2c16e8a33b",
+    "shortHash": "31e2215d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/hangar_acid_spill.png",
+    "name": "hangar_acid_spill.png",
+    "size": 83173,
+    "hash": "77a378609c6134958c48e8586f35d9e95a66c0136df8d886c862a61144df9a51",
+    "shortHash": "77a37860",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/hangar_breakable_supply_crate.png",
+    "name": "hangar_breakable_supply_crate.png",
+    "size": 85693,
+    "hash": "2261718673fef6be66fd52c73d05c997052ea2a842e847fafbedbe7f74db5b0e",
+    "shortHash": "22617186",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/hangar_cable_pipe_manifold.png",
+    "name": "hangar_cable_pipe_manifold.png",
+    "size": 110601,
+    "hash": "8105ac0c0c7581c61cb9b786cb3e9bd9729e0c5c967e8761b4de672e4cd1ca86",
+    "shortHash": "8105ac0c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/hangar_cargo_hook.png",
+    "name": "hangar_cargo_hook.png",
+    "size": 51024,
+    "hash": "dc15e23ede107c882913769a8dfbf8118926692641cb62fe0e5ae1065d9718e9",
+    "shortHash": "dc15e23e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/hangar_electric_arc_coil.png",
+    "name": "hangar_electric_arc_coil.png",
+    "size": 107796,
+    "hash": "05ab9ff68112af8fdca2a6277f67dea5e5948e0378b2dfb887b7b296d5799487",
+    "shortHash": "05ab9ff6",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/hangar_explosive_barrel.png",
+    "name": "hangar_explosive_barrel.png",
+    "size": 77010,
+    "hash": "86de148745f528f954faf339704f6190b0b24b978d83524f1eccf0c01af1312a",
+    "shortHash": "86de1487",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/hangar_flame_vent.png",
+    "name": "hangar_flame_vent.png",
+    "size": 91542,
+    "hash": "275516dcd625d14be911c5b1a8f2070dd2c3ee3f1ac71d425f5be7e120b75830",
+    "shortHash": "275516dc",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/hangar_fuel_canister.png",
+    "name": "hangar_fuel_canister.png",
+    "size": 68687,
+    "hash": "12dafb5050ef3c5b868caf078599c14fb650f29283006f122c7c129bb530d39f",
+    "shortHash": "12dafb50",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/hangar_hydraulic_crusher.png",
+    "name": "hangar_hydraulic_crusher.png",
+    "size": 101584,
+    "hash": "1b7df750f182589556c4fe5b82b9ba48f7054020d32c1034922f16b432278692",
+    "shortHash": "1b7df750",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/hangar_laser_barrier.png",
+    "name": "hangar_laser_barrier.png",
+    "size": 102084,
+    "hash": "d1efb16489af350ba8da72ca907f1ad190eb300143e780c0078e384b3ca0153f",
+    "shortHash": "d1efb164",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/hangar_pressure_airlock.png",
+    "name": "hangar_pressure_airlock.png",
+    "size": 123256,
+    "hash": "53f76c1b57f17ada30000b2874733717fc14eefe69af569ba6da2537664ef521",
+    "shortHash": "53f76c1b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/hangar_security_turret.png",
+    "name": "hangar_security_turret.png",
+    "size": 84584,
+    "hash": "94d1d564f0a8fc5001bfb12478cb2716812a4872e969b39df5c3961bd3d2f397",
+    "shortHash": "94d1d564",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/hangar_specimen_reactor_tank.png",
+    "name": "hangar_specimen_reactor_tank.png",
+    "size": 99413,
+    "hash": "077bc0d76fb637e9478770d4a16143c7b328ea978f3a3bace5a9fdbb94e72f91",
+    "shortHash": "077bc0d7",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/hangar_terminal_console.png",
+    "name": "hangar_terminal_console.png",
+    "size": 101184,
+    "hash": "b459a9a160012303badd4c1d356ea20d1eb0fb8e648ba6b349bf8f55abd9eb61",
+    "shortHash": "b459a9a1",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/hangar_toxic_gas_emitter.png",
+    "name": "hangar_toxic_gas_emitter.png",
+    "size": 95875,
+    "hash": "49efa0f1211a884a354a060d2644ab23fa7ce724d918dc7453651a2a711e2bac",
+    "shortHash": "49efa0f1",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/hangar_warning_lamp.png",
+    "name": "hangar_warning_lamp.png",
+    "size": 47454,
+    "hash": "8245c3701fdce8c4a8d4df3e4a9419e9f16f79dab18a2e7ac53cac43912b42be",
+    "shortHash": "8245c370",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/nuclear_acid_spill.png",
+    "name": "nuclear_acid_spill.png",
+    "size": 85586,
+    "hash": "53f8544c913ac963ae8fdf0a786e1bcb558e2ba07458b321884391f033513e64",
+    "shortHash": "53f8544c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/nuclear_breakable_supply_crate.png",
+    "name": "nuclear_breakable_supply_crate.png",
+    "size": 102701,
+    "hash": "3e9245d99ce452d70e0697bab6fcb97bc38d57c34192abbbc49f82b9dc9138b1",
+    "shortHash": "3e9245d9",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/nuclear_cable_pipe_manifold.png",
+    "name": "nuclear_cable_pipe_manifold.png",
+    "size": 121367,
+    "hash": "889fbbafb5b84df93fe67be4781f8829543c08df35f03671a9b250c83e9330e8",
+    "shortHash": "889fbbaf",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/nuclear_cargo_hook.png",
+    "name": "nuclear_cargo_hook.png",
+    "size": 58525,
+    "hash": "aef08b57160ab89988e499c0ba05244ba03f4b7d3cfd534ee02dbbf0f94f37f6",
+    "shortHash": "aef08b57",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/nuclear_electric_arc_coil.png",
+    "name": "nuclear_electric_arc_coil.png",
+    "size": 90219,
+    "hash": "b26389b08b2e920bce18617087fb12fb6986b5a838dc223633bd7d2ac8eb20f7",
+    "shortHash": "b26389b0",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/nuclear_explosive_barrel.png",
+    "name": "nuclear_explosive_barrel.png",
+    "size": 90595,
+    "hash": "00bbe17fc7b637f73d585f66199414ee773b8954f7a7c86ee2512059fb4cb7ce",
+    "shortHash": "00bbe17f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/nuclear_flame_vent.png",
+    "name": "nuclear_flame_vent.png",
+    "size": 91116,
+    "hash": "d68135f31d79093818df1f8364a698d229e36699749e6ea6bc2c9487dfbb0c5f",
+    "shortHash": "d68135f3",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/nuclear_fuel_canister.png",
+    "name": "nuclear_fuel_canister.png",
+    "size": 70311,
+    "hash": "6125c3e2d5421b373d8f50f7d241a912afe052584a625313a8e388cd347029ca",
+    "shortHash": "6125c3e2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/nuclear_hydraulic_crusher.png",
+    "name": "nuclear_hydraulic_crusher.png",
+    "size": 91364,
+    "hash": "715e3aab6a332f9cd3f3f8909e02088c4b91ea4816ba5ceb86035904fbb64eb2",
+    "shortHash": "715e3aab",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/nuclear_laser_barrier.png",
+    "name": "nuclear_laser_barrier.png",
+    "size": 99501,
+    "hash": "66515335fb4aa557277dd17337debf378b80e7acd6ec45ec15e91d9fbaaf162a",
+    "shortHash": "66515335",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/nuclear_pressure_airlock.png",
+    "name": "nuclear_pressure_airlock.png",
+    "size": 123331,
+    "hash": "425625da6d042459517bc1c0baf0db4a973d6069cf1e8122a4feaba451a7a68e",
+    "shortHash": "425625da",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/nuclear_security_turret.png",
+    "name": "nuclear_security_turret.png",
+    "size": 86847,
+    "hash": "d3cd56ea3656b1df4083d40a560161308cc7fb95da22cd4c392d5acb741ac8f3",
+    "shortHash": "d3cd56ea",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/nuclear_specimen_reactor_tank.png",
+    "name": "nuclear_specimen_reactor_tank.png",
+    "size": 99796,
+    "hash": "96e5d469ee41280d756c664a6722d6fa168a12ebc83da9fc875e32f3146de7a7",
+    "shortHash": "96e5d469",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/nuclear_terminal_console.png",
+    "name": "nuclear_terminal_console.png",
+    "size": 99355,
+    "hash": "c059439734653663d725309de21bcccb4ab83de90d4af61fe845b6d0823cfb8f",
+    "shortHash": "c0594397",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/nuclear_toxic_gas_emitter.png",
+    "name": "nuclear_toxic_gas_emitter.png",
+    "size": 109290,
+    "hash": "ba908e77fb15dcac16a12744fa494ffd8c1fbb77aa56fb346e1e7b834af7f499",
+    "shortHash": "ba908e77",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/nuclear_warning_lamp.png",
+    "name": "nuclear_warning_lamp.png",
+    "size": 52243,
+    "hash": "a041424cbb3479bddecae6b1b9521606e331578372380a830b546389fd8d8ba6",
+    "shortHash": "a041424c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/plaza_acid_spill.png",
+    "name": "plaza_acid_spill.png",
+    "size": 89438,
+    "hash": "b6f729d916fa737296db9ccd0f47ec64a3fc8cf3c6c1cd9fbe760a6d38df2e64",
+    "shortHash": "b6f729d9",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/plaza_breakable_supply_crate.png",
+    "name": "plaza_breakable_supply_crate.png",
+    "size": 110559,
+    "hash": "fa2f7aa566577d326f43a1de1a44432a6f668e95eedb4f5f2a99ae240af3ad59",
+    "shortHash": "fa2f7aa5",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/plaza_cable_pipe_manifold.png",
+    "name": "plaza_cable_pipe_manifold.png",
+    "size": 123383,
+    "hash": "76dbe0ebb00149bfad5d73d61978b66742ce0085ca3fd590608dfde789878c89",
+    "shortHash": "76dbe0eb",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/plaza_cargo_hook.png",
+    "name": "plaza_cargo_hook.png",
+    "size": 53585,
+    "hash": "3e780e9e44f7d32f47ea51aae140a608660483ffc42e70fb2290bc6eec856bbe",
+    "shortHash": "3e780e9e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/plaza_electric_arc_coil.png",
+    "name": "plaza_electric_arc_coil.png",
+    "size": 103110,
+    "hash": "14416206248008d92a98bb51bd8a51996512a0c4e367c2ed4c72ba835792f955",
+    "shortHash": "14416206",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/plaza_explosive_barrel.png",
+    "name": "plaza_explosive_barrel.png",
+    "size": 78038,
+    "hash": "c82f7ad9f7ea6f7e8cbdfa0025b50e7677c64137a19dbf62c1a76a9ffb414903",
+    "shortHash": "c82f7ad9",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/plaza_flame_vent.png",
+    "name": "plaza_flame_vent.png",
+    "size": 75508,
+    "hash": "e9d7aef78824ef89cca1db862eba56578fe46ade1aca265cb1be4654c5d2aee5",
+    "shortHash": "e9d7aef7",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/plaza_fuel_canister.png",
+    "name": "plaza_fuel_canister.png",
+    "size": 79695,
+    "hash": "cd01e12d42e01b59986c7fb37998183b04647c67711a037889c1e18548e4674c",
+    "shortHash": "cd01e12d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/plaza_hydraulic_crusher.png",
+    "name": "plaza_hydraulic_crusher.png",
+    "size": 101118,
+    "hash": "cdd484bfc8aa5070368317eb677dcdf4e91026f7e74e6f880076b28c0b067dd5",
+    "shortHash": "cdd484bf",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/plaza_laser_barrier.png",
+    "name": "plaza_laser_barrier.png",
+    "size": 113107,
+    "hash": "e87e2d922e8771dc37a17e67c96dbc919452e43ac9c51877254aec703a76d395",
+    "shortHash": "e87e2d92",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/plaza_pressure_airlock.png",
+    "name": "plaza_pressure_airlock.png",
+    "size": 122770,
+    "hash": "71d131320f37cac4fbc0fce5eb97b1a9a2b425910f5aac4580282341cd20807a",
+    "shortHash": "71d13132",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/plaza_security_turret.png",
+    "name": "plaza_security_turret.png",
+    "size": 97750,
+    "hash": "feb3520f1ce1e38180b0c04abe26cd6cc84040eb8f8da40d3fa9f52610f3bbda",
+    "shortHash": "feb3520f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/plaza_specimen_reactor_tank.png",
+    "name": "plaza_specimen_reactor_tank.png",
+    "size": 92988,
+    "hash": "03c99ea446605bbe78787af7b55e051c95397745e4e130b957a75665168513b9",
+    "shortHash": "03c99ea4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/plaza_terminal_console.png",
+    "name": "plaza_terminal_console.png",
+    "size": 102931,
+    "hash": "e3bbc302a286d4cec397de89f5102730d9db09da4509569e678efc44bf4e5d3b",
+    "shortHash": "e3bbc302",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/plaza_toxic_gas_emitter.png",
+    "name": "plaza_toxic_gas_emitter.png",
+    "size": 104005,
+    "hash": "e86344bcf2c69e1a0f9a4574425c1f6f0644fd7fbc16a3829e66be732e5c107f",
+    "shortHash": "e86344bc",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/plaza_warning_lamp.png",
+    "name": "plaza_warning_lamp.png",
+    "size": 34882,
+    "hash": "7952554bf52d2fe3ca64c476253652deb0e711779f8a3dc11c529f3eaa136e67",
+    "shortHash": "7952554b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/security_acid_spill.png",
+    "name": "security_acid_spill.png",
+    "size": 83158,
+    "hash": "7d1e7f4588244567540da04711b70dbba390ca14eebb5138cc5f3b9bfcf3eee0",
+    "shortHash": "7d1e7f45",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/security_breakable_supply_crate.png",
+    "name": "security_breakable_supply_crate.png",
+    "size": 98402,
+    "hash": "f8dcdf4dcad07036b4dfc7a3829a1e61671ec4c86eab7ed4b7ba6225c77ac412",
+    "shortHash": "f8dcdf4d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/security_cable_pipe_manifold.png",
+    "name": "security_cable_pipe_manifold.png",
+    "size": 116325,
+    "hash": "d649faa4d087f3c0f7480870b4ffe5b9909cdc785fc3b220a77a30b21708c350",
+    "shortHash": "d649faa4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/security_cargo_hook.png",
+    "name": "security_cargo_hook.png",
+    "size": 51429,
+    "hash": "a5b3bacb8b767488323602f1c7fd16184f4664054f2facd79ae85ee796486457",
+    "shortHash": "a5b3bacb",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/security_electric_arc_coil.png",
+    "name": "security_electric_arc_coil.png",
+    "size": 104019,
+    "hash": "887035c2bfba891c19e225f0e0d144db905e39a9531a78b01356b2372f95dfcc",
+    "shortHash": "887035c2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/security_explosive_barrel.png",
+    "name": "security_explosive_barrel.png",
+    "size": 89767,
+    "hash": "e19e16f3ed3746973c77fbb60041749eb8f45a5b2b53b603aa8ea6b04c9d2244",
+    "shortHash": "e19e16f3",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/security_flame_vent.png",
+    "name": "security_flame_vent.png",
+    "size": 80022,
+    "hash": "dfe0df07f40dab0983d08c22f949e3d0028dc0935af50cf5a1d06c1da2e9b0d3",
+    "shortHash": "dfe0df07",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/security_fuel_canister.png",
+    "name": "security_fuel_canister.png",
+    "size": 76015,
+    "hash": "2d3cce04b745697e85be3553ddabf5eb6279c9edfdbacf90b30e621b42882c28",
+    "shortHash": "2d3cce04",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/security_hydraulic_crusher.png",
+    "name": "security_hydraulic_crusher.png",
+    "size": 98484,
+    "hash": "e6342b7b033f1c62abd0420ad88f71f63f4d1cf12f52a8e5532d20ef765b9259",
+    "shortHash": "e6342b7b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/security_laser_barrier.png",
+    "name": "security_laser_barrier.png",
+    "size": 92310,
+    "hash": "c0c69e4ca9997ae8d3e1e406eaa06900c4ec04cbb87532d72128681b80b3d277",
+    "shortHash": "c0c69e4c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/security_pressure_airlock.png",
+    "name": "security_pressure_airlock.png",
+    "size": 121406,
+    "hash": "163837e36879139063fb03391f60d6177069b93cff31cede49e2a2b98e1d6760",
+    "shortHash": "163837e3",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/security_security_turret.png",
+    "name": "security_security_turret.png",
+    "size": 94002,
+    "hash": "7bb56d79ba15343c0706d6e47d3391fe9de58851b2bbbd4938615f0b17e2a231",
+    "shortHash": "7bb56d79",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/security_specimen_reactor_tank.png",
+    "name": "security_specimen_reactor_tank.png",
+    "size": 88916,
+    "hash": "148c3fc6ed4319489ed6d07218d5053aff1df1acbe91bd8e3ecca73b7d83d0ed",
+    "shortHash": "148c3fc6",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/security_terminal_console.png",
+    "name": "security_terminal_console.png",
+    "size": 85476,
+    "hash": "cf94c26a91203888065c80fbf3ae92360b196e6f5afdee8c231c0903c94d093e",
+    "shortHash": "cf94c26a",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/security_toxic_gas_emitter.png",
+    "name": "security_toxic_gas_emitter.png",
+    "size": 104457,
+    "hash": "a2b5c3d8f983aad8e307242174d7ecea3e8809654064e270c7484934de64688c",
+    "shortHash": "a2b5c3d8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/security_warning_lamp.png",
+    "name": "security_warning_lamp.png",
+    "size": 50424,
+    "hash": "2e54c6f2b859b985c7b8cbf808fbe8e4bc3751c173377d881dfbdf48dc8a15cb",
+    "shortHash": "2e54c6f2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/vault_acid_spill.png",
+    "name": "vault_acid_spill.png",
+    "size": 72317,
+    "hash": "049169a7268eaf683473496ca74af88b2fd5b096578a364f37a5654aafb78c25",
+    "shortHash": "049169a7",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/vault_breakable_supply_crate.png",
+    "name": "vault_breakable_supply_crate.png",
+    "size": 105329,
+    "hash": "76507c2b1e7a51cd25414f86a8e867271b11416096431a1d8fc9580f4300ee1d",
+    "shortHash": "76507c2b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/vault_cable_pipe_manifold.png",
+    "name": "vault_cable_pipe_manifold.png",
+    "size": 100894,
+    "hash": "262f96f8f52c9222a33536ad541e4eda51c66e818020b65ab9eb7b9424e70540",
+    "shortHash": "262f96f8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/vault_cargo_hook.png",
+    "name": "vault_cargo_hook.png",
+    "size": 55186,
+    "hash": "07fe063949a4a3d6729d3f2e9ea49af077321c0294ae6cedd151bdaa87cbbbef",
+    "shortHash": "07fe0639",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/vault_electric_arc_coil.png",
+    "name": "vault_electric_arc_coil.png",
+    "size": 92039,
+    "hash": "ffc1c26c2a9f31bf77ad85fd014dcff1ed0666c28f83f1dbb152fb17d9f4e21a",
+    "shortHash": "ffc1c26c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/vault_explosive_barrel.png",
+    "name": "vault_explosive_barrel.png",
+    "size": 86613,
+    "hash": "790cac5ab9fa2e6df244b320ec76b00b214db316f750ba26d9d4e1418d4d9384",
+    "shortHash": "790cac5a",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/vault_flame_vent.png",
+    "name": "vault_flame_vent.png",
+    "size": 85405,
+    "hash": "9bada3a45604678639dac8d64092e1879396ce111b0493fa4f0679b18c89e3d2",
+    "shortHash": "9bada3a4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/vault_fuel_canister.png",
+    "name": "vault_fuel_canister.png",
+    "size": 72840,
+    "hash": "d72c0494b9e725709a61a806aefa1c9800015992e8a4dd4b9015e3cfe8093b75",
+    "shortHash": "d72c0494",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/vault_hydraulic_crusher.png",
+    "name": "vault_hydraulic_crusher.png",
+    "size": 77129,
+    "hash": "52ec29f5c6240761026713d80f4f35bfe0d0948b5e9f9578d5c0f90cd6e2aa85",
+    "shortHash": "52ec29f5",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/vault_laser_barrier.png",
+    "name": "vault_laser_barrier.png",
+    "size": 122449,
+    "hash": "8b3d35e2dcfa4cb73b729b30c4849513a916f449cdc6a7019051f3b4864aaff5",
+    "shortHash": "8b3d35e2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/vault_pressure_airlock.png",
+    "name": "vault_pressure_airlock.png",
+    "size": 116210,
+    "hash": "f56e0574a6e411d3ffd7b71faf081272f410d186f8a9f608339079a28ec39a34",
+    "shortHash": "f56e0574",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/vault_security_turret.png",
+    "name": "vault_security_turret.png",
+    "size": 98581,
+    "hash": "7721d8c4742690ff2918fdd9946841f3267b807e8fbdbd1f9f4976e5d9e186e5",
+    "shortHash": "7721d8c4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/vault_specimen_reactor_tank.png",
+    "name": "vault_specimen_reactor_tank.png",
+    "size": 101105,
+    "hash": "02340fe9349c5f36013375e995d20ca2105ac1d8041ac333d0820734eee2bb82",
+    "shortHash": "02340fe9",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/vault_terminal_console.png",
+    "name": "vault_terminal_console.png",
+    "size": 92545,
+    "hash": "5e653bdf161f5078f1aa289a1c9fa2ab89504f07a284cb79c09921e0c9b507dd",
+    "shortHash": "5e653bdf",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/vault_toxic_gas_emitter.png",
+    "name": "vault_toxic_gas_emitter.png",
+    "size": 106671,
+    "hash": "edcd80299e821157339df971e10fb04b611558819116b11fda3c76b7502a1963",
+    "shortHash": "edcd8029",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/environment/props/vault_warning_lamp.png",
+    "name": "vault_warning_lamp.png",
+    "size": 43320,
+    "hash": "3e38c7034f06176a3e49ec437dfee3c5480a032372bab1c4d316d4133923e7ce",
+    "shortHash": "3e38c703",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sfx/boom.ogg",
+    "name": "boom.ogg",
+    "size": 7766,
+    "hash": "c650370a9f702b68b2bc9510900bad101c90bd59fa3f7d610a1aa378966eed8f",
+    "shortHash": "c650370a"
+  },
+  {
+    "file": "/game/sfx/boom.wav",
+    "name": "boom.wav",
+    "size": 61782,
+    "hash": "1e356a0ff1e73279dbd4a028a05a292ebbe119dbc702649b0edb965c620ccc55",
+    "shortHash": "1e356a0f"
+  },
+  {
+    "file": "/game/sfx/death.ogg",
+    "name": "death.ogg",
+    "size": 20870,
+    "hash": "480ee82b690136ea9db6966a3c3033356b8274752795c4e37afd6b6defcfacff",
+    "shortHash": "480ee82b"
+  },
+  {
+    "file": "/game/sfx/death_thud.ogg",
+    "name": "death_thud.ogg",
+    "size": 11617,
+    "hash": "b33a8f14068aec24ec69ba85e5e87fdc41228975f6a1a3e44a6e7d6fc3d9f8d8",
+    "shortHash": "b33a8f14"
+  },
+  {
+    "file": "/game/sfx/door.ogg",
+    "name": "door.ogg",
+    "size": 13615,
+    "hash": "9851a69d0c613e13bceef08060ecc4148f098ef487927cbebe270d642398a3b3",
+    "shortHash": "9851a69d"
+  },
+  {
+    "file": "/game/sfx/empty.ogg",
+    "name": "empty.ogg",
+    "size": 13615,
+    "hash": "9851a69d0c613e13bceef08060ecc4148f098ef487927cbebe270d642398a3b3",
+    "shortHash": "9851a69d"
+  },
+  {
+    "file": "/game/sfx/empty0.ogg",
+    "name": "empty0.ogg",
+    "size": 7286,
+    "hash": "72b589eadd41781257ac859e4f4d030222e623390e4a1a83f6d05329a6e026f1",
+    "shortHash": "72b589ea"
+  },
+  {
+    "file": "/game/sfx/empty1.ogg",
+    "name": "empty1.ogg",
+    "size": 6509,
+    "hash": "f4bbee66ca191ec744b84fc07ac9ed2a6fda955d51cfed8360f12b62815d3cbd",
+    "shortHash": "f4bbee66"
+  },
+  {
+    "file": "/game/sfx/empty2.ogg",
+    "name": "empty2.ogg",
+    "size": 7651,
+    "hash": "33b5e6e37c6e9d54e07bf5a89b12c76e879f40c1ea83cdd82714df1d6f9fec6d",
+    "shortHash": "33b5e6e3"
+  },
+  {
+    "file": "/game/sfx/fire0.ogg",
+    "name": "fire0.ogg",
+    "size": 3083,
+    "hash": "87b40dacd2b61322158a1401852a823ce8a61514cb60be836c3ea63e9fb86d61",
+    "shortHash": "87b40dac"
+  },
+  {
+    "file": "/game/sfx/fire0.wav",
+    "name": "fire0.wav",
+    "size": 19448,
+    "hash": "8fbad4c0038e2aecdcc2e779789fa48c0bdb1a6c214bd2d3546451bbbec2c160",
+    "shortHash": "8fbad4c0"
+  },
+  {
+    "file": "/game/sfx/fire1.ogg",
+    "name": "fire1.ogg",
+    "size": 5520,
+    "hash": "d981c135f5e79fbd8d9807f2f576c370ee40fcb6a4496731c347aab297b57ef7",
+    "shortHash": "d981c135"
+  },
+  {
+    "file": "/game/sfx/fire1.wav",
+    "name": "fire1.wav",
+    "size": 42380,
+    "hash": "15603b8af805484ad2b99441ac40d1ef035ada053b6c45f04764ccf82bf933a5",
+    "shortHash": "15603b8a"
+  },
+  {
+    "file": "/game/sfx/fire2.ogg",
+    "name": "fire2.ogg",
+    "size": 1870,
+    "hash": "cd5c45add33e11f6febd715274833c3cbbf802be424ffa18824e730e68388354",
+    "shortHash": "cd5c45ad"
+  },
+  {
+    "file": "/game/sfx/fire2.wav",
+    "name": "fire2.wav",
+    "size": 8864,
+    "hash": "2ae2211bfc2a85f02d8abd344c469dc4fe9149d46b6ef907f7877f053538709a",
+    "shortHash": "2ae2211b"
+  },
+  {
+    "file": "/game/sfx/fire3.ogg",
+    "name": "fire3.ogg",
+    "size": 6004,
+    "hash": "ad3010a947eb466b60234d42d16587771266b1f05755d09e4885bfb9a015079e",
+    "shortHash": "ad3010a9"
+  },
+  {
+    "file": "/game/sfx/fire3.wav",
+    "name": "fire3.wav",
+    "size": 48554,
+    "hash": "75f4399d56daa38298108a975a22473f5f8474b57c3b9075f7309ef1005c9e79",
+    "shortHash": "75f4399d"
+  },
+  {
+    "file": "/game/sfx/fire4.ogg",
+    "name": "fire4.ogg",
+    "size": 3994,
+    "hash": "8335d8b81736f514558cf942cc3c6c80fa61db0ab8596578eaa7e48fbb431b60",
+    "shortHash": "8335d8b8"
+  },
+  {
+    "file": "/game/sfx/fire4.wav",
+    "name": "fire4.wav",
+    "size": 28268,
+    "hash": "b022942de8077c2d8e58e213d6b4e09f88705ea5ea9d6ebd4496a7b0ef4f6f09",
+    "shortHash": "b022942d"
+  },
+  {
+    "file": "/game/sfx/hit.ogg",
+    "name": "hit.ogg",
+    "size": 8800,
+    "hash": "486988aa2d6440ffc4c62a0e8ccf3c23673ba84424bd4723378d451b7255eb5c",
+    "shortHash": "486988aa"
+  },
+  {
+    "file": "/game/sfx/hit_flesh.ogg",
+    "name": "hit_flesh.ogg",
+    "size": 6689,
+    "hash": "4d0096364ba9e46119d2ff6df493fdc101bd2e1efae061da5e5f77a53b3fdcb6",
+    "shortHash": "4d009636"
+  },
+  {
+    "file": "/game/sfx/hit_slice.ogg",
+    "name": "hit_slice.ogg",
+    "size": 15532,
+    "hash": "4cd96dc630bed9840c15f1dd2306da2cc56a4da26a5d3f1a03c5a7265ac5e54f",
+    "shortHash": "4cd96dc6"
+  },
+  {
+    "file": "/game/sfx/hurt.ogg",
+    "name": "hurt.ogg",
+    "size": 4812,
+    "hash": "1dd3ac68a32be1d140cd98647dfa9ece7d930e3772a513d839701d3cfb55ab4b",
+    "shortHash": "1dd3ac68"
+  },
+  {
+    "file": "/game/sfx/pickup.ogg",
+    "name": "pickup.ogg",
+    "size": 14001,
+    "hash": "d823857d82ead3d157a553baf76a2e5f64e7cc7de3e951d1f478ed34457323e4",
+    "shortHash": "d823857d"
+  },
+  {
+    "file": "/game/sfx/pickup_gold.ogg",
+    "name": "pickup_gold.ogg",
+    "size": 6146,
+    "hash": "2050202f72f11a574519c028d5324545d3a8854ccd30a89204144a68616ec27c",
+    "shortHash": "2050202f"
+  },
+  {
+    "file": "/game/sfx/reload.ogg",
+    "name": "reload.ogg",
+    "size": 10208,
+    "hash": "ba9ba60b172b3ebc131a940f25793cd2e207aca7af73dc80d637277f060f1708",
+    "shortHash": "ba9ba60b"
+  },
+  {
+    "file": "/game/voices/boss-chimera.mp3",
+    "name": "boss-chimera.mp3",
+    "size": 61869,
+    "hash": "68d658b4c2a6cd0f448f2a21ee8dd970767115496a400bb7ac6fc1e563b5d5dc",
+    "shortHash": "68d658b4"
+  },
+  {
+    "file": "/game/voices/boss-hecate.mp3",
+    "name": "boss-hecate.mp3",
+    "size": 59949,
+    "hash": "23d1e8f496ef6d74aede45a0f14dde8b9a968b2886da28670d7c2000745d0660",
+    "shortHash": "23d1e8f4"
+  },
+  {
+    "file": "/game/voices/boss-veyran.mp3",
+    "name": "boss-veyran.mp3",
+    "size": 54381,
+    "hash": "a8466595c9868ff23ad19fb6a17017bdf6ef3c24a3945fb61309b931ac30801b",
+    "shortHash": "a8466595"
+  },
+  {
+    "file": "/game/voices/breacher-1.mp3",
+    "name": "breacher-1.mp3",
+    "size": 10221,
+    "hash": "ce403f0b785c51de54e49089754901612be60b4d98ceb8164c7a67bf73c67831",
+    "shortHash": "ce403f0b"
+  },
+  {
+    "file": "/game/voices/breacher-2.mp3",
+    "name": "breacher-2.mp3",
+    "size": 11565,
+    "hash": "902d9805c6b5cf81a2f7c01e37463b96e1c06bd4b5088b64ab5c9afc4d28c790",
+    "shortHash": "902d9805"
+  },
+  {
+    "file": "/game/voices/breacher-3.mp3",
+    "name": "breacher-3.mp3",
+    "size": 19245,
+    "hash": "6187dd007ef41465c93763123cee88f006037a6ae03a650f19f791cc1e7935c5",
+    "shortHash": "6187dd00"
+  },
+  {
+    "file": "/game/voices/breacher-4.mp3",
+    "name": "breacher-4.mp3",
+    "size": 8109,
+    "hash": "5a5a9e883bfbfef65c46c5da42e91ae8a5558b4a6b20305091e4030e9164baa4",
+    "shortHash": "5a5a9e88"
+  },
+  {
+    "file": "/game/voices/breacher-5.mp3",
+    "name": "breacher-5.mp3",
+    "size": 10221,
+    "hash": "4e97463cbe0de184e1d0bd627e5b10ef64b64cda638f7fed2f6aace00dcc15c4",
+    "shortHash": "4e97463c"
+  },
+  {
+    "file": "/game/voices/breacher-6.mp3",
+    "name": "breacher-6.mp3",
+    "size": 9645,
+    "hash": "5ee6cebd5cbcd39caf43e1fc7b4865a61a8e60b55616a81d065b86513447d421",
+    "shortHash": "5ee6cebd"
+  },
+  {
+    "file": "/game/voices/chimera-1.mp3",
+    "name": "chimera-1.mp3",
+    "size": 12717,
+    "hash": "5a2526e7534468a5d36c5270c8cb330361bec56a8f55c2db4954f9d715400faf",
+    "shortHash": "5a2526e7"
+  },
+  {
+    "file": "/game/voices/chimera-2.mp3",
+    "name": "chimera-2.mp3",
+    "size": 14637,
+    "hash": "43b88ddee4df8936cf6717c19aef38b85a2f1c0117fbf2513d35c97c6c9fc075",
+    "shortHash": "43b88dde"
+  },
+  {
+    "file": "/game/voices/chimera-3.mp3",
+    "name": "chimera-3.mp3",
+    "size": 18861,
+    "hash": "4505ba15975e425179c50ba5e6716bec0209bfe779a6e5f0b72cd5a523530829",
+    "shortHash": "4505ba15"
+  },
+  {
+    "file": "/game/voices/chimera-4.mp3",
+    "name": "chimera-4.mp3",
+    "size": 15021,
+    "hash": "c2fe513bb2c3dc25f7c937ebf68ce953f54b0e12d7000416cf9a106631962e1d",
+    "shortHash": "c2fe513b"
+  },
+  {
+    "file": "/game/voices/chimera-5.mp3",
+    "name": "chimera-5.mp3",
+    "size": 12141,
+    "hash": "42d3b7d371e9c7092334c21b7e8b3d4034e93a6aa785e0102b53113243ab5172",
+    "shortHash": "42d3b7d3"
+  },
+  {
+    "file": "/game/voices/chimera-6.mp3",
+    "name": "chimera-6.mp3",
+    "size": 20781,
+    "hash": "159e347992d41c2f16be4fe40d60f663f42ff82edc0149046ac02a71cdf35e31",
+    "shortHash": "159e3479"
+  },
+  {
+    "file": "/game/voices/chimera-7.mp3",
+    "name": "chimera-7.mp3",
+    "size": 14637,
+    "hash": "3dbb82c4ae7b80cebc39c022efc2b02621f76903bc2d292f89811d245fbe0534",
+    "shortHash": "3dbb82c4"
+  },
+  {
+    "file": "/game/voices/gunner-1.mp3",
+    "name": "gunner-1.mp3",
+    "size": 15597,
+    "hash": "4b3fe30b0f40e479b8b6ca1fb9fcf6f13d5a198d67a464c9e6483649187587dc",
+    "shortHash": "4b3fe30b"
+  },
+  {
+    "file": "/game/voices/gunner-2.mp3",
+    "name": "gunner-2.mp3",
+    "size": 14445,
+    "hash": "675bca2dbbe9fae3c23c59a9aec9c58b319ca4c65f453b3a118b1874f89458b2",
+    "shortHash": "675bca2d"
+  },
+  {
+    "file": "/game/voices/gunner-3.mp3",
+    "name": "gunner-3.mp3",
+    "size": 9069,
+    "hash": "03aac96ed38749d440b18babb753793b01c5fee3192bdcae0d88ede1b724f7b1",
+    "shortHash": "03aac96e"
+  },
+  {
+    "file": "/game/voices/gunner-4.mp3",
+    "name": "gunner-4.mp3",
+    "size": 11373,
+    "hash": "c3f46ff63aff3cb9b5e7fea05c626b262ed079ac447a9e9cb7133aa1e93a4112",
+    "shortHash": "c3f46ff6"
+  },
+  {
+    "file": "/game/voices/gunner-5.mp3",
+    "name": "gunner-5.mp3",
+    "size": 10221,
+    "hash": "3a904cac1bfced210d75b456faaff3528f13f3387810694dbaa1d4d10f17a4bf",
+    "shortHash": "3a904cac"
+  },
+  {
+    "file": "/game/voices/gunner-6.mp3",
+    "name": "gunner-6.mp3",
+    "size": 14637,
+    "hash": "2aabcb3b26e01a0a120c32db6af231b182d83f7cddf4f2fe933676ca3be75cd0",
+    "shortHash": "2aabcb3b"
+  },
+  {
+    "file": "/game/voices/hazmat-1.mp3",
+    "name": "hazmat-1.mp3",
+    "size": 13293,
+    "hash": "9ef98b2655bf3e36a838e39fad970cfdd47876dbd95b7e96d4c78f266be466cb",
+    "shortHash": "9ef98b26"
+  },
+  {
+    "file": "/game/voices/hazmat-2.mp3",
+    "name": "hazmat-2.mp3",
+    "size": 15981,
+    "hash": "7cab6d649be4e4b4e79eebc7ed22aeb13f57e19276fd0242516251dbfc07b1cc",
+    "shortHash": "7cab6d64"
+  },
+  {
+    "file": "/game/voices/hazmat-3.mp3",
+    "name": "hazmat-3.mp3",
+    "size": 14253,
+    "hash": "1c0c4559fb702aa0282162ffdf6bb89b9874cf551c1d22e1e6602168484a3a13",
+    "shortHash": "1c0c4559"
+  },
+  {
+    "file": "/game/voices/hazmat-4.mp3",
+    "name": "hazmat-4.mp3",
+    "size": 15021,
+    "hash": "6e253105316c23c54a652fe83bd89ea5efcd214fc460b1a40b3a70aace762fdf",
+    "shortHash": "6e253105"
+  },
+  {
+    "file": "/game/voices/hazmat-5.mp3",
+    "name": "hazmat-5.mp3",
+    "size": 15021,
+    "hash": "0b8a2ca9d006c42359ee500c51e7b8b36fc9b396fe0e9853fc09465aa056b3c1",
+    "shortHash": "0b8a2ca9"
+  },
+  {
+    "file": "/game/voices/hazmat-6.mp3",
+    "name": "hazmat-6.mp3",
+    "size": 18093,
+    "hash": "b69a7de7de46fc811854a8c3ea610cdef8d0ddd58f50eb4b302927b6c1ac18ff",
+    "shortHash": "b69a7de7"
+  },
+  {
+    "file": "/game/voices/hecate-1.mp3",
+    "name": "hecate-1.mp3",
+    "size": 20205,
+    "hash": "2d17b729d659a420693d2a3d9c0fb8964047d5ba1c8ba5e8ff280e70339add77",
+    "shortHash": "2d17b729"
+  },
+  {
+    "file": "/game/voices/hecate-2.mp3",
+    "name": "hecate-2.mp3",
+    "size": 25005,
+    "hash": "f6e3e6c944726274c79eef1e3a25bc38e3a1b06ae29821d8722c8bb48afd518c",
+    "shortHash": "f6e3e6c9"
+  },
+  {
+    "file": "/game/voices/hecate-3.mp3",
+    "name": "hecate-3.mp3",
+    "size": 14637,
+    "hash": "d5774869149cc038ba3b985026d4a50468038fee82cd3cb2cfa60a01fd34b6f6",
+    "shortHash": "d5774869"
+  },
+  {
+    "file": "/game/voices/hecate-4.mp3",
+    "name": "hecate-4.mp3",
+    "size": 13869,
+    "hash": "ecf1c04dfe322447be1a244ea5ba54dff103875c9404d3adc33e9b3789613862",
+    "shortHash": "ecf1c04d"
+  },
+  {
+    "file": "/game/voices/hecate-5.mp3",
+    "name": "hecate-5.mp3",
+    "size": 13869,
+    "hash": "645d5bb37b7bc89866bcca1bcdb4628527bc14d6d0c08345f8cd284b766ec111",
+    "shortHash": "645d5bb3"
+  },
+  {
+    "file": "/game/voices/hecate-6.mp3",
+    "name": "hecate-6.mp3",
+    "size": 18861,
+    "hash": "c4e059a5b880e91a61c805ade75e46de6e8a8d91907afd7aaa7586355d18b86f",
+    "shortHash": "c4e059a5"
+  },
+  {
+    "file": "/game/voices/hecate-7.mp3",
+    "name": "hecate-7.mp3",
+    "size": 16173,
+    "hash": "ce418810eaa67e68f3446c5eb752ed8c3a44d70d9993ab88c1bb9ad1a1fde594",
+    "shortHash": "ce418810"
+  },
+  {
+    "file": "/game/voices/hornet-1.mp3",
+    "name": "hornet-1.mp3",
+    "size": 21165,
+    "hash": "b66648bd4cb471725895be076e6ce8c0fe9e42c2290a9103f7594457b96d8153",
+    "shortHash": "b66648bd"
+  },
+  {
+    "file": "/game/voices/hornet-2.mp3",
+    "name": "hornet-2.mp3",
+    "size": 13869,
+    "hash": "1daa29305cf6c7d72ace142e658f033eb27d0ac760f3b5a49c8b68f8ddb5301e",
+    "shortHash": "1daa2930"
+  },
+  {
+    "file": "/game/voices/hornet-3.mp3",
+    "name": "hornet-3.mp3",
+    "size": 14829,
+    "hash": "c5435edd09df7fbf1e7d67504c408459d2714182cd7564d2fe2bba4bef0ef74d",
+    "shortHash": "c5435edd"
+  },
+  {
+    "file": "/game/voices/hornet-4.mp3",
+    "name": "hornet-4.mp3",
+    "size": 12909,
+    "hash": "fe48b95438804b985641a7eb09d2fdcc5bda92c782b34d12856539537f749a0f",
+    "shortHash": "fe48b954"
+  },
+  {
+    "file": "/game/voices/hornet-5.mp3",
+    "name": "hornet-5.mp3",
+    "size": 12141,
+    "hash": "9b9735d7717fcd10042ca6e4a2c3e5b7879521df7487155605d27eed06df97d7",
+    "shortHash": "9b9735d7"
+  },
+  {
+    "file": "/game/voices/hornet-6.mp3",
+    "name": "hornet-6.mp3",
+    "size": 18669,
+    "hash": "0ab27e95a544ea1057e5a4ef6d7d4d6d302f1e9af1909684aac135eeec442215",
+    "shortHash": "0ab27e95"
+  },
+  {
+    "file": "/game/voices/loader-1.mp3",
+    "name": "loader-1.mp3",
+    "size": 16173,
+    "hash": "636d411cd0966ef56913af06541037d5dadf0652402f2ae17cefe139b9b0e76b",
+    "shortHash": "636d411c"
+  },
+  {
+    "file": "/game/voices/loader-2.mp3",
+    "name": "loader-2.mp3",
+    "size": 13101,
+    "hash": "408e1ab862c5bab236111a68e3fb84ae821504cbfebc2bf7d74c36b0413d35ca",
+    "shortHash": "408e1ab8"
+  },
+  {
+    "file": "/game/voices/loader-3.mp3",
+    "name": "loader-3.mp3",
+    "size": 14253,
+    "hash": "bbb9b61e1811c81bb8b5aae1bba1aa73cf3c6116a03eb63e079b5de4926c5f0d",
+    "shortHash": "bbb9b61e"
+  },
+  {
+    "file": "/game/voices/loader-4.mp3",
+    "name": "loader-4.mp3",
+    "size": 10605,
+    "hash": "e5b90f33a54fe0027b0e4f4e8ad0597feac5de6a0fffdbfb264e22275ca6e3dc",
+    "shortHash": "e5b90f33"
+  },
+  {
+    "file": "/game/voices/loader-5.mp3",
+    "name": "loader-5.mp3",
+    "size": 13869,
+    "hash": "e284313a2114ed2be44c43373240e2115ac5521647a701f2459efaab4fbc9229",
+    "shortHash": "e284313a"
+  },
+  {
+    "file": "/game/voices/loader-6.mp3",
+    "name": "loader-6.mp3",
+    "size": 15213,
+    "hash": "2d37e3fdefd1a8c44c868503f7b0f83a6c517b7b4edd5c755d01b0d8d45533fa",
+    "shortHash": "2d37e3fd"
+  },
+  {
+    "file": "/game/voices/marksman-1.mp3",
+    "name": "marksman-1.mp3",
+    "size": 11949,
+    "hash": "a4a9475f01570860853bbef8d1bce643f268912eab60f4d38860be007bffb14e",
+    "shortHash": "a4a9475f"
+  },
+  {
+    "file": "/game/voices/marksman-2.mp3",
+    "name": "marksman-2.mp3",
+    "size": 15981,
+    "hash": "9dd71ce13921b7ae2148949a39b60ae3eedb0aabc47895a72829a8514ed88806",
+    "shortHash": "9dd71ce1"
+  },
+  {
+    "file": "/game/voices/marksman-3.mp3",
+    "name": "marksman-3.mp3",
+    "size": 7341,
+    "hash": "114bb800707c51644f573081650f0085ee280a130a3402fdaa452e38fe9b2a44",
+    "shortHash": "114bb800"
+  },
+  {
+    "file": "/game/voices/marksman-4.mp3",
+    "name": "marksman-4.mp3",
+    "size": 17709,
+    "hash": "3a65f50906e3c393f34e762eef1a7c490414d249bbbd9f719be22c6f3edda315",
+    "shortHash": "3a65f509"
+  },
+  {
+    "file": "/game/voices/marksman-5.mp3",
+    "name": "marksman-5.mp3",
+    "size": 8685,
+    "hash": "0ddea1838aa0829c89ddae483a91b523a280d2d0c8c33e853a15734150908c50",
+    "shortHash": "0ddea183"
+  },
+  {
+    "file": "/game/voices/marksman-6.mp3",
+    "name": "marksman-6.mp3",
+    "size": 19245,
+    "hash": "5dccbec7802564b2788f37105ae0a57a1e0a119967225bf8391fbeb7e435abdd",
+    "shortHash": "5dccbec7"
+  },
+  {
+    "file": "/game/voices/martyr-1.mp3",
+    "name": "martyr-1.mp3",
+    "size": 12525,
+    "hash": "f9ee3ea3325ba2e3b8f8f234082bc7c08e4927fe8fdb18135bda8bd7933829da",
+    "shortHash": "f9ee3ea3"
+  },
+  {
+    "file": "/game/voices/martyr-2.mp3",
+    "name": "martyr-2.mp3",
+    "size": 14445,
+    "hash": "3453d742c6a40e91e8ebb0ed73d720d60e26be1c1b3f880cfcbfff01e7b5a1cf",
+    "shortHash": "3453d742"
+  },
+  {
+    "file": "/game/voices/martyr-3.mp3",
+    "name": "martyr-3.mp3",
+    "size": 23469,
+    "hash": "5ad1e66cede78991c9ed0b0ac50066130c9c148eb6a848bd097ec8fa9b0aae13",
+    "shortHash": "5ad1e66c"
+  },
+  {
+    "file": "/game/voices/martyr-4.mp3",
+    "name": "martyr-4.mp3",
+    "size": 15021,
+    "hash": "642537379fd163333b8c59109a2ba75d0c7f145e0af9a8a63681c44b7eb0fd6f",
+    "shortHash": "64253737"
+  },
+  {
+    "file": "/game/voices/martyr-5.mp3",
+    "name": "martyr-5.mp3",
+    "size": 13485,
+    "hash": "ac8fcacd0e7b418305041122cf4b5b43291360cbd6ba83363a9a61171fcf08d5",
+    "shortHash": "ac8fcacd"
+  },
+  {
+    "file": "/game/voices/martyr-6.mp3",
+    "name": "martyr-6.mp3",
+    "size": 18669,
+    "hash": "5bfc8831b02c76ea0673bd8b412d39dc591515ff030bb82d628e6a666b74746c",
+    "shortHash": "5bfc8831"
+  },
+  {
+    "file": "/game/voices/rifleman-1.mp3",
+    "name": "rifleman-1.mp3",
+    "size": 19629,
+    "hash": "cbb3d09b1b9d54b96ea35b32b7af54de33ac7f77c837e1260ff678ed66935c75",
+    "shortHash": "cbb3d09b"
+  },
+  {
+    "file": "/game/voices/rifleman-2.mp3",
+    "name": "rifleman-2.mp3",
+    "size": 17709,
+    "hash": "620971dff1cd299eab3576428830fccb4c7da5605575795170e3e32ea4a0734a",
+    "shortHash": "620971df"
+  },
+  {
+    "file": "/game/voices/rifleman-3.mp3",
+    "name": "rifleman-3.mp3",
+    "size": 10989,
+    "hash": "9cffc8ff5177852adbd7c4f5a999f791b8606c9ac73ab47e238cb98ed2c91a63",
+    "shortHash": "9cffc8ff"
+  },
+  {
+    "file": "/game/voices/rifleman-4.mp3",
+    "name": "rifleman-4.mp3",
+    "size": 8685,
+    "hash": "aca0156addea12256ebfb902bf6f5065c08ef251a183251e72ce3a1d1c0293b9",
+    "shortHash": "aca0156a"
+  },
+  {
+    "file": "/game/voices/rifleman-5.mp3",
+    "name": "rifleman-5.mp3",
+    "size": 18285,
+    "hash": "dcbe7efcf0d3a2fc53540334da24aa022461a2d9687901f7c11ec9d994c63bf7",
+    "shortHash": "dcbe7efc"
+  },
+  {
+    "file": "/game/voices/rifleman-6.mp3",
+    "name": "rifleman-6.mp3",
+    "size": 14445,
+    "hash": "af21da7c3fbc047ff63fc45e70c7dfa0fe5cfa8b9258a4980c869fd19db46714",
+    "shortHash": "af21da7c"
+  },
+  {
+    "file": "/game/voices/veyran-1.mp3",
+    "name": "veyran-1.mp3",
+    "size": 18285,
+    "hash": "22ca4f5234de7fea754378194975677476bec14a208a54662b5d9e23f53ead0c",
+    "shortHash": "22ca4f52"
+  },
+  {
+    "file": "/game/voices/veyran-2.mp3",
+    "name": "veyran-2.mp3",
+    "size": 15021,
+    "hash": "ec89e621fadec1b916207bf4b48f4bf66c5e86b0a5c63e3bf5435e70d56b9377",
+    "shortHash": "ec89e621"
+  },
+  {
+    "file": "/game/voices/veyran-3.mp3",
+    "name": "veyran-3.mp3",
+    "size": 13293,
+    "hash": "e350df6e001c9b609a200b64404f8442015cd54fc47b20009b9ce11556e9451f",
+    "shortHash": "e350df6e"
+  },
+  {
+    "file": "/game/voices/veyran-4.mp3",
+    "name": "veyran-4.mp3",
+    "size": 17133,
+    "hash": "0855b0b87e2ef6d7125590a5309941f4c2d0197a0745e4df3b41492013b59d0e",
+    "shortHash": "0855b0b8"
+  },
+  {
+    "file": "/game/voices/veyran-5.mp3",
+    "name": "veyran-5.mp3",
+    "size": 13293,
+    "hash": "664926b6ee1a35c485058bc45915b8d28cbfb9ae059ef5113f5f7d8c04949a64",
+    "shortHash": "664926b6"
+  },
+  {
+    "file": "/game/voices/veyran-6.mp3",
+    "name": "veyran-6.mp3",
+    "size": 22893,
+    "hash": "1bab191886a1e810ab801b5280249d37858173107c50220ca3585e3d1d5d4195",
+    "shortHash": "1bab1918"
+  }
+]

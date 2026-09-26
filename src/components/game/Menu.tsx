@@ -12,6 +12,7 @@ export function Menu(
     setMuted: (v: boolean) => void;
     onStart: () => void;
     onContinue?: () => void;
+    onOpenCatalog?: () => void;
   },
 ) {
   return (
@@ -75,6 +76,19 @@ export function Menu(
           <span>
             Resume last sector
             <small>Weapons and supplies carry</small>
+          </span>
+        </button>
+      )}
+      {p.onOpenCatalog && (
+        <button
+          type="button"
+          className="menu-secondary"
+          onClick={p.onOpenCatalog}
+          style={{ borderColor: "rgba(245, 158, 11, 0.4)", color: "#fef08a" }}
+        >
+          <span>
+            Asset Catalog & Weapon Preview
+            <small>Inspect Gun 1–11 rewrites, frame loops & hashes</small>
           </span>
         </button>
       )}
