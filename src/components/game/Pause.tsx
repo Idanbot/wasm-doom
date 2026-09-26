@@ -6,7 +6,7 @@ export function Pause(
     muted: boolean;
     setMuted: (v: boolean) => void;
     onResume: () => void;
-    onRestart: () => void;
+    onRetryWave: () => void;
     onMenu: () => void;
   },
 ) {
@@ -23,9 +23,9 @@ export function Pause(
       </button>
       <Settings {...p} />
       <div className="pause-actions">
-        <button type="button" onClick={p.onRestart}>
+        <button type="button" onClick={p.onRetryWave}>
           <RotateCcw size={16} />
-          Restart
+          Retry wave
         </button>
         <button type="button" onClick={p.onMenu}>
           <LogOut size={16} />

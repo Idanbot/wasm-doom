@@ -68,7 +68,7 @@ export function TouchLayer({
       />
       <button
         type="button"
-        className="absolute right-4 bottom-40 size-16 rounded-full border border-border bg-elevated/80 font-display text-xs tracking-[0.18em] text-fg"
+        className="absolute right-4 bottom-36 size-20 rounded-full border border-border bg-elevated/80 font-display text-xs tracking-[0.18em] text-fg"
         onPointerDown={(e) => {
           e.currentTarget.setPointerCapture(e.pointerId);
           onFire(true);
@@ -82,21 +82,21 @@ export function TouchLayer({
       <button
         type="button"
         aria-label="Next weapon"
-        className="absolute right-4 bottom-60 size-12 rounded-full border border-border bg-elevated/80 font-display text-[10px] tracking-[0.16em] text-muted"
+        className="absolute right-4 bottom-64 size-14 rounded-full border border-border bg-elevated/80 font-display text-[10px] tracking-[0.16em] text-muted"
         onClick={onWeapon}
       >
         WPN
       </button>
       <button
         type="button"
-        className="absolute right-24 bottom-36 size-12 rounded-full border border-border bg-elevated/80 font-display text-[10px] tracking-[0.16em] text-muted"
+        className="absolute right-[7.5rem] bottom-36 size-14 rounded-full border border-border bg-elevated/80 font-display text-[10px] tracking-[0.16em] text-muted"
         onClick={onUse}
       >
         USE
       </button>
       <button
         type="button"
-        className="absolute right-24 bottom-52 size-12 rounded-full border border-border bg-elevated/80 font-display text-[10px] tracking-[0.16em] text-muted"
+        className="absolute right-[7.5rem] bottom-[13rem] size-14 rounded-full border border-border bg-elevated/80 font-display text-[10px] tracking-[0.16em] text-muted"
         onClick={onReload}
       >
         RLD

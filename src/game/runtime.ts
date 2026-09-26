@@ -284,6 +284,8 @@ export type RuntimeHooks = {
   onSubtitles?: (subtitles: EnemySubtitle[]) => void;
   onHud: (hud: HudState, fps: number, resolution: string) => void;
   onState: (state: number) => void;
+  /** Arsenal images that failed to decode (procedural fallback in use). */
+  onAssetError?: (failed: string[]) => void;
   /** Fired once when the frame loop throws (e.g. a WASM trap from a
    * version-skewed binary). Without this the game would freeze silently
    * on a stale HUD with no game-over ever arriving. */
@@ -395,6 +397,7 @@ export class HellscanRuntime {
         const failed = urls.filter((_, i) => !imgs[i]);
         if (failed.length) {
           console.warn(`[assets] ${failed.length} arsenal images fell back to procedural:`, failed.join(", "));
+          this.hooks.onAssetError?.(failed);
         }
       }),
       this.audio.prepareEnemies((done, total) => {
@@ -413,16 +416,18 @@ export class HellscanRuntime {
     this.resolution = res;
     if (!this.wasm || !this.blit) return;
     const aspect = (this.canvas.clientWidth || res.w) / (this.canvas.clientHeight || res.h);
-    const raw = Math.max(192, Math.round(Math.min(res.w, res.h * aspect)));
+    // Cap internal width at 2560: beyond that the CPU framebuffer alone
+    // costs 33MB+ and the GPU path gains nothing CSS can't upscale.
+    const raw = Math.min(2560, Math.max(192, Math.round(Math.min(res.w, res.h * aspect))));
     const w = raw - (raw % 64);
     const h = Math.max(100, Math.round(w / aspect));
     this.wasm.hs_resize(w, h);
     this.fbView = null;
     this.blit.resize(w, h);
-    // Mips and the GPU atlas are the assets that depend on a fresh framebuffer.
+    // Mips depend on a fresh framebuffer; the GPU atlas content does not,
+    // so it is not re-uploaded here (35MB on every rotate/resize).
     // The simulation itself is not restarted.
     this.wasm.hs_textures_ready();
-    this.pushAtlas();
     this.canvas.dataset.resolution = `${w} × ${h}`;
   }
 
@@ -491,6 +496,9 @@ export class HellscanRuntime {
     this.renderer = next.kind;
     next.setGfx(this.gfx);
     if (this.resolution) this.setResolution(this.resolution);
+    // A fresh blit starts with an empty atlas; setResolution no longer
+    // uploads it (see above), so do it here explicitly.
+    this.pushAtlas();
     old.dispose();
     this.fbView = null;
     this.fbBuf = null;
@@ -562,8 +570,9 @@ export class HellscanRuntime {
   }
 
   setTouchLook(dx: number, dy: number) {
-    this.touchLookX += dx;
-    this.touchLookY += dy;
+    // Touch drags need more gain than a mouse to feel responsive.
+    this.touchLookX += dx * 1.4;
+    this.touchLookY += dy * 1.4;
   }
 
   setFireHeld(v: boolean) {
@@ -906,6 +915,7 @@ export class HellscanRuntime {
       vuln: dv.getFloat32(156, true),
       nodeX: dv.getFloat32(160, true),
       nodeY: dv.getFloat32(164, true),
+      splash: dv.getFloat32(188, true),
     };
   }
 

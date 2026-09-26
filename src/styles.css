@@ -72,6 +72,23 @@
   width: min(70vw, 680px);
   height: min(50vw, 480px);
 }
+.weapon-missing {
+  display: grid;
+  align-items: end;
+  justify-items: center;
+  padding-bottom: 18px;
+  background:
+    repeating-linear-gradient(45deg, #10191e 0 14px, #19262c 14px 28px);
+  border: 1px dashed var(--color-primary);
+  box-sizing: border-box;
+}
+.weapon-missing span {
+  font: 700 12px var(--font-display);
+  letter-spacing: 0.2em;
+  color: var(--color-primary);
+  background: var(--color-bg);
+  padding: 8px 14px;
+}
 
 .hud-num {
   font-family: var(--font-mono);
@@ -1307,8 +1324,8 @@ select:focus-visible {
   .hud-pause {
     top: 12px;
     right: 12px;
-    height: 40px;
-    padding: 0 12px;
+    height: 44px;
+    padding: 0 14px;
     font-size: 9px;
   }
   .hud-performance {

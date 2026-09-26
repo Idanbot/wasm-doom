@@ -73,6 +73,9 @@ export function GameApp() {
   const [renderer, setRenderer] = useState("webgl2");
   const [checkpoint, setCheckpoint] = useState<RunSave | null>(loadCheckpoint);
   const [radio, setRadio] = useState<{ speaker: string; text: string } | null>(null);
+  const [missingArt, setMissingArt] = useState<string[]>([]);
+  const missingRef = useRef<string[]>([]);
+  missingRef.current = missingArt;
   const persistRef = useRef<(save: RunSave) => void>(() => {});
   persistRef.current = (save) => {
     saveCheckpoint(save);
@@ -118,8 +121,18 @@ export function GameApp() {
           weapEl.style.transform = `translate(-50%, ${bobY}px) translateX(${bobX}px) rotate(${roll}deg)`;
           weapEl.style.filter = h.muzzle > 0.05 ? `brightness(${1 + h.muzzle * 0.22})` : "";
           const wpn = WEAPONS[h.weapon] ?? WEAPONS[0]!;
+          // Missing art renders the React fallback plate instead: never
+          // paint a broken URL over it (invisible gun, zero signal).
+          const artMissing =
+            missingRef.current.includes(wpn.idle) ||
+            missingRef.current.includes(wpn.fire) ||
+            missingRef.current.includes(wpn.reload);
+          if (artMissing) weapEl.style.backgroundImage = "";
           const fr = h.weapFrame | 0;
-          if (fr >= 5) {
+          if (artMissing) {
+            weapEl.style.backgroundSize = "contain";
+            weapEl.style.backgroundPosition = "center bottom";
+          } else if (fr >= 5) {
             weapEl.style.backgroundImage = `url(${asset(wpn.reload)})`;
             const pistolReload = h.weapon === 0;
             weapEl.style.backgroundSize = pistolReload ? "200% 200%" : "400% 200%";
@@ -165,6 +178,7 @@ export function GameApp() {
           h.objective,
           h.radioSeq,
           h.bossPhase,
+          h.splash > 0.5,
           h.reloading > 0.001,
         ].join("|");
         if (now - lastHudAt.current > 100 || key !== lastHudKey.current) {
@@ -212,6 +226,7 @@ export function GameApp() {
           setScreen("win");
         }
       },
+      onAssetError: (failed) => setMissingArt(failed),
       onError: (msg) => {
         rt.setPlaying(false);
         setErr(`Engine fault: ${msg}. Reload the page and deploy again.`);
@@ -317,6 +332,26 @@ export function GameApp() {
     setScreen("play");
     rtRef.current?.requestLock();
   }, []);
+
+  // Pause-menu retry: reload the wave-start checkpoint so a bad fight
+  // costs the wave, not the run. Falls back to a full restart when no
+  // checkpoint exists yet.
+  const retryWave = useCallback(() => {
+    const save = loadCheckpoint();
+    const rt = rtRef.current;
+    if (!save || !rt) {
+      restart();
+      return;
+    }
+    rt.loadSave(save);
+    rt.kick();
+    rt.setPlaying(true);
+    rt.setSens(sens);
+    rt.setMuted(muted);
+    rt.setVolumes(vol.master, vol.music, vol.sfx, vol.menu);
+    setScreen("play");
+    rt.requestLock();
+  }, [restart, sens, muted, vol]);
 
   const nextWave = useCallback(() => {
     rtRef.current?.nextWave();
@@ -466,10 +501,22 @@ export function GameApp() {
 
       {screen === "play" && (
         <>
-          <WeaponView weaponRef={weaponRef} />
+          <WeaponView
+            weaponRef={weaponRef}
+            missing={(() => {
+              const wpn = WEAPONS[hud.weapon] ?? WEAPONS[0]!;
+              return (
+                missingArt.includes(wpn.idle) ||
+                missingArt.includes(wpn.fire) ||
+                missingArt.includes(wpn.reload)
+              );
+            })()}
+            name={(WEAPONS[hud.weapon] ?? WEAPONS[0]!).name}
+          />
           <Crosshair
             flash={hud.hitmarker}
             spread={(hud.weapon === 2 ? hud.spread : hud.weapon === 1 ? 0.1 : 0) + hud.kick * 0.04}
+            danger={hud.splash > 0.5}
           />
           <HudBar
             hud={hud}
@@ -617,7 +664,7 @@ export function GameApp() {
                 gfx={gfx}
                 setGfx={setGfx}
                 onResume={resume}
-                onRestart={restart}
+                onRetryWave={retryWave}
                 onMenu={() => {
                   rtRef.current?.restart();
                   rtRef.current?.setPlaying(false);
