@@ -67,6 +67,8 @@ struct Engine {
     cooldown: f32,
     reload_t: f32,
     reload_dur: f32,
+    dry_t: f32,
+    pickup_t: f32,
     iframes: f32,
     walk: f32,
     time: f32,
@@ -114,6 +116,9 @@ struct Engine {
     smoke_grid: Vec<f32>,
     smoke_next: Vec<f32>,
     light_src: Vec<[f32; 3]>,
+    /// Per-theme wall/door variants: 8 walls then 8 doors, 256x256 each.
+    /// Slot order mirrors THEME_FILES in src/game/runtime.ts.
+    theme_tex: Vec<u32>,
 }
 
 /// Single engine instance. WASM is single-threaded; raw-ref access keeps
@@ -151,11 +156,40 @@ fn solid_kind(k: u8) -> bool {
 /// Hitscan and blasts can break crates and shut lamps. Movement still uses
 /// `solid_kind`, so these props stay walk-through.
 fn target_kind(k: u8) -> bool {
-    solid_kind(k) || k == EK_CRATE || k == EK_LAMP
+    solid_kind(k)
+        || k == EK_CRATE
+        || k == EK_LAMP
+        || matches!(
+            k,
+            EK_PROP_REACTOR
+                | EK_PROP_SERVER
+                | EK_PROP_AC
+                | EK_PROP_VENT
+                | EK_PROP_WLIGHT_C
+                | EK_PROP_WLIGHT_W
+                | EK_PROP_BEACON
+        )
 }
 
 fn floor_prop(k: u8) -> bool {
-    is_pickup(k) || matches!(k, EK_CRATE | EK_BARREL | EK_OVERRIDE_CONSOLE | EK_NODE | EK_TERMINAL | EK_FLAME | EK_FIREPATCH)
+    is_pickup(k)
+        || matches!(
+            k,
+            EK_CRATE
+                | EK_BARREL
+                | EK_OVERRIDE_CONSOLE
+                | EK_NODE
+                | EK_TERMINAL
+                | EK_FLAME
+                | EK_FIREPATCH
+                | EK_PROP_REACTOR
+                | EK_PROP_SERVER
+                | EK_PROP_AC
+                | EK_PROP_VENT
+                | EK_PROP_WLIGHT_C
+                | EK_PROP_WLIGHT_W
+                | EK_PROP_BEACON
+        )
 }
 
 /// Seat a sprite's feet on the floor line. Camera sits at mid-wall, so a
@@ -380,6 +414,8 @@ impl Engine {
             cooldown: 0.0,
             reload_t: 0.0,
             reload_dur: 1.0,
+            dry_t: 0.0,
+            pickup_t: 0.0,
             iframes: 0.0,
             walk: 0.0,
             time: 0.0,
@@ -485,6 +521,7 @@ impl Engine {
             smoke_grid: vec![0.0; MAP_CELLS],
             smoke_next: vec![0.0; MAP_CELLS],
             light_src: vec![[0.0; 3]; MAP_CELLS],
+            theme_tex: vec![0; 16 * TEX * TEX],
         };
         e.build_map();
         if generate { e.gen_textures(); }
@@ -1630,6 +1667,7 @@ impl Engine {
         self.node_done = false;
         self.lockdown = false;
         self.boss_vuln = 0.0;
+        self.apply_theme(self.wave);
         self.build_map();
         self.door.fill(0.0);
         self.hell = false;
@@ -1716,25 +1754,65 @@ impl Engine {
         self.mipmaps.clear();
         for level in 1..=8 {
             let size = TEX >> level;
-            let prev_size = size * 2;
             let source = if level == 1 { &self.tex } else { &self.mipmaps[level - 2] };
             let mut pixels = vec![0u32; TEX_N * size * size];
             for id in 0..TEX_N {
-                for y in 0..size {
-                    for x in 0..size {
-                        let p = id * prev_size * prev_size + y * 2 * prev_size + x * 2;
-                        let samples = [source[p], source[p + 1], source[p + prev_size], source[p + prev_size + 1]];
-                        let mut color = 0;
-                        for shift in [0, 8, 16, 24] {
-                            let channel: u32 = samples.iter().map(|c| (c >> shift) & 255).sum();
-                            color |= (channel / 4) << shift;
-                        }
-                        pixels[id * size * size + y * size + x] = color;
-                    }
-                }
+                Self::mipmap_layer_into(source, &mut pixels, id, level);
             }
             self.mipmaps.push(pixels);
         }
+    }
+
+    fn mipmap_layer_into(source: &[u32], pixels: &mut [u32], id: usize, level: usize) {
+        let size = TEX >> level;
+        let prev_size = size * 2;
+        for y in 0..size {
+            for x in 0..size {
+                let p = id * prev_size * prev_size + y * 2 * prev_size + x * 2;
+                let samples = [source[p], source[p + 1], source[p + prev_size], source[p + prev_size + 1]];
+                let mut color = 0;
+                for shift in [0, 8, 16, 24] {
+                    let channel: u32 = samples.iter().map(|c| (c >> shift) & 255).sum();
+                    color |= (channel / 4) << shift;
+                }
+                pixels[id * size * size + y * size + x] = color;
+            }
+        }
+    }
+
+    /// Rebuild one layer's mipmap chain (used after a theme swap so a
+    /// wave change doesn't pay for all 140 layers).
+    fn rebuild_mipmap_layer(&mut self, id: usize) {
+        for level in 1..=8 {
+            if level - 1 >= self.mipmaps.len() {
+                return;
+            }
+            // Borrow the previous level's pixels without aliasing self.
+            let prev: Vec<u32> = if level == 1 {
+                self.tex.clone()
+            } else {
+                self.mipmaps[level - 2].clone()
+            };
+            Self::mipmap_layer_into(&prev, &mut self.mipmaps[level - 1], id, level);
+        }
+    }
+
+    /// Theme index shared with THEME order in src/game/runtime.ts.
+    fn theme_index(wave: i32) -> usize {
+        ((wave - 1).rem_euclid(8)) as usize
+    }
+
+    /// Copy the wave's wall/door variants into the live T_TECH/T_DOOR
+    /// atlas slots and refresh their mipmap chains.
+    fn apply_theme(&mut self, wave: i32) {
+        let theme = Self::theme_index(wave);
+        let wall = &self.theme_tex[theme * TEX * TEX..(theme + 1) * TEX * TEX].to_vec();
+        let door = &self.theme_tex[(8 + theme) * TEX * TEX..(9 + theme) * TEX * TEX].to_vec();
+        self.tex[T_TECH * TEX * TEX..(T_TECH + 1) * TEX * TEX].copy_from_slice(wall);
+        self.tex[T_DOOR * TEX * TEX..(T_DOOR + 1) * TEX * TEX].copy_from_slice(door);
+        self.rebuild_mipmap_layer(T_TECH);
+        self.rebuild_mipmap_layer(T_DOOR);
+        self.light_dirty = true;
     }
 
     // Test-only probe into the mipmap chain (see shade_and_mip_blend).
@@ -2414,6 +2492,7 @@ impl Engine {
                 self.cooldown = 0.22;
                 self.ev_weapon = self.weapon;
                 self.events |= EV_EMPTY;
+                self.dry_t = 0.35;
             }
             return;
         }
@@ -2749,6 +2828,7 @@ impl Engine {
                 }
                 self.weapon = 1;
                 self.reload_t = 0.0;
+                self.pickup_t = 0.6;
                 self.events |= EV_PICK_GOLD;
             }
             EK_GUN3 => {
@@ -2759,6 +2839,7 @@ impl Engine {
                 }
                 self.weapon = 2;
                 self.reload_t = 0.0;
+                self.pickup_t = 0.6;
                 self.events |= EV_PICK_GOLD;
             }
             EK_GUN4 => {
@@ -2769,6 +2850,7 @@ impl Engine {
                 }
                 self.weapon = 3;
                 self.reload_t = 0.0;
+                self.pickup_t = 0.6;
                 self.events |= EV_PICK_GOLD;
             }
             EK_GUN5 => {
@@ -2779,6 +2861,7 @@ impl Engine {
                 }
                 self.weapon = 4;
                 self.reload_t = 0.0;
+                self.pickup_t = 0.6;
                 self.events |= EV_PICK_GOLD;
             }
             EK_GUN6 => {
@@ -2787,6 +2870,7 @@ impl Engine {
                 if self.mag[5] <= 0 { self.mag[5] = MAG_SZ[5]; }
                 self.weapon = 5;
                 self.reload_t = 0.0;
+                self.pickup_t = 0.6;
                 self.events |= EV_PICK_GOLD;
             }
             EK_GUN7 => {
@@ -2795,6 +2879,7 @@ impl Engine {
                 if self.mag[6] <= 0 { self.mag[6] = MAG_SZ[6]; }
                 self.weapon = 6;
                 self.reload_t = 0.0;
+                self.pickup_t = 0.6;
                 self.events |= EV_PICK_GOLD;
             }
             EK_GUN8 => {
@@ -2803,6 +2888,7 @@ impl Engine {
                 if self.mag[7] <= 0 { self.mag[7] = MAG_SZ[7]; }
                 self.weapon = 7;
                 self.reload_t = 0.0;
+                self.pickup_t = 0.6;
                 self.events |= EV_PICK_GOLD;
             }
             EK_GUN9 | EK_GUN10 | EK_GUN11 => {
@@ -2870,6 +2956,8 @@ impl Engine {
             }
         }
         self.iframes = (self.iframes - dt).max(0.0);
+        self.dry_t = (self.dry_t - dt).max(0.0);
+        self.pickup_t = (self.pickup_t - dt).max(0.0);
         self.shake = (self.shake - dt * 2.2).max(0.0);
         self.muzzle = (self.muzzle - dt * 8.0).max(0.0);
         self.hurt = (self.hurt - dt * 2.6).max(0.0);
@@ -3517,23 +3605,42 @@ impl Engine {
             prompt = 16;
         }
 
+        // v2 5x5 sheet cells: 0 full, 1 half, 2 low, 3 empty, 4 no
+        // magazine, 5 dry fire, 6-9 pickup, 10-14 reload, 15-19 fire.
+        // Cells 20-24 (alt-fire) have no mechanic and stay unused.
+        let mag_now = self.mag[wpn];
+        let mag_max = MAG_SZ[wpn];
         let weap_frame = if self.reload_t > 0.0 {
             let p = (1.0 - self.reload_t / self.reload_dur.max(0.05)).clamp(0.0, 0.999);
-            5 + (p * if self.weapon == 0 { 4.0 } else { 8.0 }) as i32
+            10 + (p * 5.0) as i32
         } else if self.muzzle > 0.08 {
             if self.weapon == 2 {
-                1 + ((self.time * 18.0) as i32).rem_euclid(4)
-            } else if self.muzzle > 0.72 {
-                1
-            } else if self.muzzle > 0.48 {
-                2
+                15 + ((self.time * 18.0) as i32).rem_euclid(5)
+            } else if self.muzzle > 0.84 {
+                15
+            } else if self.muzzle > 0.64 {
+                16
+            } else if self.muzzle > 0.44 {
+                17
             } else if self.muzzle > 0.24 {
-                3
+                18
             } else {
-                4
+                19
             }
-        } else {
+        } else if self.dry_t > 0.0 {
+            5
+        } else if self.pickup_t > 0.0 {
+            6 + (((0.6 - self.pickup_t) / 0.6).clamp(0.0, 0.999) * 4.0) as i32
+        } else if mag_now >= mag_max {
             0
+        } else if mag_now == 0 && self.ammo[wpn] == 0 {
+            3
+        } else if mag_now == 0 {
+            4
+        } else if mag_now * 2 >= mag_max {
+            1
+        } else {
+            2
         };
 
         let boss_health = self.ents.iter()
@@ -3651,6 +3758,12 @@ impl Engine {
                     self.add_light(&mut grid, e.x, e.y, 5.4, [0.62, 0.18, 0.04]);
                 } else if matches!(e.kind, EK_TERMINAL | EK_NODE | EK_OVERRIDE_CONSOLE) {
                     self.add_light(&mut grid, e.x, e.y, 6.4, [0.16, 0.42, 0.62]);
+                } else if e.kind == EK_PROP_WLIGHT_C {
+                    self.add_light(&mut grid, e.x, e.y, 6.0, [0.20, 0.70, 0.80]);
+                } else if e.kind == EK_PROP_WLIGHT_W {
+                    self.add_light(&mut grid, e.x, e.y, 6.0, [0.70, 0.70, 0.62]);
+                } else if e.kind == EK_PROP_BEACON {
+                    self.add_light(&mut grid, e.x, e.y, 5.0, [0.80, 0.36, 0.10]);
                 } else if matches!(e.kind, EK_CRATE | EK_BARREL) {
                     let i = (e.y.floor() as usize).min(MAP_H - 1) * MAP_W
                         + (e.x.floor() as usize).min(MAP_W - 1);
@@ -4637,7 +4750,11 @@ pub extern "C" fn hs_init(w: i32, h: i32) -> i32 {
 pub extern "C" fn hs_restart() {
     let e = eng();
     let textures = std::mem::take(&mut e.tex);
-    *e = Engine::with_textures(e.w, e.h, Some(textures));
+    let theme = std::mem::take(&mut e.theme_tex);
+    let (w, h) = (e.w, e.h);
+    *e = Engine::with_textures(w, h, Some(textures));
+    e.theme_tex = theme;
+    e.apply_theme(1);
 }
 
 #[no_mangle]
@@ -4762,6 +4879,7 @@ fn apply_save(e: &mut Engine, s: &RunSave) {
     e.py = start.1;
     e.pa = start.2;
     e.pitch = 0.0;
+    e.apply_theme(e.wave);
     e.build_map();
     e.door.fill(0.0);
     e.light_dirty = true;
@@ -4849,6 +4967,23 @@ pub extern "C" fn hs_tex_size() -> i32 {
 #[no_mangle]
 pub extern "C" fn hs_textures_ready() {
     eng().rebuild_mipmaps();
+}
+
+/// Staging pointer for one theme variant layer (0-7 walls, 8-15 doors),
+/// 256x256 RGBA. Slots mirror THEME_FILES in src/game/runtime.ts.
+#[no_mangle]
+pub extern "C" fn hs_theme_ptr(slot: i32) -> *mut u8 {
+    if !(0..16).contains(&slot) {
+        return core::ptr::null_mut();
+    }
+    let o = slot as usize * TEX * TEX;
+    unsafe { eng().theme_tex.as_mut_ptr().add(o) as *mut u8 }
+}
+
+/// Copy the wave's wall/door variants into the live atlas slots.
+#[no_mangle]
+pub extern "C" fn hs_apply_theme(wave: i32) {
+    eng().apply_theme(wave);
 }
 
 #[no_mangle]
@@ -5182,6 +5317,25 @@ mod tests {
         e.pa = 0.0;
         e.tick(1.0 / 60.0);
         assert_eq!(e.hud.splash, 0.0, "hitscan guns never warn");
+    }
+
+    #[test]
+    fn theme_swap_follows_wave_mod_eight() {
+        let mut e = Engine::new(160, 100);
+        for slot in 0..16 {
+            for px in e.theme_tex[slot * TEX * TEX..(slot + 1) * TEX * TEX].iter_mut() {
+                *px = 0xFF000000 | (slot as u32);
+            }
+        }
+        e.apply_theme(1);
+        let tech = e.tex[T_TECH * TEX * TEX];
+        let door = e.tex[T_DOOR * TEX * TEX];
+        assert_eq!((tech, door), (0xFF000000, 0xFF000008));
+        e.apply_theme(9);
+        assert_eq!(e.tex[T_TECH * TEX * TEX], tech, "wave 9 reuses wave 1 theme");
+        e.apply_theme(2);
+        assert_eq!(e.tex[T_TECH * TEX * TEX], 0xFF000001);
+        assert_eq!(e.tex[T_DOOR * TEX * TEX], 0xFF000009);
     }
 
     #[test]

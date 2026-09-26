@@ -426,6 +426,9 @@ pub(crate) fn place_hub_spoke(e: &mut Engine) {
     e.spawn(EK_MED, 32.5, 25.5);
     e.spawn(EK_GUN6, 41.5, 24.5);
     e.spawn(EK_GUN7, 4.5, 20.5);
+    // Hangar machinery: server rack and worklight by the start bay.
+    prop(e, EK_PROP_SERVER, 6.5, 14.5);
+    prop(e, EK_PROP_WLIGHT_W, 3.5, 16.5);
 }
 
 fn reset_level_entities(e: &mut Engine) {
@@ -492,6 +495,10 @@ fn place_foundry(e: &mut Engine) {
     ] {
         e.spawn(kind, x, y);
     }
+    // Foundry machinery: reactor and AC by the intake, cyan worklight.
+    prop(e, EK_PROP_REACTOR, 6.5, 6.5);
+    prop(e, EK_PROP_AC, 4.5, 8.5);
+    prop(e, EK_PROP_WLIGHT_C, 8.5, 7.5);
 }
 
 fn place_bioforge(e: &mut Engine) {
@@ -518,6 +525,16 @@ fn place_bioforge(e: &mut Engine) {
     ] {
         e.spawn(kind, x, y);
     }
+    // Bioforge machinery: ventilation and warning beacon by the dock.
+    prop(e, EK_PROP_VENT, 6.5, 15.5);
+    prop(e, EK_PROP_BEACON, 4.5, 17.5);
+}
+
+/// Static v2 machinery: nearest-open seating keeps a hand-authored
+/// coordinate from embedding inside a wall after a carve change.
+fn prop(e: &mut Engine, kind: u8, x: f32, y: f32) {
+    let (sx, sy) = e.nearest_open(x, y, 0.3);
+    e.spawn(kind, sx, sy);
 }
 
 pub(crate) fn place_level(e: &mut Engine) {
@@ -729,6 +746,30 @@ mod tests {
         assert_ne!(layouts[0], layouts[1]);
         assert_ne!(layouts[1], layouts[2]);
         assert_ne!(layouts[0], layouts[2]);
+    }
+
+    #[test]
+    fn each_sector_places_its_machinery_props() {
+        let mut e = Engine::new(160, 100);
+        let expected: [(i32, &[u8]); 3] = [
+            (1, &[EK_PROP_SERVER, EK_PROP_WLIGHT_W]),
+            (2, &[EK_PROP_REACTOR, EK_PROP_AC, EK_PROP_WLIGHT_C]),
+            (3, &[EK_PROP_VENT, EK_PROP_BEACON]),
+        ];
+        for (wave, kinds) in expected {
+            e.wave = wave;
+            build_level(&mut e);
+            place_level(&mut e);
+            for &kind in kinds {
+                let en = e.ents.iter().find(|en| en.kind == kind && en.hp > 0);
+                assert!(en.is_some(), "wave {wave} places prop kind {kind}");
+                let en = en.unwrap();
+                assert!(
+                    !e.circle_blocked(en.x, en.y, en.radius),
+                    "wave {wave} prop kind {kind} sits in open space"
+                );
+            }
+        }
     }
 
     #[test]

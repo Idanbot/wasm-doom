@@ -156,6 +156,13 @@ pub(crate) const ENEMY_DEFS: &[EnemyDef] = &[
     EnemyDef { kind: EK_OVERRIDE_CONSOLE, name: "Override console", role: "objective", hp: 1, radius: 0.22, zoff: 18.0, scale: 0.95, texture: T_CONSOLE_UPPER, sheet4: false, hostile: false, cleared_on_wave: false },
     EnemyDef { kind: EK_NODE, name: "Sector node", role: "objective", hp: 1, radius: 0.22, zoff: 18.0, scale: 0.82, texture: T_CONSOLE_UPPER, sheet4: false, hostile: false, cleared_on_wave: false },
     EnemyDef { kind: EK_TERMINAL, name: "Terminal", role: "objective", hp: 1, radius: 0.2, zoff: 16.0, scale: 0.62, texture: T_CONSOLE_UPPER, sheet4: false, hostile: false, cleared_on_wave: false },
+    EnemyDef { kind: EK_PROP_REACTOR, name: "Reactor", role: "prop", hp: 30, radius: 0.5, zoff: 80.0, scale: 0.95, texture: T_PROP_REACTOR, sheet4: false, hostile: false, cleared_on_wave: false },
+    EnemyDef { kind: EK_PROP_SERVER, name: "Server rack", role: "prop", hp: 30, radius: 0.4, zoff: 80.0, scale: 0.85, texture: T_PROP_SERVER, sheet4: false, hostile: false, cleared_on_wave: false },
+    EnemyDef { kind: EK_PROP_AC, name: "AC unit", role: "prop", hp: 30, radius: 0.4, zoff: 80.0, scale: 0.85, texture: T_PROP_AC, sheet4: false, hostile: false, cleared_on_wave: false },
+    EnemyDef { kind: EK_PROP_VENT, name: "Ventilation", role: "prop", hp: 30, radius: 0.45, zoff: 80.0, scale: 0.9, texture: T_PROP_VENT, sheet4: false, hostile: false, cleared_on_wave: false },
+    EnemyDef { kind: EK_PROP_WLIGHT_C, name: "Worklight cyan", role: "prop", hp: 30, radius: 0.2, zoff: 40.0, scale: 0.5, texture: T_PROP_WLIGHT_C, sheet4: false, hostile: false, cleared_on_wave: false },
+    EnemyDef { kind: EK_PROP_WLIGHT_W, name: "Worklight white", role: "prop", hp: 30, radius: 0.2, zoff: 40.0, scale: 0.5, texture: T_PROP_WLIGHT_W, sheet4: false, hostile: false, cleared_on_wave: false },
+    EnemyDef { kind: EK_PROP_BEACON, name: "Beacon", role: "prop", hp: 30, radius: 0.2, zoff: 40.0, scale: 0.45, texture: T_PROP_BEACON, sheet4: false, hostile: false, cleared_on_wave: false },
 ];
 
 /// Look up a kind's row. Returns `None` for kind 0 (empty slot).

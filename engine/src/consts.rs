@@ -24,7 +24,14 @@ pub(crate) const T_GUN8: usize = T_CONSOLE_BIOFORGE + 1;
 pub(crate) const T_GUN9: usize = T_GUN8 + 1;
 pub(crate) const T_GUN10: usize = T_GUN8 + 2;
 pub(crate) const T_GUN11: usize = T_GUN8 + 3;
-pub(crate) const TEX_N: usize = T_GUN11 + 1;
+pub(crate) const T_PROP_REACTOR: usize = T_GUN11 + 1;
+pub(crate) const T_PROP_SERVER: usize = T_GUN11 + 2;
+pub(crate) const T_PROP_AC: usize = T_GUN11 + 3;
+pub(crate) const T_PROP_VENT: usize = T_GUN11 + 4;
+pub(crate) const T_PROP_WLIGHT_C: usize = T_GUN11 + 5;
+pub(crate) const T_PROP_WLIGHT_W: usize = T_GUN11 + 6;
+pub(crate) const T_PROP_BEACON: usize = T_GUN11 + 7;
+pub(crate) const TEX_N: usize = T_PROP_BEACON + 1;
 pub(crate) const ENT_N: usize = 192;
 pub(crate) const T_BRICK: usize = 0;
 pub(crate) const T_METAL: usize = 1;
@@ -96,6 +103,15 @@ pub(crate) const EK_GUN9: u8 = 32;
 pub(crate) const EK_GUN10: u8 = 33;
 pub(crate) const EK_GUN11: u8 = 34;
 pub(crate) const EK_POWER: u8 = 35;
+/// Static v2 machinery/lighting props. Walk-through like crates (they never
+/// inflate the kill counter); shots stop on them via `target_kind`.
+pub(crate) const EK_PROP_REACTOR: u8 = 36;
+pub(crate) const EK_PROP_SERVER: u8 = 37;
+pub(crate) const EK_PROP_AC: u8 = 38;
+pub(crate) const EK_PROP_VENT: u8 = 39;
+pub(crate) const EK_PROP_WLIGHT_C: u8 = 40;
+pub(crate) const EK_PROP_WLIGHT_W: u8 = 41;
+pub(crate) const EK_PROP_BEACON: u8 = 42;
 pub(crate) const SKIN_CONSOLE_UPPER: u8 = 240;
 pub(crate) const SKIN_CONSOLE_FOUNDRY: u8 = 241;
 pub(crate) const SKIN_CONSOLE_BIOFORGE: u8 = 242;
@@ -197,7 +213,7 @@ mod tests {
     fn texture_slots_cover_the_known_atlas() {
         assert_eq!(
             TEX_N,
-            ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT + 13
+            ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT + 20
         );
         assert_eq!(TEX, 256);
         assert_eq!(TEXM, 255);
