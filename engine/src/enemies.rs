@@ -46,7 +46,9 @@ pub(crate) struct EnemyDef {
     /// Chases/shoots the player; counted as living; cleared per wave.
     pub hostile: bool,
     /// Removed when the next wave starts (hostiles plus their
-    /// projectiles, beams and lingering fire).
+    /// projectiles, beams and lingering fire). Authoring metadata from
+    /// docs/enemy-authoring.md; not yet consumed by the sim.
+    #[allow(dead_code)]
     pub cleared_on_wave: bool,
 }
 

@@ -3,7 +3,8 @@ use crate::{consts::*, enemies::skin_def, Engine};
 
 #[repr(C)]
 #[derive(Clone, Copy, Default)]
-pub(crate) struct EnemyCue {
+/// repr(C) snapshot shared with TypeScript through `hs_enemy_cues`.
+pub struct EnemyCue {
     pub id: f32, pub skin: f32, pub anim: f32, pub hp: f32,
     pub x: f32, pub y: f32, pub screen_x: f32, pub screen_y: f32,
     pub sight: f32, pub distance: f32,
@@ -34,7 +35,8 @@ pub(crate) fn snapshot(e: &Engine, out: &mut [EnemyCue; ENT_N]) -> usize {
 /// One on-screen damage bar. `layer` is 0 health, 1 armor, 2 shield.
 #[repr(C)]
 #[derive(Clone, Copy, Default)]
-pub(crate) struct BarCue {
+/// repr(C) snapshot shared with TypeScript through `hs_bars`.
+pub struct BarCue {
     pub screen_x: f32,
     pub screen_y: f32,
     pub frac: f32,

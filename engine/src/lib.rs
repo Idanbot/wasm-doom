@@ -600,30 +600,6 @@ impl Engine {
         }
     }
 
-    fn smoke_tau(&self, x0: f32, y0: f32, x1: f32, y1: f32) -> f32 {
-        let mut tau = 0.0f32;
-        for i in 1..=8 {
-            let t = i as f32 / 8.0;
-            let x = x0 + (x1 - x0) * t;
-            let y = y0 + (y1 - y0) * t;
-            let ix = x.floor().clamp(0.0, (MAP_W - 1) as f32) as usize;
-            let iy = y.floor().clamp(0.0, (MAP_H - 1) as f32) as usize;
-            tau += self.smoke_grid[iy * MAP_W + ix];
-        }
-        tau * ((x1 - x0).powi(2) + (y1 - y0).powi(2)).sqrt() / 8.0
-    }
-
-    fn apply_smoke(&self, color: u32, x0: f32, y0: f32, x1: f32, y1: f32) -> u32 {
-        let tau = self.smoke_tau(x0, y0, x1, y1);
-        if tau < 0.06 { return color; }
-        let k = (1.0 - (-tau * 0.75).exp()).clamp(0.0, 0.35);
-        let mix = |src: u32, dst: u32| ((src as f32) * (1.0 - k) + dst as f32 * k) as u32;
-        mix(color & 255, 148)
-            | (mix((color >> 8) & 255, 152) << 8)
-            | (mix((color >> 16) & 255, 156) << 16)
-            | (color & 0xFF00_0000)
-    }
-
     fn cell(&self, x: i32, y: i32) -> u8 {
         if x < 0 || y < 0 || x >= MAP_W as i32 || y >= MAP_H as i32 {
             return 1;
@@ -751,15 +727,6 @@ impl Engine {
 
     fn build_map(&mut self) {
         map::build_level(self);
-    }
-
-    fn tex_at_mut(&mut self, id: usize) -> &mut [u32] {
-        let o = id * TEX * TEX;
-        &mut self.tex[o..o + TEX * TEX]
-    }
-
-    fn put_tex(slot: &mut [u32], x: usize, y: usize, c: u32) {
-        slot[(y & (TEX - 1)) * TEX + (x & (TEX - 1))] = c;
     }
 
     fn pack(r: u32, g: u32, b: u32, a: u32) -> u32 {
@@ -1342,6 +1309,25 @@ impl Engine {
         self.events |= EV_PICK_GOLD;
     }
 
+    /// QA-only full heal so long single-page smokes don't die mid-run.
+    /// Keeps weapons, armor and position; revives and clears hostiles,
+    /// in-flight projectiles and lingering fire so a converged crowd
+    /// can't wedge the rest of the script.
+    fn qa_heal(&mut self) {
+        if !self.qa { return; }
+        self.health = 100;
+        self.iframes = 1.5;
+        self.state = 0;
+        for ent in &mut self.ents {
+            if is_hostile_kind(ent.kind)
+                || matches!(ent.kind, EK_PROJ | EK_FIREPATCH | EK_FLAME)
+            {
+                ent.kind = EK_NONE;
+                ent.hp = 0;
+            }
+        }
+    }
+
     fn drop_boss_case(&mut self, x: f32, y: f32) {
         let kind = field::boss_case(self.wave);
         if self.spawn(kind, x, y).is_some() {
@@ -1569,7 +1555,10 @@ impl Engine {
     }
 
     fn next_wave(&mut self) {
-        self.wave = (self.wave + 1).min(12);
+        // Endless: waves climb without a cap, cycling the three sectors.
+        // Hostile count stays capped at 4x for the 192-entity budget;
+        // difficulty past wave 12 comes from boss health scaling.
+        self.wave = (self.wave + 1).min(999);
         // Capped at 4x (56 hostiles + ambushes): the uncapped 1<<8 shift
         // filled all 192 entity slots with hostiles and starved FX.
         let shift = (self.wave - 1).clamp(0, 2);
@@ -1655,7 +1644,8 @@ impl Engine {
         self.hell = true;
         self.shake = 1.0;
         self.events |= EV_EXPLODE | EV_BOSS_DROP;
-        // Capped so late waves stay killable: 480 / 720 / 1080 / 1620, then 2200.
+        // Endless scaling: 480 x1.5 per wave, capped at 6000 so deep
+        // runs stay killable (480 / 720 / 1080 / 1620 / ... / 6000).
         let hp = self.boss_max_health();
         let fx = self.pa.cos();
         let fy = self.pa.sin();
@@ -1708,7 +1698,7 @@ impl Engine {
     }
 
     fn boss_max_health(&self) -> i32 {
-        (480.0 * 1.5f32.powi((self.wave - 1).max(0))).min(2200.0).round() as i32
+        (480.0 * 1.5f32.powi((self.wave - 1).max(0))).min(6000.0).round() as i32
     }
 
     fn sample(&self, id: usize, u: i32, v: i32) -> u32 {
@@ -1742,6 +1732,8 @@ impl Engine {
         }
     }
 
+    // Test-only probe into the mipmap chain (see shade_and_mip_blend).
+    #[cfg(test)]
     fn sample_lod(&self, id: usize, u: i32, v: i32, footprint: f32) -> u32 {
         let lod = footprint.max(1.0).log2().clamp(0.0, 8.0);
         let level = lod as usize;
@@ -3598,18 +3590,6 @@ impl Engine {
         };
     }
 
-    fn put(&mut self, x: i32, y: i32, c: u32) {
-        if x < 0 || y < 0 {
-            return;
-        }
-        let x = x as usize;
-        let y = y as usize;
-        if x >= self.w || y >= self.h {
-            return;
-        }
-        self.fb[y * self.w + x] = c;
-    }
-
     fn add_light(&self, grid: &mut [[f32; 3]], x: f32, y: f32, radius: f32, rgb: [f32; 3]) {
         let x0 = (x - radius).floor().max(0.0) as usize;
         let y0 = (y - radius).floor().max(0.0) as usize;
@@ -4490,27 +4470,30 @@ impl Engine {
 }
 
 
+/// repr(C) frame shared with TypeScript through `hs_gpu_view`.
 #[repr(C)]
 #[derive(Clone, Copy)]
-struct GpuView {
+pub struct GpuView {
     px: f32, py: f32, dir_x: f32, dir_y: f32,
     plane_x: f32, plane_y: f32, horizon: f32, time: f32,
     hell: f32, muzzle: f32, w: f32, h: f32,
     plane_len: f32, sprite_n: f32, _p1: f32, _p2: f32,
 }
 
+/// repr(C) frame shared with TypeScript through `hs_gpu_cols`.
 #[repr(C)]
 #[derive(Clone, Copy)]
-struct GpuCol {
+pub struct GpuCol {
     perp: f32, tex_x: f32, light_r: f32, light_g: f32,
     light_b: f32, draw0: f32, draw1: f32, line_h: f32,
     ds_full: f32, tex: f32, side: f32, dec: f32,
     hash: f32, hit: f32, z: f32, _pad: f32,
 }
 
+/// repr(C) frame shared with TypeScript through `hs_gpu_sprites`.
 #[repr(C)]
 #[derive(Clone, Copy)]
-struct GpuSprite {
+pub struct GpuSprite {
     x: f32, y: f32, zoff: f32, scale: f32,
     tex: f32, frame: f32, flash: f32, kind: f32,
 }
@@ -4524,6 +4507,9 @@ struct GpuScratch {
     view: GpuView,
 }
 
+// Single-threaded WASM: every entry point runs on the same JS thread, so
+// exclusive access holds (same contract as eng() above).
+#[allow(static_mut_refs)]
 fn gpu_scratch() -> &'static mut GpuScratch {
     static mut G: Option<GpuScratch> = None;
     unsafe {
@@ -4716,7 +4702,7 @@ fn capture_save(e: &Engine) -> RunSave {
 }
 
 fn apply_save(e: &mut Engine, s: &RunSave) {
-    e.wave = s.wave.clamp(1, 12);
+    e.wave = s.wave.clamp(1, 999);
     e.health = s.health.clamp(1, 100);
     e.armor = s.armor.clamp(0, 100);
     e.kills = s.kills.max(0);
@@ -4870,6 +4856,12 @@ pub extern "C" fn hs_qa_armory() {
     e.has_w11 = true;
     e.mag = MAG_SZ;
     e.ammo = [120, 40, 200, 16, 24, 48, 320, 24, 8, 28, 10];
+}
+
+/// QA-only full heal so long single-page smokes don't die mid-run.
+#[no_mangle]
+pub extern "C" fn hs_qa_heal() {
+    eng().qa_heal();
 }
 
 #[no_mangle]
@@ -5129,6 +5121,25 @@ mod tests {
     }
 
     #[test]
+    fn qa_heal_restores_health_and_revives() {
+        let mut e = arena();
+        e.qa = true;
+        e.health = 12;
+        e.state = 1;
+        e.spawn(EK_HUSK, 6.5, 4.5).unwrap();
+        e.qa_heal();
+        assert_eq!((e.health, e.state), (100, 0));
+        assert!(
+            e.ents.iter().all(|en| !is_hostile_kind(en.kind)),
+            "heal clears the converged crowd"
+        );
+        e.qa = false;
+        e.health = 5;
+        e.qa_heal();
+        assert_eq!(e.health, 5, "heal is QA-only");
+    }
+
+    #[test]
     fn run_save_layout_matches_ts_side() {
         // Pinned against SAVE_SIZE/SAVE_AMMO_BASE/SAVE_MAG_BASE in
         // src/game/save-abi.ts. Update both files together when WEP_N changes.
@@ -5161,7 +5172,31 @@ mod tests {
         assert!(map::living_hostiles(&e) <= 60, "wave spawn must leave FX slots free");
         e.maybe_spawn_boss();
         let boss = e.ents.iter().find(|x| x.kind == EK_BOSS).expect("boss spawns");
-        assert!(boss.hp <= 2200, "late-wave boss must stay killable");
+        assert!(boss.hp <= 6000, "late-wave boss must stay killable");
+    }
+
+    #[test]
+    fn waves_are_endless_and_keep_scaling() {
+        // Hub at 4x fields a 64-strong roster (plus its zone cast), so the
+        // deep-wave budget is a range: every roster spawn must succeed, with
+        // headroom left for transient FX ents. Waves 4/7/10 already run hot
+        // in production; endless mode just keeps doing it.
+        let mut e = Engine::new(160, 100);
+        e.wave = 12;
+        e.next_wave();
+        assert_eq!(e.wave, 13, "waves climb past the old cap");
+        assert_eq!(map::level_index(e.wave), 0, "sectors cycle back to the start");
+        let living = map::living_hostiles(&e);
+        assert!(living >= 64, "the full 4x hub roster spawns, got {living}");
+        assert!(living <= 120, "FX headroom remains, got {living}");
+        assert_eq!(e.boss_max_health(), 6000, "boss health grows into the new cap");
+        e.wave = 40;
+        e.next_wave();
+        assert_eq!(e.wave, 41);
+        let living = map::living_hostiles(&e);
+        assert!(living >= 56, "the full 4x foundry roster spawns, got {living}");
+        assert!(living <= 120, "FX headroom remains, got {living}");
+        assert_eq!(e.boss_max_health(), 6000, "boss health never exceeds the cap");
     }
 
     #[test]
@@ -5671,7 +5706,7 @@ mod tests {
         );
         e.wave = 12;
         e.next_wave();
-        assert_eq!(e.wave, 12, "waves cap at 12");
+        assert_eq!(e.wave, 13, "endless waves climb past 12");
         assert!(e.ents.iter().any(|en| en.kind == EK_MED));
     }
 
