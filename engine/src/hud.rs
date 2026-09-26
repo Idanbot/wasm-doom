@@ -54,6 +54,9 @@ pub struct Hud {
     pub has_w11: i32,
     pub power: i32,
     pub power_t: f32,
+    /// 1.0 while the aimed wall sits inside the current weapon's own blast
+    /// radius (explosive splash hits the shooter too).
+    pub splash: f32,
 }
 
 /// Byte size of the HUD struct as seen by TypeScript.
@@ -61,7 +64,7 @@ pub const HUD_SIZE: usize = core::mem::size_of::<Hud>();
 
 /// Field offsets as seen by TypeScript. Kept next to the struct so a
 /// reorder forces an update here instead of a silent desync.
-pub const HUD_OFFSETS: [(u32, &str); 15] = [
+pub const HUD_OFFSETS: [(u32, &str); 16] = [
     (108, "events"),
     (112, "ev_weapon"),
     (88, "reserve"),
@@ -77,9 +80,10 @@ pub const HUD_OFFSETS: [(u32, &str); 15] = [
     (144, "objective"),
     (148, "radio_seq"),
     (24, "state"),
+    (188, "splash"),
 ];
 
-const _: () = assert!(HUD_SIZE == 188, "Hud layout changed; update runtime.ts");
+const _: () = assert!(HUD_SIZE == 192, "Hud layout changed; update runtime.ts");
 
 #[cfg(test)]
 mod tests {
@@ -89,7 +93,7 @@ mod tests {
     fn hud_size_matches_ts_side() {
         // Mirrors src/game/hud-abi.ts. The compile-time assert above is the
         // real guard; this keeps the value visible in test output.
-        assert_eq!(HUD_SIZE, 188);
+        assert_eq!(HUD_SIZE, 192);
     }
 
     #[test]

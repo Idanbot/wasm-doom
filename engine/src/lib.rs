@@ -440,6 +440,7 @@ impl Engine {
                 has_w11: 0,
                 power: 0,
                 power_t: 0.0,
+                splash: 0.0,
             },
             rng: 0xC0FFEE,
             shake: 0.0,
@@ -1070,10 +1071,14 @@ impl Engine {
 
     fn spawn_with_skin(&mut self, kind: u8, skin: u8, x: f32, y: f32) -> Option<usize> {
         // Stats come from the roster table so new enemies need no code here.
-        let (hp, radius, zoff) = match enemy_def(kind) {
+        // Past wave 12, hostiles also scale +2% HP per wave (endless mode).
+        let (mut hp, radius, zoff) = match enemy_def(kind) {
             Some(d) => (d.hp, d.radius, d.zoff),
             None => (1, 0.2, 0.0),
         };
+        if is_hostile_kind(kind) && self.wave > 12 {
+            hp = ((hp as f32) * (1.0 + 0.02 * (self.wave - 12) as f32)).round() as i32;
+        }
         let zoff = skin_def(skin).map(|d| d.zoff).unwrap_or(zoff);
         for (i, e) in self.ents.iter_mut().enumerate() {
             if e.kind == 0 {
@@ -3535,6 +3540,26 @@ impl Engine {
             .find(|e| e.kind == EK_BOSS && e.hp > 0)
             .map(|e| e.hp)
             .unwrap_or(0);
+        // Self-splash telegraph: these guns burst at the aimed wall and
+        // the blast reaches back to the shooter inside these radii.
+        let splash = if self.state == 0 {
+            let radius = match self.weapon {
+                4 => 4.8,
+                8 => 3.0,
+                9 => 2.6,
+                10 => 1.6,
+                _ => 0.0,
+            };
+            if radius > 0.0
+                && self.wall_distance(self.px, self.py, self.pa.cos(), self.pa.sin(), 8.0) < radius
+            {
+                1.0
+            } else {
+                0.0
+            }
+        } else {
+            0.0
+        };
         self.hud = Hud {
             health: self.health,
             armor: self.armor,
@@ -3587,6 +3612,7 @@ impl Engine {
             has_w11: if self.has_w11 { 1 } else { 0 },
             power: self.power as i32,
             power_t: self.power_t,
+            splash,
         };
     }
 
@@ -5140,6 +5166,25 @@ mod tests {
     }
 
     #[test]
+    fn splash_warns_when_wall_inside_blast_radius() {
+        let mut e = arena();
+        e.set_cell(6, 4, 1);
+        e.px = 4.5;
+        e.py = 4.5;
+        e.pa = 0.0;
+        e.weapon = 4;
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.hud.splash, 1.0, "VLK-6 at a 2m wall must warn");
+        e.pa = core::f32::consts::FRAC_PI_2;
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.hud.splash, 0.0, "open lane must not warn");
+        e.weapon = 0;
+        e.pa = 0.0;
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.hud.splash, 0.0, "hitscan guns never warn");
+    }
+
+    #[test]
     fn run_save_layout_matches_ts_side() {
         // Pinned against SAVE_SIZE/SAVE_AMMO_BASE/SAVE_MAG_BASE in
         // src/game/save-abi.ts. Update both files together when WEP_N changes.
@@ -5173,6 +5218,20 @@ mod tests {
         e.maybe_spawn_boss();
         let boss = e.ents.iter().find(|x| x.kind == EK_BOSS).expect("boss spawns");
         assert!(boss.hp <= 6000, "late-wave boss must stay killable");
+    }
+
+    #[test]
+    fn deep_waves_scale_hostile_health() {
+        let mut e = arena();
+        e.wave = 12;
+        let base = e.spawn(EK_HUSK, 6.5, 4.5).unwrap();
+        let base_hp = e.ents[base].hp;
+        e.wave = 22;
+        let scaled = e.spawn(EK_HUSK, 7.5, 4.5).unwrap();
+        assert_eq!(e.ents[scaled].hp, ((base_hp as f32) * 1.2).round() as i32);
+        e.wave = 12;
+        let flat = e.spawn(EK_HUSK, 8.5, 4.5).unwrap();
+        assert_eq!(e.ents[flat].hp, base_hp, "waves 1-12 keep roster stats");
     }
 
     #[test]
