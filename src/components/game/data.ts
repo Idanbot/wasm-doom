@@ -173,6 +173,14 @@ export function radioCopy(line: number, wave: number) {
       ][sector]!,
     };
   }
+  if (line === 8) {
+    const kill = [
+      { speaker: "MALIK", text: "Impossible. The vault... was mine. Take the rail. See how far it gets you." },
+      { speaker: "HECATE–9", text: "CORE INTEGRITY ZERO. FORGE GOING... COLD. THE CUTTER IS YOURS." },
+      { speaker: "HANDLER", text: "Specimen flatlined. Bag its sprayer — that case is your way out." },
+    ][sector]!;
+    return kill;
+  }
   const memo = MEMOS[line];
   if (memo) return { speaker: line >= 18 ? "LAB" : line >= 14 ? "FORGE" : "ARCHIVE", text: memo };
   return null;

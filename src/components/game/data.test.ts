@@ -7,6 +7,7 @@ import {
   loadGfx,
   loadRes,
   loadVol,
+  radioCopy,
   saveBoard,
   sheetPos,
   WEAPONS,
@@ -58,6 +59,16 @@ describe("sectorForWave", () => {
     ]);
     assert.equal(new Set([1, 2, 3].map((wave) => sectorForWave(wave).bossName)).size, 3);
     assert.equal(sectorForWave(4).name, "UPPER WORKS");
+  });
+});
+
+describe("radioCopy", () => {
+  it("has one distinct boss-kill line per sector", () => {
+    const lines = [1, 2, 3].map((wave) => radioCopy(8, wave));
+    for (const line of lines) {
+      assert.ok(line && line.speaker.length > 0 && line.text.length > 0);
+    }
+    assert.equal(new Set(lines.map((l) => l!.text)).size, 3);
   });
 });
 

@@ -22,6 +22,7 @@ export type GameAudio = {
   setMuted: (m: boolean) => void;
   setVolumes: (master: number, music: number, sfx: number) => void;
   setMusic: (on: boolean) => void;
+  setMenuBed: (on: boolean) => void;
   setBoss: (on: boolean) => void;
   hushBoss: () => void;
   dropBoss: () => void;
@@ -65,6 +66,8 @@ export function createAudio(): GameAudio {
   let drumBus: GainNode | null = null;
   let bed: HTMLAudioElement | null = null;
   let bossBed: HTMLAudioElement | null = null;
+  let menuBed: HTMLAudioElement | null = null;
+  let menuBedWanted = false;
   let bedFailed = false;
   let bossVol = 0;
   let bossFade = 0;
@@ -131,6 +134,7 @@ export function createAudio(): GameAudio {
     music.gain.setTargetAtTime(mv, t, 0.08);
     if (bed) bed.volume = muted || !musicOn ? 0 : 0.85;
     if (bossBed) bossBed.volume = muted || !musicOn ? 0 : bossVol;
+    if (menuBed) menuBed.volume = muted ? 0 : 0.7;
   }
   function loadSfx() {
     if (!ctx || sfxLoadStarted) return;
@@ -456,6 +460,26 @@ export function createAudio(): GameAudio {
     }
   }
 
+  // Menu bed bypasses the music gain (gated by musicOn) and hangs off
+  // master, so the standby screen has its own bed while the field is quiet.
+  // preload="none": the 21MB bed streams on first actual play instead of
+  // fetching on every page load (which stalls headless runs and burns
+  // mobile data when the player goes straight into the field).
+  function hookMasterBed(url: string): HTMLAudioElement | null {
+    if (!ctx || !master) return null;
+    const el = new Audio();
+    el.loop = true;
+    el.preload = "none";
+    el.src = url;
+    try {
+      const node = ctx.createMediaElementSource(el);
+      node.connect(master);
+      return el;
+    } catch {
+      return null;
+    }
+  }
+
   function ensureBed() {
     if (!ctx || !music || bedFailed) return;
     if (!bed) bed = hookBed(asset("/game/music/bgm-remix.ogg"));
@@ -513,6 +537,7 @@ export function createAudio(): GameAudio {
   function startGate() {
     if (!ctx || !music) return;
     ensureBed();
+    menuBed?.pause();
     stopSynth();
     if (bossMode && bossBed) {
       bed?.pause();
@@ -627,6 +652,9 @@ export function createAudio(): GameAudio {
     },
     unlock() {
       resume();
+      // Autoplay policy may have blocked the standby bed before the first
+      // gesture; retry it on every unlock while the menu wants it.
+      if (menuBedWanted && menuBed && menuBed.paused) playEl(menuBed);
     },
     setMuted(m) {
       muted = m;
@@ -647,6 +675,22 @@ export function createAudio(): GameAudio {
       } else {
         stopGate();
       }
+    },
+    setMenuBed(on) {
+      resume();
+      menuBedWanted = on;
+      if (on) {
+        if (!menuBed) menuBed = hookMasterBed(asset("/game/music/bgm.ogg"));
+        if (menuBed) {
+          bed?.pause();
+          bossBed?.pause();
+          stopSynth();
+          menuBed.volume = muted ? 0 : 0.7;
+          playEl(menuBed);
+        }
+        return;
+      }
+      menuBed?.pause();
     },
     setBoss(on) {
       const was = bossMode;

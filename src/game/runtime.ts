@@ -18,6 +18,7 @@ import {
   T_ORDNANCE,
 } from "./gpu-world";
 import { HUD_SIZE } from "./hud-abi";
+import { SAVE_AMMO_BASE, SAVE_MAG_BASE, SAVE_SIZE, SAVE_SLOTS } from "./save-abi";
 import { keySpriteAlpha } from "./sprite-alpha";
 import {
   readEnemyCues,
@@ -382,9 +383,17 @@ export class HellscanRuntime {
         slices.tex = total ? done / total : 1;
         paint("World textures");
       }),
-      preloadImages([...UI_CRITICAL, ...UI_DEFERRED], 4, (done, total) => {
+      // Sector-1 guns decode first (UI_DEFERRED is already ordered that
+      // way); wider batch so reload sheets land before first contact.
+      preloadImages([...UI_CRITICAL, ...UI_DEFERRED], 8, (done, total) => {
         slices.ui = total ? done / total : 1;
         paint("Arsenal");
+      }).then((imgs) => {
+        const urls = [...UI_CRITICAL, ...UI_DEFERRED];
+        const failed = urls.filter((_, i) => !imgs[i]);
+        if (failed.length) {
+          console.warn(`[assets] ${failed.length} arsenal images fell back to procedural:`, failed.join(", "));
+        }
       }),
       this.audio.prepareEnemies((done, total) => {
         slices.voice = total ? done / total : 1;
@@ -449,6 +458,10 @@ export class HellscanRuntime {
   setMuted(v: boolean) {
     this.muted = v;
     this.audio.setMuted(v);
+  }
+
+  setMenuBed(on: boolean) {
+    this.audio.setMenuBed(on);
   }
 
   setVolumes(master: number, music: number, sfx: number) {
@@ -598,10 +611,12 @@ export class HellscanRuntime {
     const ptr = wasm.hs_save_ptr();
     const dv = new DataView(wasm.memory.buffer, ptr, wasm.hs_save_size());
     const size = wasm.hs_save_size();
-    // Engine RunSave holds 11 weapons: ammo at 32, mag at 32 + 11*4.
     // Legacy 8-slot checkpoints (mag at 64) are still readable via loadSave.
-    const slots = size >= 120 ? 11 : 8;
-    const magBase = 32 + slots * 4;
+    const slots = size >= SAVE_SIZE ? SAVE_SLOTS : 8;
+    const magBase = SAVE_AMMO_BASE + slots * 4;
+    if (size >= SAVE_SIZE && size !== SAVE_SIZE) {
+      throw new Error(`RunSave ABI mismatch: WASM reports ${size} bytes, TS expects ${SAVE_SIZE}.`);
+    }
     return {
       wave: dv.getInt32(0, true),
       health: dv.getInt32(4, true),
@@ -611,10 +626,10 @@ export class HellscanRuntime {
       kills: dv.getInt32(20, true),
       secrets: dv.getInt32(24, true),
       elapsedMs: dv.getInt32(28, true),
-      ammo: Array.from({ length: 11 }, (_, i) =>
-        i < slots ? dv.getInt32(32 + i * 4, true) : 0,
+      ammo: Array.from({ length: SAVE_SLOTS }, (_, i) =>
+        i < slots ? dv.getInt32(SAVE_AMMO_BASE + i * 4, true) : 0,
       ),
-      mag: Array.from({ length: 11 }, (_, i) =>
+      mag: Array.from({ length: SAVE_SLOTS }, (_, i) =>
         i < slots ? dv.getInt32(magBase + i * 4, true) : 0,
       ),
     };
@@ -626,10 +641,10 @@ export class HellscanRuntime {
     const ptr = wasm.hs_load_ptr();
     const dv = new DataView(wasm.memory.buffer, ptr, wasm.hs_save_size());
     const size = wasm.hs_save_size();
-    const slots = size >= 120 ? 11 : 8;
-    const magBase = 32 + slots * 4;
-    const ammo = [...save.ammo, ...Array(11).fill(0)].slice(0, slots);
-    const mag = [...save.mag, ...Array(11).fill(0)].slice(0, slots);
+    const slots = size >= SAVE_SIZE ? SAVE_SLOTS : 8;
+    const magBase = SAVE_AMMO_BASE + slots * 4;
+    const ammo = [...save.ammo, ...Array(SAVE_SLOTS).fill(0)].slice(0, slots);
+    const mag = [...save.mag, ...Array(SAVE_SLOTS).fill(0)].slice(0, slots);
     dv.setInt32(0, save.wave, true);
     dv.setInt32(4, save.health, true);
     dv.setInt32(8, save.armor, true);
@@ -638,7 +653,7 @@ export class HellscanRuntime {
     dv.setInt32(20, save.kills, true);
     dv.setInt32(24, save.secrets, true);
     dv.setInt32(28, save.elapsedMs, true);
-    ammo.forEach((n, i) => dv.setInt32(32 + i * 4, n, true));
+    ammo.forEach((n, i) => dv.setInt32(SAVE_AMMO_BASE + i * 4, n, true));
     mag.forEach((n, i) => dv.setInt32(magBase + i * 4, n, true));
     wasm.hs_load_run();
     this.hud = this.readHud();
@@ -1046,7 +1061,10 @@ export class HellscanRuntime {
   }
 
   private installQa() {
-    if (!import.meta.env.DEV && new URLSearchParams(location.search).get("qa") !== "1") return;
+    // Debug hooks (grantWeapons/triggerEnd/nextWave) are dev-only. They
+    // power the Playwright smokes against `npm run dev`; exposing them in
+    // production lets anyone skip sectors on the live site.
+    if (!import.meta.env.DEV) return;
     const mapCodes = (codes: string[]) => {
       let bits = 0;
       for (const c of codes) bits |= CODE_BITS[c] ?? 0;

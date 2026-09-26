@@ -388,6 +388,9 @@ export function GameApp() {
     if (screen !== "play" && document.pointerLockElement) {
       document.exitPointerLock();
     }
+    // Standby bed (bgm.ogg) under menus and end cards; the field mix
+    // takes over on play via setMusic.
+    rtRef.current?.setMenuBed(screen !== "play");
   }, [screen]);
 
   useEffect(() => {
@@ -519,6 +522,17 @@ export function GameApp() {
           {hud.prompt === 3 && (
             <p className="pointer-events-none absolute bottom-28 left-1/2 -translate-x-1/2 font-display text-sm tracking-[0.2em] text-danger">
               USE E — INITIATE OVERRIDE
+            </p>
+          )}
+          {hud.prompt === 16 && (
+            <p className="pointer-events-none absolute bottom-28 left-1/2 -translate-x-1/2 font-display text-sm tracking-[0.2em] text-primary">
+              CLAIM THE{" "}
+              {
+                [WEAPONS[8], WEAPONS[9], WEAPONS[10]][
+                  (Math.max(1, hud.wave) - 1) % 3
+                ]!.name
+              }{" "}
+              — SECTOR OPEN
             </p>
           )}
           {hud.prompt >= 7 && hud.prompt <= 12 && (

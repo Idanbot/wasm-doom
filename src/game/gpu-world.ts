@@ -470,6 +470,20 @@ export async function createWebGpuWorld(device: GPUDevice): Promise<GpuWorld> {
   };
 }
 
+// Scratch buffers reused across frames: readWorldFrame runs 60x/s and the
+// column buffer alone is ~245KB at 1080p. The frame is consumed
+// synchronously by draw(), so reuse is safe.
+let frameScratch: {
+  w: number;
+  spriteCap: number;
+  view: Float32Array;
+  cols: Float32Array;
+  sprites: Float32Array;
+  floor: Uint8Array;
+  light: Float32Array;
+  smoke: Float32Array;
+} | null = null;
+
 export function readWorldFrame(
   memory: ArrayBuffer,
   viewPtr: number,
@@ -481,19 +495,28 @@ export function readWorldFrame(
   smokePtr: number,
   w: number,
 ): WorldFrame {
-  const view = new Float32Array(VIEW_FLOATS);
-  view.set(new Float32Array(memory, viewPtr, VIEW_FLOATS));
-  const cols = new Float32Array(w * COL_FLOATS);
-  cols.set(new Float32Array(memory, colPtr, w * COL_FLOATS));
-  const sprites = new Float32Array(Math.max(spriteCount, 1) * SPR_FLOATS);
-  if (spriteCount > 0) sprites.set(new Float32Array(memory, sprPtr, spriteCount * SPR_FLOATS));
-  const floor = new Uint8Array(MAP_W * MAP_H);
-  floor.set(new Uint8Array(memory, floorPtr, MAP_W * MAP_H));
-  const light = new Float32Array(MAP_W * MAP_H * 3);
-  light.set(new Float32Array(memory, lightPtr, MAP_W * MAP_H * 3));
-  const smoke = new Float32Array(MAP_W * MAP_H);
-  if (smokePtr) smoke.set(new Float32Array(memory, smokePtr, MAP_W * MAP_H));
-  return { w, h: view[11]!, view, cols, sprites, spriteCount, floor, light, smoke };
+  const spriteNeed = Math.max(spriteCount, 1) * SPR_FLOATS;
+  if (!frameScratch || frameScratch.w !== w || frameScratch.spriteCap < spriteNeed) {
+    frameScratch = {
+      w,
+      spriteCap: spriteNeed,
+      view: new Float32Array(VIEW_FLOATS),
+      cols: new Float32Array(w * COL_FLOATS),
+      sprites: new Float32Array(spriteNeed),
+      floor: new Uint8Array(MAP_W * MAP_H),
+      light: new Float32Array(MAP_W * MAP_H * 3),
+      smoke: new Float32Array(MAP_W * MAP_H),
+    };
+  }
+  const s = frameScratch;
+  s.view.set(new Float32Array(memory, viewPtr, VIEW_FLOATS));
+  s.cols.set(new Float32Array(memory, colPtr, w * COL_FLOATS));
+  if (spriteCount > 0) s.sprites.set(new Float32Array(memory, sprPtr, spriteCount * SPR_FLOATS));
+  s.floor.set(new Uint8Array(memory, floorPtr, MAP_W * MAP_H));
+  s.light.set(new Float32Array(memory, lightPtr, MAP_W * MAP_H * 3));
+  if (smokePtr) s.smoke.set(new Float32Array(memory, smokePtr, MAP_W * MAP_H));
+  else s.smoke.fill(0);
+  return { w, h: s.view[11]!, view: s.view, cols: s.cols, sprites: s.sprites, spriteCount, floor: s.floor, light: s.light, smoke: s.smoke };
 }
 
 const GL_FILL_VS = `#version 300 es
@@ -699,6 +722,8 @@ export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
   const fillVao = gl.createVertexArray();
   if (!colsTex || !floorTex || !lightTex || !atlas || !fbo || !sprBuf || !sprVao || !fillVao) return null;
   const colsImg = new Float32Array(MAX_COLS * 4 * 4);
+  const lightRgba = new Float32Array(MAP_W * MAP_H * 4);
+  const quad = new Float32Array(24);
   let atlasReady = false;
   gl.bindTexture(gl.TEXTURE_2D_ARRAY, atlas);
   gl.texParameteri(gl.TEXTURE_2D_ARRAY, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
@@ -734,7 +759,6 @@ export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.R8, MAP_W, MAP_H, 0, gl.RED, gl.UNSIGNED_BYTE, frame.floor);
-      const lightRgba = new Float32Array(MAP_W * MAP_H * 4);
       for (let i = 0; i < MAP_W * MAP_H; i++) {
         lightRgba[i * 4] = frame.light[i * 3] ?? 0;
         lightRgba[i * 4 + 1] = frame.light[i * 3 + 1] ?? 0;
@@ -788,7 +812,6 @@ export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
       gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 16, 0);
       gl.enableVertexAttribArray(1);
       gl.vertexAttribPointer(1, 2, gl.FLOAT, false, 16, 8);
-      const quad = new Float32Array(24);
       for (let i = 0; i < frame.spriteCount; i++) {
         const o = i * 8;
         const sx = frame.sprites[o]! - v[0]!;
