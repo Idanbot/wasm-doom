@@ -3,17 +3,17 @@
     {
       "id": "boss-veyran",
       "url": "/game/voices/boss-veyran.mp3",
-      "duration": 5.928
+      "duration": 6.768
     },
     {
       "id": "boss-hecate",
       "url": "/game/voices/boss-hecate.mp3",
-      "duration": 4.824
+      "duration": 7.464
     },
     {
-      "id": "boss-handler",
-      "url": "/game/voices/boss-handler.mp3",
-      "duration": 5.304
+      "id": "boss-chimera",
+      "url": "/game/voices/boss-chimera.mp3",
+      "duration": 7.704
     }
   ]
 }

@@ -96,7 +96,7 @@ export function createAudio(): GameAudio {
     hurt: asset("/game/sfx/hurt.ogg"),
     bossKill0: asset("/game/voices/boss-veyran.mp3"),
     bossKill1: asset("/game/voices/boss-hecate.mp3"),
-    bossKill2: asset("/game/voices/boss-handler.mp3"),
+    bossKill2: asset("/game/voices/boss-chimera.mp3"),
   };
 
   function ensure() {

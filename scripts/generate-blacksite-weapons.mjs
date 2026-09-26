@@ -36,15 +36,15 @@ const WEAPONS = [
   ],
   [
     "vr9",
-    "long dark metal science-fiction rifle with a glowing cyan side channel",
+    "VR-9 OVERRIDE precision rail rifle captured from Malik Veyran, long centered barrel, dark command-armor plating, amber charge chamber and visible rear sight",
   ],
   [
     "hc9",
-    "bulky industrial beam cutter with wide emitter head, armored housing and amber heat vents",
+    "HC-9 FORGE compact rotary electrical cannon captured from HECATE-9, central bore, cyan induction coils, chipped ceramic heat shields and heavy mechanical receiver",
   ],
   [
     "cm9",
-    "bio-mechanical acid sprayer with twin tanks, wide fan nozzle and reinforced grip frame",
+    "CM-9 CHIMERA chemical projector captured from CHIMERA-9, one centered forward nozzle, off-white containment ceramic, two sealed green-fluid side cartridges and practical pressure hoses",
   ],
 ];
 const reloadOnly = process.argv.includes("--reload");

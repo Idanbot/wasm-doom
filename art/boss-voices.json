@@ -7,21 +7,21 @@
       "speaker": "saturn",
       "style": "Dying overlord, arrogant to the last syllable",
       "effect": "overlord",
-      "text": "Impossible. The vault... was mine. Take the rail. See how far it gets you."
+      "text": "Impossible. The vault was mine. Take the override rail. It still remembers my hand."
     },
     {
       "id": "boss-hecate",
       "speaker": "neptune",
       "style": "Machine warden shutting down, flat and final",
       "effect": "robot-low",
-      "text": "Core integrity zero. Forge going... cold. The cutter is yours."
+      "text": "Core integrity zero. Forge power is... cold. Take the arc cannon. Do not touch the coils."
     },
     {
-      "id": "boss-handler",
+      "id": "boss-chimera",
       "speaker": "draco",
       "style": "Clipped command channel, professional",
       "effect": "comms",
-      "text": "Specimen flatlined. Bag its sprayer. That case is your way out."
+      "text": "Specimen containment failed. Take the corrosive carbine. The green will outlive us both."
     }
   ]
 }

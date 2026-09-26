@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 const plan = JSON.parse(readFileSync("art/blacksite-voices.json", "utf8"));
 const manifest = JSON.parse(readFileSync("public/game/voices/manifest.json", "utf8"));
 assert.equal(manifest.model, "@cf/deepgram/aura-2-en");
-assert.equal(manifest.enemies.length, 13);
+assert.equal(manifest.enemies.length, 15);
 const all = [];
 for (const enemy of manifest.enemies) {
   const source = plan.enemies.find((p) => p.skin === enemy.skin);
@@ -22,18 +22,18 @@ for (const enemy of manifest.enemies) {
     all.push(line);
   }
 }
-assert.equal(all.length, 54);
-assert.equal(new Set(all.map((line) => line.id)).size, 54);
-assert.equal(new Set(all.map((line) => line.text)).size, 54);
+assert.equal(all.length, 68);
+assert.equal(new Set(all.map((line) => line.id)).size, 68);
+assert.equal(new Set(all.map((line) => line.text)).size, 68);
 assert.equal(manifest.enemies.filter((e) => !e.lines.length).length, 4);
 console.log(
-  "[check:voices] 54 Cloudflare clips, 9 speaking profiles and 4 nonverbal profiles verified.",
+  "[check:voices] 68 Cloudflare clips, 11 speaking profiles and 4 nonverbal profiles verified.",
 );
 
 // Boss-kill lines live outside the enemy manifest (art/boss-voices.json).
 const bossPlan = JSON.parse(readFileSync("art/boss-voices.json", "utf8"));
 assert.equal(bossPlan.bosses.length, 3);
-const bossIds = ["boss-veyran", "boss-hecate", "boss-handler"];
+const bossIds = ["boss-veyran", "boss-hecate", "boss-chimera"];
 for (const [i, boss] of bossPlan.bosses.entries()) {
   assert.equal(boss.id, bossIds[i]);
   assert.ok(boss.text.length > 10);

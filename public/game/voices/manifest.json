@@ -491,6 +491,122 @@
           "duration": 2.832
         }
       ]
+    },
+    {
+      "skin": 13,
+      "id": "hecate",
+      "name": "HECATE–9",
+      "style": "Industrial machine warden, clipped low synthetic voice with electrical hum",
+      "speaker": "neptune",
+      "lines": [
+        {
+          "id": "hecate-1",
+          "cue": "alert",
+          "text": "Unauthorized lifeform in the forge.",
+          "url": "/game/voices/hecate-1.mp3",
+          "duration": 2.496
+        },
+        {
+          "id": "hecate-2",
+          "cue": "alert",
+          "text": "Production halt. Threat priority maximum.",
+          "url": "/game/voices/hecate-2.mp3",
+          "duration": 3.096
+        },
+        {
+          "id": "hecate-3",
+          "cue": "attack",
+          "text": "Arc lattice armed.",
+          "url": "/game/voices/hecate-3.mp3",
+          "duration": 1.8
+        },
+        {
+          "id": "hecate-4",
+          "cue": "attack",
+          "text": "Your movement has been solved.",
+          "url": "/game/voices/hecate-4.mp3",
+          "duration": 1.704
+        },
+        {
+          "id": "hecate-5",
+          "cue": "pain",
+          "text": "Cooling loop compromised.",
+          "url": "/game/voices/hecate-5.mp3",
+          "duration": 1.704
+        },
+        {
+          "id": "hecate-6",
+          "cue": "taunt",
+          "text": "Every corridor belongs to my factory.",
+          "url": "/game/voices/hecate-6.mp3",
+          "duration": 2.328
+        },
+        {
+          "id": "hecate-7",
+          "cue": "taunt",
+          "text": "You are an inefficient input.",
+          "url": "/game/voices/hecate-7.mp3",
+          "duration": 1.992
+        }
+      ]
+    },
+    {
+      "skin": 14,
+      "id": "chimera",
+      "name": "CHIMERA–9",
+      "style": "Bioengineered containment giant, wet rasping voice through a damaged respirator",
+      "speaker": "hyperion",
+      "lines": [
+        {
+          "id": "chimera-1",
+          "cue": "alert",
+          "text": "The lights hurt my eyes.",
+          "url": "/game/voices/chimera-1.mp3",
+          "duration": 1.56
+        },
+        {
+          "id": "chimera-2",
+          "cue": "alert",
+          "text": "You smell like the outside.",
+          "url": "/game/voices/chimera-2.mp3",
+          "duration": 1.8
+        },
+        {
+          "id": "chimera-3",
+          "cue": "attack",
+          "text": "Hold still. Let it spread.",
+          "url": "/game/voices/chimera-3.mp3",
+          "duration": 2.328
+        },
+        {
+          "id": "chimera-4",
+          "cue": "attack",
+          "text": "The green remembers your shape.",
+          "url": "/game/voices/chimera-4.mp3",
+          "duration": 1.848
+        },
+        {
+          "id": "chimera-5",
+          "cue": "pain",
+          "text": "The cage is breaking.",
+          "url": "/game/voices/chimera-5.mp3",
+          "duration": 1.488
+        },
+        {
+          "id": "chimera-6",
+          "cue": "taunt",
+          "text": "Come closer. I can hear your blood.",
+          "url": "/game/voices/chimera-6.mp3",
+          "duration": 2.568
+        },
+        {
+          "id": "chimera-7",
+          "cue": "taunt",
+          "text": "Nothing grows here but me.",
+          "url": "/game/voices/chimera-7.mp3",
+          "duration": 1.8
+        }
+      ]
     }
   ]
 }

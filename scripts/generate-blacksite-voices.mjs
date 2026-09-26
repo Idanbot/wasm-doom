@@ -15,7 +15,7 @@ const plan = JSON.parse(await readFile("art/blacksite-voices.json", "utf8"));
 const characters = plan.enemies.flatMap((e) => e.lines).reduce((n, [, text]) => n + text.length, 0);
 const estimate = {
   model: plan.model,
-  clips: 54,
+  clips: plan.enemies.reduce((n, enemy) => n + enemy.lines.length, 0),
   characters,
   estimatedUsd: (characters * 0.03) / 1000,
   estimatedNeurons: Math.ceil(((characters * 0.03) / 1000 / 0.011) * 1000),

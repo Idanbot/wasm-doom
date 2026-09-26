@@ -153,6 +153,8 @@ const ENEMY_SKINS = [
   "spitter",
   "martyr",
   "veyran",
+  "hecate",
+  "chimera",
 ] as const;
 const ENEMY_ANIMATIONS = ["idle", "move", "pain", "fire", "reload", "dead", "special"] as const;
 

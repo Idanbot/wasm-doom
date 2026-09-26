@@ -1,7 +1,7 @@
 {
-  "signature": "73d36649694384d75a74789f996dcb6a025008fa220e0ab714f62bfa38752077",
+  "signature": "07168e6b4390fdd4358de7f8f7f037634e425e29f1e62fb23d313a601af28015",
   "model": "@cf/deepgram/aura-2-en",
   "speaker": "neptune",
   "effect": "asetrate=20400,aresample=24000,atempo=1.12,aeval=val(0)*(0.72+0.28*sin(2*PI*48*t)),highpass=f=120,lowpass=f=3600",
-  "generatedAt": "2026-09-26T09:55:36.800Z"
+  "generatedAt": "2026-09-26T15:00:50.968Z"
 }

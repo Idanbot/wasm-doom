@@ -36,11 +36,23 @@ def clean_native_alpha(image: Image.Image) -> Image.Image:
     for y in range(image.height):
         for x in range(image.width):
             r, g, b, a = pixels[x, y]
+            # Cloudflare concept renders use the same neon-magenta key as the
+            # enemy pipeline. Remove it before bounding-box fitting so boss
+            # weapons do not carry a pink rectangle into the view model.
+            if r > 120 and b > 90 and g < 170 and r > g * 1.18 and b > g * 1.08:
+                pixels[x, y] = (0, 0, 0, 0)
+                continue
             if a < 72:
                 pixels[x, y] = (0, 0, 0, 0)
             else:
                 alpha = min(255, round((a - 56) * 255 / 199))
                 pixels[x, y] = (r, g, b, alpha)
+    # Remove the compressed magenta fringe that remains around hard edges.
+    for y in range(image.height):
+        for x in range(image.width):
+            r, g, b, a = pixels[x, y]
+            if a > 0 and r > 45 and b > 45 and g < min(r, b) * 0.86:
+                pixels[x, y] = (0, 0, 0, 0)
     return image
 
 

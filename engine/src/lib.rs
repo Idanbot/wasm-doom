@@ -5836,7 +5836,7 @@ mod tests {
         let bosses: Vec<_> = e.ents.iter().filter(|en| en.kind == EK_BOSS).collect();
         assert_eq!(bosses.len(), 1);
         assert_eq!(bosses[0].hp, 720);
-        assert_eq!(bosses[0].skin, SKIN_GUNNER);
+        assert_eq!(bosses[0].skin, SKIN_HECATE);
         assert!(e.boss_spawned);
         assert!(e.hell);
         e.tick(1.0 / 60.0);
@@ -5915,7 +5915,7 @@ mod tests {
         foundry.ents[boss].hp = 400;
         foundry.tick(1.0 / 60.0);
         assert_eq!(foundry.ents.iter().filter(|e| e.kind == EK_PROJ).count(), 8);
-        assert!(foundry.ents.iter().any(|e| e.skin == SKIN_GUNNER && e.kind == EK_BOSS));
+        assert!(foundry.ents.iter().any(|e| e.skin == SKIN_HECATE && e.kind == EK_BOSS));
 
         let mut bioforge = arena();
         bioforge.wave = 3;
@@ -5924,7 +5924,7 @@ mod tests {
         bioforge.ents[boss].hp = 700;
         bioforge.tick(1.0 / 60.0);
         assert_eq!(bioforge.ents.iter().filter(|e| e.kind == EK_PROJ && e.effect_tick == 3.0).count(), 6);
-        assert!(bioforge.ents.iter().any(|e| e.skin == SKIN_VATBRUTE && e.kind == EK_BOSS));
+        assert!(bioforge.ents.iter().any(|e| e.skin == SKIN_CHIMERA && e.kind == EK_BOSS));
     }
 
     #[test]

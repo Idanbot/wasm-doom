@@ -167,6 +167,40 @@
         ["pain", "Pain is obsolete."],
         ["taunt", "There is no outside. Only me."]
       ]
+    },
+    {
+      "skin": 13,
+      "id": "hecate",
+      "name": "HECATE–9",
+      "speaker": "neptune",
+      "style": "Industrial machine warden, clipped low synthetic voice with electrical hum",
+      "effect": "robot-low",
+      "lines": [
+        ["alert", "Unauthorized lifeform in the forge."],
+        ["alert", "Production halt. Threat priority maximum."],
+        ["attack", "Arc lattice armed."],
+        ["attack", "Your movement has been solved."],
+        ["pain", "Cooling loop compromised."],
+        ["taunt", "Every corridor belongs to my factory."],
+        ["taunt", "You are an inefficient input."]
+      ]
+    },
+    {
+      "skin": 14,
+      "id": "chimera",
+      "name": "CHIMERA–9",
+      "speaker": "hyperion",
+      "style": "Bioengineered containment giant, wet rasping voice through a damaged respirator",
+      "effect": "respirator",
+      "lines": [
+        ["alert", "The lights hurt my eyes."],
+        ["alert", "You smell like the outside."],
+        ["attack", "Hold still. Let it spread."],
+        ["attack", "The green remembers your shape."],
+        ["pain", "The cage is breaking."],
+        ["taunt", "Come closer. I can hear your blood."],
+        ["taunt", "Nothing grows here but me."]
+      ]
     }
   ]
 }

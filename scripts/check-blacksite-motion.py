@@ -5,7 +5,7 @@ from PIL import Image, ImageChops, ImageStat
 
 ROOT = Path(__file__).resolve().parents[1]
 ANIMATIONS = ("idle", "move", "pain", "fire", "reload", "dead", "special")
-SKINS = ("rifleman", "breacher", "subject", "hazmat", "gunner", "loader", "vatbrute", "marksman", "hornet", "hound", "spitter", "martyr", "veyran")
+SKINS = ("rifleman", "breacher", "subject", "hazmat", "gunner", "loader", "vatbrute", "marksman", "hornet", "hound", "spitter", "martyr", "veyran", "hecate", "chimera")
 
 checked = 0
 for skin in SKINS:

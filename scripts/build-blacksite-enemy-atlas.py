@@ -32,6 +32,8 @@ SPECS = (
     "spitter",
     "martyr",
     "veyran",
+    "hecate",
+    "chimera",
 )
 
 

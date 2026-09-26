@@ -1,0 +1,14 @@
+{
+  "signature": "55af27e7eb7681b569eb72ea23c86e806a25c19db9cad0a117041e2836b9b22a",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The cage is breaking.",
+    "speaker": "hyperion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Bioengineered containment giant, wet rasping voice through a damaged respirator",
+  "effect": "highpass=f=380,lowpass=f=2600,aecho=0.8:0.6:18:0.16",
+  "generatedAt": "2026-09-26T14:59:27.537Z"
+}

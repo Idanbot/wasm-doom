@@ -27,6 +27,8 @@ pub(crate) fn profile(skin: u8, kind: u8) -> Combat {
         SKIN_MARTYR => Combat { speed: 3.2, range: 1.1, windup: 0.5, cooldown: 1.0, damage: 0, melee: true, ..rifle },
         SKIN_SPITTER => Combat { speed: 1.7, range: 4.0, windup: 0.65, cooldown: 1.5, damage: 14, ..rifle },
         SKIN_VEYRAN => Combat { speed: 1.28, range: 5.0, windup: 1.0, cooldown: 1.4, damage: 18, pellets: 5, spread: 0.16, ..rifle },
+        SKIN_HECATE => Combat { speed: 0.82, range: 7.0, windup: 0.72, cooldown: 1.05, damage: 10, pellets: 4, spread: 0.11, ..rifle },
+        SKIN_CHIMERA => Combat { speed: 1.45, range: 4.2, windup: 0.5, cooldown: 0.85, damage: 16, pellets: 2, spread: 0.08, ..rifle },
         _ if kind == EK_BRUTE => Combat { speed: 2.15, range: 1.1, windup: 0.6, cooldown: 0.9, damage: 14, melee: true, ..rifle },
         _ => rifle,
     }

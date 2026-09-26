@@ -1,0 +1,14 @@
+{
+  "signature": "f3116ffb0ee1c0affea921983eb94c8bfd3054cdc7043925c6f6f278f24a4654",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Production halt. Threat priority maximum.",
+    "speaker": "neptune",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Industrial machine warden, clipped low synthetic voice with electrical hum",
+  "effect": "asetrate=20400,aresample=24000,atempo=1.12,aeval=val(0)*(0.72+0.28*sin(2*PI*48*t)),highpass=f=120,lowpass=f=3600",
+  "generatedAt": "2026-09-26T14:59:16.786Z"
+}

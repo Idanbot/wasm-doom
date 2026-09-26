@@ -50,7 +50,7 @@ pub(crate) fn override_point(wave: i32) -> (f32, f32) {
 }
 
 pub(crate) fn boss_skin(wave: i32) -> u8 {
-    [SKIN_VEYRAN, SKIN_GUNNER, SKIN_VATBRUTE][level_index(wave)]
+    [SKIN_VEYRAN, SKIN_HECATE, SKIN_CHIMERA][level_index(wave)]
 }
 
 pub(crate) type HostileSpawn = (u8, u8, f32, f32);
@@ -734,7 +734,7 @@ mod tests {
     #[test]
     fn each_sector_has_a_distinct_boss_and_enemy_cast() {
         let skins: Vec<u8> = (1..=3).map(boss_skin).collect();
-        assert_eq!(skins, vec![SKIN_VEYRAN, SKIN_GUNNER, SKIN_VATBRUTE]);
+        assert_eq!(skins, vec![SKIN_VEYRAN, SKIN_HECATE, SKIN_CHIMERA]);
         assert!(hostiles(1).len() > 10 && hostiles(2).len() > 10 && hostiles(3).len() > 10);
         assert_ne!(hostiles(1), hostiles(2));
         assert_ne!(hostiles(2), hostiles(3));

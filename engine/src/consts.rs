@@ -9,7 +9,7 @@ pub(crate) const TEXM: i32 = (TEX as i32) - 1;
 /// Atlas layers: the original 29 world layers plus seven animation sheets
 /// for each of the thirteen BLACKSITE enemy skins.
 pub(crate) const ENEMY_ANIM_COUNT: usize = 7;
-pub(crate) const ENEMY_SKIN_COUNT: usize = 13;
+pub(crate) const ENEMY_SKIN_COUNT: usize = 15;
 pub(crate) const ENEMY_TEX_BASE: usize = 29;
 pub(crate) const T_ORDNANCE: usize = ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT;
 pub(crate) const T_GUN3: usize = T_ORDNANCE + 1;
@@ -125,6 +125,8 @@ pub(crate) const SKIN_HOUND: u8 = 9;
 pub(crate) const SKIN_SPITTER: u8 = 10;
 pub(crate) const SKIN_MARTYR: u8 = 11;
 pub(crate) const SKIN_VEYRAN: u8 = 12;
+pub(crate) const SKIN_HECATE: u8 = 13;
+pub(crate) const SKIN_CHIMERA: u8 = 14;
 
 pub(crate) const IN_W: u32 = 1;
 pub(crate) const IN_S: u32 = 2;

@@ -248,6 +248,28 @@
       "sheet": "2x2",
       "size": 256,
       "status": "ready"
+    },
+    {
+      "specId": "enemy_hecate",
+      "engineKind": "EK_BOSS",
+      "archetype": "foundry boss",
+      "textureSlot": 120,
+      "file": "enemy_hecate_idle.png",
+      "animationFiles": ["enemy_hecate_idle.png", "enemy_hecate_move.png", "enemy_hecate_pain.png", "enemy_hecate_fire.png", "enemy_hecate_reload.png", "enemy_hecate_dead.png", "enemy_hecate_special.png"],
+      "sheet": "2x2",
+      "size": 256,
+      "status": "ready"
+    },
+    {
+      "specId": "enemy_chimera",
+      "engineKind": "EK_BOSS",
+      "archetype": "bioforge boss",
+      "textureSlot": 127,
+      "file": "enemy_chimera_idle.png",
+      "animationFiles": ["enemy_chimera_idle.png", "enemy_chimera_move.png", "enemy_chimera_pain.png", "enemy_chimera_fire.png", "enemy_chimera_reload.png", "enemy_chimera_dead.png", "enemy_chimera_special.png"],
+      "sheet": "2x2",
+      "size": 256,
+      "status": "ready"
     }
   ],
   "weapons": [

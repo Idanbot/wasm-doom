@@ -1,0 +1,58 @@
+{
+  "id": "enemy_chimera",
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "origin": {
+    "x": 64,
+    "y": 118
+  },
+  "animations": {
+    "idle": {
+      "start": 0,
+      "frames": 4,
+      "fps": 6
+    },
+    "move": {
+      "start": 4,
+      "frames": 4,
+      "fps": 8
+    },
+    "pain": {
+      "start": 8,
+      "frames": 4,
+      "fps": 6
+    },
+    "fire": {
+      "start": 12,
+      "frames": 4,
+      "fps": 6
+    },
+    "reload": {
+      "start": 16,
+      "frames": 4,
+      "fps": 6
+    },
+    "dead": {
+      "start": 20,
+      "frames": 4,
+      "fps": 6
+    },
+    "special": {
+      "start": 24,
+      "frames": 4,
+      "fps": 6
+    }
+  },
+  "layers": [
+    "enemy_chimera_idle.png",
+    "enemy_chimera_move.png",
+    "enemy_chimera_pain.png",
+    "enemy_chimera_fire.png",
+    "enemy_chimera_reload.png",
+    "enemy_chimera_dead.png",
+    "enemy_chimera_special.png"
+  ],
+  "background": "native transparency with deterministic alpha cleanup; legacy #ff00ff key supported",
+  "source": "art/source_hd/enemies/enemy_chimera.png",
+  "motion": "four-frame anchored deformation with independent torso recoil"
+}
