@@ -30,7 +30,24 @@ const WEAPONS = [
     "m91",
     "heavy rotary cannon with a clearly visible cluster of six barrels, armored motor housing, belt-feed box and amber heat vents",
   ],
+  [
+    "hx8",
+    "compact incendiary projector with top fuel canister, amber pilot lamp and heat-shielded shroud",
+  ],
+  [
+    "vr9",
+    "long dark metal science-fiction rifle with a glowing cyan side channel",
+  ],
+  [
+    "hc9",
+    "bulky industrial beam cutter with wide emitter head, armored housing and amber heat vents",
+  ],
+  [
+    "cm9",
+    "bio-mechanical acid sprayer with twin tanks, wide fan nozzle and reinforced grip frame",
+  ],
 ];
+const reloadOnly = process.argv.includes("--reload");
 const envText = await readFile(resolve(".env"), "utf8");
 const key = envText.match(/^CF_API_KEY=(.+)$/m)?.[1]?.trim();
 if (!key) throw new Error("CF_API_KEY is missing from the ignored .env file");
@@ -48,12 +65,19 @@ await mkdir(outputDir, { recursive: true });
 
 for (const [slug, description] of WEAPONS) {
   if (only && slug !== only) continue;
-  const prompt = [
-    `First-person FPS viewmodel of a ${description}.`,
-    "Centered lower-screen weapon held in two black tactical gloves, barrel points toward the exact top center, strong readable silhouette and believable mechanical construction.",
-    "BLACKSITE industrial military science-fiction style, worn gunmetal, restrained amber and cyan indicators, realistic hard-surface game render, orthographic game asset lighting.",
-    "Solid flat neon magenta #FF00FF background including gaps around hands and weapon. No room, floor, smoke, flame, muzzle flash, projectile, text, logo, border, cropped muzzle or cropped hands.",
-  ].join(" ");
+  const prompt = reloadOnly
+    ? [
+        `First-person FPS weapon reload sequence for a ${description}, eight sequential animation frames arranged in an exact 4-column by 2-row grid, strict over-the-shoulder rear view in every cell.`,
+        "Fixed camera directly behind the shooter's two black tactical gloves at the bottom center of every cell. The weapon receiver fills the bottom center with exactly one barrel assembly extending STRAIGHT UP along the exact vertical centerline. Identical weapon design in every cell, clear mechanical continuity from loaded weapon through handling motion back to ready. Side profile views, front muzzle closeups and diagonal compositions are forbidden.",
+        "BLACKSITE industrial military science-fiction style, worn gunmetal, restrained amber and cyan indicators, realistic hard-surface game render, orthographic game asset lighting.",
+        "Solid flat neon magenta #FF00FF background including every gap in every cell. No room, floor, smoke, flame, muzzle flash, projectile, text, logo, border, cropped cells or extra objects.",
+      ].join(" ")
+    : [
+        `First-person FPS viewmodel of a ${description}, strict over-the-shoulder rear view.`,
+        "The camera sits directly behind the shooter's two black tactical gloves at the bottom center. The weapon receiver fills the bottom center. Exactly one barrel assembly extends STRAIGHT UP along the exact vertical centerline of the image to the top edge. Side profile views, front muzzle closeups and diagonal compositions are forbidden.",
+        "BLACKSITE industrial military science-fiction style, worn gunmetal, restrained amber and cyan indicators, realistic hard-surface game render, orthographic game asset lighting.",
+        "Solid flat neon magenta #FF00FF background including gaps around hands and weapon. Absolutely no text, letters, numbers, symbols, decals, room, floor, smoke, flame, muzzle flash, projectile, logo, border, cropped muzzle or cropped hands.",
+      ].join(" ");
   const response = await fetch(
     `https://api.cloudflare.com/client/v4/accounts/${account}/ai/run/${MODEL}`,
     {
@@ -66,7 +90,7 @@ for (const [slug, description] of WEAPONS) {
   if (!response.ok || !body.success || typeof body.result?.image !== "string") {
     throw new Error(`${slug}: Cloudflare ${response.status} ${JSON.stringify(body.errors ?? [])}`);
   }
-  const output = resolve(outputDir, `${slug}.jpg`);
+  const output = resolve(outputDir, reloadOnly ? `${slug}_reload.jpg` : `${slug}.jpg`);
   await writeFile(output, Buffer.from(body.result.image, "base64"));
   await writeFile(
     output.replace(/\.jpg$/, ".json"),

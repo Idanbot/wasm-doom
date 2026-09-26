@@ -20,6 +20,10 @@ WEAPONS = {
     "vlk6": {"name": "VLK-6 WARDEN", "height": 590, "flash_y": 150},
     "ax12": {"name": "AX-12 VOLT", "height": 610, "flash_y": 42},
     "m91": {"name": "M91 CYCLONE", "height": 610, "flash_y": 58},
+    "hx8": {"name": "HX-8 PYRE", "height": 600, "flash_y": 120},
+    "vr9": {"name": "VR-9 OVERRIDE", "height": 620, "flash_y": 30},
+    "hc9": {"name": "HC-9 FORGE", "height": 600, "flash_y": 150},
+    "cm9": {"name": "CM-9 CHIMERA", "height": 600, "flash_y": 90},
 }
 FRAME_W = 800
 FRAME_H = 480
@@ -145,11 +149,17 @@ def main() -> None:
         }
     }
 
+    # Handling cycle when no multi-pose reload master exists: dip the
+    # muzzle down, cant side to side, rise back to ready. Same fake as the
+    # fire sheets, and consistent by construction.
+    HANDLING = [(0, 0, 0), (0, 14, -4), (0, 30, -9), (-4, 44, -14),
+                (4, 44, 14), (0, 30, 9), (0, 14, 4), (0, 0, 0)]
+
     for slug, spec in WEAPONS.items():
         source_path = SOURCE / f"{slug}.png"
         reload_path = SOURCE / f"{slug}_reload_raw.png"
-        if not source_path.exists() or not reload_path.exists():
-            raise FileNotFoundError(source_path if not source_path.exists() else reload_path)
+        if not source_path.exists():
+            raise FileNotFoundError(source_path)
         base = fit_view(Image.open(source_path), spec["height"])
         base.save(OUT / f"weap_{slug}.png", optimize=True)
         recoil = [
@@ -159,12 +169,17 @@ def main() -> None:
             shifted(base, 0, 12, 0, 0.98),
         ]
         pack(recoil, 2, 2).save(OUT / f"weap_{slug}_fire.png", optimize=True)
-        reload = reload_frames(reload_path, spec["height"])
+        if reload_path.exists():
+            reload = reload_frames(reload_path, spec["height"])
+            reload_source = str(reload_path.relative_to(ROOT))
+        else:
+            reload = [shifted(base, dx, dy, ang) for (dx, dy, ang) in HANDLING]
+            reload_source = f"{source_path.relative_to(ROOT)} (synthetic handling cycle)"
         pack(reload, 4, 2).save(OUT / f"weap_{slug}_reload.png", optimize=True)
         report[slug] = {
             "name": spec["name"],
             "source": str(source_path.relative_to(ROOT)),
-            "reloadSource": str(reload_path.relative_to(ROOT)),
+            "reloadSource": reload_source,
             "idle": f"public/game/weap_{slug}.png",
             "fireFrames": 4,
             "reloadFrames": 8,
