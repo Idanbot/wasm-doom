@@ -112,6 +112,8 @@ struct Engine {
     ambush: Vec<AmbushTrigger>,
     smokes: [Smoke; 8],
     smoke_grid: Vec<f32>,
+    smoke_next: Vec<f32>,
+    light_src: Vec<[f32; 3]>,
 }
 
 /// Single engine instance. WASM is single-threaded; raw-ref access keeps
@@ -480,6 +482,8 @@ impl Engine {
             ambush: Vec::new(),
             smokes: [Smoke::DEAD; 8],
             smoke_grid: vec![0.0; MAP_CELLS],
+            smoke_next: vec![0.0; MAP_CELLS],
+            light_src: vec![[0.0; 3]; MAP_CELLS],
         };
         e.build_map();
         if generate { e.gen_textures(); }
@@ -506,6 +510,8 @@ impl Engine {
                 slot = i;
             }
         }
+        // Grid-only smoke: the volumetric alpha effect in the smoke grid is
+        // the whole effect now. No EK_SMOKE sprite companions are spawned.
         let drift = self.rnd() * core::f32::consts::TAU;
         self.smokes[slot] = Smoke {
             x,
@@ -514,18 +520,6 @@ impl Engine {
             vx: drift.cos() * 0.22,
             vy: drift.sin() * 0.22,
         };
-        for n in 0..7 {
-            let a = n as f32 * core::f32::consts::TAU / 7.0 + drift;
-            let r = 0.35 + (n % 3) as f32 * 0.25;
-            if let Some(i) = self.spawn(EK_SMOKE, x + a.cos() * r, y + a.sin() * r) {
-                let e = &mut self.ents[i];
-                e.timer = 2.6;
-                e.effect_tick = 2.6;
-                e.vx = a.cos() * 0.22;
-                e.vy = a.sin() * 0.22;
-                e.zoff = -12.0 - (n % 3) as f32 * 10.0;
-            }
-        }
     }
 
     fn age_smoke(&mut self, dt: f32) {
@@ -564,7 +558,9 @@ impl Engine {
     }
 
     fn rebuild_smoke_grid(&mut self) {
-        let mut next = vec![0.0f32; MAP_CELLS];
+        // Scratch buffer: zeroed in place every frame, never reallocated.
+        self.smoke_next.fill(0.0);
+        let mut next = core::mem::take(&mut self.smoke_next);
         for y in 1..MAP_H - 1 {
             for x in 1..MAP_W - 1 {
                 if self.blocked(x as i32, y as i32) { continue; }
@@ -581,6 +577,7 @@ impl Engine {
             }
         }
         self.smoke_grid.copy_from_slice(&next);
+        self.smoke_next = next;
         for s in self.smokes {
             if s.age < 0.0 { continue; }
             let radius = Self::smoke_radius(s.age);
@@ -685,7 +682,7 @@ impl Engine {
                 self.shake = (self.shake + 0.15).min(1.0);
                 for n in 0..9 {
                     let a = n as f32 * core::f32::consts::TAU / 9.0;
-                    self.spawn_timed(EK_SMOKE, x + a.cos() * 1.2, y + a.sin() * 1.2, 0.9, -5.0);
+                    self.spawn_timed(EK_SPARK, x + a.cos() * 1.2, y + a.sin() * 1.2, 0.9, -5.0);
                 }
             }
         }
@@ -1334,7 +1331,7 @@ impl Engine {
     fn drop_boss_case(&mut self, x: f32, y: f32) {
         let kind = field::boss_case(self.wave);
         if self.spawn(kind, x, y).is_some() {
-            self.say(field::RADIO_BOSS_DROP);
+            self.say(field::RADIO_BOSS_KILL);
             self.shake = (self.shake + 0.4).min(1.0);
         } else {
             self.grant_slot(field::boss_slot(kind));
@@ -1675,10 +1672,10 @@ impl Engine {
             let a = self.rnd() * core::f32::consts::TAU;
             let r = 0.5 + self.rnd() * 1.6;
             self.spawn_timed(
-                if sector == 2 { EK_SMOKE } else { EK_SPARK },
+                EK_SPARK,
                 entry.0 + a.cos() * r,
                 entry.1 + a.sin() * r,
-                if sector == 2 { 1.1 } else { 0.7 },
+                0.7,
                 if sector == 1 { -32.0 } else { -16.0 },
             );
         }
@@ -2973,9 +2970,10 @@ impl Engine {
                 my -= right_y;
             }
             let mag = (mx * mx + my * my).sqrt();
-            let sprint = if bits & IN_SPRINT != 0 { 2.0 } else { 1.0 };
+            let sprint = if bits & IN_SPRINT != 0 { 1.2 } else { 1.0 };
             let boosted: f32 = 3.35 * sprint * if self.power == field::POWER_OVERDRIVE { 1.85 } else { 1.0 };
-            let speed = boosted.min(3.35 * 2.0);
+            // Absolute cap: nothing moves faster than 1.2x walk speed.
+            let speed = boosted.min(3.35 * 1.2);
             if mag > 0.001 {
                 mx /= mag;
                 my /= mag;
@@ -3368,23 +3366,7 @@ impl Engine {
             self.damage_player(dmg);
         }
 
-        if (self.rng & 31) == 0 {
-            let mut puffs: Vec<(f32, f32, f32)> = Vec::new();
-            for e in self.ents.iter() {
-                if (e.kind == EK_LAMP && e.timer >= 0.0) || e.kind == EK_FLAME {
-                    puffs.push((
-                        e.x,
-                        e.y,
-                        if e.kind == EK_FLAME { 14.0 } else { -60.0 },
-                    ));
-                }
-            }
-            for (x, y, z) in puffs {
-                if self.rnd() > 0.45 {
-                    self.spawn_timed(EK_SMOKE, x, y, 0.5, z);
-                }
-            }
-        }
+
 
         // push enemies out of walls / each other lightly skipped
 
@@ -3693,7 +3675,8 @@ impl Engine {
     }
 
     fn bounce_light(&mut self) {
-        let src = self.light_grid.clone();
+        self.light_src.copy_from_slice(&self.light_grid);
+        let src = core::mem::take(&mut self.light_src);
         for y in 1..MAP_H - 1 {
             for x in 1..MAP_W - 1 {
                 if self.blocked(x as i32, y as i32) { continue; }
@@ -3712,6 +3695,7 @@ impl Engine {
                 for c in 0..3 { self.light_grid[i][c] += acc[c] / n * 0.22; }
             }
         }
+        self.light_src = src;
     }
 
     fn light_at(&self, x: f32, y: f32) -> [f32; 3] {
@@ -5111,14 +5095,28 @@ mod tests {
     }
 
     #[test]
-    fn sprint_cannot_exceed_double_walk_speed() {
+    fn sprint_cannot_exceed_twenty_percent_over_walk_speed() {
         let mut e = arena();
         e.pa = 0.0;
         e.bits = IN_W | IN_SPRINT;
         e.power = field::POWER_OVERDRIVE;
         e.tick(0.08);
         let dist = ((e.px - 4.5).powi(2) + (e.py - 4.5).powi(2)).sqrt();
-        assert!((dist - 3.35 * 2.0 * 0.08).abs() < 0.001);
+        assert!((dist - 3.35 * 1.2 * 0.08).abs() < 0.001);
+    }
+
+    #[test]
+    fn run_save_layout_matches_ts_side() {
+        // Pinned against SAVE_SIZE/SAVE_AMMO_BASE/SAVE_MAG_BASE in
+        // src/game/save-abi.ts. Update both files together when WEP_N changes.
+        assert_eq!(core::mem::size_of::<RunSave>(), 120);
+        let s = RunSave {
+            wave: 0, health: 0, armor: 0, weapon: 0, flags: 0, kills: 0,
+            secrets: 0, elapsed_ms: 0, ammo: [0; WEP_N], mag: [0; WEP_N],
+        };
+        let base = &s as *const RunSave as usize;
+        assert_eq!(&s.ammo as *const _ as usize - base, 32);
+        assert_eq!(&s.mag as *const _ as usize - base, 76);
     }
 
     #[test]
@@ -5733,7 +5731,7 @@ mod tests {
         e.wave = 3;
         assert_eq!(e.boss_intro_duration(), 4.6);
         e.boss_intro_effect(0);
-        assert!(e.fx_q[..e.fx_n].iter().any(|fx| fx.kind == EK_SMOKE));
+        assert!(e.fx_q[..e.fx_n].iter().any(|fx| fx.kind == EK_SPARK));
     }
 
     #[test]

@@ -16,6 +16,7 @@ pub(crate) const RADIO_NODE: i32 = 4;
 pub(crate) const RADIO_SECRET: i32 = 5;
 pub(crate) const RADIO_BOSS_DROP: i32 = 6;
 pub(crate) const RADIO_POWER: i32 = 7;
+pub(crate) const RADIO_BOSS_KILL: i32 = 8;
 pub(crate) const POWER_OVERDRIVE: u8 = 1;
 pub(crate) const POWER_FEED: u8 = 2;
 pub(crate) const POWER_AEGIS: u8 = 3;
