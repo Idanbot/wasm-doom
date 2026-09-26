@@ -1,0 +1,75 @@
+{
+  "medkit.png": {
+    "runtime": "public/game/spr_med.png",
+    "size": [
+      256,
+      256
+    ]
+  },
+  "ammo_cache.png": {
+    "runtime": "public/game/spr_ammo.png",
+    "size": [
+      256,
+      256
+    ]
+  },
+  "lantern_amber.png": {
+    "runtime": "public/game/spr_lamp.png",
+    "size": [
+      256,
+      256
+    ]
+  },
+  "reactor_unit.png": {
+    "runtime": "public/game/spr_prop_reactor.png",
+    "size": [
+      256,
+      256
+    ]
+  },
+  "server_rack.png": {
+    "runtime": "public/game/spr_prop_server.png",
+    "size": [
+      256,
+      256
+    ]
+  },
+  "ac_power_unit.png": {
+    "runtime": "public/game/spr_prop_ac.png",
+    "size": [
+      256,
+      256
+    ]
+  },
+  "ventilation_array.png": {
+    "runtime": "public/game/spr_prop_vent.png",
+    "size": [
+      256,
+      256
+    ]
+  },
+  "worklight_cyan.png": {
+    "runtime": "public/game/spr_prop_worklight_cyan.png",
+    "size": [
+      256,
+      256
+    ]
+  },
+  "worklight_white.png": {
+    "runtime": "public/game/spr_prop_worklight_white.png",
+    "size": [
+      256,
+      256
+    ]
+  },
+  "beacon_warning.png": {
+    "runtime": "public/game/spr_prop_beacon.png",
+    "size": [
+      256,
+      256
+    ]
+  },
+  "lantern_red.png": {
+    "staged": true
+  }
+}

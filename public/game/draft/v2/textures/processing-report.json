@@ -1,0 +1,94 @@
+{
+  "global": {
+    "wall_brick.png": {
+      "source": "wall_old_brick_1080p.png",
+      "seam": 9.1
+    },
+    "wall_metal.png": {
+      "source": "wall_dark_alloy_1080p.png",
+      "seam": 7.28
+    },
+    "floor_grate.png": {
+      "source": "floor_military_grate_1080p.png",
+      "seam": 1.5
+    },
+    "floor_concrete.png": {
+      "source": "floor_service_concrete_1080p.png",
+      "seam": 7.88
+    },
+    "wall_hazard_tile2x2.png": {
+      "source": "floor_hazard_steel_1080p.png",
+      "seam": 10.1
+    },
+    "ceil_pipes.png": {
+      "source": "ceil_dark_panels_1080p.png",
+      "seam": 6.95
+    }
+  },
+  "theme": {
+    "wall_hangar.png": {
+      "source": "wall_hangar_sector_1080p.png",
+      "seam": 8.42
+    },
+    "door_hangar.png": {
+      "source": "door_hangar_1080p.png",
+      "seam": 0.0
+    },
+    "wall_plaza.png": {
+      "source": "wall_plaza_sector_1080p.png",
+      "seam": 9.13
+    },
+    "door_plaza.png": {
+      "source": "door_plaza_1080p.png",
+      "seam": 0.0
+    },
+    "wall_security.png": {
+      "source": "wall_security_sector_1080p.png",
+      "seam": 8.84
+    },
+    "door_security.png": {
+      "source": "door_security_1080p.png",
+      "seam": 0.0
+    },
+    "wall_datacenter.png": {
+      "source": "wall_datacenter_sector_1080p.png",
+      "seam": 8.23
+    },
+    "door_datacenter.png": {
+      "source": "door_datacenter_1080p.png",
+      "seam": 0.0
+    },
+    "wall_foundry.png": {
+      "source": "wall_foundry_sector_1080p.png",
+      "seam": 8.32
+    },
+    "door_foundry.png": {
+      "source": "door_foundry_1080p.png",
+      "seam": 0.0
+    },
+    "wall_biotech.png": {
+      "source": "wall_biotech_sector_1080p.png",
+      "seam": 7.83
+    },
+    "door_biotech.png": {
+      "source": "door_biotech_1080p.png",
+      "seam": 0.0
+    },
+    "wall_nuclear.png": {
+      "source": "wall_nuclear_sector_1080p.png",
+      "seam": 8.64
+    },
+    "door_nuclear.png": {
+      "source": "door_nuclear_1080p.png",
+      "seam": 0.0
+    },
+    "wall_vault.png": {
+      "source": "wall_vault_sector_1080p.png",
+      "seam": 8.57
+    },
+    "door_vault.png": {
+      "source": "door_vault_1080p.png",
+      "seam": 0.0
+    }
+  }
+}
