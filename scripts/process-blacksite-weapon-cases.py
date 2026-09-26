@@ -12,7 +12,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "art" / "source_hd" / "weapon_cases"
 OUT = ROOT / "public" / "game"
-WEAPONS = ("mk23s", "br12", "kx9", "mr4", "vlk6", "ax12", "m91")
+WEAPONS = ("mk23s", "br12", "kx9", "mr4", "vlk6", "ax12", "m91", "hx8", "vr9", "hc9", "cm9")
 
 
 def key_magenta(image: Image.Image) -> Image.Image:

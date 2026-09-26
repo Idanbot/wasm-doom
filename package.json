@@ -29,7 +29,7 @@
     "check:motion": "python3 scripts/check-blacksite-motion.py",
     "assets:voices": "node scripts/generate-blacksite-voices.mjs",
     "test:voices": "node --experimental-strip-types --test src/game/enemy-presentation.test.ts",
-    "test": "node --test 'scripts/**/*.test.mjs' && node --experimental-strip-types --test src/lib/app-data/app-data.test.ts src/lib/app-data/readiness-schedule.test.ts src/lib/auth/gate-identity.test.ts src/lib/auth/sign-in-gate.test.ts src/components/game/data.test.ts src/game/hud-abi.test.ts src/game/runtime.test.ts",
+    "test": "node --test 'scripts/**/*.test.mjs' && node --experimental-strip-types --test src/lib/app-data/app-data.test.ts src/lib/app-data/readiness-schedule.test.ts src/lib/auth/gate-identity.test.ts src/lib/auth/sign-in-gate.test.ts src/components/game/data.test.ts src/game/hud-abi.test.ts src/game/save-abi.test.ts src/game/runtime.test.ts",
     "lint": "eslint .",
     "format": "prettier --write ."
   },

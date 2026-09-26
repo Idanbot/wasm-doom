@@ -1,0 +1,14 @@
+{
+  "model": "@cf/black-forest-labs/flux-1-schnell",
+  "steps": 8,
+  "prompt": "One isolated open military science-fiction gun case containing a bio-mechanical acid sprayer with twin tanks and a wide fan nozzle in a medium reinforced weapon case. Three-quarter overhead game pickup view. The foam insert precisely follows the weapon silhouette; the case proportions and thickness visibly match the weapon size. Worn dark gunmetal shell, practical hinges, small amber status lamps, realistic hard-surface detail, no loose ammunition. Entire open case fully visible, centered, generous clearance on all sides, strong readable silhouette at icon size. Solid perfectly flat neon magenta #FF00FF background including every gap and hole. No floor, room, scenery, people, hands, text, lettering, logo, border, shadow outside the case, or extra objects.",
+  "usage": {
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "neurons": 326.4000244140625
+  }
+}

@@ -11,7 +11,7 @@
  * Passes vacuously until the first asset batch lands (all `planned`).
  * Used in CI and as `npm run check:assets`.
  */
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
 import { join, dirname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -211,6 +211,42 @@ export function validateReadyFiles(manifest, gameDir, atlasesDir) {
   return { errors, warnings, checked };
 }
 
+/**
+ * Size budgets over delivered art, independent of the manifest.
+ * Viewmodel fire/reload frames cost bandwidth per byte (warn above 2MB so
+ * the tree can ratchet down); weapon pickup cases below 40KB historically
+ * meant a weak off-pipeline drop (error).
+ */
+export function checkBudgetFiles(gameDir) {
+  const errors = [];
+  const warnings = [];
+  let names;
+  try {
+    names = readdirSync(gameDir);
+  } catch {
+    return { errors: [`cannot read game dir ${gameDir}`], warnings };
+  }
+  for (const name of names) {
+    let size;
+    try {
+      size = statSync(join(gameDir, name)).size;
+    } catch {
+      continue;
+    }
+    if (/^weap_.*_(fire|reload)\.png$/.test(name) && size > 2_000_000) {
+      warnings.push(
+        `${name} is ${(size / 1048576).toFixed(1)}MB; re-encode to WebP or downscale`,
+      );
+    }
+    if (/^spr_gun_.*\.png$/.test(name) && size < 40_000) {
+      errors.push(
+        `${name} is only ${(size / 1024).toFixed(0)}KB; regenerate at pipeline fidelity`,
+      );
+    }
+  }
+  return { errors, warnings };
+}
+
 export function checkAssets(root) {
   const manifestPath = join(root, "art", "blacksite-manifest.json");
   let manifest;
@@ -230,10 +266,11 @@ export function checkAssets(root) {
     join(root, "public", "game"),
     join(root, "art", "atlases"),
   );
+  const b = checkBudgetFiles(join(root, "public", "game"));
   return {
-    ok: m.errors.length === 0 && f.errors.length === 0,
-    errors: [...m.errors, ...f.errors],
-    warnings: [...m.warnings, ...f.warnings],
+    ok: m.errors.length === 0 && f.errors.length === 0 && b.errors.length === 0,
+    errors: [...m.errors, ...f.errors, ...b.errors],
+    warnings: [...m.warnings, ...f.warnings, ...b.warnings],
     checked: f.checked,
   };
 }

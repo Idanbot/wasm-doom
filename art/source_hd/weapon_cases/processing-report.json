@@ -54,5 +54,37 @@
       256,
       256
     ]
+  },
+  "hx8": {
+    "source": "art/source_hd/weapon_cases/hx8.jpg",
+    "runtime": "public/game/spr_gun_hx8.png",
+    "size": [
+      256,
+      256
+    ]
+  },
+  "vr9": {
+    "source": "art/source_hd/weapon_cases/vr9.jpg",
+    "runtime": "public/game/spr_gun_vr9.png",
+    "size": [
+      256,
+      256
+    ]
+  },
+  "hc9": {
+    "source": "art/source_hd/weapon_cases/hc9.jpg",
+    "runtime": "public/game/spr_gun_hc9.png",
+    "size": [
+      256,
+      256
+    ]
+  },
+  "cm9": {
+    "source": "art/source_hd/weapon_cases/cm9.jpg",
+    "runtime": "public/game/spr_gun_cm9.png",
+    "size": [
+      256,
+      256
+    ]
   }
 }

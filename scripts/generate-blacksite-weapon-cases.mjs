@@ -15,6 +15,14 @@ const WEAPONS = {
     "modern electrical carbine with restrained cyan coils and copper induction rails in a reinforced case",
   m91:
     "heavy six-barrel rotary cannon with feed drum and amber heat vents in an oversized reinforced case",
+  hx8:
+    "compact incendiary projector with a top fuel canister and amber pilot lamp in a medium heat-shielded weapon case",
+  vr9:
+    "long electromagnetic railgun with twin acceleration rails and a narrow cyan charge channel in an elongated narrow gun case",
+  hc9:
+    "bulky industrial beam cutter with a wide emitter head and amber heat vents in a deep heavy weapons case",
+  cm9:
+    "bio-mechanical acid sprayer with twin tanks and a wide fan nozzle in a medium reinforced weapon case",
 };
 
 const envText = await readFile(resolve(".env"), "utf8");

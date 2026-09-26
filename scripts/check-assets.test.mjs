@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 import { deflateSync } from "node:zlib";
 import {
   checkAssets,
+  checkBudgetFiles,
   isSnakePng,
   readPngInfo,
   validateManifest,
@@ -163,6 +164,27 @@ test("ready viewmodel weapons accept 800x480 frames and 4x2 reload sheets", () =
   );
   assert.deepEqual(result.errors, []);
   assert.equal(result.checked, 3);
+});
+
+test("budgets flag tiny pickup cases and warn on huge viewmodels", () => {
+  const root = makeRoot();
+  const gameDir = join(root, "public", "game");
+  writeFileSync(join(gameDir, "spr_gun_test.png"), Buffer.alloc(30_000));
+  writeFileSync(join(gameDir, "weap_test_fire.png"), Buffer.alloc(2_100_000));
+  writeFileSync(join(gameDir, "weap_test.png"), Buffer.alloc(100_000));
+  const result = checkBudgetFiles(gameDir);
+  assert.match(result.errors.join("\n"), /spr_gun_test\.png.*regenerate/);
+  assert.match(result.warnings.join("\n"), /weap_test_fire\.png.*2\.0MB/);
+  writeFileSync(join(gameDir, "spr_gun_test.png"), Buffer.alloc(60_000));
+  writeFileSync(join(gameDir, "weap_test_fire.png"), Buffer.alloc(500_000));
+  const clean = checkBudgetFiles(gameDir);
+  assert.deepEqual(clean.errors, []);
+  assert.deepEqual(clean.warnings, []);
+});
+
+test("budgets pass against the real repo tree", () => {
+  const gameDir = join(dirname(fileURLToPath(import.meta.url)), "..", "public", "game");
+  assert.deepEqual(checkBudgetFiles(gameDir).errors, []);
 });
 
 test("cli passes against the real repo (all planned)", async () => {
