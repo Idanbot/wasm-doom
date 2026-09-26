@@ -14,6 +14,7 @@ export type Blitter = {
   kind: BlitKind;
   draw: (pixels: Uint8Array<ArrayBuffer>, w: number, h: number, fx?: BlitFx) => void;
   uploadAtlas?: (layers: Uint8Array<ArrayBuffer>) => void;
+  uploadAtlasLayer?: (id: number, rgba: Uint8Array<ArrayBuffer>) => void;
   drawWorld?: (frame: WorldFrame, fx?: BlitFx) => boolean;
   resize: (w: number, h: number) => void;
   setGfx: (g: GfxOpts) => void;
@@ -414,6 +415,9 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
     uploadAtlas(layers) {
       world?.uploadAtlas(layers);
     },
+    uploadAtlasLayer(id, rgba) {
+      world?.uploadAtlasLayer(id, rgba);
+    },
     drawWorld(frame, fx) {
       if (!ready || !device || !ctx || !pipeline || !bloomPipe || !world) return false;
       const { dw, dh, changed } = syncDisplay(canvas);
@@ -646,6 +650,9 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
     },
     uploadAtlas(layers) {
       world?.uploadAtlas(layers);
+    },
+    uploadAtlasLayer(id, rgba) {
+      world?.uploadAtlasLayer(id, rgba);
     },
     drawWorld(frame, fx) {
       if (!world) return false;

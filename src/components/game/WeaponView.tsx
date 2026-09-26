@@ -31,9 +31,9 @@ export function WeaponView({
       ref={weaponRef}
       className="weapon-view pointer-events-none absolute bottom-[-2%] left-1/2 origin-bottom select-none"
       style={{
-        backgroundImage: `url(${asset(WEAPONS[0]!.idle)})`,
-        backgroundSize: "contain",
-        backgroundPosition: "center bottom",
+        backgroundImage: `url(${asset(WEAPONS[0]!.sheet)})`,
+        backgroundSize: "500% 500%",
+        backgroundPosition: "0% 0%",
         backgroundRepeat: "no-repeat",
         transform: "translate(-50%, 0)",
       }}

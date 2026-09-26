@@ -69,6 +69,45 @@ if (plan) {
   }
 }
 
+function checkDraftV2() {
+  const ids = ["ax12", "br12", "cm9", "hc9", "hx8", "kx9", "m91", "mk23s", "mr4", "vlk6", "vr9"];
+  const themes = ["hangar", "plaza", "security", "datacenter", "foundry", "biotech", "nuclear", "vault"];
+  const dim = (relative, w, h, alpha = false) => {
+    const full = join(root, relative);
+    if (!existsSync(full)) {
+      errors.push(`missing ${relative}`);
+      return;
+    }
+    try {
+      const info = readPngInfo(readFileSync(full));
+      if (info.width !== w || info.height !== h) errors.push(`${relative}: expected ${w}x${h}, got ${info.width}x${info.height}`);
+      if (alpha && !info.hasAlpha) errors.push(`${relative}: expected an alpha channel`);
+    } catch (error) {
+      errors.push(`${relative}: ${error.message}`);
+    }
+  };
+  for (const id of ids) {
+    dim(`public/game/draft/v2/weap_${id}_5x5.png`, 2560, 1920, true);
+    dim(`public/game/draft/v2/weap_${id}_aim.png`, 512, 384, true);
+    dim(`public/game/draft/v2/cases/case_${id}.png`, 1024, 768, true);
+  }
+  for (const name of ["ac_power_unit", "ammo_cache", "beacon_warning", "lantern_amber", "lantern_red", "medkit", "reactor_unit", "server_rack", "ventilation_array", "worklight_cyan", "worklight_white"]) {
+    dim(`public/game/draft/v2/items/${name}.png`, 768, 1024, true);
+  }
+  for (const theme of themes) {
+    dim(`public/game/theme/wall_${theme}.png`, 256, 256);
+    dim(`public/game/theme/door_${theme}.png`, 256, 256);
+  }
+  for (const name of ["spr_med.png", "spr_ammo.png", "spr_lamp.png", "spr_prop_reactor.png", "spr_prop_server.png", "spr_prop_ac.png", "spr_prop_vent.png", "spr_prop_worklight_cyan.png", "spr_prop_worklight_white.png", "spr_prop_beacon.png"]) {
+    dim(`public/game/${name}`, 256, 256, true);
+  }
+  for (const name of ["wall_brick.png", "wall_metal.png", "floor_grate.png", "floor_concrete.png", "wall_hazard_tile2x2.png", "ceil_pipes.png"]) {
+    // Opaque world surfaces: no alpha channel by design.
+    dim(`public/game/${name}`, 256, 256, false);
+  }
+}
+checkDraftV2();
+
 if (errors.length) {
   for (const error of errors) console.error(`[check:environment] ${error}`);
   process.exit(1);

@@ -92,7 +92,7 @@ describe("gridPos", () => {
 });
 
 describe("WEAPONS", () => {
-  it("has eleven entries with unique ids and art paths", () => {
+  it("has eleven entries with v2 5x5 sheets and reserve caps", () => {
     assert.equal(WEAPONS.length, 11);
     assert.deepEqual(
       WEAPONS.map((w) => w.id),
@@ -100,15 +100,18 @@ describe("WEAPONS", () => {
     );
     for (const w of WEAPONS) {
       assert.ok(w.name.length > 0);
-      for (const art of [w.idle, w.fire, w.reload]) {
-        assert.match(art, /^\/game\/weap_.+\.png$/);
-      }
+      assert.match(w.sheet, /^\/game\/draft\/v2\/weap_.+_5x5\.png$/);
       assert.ok(w.magSize > 0);
       assert.ok(w.lowAmmoAt > 0 && w.lowAmmoAt < w.magSize);
+      assert.ok(w.reserve >= w.magSize);
     }
     assert.deepEqual(
       WEAPONS.map((w) => w.magSize),
       [12, 8, 36, 5, 4, 10, 90, 6, 4, 14, 5],
+    );
+    assert.deepEqual(
+      WEAPONS.map((w) => w.reserve),
+      [120, 48, 216, 20, 16, 80, 450, 36, 24, 84, 30],
     );
   });
 });

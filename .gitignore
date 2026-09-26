@@ -20,5 +20,6 @@ screenshots/sector-*.png
 screenshots/combat-weapon-*.png
 screenshots/combat-*.png
 screenshots/*.json
+public/game/draft/v2/masters/
 *.log
 .DS_Store

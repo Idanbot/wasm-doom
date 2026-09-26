@@ -15,6 +15,15 @@ import {
   T_GUN9,
   T_GUN10,
   T_GUN11,
+  T_PROP_REACTOR,
+  T_PROP_SERVER,
+  T_PROP_AC,
+  T_PROP_VENT,
+  T_PROP_WLIGHT_C,
+  T_PROP_WLIGHT_W,
+  T_PROP_BEACON,
+  T_DOOR,
+  T_TECH,
   T_ORDNANCE,
 } from "./gpu-world";
 import { HUD_SIZE } from "./hud-abi";
@@ -63,6 +72,8 @@ type WasmExports = {
   hs_floor_ptr: () => number;
   hs_light_ptr: () => number;
   hs_smoke_ptr: () => number;
+  hs_theme_ptr: (slot: number) => number;
+  hs_apply_theme: (wave: number) => void;
   hs_yaw: () => number;
   hs_speed: () => number;
   hs_spread: () => number;
@@ -199,6 +210,13 @@ const TEX_FILES: { id: number; src: string }[] = [
   { id: T_GUN9, src: "/game/spr_gun_vr9.png" },
   { id: T_GUN10, src: "/game/spr_gun_hc9.png" },
   { id: T_GUN11, src: "/game/spr_gun_cm9.png" },
+  { id: T_PROP_REACTOR, src: "/game/spr_prop_reactor.png" },
+  { id: T_PROP_SERVER, src: "/game/spr_prop_server.png" },
+  { id: T_PROP_AC, src: "/game/spr_prop_ac.png" },
+  { id: T_PROP_VENT, src: "/game/spr_prop_vent.png" },
+  { id: T_PROP_WLIGHT_C, src: "/game/spr_prop_worklight_cyan.png" },
+  { id: T_PROP_WLIGHT_W, src: "/game/spr_prop_worklight_white.png" },
+  { id: T_PROP_BEACON, src: "/game/spr_prop_beacon.png" },
   ...ENEMY_SKINS.flatMap((skin, skinIndex) =>
     ENEMY_ANIMATIONS.map((animation, animationIndex) => ({
       id: ENEMY_TEX_BASE + skinIndex * ENEMY_ANIM_COUNT + animationIndex,
@@ -207,40 +225,39 @@ const TEX_FILES: { id: number; src: string }[] = [
   ),
 ];
 
-const UI_CRITICAL = ["/game/weap_mk23s.png", "/game/weap_mk23s_fire.png", "/game/menu.jpg"];
+const UI_CRITICAL = ["/game/draft/v2/weap_mk23s_5x5.png", "/game/menu.jpg"];
 
 const UI_DEFERRED = [
-  "/game/weap_mk23s_reload.png",
-  "/game/weap_br12.png",
-  "/game/weap_br12_fire.png",
-  "/game/weap_br12_reload.png",
-  "/game/weap_kx9.png",
-  "/game/weap_kx9_fire.png",
-  "/game/weap_kx9_reload.png",
-  "/game/weap_mr4.png",
-  "/game/weap_mr4_fire.png",
-  "/game/weap_mr4_reload.png",
-  "/game/weap_vlk6.png",
-  "/game/weap_vlk6_fire.png",
-  "/game/weap_vlk6_reload.png",
-  "/game/weap_ax12.png",
-  "/game/weap_ax12_fire.png",
-  "/game/weap_ax12_reload.png",
-  "/game/weap_m91.png",
-  "/game/weap_m91_fire.png",
-  "/game/weap_m91_reload.png",
-  "/game/weap_hx8.png",
-  "/game/weap_hx8_fire.png",
-  "/game/weap_hx8_reload.png",
-  "/game/weap_vr9.png",
-  "/game/weap_vr9_fire.png",
-  "/game/weap_vr9_reload.png",
-  "/game/weap_hc9.png",
-  "/game/weap_hc9_fire.png",
-  "/game/weap_hc9_reload.png",
-  "/game/weap_cm9.png",
-  "/game/weap_cm9_fire.png",
-  "/game/weap_cm9_reload.png",
+  "/game/draft/v2/weap_br12_5x5.png",
+  "/game/draft/v2/weap_kx9_5x5.png",
+  "/game/draft/v2/weap_mr4_5x5.png",
+  "/game/draft/v2/weap_vlk6_5x5.png",
+  "/game/draft/v2/weap_ax12_5x5.png",
+  "/game/draft/v2/weap_m91_5x5.png",
+  "/game/draft/v2/weap_hx8_5x5.png",
+  "/game/draft/v2/weap_vr9_5x5.png",
+  "/game/draft/v2/weap_hc9_5x5.png",
+  "/game/draft/v2/weap_cm9_5x5.png",
+];
+
+/**
+ * Theme order shared with theme_index/engine theme slots in
+ * engine/src/lib.rs: walls 0-7, then doors 8-15.
+ */
+export const THEME_ORDER = [
+  "hangar",
+  "plaza",
+  "security",
+  "datacenter",
+  "foundry",
+  "biotech",
+  "nuclear",
+  "vault",
+] as const;
+
+const THEME_FILES: { slot: number; src: string }[] = [
+  ...THEME_ORDER.map((theme, i) => ({ slot: i, src: `/game/theme/wall_${theme}.png` })),
+  ...THEME_ORDER.map((theme, i) => ({ slot: 8 + i, src: `/game/theme/door_${theme}.png` })),
 ];
 
 function decodeImage(src: string): Promise<HTMLImageElement | null> {
@@ -342,6 +359,7 @@ export class HellscanRuntime {
   private fbBuf: ArrayBuffer | null = null;
   private fbLen = 0;
   private gpuReady = false;
+  private lastThemeWave = 1;
 
   constructor(canvas: HTMLCanvasElement, hooks: RuntimeHooks) {
     this.canvas = canvas;
@@ -512,6 +530,7 @@ export class HellscanRuntime {
     this.clearInput();
     this.accumulator = 0;
     this.wasm?.hs_restart();
+    this.refreshThemeLayers(1);
     this.hud = { ...DEFAULT_HUD };
     this.prevHud = { ...DEFAULT_HUD };
     this.prevRadioSeq = 0;
@@ -671,6 +690,7 @@ export class HellscanRuntime {
     ammo.forEach((n, i) => dv.setInt32(SAVE_AMMO_BASE + i * 4, n, true));
     mag.forEach((n, i) => dv.setInt32(magBase + i * 4, n, true));
     wasm.hs_load_run();
+    this.refreshThemeLayers(save.wave);
     this.hud = this.readHud();
   }
 
@@ -752,8 +772,64 @@ export class HellscanRuntime {
         /* keep procedural */
       }
     }
+    await this.uploadThemeVariants(ctx, size);
+    wasm.hs_apply_theme(1);
     wasm.hs_textures_ready();
     this.pushAtlas();
+  }
+
+  /** Decode the 16 per-theme wall/door layers into engine staging memory. */
+  private async uploadThemeVariants(
+    ctx: CanvasRenderingContext2D,
+    size: number,
+  ): Promise<string[]> {
+    const wasm = this.wasm;
+    if (!wasm) return [];
+    const loaded = await preloadImages(
+      THEME_FILES.map((t) => t.src),
+      4,
+    );
+    const failed: string[] = [];
+    for (let i = 0; i < THEME_FILES.length; i++) {
+      const img = loaded[i];
+      const { slot, src } = THEME_FILES[i]!;
+      if (!img) {
+        failed.push(src);
+        continue;
+      }
+      try {
+        ctx.imageSmoothingEnabled = false;
+        ctx.clearRect(0, 0, size, size);
+        ctx.drawImage(img, 0, 0, size, size);
+        const pixels = ctx.getImageData(0, 0, size, size);
+        const ptr = wasm.hs_theme_ptr(slot);
+        new Uint8Array(wasm.memory.buffer, ptr, size * size * 4).set(pixels.data);
+      } catch {
+        failed.push(src);
+      }
+    }
+    if (failed.length) {
+      console.warn(`[assets] ${failed.length} theme layers missing, base art stays:`, failed.join(", "));
+    }
+    return failed;
+  }
+
+  /**
+   * Re-apply the wave theme on the CPU side and push the two swapped
+   * atlas layers to the GPU. The canvas2d fallback reads engine memory
+   * directly and needs no upload.
+   */
+  private refreshThemeLayers(wave: number) {
+    const wasm = this.wasm;
+    const blit = this.blit;
+    if (!wasm || !blit?.drawWorld) return;
+    wasm.hs_apply_theme(wave);
+    const size = wasm.hs_tex_size();
+    for (const id of [T_TECH, T_DOOR]) {
+      const ptr = wasm.hs_tex_ptr(id);
+      blit.uploadAtlasLayer?.(id, new Uint8Array(wasm.memory.buffer, ptr, size * size * 4));
+    }
+    this.lastThemeWave = wave;
   }
 
   private bind() {
@@ -986,6 +1062,9 @@ export class HellscanRuntime {
       this.accumulator -= step;
     }
     const hud = this.readHud();
+    // Wave transitions swap the wall/door theme inside the engine; push
+    // the two layers before presenting so no frame shows the old theme.
+    if (hud.wave !== this.lastThemeWave) this.refreshThemeLayers(hud.wave);
     const boss = -1;
     const fx = { muzzle: hud.muzzle, hurt: hud.hurt, time: t * 0.001, boss };
     const w = wasm.hs_fb_w();

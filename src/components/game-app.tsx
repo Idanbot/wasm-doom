@@ -33,6 +33,8 @@ import { Automap } from "./game/Automap";
 import { EnemyBars } from "./game/EnemyBars";
 import { RadioCard } from "./game/RadioCard";
 import { loadEnemyOptions, type EnemySubtitle } from "@/game/enemy-presentation";
+import { AssetCatalog } from "./catalog/AssetCatalog";
+import { isCatalogEnabled } from "@/lib/catalog-guard";
 
 export function GameApp() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -48,6 +50,20 @@ export function GameApp() {
   const [enemyOptions, setEnemyOptions] = useState(loadEnemyOptions);
   const [subtitles, setSubtitles] = useState<EnemySubtitle[]>([]);
   const [screen, setScreen] = useState<Screen>("menu");
+  const [catalogEnabled, setCatalogEnabled] = useState(false);
+  useEffect(() => setCatalogEnabled(isCatalogEnabled()), []);
+  const [view, setView] = useState<"game" | "catalog">(() => {
+    if (typeof window !== "undefined") {
+      if (
+        window.location.search.includes("catalog") ||
+        window.location.hash.includes("catalog") ||
+        window.location.pathname.includes("catalog")
+      ) {
+        return "catalog";
+      }
+    }
+    return "game";
+  });
   const [hud, setHud] = useState<HudState>(DEFAULT_HUD);
   const [fps, setFps] = useState(0);
   const [renderResolution, setRenderResolution] = useState("");
@@ -123,30 +139,18 @@ export function GameApp() {
           const wpn = WEAPONS[h.weapon] ?? WEAPONS[0]!;
           // Missing art renders the React fallback plate instead: never
           // paint a broken URL over it (invisible gun, zero signal).
-          const artMissing =
-            missingRef.current.includes(wpn.idle) ||
-            missingRef.current.includes(wpn.fire) ||
-            missingRef.current.includes(wpn.reload);
+          const artMissing = missingRef.current.includes(wpn.sheet);
           if (artMissing) weapEl.style.backgroundImage = "";
-          const fr = h.weapFrame | 0;
+          // Engine weapFrame is a v2 5x5 cell index (0-24); one sheet
+          // covers idle, dry, pickup, reload and fire states.
+          const fr = Math.max(0, Math.min(24, h.weapFrame | 0));
           if (artMissing) {
             weapEl.style.backgroundSize = "contain";
             weapEl.style.backgroundPosition = "center bottom";
-          } else if (fr >= 5) {
-            weapEl.style.backgroundImage = `url(${asset(wpn.reload)})`;
-            const pistolReload = h.weapon === 0;
-            weapEl.style.backgroundSize = pistolReload ? "200% 200%" : "400% 200%";
-            weapEl.style.backgroundPosition = pistolReload
-              ? sheetPos(Math.min(3, fr - 5))
-              : gridPos(Math.min(7, fr - 5), 4, 2);
-          } else if (fr >= 1) {
-            weapEl.style.backgroundImage = `url(${asset(wpn.fire)})`;
-            weapEl.style.backgroundSize = "200% 200%";
-            weapEl.style.backgroundPosition = sheetPos(Math.min(3, fr - 1));
           } else {
-            weapEl.style.backgroundImage = `url(${asset(wpn.idle)})`;
-            weapEl.style.backgroundSize = "contain";
-            weapEl.style.backgroundPosition = "center bottom";
+            weapEl.style.backgroundImage = `url(${asset(wpn.sheet)})`;
+            weapEl.style.backgroundSize = "500% 500%";
+            weapEl.style.backgroundPosition = gridPos(fr, 5, 5);
           }
           weapEl.style.backgroundRepeat = "no-repeat";
         }
@@ -484,10 +488,25 @@ export function GameApp() {
     }
   }, [vol]);
 
+  if (view === "catalog" && catalogEnabled) {
+    return <AssetCatalog onBackToGame={() => setView("game")} />;
+  }
+
   const overlay = screen !== "play";
 
   return (
     <main className="relative h-dvh w-full overflow-hidden bg-bg text-fg">
+      {catalogEnabled && (
+        <div className="fixed top-3 right-3 z-50 pointer-events-auto">
+          <button
+            type="button"
+            onClick={() => setView("catalog")}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-black/85 hover:bg-black border border-amber-500/50 text-amber-300 hover:text-amber-200 text-xs font-mono font-bold tracking-wider shadow-lg backdrop-blur cursor-pointer transition-all"
+          >
+            <span>📦 ASSET CATALOG</span>
+          </button>
+        </div>
+      )}
       <canvas
         ref={canvasRef}
         className="game-canvas"
@@ -505,11 +524,7 @@ export function GameApp() {
             weaponRef={weaponRef}
             missing={(() => {
               const wpn = WEAPONS[hud.weapon] ?? WEAPONS[0]!;
-              return (
-                missingArt.includes(wpn.idle) ||
-                missingArt.includes(wpn.fire) ||
-                missingArt.includes(wpn.reload)
-              );
+              return missingArt.includes(wpn.sheet);
             })()}
             name={(WEAPONS[hud.weapon] ?? WEAPONS[0]!).name}
           />
@@ -627,6 +642,7 @@ export function GameApp() {
                 onPreviewVoice={(skin) => rtRef.current?.previewEnemy(skin)}
                 onStart={start}
                 onContinue={checkpoint ? continueRun : undefined}
+                onOpenCatalog={catalogEnabled ? () => setView("catalog") : undefined}
                 ready={ready}
                 load={load}
                 err={err}

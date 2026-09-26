@@ -81,31 +81,47 @@ try {
     assert.equal(await page.evaluate(() => window.__controlsTest.getAmmo()), magazine);
     await page.waitForFunction((name) => document.body.innerText.includes(name), name);
     await page.evaluate(() => window.__controlsTest.setKeys(["Space"]));
-    await page.waitForFunction(() => {
-      const weapon = document.querySelector(".weapon-view");
-      // Any cell of the 2x2 fire sheet counts: at 13fps headless the
-      // mid-burst cells can alias past the poller while the trigger is held.
-      return (
-        weapon?.style.backgroundImage.includes("_fire.png") &&
-        ["0% 0%", "100% 0%", "0% 100%", "100% 100%"].includes(weapon.style.backgroundPosition)
-      );
-    });
+    // v2 5x5 sheet: sample every presented frame for a fire-row cell
+    // (row y = 75%). rAF sampling cannot alias past brief mid-burst
+    // cells the way interval polling can at low headless frame rates.
+    const seenFire = await page.evaluate(
+      () =>
+        new Promise((resolve) => {
+          const seen = new Set();
+          const t0 = performance.now();
+          const tick = () => {
+            const weapon = document.querySelector(".weapon-view");
+            if (weapon?.style.backgroundImage.includes("_5x5.png")) {
+              seen.add(`${weapon.style.backgroundSize}|${weapon.style.backgroundPosition}`);
+            }
+            if ([...seen].some((s) => /% 75%$/.test(s)) || performance.now() - t0 > 8000) {
+              resolve([...seen]);
+            } else {
+              requestAnimationFrame(tick);
+            }
+          };
+          requestAnimationFrame(tick);
+        }),
+    );
+    assert.ok(
+      seenFire.some((s) => s.startsWith("500% 500%") && /% 75%$/.test(s)),
+      `no fire cell seen for ${name}: ${seenFire.join(", ")}`,
+    );
     // Capture an actual recoil/flash frame rather than the settled tail of
     // the shot, which can already be back on the idle sheet after ammo drops.
     await page.screenshot({ path: `screenshots/combat-weapon-${slot}.png` });
     await page.waitForFunction((mag) => window.__controlsTest.getAmmo() < mag, magazine);
     await page.evaluate(() => window.__controlsTest.setKeys(["KeyR"]));
     await page.waitForFunction(() => window.__controlsTest.getReloading() > 0);
-    await page.waitForFunction(
-      (slot) => {
-        const weapon = document.querySelector(".weapon-view");
-        if (!weapon?.style.backgroundImage.includes("_reload.png")) return false;
-        return slot === 0
-          ? weapon.style.backgroundSize === "200% 200%"
-          : weapon.style.backgroundSize === "400% 200%";
-      },
-      slot,
-    );
+    await page.waitForFunction(() => {
+      // v2 5x5 sheet: any reload-row cell (row y = 50%).
+      const weapon = document.querySelector(".weapon-view");
+      return (
+        weapon?.style.backgroundImage.includes("_5x5.png") &&
+        weapon?.style.backgroundSize === "500% 500%" &&
+        /% 50%$/.test(weapon.style.backgroundPosition)
+      );
+    });
     await page.waitForTimeout(220);
     await page.screenshot({ path: `screenshots/combat-weapon-${slot}-reload.png` });
     await page.evaluate(() => window.__controlsTest.setKeys([]));

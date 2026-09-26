@@ -18,117 +18,23 @@ export function sectorForWave(wave: number) {
   return SECTORS[(Math.max(1, wave || 1) - 1) % SECTORS.length]!;
 }
 
+// v2 viewmodels: one 5x5 sheet per gun (25 cells of 512x384).
+// Cells: 0 full, 1 half, 2 low, 3 empty, 4 no magazine, 5 dry fire,
+// 6-9 pickup, 10-14 reload, 15-19 fire, 20-24 alt-fire (unused: no
+// alt-fire mechanic ships, boss sheets carry them as spares).
+// `reserve` mirrors the engine pickup caps for the ammo-state frames.
 export const WEAPONS = [
-  {
-    id: 0,
-    name: "MK23-S",
-    role: "Suppressed precision · 12 rounds",
-    magSize: 12,
-    lowAmmoAt: 3,
-    idle: "/game/weap_mk23s.png",
-    fire: "/game/weap_mk23s_fire.png",
-    reload: "/game/weap_mk23s_reload.png",
-  },
-  {
-    id: 1,
-    name: "BR-12 BREAKER",
-    role: "8-shot breacher · heavy stagger",
-    magSize: 8,
-    lowAmmoAt: 2,
-    idle: "/game/weap_br12.png",
-    fire: "/game/weap_br12_fire.png",
-    reload: "/game/weap_br12_reload.png",
-  },
-  {
-    id: 2,
-    name: "KX-9 VECTOR",
-    role: "36-round PDW · controlled burst",
-    magSize: 36,
-    lowAmmoAt: 9,
-    idle: "/game/weap_kx9.png",
-    fire: "/game/weap_kx9_fire.png",
-    reload: "/game/weap_kx9_reload.png",
-  },
-  {
-    id: 3,
-    name: "MR-4 LONGBOW",
-    role: "Magnetic penetrator · pierces 3",
-    magSize: 5,
-    lowAmmoAt: 1,
-    idle: "/game/weap_mr4.png",
-    fire: "/game/weap_mr4_fire.png",
-    reload: "/game/weap_mr4_reload.png",
-  },
-  {
-    id: 4,
-    name: "VLK-6 WARDEN",
-    role: "Guided micro-missile · blast radius",
-    magSize: 4,
-    lowAmmoAt: 1,
-    idle: "/game/weap_vlk6.png",
-    fire: "/game/weap_vlk6_fire.png",
-    reload: "/game/weap_vlk6_reload.png",
-  },
-  {
-    id: 5,
-    name: "AX-12 VOLT",
-    role: "Electrical carbine · precision shock",
-    magSize: 10,
-    lowAmmoAt: 2,
-    idle: "/game/weap_ax12.png",
-    fire: "/game/weap_ax12_fire.png",
-    reload: "/game/weap_ax12_reload.png",
-  },
-  {
-    id: 6,
-    name: "M91 CYCLONE",
-    role: "Rotary cannon · sustained suppression",
-    magSize: 90,
-    lowAmmoAt: 22,
-    idle: "/game/weap_m91.png",
-    fire: "/game/weap_m91_fire.png",
-    reload: "/game/weap_m91_reload.png",
-  },
-  {
-    id: 7,
-    name: "HX-8 PYRE",
-    role: "Incendiary projector · leaves a burn",
-    magSize: 6,
-    lowAmmoAt: 2,
-    idle: "/game/weap_hx8.png",
-    fire: "/game/weap_hx8_fire.png",
-    reload: "/game/weap_hx8_reload.png",
-  },
-  {
-    id: 8,
-    name: "VR-9 OVERRIDE",
-    role: "Veyran rail · pierces the lane, then bursts",
-    magSize: 4,
-    lowAmmoAt: 1,
-    idle: "/game/weap_vr9.png",
-    fire: "/game/weap_vr9_fire.png",
-    reload: "/game/weap_vr9_reload.png",
-  },
-  {
-    id: 9,
-    name: "HC-9 FORGE",
-    role: "HECATE cutter · wide beam and impact splash",
-    magSize: 14,
-    lowAmmoAt: 3,
-    idle: "/game/weap_hc9.png",
-    fire: "/game/weap_hc9_fire.png",
-    reload: "/game/weap_hc9_reload.png",
-  },
-  {
-    id: 10,
-    name: "CM-9 CHIMERA",
-    role: "Specimen fan · acid bursts and a short pool",
-    magSize: 5,
-    lowAmmoAt: 1,
-    idle: "/game/weap_cm9.png",
-    fire: "/game/weap_cm9_fire.png",
-    reload: "/game/weap_cm9_reload.png",
-  },
+  { id: 0, name: "MK23-S", role: "Suppressed precision · 12 rounds", magSize: 12, lowAmmoAt: 3, reserve: 120, sheet: "/game/draft/v2/weap_mk23s_5x5.png" },
+  { id: 1, name: "BR-12 BREAKER", role: "8-shot breacher · heavy stagger", magSize: 8, lowAmmoAt: 2, reserve: 48, sheet: "/game/draft/v2/weap_br12_5x5.png" },
+  { id: 2, name: "KX-9 VECTOR", role: "36-round PDW · controlled burst", magSize: 36, lowAmmoAt: 9, reserve: 216, sheet: "/game/draft/v2/weap_kx9_5x5.png" },
+  { id: 3, name: "MR-4 LONGBOW", role: "Magnetic penetrator · pierces 3", magSize: 5, lowAmmoAt: 1, reserve: 20, sheet: "/game/draft/v2/weap_mr4_5x5.png" },
+  { id: 4, name: "VLK-6 WARDEN", role: "Guided micro-missile · blast radius", magSize: 4, lowAmmoAt: 1, reserve: 16, sheet: "/game/draft/v2/weap_vlk6_5x5.png" },
+  { id: 5, name: "AX-12 VOLT", role: "Electrical carbine · precision shock", magSize: 10, lowAmmoAt: 2, reserve: 80, sheet: "/game/draft/v2/weap_ax12_5x5.png" },
+  { id: 6, name: "M91 CYCLONE", role: "Rotary cannon · sustained suppression", magSize: 90, lowAmmoAt: 22, reserve: 450, sheet: "/game/draft/v2/weap_m91_5x5.png" },
+  { id: 7, name: "HX-8 PYRE", role: "Incendiary projector · leaves a burn", magSize: 6, lowAmmoAt: 2, reserve: 36, sheet: "/game/draft/v2/weap_hx8_5x5.png" },
+  { id: 8, name: "VR-9 OVERRIDE", role: "Veyran rail · pierces the lane, then bursts", magSize: 4, lowAmmoAt: 1, reserve: 24, sheet: "/game/draft/v2/weap_vr9_5x5.png" },
+  { id: 9, name: "HC-9 FORGE", role: "HECATE cutter · wide beam and impact splash", magSize: 14, lowAmmoAt: 3, reserve: 84, sheet: "/game/draft/v2/weap_hc9_5x5.png" },
+  { id: 10, name: "CM-9 CHIMERA", role: "Specimen fan · acid bursts and a short pool", magSize: 5, lowAmmoAt: 1, reserve: 30, sheet: "/game/draft/v2/weap_cm9_5x5.png" },
 ];
 
 const HANDLER = [
@@ -176,10 +82,11 @@ export function radioCopy(line: number, wave: number) {
     };
   }
   if (line === 8) {
+    // Speaker and copy mirror art/boss-voices.json (voiced kill lines).
     const kill = [
-      { speaker: "MALIK", text: "Impossible. The vault... was mine. Take the rail. See how far it gets you." },
-      { speaker: "HECATE–9", text: "CORE INTEGRITY ZERO. FORGE GOING... COLD. THE CUTTER IS YOURS." },
-      { speaker: "HANDLER", text: "Specimen flatlined. Bag its sprayer — that case is your way out." },
+      { speaker: "MALIK", text: "Impossible. The vault was mine. Take the override rail. It still remembers my hand." },
+      { speaker: "HECATE–9", text: "Core integrity zero. Forge power is... cold. Take the arc cannon. Do not touch the coils." },
+      { speaker: "CHIMERA–9", text: "Specimen containment failed. Take the corrosive carbine. The green will outlive us both." },
     ][sector]!;
     return kill;
   }

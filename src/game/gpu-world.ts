@@ -17,8 +17,17 @@ export const T_GUN7 = T_ORDNANCE + 5;
 export const T_GUN8 = T_GUN7 + 4;
 export const T_GUN9 = T_GUN8 + 1;
 export const T_GUN10 = T_GUN8 + 2;
+export const T_TECH = 18;
+export const T_DOOR = 4;
 export const T_GUN11 = T_GUN8 + 3;
-export const TEX_N = T_GUN11 + 1;
+export const T_PROP_REACTOR = T_GUN11 + 1;
+export const T_PROP_SERVER = T_GUN11 + 2;
+export const T_PROP_AC = T_GUN11 + 3;
+export const T_PROP_VENT = T_GUN11 + 4;
+export const T_PROP_WLIGHT_C = T_GUN11 + 5;
+export const T_PROP_WLIGHT_W = T_GUN11 + 6;
+export const T_PROP_BEACON = T_GUN11 + 7;
+export const TEX_N = T_PROP_BEACON + 1;
 export const MAX_COLS = 3840;
 export const TEX = 256;
 export type WorldFrame = {
@@ -36,6 +45,7 @@ export type WorldFrame = {
 
 export type GpuWorld = {
   uploadAtlas(layers: Uint8Array<ArrayBuffer>): void;
+  uploadAtlasLayer(id: number, rgba: Uint8Array<ArrayBuffer>): void;
   draw(encoder: GPUCommandEncoder, color: GPUTextureView, frame: WorldFrame): void;
   dispose(): void;
 };
@@ -415,6 +425,14 @@ export async function createWebGpuWorld(device: GPUDevice): Promise<GpuWorld> {
       }
       atlasReady = true;
     },
+    uploadAtlasLayer(id, rgba) {
+      device.queue.writeTexture(
+        { texture: atlas, origin: { z: id } },
+        rgba,
+        { bytesPerRow: TEX * 4, rowsPerImage: TEX },
+        { width: TEX, height: TEX, depthOrArrayLayers: 1 },
+      );
+    },
     draw(encoder, color, frame) {
       if (!atlasReady) return;
       device.queue.writeBuffer(viewBuf, 0, frame.view);
@@ -650,6 +668,7 @@ function glProgram(gl: WebGL2RenderingContext, vsSrc: string, fsSrc: string): We
 
 export type GlWorld = {
   uploadAtlas(layers: Uint8Array<ArrayBuffer>): void;
+  uploadAtlasLayer(id: number, rgba: Uint8Array<ArrayBuffer>): void;
   draw(target: WebGLTexture, frame: WorldFrame): boolean;
   dispose(): void;
 };
@@ -738,6 +757,10 @@ export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
         gl.texSubImage3D(gl.TEXTURE_2D_ARRAY, 0, 0, 0, id, TEX, TEX, 1, gl.RGBA, gl.UNSIGNED_BYTE, layers.subarray(id * TEX * TEX * 4, (id + 1) * TEX * TEX * 4));
       }
       atlasReady = true;
+    },
+    uploadAtlasLayer(id, rgba) {
+      gl.bindTexture(gl.TEXTURE_2D_ARRAY, atlas);
+      gl.texSubImage3D(gl.TEXTURE_2D_ARRAY, 0, 0, 0, id, TEX, TEX, 1, gl.RGBA, gl.UNSIGNED_BYTE, rgba);
     },
     draw(target, frame) {
       if (!atlasReady) return false;
