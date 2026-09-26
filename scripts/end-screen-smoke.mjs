@@ -26,7 +26,7 @@ try {
   await page.getByRole("button", { name: /Start again/ }).click();
   await page.waitForFunction(() => document.body.innerText.includes("HEALTH"));
   await page.evaluate(() => window.__controlsTest.triggerEnd(2));
-  await page.getByText("SITE CLEARED", { exact: true }).waitFor();
+  await page.getByText("SITE SECURED", { exact: true }).waitFor();
   await page.screenshot({ path: "screenshots/refine-level-won.png" });
 
   const mobile = await browser.newPage({
@@ -42,7 +42,7 @@ try {
     { timeout: 90000 },
   );
   await mobile.evaluate(() => window.__controlsTest.triggerEnd(2));
-  await mobile.getByText("SITE CLEARED", { exact: true }).waitFor();
+  await mobile.getByText("SITE SECURED", { exact: true }).waitFor();
   assert.ok(await mobile.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
   await mobile.screenshot({ path: "screenshots/refine-level-won-mobile.png", fullPage: true });
   assert.deepEqual(errors, []);
