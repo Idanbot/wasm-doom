@@ -37,6 +37,30 @@
       "name": "M91 CYCLONE",
       "role": "six-barrel rotary cannon with side feed",
       "reload": "release feed, replace ammunition drum, reconnect and lock feed"
+    },
+    "hx8": {
+      "name": "HX-8 PYRE",
+      "role": "incendiary projector with fuel canister",
+      "reload": "synthetic handling cycle (Flux idle master)",
+      "generator": "Cloudflare flux-1-schnell"
+    },
+    "vr9": {
+      "name": "VR-9 OVERRIDE",
+      "role": "long electromagnetic railgun",
+      "reload": "synthetic handling cycle (Flux idle master)",
+      "generator": "Cloudflare flux-1-schnell"
+    },
+    "hc9": {
+      "name": "HC-9 FORGE",
+      "role": "bulky beam cutter",
+      "reload": "synthetic handling cycle (Flux idle master)",
+      "generator": "Cloudflare flux-1-schnell"
+    },
+    "cm9": {
+      "name": "CM-9 CHIMERA",
+      "role": "twin-tank acid sprayer",
+      "reload": "synthetic handling cycle (Flux idle master)",
+      "generator": "Cloudflare flux-1-schnell"
     }
   }
 }

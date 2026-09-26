@@ -1,0 +1,27 @@
+{
+  "id": "weapon_hx8",
+  "frameWidth": 800,
+  "frameHeight": 480,
+  "origin": {
+    "x": 400,
+    "y": 480
+  },
+  "animations": {
+    "idle": {
+      "start": 0,
+      "frames": 1,
+      "fps": 1
+    },
+    "fire": {
+      "start": 0,
+      "frames": 4,
+      "fps": 12
+    },
+    "reload": {
+      "start": 0,
+      "frames": 8,
+      "fps": 12
+    }
+  },
+  "view": "centered first-person sightline"
+}

@@ -53,5 +53,37 @@
     "idle": "public/game/weap_m91.png",
     "fireFrames": 4,
     "reloadFrames": 8
+  },
+  "hx8": {
+    "name": "HX-8 PYRE",
+    "source": "art/source_hd/weapons_v3/hx8.png",
+    "reloadSource": "art/source_hd/weapons_v3/hx8.png (synthetic handling cycle)",
+    "idle": "public/game/weap_hx8.png",
+    "fireFrames": 4,
+    "reloadFrames": 8
+  },
+  "vr9": {
+    "name": "VR-9 OVERRIDE",
+    "source": "art/source_hd/weapons_v3/vr9.png",
+    "reloadSource": "art/source_hd/weapons_v3/vr9.png (synthetic handling cycle)",
+    "idle": "public/game/weap_vr9.png",
+    "fireFrames": 4,
+    "reloadFrames": 8
+  },
+  "hc9": {
+    "name": "HC-9 FORGE",
+    "source": "art/source_hd/weapons_v3/hc9.png",
+    "reloadSource": "art/source_hd/weapons_v3/hc9.png (synthetic handling cycle)",
+    "idle": "public/game/weap_hc9.png",
+    "fireFrames": 4,
+    "reloadFrames": 8
+  },
+  "cm9": {
+    "name": "CM-9 CHIMERA",
+    "source": "art/source_hd/weapons_v3/cm9.png",
+    "reloadSource": "art/source_hd/weapons_v3/cm9.png (synthetic handling cycle)",
+    "idle": "public/game/weap_cm9.png",
+    "fireFrames": 4,
+    "reloadFrames": 8
   }
 }

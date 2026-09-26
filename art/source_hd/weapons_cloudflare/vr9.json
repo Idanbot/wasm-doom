@@ -1,0 +1,14 @@
+{
+  "model": "@cf/black-forest-labs/flux-1-schnell",
+  "steps": 8,
+  "prompt": "First-person FPS viewmodel of a long dark metal science-fiction rifle with a glowing cyan side channel, strict over-the-shoulder rear view. The camera sits directly behind the shooter's two black tactical gloves at the bottom center. The weapon receiver fills the bottom center. Exactly one barrel assembly extends STRAIGHT UP along the exact vertical centerline of the image to the top edge. Side profile views, front muzzle closeups and diagonal compositions are forbidden. BLACKSITE industrial military science-fiction style, worn gunmetal, restrained amber and cyan indicators, realistic hard-surface game render, orthographic game asset lighting. Solid flat neon magenta #FF00FF background including gaps around hands and weapon. Absolutely no text, letters, numbers, symbols, decals, room, floor, smoke, flame, muzzle flash, projectile, logo, border, cropped muzzle or cropped hands.",
+  "usage": {
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "neurons": 326.4000244140625
+  }
+}

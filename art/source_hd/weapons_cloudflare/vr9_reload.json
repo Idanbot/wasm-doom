@@ -1,0 +1,14 @@
+{
+  "model": "@cf/black-forest-labs/flux-1-schnell",
+  "steps": 8,
+  "prompt": "First-person FPS weapon reload sequence for a long dark metal science-fiction rifle with a glowing cyan side channel, eight sequential animation frames arranged in an exact 4-column by 2-row grid. Fixed camera, identical weapon design and black tactical gloves in every cell, centered lower-screen framing, strong readable silhouettes, clear mechanical continuity from loaded weapon through handling motion back to ready. BLACKSITE industrial military science-fiction style, worn gunmetal, restrained amber and cyan indicators, realistic hard-surface game render, orthographic game asset lighting. Solid flat neon magenta #FF00FF background including every gap in every cell. No room, floor, smoke, flame, muzzle flash, projectile, text, logo, border, cropped cells or extra objects.",
+  "usage": {
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "neurons": 326.4000244140625
+  }
+}
