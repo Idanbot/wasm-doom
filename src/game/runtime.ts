@@ -73,6 +73,7 @@ type WasmExports = {
   hs_prepare_bars: () => number;
   hs_bars: () => number;
   hs_qa_end: (state: number) => void;
+  hs_qa_heal: () => void;
   hs_qa_boss: (phase: number) => void;
   hs_qa_objective: () => void;
   hs_save_ptr: () => number;
@@ -319,6 +320,7 @@ export class HellscanRuntime {
   private fpsFrames = 0;
   private hud: HudState = { ...DEFAULT_HUD };
   private prevHud = { ...DEFAULT_HUD };
+  private prevRadioSeq = 0;
   private lastEnemies: EnemyCue[] = [];
   private lastBars: BarCue[] = [];
   private qaBits = 0;
@@ -332,7 +334,7 @@ export class HellscanRuntime {
   private volumes = { master: 0.85, music: 0.42, sfx: 0.75, menu: 0.7 };
   private gfx: GfxOpts = { ...DEFAULT_GFX };
   private requireGpu = false;
-  private fbView: Uint8Array | null = null;
+  private fbView: Uint8Array<ArrayBuffer> | null = null;
   private fbBuf: ArrayBuffer | null = null;
   private fbLen = 0;
   private gpuReady = false;
@@ -502,12 +504,14 @@ export class HellscanRuntime {
     this.wasm?.hs_restart();
     this.hud = { ...DEFAULT_HUD };
     this.prevHud = { ...DEFAULT_HUD };
+    this.prevRadioSeq = 0;
     this.audio.setBoss(false);
   }
 
   nextWave() {
     this.audio.clearEnemies(true);
     this.wasm?.hs_next_wave();
+    this.prevRadioSeq = 0;
     this.audio.setBoss(false);
   }
 
@@ -1000,13 +1004,22 @@ export class HellscanRuntime {
         this.fbView = new Uint8Array(buf, ptr, len);
         this.fbBuf = buf;
         this.fbLen = len;
-      } else if ((this.fbView as Uint8Array).byteOffset !== ptr) {
+      } else if (this.fbView.byteOffset !== ptr) {
         this.fbView = new Uint8Array(buf, ptr, len);
         this.fbLen = len;
       }
-      blit.draw(this.fbView as Uint8Array, w, h, fx);
+      blit.draw(this.fbView, w, h, fx);
     }
 
+    // Radio feedback is frame-level (not per-substep): a boss-kill line
+    // plays its voice clip, every other line gets the comms blip.
+    if (hud.radioSeq !== this.prevRadioSeq) {
+      this.prevRadioSeq = hud.radioSeq;
+      if (hud.radioSeq !== 0) {
+        if (hud.radioLine === 8) this.audio.bossKill((hud.wave - 1) % 3);
+        else this.audio.radio();
+      }
+    }
     this.hud = hud;
     const count = wasm.hs_prepare_enemies();
     // Cached for the QA probe (`getEnemies`) so browser tests can assert
@@ -1054,7 +1067,6 @@ export class HellscanRuntime {
       if (ev & 4096) this.audio.kill();
       if (ev & 8192) this.audio.hushBoss();
       if (ev & 16384) this.audio.dropBoss();
-      if (ev & 32768) this.audio.radio();
     } catch {
       /* keep the sim running if a sound fails */
     }
@@ -1105,6 +1117,12 @@ export class HellscanRuntime {
         this.wasm?.hs_qa(this.qaBits, this.qaOn ? 1 : 0);
       },
       triggerEnd: (state: 1 | 2) => this.wasm?.hs_qa_end(state),
+      heal: () => {
+        // setKeys([]) disables QA mode; re-enable so the heal lands.
+        this.qaOn = true;
+        this.wasm?.hs_qa(this.qaBits, 1);
+        this.wasm?.hs_qa_heal();
+      },
       triggerBoss: (phase = 0) => this.wasm?.hs_qa_boss(phase),
       visitObjective: () => this.wasm?.hs_qa_objective(),
       nextWave: () => this.nextWave(),
@@ -1150,6 +1168,7 @@ declare global {
       getFirePatches?: () => number;
       grantWeapons?: () => void;
       triggerEnd?: (state: 1 | 2) => void;
+      heal?: () => void;
       triggerBoss?: (phase?: number) => void;
       visitObjective?: () => void;
       nextWave?: () => void;

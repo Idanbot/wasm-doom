@@ -329,7 +329,7 @@ export function loadCheckpoint(): RunSave | null {
     if (v.mag.length !== 8 && v.mag.length !== 11) return null;
     const pad11 = (a: number[]) => [...a, ...Array(11).fill(0)].slice(0, 11);
     return {
-      wave: Math.min(12, Math.max(1, v.wave || 1)),
+      wave: Math.min(999, Math.max(1, v.wave || 1)),
       health: v.health || 100,
       armor: Math.min(100, Math.max(0, v.armor || 0)),
       weapon: v.weapon || 0,

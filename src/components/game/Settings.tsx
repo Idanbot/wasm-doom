@@ -253,7 +253,7 @@ export function Settings(p: SettingsProps) {
                     ["Reload", "R"],
                     ["Interact", "E"],
                     ["Sprint", "Shift"],
-                    ["Switch weapon", "1 – 7 / wheel"],
+                    ["Switch weapon", "1–9, 0, – / wheel"],
                     ["Pause", "Esc / P"],
                   ].map(([action, key]) => (
                     <div key={action}>

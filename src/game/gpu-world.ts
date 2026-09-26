@@ -24,18 +24,18 @@ export const TEX = 256;
 export type WorldFrame = {
   w: number;
   h: number;
-  view: Float32Array;
-  cols: Float32Array;
-  sprites: Float32Array;
+  view: Float32Array<ArrayBuffer>;
+  cols: Float32Array<ArrayBuffer>;
+  sprites: Float32Array<ArrayBuffer>;
   spriteCount: number;
-  floor: Uint8Array;
-  light: Float32Array;
-  smoke: Float32Array;
+  floor: Uint8Array<ArrayBuffer>;
+  light: Float32Array<ArrayBuffer>;
+  smoke: Float32Array<ArrayBuffer>;
 };
 
 
 export type GpuWorld = {
-  uploadAtlas(layers: Uint8Array): void;
+  uploadAtlas(layers: Uint8Array<ArrayBuffer>): void;
   draw(encoder: GPUCommandEncoder, color: GPUTextureView, frame: WorldFrame): void;
   dispose(): void;
 };
@@ -476,12 +476,12 @@ export async function createWebGpuWorld(device: GPUDevice): Promise<GpuWorld> {
 let frameScratch: {
   w: number;
   spriteCap: number;
-  view: Float32Array;
-  cols: Float32Array;
-  sprites: Float32Array;
-  floor: Uint8Array;
-  light: Float32Array;
-  smoke: Float32Array;
+  view: Float32Array<ArrayBuffer>;
+  cols: Float32Array<ArrayBuffer>;
+  sprites: Float32Array<ArrayBuffer>;
+  floor: Uint8Array<ArrayBuffer>;
+  light: Float32Array<ArrayBuffer>;
+  smoke: Float32Array<ArrayBuffer>;
 } | null = null;
 
 export function readWorldFrame(
@@ -649,7 +649,7 @@ function glProgram(gl: WebGL2RenderingContext, vsSrc: string, fsSrc: string): We
 }
 
 export type GlWorld = {
-  uploadAtlas(layers: Uint8Array): void;
+  uploadAtlas(layers: Uint8Array<ArrayBuffer>): void;
   draw(target: WebGLTexture, frame: WorldFrame): boolean;
   dispose(): void;
 };

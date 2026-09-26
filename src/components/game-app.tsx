@@ -200,7 +200,7 @@ export function GameApp() {
               }
               persistRef.current({
                 ...save,
-                wave: Math.min(12, save.wave + 1),
+                wave: Math.min(999, save.wave + 1),
                 health: 100,
                 armor: Math.min(100, Math.max(0, save.armor)),
                 mag,
@@ -388,8 +388,8 @@ export function GameApp() {
     if (screen !== "play" && document.pointerLockElement) {
       document.exitPointerLock();
     }
-    // Standby bed (bgm.ogg) under menus and end cards; the field mix
-    // takes over on play via setMusic.
+    // Standby bed (bgm-menu.ogg, cut from the 31-minute bgm.ogg) under
+    // menus and end cards; the field mix takes over on play via setMusic.
     rtRef.current?.setMenuBed(screen !== "play");
   }, [screen]);
 

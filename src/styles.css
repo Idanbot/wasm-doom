@@ -1121,7 +1121,7 @@ select:focus-visible {
   color: var(--color-primary);
 }
 .weapon-slot.locked {
-  opacity: 0.3;
+  opacity: 0.55;
 }
 .enemy-subtitles {
   position: absolute;
@@ -1153,8 +1153,35 @@ select:focus-visible {
   margin-bottom: 3px;
 }
 @media (max-width: 900px) {
+  .hud-bottom {
+    flex-wrap: wrap;
+  }
   .hud-loadout {
+    display: block;
+    order: -1;
+    flex: 1 1 100%;
+    padding: 0 4px 8px;
+  }
+  .hud-loadout > div {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    gap: 4px;
+    margin: 6px 0 0;
+  }
+  .hud-loadout > p {
+    margin: 6px 0 0;
+  }
+  .weapon-slot {
+    flex: 0 0 auto;
+    padding: 5px 7px;
+    gap: 2px;
+  }
+  .weapon-slot small {
     display: none;
+  }
+  .weapon-slot b {
+    font-size: 12px;
   }
   .hud-plate {
     width: 265px;
@@ -1294,6 +1321,14 @@ select:focus-visible {
     top: 104px;
     width: calc(100% - 24px);
     padding: 10px 12px;
+  }
+  .radio-card {
+    top: auto;
+    bottom: 178px;
+    left: 12px;
+    right: 12px;
+    max-width: none;
+    background: var(--color-bg);
   }
   .hud-boss > div:first-child {
     gap: 6px;

@@ -12,8 +12,8 @@ export type BlitFx = {
 
 export type Blitter = {
   kind: BlitKind;
-  draw: (pixels: Uint8Array, w: number, h: number, fx?: BlitFx) => void;
-  uploadAtlas?: (layers: Uint8Array) => void;
+  draw: (pixels: Uint8Array<ArrayBuffer>, w: number, h: number, fx?: BlitFx) => void;
+  uploadAtlas?: (layers: Uint8Array<ArrayBuffer>) => void;
   drawWorld?: (frame: WorldFrame, fx?: BlitFx) => boolean;
   resize: (w: number, h: number) => void;
   setGfx: (g: GfxOpts) => void;
@@ -43,7 +43,7 @@ export async function createBlitter(
   return createCanvas2dBlit(canvas);
 }
 
-function padRows(pixels: Uint8Array, w: number, h: number) {
+function padRows(pixels: Uint8Array<ArrayBuffer>, w: number, h: number) {
   const row = w * 4;
   const stride = Math.ceil(row / 256) * 256;
   if (stride === row) return { data: pixels, stride };

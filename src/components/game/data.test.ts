@@ -59,6 +59,7 @@ describe("sectorForWave", () => {
     ]);
     assert.equal(new Set([1, 2, 3].map((wave) => sectorForWave(wave).bossName)).size, 3);
     assert.equal(sectorForWave(4).name, "UPPER WORKS");
+    assert.equal(sectorForWave(13).name, "UPPER WORKS");
   });
 });
 
