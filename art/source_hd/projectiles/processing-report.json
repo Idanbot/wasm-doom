@@ -191,5 +191,11 @@
     "explosive_impact",
     "incendiary_projectile",
     "pistol_muzzle"
+  ],
+  "replacedFromV3Atlases": [
+    "spr_flame.png",
+    "spr_impact.png",
+    "spr_muzzle.png",
+    "spr_ordnance.png"
   ]
 }

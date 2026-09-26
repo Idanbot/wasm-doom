@@ -11,6 +11,9 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "art" / "source_hd" / "weapon_cases"
+# v2 draft cases (1024x768 native-alpha renders) supersede the v1 masters
+# and are processed second so they win the runtime sprite slots.
+V2_SOURCE = ROOT / "public" / "game" / "draft" / "v2" / "cases"
 OUT = ROOT / "public" / "game"
 WEAPONS = ("mk23s", "br12", "kx9", "mr4", "vlk6", "ax12", "m91", "hx8", "vr9", "hc9", "cm9")
 
@@ -67,11 +70,27 @@ def fit(image: Image.Image) -> Image.Image:
     return canvas
 
 
+def despill(image: Image.Image) -> Image.Image:
+    """Clear enclosed pink fringe the edge flood fill cannot reach.
+    Guarded to spare amber lamps and true reds."""
+    pixels = image.load()
+    for y in range(image.height):
+        for x in range(image.width):
+            red, green, blue, alpha = pixels[x, y]
+            if alpha >= 32 and red > 150 and green < 80 and blue > 90 and (red - blue) > 30:
+                pixels[x, y] = (0, 0, 0, 0)
+    return image
+
+
 def main() -> None:
     report = {}
     for slug in WEAPONS:
-        source = SOURCE / (f"{slug}.png" if (SOURCE / f"{slug}.png").exists() else f"{slug}.jpg")
-        sprite = fit(key_magenta(Image.open(source)))
+        v2 = V2_SOURCE / f"case_{slug}.png"
+        if v2.exists():
+            source = v2
+        else:
+            source = SOURCE / (f"{slug}.png" if (SOURCE / f"{slug}.png").exists() else f"{slug}.jpg")
+        sprite = fit(despill(key_magenta(Image.open(source))))
         target = OUT / f"spr_gun_{slug}.png"
         sprite.save(target, "PNG", optimize=True)
         report[slug] = {

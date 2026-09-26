@@ -1,6 +1,6 @@
 {
   "mk23s": {
-    "source": "art/source_hd/weapon_cases/mk23s.jpg",
+    "source": "public/game/draft/v2/cases/case_mk23s.png",
     "runtime": "public/game/spr_gun_mk23s.png",
     "size": [
       256,
@@ -8,7 +8,7 @@
     ]
   },
   "br12": {
-    "source": "art/source_hd/weapon_cases/br12.jpg",
+    "source": "public/game/draft/v2/cases/case_br12.png",
     "runtime": "public/game/spr_gun_br12.png",
     "size": [
       256,
@@ -16,7 +16,7 @@
     ]
   },
   "kx9": {
-    "source": "art/source_hd/weapon_cases/kx9.jpg",
+    "source": "public/game/draft/v2/cases/case_kx9.png",
     "runtime": "public/game/spr_gun_kx9.png",
     "size": [
       256,
@@ -24,7 +24,7 @@
     ]
   },
   "mr4": {
-    "source": "art/source_hd/weapon_cases/mr4.jpg",
+    "source": "public/game/draft/v2/cases/case_mr4.png",
     "runtime": "public/game/spr_gun_mr4.png",
     "size": [
       256,
@@ -32,7 +32,7 @@
     ]
   },
   "vlk6": {
-    "source": "art/source_hd/weapon_cases/vlk6.jpg",
+    "source": "public/game/draft/v2/cases/case_vlk6.png",
     "runtime": "public/game/spr_gun_vlk6.png",
     "size": [
       256,
@@ -40,7 +40,7 @@
     ]
   },
   "ax12": {
-    "source": "art/source_hd/weapon_cases/ax12.jpg",
+    "source": "public/game/draft/v2/cases/case_ax12.png",
     "runtime": "public/game/spr_gun_ax12.png",
     "size": [
       256,
@@ -48,7 +48,7 @@
     ]
   },
   "m91": {
-    "source": "art/source_hd/weapon_cases/m91.png",
+    "source": "public/game/draft/v2/cases/case_m91.png",
     "runtime": "public/game/spr_gun_m91.png",
     "size": [
       256,
@@ -56,7 +56,7 @@
     ]
   },
   "hx8": {
-    "source": "art/source_hd/weapon_cases/hx8.jpg",
+    "source": "public/game/draft/v2/cases/case_hx8.png",
     "runtime": "public/game/spr_gun_hx8.png",
     "size": [
       256,
@@ -64,7 +64,7 @@
     ]
   },
   "vr9": {
-    "source": "art/source_hd/weapon_cases/vr9.jpg",
+    "source": "public/game/draft/v2/cases/case_vr9.png",
     "runtime": "public/game/spr_gun_vr9.png",
     "size": [
       256,
@@ -72,7 +72,7 @@
     ]
   },
   "hc9": {
-    "source": "art/source_hd/weapon_cases/hc9.jpg",
+    "source": "public/game/draft/v2/cases/case_hc9.png",
     "runtime": "public/game/spr_gun_hc9.png",
     "size": [
       256,
@@ -80,7 +80,7 @@
     ]
   },
   "cm9": {
-    "source": "art/source_hd/weapon_cases/cm9.jpg",
+    "source": "public/game/draft/v2/cases/case_cm9.png",
     "runtime": "public/game/spr_gun_cm9.png",
     "size": [
       256,

@@ -52,6 +52,13 @@ SHEETS = {
     "spr_flame.png": ("fire_patch", "smoke_puff", "electric_sparks", "casing_burst"),
 }
 
+V3_SHEETS = {
+    "spr_ordnance.png": SOURCE / "ordnance_v3_2x2.png",
+    "spr_muzzle.png": SOURCE / "muzzle_v3_2x2.png",
+    "spr_impact.png": SOURCE / "impact_v3_2x2.png",
+    "spr_flame.png": SOURCE / "ambient_v3_2x2.png",
+}
+
 
 def key_magenta(image: Image.Image) -> Image.Image:
     image = image.convert("RGBA")
@@ -127,6 +134,20 @@ def main() -> None:
         # transparent silhouette and creates coloured halos in the atlas.
         master.paste((0, 0, 0, 0), (*target, target[0] + 256, target[1] + 256))
         master.alpha_composite(replacement, target)
+    for sheet_name, source_path in V3_SHEETS.items():
+        if not source_path.exists():
+            continue
+        source_sheet = Image.open(source_path).convert("RGBA")
+        if source_sheet.size != (1024, 1024):
+            raise ValueError(f"{source_path} must be 1024x1024, got {source_sheet.size}")
+        for index, name in enumerate(SHEETS[sheet_name]):
+            panel_x, panel_y = (index & 1) * 512, (index >> 1) * 512
+            panel = source_sheet.crop((panel_x, panel_y, panel_x + 512, panel_y + 512))
+            panel = panel.resize((256, 256), Image.Resampling.LANCZOS)
+            column, row = CELL_COORDS[name]
+            target = (column * 256, row * 256)
+            master.paste((0, 0, 0, 0), (*target, target[0] + 256, target[1] + 256))
+            master.alpha_composite(panel, target)
     master.save(MASTER, format="PNG", optimize=False)
 
     cell_records: dict[str, dict[str, object]] = {}
@@ -152,6 +173,7 @@ def main() -> None:
         "runtime": runtime_records,
         "alpha": "true RGBA transparency preserved from the generated master",
         "replacedFromCombatV3": sorted(replacements),
+        "replacedFromV3Atlases": sorted(name for name, path in V3_SHEETS.items() if path.exists()),
     }
     (SOURCE / "processing-report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, indent=2))
