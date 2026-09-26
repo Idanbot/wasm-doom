@@ -23,6 +23,7 @@ export type GameAudio = {
   setVolumes: (master: number, music: number, sfx: number, menu: number) => void;
   setMusic: (on: boolean) => void;
   setMenuBed: (on: boolean) => void;
+  bossKill: (sector: number) => void;
   setBoss: (on: boolean) => void;
   hushBoss: () => void;
   dropBoss: () => void;
@@ -93,6 +94,9 @@ export function createAudio(): GameAudio {
     boom: asset("/game/sfx/boom.ogg"),
     door: asset("/game/sfx/door.ogg?v=2"),
     hurt: asset("/game/sfx/hurt.ogg"),
+    bossKill0: asset("/game/voices/boss-veyran.mp3"),
+    bossKill1: asset("/game/voices/boss-hecate.mp3"),
+    bossKill2: asset("/game/voices/boss-handler.mp3"),
   };
 
   function ensure() {
@@ -682,7 +686,7 @@ export function createAudio(): GameAudio {
       resume();
       menuBedWanted = on;
       if (on) {
-        if (!menuBed) menuBed = hookMasterBed(asset("/game/music/bgm.ogg"));
+        if (!menuBed) menuBed = hookMasterBed(asset("/game/music/bgm-menu.ogg"));
         if (menuBed) {
           bed?.pause();
           bossBed?.pause();
@@ -736,6 +740,13 @@ export function createAudio(): GameAudio {
       resume();
       beep(740, 0.05, "square", 0.04, -80);
       beep(980, 0.07, "sine", 0.035, 40);
+    },
+    bossKill(sector) {
+      resume();
+      const clip = `bossKill${((sector % 3) + 3) % 3}`;
+      if (sample(clip, 1.35)) return;
+      beep(523, 0.12, "triangle", 0.09, 80);
+      beep(784, 0.16, "square", 0.07, 60);
     },
     fire(weapon) {
       resume();

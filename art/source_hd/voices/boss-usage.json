@@ -1,0 +1,19 @@
+{
+  "report": [
+    {
+      "id": "boss-veyran",
+      "url": "/game/voices/boss-veyran.mp3",
+      "duration": 5.928
+    },
+    {
+      "id": "boss-hecate",
+      "url": "/game/voices/boss-hecate.mp3",
+      "duration": 4.824
+    },
+    {
+      "id": "boss-handler",
+      "url": "/game/voices/boss-handler.mp3",
+      "duration": 5.304
+    }
+  ]
+}

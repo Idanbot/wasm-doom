@@ -29,3 +29,18 @@ assert.equal(manifest.enemies.filter((e) => !e.lines.length).length, 4);
 console.log(
   "[check:voices] 54 Cloudflare clips, 9 speaking profiles and 4 nonverbal profiles verified.",
 );
+
+// Boss-kill lines live outside the enemy manifest (art/boss-voices.json).
+const bossPlan = JSON.parse(readFileSync("art/boss-voices.json", "utf8"));
+assert.equal(bossPlan.bosses.length, 3);
+const bossIds = ["boss-veyran", "boss-hecate", "boss-handler"];
+for (const [i, boss] of bossPlan.bosses.entries()) {
+  assert.equal(boss.id, bossIds[i]);
+  assert.ok(boss.text.length > 10);
+  const bytes = readFileSync(`public/game/voices/${boss.id}.mp3`);
+  assert.ok(
+    bytes.length > 1000 && (bytes.subarray(0, 3).toString() === "ID3" || bytes[0] === 255),
+    `${boss.id}.mp3 must be a real MP3`,
+  );
+}
+console.log("[check:voices] 3 boss-kill lines verified.");

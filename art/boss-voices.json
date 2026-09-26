@@ -1,0 +1,27 @@
+{
+  "model": "@cf/deepgram/aura-2-en",
+  "source": "src/components/game/data.ts radioCopy line 8",
+  "bosses": [
+    {
+      "id": "boss-veyran",
+      "speaker": "saturn",
+      "style": "Dying overlord, arrogant to the last syllable",
+      "effect": "overlord",
+      "text": "Impossible. The vault... was mine. Take the rail. See how far it gets you."
+    },
+    {
+      "id": "boss-hecate",
+      "speaker": "neptune",
+      "style": "Machine warden shutting down, flat and final",
+      "effect": "robot-low",
+      "text": "Core integrity zero. Forge going... cold. The cutter is yours."
+    },
+    {
+      "id": "boss-handler",
+      "speaker": "draco",
+      "style": "Clipped command channel, professional",
+      "effect": "comms",
+      "text": "Specimen flatlined. Bag its sprayer. That case is your way out."
+    }
+  ]
+}
