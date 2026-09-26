@@ -20,7 +20,7 @@ export type GameAudio = {
   dispose: () => void;
   unlock: () => void;
   setMuted: (m: boolean) => void;
-  setVolumes: (master: number, music: number, sfx: number) => void;
+  setVolumes: (master: number, music: number, sfx: number, menu: number) => void;
   setMusic: (on: boolean) => void;
   setMenuBed: (on: boolean) => void;
   setBoss: (on: boolean) => void;
@@ -54,6 +54,7 @@ export function createAudio(): GameAudio {
   let masterV = 0.85;
   let musicV = 0.42;
   let sfxV = 0.75;
+  let menuV = 0.7;
   let noise: AudioBuffer | null = null;
   let musicOn = false;
   let musicTimer: number | null = null;
@@ -134,7 +135,7 @@ export function createAudio(): GameAudio {
     music.gain.setTargetAtTime(mv, t, 0.08);
     if (bed) bed.volume = muted || !musicOn ? 0 : 0.85;
     if (bossBed) bossBed.volume = muted || !musicOn ? 0 : bossVol;
-    if (menuBed) menuBed.volume = muted ? 0 : 0.7;
+    if (menuBed) menuBed.volume = muted ? 0 : menuV;
   }
   function loadSfx() {
     if (!ctx || sfxLoadStarted) return;
@@ -660,10 +661,11 @@ export function createAudio(): GameAudio {
       muted = m;
       applyGains();
     },
-    setVolumes(masterVol, musicVol, sfxVol) {
+    setVolumes(masterVol, musicVol, sfxVol, menuVol) {
       masterV = masterVol;
       musicV = musicVol;
       sfxV = sfxVol;
+      menuV = menuVol ?? menuV;
       applyGains();
     },
     setMusic(on) {
@@ -685,7 +687,7 @@ export function createAudio(): GameAudio {
           bed?.pause();
           bossBed?.pause();
           stopSynth();
-          menuBed.volume = muted ? 0 : 0.7;
+          menuBed.volume = muted ? 0 : menuV;
           playEl(menuBed);
         }
         return;

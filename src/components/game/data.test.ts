@@ -114,17 +114,17 @@ describe("WEAPONS", () => {
 
 describe("loadVol", () => {
   it("returns defaults when nothing is stored", () => {
-    assert.deepEqual(loadVol(), { master: 0.85, music: 0.42, sfx: 0.75 });
+    assert.deepEqual(loadVol(), { master: 0.85, music: 0.42, sfx: 0.75, menu: 0.7 });
   });
 
   it("merges stored values over defaults", () => {
     installMemoryStorage({ "hellscan-vol": JSON.stringify({ master: 0.5 }) });
-    assert.deepEqual(loadVol(), { master: 0.5, music: 0.42, sfx: 0.75 });
+    assert.deepEqual(loadVol(), { master: 0.5, music: 0.42, sfx: 0.75, menu: 0.7 });
   });
 
   it("falls back to defaults on corrupt JSON", () => {
     installMemoryStorage({ "hellscan-vol": "{" });
-    assert.deepEqual(loadVol(), { master: 0.85, music: 0.42, sfx: 0.75 });
+    assert.deepEqual(loadVol(), { master: 0.85, music: 0.42, sfx: 0.75, menu: 0.7 });
   });
 });
 

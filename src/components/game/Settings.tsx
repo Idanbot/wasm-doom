@@ -3,7 +3,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { SlidersHorizontal, X, Volume2, Monitor, Mouse, Captions, RotateCcw } from "lucide-react";
 import { DEFAULT_GFX, DEFAULT_RES, RES_MODES, type GfxOpts, type ResMode } from "@/game/types";
 import { DEFAULT_ENEMY_OPTIONS, type EnemyOptions } from "@/game/enemy-presentation";
-import type { Vol } from "./data";
+import { DEFAULT_VOL, type Vol } from "./data";
 
 export type SettingsProps = {
   res: ResMode;
@@ -95,7 +95,7 @@ const tabs = [
 export function Settings(p: SettingsProps) {
   const [tab, setTab] = useState<string>("audio");
   const reset = () => {
-    p.setVol({ master: 0.85, music: 0.42, sfx: 0.75 });
+    p.setVol({ ...DEFAULT_VOL });
     p.setSens(1.4);
     p.setGfx({ ...DEFAULT_GFX });
     p.setRes(DEFAULT_RES);
@@ -144,14 +144,16 @@ export function Settings(p: SettingsProps) {
                 </p>
                 {(
                   [
-                    ["master", "Master volume"],
-                    ["music", "Music"],
-                    ["sfx", "Effects"],
+                    ["master", "Master volume", undefined],
+                    ["music", "Music", "Field mix during play."],
+                    ["menu", "Menu music", "Standby bed under menus and end cards."],
+                    ["sfx", "Effects", undefined],
                   ] as const
-                ).map(([key, label]) => (
+                ).map(([key, label, description]) => (
                   <Slider
                     key={key}
                     label={label}
+                    description={description}
                     value={p.vol[key]}
                     onChange={(v) => p.setVol({ ...p.vol, [key]: v })}
                   />

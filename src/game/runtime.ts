@@ -329,7 +329,7 @@ export class HellscanRuntime {
   private weaponPulse = 0;
   muted = false;
   renderer: BlitKind = "canvas2d";
-  private volumes = { master: 0.85, music: 0.42, sfx: 0.75 };
+  private volumes = { master: 0.85, music: 0.42, sfx: 0.75, menu: 0.7 };
   private gfx: GfxOpts = { ...DEFAULT_GFX };
   private requireGpu = false;
   private fbView: Uint8Array | null = null;
@@ -464,9 +464,9 @@ export class HellscanRuntime {
     this.audio.setMenuBed(on);
   }
 
-  setVolumes(master: number, music: number, sfx: number) {
-    this.volumes = { master, music, sfx };
-    this.audio.setVolumes(master, music, sfx);
+  setVolumes(master: number, music: number, sfx: number, menu: number) {
+    this.volumes = { master, music, sfx, menu };
+    this.audio.setVolumes(master, music, sfx, menu);
   }
 
   setGfx(g: GfxOpts) {

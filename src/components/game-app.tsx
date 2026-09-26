@@ -294,7 +294,7 @@ export function GameApp() {
     rt.setPlaying(true);
     rt.setSens(sens);
     rt.setMuted(muted);
-    rt.setVolumes(vol.master, vol.music, vol.sfx);
+    rt.setVolumes(vol.master, vol.music, vol.sfx, vol.menu);
     setScreen("play");
     rt.requestLock();
   }, [sens, muted, vol]);
@@ -334,7 +334,7 @@ export function GameApp() {
     rt.setPlaying(true);
     rt.setSens(sens);
     rt.setMuted(muted);
-    rt.setVolumes(vol.master, vol.music, vol.sfx);
+    rt.setVolumes(vol.master, vol.music, vol.sfx, vol.menu);
     setScreen("play");
     rt.requestLock();
   }, [sens, muted, vol]);
@@ -441,7 +441,7 @@ export function GameApp() {
   }, [muted]);
 
   useEffect(() => {
-    rtRef.current?.setVolumes(vol.master, vol.music, vol.sfx);
+    rtRef.current?.setVolumes(vol.master, vol.music, vol.sfx, vol.menu);
     try {
       localStorage.setItem("hellscan-vol", JSON.stringify(vol));
     } catch {

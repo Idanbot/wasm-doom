@@ -1278,6 +1278,20 @@ impl Engine {
                 self.door[idx] = 0.0;
             }
         }
+        // Eject anyone whose center is caught inside a slamming leaf: a
+        // shut door cell is solid, so that wedges the player with no legal
+        // move. Mere overlap from outside still allows backing out.
+        for &(x, y) in field::lockdown_doors(self.wave) {
+            if self.cell(x, y) != 8 {
+                continue;
+            }
+            if self.px.floor() as i32 == x && self.py.floor() as i32 == y {
+                let (nx, ny) = self.nearest_open(self.px, self.py, self.pr);
+                self.px = nx;
+                self.py = ny;
+                break;
+            }
+        }
         self.light_dirty = true;
         match map::level_index(self.wave) {
             1 => {
@@ -2989,6 +3003,15 @@ impl Engine {
                 self.hud.speed = 0.0;
                 self.walk *= 1.0 - (dt * 6.0).min(1.0);
                 self.foot_acc = 0.0;
+            }
+            // Backstop: no sequence (slamming seals, loads, spawns) may
+            // leave the player's center embedded in solid rock with no
+            // legal move. Wall-hugging (circle overlap only) is normal
+            // play and must not relocate.
+            if self.blocked(self.px.floor() as i32, self.py.floor() as i32) {
+                let (nx, ny) = self.nearest_open(self.px, self.py, self.pr);
+                self.px = nx;
+                self.py = ny;
             }
 
             if bits & IN_USE != 0 {
@@ -5593,6 +5616,32 @@ mod tests {
         assert_eq!((e.state, e.wave), (0, 2));
         assert!(!e.boss_spawned && !e.hell);
         assert!(map::living_hostiles(&e) > 0, "the next level spawns its cast");
+    }
+
+    #[test]
+    fn lockdown_seal_ejects_player_from_doorway() {
+        let mut e = Engine::new(160, 100);
+        assert_eq!(e.wave, 1);
+        let (dx, dy) = field::lockdown_doors(1)[0];
+        assert_eq!(e.cell(dx, dy), 8, "the vault leaf must be a door cell");
+        let idx = dy as usize * MAP_W + dx as usize;
+        e.door[idx] = 1.0;
+        e.px = dx as f32 + 0.5;
+        e.py = dy as f32 + 0.5;
+        assert!(!e.circle_blocked(e.px, e.py, e.pr), "open doorway starts walkable");
+        e.seal_lockdown();
+        assert!(!e.circle_blocked(e.px, e.py, e.pr), "the seal must eject, not trap");
+    }
+
+    #[test]
+    fn embedded_player_is_relocated_by_tick() {
+        let mut e = arena();
+        e.set_cell(5, 4, 1);
+        e.px = 5.5;
+        e.py = 4.5;
+        assert!(e.circle_blocked(e.px, e.py, e.pr));
+        e.tick(1.0 / 60.0);
+        assert!(!e.circle_blocked(e.px, e.py, e.pr), "a tick must unstick the player");
     }
 
     #[test]

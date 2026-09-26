@@ -4,7 +4,9 @@ export type Screen = "menu" | "play" | "pause" | "dead" | "win";
 
 export type Score = { name: string; wave: number; kills: number; time: number };
 
-export type Vol = { master: number; music: number; sfx: number };
+export type Vol = { master: number; music: number; sfx: number; menu: number };
+
+export const DEFAULT_VOL: Vol = { master: 0.85, music: 0.42, sfx: 0.75, menu: 0.7 };
 
 export const SECTORS = [
   { code: "NADIR–7A", name: "UPPER WORKS", bossTitle: "VAULT MASTER", bossName: "MALIK VEYRAN" },
@@ -209,11 +211,16 @@ export function gridPos(cell: number, columns: number, rows: number) {
 export function loadVol(): Vol {
   try {
     const raw = localStorage.getItem("hellscan-vol");
-    if (!raw) return { master: 0.85, music: 0.42, sfx: 0.75 };
+    if (!raw) return { ...DEFAULT_VOL };
     const v = JSON.parse(raw) as Partial<Vol>;
-    return { master: v.master ?? 0.85, music: v.music ?? 0.42, sfx: v.sfx ?? 0.75 };
+    return {
+      master: v.master ?? DEFAULT_VOL.master,
+      music: v.music ?? DEFAULT_VOL.music,
+      sfx: v.sfx ?? DEFAULT_VOL.sfx,
+      menu: v.menu ?? DEFAULT_VOL.menu,
+    };
   } catch {
-    return { master: 0.85, music: 0.42, sfx: 0.75 };
+    return { ...DEFAULT_VOL };
   }
 }
 
