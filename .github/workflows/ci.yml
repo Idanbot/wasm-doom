@@ -23,8 +23,10 @@ jobs:
       - run: npm run check:assets
       - run: npm run check:environment
       - run: npm run check:projectiles
+      - run: npm run check:voices
       - run: npm run build
-      - run: node scripts/renderer-benchmark.mjs
+      - run: node scripts/renderer-benchmark.mjs /tmp/perf-current.json
+      - run: node scripts/check-perf.mjs art/perf-baseline.json /tmp/perf-current.json
       - run: node --experimental-strip-types --test src/components/game/data.test.ts src/game/hud-abi.test.ts src/game/save-abi.test.ts
       # Latest action commit is master (2026-09-12). The only release tag is v1 from 2022.
       # toolchain: stable installs the current stable Rust channel.
@@ -32,6 +34,8 @@ jobs:
         with:
           toolchain: stable
       - run: cargo test --manifest-path engine/Cargo.toml
+        env:
+          RUSTFLAGS: -D warnings
   e2e:
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -48,6 +52,8 @@ jobs:
           toolchain: stable
           targets: wasm32-unknown-unknown
       - run: npm run build:wasm
+        env:
+          RUSTFLAGS: -D warnings
       - run: npm run dev > dev.log 2>&1 &
       - run: |
           for i in $(seq 1 60); do

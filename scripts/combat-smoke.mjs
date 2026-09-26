@@ -39,6 +39,13 @@ try {
   page.on("console", (message) => {
     if (message.type() === "error") errors.push(message.text());
   });
+  // One page load for the whole arsenal: reloads cost ~10s each in
+  // asset decode, and every loop ends with a full magazine plus a
+  // settled reload state, so slots cannot bleed into each other.
+  await page.goto(url.href);
+  await page.waitForFunction(
+    () => !!window.__controlsTest && document.body.innerText.includes("HEALTH"),
+  );
   for (const [slot, name, magazine] of [
     [0, "MK23-S", 12],
     [1, "BR-12 BREAKER", 8],
@@ -48,10 +55,6 @@ try {
     [5, "AX-12 VOLT", 10],
     [6, "M91 CYCLONE", 90],
   ]) {
-    await page.goto(url.href);
-    await page.waitForFunction(
-      () => !!window.__controlsTest && document.body.innerText.includes("HEALTH"),
-    );
     if (slot === 0) {
       const locked = await page.locator(".weapon-slot.locked").allTextContents();
       assert.ok(locked.some((text) => text.includes("6") && text.includes("AX-12 VOLT")));
@@ -65,6 +68,7 @@ try {
       const t = window.__controlsTest;
       t.grantWeapons();
       t.setKeys([`Digit${slot + 1}`]);
+      t.heal();
     }, slot);
     await page.waitForFunction((slot) => window.__controlsTest.getWeapon() === slot, slot);
     await page.evaluate(() => window.__controlsTest.setKeys([]));

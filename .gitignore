@@ -11,5 +11,13 @@ engine/target/
 .grok/og-pending
 screenshots/batch-*.png
 screenshots/arsenal-*.png
+screenshots/probe-*.png
+screenshots/ci-*.png
+screenshots/refine-*.png
+screenshots/pages-*.png
+screenshots/pages-*.json
+screenshots/sector-*.png
+screenshots/combat-weapon-*-reload.png
+screenshots/*.json
 *.log
 .DS_Store
