@@ -17,7 +17,8 @@ screenshots/refine-*.png
 screenshots/pages-*.png
 screenshots/pages-*.json
 screenshots/sector-*.png
-screenshots/combat-weapon-*-reload.png
+screenshots/combat-weapon-*.png
+screenshots/combat-*.png
 screenshots/*.json
 *.log
 .DS_Store
