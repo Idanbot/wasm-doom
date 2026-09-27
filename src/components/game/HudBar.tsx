@@ -105,11 +105,11 @@ export function HudBar({
             <span
               className="vital-fill"
               style={{
-                width: `${hud.reloading > 0.001 ? hud.reloading * 100 : (hud.ammo / weapon.magSize) * 100}%`,
+                width: `${hud.weapon !== 1 && hud.reloading > 0.001 ? hud.reloading * 100 : (hud.ammo / weapon.magSize) * 100}%`,
               }}
             />
           </div>
-          <p>{hud.reloading > 0.001 ? "CHANGING MAGAZINE" : weapon.role}</p>
+          <p>{hud.reloading > 0.001 ? hud.weapon === 1 ? "LOADING SHELLS" : "CHANGING MAGAZINE" : weapon.role}</p>
         </section>
       </div>
     </div>

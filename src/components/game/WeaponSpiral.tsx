@@ -24,7 +24,7 @@ export function WeaponSpiral({ hud, visible }: { hud: HudState; visible: boolean
                 opacity: 1 - Math.abs(distance) * 0.22,
               }}
             >
-              <img src={`/game/draft/v2/weap_${SLUGS[index]}_aim.png`} alt="" />
+              <img src={`/game/ui/weapon-thumbs/${SLUGS[index]}.png`} alt="" />
               <span>{index + 1} · {weapon.name.split(" ")[0]}</span>
             </div>
           );

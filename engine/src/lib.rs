@@ -67,7 +67,6 @@ struct Engine {
     cooldown: f32,
     reload_t: f32,
     reload_dur: f32,
-    dry_t: f32,
     pickup_t: f32,
     iframes: f32,
     walk: f32,
@@ -414,7 +413,6 @@ impl Engine {
             cooldown: 0.0,
             reload_t: 0.0,
             reload_dur: 1.0,
-            dry_t: 0.0,
             pickup_t: 0.0,
             iframes: 0.0,
             walk: 0.0,
@@ -2466,18 +2464,24 @@ impl Engine {
         if self.mag[w] >= MAG_SZ[w] || self.ammo[w] <= 0 {
             return;
         }
-        self.reload_dur = RELOAD_T[w];
-        self.reload_t = RELOAD_T[w];
+        // BR-12 feeds its tube one shell at a time. Other weapons swap a magazine.
+        self.reload_dur = if w == 1 { 0.42 } else { RELOAD_T[w] };
+        self.reload_t = self.reload_dur;
         self.events |= EV_RELOAD;
     }
 
     fn finish_reload(&mut self) {
         let w = self.weapon as usize;
         let need = MAG_SZ[w] - self.mag[w];
-        let take = need.min(self.ammo[w]).max(0);
+        let take = need.min(self.ammo[w]).max(0).min(if w == 1 { 1 } else { i32::MAX });
         self.mag[w] += take;
         self.ammo[w] -= take;
-        self.reload_t = 0.0;
+        self.reload_t = if w == 1 && self.mag[w] < MAG_SZ[w] && self.ammo[w] > 0 {
+            self.events |= EV_RELOAD;
+            self.reload_dur
+        } else {
+            0.0
+        };
     }
 
     fn fire(&mut self) {
@@ -2487,9 +2491,6 @@ impl Engine {
         let w = self.weapon as usize;
         if self.mag[w] <= 0 {
             self.cooldown = 0.22;
-            self.ev_weapon = self.weapon;
-            self.events |= EV_EMPTY;
-            self.dry_t = 0.35;
             return;
         }
         self.mag[w] -= 1;
@@ -2947,7 +2948,6 @@ impl Engine {
             }
         }
         self.iframes = (self.iframes - dt).max(0.0);
-        self.dry_t = (self.dry_t - dt).max(0.0);
         self.pickup_t = (self.pickup_t - dt).max(0.0);
         self.shake = (self.shake - dt * 2.2).max(0.0);
         self.muzzle = (self.muzzle - dt * 8.0).max(0.0);
@@ -3604,7 +3604,7 @@ impl Engine {
         }
 
         // v2 5x5 sheet cells: 0 full, 1 half, 2 low, 3 empty, 4 no
-        // magazine, 5 dry fire, 6-9 pickup, 10-14 reload, 15-19 fire.
+        // magazine, 5 unused, 6-9 pickup, 10-14 reload, 15-19 fire.
         // Cells 20-24 (alt-fire) have no mechanic and stay unused.
         let mag_now = self.mag[wpn];
         let mag_max = MAG_SZ[wpn];
@@ -3625,8 +3625,6 @@ impl Engine {
             } else {
                 19
             }
-        } else if self.dry_t > 0.0 {
-            5
         } else if self.pickup_t > 0.0 {
             6 + (((0.6 - self.pickup_t) / 0.6).clamp(0.0, 0.999) * 4.0) as i32
         } else if mag_now >= mag_max {
@@ -5432,7 +5430,7 @@ mod tests {
     }
 
     #[test]
-    fn empty_magazine_waits_for_manual_reload_and_dry_fires() {
+    fn empty_magazine_waits_for_manual_reload_without_dry_fire_animation() {
         let mut e = arena();
         e.mag[0] = 0;
         e.ammo[0] = 9;
@@ -5440,17 +5438,33 @@ mod tests {
         assert_eq!(e.hud.weap_frame, 3, "reserve ammo keeps the empty-mag pose");
         e.fire();
         assert_eq!(e.reload_t, 0.0);
-        assert!(e.dry_t > 0.0);
         e.tick(1.0 / 60.0);
-        assert_eq!(e.hud.weap_frame, 5, "an empty trigger pull clicks");
+        assert_eq!(e.hud.weap_frame, 3, "an empty trigger pull keeps the empty-mag pose");
+        assert_eq!(e.events & EV_EMPTY, 0);
         e.begin_reload();
         assert!(e.reload_t > 0.0, "reload remains available on explicit input");
 
         e.reload_t = 0.0;
-        e.dry_t = 0.0;
         e.ammo[0] = 0;
         e.tick(1.0 / 60.0);
         assert_eq!(e.hud.weap_frame, 4, "zero magazine and reserve use no-ammo pose");
+    }
+
+    #[test]
+    fn br12_reload_feeds_one_shell_per_step() {
+        let mut e = arena();
+        e.weapon = 1;
+        e.has_w2 = true;
+        e.mag[1] = 2;
+        e.ammo[1] = 3;
+        e.begin_reload();
+        assert!((e.reload_t - 0.42).abs() < 0.001);
+        for expected in 3..=5 {
+            while e.mag[1] < expected { e.tick(1.0 / 60.0); }
+            assert_eq!(e.mag[1], expected);
+            assert_eq!(e.ammo[1], 5 - expected);
+            assert_eq!(e.reload_t > 0.0, expected < 5);
+        }
     }
 
     #[test]
@@ -5745,7 +5759,7 @@ mod tests {
         e.mag[0] = 0;
         e.bits = IN_FIRE;
         e.tick(1.0 / 60.0);
-        assert!(e.events & EV_EMPTY != 0);
+        assert_eq!(e.events & EV_EMPTY, 0);
         assert_eq!(e.reload_t, 0.0);
         assert_eq!(e.mag[0], 0);
     }

@@ -639,7 +639,7 @@ export function GameApp() {
                 setEnemyOptions={setEnemyOptions}
                 onPreviewVoice={(skin) => rtRef.current?.previewEnemy(skin)}
                 onStart={start}
-                onContinue={checkpoint ? continueRun : undefined}
+                onContinue={import.meta.env.DEV && checkpoint ? continueRun : undefined}
                 onOpenCatalog={catalogEnabled ? () => setView("catalog") : undefined}
                 ready={ready}
                 load={load}
@@ -696,7 +696,7 @@ export function GameApp() {
                 showBoard
                 nextLabel="Start again"
                 onAgain={restart}
-                onResume={checkpoint ? continueRun : undefined}
+                onResume={import.meta.env.DEV && checkpoint ? continueRun : undefined}
                 onMenu={() => {
                   rtRef.current?.restart();
                   rtRef.current?.setPlaying(false);
