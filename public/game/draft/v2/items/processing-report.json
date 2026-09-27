@@ -62,7 +62,7 @@
       256
     ]
   },
-  "beacon_warning.png": {
+  "security_sensor_pylon.png": {
     "runtime": "public/game/spr_prop_beacon.png",
     "size": [
       256,

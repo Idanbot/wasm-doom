@@ -91,8 +91,8 @@ function checkDraftV2() {
     dim(`public/game/draft/v2/weap_${id}_aim.png`, 512, 384, true);
     dim(`public/game/draft/v2/cases/case_${id}.png`, 1024, 768, true);
   }
-  for (const name of ["ac_power_unit", "ammo_cache", "beacon_warning", "lantern_amber", "lantern_red", "medkit", "reactor_unit", "server_rack", "ventilation_array", "worklight_cyan", "worklight_white"]) {
-    dim(`public/game/draft/v2/items/${name}.png`, 768, 1024, true);
+  for (const name of ["ac_power_unit", "ammo_cache", "security_sensor_pylon", "lantern_amber", "lantern_red", "medkit", "reactor_unit", "server_rack", "ventilation_array", "worklight_cyan", "worklight_white"]) {
+    dim(`public/game/draft/v2/items/${name}.png`, name === "security_sensor_pylon" ? 1024 : 768, 1024, true);
   }
   for (const theme of themes) {
     dim(`public/game/theme/wall_${theme}.png`, 256, 256);

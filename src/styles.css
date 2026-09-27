@@ -72,7 +72,7 @@
   width: min(84vw, 860px);
   aspect-ratio: 4 / 3;
   height: auto;
-  margin-left: min(4vw, 46px);
+  right: clamp(8px, 1.5vw, 20px);
 }
 .weapon-view canvas {
   display: block;
@@ -782,8 +782,8 @@ select:focus-visible {
 }
 .automap {
   position: absolute;
-  top: 8.4rem;
-  right: 0.8rem;
+  top: 10.4rem;
+  left: 0.8rem;
   width: 16rem;
   height: auto;
   border: 1px solid var(--color-border);
@@ -992,8 +992,8 @@ select:focus-visible {
   bottom: 20px;
   display: flex;
   align-items: flex-end;
-  justify-content: space-between;
-  gap: 16px;
+  justify-content: flex-start;
+  gap: 0;
   margin: 0;
 }
 .hud-plate {
@@ -1006,11 +1006,8 @@ select:focus-visible {
   text-shadow: 0 1px 3px var(--color-bg);
 }
 .hud-ammo {
-  position: absolute;
-  top: 320px;
-  right: 24px;
-  width: 252px;
-  padding: 22px 27px 28px;
+  width: 280px;
+  padding: 26px 28px 34px;
 }
 .hud-health {
   display: flex;
@@ -1118,40 +1115,38 @@ select:focus-visible {
   max-width: 100%;
   overflow-wrap: anywhere;
 }
-.hud-loadout {
+.weapon-spiral {
+  position: absolute;
+  left: 50%;
+  bottom: 155px;
+  width: min(510px, 94vw);
+  height: 140px;
+  transform: translateX(-50%) translateY(18px);
+  opacity: 0;
+  transition: opacity 180ms ease, transform 220ms ease;
+  pointer-events: none;
+  z-index: 26;
   text-align: center;
-  margin: 0;
-  padding: 0 8px 16px;
-  font: 700 8px var(--font-display);
-  color: var(--color-muted);
 }
-.hud-loadout > div {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 5px;
-  margin: 8px 0;
-}
-.weapon-slot {
+.weapon-spiral.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+.weapon-spiral-caption { color: var(--color-steel); font: 700 9px var(--font-display); letter-spacing: .13em; text-shadow: 0 2px 5px #000; }
+.weapon-spiral-orbit { position: relative; height: 120px; perspective: 600px; }
+.weapon-spiral-slot {
+  position: absolute;
+  left: calc(50% - 58px);
+  top: 12px;
+  width: 116px;
+  height: 91px;
   display: grid;
-  gap: 5px;
-  padding: 8px 9px;
-  background: color-mix(in srgb, var(--color-bg) 90%, transparent);
+  place-items: center;
+  background: rgb(4 10 14 / 88%);
   border: 1px solid var(--color-border);
+  box-shadow: 0 10px 25px #000b;
+  transition: transform 240ms cubic-bezier(.2,.8,.2,1), opacity 240ms;
 }
-.weapon-slot b {
-  font-size: 13px;
-}
-.weapon-slot small {
-  font-size: 7px;
-}
-.weapon-slot.selected {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-}
-.weapon-slot.locked {
-  opacity: 0.55;
-}
+.weapon-spiral-slot.active { border-color: var(--color-primary); box-shadow: 0 0 22px color-mix(in srgb, var(--color-primary) 30%, transparent); }
+.weapon-spiral-slot img { width: 78px; height: 62px; object-fit: contain; }
+.weapon-spiral-slot span { max-width: 110px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--color-fg); font: 700 8px var(--font-display); }
 .enemy-subtitles {
   position: absolute;
   inset: 0;
@@ -1182,36 +1177,6 @@ select:focus-visible {
   margin-bottom: 3px;
 }
 @media (max-width: 900px) {
-  .hud-bottom {
-    flex-wrap: wrap;
-  }
-  .hud-loadout {
-    display: block;
-    order: -1;
-    flex: 1 1 100%;
-    padding: 0 4px 8px;
-  }
-  .hud-loadout > div {
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    overflow-x: auto;
-    gap: 4px;
-    margin: 6px 0 0;
-  }
-  .hud-loadout > p {
-    margin: 6px 0 0;
-  }
-  .weapon-slot {
-    flex: 0 0 auto;
-    padding: 5px 7px;
-    gap: 2px;
-  }
-  .weapon-slot small {
-    display: none;
-  }
-  .weapon-slot b {
-    font-size: 12px;
-  }
   .hud-plate {
     width: 265px;
     padding: 24px 28px 30px;
@@ -1329,8 +1294,8 @@ select:focus-visible {
     font-size: 8px;
   }
   .automap {
-    top: 10.6rem;
-    right: 0.75rem;
+    top: 11.5rem;
+    left: 0.75rem;
     width: 11.5rem;
   }
   .hud-pause {
@@ -1352,11 +1317,11 @@ select:focus-visible {
     padding: 10px 12px;
   }
   .radio-card {
-    top: auto;
-    bottom: 225px;
+    top: 5.8rem;
+    bottom: auto;
     left: 12px;
-    right: 12px;
-    max-width: none;
+    right: auto;
+    max-width: min(260px, 68vw);
     background: var(--color-bg);
   }
   .hud-boss > div:first-child {
@@ -1372,18 +1337,19 @@ select:focus-visible {
     left: 12px;
     right: 12px;
     bottom: 12px;
-    gap: 8px;
+    gap: 0;
   }
   .hud-plate {
     width: calc(50% - 4px);
     padding: 18px 18px 22px;
   }
   .hud-ammo {
-    top: 330px;
-    right: 12px;
-    width: 180px;
-    padding: 16px 18px 20px;
+    width: 50%;
+    padding: 18px 16px 22px;
   }
+  .weapon-view { bottom: 5%; }
+  .weapon-spiral { bottom: 125px; transform: translateX(-50%) translateY(18px) scale(.72); }
+  .weapon-spiral.visible { transform: translateX(-50%) translateY(0) scale(.72); }
   .hud-health {
     gap: 6px;
   }

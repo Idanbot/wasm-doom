@@ -28,7 +28,7 @@ ITEMS = {
     "ventilation_array.png": "spr_prop_vent.png",
     "worklight_cyan.png": "spr_prop_worklight_cyan.png",
     "worklight_white.png": "spr_prop_worklight_white.png",
-    "beacon_warning.png": "spr_prop_beacon.png",
+    "security_sensor_pylon.png": "spr_prop_beacon.png",
     "lantern_red.png": None,
 }
 

@@ -212,6 +212,7 @@
     "explosive_impact": "explosion_core",
     "acid_impact": "impact_acid",
     "smoke_puff": "smoke_explosion",
-    "electric_sparks": "impact_electric"
+    "electric_sparks": "impact_electric",
+    "casing_burst": "impact_shrapnel"
   }
 }

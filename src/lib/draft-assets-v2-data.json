@@ -360,9 +360,9 @@
   {
     "file": "/game/draft/v2/fx/muzzle_ballistic.png",
     "name": "muzzle_ballistic_v2.png",
-    "size": 318200,
-    "hash": "d67a3e4064ec5aef0ece4589040dae4e63f0e5f0c3a0c11c5f96eb2bdff0805c",
-    "shortHash": "d67a3e40",
+    "size": 159943,
+    "hash": "25f899f0535b326b552f1e51244e4f6e93e59d60c2d11ea849b274e2de7ff901",
+    "shortHash": "25f899f0",
     "width": 512,
     "height": 512,
     "group": "particles"
@@ -370,9 +370,9 @@
   {
     "file": "/game/draft/v2/fx/muzzle_suppressed.png",
     "name": "muzzle_suppressed_v2.png",
-    "size": 164715,
-    "hash": "8b31dc41b9d49d6ab81369b3fdf9bfaefc9e7d9775137f9355a1dade3d38aa27",
-    "shortHash": "8b31dc41",
+    "size": 46428,
+    "hash": "f1938701754acff1356ca9ab34ee0ae5945f12e88a584df4ec8057460b43d3b6",
+    "shortHash": "f1938701",
     "width": 512,
     "height": 512,
     "group": "particles"
@@ -380,9 +380,9 @@
   {
     "file": "/game/draft/v2/fx/muzzle_rocket.png",
     "name": "muzzle_rocket_v2.png",
-    "size": 218524,
-    "hash": "a11592d0b2221c2c40bd3db202b47cbad52e68f6576b839e3ea6df3f333bacb2",
-    "shortHash": "a11592d0",
+    "size": 209316,
+    "hash": "8aee8cc98958271dfde8aac4e6bc1752eed8a81ffea4304e4372a8c345ef8709",
+    "shortHash": "8aee8cc9",
     "width": 512,
     "height": 512,
     "group": "particles"
@@ -390,9 +390,9 @@
   {
     "file": "/game/draft/v2/fx/impact_sparks.png",
     "name": "impact_sparks_v2.png",
-    "size": 361230,
-    "hash": "34ed4380bebaaeb0cd317003200c8ba7381e7d04cab8bdb1fe3f052b2bce6171",
-    "shortHash": "34ed4380",
+    "size": 412095,
+    "hash": "62aa0941287a7ecc85cac1755c806228491ad946379796c3269b7daa7a408f47",
+    "shortHash": "62aa0941",
     "width": 512,
     "height": 512,
     "group": "particles"
@@ -400,9 +400,9 @@
   {
     "file": "/game/draft/v2/fx/impact_electric.png",
     "name": "impact_electric_v2.png",
-    "size": 354487,
-    "hash": "1868ccf88223d32639d8bf46059a8261e59ed37b327ce39f62fec41eabb62e36",
-    "shortHash": "1868ccf8",
+    "size": 460511,
+    "hash": "a27fbe049190574ec38d224937599db83c2ecf75500e3ae4e8328ae571d93bfc",
+    "shortHash": "a27fbe04",
     "width": 512,
     "height": 512,
     "group": "particles"
@@ -410,9 +410,9 @@
   {
     "file": "/game/draft/v2/fx/impact_acid.png",
     "name": "impact_acid_v2.png",
-    "size": 404692,
-    "hash": "eb08509c329be6a25de8490464e608ebadc66f042dc2ac9a98f19c1d47e3e237",
-    "shortHash": "eb08509c",
+    "size": 446932,
+    "hash": "e914d23423a8cff45978895451e29c9f32e07d75e46a63bb7ba362340edefedf",
+    "shortHash": "e914d234",
     "width": 512,
     "height": 512,
     "group": "particles"
@@ -420,9 +420,9 @@
   {
     "file": "/game/draft/v2/fx/projectile_rocket.png",
     "name": "projectile_rocket_v2.png",
-    "size": 140234,
-    "hash": "f8800d1016f0f41182a2a54e605dbdbfc6fc46eff6fbd2b6147d78e10a5314a8",
-    "shortHash": "f8800d10",
+    "size": 149573,
+    "hash": "63903fc9cc3976990c4d09d643841569440087b644853e82f8d4b92052d9d99d",
+    "shortHash": "63903fc9",
     "width": 512,
     "height": 512,
     "group": "particles"
@@ -450,9 +450,9 @@
   {
     "file": "/game/draft/v2/fx/projectile_acid.png",
     "name": "projectile_acid_v2.png",
-    "size": 245185,
-    "hash": "45f46a653eb2ab0c03e220a5050f187bfc580baaec493bea9069aceee8f12970",
-    "shortHash": "45f46a65",
+    "size": 213501,
+    "hash": "56c4e92eea2491217c15614f08ca32531344bd58a00827ff90a958efc608978d",
+    "shortHash": "56c4e92e",
     "width": 512,
     "height": 512,
     "group": "particles"
@@ -460,9 +460,9 @@
   {
     "file": "/game/draft/v2/fx/smoke_muzzle.png",
     "name": "smoke_muzzle_v2.png",
-    "size": 298257,
-    "hash": "797836317a5a05cb07620b2c0d4d426d4f4dde46ec42fa13dcd2ffbbef173be9",
-    "shortHash": "79783631",
+    "size": 72588,
+    "hash": "532c9a0d8bd4f1adc3d9df0cadf700a8515c6d484e79cc4b490a545b8468dabc",
+    "shortHash": "532c9a0d",
     "width": 512,
     "height": 512,
     "group": "particles"
@@ -470,9 +470,9 @@
   {
     "file": "/game/draft/v2/fx/smoke_explosion.png",
     "name": "smoke_explosion_v2.png",
-    "size": 319702,
-    "hash": "850ae9d6458d032dd579e546a9d0e945a73b0a7bf9522968ef93bb4b5d0b413e",
-    "shortHash": "850ae9d6",
+    "size": 394395,
+    "hash": "30629986547bc5643a7a466c8de0e75ffeb9237df953b431c8c6b5b50b5c9f7d",
+    "shortHash": "30629986",
     "width": 512,
     "height": 512,
     "group": "particles"
@@ -480,9 +480,9 @@
   {
     "file": "/game/draft/v2/fx/shockwave.png",
     "name": "shockwave_v2.png",
-    "size": 42647,
-    "hash": "fe8f097903cf35ac52410c33b27456c5516c7d98fb53d6d6d89ac233a95b184a",
-    "shortHash": "fe8f0979",
+    "size": 372699,
+    "hash": "227fcfc16aed2abac481b15b4e504a297f159bb78fbffb1eb520145079bd11dc",
+    "shortHash": "227fcfc1",
     "width": 512,
     "height": 512,
     "group": "particles"
@@ -490,9 +490,9 @@
   {
     "file": "/game/draft/v2/fx/explosion_core.png",
     "name": "explosion_core_v2.png",
-    "size": 411885,
-    "hash": "27d96df895b0914efa41e1283922b9cff91419f2bc13b36abdfe783404b9ba95",
-    "shortHash": "27d96df8",
+    "size": 451418,
+    "hash": "ed6af1a21845765ffc69edd7f674996c20881d2f6b178ccf142cce458731f2a2",
+    "shortHash": "ed6af1a2",
     "width": 512,
     "height": 512,
     "group": "particles"
@@ -538,12 +538,12 @@
     "group": "items"
   },
   {
-    "file": "/game/draft/v2/items/beacon_warning.png",
-    "name": "beacon_warning_v2.png",
-    "size": 9301,
-    "hash": "0d1ce05ac9268a82200207983bc359a3db2e1bedec9d5e85dc1aa9b0572ac85f",
-    "shortHash": "0d1ce05a",
-    "width": 768,
+    "file": "/game/draft/v2/items/security_sensor_pylon.png",
+    "name": "security_sensor_pylon_v2.png",
+    "size": 642498,
+    "hash": "6feeaf1b53f4ab9bd33953354663341d2b114a9f839576ba49041af9387d6cab",
+    "shortHash": "6feeaf1b",
+    "width": 1024,
     "height": 1024,
     "group": "items"
   },
@@ -606,5 +606,15 @@
     "width": 768,
     "height": 1024,
     "group": "items"
+  },
+  {
+    "file": "/game/draft/v2/fx/impact_shrapnel.png",
+    "name": "impact_shrapnel_v2.png",
+    "hash": "acf0c088cf0506e5a3930a7d4e4aadc9869a3a4b2ef095ecbf77d15c32092844",
+    "shortHash": "acf0c088",
+    "size": 270152,
+    "width": 512,
+    "height": 512,
+    "group": "particles"
   }
 ]

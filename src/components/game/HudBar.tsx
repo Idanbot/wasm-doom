@@ -59,28 +59,6 @@ export function HudBar({
           </small>
         </section>
       )}
-      <section
-        className={cn("hud-plate hud-ammo", lowAmmo && "hud-low-ammo")}
-        aria-label="Weapon ammunition"
-      >
-        <div className="hud-ammo-heading">
-          <span>{weapon.name}</span>
-          <span>{hud.reloading > 0.001 ? "RELOADING" : lowAmmo ? "LOW AMMO" : "AMMO"}</span>
-        </div>
-        <strong className={hud.ammo === 0 ? "text-danger" : ""}>
-          {String(hud.ammo).padStart(2, "0")}
-          <small> / {hud.reserve}</small>
-        </strong>
-        <div className="vital-track">
-          <span
-            className="vital-fill"
-            style={{
-              width: `${hud.reloading > 0.001 ? hud.reloading * 100 : (hud.ammo / weapon.magSize) * 100}%`,
-            }}
-          />
-        </div>
-        <p>{hud.reloading > 0.001 ? "CHANGING MAGAZINE" : weapon.role}</p>
-      </section>
       <div className="hud-bottom">
         <section
           className={cn("hud-plate hud-vitals", hud.health < 30 && "hud-critical")}
@@ -111,29 +89,28 @@ export function HudBar({
             </span>
           </div>
         </section>
-        <div className="hud-loadout">
-          <span>ARSENAL</span>
-          <div>
-            {WEAPONS.map((w, i) => (
-              <span
-                key={i}
-                className={cn(
-                  "weapon-slot",
-                  hud.weapon === i && "selected",
-                  i > 0 &&
-                    ![true, hud.hasW2, hud.hasW3, hud.hasW4, hud.hasW5, hud.hasW6, hud.hasW7, hud.hasW8, hud.hasW9, hud.hasW10, hud.hasW11][i] &&
-                    "locked",
-                )}
-              >
-                <b>{i + 1}</b>
-                <small>{w.name}</small>
-              </span>
-            ))}
+        <section
+          className={cn("hud-plate hud-ammo", lowAmmo && "hud-low-ammo")}
+          aria-label="Weapon ammunition"
+        >
+          <div className="hud-ammo-heading">
+            <span>{weapon.name}</span>
+            <span>{hud.reloading > 0.001 ? "RELOADING" : lowAmmo ? "LOW AMMO" : "AMMO"}</span>
           </div>
-          <p>
-            {hud.kills} ELIMINATED · {hud.secrets} SECRETS
-          </p>
-        </div>
+          <strong className={hud.ammo === 0 ? "text-danger" : ""}>
+            {String(hud.ammo).padStart(2, "0")}
+            <small> / {hud.reserve}</small>
+          </strong>
+          <div className="vital-track">
+            <span
+              className="vital-fill"
+              style={{
+                width: `${hud.reloading > 0.001 ? hud.reloading * 100 : (hud.ammo / weapon.magSize) * 100}%`,
+              }}
+            />
+          </div>
+          <p>{hud.reloading > 0.001 ? "CHANGING MAGAZINE" : weapon.role}</p>
+        </section>
       </div>
     </div>
   );

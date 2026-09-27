@@ -6,6 +6,7 @@ from functools import lru_cache
 from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw, ImageEnhance, ImageFilter
+from scipy.ndimage import binary_dilation, label
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'public/game/draft/v2'
@@ -59,24 +60,36 @@ def glow(im,at,color,radius=7):
     d.ellipse((x-radius//2,y-radius//2,x+radius//2,y+radius//2),fill=(*color,230))
     return im
 
-def flare(im,at,color,scale=1):
+def flare(im,at,color,scale=1,kind=None):
     x,y=at
-    source=muzzle_art()
-    w,h=round(112*scale),round(78*scale)
+    source=muzzle_art(color,kind)
+    w,h=round(88*scale),round(88*scale)
     art=source.resize((w,h),Image.Resampling.LANCZOS)
     if color[2]>color[0]*1.1 or color[1]>color[0]*1.2:
         a=np.array(art)
         intensity=a[:,:,:3].max(axis=2).astype(np.float32)/255
         for c in range(3):a[:,:,c]=np.clip(color[c]*intensity+35,0,255)
         art=Image.fromarray(a,'RGBA')
-    im.alpha_composite(art,(round(x-w*.24),round(y-h*.5)))
+    # All authored flashes point upper-left; the lower-right ignition point
+    # must sit on the barrel tip, not float ahead of the viewmodel.
+    im.alpha_composite(art,(round(x-w*.76),round(y-h*.76)))
     return im
 
-@lru_cache(maxsize=1)
-def muzzle_art():
-    source=Image.open(OUT/'masters/fx_muzzle.png').convert('RGBA')
-    source=source.crop(source.getchannel('A').getbbox())
-    return source.rotate(180,expand=True)
+@lru_cache(maxsize=3)
+def muzzle_art(color=(255,187,71),kind=None):
+    if kind=='suppressed' or (kind is None and color[2]>color[0]*1.1):
+        name='muzzle_suppressed'
+    elif kind=='rocket' or (kind is None and color[0]>240 and color[1]<150):
+        name='muzzle_rocket'
+    else:
+        name='muzzle_ballistic'
+    source=Image.open(ROOT/'art/source_hd/combat_v4'/f'{name}.png').convert('RGBA')
+    return source.crop(source.getchannel('A').getbbox())
+
+def rotated_point(point,angle,center=(415,342)):
+    x,y=point;cx,cy=center;a=math.radians(angle)
+    return (round(cx+(x-cx)*math.cos(a)+(y-cy)*math.sin(a)),
+            round(cy-(x-cx)*math.sin(a)+(y-cy)*math.cos(a)))
 
 def mag(im,step,color):
     # Detached metal magazine changes position and rotation across reload cells.
@@ -195,6 +208,15 @@ def pose_frames(slug,kind,count):
             small=f.resize((round(f.width*.94),round(f.height*.94)),Image.Resampling.LANCZOS)
             f=Image.new('RGBA',CELL)
             f.alpha_composite(small,(512-small.width,384-small.height))
+        if slug=='hx8' and kind=='reload':
+            alpha=np.asarray(f.getchannel('A'))
+            components,total=label(alpha>50)
+            if total:
+                largest=np.bincount(components.ravel())[1:].argmax()+1
+                clean=np.array(f)
+                keep=binary_dilation(components==largest,iterations=3)
+                clean[:,:,3][~keep]=0
+                f=Image.fromarray(clean,'RGBA')
         frames.append(f)
     return frames
 
@@ -252,7 +274,10 @@ def make_sheet(slug,boss,color,muzzle):
             frames.append(f)
     for i,(dx,dy,angle) in enumerate([(2,-6,1),(8,-17,5),(7,-13,4),(3,-5,2),(0,0,0)]):
         f=frame(base,dx,dy,angle,light=1.05 if i<3 else 1)
-        if i in (0,1): flare(f,(muzzle[0]+dx,muzzle[1]+dy),color,1.1 if i==1 else .8)
+        if i in (0,1):
+            tip=rotated_point(muzzle,angle)
+            flash_kind='suppressed' if slug=='mk23s' else 'rocket' if slug in ('vlk6','hx8') else None
+            flare(f,(tip[0]+dx,tip[1]+dy),color,1.1 if i==1 else .8,kind=flash_kind)
         if i==2 and not boss:
             ImageDraw.Draw(f).ellipse((340,149,348,156),fill=(216,169,76,220))
         frames.append(f)
@@ -260,7 +285,9 @@ def make_sheet(slug,boss,color,muzzle):
         for i in range(5):
             f=frame(base,dx=[0,1,7,4,0][i],dy=[0,-3,-19,-8,0][i],angle=[0,1,7,3,0][i],light=[1,1.06,1.16,1.03,1][i])
             if i in (0,1,2,3): glow(f,(muzzle[0],muzzle[1]-i*2),color,5+i*3)
-            if i==2: flare(f,(muzzle[0]+7,muzzle[1]-19),color,1.5)
+            if i==2:
+                tip=rotated_point(muzzle,7)
+                flare(f,(tip[0]+7,tip[1]-19),color,1.5)
             frames.append(f)
     else:
         frames.extend([frames[i].copy() for i in range(15,20)])
@@ -334,6 +361,17 @@ def texture(name,base,seed,kind):
     return Image.fromarray(ar,'RGB')
 
 def particle(name,color,kind):
+    v4=ROOT/'art/source_hd/combat_v4'
+    if (v4/f'{name}.png').exists():
+        return Image.open(v4/f'{name}.png').convert('RGBA').resize((512,512),Image.Resampling.LANCZOS)
+    for atlas_name,names in [
+        ('impact_atlas',['impact_sparks','impact_electric','explosion_core','impact_acid']),
+        ('ambient_atlas',['smoke_muzzle','smoke_explosion','shockwave','impact_shrapnel']),
+    ]:
+        if name in names and (v4/f'{atlas_name}.png').exists():
+            atlas=Image.open(v4/f'{atlas_name}.png').convert('RGBA')
+            index=names.index(name);w=atlas.width//2;h=atlas.height//2
+            return atlas.crop(((index%2)*w,(index//2)*h,((index%2)+1)*w,((index//2)+1)*h)).resize((512,512),Image.Resampling.LANCZOS)
     source_map={
         'muzzle_ballistic':('muzzle',1),'muzzle_suppressed':('muzzle',0),'muzzle_rocket':('muzzle',3),
         'impact_sparks':('impact',0),'impact_electric':('impact',1),'impact_acid':('impact',3),
@@ -513,13 +551,17 @@ def main():
         name=f'door_{sector}'
         path=OUT/'textures'/f'{name}_1080p.png';h,s=save(door_texture(sector),path)
         extras.append(dict(file=f'/game/draft/v2/textures/{name}_1080p.png',name=f'{name}_v2_1080p.png',size=path.stat().st_size,hash=h,shortHash=s,width=1920,height=1080,group='textures',seamless=False))
-    for name,color,kind in [('muzzle_ballistic',(255,187,71),'flash'),('muzzle_suppressed',(184,200,179),'flash'),('muzzle_rocket',(255,107,42),'flash'),('impact_sparks',(255,201,107),'spark'),('impact_electric',(70,208,255),'spark'),('impact_acid',(149,234,87),'spark'),('projectile_rocket',(255,135,53),'trail'),('projectile_rail',(253,174,64),'trail'),('projectile_arc',(103,224,255),'trail'),('projectile_acid',(144,230,80),'orb'),('smoke_muzzle',(146,151,149),'smoke'),('smoke_explosion',(77,83,83),'smoke'),('shockwave',(150,214,232),'ring'),('explosion_core',(255,134,47),'orb')]:
+    for name,color,kind in [('muzzle_ballistic',(255,187,71),'flash'),('muzzle_suppressed',(184,200,179),'flash'),('muzzle_rocket',(255,107,42),'flash'),('impact_sparks',(255,201,107),'spark'),('impact_electric',(70,208,255),'spark'),('impact_acid',(149,234,87),'spark'),('impact_shrapnel',(255,200,130),'spark'),('projectile_rocket',(255,135,53),'trail'),('projectile_rail',(253,174,64),'trail'),('projectile_arc',(103,224,255),'trail'),('projectile_acid',(144,230,80),'orb'),('smoke_muzzle',(146,151,149),'smoke'),('smoke_explosion',(77,83,83),'smoke'),('shockwave',(150,214,232),'ring'),('explosion_core',(255,134,47),'orb')]:
         path=OUT/'fx'/f'{name}.png';h,s=save(particle(name,color,kind),path)
         extras.append(dict(file=f'/game/draft/v2/fx/{name}.png',name=f'{name}_v2.png',size=path.stat().st_size,hash=h,shortHash=s,width=512,height=512,group='particles'))
-    for name,color in [('lantern_amber',(255,188,100)),('lantern_red',(234,81,67)),('worklight_white',(249,245,204)),('worklight_cyan',(138,225,242)),('beacon_warning',(255,112,57)),('medkit',(211,78,72)),('ammo_cache',(209,169,73))]:
+    for name,color in [('lantern_amber',(255,188,100)),('lantern_red',(234,81,67)),('worklight_white',(249,245,204)),('worklight_cyan',(138,225,242)),('security_sensor_pylon',(255,112,57)),('medkit',(211,78,72)),('ammo_cache',(209,169,73))]:
         kind=name.split('_')[0]
-        path=OUT/'items'/f'{name}.png';h,s=save(object_sprite(kind,color),path)
-        extras.append(dict(file=f'/game/draft/v2/items/{name}.png',name=f'{name}_v2.png',size=path.stat().st_size,hash=h,shortHash=s,width=768,height=1024,group='items'))
+        path=OUT/'items'/f'{name}.png'
+        if name=='security_sensor_pylon':
+            image=Image.open(ROOT/'art/source_hd/combat_v4/security_sensor_pylon.png').convert('RGBA').resize((1024,1024),Image.Resampling.LANCZOS)
+        else: image=object_sprite(kind,color)
+        h,s=save(image,path)
+        extras.append(dict(file=f'/game/draft/v2/items/{name}.png',name=f'{name}_v2.png',size=path.stat().st_size,hash=h,shortHash=s,width=image.width,height=image.height,group='items'))
     for name in ('reactor_unit','server_rack','ac_power_unit','ventilation_array'):
         path=OUT/'items'/f'{name}.png';h,s=save(machinery_sprite(name),path)
         extras.append(dict(file=f'/game/draft/v2/items/{name}.png',name=f'{name}_v2.png',size=path.stat().st_size,hash=h,shortHash=s,width=768,height=1024,group='items'))

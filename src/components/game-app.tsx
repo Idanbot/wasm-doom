@@ -26,6 +26,7 @@ import { Menu } from "./game/Menu";
 import { Pause } from "./game/Pause";
 import { TouchLayer } from "./game/TouchLayer";
 import { WeaponView } from "./game/WeaponView";
+import { WeaponSpiral } from "./game/WeaponSpiral";
 import { EnemySubtitles } from "./game/EnemySubtitles";
 import { Automap } from "./game/Automap";
 import { EnemyBars } from "./game/EnemyBars";
@@ -63,6 +64,9 @@ export function GameApp() {
     return "game";
   });
   const [hud, setHud] = useState<HudState>(DEFAULT_HUD);
+  const [wheelVisible, setWheelVisible] = useState(false);
+  const wheelTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (wheelTimer.current) clearTimeout(wheelTimer.current); }, []);
   const [fps, setFps] = useState(0);
   const [renderResolution, setRenderResolution] = useState("");
   const [res, setRes] = useState<ResMode>(loadRes);
@@ -132,7 +136,7 @@ export function GameApp() {
           const bobY = (h.bob * 7 + h.kick * 18 * weight + reloadDip + swapDip) * motion;
           const bobX = (h.kick * -6 * weight + (reloading ? 20 : 0)) * motion;
           const roll = h.kick * -1.8 * weight * motion;
-          weapEl.style.transform = `translate(-50%, ${bobY}px) translateX(${bobX}px) rotate(${roll}deg)`;
+          weapEl.style.transform = `translateY(${bobY}px) translateX(${bobX}px) rotate(${roll}deg)`;
           weapEl.style.filter = h.muzzle > 0.05 ? `brightness(${1 + h.muzzle * 0.22})` : "";
           const wpn = WEAPONS[h.weapon] ?? WEAPONS[0]!;
           const artMissing = missingRef.current.includes(wpn.sheet);
@@ -495,17 +499,6 @@ export function GameApp() {
 
   return (
     <main className="relative h-dvh w-full overflow-hidden bg-bg text-fg">
-      {catalogEnabled && (
-        <div className="fixed top-3 right-3 z-50 pointer-events-auto">
-          <button
-            type="button"
-            onClick={() => setView("catalog")}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-black/85 hover:bg-black border border-amber-500/50 text-amber-300 hover:text-amber-200 text-xs font-mono font-bold tracking-wider shadow-lg backdrop-blur cursor-pointer transition-all"
-          >
-            <span>📦 ASSET CATALOG</span>
-          </button>
-        </div>
-      )}
       <canvas
         ref={canvasRef}
         className="game-canvas"
@@ -513,7 +506,12 @@ export function GameApp() {
           if (screen === "play") rtRef.current?.requestLock();
         }}
         onWheel={(e) => {
-          if (screen === "play") rtRef.current?.cycleWeapon(e.deltaY >= 0 ? 1 : -1);
+          if (screen === "play") {
+            rtRef.current?.cycleWeapon(e.deltaY >= 0 ? 1 : -1);
+            setWheelVisible(true);
+            if (wheelTimer.current) clearTimeout(wheelTimer.current);
+            wheelTimer.current = setTimeout(() => setWheelVisible(false), 2800);
+          }
         }}
       />
 
@@ -539,6 +537,7 @@ export function GameApp() {
             renderer={renderer}
             showStats={enemyOptions.showStats}
           />
+          <WeaponSpiral hud={hud} visible={wheelVisible} />
           <Automap hud={hud} readMap={readMap} getEnemies={getEnemies} />
           <EnemyBars getBars={getBars} />
           {radio && <RadioCard speaker={radio.speaker} text={radio.text} />}

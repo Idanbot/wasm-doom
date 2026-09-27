@@ -14,8 +14,7 @@ export function WeaponView({
     return (
       <div
         ref={weaponRef}
-        className="weapon-view weapon-missing pointer-events-none absolute bottom-[-2%] left-1/2 origin-bottom select-none"
-        style={{ transform: "translate(-50%, 0)" }}
+        className="weapon-view weapon-missing pointer-events-none absolute bottom-[-2%] origin-bottom select-none"
       >
         <span>{name ?? "WEAPON"}</span>
       </div>
@@ -24,8 +23,7 @@ export function WeaponView({
   return (
     <div
       ref={weaponRef}
-      className="weapon-view pointer-events-none absolute bottom-[-2%] left-1/2 origin-bottom select-none"
-      style={{ transform: "translate(-50%, 0)" }}
+      className="weapon-view pointer-events-none absolute bottom-[-2%] origin-bottom select-none"
     >
       <canvas width={512} height={384} aria-hidden="true" />
     </div>

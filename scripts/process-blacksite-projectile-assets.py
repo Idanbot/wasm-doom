@@ -78,6 +78,7 @@ DRAFT_CELLS = {
     "acid_impact": "impact_acid",
     "smoke_puff": "smoke_explosion",
     "electric_sparks": "impact_electric",
+    "casing_burst": "impact_shrapnel",
 }
 
 
