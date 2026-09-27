@@ -11,6 +11,7 @@ export type GameAudio = {
   previewEnemy: (skin: number) => void;
   enemyDiagnostics: () => ReturnType<EnemyAudio["diagnostics"]> | null;
   prepareEnemies: (onProgress?: (done: number, total: number) => void) => Promise<void>;
+  prepareMedia: () => Promise<void>;
   setEnemyOptions: (options: EnemyOptions) => void;
   updateEnemies: (
     enemies: EnemyCue[],
@@ -74,7 +75,13 @@ export function createAudio(): GameAudio {
   let bossVol = 0;
   let bossFade = 0;
   const buffers: Record<string, AudioBuffer> = {};
-  let sfxLoadStarted = false;
+  let sfxLoadPromise: Promise<void> | null = null;
+  let musicLoadPromise: Promise<void> | null = null;
+  const MUSIC_URLS = [
+    asset("/game/music/bgm-menu.ogg"),
+    asset("/game/music/bgm-remix.ogg"),
+    asset("/game/music/boss.ogg"),
+  ];
   const SFX_URLS: Record<string, string> = {
     fire0: asset("/game/sfx/fire0.ogg"),
     fire1: asset("/game/sfx/fire1.ogg"),
@@ -122,7 +129,7 @@ export function createAudio(): GameAudio {
     }
     noise = ctx.createBuffer(1, data.length, ctx.sampleRate);
     noise.getChannelData(0).set(data);
-    loadSfx();
+    void loadSfx();
   }
 
   function resume() {
@@ -141,11 +148,10 @@ export function createAudio(): GameAudio {
     if (bossBed) bossBed.volume = muted || !musicOn ? 0 : bossVol;
     if (menuBed) menuBed.volume = muted ? 0 : menuV;
   }
-  function loadSfx() {
-    if (!ctx || sfxLoadStarted) return;
-    sfxLoadStarted = true;
-    for (const [key, url] of Object.entries(SFX_URLS)) {
-      void fetch(url)
+  function loadSfx(): Promise<void> {
+    if (!ctx) return Promise.resolve();
+    sfxLoadPromise ??= Promise.all(Object.entries(SFX_URLS).map(([key, url]) =>
+      fetch(url)
         .then((r) => (r.ok ? r.arrayBuffer() : Promise.reject(new Error(url))))
         .then((buf) => ctx!.decodeAudioData(buf.slice(0)))
         .then((audio) => {
@@ -153,8 +159,18 @@ export function createAudio(): GameAudio {
         })
         .catch(() => {
           /* synth fallback */
-        });
-    }
+        }),
+    )).then(() => undefined);
+    return sfxLoadPromise;
+  }
+
+  function preloadMusic(): Promise<void> {
+    musicLoadPromise ??= Promise.all(MUSIC_URLS.map(async (url) => {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`Music could not load: ${url}`);
+      await response.arrayBuffer();
+    })).then(() => undefined);
+    return musicLoadPromise;
   }
 
   const pool: Record<string, HTMLAudioElement[]> = {};
@@ -637,6 +653,10 @@ export function createAudio(): GameAudio {
     async prepareEnemies(onProgress?: (done: number, total: number) => void) {
       ensure();
       await enemies?.load(onProgress);
+    },
+    async prepareMedia() {
+      ensure();
+      await Promise.all([loadSfx(), preloadMusic()]);
     },
     setEnemyOptions(options) {
       enemyOptions = { ...options };

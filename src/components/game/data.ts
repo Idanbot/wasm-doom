@@ -1,4 +1,5 @@
 import { DEFAULT_GFX, DEFAULT_RES, RES_MODES, type GfxOpts, type ResMode } from "../../game/types.ts";
+import { WEAPON_SHEETS } from "../../game/weapon-assets.ts";
 
 export type Screen = "menu" | "play" | "pause" | "dead" | "win";
 
@@ -24,17 +25,17 @@ export function sectorForWave(wave: number) {
 // alt-fire mechanic ships, boss sheets carry them as spares).
 // `reserve` mirrors the engine pickup caps for the ammo-state frames.
 export const WEAPONS = [
-  { id: 0, name: "MK23-S", role: "Suppressed precision · 12 rounds", magSize: 12, lowAmmoAt: 3, reserve: 120, sheet: "/game/draft/v2/weap_mk23s_5x5.png" },
-  { id: 1, name: "BR-12 BREAKER", role: "8-shot breacher · heavy stagger", magSize: 8, lowAmmoAt: 2, reserve: 48, sheet: "/game/draft/v2/weap_br12_5x5.png" },
-  { id: 2, name: "KX-9 VECTOR", role: "36-round PDW · controlled burst", magSize: 36, lowAmmoAt: 9, reserve: 216, sheet: "/game/draft/v2/weap_kx9_5x5.png" },
-  { id: 3, name: "MR-4 LONGBOW", role: "Magnetic penetrator · pierces 3", magSize: 5, lowAmmoAt: 1, reserve: 20, sheet: "/game/draft/v2/weap_mr4_5x5.png" },
-  { id: 4, name: "VLK-6 WARDEN", role: "Guided micro-missile · blast radius", magSize: 4, lowAmmoAt: 1, reserve: 16, sheet: "/game/draft/v2/weap_vlk6_5x5.png" },
-  { id: 5, name: "AX-12 VOLT", role: "Electrical carbine · precision shock", magSize: 10, lowAmmoAt: 2, reserve: 80, sheet: "/game/draft/v2/weap_ax12_5x5.png" },
-  { id: 6, name: "M91 CYCLONE", role: "Rotary cannon · sustained suppression", magSize: 90, lowAmmoAt: 22, reserve: 450, sheet: "/game/draft/v2/weap_m91_5x5.png" },
-  { id: 7, name: "HX-8 PYRE", role: "Incendiary projector · leaves a burn", magSize: 6, lowAmmoAt: 2, reserve: 36, sheet: "/game/draft/v2/weap_hx8_5x5.png" },
-  { id: 8, name: "VR-9 OVERRIDE", role: "Veyran rail · pierces the lane, then bursts", magSize: 4, lowAmmoAt: 1, reserve: 24, sheet: "/game/draft/v2/weap_vr9_5x5.png" },
-  { id: 9, name: "HC-9 FORGE", role: "HECATE cutter · wide beam and impact splash", magSize: 14, lowAmmoAt: 3, reserve: 84, sheet: "/game/draft/v2/weap_hc9_5x5.png" },
-  { id: 10, name: "CM-9 CHIMERA", role: "Specimen fan · acid bursts and a short pool", magSize: 5, lowAmmoAt: 1, reserve: 30, sheet: "/game/draft/v2/weap_cm9_5x5.png" },
+  { id: 0, name: "MK23-S", role: "Suppressed precision · 12 rounds", magSize: 12, lowAmmoAt: 3, reserve: 120, sheet: WEAPON_SHEETS[0]! },
+  { id: 1, name: "BR-12 BREAKER", role: "8-shot breacher · heavy stagger", magSize: 8, lowAmmoAt: 2, reserve: 48, sheet: WEAPON_SHEETS[1]! },
+  { id: 2, name: "KX-9 VECTOR", role: "36-round PDW · controlled burst", magSize: 36, lowAmmoAt: 9, reserve: 216, sheet: WEAPON_SHEETS[2]! },
+  { id: 3, name: "MR-4 LONGBOW", role: "Magnetic penetrator · pierces 3", magSize: 5, lowAmmoAt: 1, reserve: 20, sheet: WEAPON_SHEETS[3]! },
+  { id: 4, name: "VLK-6 WARDEN", role: "Guided micro-missile · blast radius", magSize: 4, lowAmmoAt: 1, reserve: 16, sheet: WEAPON_SHEETS[4]! },
+  { id: 5, name: "AX-12 VOLT", role: "Electrical carbine · precision shock", magSize: 10, lowAmmoAt: 2, reserve: 80, sheet: WEAPON_SHEETS[5]! },
+  { id: 6, name: "M91 CYCLONE", role: "Rotary cannon · sustained suppression", magSize: 90, lowAmmoAt: 22, reserve: 450, sheet: WEAPON_SHEETS[6]! },
+  { id: 7, name: "HX-8 PYRE", role: "Incendiary projector · leaves a burn", magSize: 6, lowAmmoAt: 2, reserve: 36, sheet: WEAPON_SHEETS[7]! },
+  { id: 8, name: "VR-9 OVERRIDE", role: "Veyran rail · pierces the lane, then bursts", magSize: 4, lowAmmoAt: 1, reserve: 24, sheet: WEAPON_SHEETS[8]! },
+  { id: 9, name: "HC-9 FORGE", role: "HECATE cutter · wide beam and impact splash", magSize: 14, lowAmmoAt: 3, reserve: 84, sheet: WEAPON_SHEETS[9]! },
+  { id: 10, name: "CM-9 CHIMERA", role: "Specimen fan · acid bursts and a short pool", magSize: 5, lowAmmoAt: 1, reserve: 30, sheet: WEAPON_SHEETS[10]! },
 ];
 
 const HANDLER = [

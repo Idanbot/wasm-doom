@@ -28,6 +28,51 @@ test("saved checkpoint never adds Resume last sector to the main menu", async ()
   } finally { await page.close(); }
 });
 
+test("loading screen fetches and decodes every weapon sheet and thumbnail before deployment", async () => {
+  const page = await browser.newPage();
+  const requested = new Set();
+  let releaseThumbnail;
+  let thumbnailStarted;
+  const heldThumbnail = new Promise((resolve) => { releaseThumbnail = resolve; });
+  const thumbnailRequest = new Promise((resolve) => { thumbnailStarted = resolve; });
+  await page.route("**/game/ui/weapon-thumbs/br12.png", async (route) => {
+    thumbnailStarted();
+    await heldThumbnail;
+    await route.continue();
+  });
+  page.on("request", (request) => requested.add(new URL(request.url()).pathname));
+  try {
+    await page.goto(baseUrl, { waitUntil: "domcontentloaded" });
+    await thumbnailRequest;
+    assert.equal(await page.locator(".deploy-button").isDisabled(), true, "deployment became ready before a thumbnail loaded");
+    releaseThumbnail();
+    await page.waitForFunction(() => !document.querySelector(".deploy-button")?.hasAttribute("disabled"), null, { timeout: 90_000 });
+    for (const slug of slugs) {
+      assert.ok(requested.has(`/game/ui/weapon-thumbs/${slug}.png`), `${slug} thumbnail was not loaded before deployment`);
+      assert.ok(requested.has(`/game/draft/v2/weap_${slug}_5x5.png`), `${slug} viewmodel was not loaded before deployment`);
+    }
+    for (const path of [
+      "/game/ui/hud-panel.webp",
+      "/game/ui/menu-reactor.webp",
+      "/game/music/bgm-menu.ogg",
+      "/game/music/bgm-remix.ogg",
+      "/game/music/boss.ogg",
+      "/game/sfx/fire0.ogg",
+    ]) assert.ok(requested.has(path), `${path} was not loaded before deployment`);
+  } finally { releaseThumbnail(); await page.close(); }
+});
+
+test("a missing thumbnail keeps deployment blocked with an asset error", async () => {
+  const page = await browser.newPage();
+  try {
+    await page.route("**/game/ui/weapon-thumbs/br12.png", (route) => route.fulfill({ status: 404, body: "missing" }));
+    await page.goto(baseUrl);
+    await page.getByRole("alert").waitFor({ timeout: 90_000 });
+    assert.equal(await page.locator(".deploy-button").isDisabled(), true);
+    assert.match(await page.getByRole("alert").innerText(), /arsenal|asset|BR-12|br12/i);
+  } finally { await page.close(); }
+});
+
 test("mouse-wheel arsenal renders readable transparent gun thumbnails", async () => {
   const page = await checkpointPage();
   try {

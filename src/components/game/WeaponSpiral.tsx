@@ -1,7 +1,7 @@
 import type { HudState } from "@/game/types";
+import { WEAPON_THUMBNAILS } from "@/game/weapon-assets";
+import { asset } from "@/lib/asset";
 import { WEAPONS } from "./data";
-
-const SLUGS = ["mk23s", "br12", "kx9", "mr4", "vlk6", "ax12", "m91", "hx8", "vr9", "hc9", "cm9"];
 
 export function WeaponSpiral({ hud, visible }: { hud: HudState; visible: boolean }) {
   const owned = [true, hud.hasW2, hud.hasW3, hud.hasW4, hud.hasW5, hud.hasW6, hud.hasW7, hud.hasW8, hud.hasW9, hud.hasW10, hud.hasW11];
@@ -24,7 +24,7 @@ export function WeaponSpiral({ hud, visible }: { hud: HudState; visible: boolean
                 opacity: 1,
               }}
             >
-              <img src={`/game/ui/weapon-thumbs/${SLUGS[index]}.png`} alt="" />
+              <img src={asset(WEAPON_THUMBNAILS[index]!)} alt="" loading="eager" decoding="sync" />
               <span>{index + 1} · {weapon.name.split(" ")[0]}</span>
             </div>
           );

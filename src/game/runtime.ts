@@ -29,6 +29,7 @@ import {
 import { HUD_SIZE } from "./hud-abi";
 import { SAVE_AMMO_BASE, SAVE_SIZE, SAVE_SLOTS } from "./save-abi";
 import { keySpriteAlpha } from "./sprite-alpha";
+import { WEAPON_SHEETS, WEAPON_THUMBNAILS } from "./weapon-assets";
 import {
   readEnemyCues,
   readBars,
@@ -225,7 +226,14 @@ const TEX_FILES: { id: number; src: string }[] = [
   ),
 ];
 
-const UI_CRITICAL = ["/game/draft/v2/weap_mk23s_5x5.png"];
+const UI_CRITICAL = [
+  ...WEAPON_THUMBNAILS,
+  ...WEAPON_SHEETS,
+  "/game/ui/hud-panel.webp",
+  "/game/ui/menu-reactor.webp",
+  "/game/ui-plaque.svg",
+];
+const weaponSheetPaths = new Set<string>(WEAPON_SHEETS);
 const weaponSheetCache = new Map<string, HTMLImageElement>();
 const pendingWeaponSheets = new Set<string>();
 
@@ -265,8 +273,6 @@ const THEME_FILES: { slot: number; src: string }[] = [
   ...THEME_ORDER.map((theme, i) => ({ slot: 8 + i, src: `/game/theme/door_${theme}.png` })),
 ];
 
-const failedImageUrls = new Set<string>();
-
 function decodeImage(src: string, timeoutMs = 30000): Promise<HTMLImageElement | null> {
   return new Promise((resolve) => {
     const img = new Image();
@@ -277,25 +283,14 @@ function decodeImage(src: string, timeoutMs = 30000): Promise<HTMLImageElement |
       window.clearTimeout(timer);
       resolve(value);
     };
-    // A deadline keeps boot moving, but only an actual load error may mark
-    // art as missing. A slow 5x5 sheet can still render when equipped.
-    const critical = UI_CRITICAL.includes(src);
-    const timer = window.setTimeout(() => finish(null), critical ? 30000 : timeoutMs);
+    const timer = window.setTimeout(() => finish(null), timeoutMs);
     img.onload = () => {
-      failedImageUrls.delete(src);
-      if (critical) {
-        img.decode().then(() => {
-          weaponSheetCache.set(src, img);
-          finish(img);
-        }, () => finish(null));
-      } else {
+      img.decode().then(() => {
+        if (weaponSheetPaths.has(src)) weaponSheetCache.set(src, img);
         finish(img);
-      }
+      }, () => finish(null));
     };
-    img.onerror = () => {
-      failedImageUrls.add(src);
-      finish(null);
-    };
+    img.onerror = () => finish(null);
     img.src = asset(src);
   });
 }
@@ -422,32 +417,35 @@ export class HellscanRuntime {
     this.running = true;
     this.last = performance.now();
     this.loop(this.last);
-    const slices = { tex: 0, ui: 0, voice: 0 };
+    const slices = { tex: 0, ui: 0, voice: 0, media: 0 };
     const paint = (label: string) => {
-      report(Math.min(0.99, 0.12 + 0.48 * slices.tex + 0.18 * slices.ui + 0.22 * slices.voice), label);
+      report(Math.min(0.99, 0.12 + 0.4 * slices.tex + 0.25 * slices.ui + 0.15 * slices.voice + 0.08 * slices.media), label);
     };
     await Promise.all([
       this.uploadTextures((done, total) => {
         slices.tex = total ? done / total : 1;
         paint("World textures");
       }),
-      // Only the equipped sheet gates the first playable frame. Loading all
-      // eleven 5x5 sheets here exhausted decode bandwidth and delayed the gun.
-      preloadImages(UI_CRITICAL, 1, (done, total) => {
+      // Deployment waits for every viewmodel, wheel thumbnail and HUD image.
+      preloadImages(UI_CRITICAL, 2, (done, total) => {
         slices.ui = total ? done / total : 1;
-        paint("Arsenal");
+        paint("Arsenal & interface");
       }, 30000).then((imgs) => {
-        const urls = UI_CRITICAL;
-        const failed = urls.filter((src, i) => !imgs[i] && failedImageUrls.has(src));
+        const failed = UI_CRITICAL.filter((_, i) => !imgs[i]);
         if (failed.length) {
-          console.warn(`[assets] ${failed.length} arsenal images fell back to procedural:`, failed.join(", "));
           this.hooks.onAssetError?.(failed);
+          throw new Error(`Arsenal assets could not load: ${failed.join(", ")}`);
         }
       }),
       this.audio.prepareEnemies((done, total) => {
         slices.voice = total ? done / total : 1;
         paint("Enemy voices");
       }),
+      this.audio.prepareMedia().then(() => {
+        slices.media = 1;
+        paint("Sound & music");
+      }),
+      document.fonts.ready,
     ]);
     report(1, "Ready");
     if (this.aborted) {
@@ -744,7 +742,7 @@ export class HellscanRuntime {
     scratch.width = size;
     scratch.height = size;
     const ctx = scratch.getContext("2d", { willReadFrequently: true });
-    if (!ctx) return;
+    if (!ctx) throw new Error("Unable to prepare world textures");
     // Enemy animation layers are independent 256px files; decode them in a
     // wider batch so the first playable frame is not gated by four-at-a-time
     // image loads.
@@ -753,6 +751,8 @@ export class HellscanRuntime {
       12,
       onItem,
     );
+    const missing = TEX_FILES.filter((_, i) => !loaded[i]).map((t) => t.src);
+    if (missing.length) throw new Error(`World textures could not load: ${missing.join(", ")}`);
     for (let i = 0; i < TEX_FILES.length; i++) {
       const img = loaded[i];
       const id = TEX_FILES[i]!.id;
@@ -793,7 +793,7 @@ export class HellscanRuntime {
         const view = new Uint8Array(wasm.memory.buffer, ptr, size * size * 4);
         view.set(pixels.data);
       } catch {
-        /* keep procedural */
+        throw new Error(`World texture could not be prepared: ${TEX_FILES[i]!.src}`);
       }
     }
     await this.uploadThemeVariants(ctx, size);
@@ -832,9 +832,7 @@ export class HellscanRuntime {
         failed.push(src);
       }
     }
-    if (failed.length) {
-      console.warn(`[assets] ${failed.length} theme layers missing, base art stays:`, failed.join(", "));
-    }
+    if (failed.length) throw new Error(`Sector textures could not load: ${failed.join(", ")}`);
     return failed;
   }
 

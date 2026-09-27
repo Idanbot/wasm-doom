@@ -15,6 +15,7 @@ import {
   sectorForWave,
 } from "./data.ts";
 import { DEFAULT_GFX, RES_MODES } from "../../game/types.ts";
+import { WEAPON_SHEETS, WEAPON_THUMBNAILS } from "../../game/weapon-assets.ts";
 
 function installMemoryStorage(initial: Record<string, string> = {}) {
   const store = new Map<string, string>(Object.entries(initial));
@@ -98,6 +99,8 @@ describe("WEAPONS", () => {
       WEAPONS.map((w) => w.id),
       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     );
+    assert.deepEqual(WEAPONS.map((weapon) => weapon.sheet), WEAPON_SHEETS);
+    assert.equal(WEAPON_THUMBNAILS.length, WEAPONS.length);
     for (const w of WEAPONS) {
       assert.ok(w.name.length > 0);
       assert.match(w.sheet, /^\/game\/draft\/v2\/weap_.+_5x5\.png$/);
