@@ -203,10 +203,10 @@ export function GameApp() {
             if (save) {
               // Winning keeps every unlocked weapon, restores full health
               // and full ammo, and preserves armor clamped to [0, 100].
-              const sizes = [12, 8, 36, 5, 4, 10, 90, 6, 4, 14, 5, 9];
-              const full = [120, 48, 216, 20, 16, 80, 450, 36, 24, 84, 30, 54];
-              const mag = [...save.mag, ...Array(12).fill(0)].slice(0, 12);
-              const ammo = [...save.ammo, ...Array(12).fill(0)].slice(0, 12);
+              const sizes = [12, 8, 36, 5, 4, 10, 90, 6, 4, 14, 5, 9, 4, 8, 6, 24, 3, 30];
+              const full = [120, 48, 216, 20, 16, 80, 450, 36, 24, 84, 30, 54, 24, 48, 36, 144, 18, 180];
+              const mag = [...save.mag, ...Array(18).fill(0)].slice(0, 18);
+              const ammo = [...save.ammo, ...Array(18).fill(0)].slice(0, 18);
               mag[0] = sizes[0]!;
               ammo[0] = full[0]!;
               for (let i = 1; i < 12; i++) {
@@ -426,8 +426,7 @@ export function GameApp() {
     if (screen !== "play" && document.pointerLockElement) {
       document.exitPointerLock();
     }
-    // Standby bed (bgm-menu.ogg, cut from the 31-minute bgm.ogg) under
-    // menus and end cards; the field mix takes over on play via setMusic.
+    // One menu MP3 covers menus, pause, settings, and end cards.
     rtRef.current?.setMenuBed(screen !== "play");
   }, [screen]);
 

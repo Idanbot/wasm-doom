@@ -1,0 +1,14 @@
+{
+  "signature": "1259f12f179a0d74fc063edca039778224689b9f224cd48381c25ab5e3f75958",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You reached Command. That took longer than expected.",
+    "speaker": "saturn",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Human site director with calm tactical radio cadence",
+  "effect": "highpass=f=190,lowpass=f=4800",
+  "generatedAt": "2026-09-27T21:01:47.245Z"
+}

@@ -18,17 +18,87 @@
     {
       "id": "boss-oracle",
       "url": "/game/voices/boss-oracle.mp3",
-      "duration": 3.624
+      "duration": 3.576
     },
     {
       "id": "boss-gravemind",
       "url": "/game/voices/boss-gravemind.mp3",
-      "duration": 4.608
+      "duration": 4.872
     },
     {
       "id": "boss-archivist",
       "url": "/game/voices/boss-archivist.mp3",
       "duration": 4.536
+    },
+    {
+      "id": "boss-veyran-v2",
+      "url": "/game/voices/boss-veyran-v2.mp3",
+      "duration": 6.408
+    },
+    {
+      "id": "boss-hecate-v2",
+      "url": "/game/voices/boss-hecate-v2.mp3",
+      "duration": 5.376
+    },
+    {
+      "id": "boss-chimera-v2",
+      "url": "/game/voices/boss-chimera-v2.mp3",
+      "duration": 5.4
+    },
+    {
+      "id": "boss-oracle-v2",
+      "url": "/game/voices/boss-oracle-v2.mp3",
+      "duration": 4.656
+    },
+    {
+      "id": "boss-gravemind-v2",
+      "url": "/game/voices/boss-gravemind-v2.mp3",
+      "duration": 4.872
+    },
+    {
+      "id": "boss-archivist-v2",
+      "url": "/game/voices/boss-archivist-v2.mp3",
+      "duration": 4.896
+    },
+    {
+      "id": "boss-halcyon",
+      "url": "/game/voices/boss-halcyon.mp3",
+      "duration": 5.448
+    },
+    {
+      "id": "boss-halcyon-v2",
+      "url": "/game/voices/boss-halcyon-v2.mp3",
+      "duration": 4.272
+    },
+    {
+      "id": "boss-relay",
+      "url": "/game/voices/boss-relay.mp3",
+      "duration": 3.768
+    },
+    {
+      "id": "boss-relay-v2",
+      "url": "/game/voices/boss-relay-v2.mp3",
+      "duration": 5.208
+    },
+    {
+      "id": "boss-titan",
+      "url": "/game/voices/boss-titan.mp3",
+      "duration": 5.664
+    },
+    {
+      "id": "boss-titan-v2",
+      "url": "/game/voices/boss-titan-v2.mp3",
+      "duration": 5.592
+    },
+    {
+      "id": "boss-kest",
+      "url": "/game/voices/boss-kest.mp3",
+      "duration": 3.648
+    },
+    {
+      "id": "boss-kest-v2",
+      "url": "/game/voices/boss-kest-v2.mp3",
+      "duration": 4.608
     }
   ]
 }

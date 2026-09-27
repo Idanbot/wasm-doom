@@ -28,14 +28,14 @@
       "speaker": "electra",
       "style": "Predictive machine core collapsing into static",
       "effect": "robot-high",
-      "text": "Prediction failed. Core access released."
+      "text": "Prediction failed. The Predictor rail is yours."
     },
     {
       "id": "boss-gravemind",
       "speaker": "saturn",
       "style": "Dying reactor engineer, exhausted human rasp",
       "effect": "respirator",
-      "text": "Containment... lost. Take the cutter. Seal the sink."
+      "text": "Containment... lost. Take the Sink cannon. Seal the reactor."
     },
     {
       "id": "boss-archivist",
@@ -43,6 +43,104 @@
       "style": "Ancient memory custodian, calm synthetic voice breaking into human regret",
       "effect": "robot-low",
       "text": "Archive integrity lost. The rail is yours. Do not write me back."
+    },
+    {
+      "id": "boss-veyran-v2",
+      "speaker": "saturn",
+      "style": "Wounded human commander",
+      "effect": "overlord",
+      "text": "My vault is yours. I buried the truth beneath that rail. Do not let them seal it again."
+    },
+    {
+      "id": "boss-hecate-v2",
+      "speaker": "neptune",
+      "style": "Damaged machine warden",
+      "effect": "robot-low",
+      "text": "Safety locks have failed. My forge cutter is yours. Keep clear of the discharge."
+    },
+    {
+      "id": "boss-chimera-v2",
+      "speaker": "draco",
+      "style": "Infected specimen",
+      "effect": "bio",
+      "text": "Containment was never meant to save you. The compound still lives in the sprayer."
+    },
+    {
+      "id": "boss-oracle-v2",
+      "speaker": "electra",
+      "style": "Predictive core",
+      "effect": "robot-high",
+      "text": "I saw every outcome except this one. The Predictor rifle is yours."
+    },
+    {
+      "id": "boss-gravemind-v2",
+      "speaker": "saturn",
+      "style": "Dying reactor engineer",
+      "effect": "respirator",
+      "text": "Pressure gone. Take the Sink cannon. Keep the core from swallowing you."
+    },
+    {
+      "id": "boss-archivist-v2",
+      "speaker": "neptune",
+      "style": "Ancient memory custodian",
+      "effect": "robot-low",
+      "text": "Last record: I was here. Take the Archive rail and carry it out."
+    },
+    {
+      "id": "boss-halcyon",
+      "speaker": "neptune",
+      "style": "Cryogenic sentry",
+      "effect": "robot-low",
+      "text": "Coolant pressure collapsing. The Rime launcher is yours. Do not let it thaw."
+    },
+    {
+      "id": "boss-halcyon-v2",
+      "speaker": "neptune",
+      "style": "Cryogenic sentry",
+      "effect": "robot-low",
+      "text": "Containment ice gone. Keep the cold between you and the next chamber."
+    },
+    {
+      "id": "boss-relay",
+      "speaker": "electra",
+      "style": "Interference robot",
+      "effect": "robot-high",
+      "text": "Signal lost. The Relay carbine is unbound."
+    },
+    {
+      "id": "boss-relay-v2",
+      "speaker": "electra",
+      "style": "Interference robot",
+      "effect": "robot-high",
+      "text": "No carrier. No command. Take my transmitter and make your own route."
+    },
+    {
+      "id": "boss-titan",
+      "speaker": "draco",
+      "style": "Hydraulic siege walker",
+      "effect": "heavy",
+      "text": "Hydraulics failed. Siege cannon released. The gate is yours."
+    },
+    {
+      "id": "boss-titan-v2",
+      "speaker": "draco",
+      "style": "Hydraulic siege walker",
+      "effect": "heavy",
+      "text": "Load-bearing systems gone. Take the Titan cannon before the ceiling follows."
+    },
+    {
+      "id": "boss-kest",
+      "speaker": "saturn",
+      "style": "Wounded site director",
+      "effect": "comms",
+      "text": "You have cut the chain of command. The Kest rifle is yours."
+    },
+    {
+      "id": "boss-kest-v2",
+      "speaker": "saturn",
+      "style": "Wounded site director",
+      "effect": "comms",
+      "text": "I built this place to outlast us. Take the rifle. Prove me wrong."
     }
   ]
 }

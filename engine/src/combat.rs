@@ -32,6 +32,10 @@ pub(crate) fn profile(skin: u8, kind: u8) -> Combat {
         SKIN_ORACLE => Combat { speed: 1.8, range: 8.5, windup: 0.58, cooldown: 1.18, damage: 16, pellets: 2, spread: 0.035, ..rifle },
         SKIN_GRAVEMIND => Combat { speed: 1.05, range: 5.6, windup: 0.88, cooldown: 1.35, damage: 13, pellets: 5, spread: 0.17, ..rifle },
         SKIN_ARCHIVIST => Combat { speed: 1.62, range: 7.4, windup: 0.76, cooldown: 1.24, damage: 18, pellets: 3, spread: 0.06, ..rifle },
+        SKIN_HALCYON => Combat { speed: 0.9, range: 6.2, windup: 0.7, cooldown: 1.35, damage: 14, pellets: 5, spread: 0.13, ..rifle },
+        SKIN_RELAY => Combat { speed: 2.1, range: 8.2, windup: 0.42, cooldown: 0.9, damage: 12, pellets: 3, spread: 0.045, ..rifle },
+        SKIN_TITAN => Combat { speed: 0.72, range: 7.0, windup: 1.15, cooldown: 1.6, damage: 25, pellets: 5, spread: 0.14, ..rifle },
+        SKIN_KEST => Combat { speed: 2.35, range: 7.5, windup: 0.38, cooldown: 0.78, damage: 11, pellets: 4, spread: 0.055, ..rifle },
         _ if kind == EK_BRUTE => Combat { speed: 2.15, range: 1.1, windup: 0.6, cooldown: 0.9, damage: 14, melee: true, ..rifle },
         _ => rifle,
     }

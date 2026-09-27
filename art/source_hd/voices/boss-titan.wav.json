@@ -1,0 +1,7 @@
+{
+  "signature": "034f3ce33d7ec9b7f5e821ebbbc527b3169f01c3b1ff4f10f44a1d4357c11bb0",
+  "model": "@cf/deepgram/aura-2-en",
+  "speaker": "draco",
+  "effect": "asetrate=22080,aresample=24000,atempo=1.04,highpass=f=110,lowpass=f=5200",
+  "generatedAt": "2026-09-27T20:59:58.058Z"
+}

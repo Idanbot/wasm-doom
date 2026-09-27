@@ -1,0 +1,14 @@
+{
+  "signature": "778d18ce2d659bc802df88742fc37bf5d00994bc62720ecfbd8f8120869482da",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Move left. I know your pattern.",
+    "speaker": "saturn",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Human site director with calm tactical radio cadence",
+  "effect": "highpass=f=190,lowpass=f=4800",
+  "generatedAt": "2026-09-27T21:01:49.953Z"
+}

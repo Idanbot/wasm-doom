@@ -1,0 +1,14 @@
+{
+  "signature": "956fbda1783a02c67454eeb357bb9b91c00803c6542c5e93e1afafbe52085583",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Armor hit. Staying on task.",
+    "speaker": "saturn",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Human site director with calm tactical radio cadence",
+  "effect": "highpass=f=190,lowpass=f=4800",
+  "generatedAt": "2026-09-27T21:01:52.317Z"
+}

@@ -1,0 +1,14 @@
+{
+  "signature": "09b347a3127c5ae4f72768e1e237472650dfd786fb54ada5e13bad4ed57d5e76",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "This yard was built to hold you.",
+    "speaker": "draco",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Hydraulic siege walker with deep synthetic roar",
+  "effect": "asetrate=22080,aresample=24000,atempo=1.04,highpass=f=110,lowpass=f=5200",
+  "generatedAt": "2026-09-27T21:01:45.601Z"
+}

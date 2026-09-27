@@ -1861,27 +1861,6 @@
     "height": 960
   },
   {
-    "file": "/game/music/bgm-menu.ogg",
-    "name": "bgm-menu.ogg",
-    "size": 2726862,
-    "hash": "e78e4a06cc055ead04d699865dee38a32495b1884d887b47dd50bc13b888fc0e",
-    "shortHash": "e78e4a06"
-  },
-  {
-    "file": "/game/music/bgm-remix.ogg",
-    "name": "bgm-remix.ogg",
-    "size": 2751190,
-    "hash": "0b6d179af18c896391095a2c430ea051d36f6a7735b2fd11cc9328bd4794cfbb",
-    "shortHash": "0b6d179a"
-  },
-  {
-    "file": "/game/music/boss.ogg",
-    "name": "boss.ogg",
-    "size": 2871617,
-    "hash": "a2fc1d64ce9efbaf84dd8497bbe8f2488210230e78d64d50f66c2dad39e63696",
-    "shortHash": "a2fc1d64"
-  },
-  {
     "file": "/game/environment/items/combat_armor_plate.png",
     "name": "combat_armor_plate.png",
     "size": 111741,
@@ -4417,16 +4396,16 @@
   {
     "file": "/game/voices/boss-gravemind.mp3",
     "name": "boss-gravemind.mp3",
-    "size": 55629,
-    "hash": "302e20a2ecee9aee5aad9c798d1e6ecde5848e39fe8d269a9644fe6503bdb9f9",
-    "shortHash": "302e20a2"
+    "size": 58797,
+    "hash": "88241f726c27772b40aecfcdae973b96629c50b110b17aaea56619f1fe1fe0a6",
+    "shortHash": "88241f72"
   },
   {
     "file": "/game/voices/boss-oracle.mp3",
     "name": "boss-oracle.mp3",
-    "size": 43821,
-    "hash": "74ba0368a169a63a5e9245e296798905648a6dd4c95b3844788fedecad576343",
-    "shortHash": "74ba0368"
+    "size": 43245,
+    "hash": "5f8e7987b48d1f11cc6a4b9ca9f0c263e1008e51f9e6a5358ab8fa716394bfd1",
+    "shortHash": "5f8e7987"
   },
   {
     "file": "/game/voices/gravemind-1.mp3",
@@ -4677,5 +4656,868 @@
     "size": 17901,
     "hash": "a8ce19f7795a03898d1f29768f11a12c6f60c8329f6907b371ff097b84c62c97",
     "shortHash": "a8ce19f7"
+  },
+  {
+    "file": "/game/draft/v2/weap_or7_5x5.png",
+    "name": "weap_or7_5x5.png",
+    "size": 2800042,
+    "hash": "3f469daec9a9f708a5ea7512a0b5a44d731795515b687a1b0bd3f472f1b45a48",
+    "shortHash": "3f469dae",
+    "width": 2560,
+    "height": 1920
+  },
+  {
+    "file": "/game/draft/v2/weap_or7_aim.png",
+    "name": "weap_or7_aim.png",
+    "size": 152104,
+    "hash": "c0eff28a058b1416f93e0b86ef23cbd4cae48f2477ba1da9c8d8fbad2c3f9a18",
+    "shortHash": "c0eff28a",
+    "width": 512,
+    "height": 384
+  },
+  {
+    "file": "/game/draft/v2/masters/or7.png",
+    "name": "or7.png",
+    "size": 323635,
+    "hash": "2508a2d224604f5d403b5fa3843aecab4a97de84a88d30965cbf78c53ad55df8",
+    "shortHash": "2508a2d2",
+    "width": 481,
+    "height": 457
+  },
+  {
+    "file": "/game/draft/v2/cases/case_or7.png",
+    "name": "case_or7.png",
+    "size": 904475,
+    "hash": "f9606ce40aa46d2277163ea6d21da912f8607c6374b367894b6fef80992a9bd7",
+    "shortHash": "f9606ce4",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "file": "/game/spr_gun_or7.png",
+    "name": "spr_gun_or7.png",
+    "size": 60487,
+    "hash": "8882656f4d62669c573a2fe786452025cebd2cfcb5582274966f9219a636bc83",
+    "shortHash": "8882656f",
+    "width": 256,
+    "height": 192
+  },
+  {
+    "file": "/game/ui/weapon-thumbs/or7.png",
+    "name": "or7.png",
+    "size": 144538,
+    "hash": "60e46d33b523936f4dd7b8e262c7d02f4312da6e15a537c95321268c00ca18ca",
+    "shortHash": "60e46d33",
+    "width": 640,
+    "height": 300
+  },
+  {
+    "file": "/game/draft/v2/weap_gs4_5x5.png",
+    "name": "weap_gs4_5x5.png",
+    "size": 2570107,
+    "hash": "d417ad576c8ed4954bfbbc4afc00cdd28d25711e98a2082b9fb6144cea8079f0",
+    "shortHash": "d417ad57",
+    "width": 2560,
+    "height": 1920
+  },
+  {
+    "file": "/game/draft/v2/weap_gs4_aim.png",
+    "name": "weap_gs4_aim.png",
+    "size": 139447,
+    "hash": "4aaeddc58d1f722497e5842f4882827bce4524a2ea8a1ee7b2e79eabb883e9cc",
+    "shortHash": "4aaeddc5",
+    "width": 512,
+    "height": 384
+  },
+  {
+    "file": "/game/draft/v2/masters/gs4.png",
+    "name": "gs4.png",
+    "size": 309458,
+    "hash": "c627538c44b8adc07461f57efb52129e0c884bd2e0ea2fd9f50df39aa090fd51",
+    "shortHash": "c627538c",
+    "width": 465,
+    "height": 470
+  },
+  {
+    "file": "/game/draft/v2/cases/case_gs4.png",
+    "name": "case_gs4.png",
+    "size": 906849,
+    "hash": "d8a900857e0dd303eda3db00f7de78231a87c482f19c0ebe37ce1d948ad2a2d9",
+    "shortHash": "d8a90085",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "file": "/game/spr_gun_gs4.png",
+    "name": "spr_gun_gs4.png",
+    "size": 60241,
+    "hash": "cb0d622f031f773e6a1581fb8fd33e11fc4193be91ac374d9913fec6d7e4b4ec",
+    "shortHash": "cb0d622f",
+    "width": 256,
+    "height": 192
+  },
+  {
+    "file": "/game/ui/weapon-thumbs/gs4.png",
+    "name": "gs4.png",
+    "size": 131675,
+    "hash": "24a96d6b6d338be182e564a148b311c7a44595dd7be6df182e48632e2f3d20d2",
+    "shortHash": "24a96d6b",
+    "width": 640,
+    "height": 300
+  },
+  {
+    "file": "/game/draft/v2/weap_cr3_5x5.png",
+    "name": "weap_cr3_5x5.png",
+    "size": 2667744,
+    "hash": "6fee195554af90da87af224df3ff2e6b9a7996919c27486f6214b2807912bf7d",
+    "shortHash": "6fee1955",
+    "width": 2560,
+    "height": 1920
+  },
+  {
+    "file": "/game/draft/v2/weap_cr3_aim.png",
+    "name": "weap_cr3_aim.png",
+    "size": 143469,
+    "hash": "05a363012b47be0375e42f1ca7de2e002118fa74eb1b57f9840972e2f5a730d3",
+    "shortHash": "05a36301",
+    "width": 512,
+    "height": 384
+  },
+  {
+    "file": "/game/draft/v2/masters/cr3.png",
+    "name": "cr3.png",
+    "size": 310841,
+    "hash": "ad72d2b0c970c54dcc572372e051cc859b3bcdb166e9777919d57982b024f732",
+    "shortHash": "ad72d2b0",
+    "width": 461,
+    "height": 467
+  },
+  {
+    "file": "/game/draft/v2/cases/case_cr3.png",
+    "name": "case_cr3.png",
+    "size": 913115,
+    "hash": "b8ee332950dd260d495e1f7d7aa2265a22e4d08c624d2834d4f40ae0ea71bcd8",
+    "shortHash": "b8ee3329",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "file": "/game/spr_gun_cr3.png",
+    "name": "spr_gun_cr3.png",
+    "size": 60639,
+    "hash": "a7dbbb8bda67e43a79c2126d4d4258fa3ef6df1fe8ad15559b2264cad1a5fe73",
+    "shortHash": "a7dbbb8b",
+    "width": 256,
+    "height": 192
+  },
+  {
+    "file": "/game/ui/weapon-thumbs/cr3.png",
+    "name": "cr3.png",
+    "size": 132912,
+    "hash": "1e1f9872b40e66c549399cbdab8f53c4e1b191eb25136c8dc9c161fa8b774969",
+    "shortHash": "1e1f9872",
+    "width": 640,
+    "height": 300
+  },
+  {
+    "file": "/game/draft/v2/weap_sr0_5x5.png",
+    "name": "weap_sr0_5x5.png",
+    "size": 2596785,
+    "hash": "df612fed6a303f9db47aa30ce40a3348ebb8921d11b591024b46e02e4278dd9d",
+    "shortHash": "df612fed",
+    "width": 2560,
+    "height": 1920
+  },
+  {
+    "file": "/game/draft/v2/weap_sr0_aim.png",
+    "name": "weap_sr0_aim.png",
+    "size": 140298,
+    "hash": "932850e79d81c1179e7dbb2da5e29d6a42db0e12770a174697d984b30e2e52fb",
+    "shortHash": "932850e7",
+    "width": 512,
+    "height": 384
+  },
+  {
+    "file": "/game/draft/v2/masters/sr0.png",
+    "name": "sr0.png",
+    "size": 328400,
+    "hash": "c5a37cf0b0bc840e31d415b98e700373c435d746592bb6219edabd174173a402",
+    "shortHash": "c5a37cf0",
+    "width": 481,
+    "height": 483
+  },
+  {
+    "file": "/game/draft/v2/cases/case_sr0.png",
+    "name": "case_sr0.png",
+    "size": 902653,
+    "hash": "7fc03e0c30777536b6998e159b27a21ae7f248c7b968126999d81cbb1d5211a2",
+    "shortHash": "7fc03e0c",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "file": "/game/spr_gun_sr0.png",
+    "name": "spr_gun_sr0.png",
+    "size": 60092,
+    "hash": "9723fd3b163ef04be9288bae2946762737e7cd0f3891386d4c28baaf45ef9b14",
+    "shortHash": "9723fd3b",
+    "width": 256,
+    "height": 192
+  },
+  {
+    "file": "/game/ui/weapon-thumbs/sr0.png",
+    "name": "sr0.png",
+    "size": 142476,
+    "hash": "edefac8a66a12a27865d0e2c1fcf7a83eb8e7f8b0958c15b162d8a1cdeef6cd8",
+    "shortHash": "edefac8a",
+    "width": 640,
+    "height": 300
+  },
+  {
+    "file": "/game/draft/v2/weap_ts12_5x5.png",
+    "name": "weap_ts12_5x5.png",
+    "size": 2831737,
+    "hash": "f9d56373fc9329424d3a37a2bf8cf9e93919283104d9460dfe2c707bb3d5d5ec",
+    "shortHash": "f9d56373",
+    "width": 2560,
+    "height": 1920
+  },
+  {
+    "file": "/game/draft/v2/weap_ts12_aim.png",
+    "name": "weap_ts12_aim.png",
+    "size": 153049,
+    "hash": "2621c983b6634eee5a2ef7d9fd6574214feb7c2392b83ea697f5747375d1007a",
+    "shortHash": "2621c983",
+    "width": 512,
+    "height": 384
+  },
+  {
+    "file": "/game/draft/v2/masters/ts12.png",
+    "name": "ts12.png",
+    "size": 390579,
+    "hash": "7ce01cda5d26c1f63b8878466ccb0914e6b1420ca3806b3aac0d2270c9f174a5",
+    "shortHash": "7ce01cda",
+    "width": 479,
+    "height": 506
+  },
+  {
+    "file": "/game/draft/v2/cases/case_ts12.png",
+    "name": "case_ts12.png",
+    "size": 913759,
+    "hash": "c8a037ee20706039afd13ae644a8b8e278c92633b6bade1718a947f24d387bc8",
+    "shortHash": "c8a037ee",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "file": "/game/spr_gun_ts12.png",
+    "name": "spr_gun_ts12.png",
+    "size": 61213,
+    "hash": "b5feea5370ad0a5e77ad7697915f37b73e7f857cb2bf567f678c4edde7c09c94",
+    "shortHash": "b5feea53",
+    "width": 256,
+    "height": 192
+  },
+  {
+    "file": "/game/ui/weapon-thumbs/ts12.png",
+    "name": "ts12.png",
+    "size": 144501,
+    "hash": "38949e2c07da4384835f7df36406c95f38a8a7daacdf5bab8cd9913d2eee015a",
+    "shortHash": "38949e2c",
+    "width": 640,
+    "height": 300
+  },
+  {
+    "file": "/game/draft/v2/weap_ks8_5x5.png",
+    "name": "weap_ks8_5x5.png",
+    "size": 2849254,
+    "hash": "dc429e3af74a72046077dccfee19393605b47b5007c194919ebfa19a1c20d821",
+    "shortHash": "dc429e3a",
+    "width": 2560,
+    "height": 1920
+  },
+  {
+    "file": "/game/draft/v2/weap_ks8_aim.png",
+    "name": "weap_ks8_aim.png",
+    "size": 153430,
+    "hash": "d976838d3910bf0d698c6dda75bae776096309e0dfb0ca2b25de62183bc0d99d",
+    "shortHash": "d976838d",
+    "width": 512,
+    "height": 384
+  },
+  {
+    "file": "/game/draft/v2/masters/ks8.png",
+    "name": "ks8.png",
+    "size": 358855,
+    "hash": "b03b396079f57d10920c6feb1e482343564b62ebc0876f336ef228909596336c",
+    "shortHash": "b03b3960",
+    "width": 478,
+    "height": 480
+  },
+  {
+    "file": "/game/draft/v2/cases/case_ks8.png",
+    "name": "case_ks8.png",
+    "size": 904265,
+    "hash": "372fd2dd78b9dafb4b34665daf3cc19e2a7fc9bad4a32812f3a2e2abb0886d30",
+    "shortHash": "372fd2dd",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "file": "/game/spr_gun_ks8.png",
+    "name": "spr_gun_ks8.png",
+    "size": 60441,
+    "hash": "860bfacb79109f67075c6e94884da5aa6417db57ac00afb94fb2e6d5ac400d2f",
+    "shortHash": "860bfacb",
+    "width": 256,
+    "height": 192
+  },
+  {
+    "file": "/game/ui/weapon-thumbs/ks8.png",
+    "name": "ks8.png",
+    "size": 144850,
+    "hash": "e931394c93d9192dc9da38b4c7bd466dbd3433e1bc9a03d7716f0f3e30439b90",
+    "shortHash": "e931394c",
+    "width": 640,
+    "height": 300
+  },
+  {
+    "file": "/game/enemy_halcyon_idle.png",
+    "name": "enemy_halcyon_idle.png",
+    "size": 71588,
+    "hash": "d8d0f41a36a4d80663625bf6fa2faff9b7689068e7e3879fa773d437fe4f5834",
+    "shortHash": "d8d0f41a",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_halcyon_move.png",
+    "name": "enemy_halcyon_move.png",
+    "size": 71639,
+    "hash": "6526e067a876424c7e6248a9f54fe1cbe929fff9808b35a59967711ed18cd587",
+    "shortHash": "6526e067",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_halcyon_pain.png",
+    "name": "enemy_halcyon_pain.png",
+    "size": 55034,
+    "hash": "df5f2340d9ecc22d7cf3de16706e36480e587dea74473f3801fddf26d7154002",
+    "shortHash": "df5f2340",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_halcyon_fire.png",
+    "name": "enemy_halcyon_fire.png",
+    "size": 105340,
+    "hash": "659f427840f1f8f7c1148de7ef73e87c34d58c89251442a7ec6389e7044135a9",
+    "shortHash": "659f4278",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_halcyon_reload.png",
+    "name": "enemy_halcyon_reload.png",
+    "size": 54823,
+    "hash": "07c9a52e21c91352686ccd6d3b2bfe5839ec4763a1f9b15bdac5b1c4508c0041",
+    "shortHash": "07c9a52e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_halcyon_dead.png",
+    "name": "enemy_halcyon_dead.png",
+    "size": 51749,
+    "hash": "bdec314f9bed6b15c9098ac70e849b2f8dd75743172dd6ffb25b5c65c0e75f79",
+    "shortHash": "bdec314f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_halcyon_special.png",
+    "name": "enemy_halcyon_special.png",
+    "size": 101406,
+    "hash": "2ca1bd0df9afc71362a9dc11307473941d88cf7a1259370513945fcf848dc478",
+    "shortHash": "2ca1bd0d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/voices/halcyon-1.mp3",
+    "name": "halcyon-1.mp3",
+    "size": 12525,
+    "hash": "b40f808ea6bd69999d349e24b690cc5f4c149487b7a1df6e56c95f8d7f8d8ee7",
+    "shortHash": "b40f808e"
+  },
+  {
+    "file": "/game/voices/halcyon-2.mp3",
+    "name": "halcyon-2.mp3",
+    "size": 18285,
+    "hash": "175293467a60e54d7c50acc0dad573e7097ac333c27e91db43c8c36059084bbc",
+    "shortHash": "17529346"
+  },
+  {
+    "file": "/game/voices/halcyon-3.mp3",
+    "name": "halcyon-3.mp3",
+    "size": 12909,
+    "hash": "755e79ff17d1359cfe230c9845a35d2732079e976ae55e7044db1a9e86fe553c",
+    "shortHash": "755e79ff"
+  },
+  {
+    "file": "/game/voices/halcyon-4.mp3",
+    "name": "halcyon-4.mp3",
+    "size": 12141,
+    "hash": "a474be36b7268c954c14919393bd678c6e39fb0ded4dccb9bf516c5846f64793",
+    "shortHash": "a474be36"
+  },
+  {
+    "file": "/game/voices/halcyon-5.mp3",
+    "name": "halcyon-5.mp3",
+    "size": 14637,
+    "hash": "7e5f54b64b2c9efee3c23d48297e10c93b05ec40a4d3b34b10d700a26dc00ad4",
+    "shortHash": "7e5f54b6"
+  },
+  {
+    "file": "/game/voices/halcyon-6.mp3",
+    "name": "halcyon-6.mp3",
+    "size": 11949,
+    "hash": "92058ff3dfb6b4e317d593533a901db7765d48b2bdb3c18b260b20b9b9411a2e",
+    "shortHash": "92058ff3"
+  },
+  {
+    "file": "/game/enemy_relay_idle.png",
+    "name": "enemy_relay_idle.png",
+    "size": 47497,
+    "hash": "ab7b322f9e6357857245228c98bc797960e2f049be50993232f62ad1d7a890d0",
+    "shortHash": "ab7b322f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_relay_move.png",
+    "name": "enemy_relay_move.png",
+    "size": 47545,
+    "hash": "0a1841b67333b4b2eb391ef6ec36343673703039e34336a52e757c33dc1b9f52",
+    "shortHash": "0a1841b6",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_relay_pain.png",
+    "name": "enemy_relay_pain.png",
+    "size": 40539,
+    "hash": "6e45aa071b056f199fb669ad940cedefabb7604e32daeea5c20ec8e3768aa5d2",
+    "shortHash": "6e45aa07",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_relay_fire.png",
+    "name": "enemy_relay_fire.png",
+    "size": 75812,
+    "hash": "709e7b660ab207ea90c396397b62fbda483e97ae6f6d5369b7dc6ab443bb903e",
+    "shortHash": "709e7b66",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_relay_reload.png",
+    "name": "enemy_relay_reload.png",
+    "size": 40502,
+    "hash": "417cea02e3f24d07f9095485bee3db9bcb027716e929a963efc9bdbe76afb13c",
+    "shortHash": "417cea02",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_relay_dead.png",
+    "name": "enemy_relay_dead.png",
+    "size": 41343,
+    "hash": "ffec92e19abb7ce20c33315ad938561b8aa9b3aafe9543ca9fdff5c570626492",
+    "shortHash": "ffec92e1",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_relay_special.png",
+    "name": "enemy_relay_special.png",
+    "size": 80432,
+    "hash": "9215195ed205d1daee036b91ac37582820bc6b4c775c252e136965704a2c1e3a",
+    "shortHash": "9215195e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/voices/relay-1.mp3",
+    "name": "relay-1.mp3",
+    "size": 20205,
+    "hash": "ba002ca4cd45eccc29db675e08efb20079043a6a654a64b4e386e240a8775cb7",
+    "shortHash": "ba002ca4"
+  },
+  {
+    "file": "/game/voices/relay-2.mp3",
+    "name": "relay-2.mp3",
+    "size": 13485,
+    "hash": "8fff0d7e17ffb85b0b755fc4b68ede5faf74ce741c80d4a7746e2ee52795c72e",
+    "shortHash": "8fff0d7e"
+  },
+  {
+    "file": "/game/voices/relay-3.mp3",
+    "name": "relay-3.mp3",
+    "size": 18669,
+    "hash": "7c3fd526233c455c5200b5d93427b6db973fe5d20ee4936c2ac12f1b2445c720",
+    "shortHash": "7c3fd526"
+  },
+  {
+    "file": "/game/voices/relay-4.mp3",
+    "name": "relay-4.mp3",
+    "size": 12909,
+    "hash": "20fc295a9b56df9950b995eba592a8a4c24f660dd624f8adb77dfec3ec3fd295",
+    "shortHash": "20fc295a"
+  },
+  {
+    "file": "/game/voices/relay-5.mp3",
+    "name": "relay-5.mp3",
+    "size": 18861,
+    "hash": "45c710b3588c8c36a075f7bc8bce98296348a01acc815238effe5c985385ce84",
+    "shortHash": "45c710b3"
+  },
+  {
+    "file": "/game/voices/relay-6.mp3",
+    "name": "relay-6.mp3",
+    "size": 19629,
+    "hash": "54ab48b166c7e3b2a528dd94640a09a8a87cd7e8de6ad1b3d13603ce32451b98",
+    "shortHash": "54ab48b1"
+  },
+  {
+    "file": "/game/enemy_titan_idle.png",
+    "name": "enemy_titan_idle.png",
+    "size": 83327,
+    "hash": "1eeb8ba6e334e4fc6af730d84f7db9d5ba33a47e107d5841327892934fa06f63",
+    "shortHash": "1eeb8ba6",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_titan_move.png",
+    "name": "enemy_titan_move.png",
+    "size": 83377,
+    "hash": "52b4c716d9a4575a3595bd4aa5f4f5682e2a9db438779d04fbbee99ec0fe2c90",
+    "shortHash": "52b4c716",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_titan_pain.png",
+    "name": "enemy_titan_pain.png",
+    "size": 62321,
+    "hash": "9b498fe14df82d9a367e33e29a59f990f9bd60afb33c1fa3d44a9add09013281",
+    "shortHash": "9b498fe1",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_titan_fire.png",
+    "name": "enemy_titan_fire.png",
+    "size": 120487,
+    "hash": "30ccc2b1220f35008ae615cf27630d89985f3f87f61d7c795876d0d221b56800",
+    "shortHash": "30ccc2b1",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_titan_reload.png",
+    "name": "enemy_titan_reload.png",
+    "size": 62026,
+    "hash": "96c171501ab2e4233a8706b2caadb4a3a035c877783c86a5f1f69d25487baf91",
+    "shortHash": "96c17150",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_titan_dead.png",
+    "name": "enemy_titan_dead.png",
+    "size": 52701,
+    "hash": "e7bd1a3ddd4a53ff8e96e03f6f0c28468ca4c27333a8c8ae31e1f39464f1c7b2",
+    "shortHash": "e7bd1a3d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_titan_special.png",
+    "name": "enemy_titan_special.png",
+    "size": 125141,
+    "hash": "19bd1c7d7a00fe9d163794387307de8d967f1ab67b27a15d00a07e90f0a5e095",
+    "shortHash": "19bd1c7d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/voices/titan-1.mp3",
+    "name": "titan-1.mp3",
+    "size": 17517,
+    "hash": "7478d386fccc55c0e1357fc53409eac450521a9e4e5cbc7262821815d5997cd2",
+    "shortHash": "7478d386"
+  },
+  {
+    "file": "/game/voices/titan-2.mp3",
+    "name": "titan-2.mp3",
+    "size": 18477,
+    "hash": "d69e1d2015ff165b62e5547dcde351b5419d79d7864c961e1742eade115f585e",
+    "shortHash": "d69e1d20"
+  },
+  {
+    "file": "/game/voices/titan-3.mp3",
+    "name": "titan-3.mp3",
+    "size": 10029,
+    "hash": "58e89eb28eb84e56cae4d6f1662c6d661f42252185c380b5e4bc3e83ef884258",
+    "shortHash": "58e89eb2"
+  },
+  {
+    "file": "/game/voices/titan-4.mp3",
+    "name": "titan-4.mp3",
+    "size": 12525,
+    "hash": "6955d4b2d2e65328d4de2a1586f0ff017a66ea449ab48bbbabdd818cdd172ea4",
+    "shortHash": "6955d4b2"
+  },
+  {
+    "file": "/game/voices/titan-5.mp3",
+    "name": "titan-5.mp3",
+    "size": 15597,
+    "hash": "e4f4957dcea5c7d6d3a4054047ff56243d38ed0ec4b91a4c7b720ffae33fcad0",
+    "shortHash": "e4f4957d"
+  },
+  {
+    "file": "/game/voices/titan-6.mp3",
+    "name": "titan-6.mp3",
+    "size": 20781,
+    "hash": "477ddb8dd4f983ebc20b5f5d7d223d0f62dfdf2c4aefd8b2bdd02dd2f3f1a027",
+    "shortHash": "477ddb8d"
+  },
+  {
+    "file": "/game/enemy_kest_idle.png",
+    "name": "enemy_kest_idle.png",
+    "size": 43174,
+    "hash": "8c9ce038a25b2adb03b7bdad32c7549c10d2b5999f9e5b8bc822660cd92f789f",
+    "shortHash": "8c9ce038",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_kest_move.png",
+    "name": "enemy_kest_move.png",
+    "size": 43224,
+    "hash": "b3f2a00b36fdd8be0904844f0600f50f946cdd60ac294a9bfb1c8c83404e8449",
+    "shortHash": "b3f2a00b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_kest_pain.png",
+    "name": "enemy_kest_pain.png",
+    "size": 37791,
+    "hash": "43457e661c20b597d98250a548ee570173da8e89f816cdaecbba120fb1f95b64",
+    "shortHash": "43457e66",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_kest_fire.png",
+    "name": "enemy_kest_fire.png",
+    "size": 71242,
+    "hash": "5144b7f7f42ba88f7ee839728bd9e00deb3aa302d60f9ff0855878ccaf39b795",
+    "shortHash": "5144b7f7",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_kest_reload.png",
+    "name": "enemy_kest_reload.png",
+    "size": 37813,
+    "hash": "93177eb2b852560953fad73f0bcb6f8ec17f04b1d2a7db648d36c35838ec642f",
+    "shortHash": "93177eb2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_kest_dead.png",
+    "name": "enemy_kest_dead.png",
+    "size": 31819,
+    "hash": "75ce79627231a1a1e87f68433c439d2e876e2c9b28bc312844092e0ca28b0198",
+    "shortHash": "75ce7962",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_kest_special.png",
+    "name": "enemy_kest_special.png",
+    "size": 76480,
+    "hash": "74fd2c044acb9f39086d2804d1e9b3c25d015e80fd768c78cb284dc4fd06ebfb",
+    "shortHash": "74fd2c04",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/voices/kest-1.mp3",
+    "name": "kest-1.mp3",
+    "size": 25581,
+    "hash": "c3c8b2e8715d3d61500d1bd5cf6d30bae97f0f8d0c5a65ab9c70caa21a3cd498",
+    "shortHash": "c3c8b2e8"
+  },
+  {
+    "file": "/game/voices/kest-2.mp3",
+    "name": "kest-2.mp3",
+    "size": 20781,
+    "hash": "2f0c85716e5ea00ecbd6aeca0cdd92b5ee29fec5da4f66a68010c8a4750d5377",
+    "shortHash": "2f0c8571"
+  },
+  {
+    "file": "/game/voices/kest-3.mp3",
+    "name": "kest-3.mp3",
+    "size": 17901,
+    "hash": "9499e56377cd15c281a8cc59020414a242d49c7e6df0b02f90da6d77da7807d6",
+    "shortHash": "9499e563"
+  },
+  {
+    "file": "/game/voices/kest-4.mp3",
+    "name": "kest-4.mp3",
+    "size": 13869,
+    "hash": "96d657607165503c7267b8dc3e8a880078938f7a89eefb504ba105ae09ef541a",
+    "shortHash": "96d65760"
+  },
+  {
+    "file": "/game/voices/kest-5.mp3",
+    "name": "kest-5.mp3",
+    "size": 19245,
+    "hash": "2884e51568a966e8d75fe7b48c9b4ceda20dc92d1440947de3a0d6a501521a32",
+    "shortHash": "2884e515"
+  },
+  {
+    "file": "/game/voices/kest-6.mp3",
+    "name": "kest-6.mp3",
+    "size": 16365,
+    "hash": "9af2e883375a4e9272891fe9c38cb34f212ed2b34964baeb04026253b10b70b2",
+    "shortHash": "9af2e883"
+  },
+  {
+    "file": "/game/voices/boss-veyran-v2.mp3",
+    "name": "boss-veyran-v2.mp3",
+    "size": 77229,
+    "hash": "339d75958529748fa7ed456a30d3833386d7afe6d27288c649261887552ca55e",
+    "shortHash": "339d7595"
+  },
+  {
+    "file": "/game/voices/boss-hecate-v2.mp3",
+    "name": "boss-hecate-v2.mp3",
+    "size": 64845,
+    "hash": "97c840fe4b36cd440eb1a5a7975de070d0aa26b2f50b344381d0847d9e398132",
+    "shortHash": "97c840fe"
+  },
+  {
+    "file": "/game/voices/boss-chimera-v2.mp3",
+    "name": "boss-chimera-v2.mp3",
+    "size": 65133,
+    "hash": "50ac5737b76d46bb0d6cca35a6da463f5dfe0d9481383c2892527d2a79b03a1c",
+    "shortHash": "50ac5737"
+  },
+  {
+    "file": "/game/voices/boss-oracle-v2.mp3",
+    "name": "boss-oracle-v2.mp3",
+    "size": 56205,
+    "hash": "13e8c17fa88aadca85a9e10365e961d82c26e28af018aa929850f051c37219ea",
+    "shortHash": "13e8c17f"
+  },
+  {
+    "file": "/game/voices/boss-gravemind-v2.mp3",
+    "name": "boss-gravemind-v2.mp3",
+    "size": 58797,
+    "hash": "ba6903be9ae56087d3f827fb053de892a71f98a74225cfe004bc14ed1731ad39",
+    "shortHash": "ba6903be"
+  },
+  {
+    "file": "/game/voices/boss-archivist-v2.mp3",
+    "name": "boss-archivist-v2.mp3",
+    "size": 59085,
+    "hash": "c505718182393c8254fb21fb2bdf1dce3fdd0ca40fc8f2445753ed8cb72a25ab",
+    "shortHash": "c5057181"
+  },
+  {
+    "file": "/game/voices/boss-halcyon-v2.mp3",
+    "name": "boss-halcyon-v2.mp3",
+    "size": 51597,
+    "hash": "24b117a575a5f8c3fa4014d8da1e36b2bfb2c76bcaf7ad54e81fe12dd5428e5b",
+    "shortHash": "24b117a5"
+  },
+  {
+    "file": "/game/voices/boss-relay-v2.mp3",
+    "name": "boss-relay-v2.mp3",
+    "size": 62829,
+    "hash": "7a73715c4013011860c9ea346eec76200cb322114143720333c5e09a2c5788b5",
+    "shortHash": "7a73715c"
+  },
+  {
+    "file": "/game/voices/boss-titan-v2.mp3",
+    "name": "boss-titan-v2.mp3",
+    "size": 67437,
+    "hash": "03c989ee039ff6b97cda3ea9bf2f81b0271cadff047ea00a20ee0660b179129a",
+    "shortHash": "03c989ee"
+  },
+  {
+    "file": "/game/voices/boss-kest-v2.mp3",
+    "name": "boss-kest-v2.mp3",
+    "size": 55629,
+    "hash": "39161801c02e24b46d38969fdcc378f7dcdb67cf09ba7235fab5a3f1e1b67395",
+    "shortHash": "39161801"
+  },
+  {
+    "file": "/game/voices/boss-halcyon.mp3",
+    "name": "boss-halcyon.mp3",
+    "size": 65709,
+    "hash": "6f1b843d7595dca06090207161e52e4453a832e41ac2c0d585bbc75d4b67a501",
+    "shortHash": "6f1b843d"
+  },
+  {
+    "file": "/game/voices/boss-relay.mp3",
+    "name": "boss-relay.mp3",
+    "size": 45549,
+    "hash": "412145b4215a7170a1b528845e62ab53bc123f037996b49aab8df7d2da7fa541",
+    "shortHash": "412145b4"
+  },
+  {
+    "file": "/game/voices/boss-titan.mp3",
+    "name": "boss-titan.mp3",
+    "size": 68301,
+    "hash": "b3f93a8506c1799f537bee2403a2f20f9b8ac7b4490985ba740b05bf7f6b7def",
+    "shortHash": "b3f93a85"
+  },
+  {
+    "file": "/game/voices/boss-kest.mp3",
+    "name": "boss-kest.mp3",
+    "size": 44109,
+    "hash": "6a0df9c06da0ba98e54bc86d8b7ee54d5774f7754537200cacc785e9863fd841",
+    "shortHash": "6a0df9c0"
+  },
+  {
+    "file": "/game/music/menu.mp3",
+    "name": "menu.mp3",
+    "size": 4249822,
+    "hash": "f2c9cdf425d3c371d7c7c2eb36ea21d3f2f3219ccbe3a1365844d68dfd28e16a",
+    "shortHash": "f2c9cdf4"
+  },
+  {
+    "file": "/game/music/bgm-remix.mp3",
+    "name": "bgm-remix.mp3",
+    "size": 3108357,
+    "hash": "d47580acbfbf6d115dcc7f51268a13c516b1bd5295d5284ab04ab7374d62429e",
+    "shortHash": "d47580ac"
+  },
+  {
+    "file": "/game/music/boss.mp3",
+    "name": "boss.mp3",
+    "size": 5540253,
+    "hash": "db63b9e593b5325384eb8b5f0b3c9b7b46cddc56120132e22c2b7a52fbf255ba",
+    "shortHash": "db63b9e5"
   }
 ]

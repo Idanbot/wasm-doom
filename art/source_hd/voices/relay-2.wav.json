@@ -1,0 +1,14 @@
+{
+  "signature": "b29b3845c743879c8a6b4afb8d452e0fd4186f5a7ef9522d14e3726695236d82",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "I have your frequency.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Interference robot with sharp synthetic voice",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-09-27T21:01:34.151Z"
+}

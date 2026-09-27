@@ -22,10 +22,11 @@ use crate::Engine;
 
 /// Player spawn: hangar floor, facing east into the west lane.
 pub(crate) const PLAYER_START: (f32, f32, f32) = (4.5, 15.5, 0.0);
-pub(crate) const LEVEL_COUNT: usize = 6;
+pub(crate) const LEVEL_COUNT: usize = 10;
 
 const PLAYER_STARTS: [(f32, f32, f32); LEVEL_COUNT] =
-    [PLAYER_START, (4.5, 6.5, 0.0), (4.5, 15.5, 0.0), (4.5, 6.5, 0.0), (4.5, 25.5, 0.0), (4.5, 16.5, 0.0)];
+    [PLAYER_START, (4.5, 6.5, 0.0), (4.5, 15.5, 0.0), (4.5, 6.5, 0.0), (4.5, 25.5, 0.0), (4.5, 16.5, 0.0),
+     (4.5, 5.5, 0.0), (4.5, 25.5, 0.0), (4.5, 15.5, 0.0), (4.5, 5.5, 0.0)];
 const BOSS_SPOTS_BY_LEVEL: [[(f32, f32); 2]; LEVEL_COUNT] = [
     [(40.5, 24.5), (43.5, 27.5)],
     [(38.5, 23.5), (43.5, 25.5)],
@@ -33,8 +34,13 @@ const BOSS_SPOTS_BY_LEVEL: [[(f32, f32); 2]; LEVEL_COUNT] = [
     [(39.5, 24.5), (43.5, 25.5)],
     [(39.5, 24.5), (42.5, 24.5)],
     [(40.5, 23.5), (42.5, 25.5)],
+    [(39.5, 25.5), (43.5, 26.5)],
+    [(39.5, 8.5), (43.5, 7.5)],
+    [(42.5, 15.5), (43.5, 18.5)],
+    [(40.5, 26.5), (43.5, 25.5)],
 ];
-const OVERRIDES: [(f32, f32); LEVEL_COUNT] = [(40.5, 21.5), (43.5, 27.5), (43.5, 15.5), (40.5, 21.5), (39.5, 20.5), (40.5, 20.5)];
+const OVERRIDES: [(f32, f32); LEVEL_COUNT] = [(40.5, 21.5), (43.5, 27.5), (43.5, 15.5), (40.5, 21.5), (39.5, 20.5), (40.5, 20.5),
+    (40.5, 23.5), (40.5, 6.5), (40.5, 13.5), (40.5, 23.5)];
 
 pub(crate) fn level_index(wave: i32) -> usize {
     (wave.saturating_sub(1) as usize) % LEVEL_COUNT
@@ -53,7 +59,8 @@ pub(crate) fn override_point(wave: i32) -> (f32, f32) {
 }
 
 pub(crate) fn boss_skin(wave: i32) -> u8 {
-    [SKIN_VEYRAN, SKIN_HECATE, SKIN_CHIMERA, SKIN_ORACLE, SKIN_GRAVEMIND, SKIN_ARCHIVIST][level_index(wave)]
+    [SKIN_VEYRAN, SKIN_HECATE, SKIN_CHIMERA, SKIN_ORACLE, SKIN_GRAVEMIND, SKIN_ARCHIVIST,
+     SKIN_HALCYON, SKIN_RELAY, SKIN_TITAN, SKIN_KEST][level_index(wave)]
 }
 
 pub(crate) type HostileSpawn = (u8, u8, f32, f32);
@@ -140,9 +147,31 @@ const HOSTILES_ARCHIVE: &[HostileSpawn] = &[
     (EK_BRUTE, SKIN_GUNNER | field::SHIELD_BIT, 35.5, 23.5),
     (EK_WRAITH, SKIN_HORNET, 43.5, 26.5),
 ];
+const HOSTILES_CRYO: &[HostileSpawn] = &[
+    (EK_HUSK, SKIN_HAZMAT, 8.5, 5.5), (EK_WRAITH, SKIN_HORNET, 17.5, 5.5),
+    (EK_BRUTE, SKIN_LOADER, 25.5, 8.5), (EK_HUSK, SKIN_BREACHER, 20.5, 20.5),
+    (EK_WRAITH, SKIN_MARKSMAN, 24.5, 25.5), (EK_BRUTE, SKIN_HAZMAT, 37.5, 25.5),
+    (EK_WRAITH, SKIN_HORNET, 43.5, 25.5),
+];
+const HOSTILES_SIGNAL: &[HostileSpawn] = &[
+    (EK_HUSK, SKIN_RIFLEMAN, 8.5, 25.5), (EK_WRAITH, SKIN_MARKSMAN, 18.5, 24.5),
+    (EK_HUSK, SKIN_GUNNER, 24.5, 20.5), (EK_MARTYR, SKIN_MARTYR, 20.5, 8.5),
+    (EK_WRAITH, SKIN_HORNET, 35.5, 8.5), (EK_BRUTE, SKIN_GUNNER, 42.5, 8.5),
+];
+const HOSTILES_SIEGE: &[HostileSpawn] = &[
+    (EK_HUSK, SKIN_BREACHER, 8.5, 15.5), (EK_BRUTE, SKIN_LOADER, 18.5, 15.5),
+    (EK_WRAITH, SKIN_HORNET, 24.5, 6.5), (EK_BRUTE, SKIN_GUNNER, 25.5, 25.5),
+    (EK_HUSK, SKIN_HAZMAT, 35.5, 14.5), (EK_BRUTE, SKIN_LOADER, 43.5, 20.5),
+];
+const HOSTILES_COMMAND: &[HostileSpawn] = &[
+    (EK_HUSK, SKIN_RIFLEMAN, 8.5, 5.5), (EK_WRAITH, SKIN_MARKSMAN, 20.5, 6.5),
+    (EK_HUSK, SKIN_GUNNER, 21.5, 15.5), (EK_BRUTE, SKIN_HAZMAT, 20.5, 25.5),
+    (EK_WRAITH, SKIN_HORNET, 35.5, 24.5), (EK_HUSK, SKIN_BREACHER, 43.5, 26.5),
+];
 
 pub(crate) fn hostiles(wave: i32) -> &'static [HostileSpawn] {
-    [HOSTILES_UPPER, HOSTILES_FOUNDRY, HOSTILES_BIOFORGE, HOSTILES_DATACENTER, HOSTILES_REACTOR, HOSTILES_ARCHIVE][level_index(wave)]
+    [HOSTILES_UPPER, HOSTILES_FOUNDRY, HOSTILES_BIOFORGE, HOSTILES_DATACENTER, HOSTILES_REACTOR, HOSTILES_ARCHIVE,
+     HOSTILES_CRYO, HOSTILES_SIGNAL, HOSTILES_SIEGE, HOSTILES_COMMAND][level_index(wave)]
 }
 
 /// One ambush: a player zone rect plus the group that spawns once.
@@ -207,9 +236,14 @@ const ARCHIVE_AMBUSHES: &[AmbushDef] = &[
     AmbushDef { zone: (14.0, 13.0, 29.0, 20.0), group: &[(EK_WRAITH, 23.5, 5.5), (EK_HUSK, 22.5, 26.5)] },
     AmbushDef { zone: (34.0, 17.0, 44.0, 26.0), group: &[(EK_MARTYR, 40.5, 8.5), (EK_WRAITH, 37.5, 8.5)] },
 ];
+const CRYO_AMBUSHES: &[AmbushDef] = &[AmbushDef { zone: (14.0, 2.0, 29.0, 11.0), group: &[(EK_WRAITH, 20.5, 22.5), (EK_BRUTE, 25.5, 23.5)] }];
+const SIGNAL_AMBUSHES: &[AmbushDef] = &[AmbushDef { zone: (14.0, 20.0, 29.0, 29.0), group: &[(EK_MARTYR, 21.5, 7.5), (EK_WRAITH, 24.5, 8.5)] }];
+const SIEGE_AMBUSHES: &[AmbushDef] = &[AmbushDef { zone: (15.0, 12.0, 29.0, 21.0), group: &[(EK_BRUTE, 25.5, 6.5), (EK_MARTYR, 25.5, 25.5)] }];
+const COMMAND_AMBUSHES: &[AmbushDef] = &[AmbushDef { zone: (15.0, 2.0, 29.0, 11.0), group: &[(EK_WRAITH, 23.5, 25.5), (EK_HUSK, 20.5, 24.5)] }];
 
 fn ambush_defs(wave: i32) -> &'static [AmbushDef] {
-    [AMBUSH_DEFS, FOUNDRY_AMBUSHES, BIOFORGE_AMBUSHES, DATACENTER_AMBUSHES, REACTOR_AMBUSHES, ARCHIVE_AMBUSHES][level_index(wave)]
+    [AMBUSH_DEFS, FOUNDRY_AMBUSHES, BIOFORGE_AMBUSHES, DATACENTER_AMBUSHES, REACTOR_AMBUSHES, ARCHIVE_AMBUSHES,
+     CRYO_AMBUSHES, SIGNAL_AMBUSHES, SIEGE_AMBUSHES, COMMAND_AMBUSHES][level_index(wave)]
 }
 
 /// Carve the hub-and-spoke shell. Idempotent per fresh map fill.
@@ -478,6 +512,42 @@ fn build_archive(e: &mut Engine) {
     mark_override(e, OVERRIDES[5]);
 }
 
+fn build_cryo(e: &mut Engine) {
+    e.map.fill(1); e.floor.fill(0); e.decal.fill(0);
+    for &(x,y,w,h,t) in &[(1,2,11,9,7),(14,2,15,10,7),(14,17,15,13,6),(32,2,14,11,7),(32,17,14,13,4)] { e.room(x,y,w,h,t,1); }
+    e.hall_h(10,15,6,11); e.hall_v(21,11,18,13); e.hall_h(28,33,24,12);
+    e.hall_h(28,33,7,11); e.hall_v(39,11,18,12);
+    for (x,y) in [(18,5),(26,5),(18,24),(26,25),(35,5),(43,6),(35,26),(44,26)] { e.pillar(x,y,6); }
+    mark_override(e, OVERRIDES[6]);
+}
+
+fn build_signal(e: &mut Engine) {
+    e.map.fill(1); e.floor.fill(0); e.decal.fill(0);
+    for &(x,y,w,h,t) in &[(1,20,11,10,4),(14,18,16,12,6),(14,2,16,12,4),(33,2,13,12,4),(33,18,13,12,6)] { e.room(x,y,w,h,t,1); }
+    e.hall_h(10,15,25,14); e.hall_v(21,12,19,13); e.hall_h(29,34,8,13);
+    e.hall_h(29,34,24,13); e.hall_v(39,12,19,14);
+    for (x,y) in [(17,4),(27,10),(17,25),(27,25),(35,4),(43,10),(35,24),(43,24)] { e.pillar(x,y,6); }
+    mark_override(e, OVERRIDES[7]);
+}
+
+fn build_siege(e: &mut Engine) {
+    e.map.fill(1); e.floor.fill(0); e.decal.fill(0);
+    for &(x,y,w,h,t) in &[(1,12,11,9,6),(15,11,15,11,7),(15,2,15,7,6),(15,24,15,6,7),(33,10,13,13,4)] { e.room(x,y,w,h,t,1); }
+    e.hall_h(10,16,16,14); e.hall_h(29,34,16,12);
+    e.hall_v(22,8,12,14); e.hall_v(22,21,25,14);
+    for (x,y) in [(17,13),(27,13),(17,20),(27,20),(36,12),(44,12),(36,20),(44,20)] { e.pillar(x,y,6); }
+    mark_override(e, OVERRIDES[8]);
+}
+
+fn build_command(e: &mut Engine) {
+    e.map.fill(1); e.floor.fill(0); e.decal.fill(0);
+    for &(x,y,w,h,t) in &[(1,2,11,9,4),(14,2,15,11,6),(14,18,15,12,4),(33,2,13,11,6),(33,18,13,12,4)] { e.room(x,y,w,h,t,1); }
+    e.hall_h(10,15,6,12); e.hall_v(21,11,19,14); e.hall_h(28,34,24,14);
+    e.hall_h(28,34,7,12); e.hall_v(39,11,19,14);
+    for (x,y) in [(17,4),(27,4),(17,26),(27,26),(35,5),(44,5),(35,26),(44,26)] { e.pillar(x,y,6); }
+    mark_override(e, OVERRIDES[9]);
+}
+
 fn mark_override(e: &mut Engine, point: (f32, f32)) {
     let cx = point.0.floor() as i32;
     let cy = point.1.floor() as i32;
@@ -497,6 +567,10 @@ pub(crate) fn build_level(e: &mut Engine) {
         3 => build_datacenter(e),
         4 => build_reactor(e),
         5 => build_archive(e),
+        6 => build_cryo(e),
+        7 => build_signal(e),
+        8 => build_siege(e),
+        9 => build_command(e),
         _ => build_hub_spoke(e),
     }
 }
@@ -739,6 +813,29 @@ fn place_archive(e: &mut Engine) {
     ] { prop(e, kind, x, y); }
 }
 
+fn place_expansion(e: &mut Engine, sector: usize) {
+    reset_level_entities(e);
+    let decor = match sector {
+        6 => EK_PROP_AC,
+        7 => EK_PROP_SERVER,
+        8 => EK_PROP_REACTOR,
+        _ => EK_PROP_VENT,
+    };
+    let points = match sector {
+        6 | 9 => [(6.5,5.5),(18.5,5.5),(26.5,7.5),(19.5,23.5),(26.5,25.5),(35.5,6.5),(43.5,8.5),(35.5,25.5),(44.5,26.5)],
+        7 => [(6.5,25.5),(18.5,25.5),(26.5,24.5),(19.5,6.5),(26.5,8.5),(35.5,6.5),(43.5,8.5),(35.5,25.5),(43.5,25.5)],
+        _ => [(6.5,15.5),(18.5,15.5),(26.5,17.5),(19.5,5.5),(26.5,6.5),(19.5,26.5),(26.5,26.5),(35.5,15.5),(43.5,20.5)],
+    };
+    for (i, (x, y)) in points.into_iter().enumerate() {
+        prop(e, if i % 3 == 0 { EK_PROP_WLIGHT_C } else { decor }, x, y);
+    }
+    let start = player_start(e.wave);
+    prop(e, EK_MED, start.0 + 1.0, start.1 + 1.0);
+    prop(e, EK_AMMO, start.0 + 3.0, start.1);
+    prop(e, EK_ARMOR, start.0 + 5.0, start.1 + 1.0);
+    for (x,y) in [(17.5,14.5),(25.5,17.5),(36.5,18.5),(43.5,22.5)] { prop(e, EK_CRATE, x, y); }
+}
+
 /// Static v2 machinery: nearest-open seating keeps a hand-authored
 /// coordinate from embedding inside a wall after a carve change.
 fn prop(e: &mut Engine, kind: u8, x: f32, y: f32) {
@@ -753,10 +850,12 @@ pub(crate) fn place_level(e: &mut Engine) {
         3 => place_datacenter(e),
         4 => place_reactor(e),
         5 => place_archive(e),
+        6..=9 => place_expansion(e, level_index(e.wave)),
         _ => place_hub_spoke(e),
     }
     let (x, y) = override_point(e.wave);
-    let skin = [SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_BIOFORGE, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER][level_index(e.wave)];
+    let skin = [SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_BIOFORGE, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER,
+                SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER][level_index(e.wave)];
     e.spawn_with_skin(EK_OVERRIDE_CONSOLE, skin, x, y);
     let (nx, ny) = field::node_point(e.wave);
     e.spawn_with_skin(EK_NODE, skin, nx, ny);
@@ -997,7 +1096,8 @@ mod tests {
     #[test]
     fn each_sector_has_a_distinct_boss_and_enemy_cast() {
         let skins: Vec<u8> = (1..=LEVEL_COUNT as i32).map(boss_skin).collect();
-        assert_eq!(skins, vec![SKIN_VEYRAN, SKIN_HECATE, SKIN_CHIMERA, SKIN_ORACLE, SKIN_GRAVEMIND, SKIN_ARCHIVIST]);
+        assert_eq!(skins, vec![SKIN_VEYRAN, SKIN_HECATE, SKIN_CHIMERA, SKIN_ORACLE, SKIN_GRAVEMIND, SKIN_ARCHIVIST,
+            SKIN_HALCYON, SKIN_RELAY, SKIN_TITAN, SKIN_KEST]);
         assert!(hostiles(1).len() > 10 && hostiles(2).len() > 10 && hostiles(3).len() > 10);
         assert_ne!(hostiles(1), hostiles(2));
         assert_ne!(hostiles(2), hostiles(3));
@@ -1013,7 +1113,8 @@ mod tests {
             let consoles: Vec<_> = e.ents.iter().filter(|ent| ent.kind == EK_OVERRIDE_CONSOLE).collect();
             assert_eq!(consoles.len(), 1);
             assert_eq!((consoles[0].x, consoles[0].y), override_point(wave));
-            assert_eq!(consoles[0].skin, [SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_BIOFORGE, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER][level_index(wave)]);
+            assert_eq!(consoles[0].skin, [SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_BIOFORGE, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER,
+                SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER][level_index(wave)]);
             assert!(boss_spots(wave).iter().all(|spot| *spot != override_point(wave)));
         }
     }

@@ -1,0 +1,14 @@
+{
+  "signature": "5b6538fd5eec533826c5a1fdf104a7e1705993a5be48b3f9695d23b36fdceff2",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Siege platform online.",
+    "speaker": "draco",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Hydraulic siege walker with deep synthetic roar",
+  "effect": "asetrate=22080,aresample=24000,atempo=1.04,highpass=f=110,lowpass=f=5200",
+  "generatedAt": "2026-09-27T21:01:40.241Z"
+}

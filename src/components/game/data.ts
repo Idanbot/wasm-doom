@@ -16,10 +16,20 @@ export const SECTORS = [
   { code: "NADIR–7D", name: "DATA SPINE", bossTitle: "PREDICTIVE CORE", bossName: "ORACLE–7" },
   { code: "NADIR–7E", name: "REACTOR SINK", bossTitle: "REACTOR WARDEN", bossName: "GRAVEMIND–4" },
   { code: "NADIR–7F", name: "NULL ARCHIVE", bossTitle: "MEMORY CUSTODIAN", bossName: "NULL ARCHIVIST" },
+  { code: "NADIR–7G", name: "CRYO RESERVE", bossTitle: "COOLANT SENTINEL", bossName: "HALCYON–3" },
+  { code: "NADIR–7H", name: "SIGNAL CRYPT", bossTitle: "TRANSMISSION GHOST", bossName: "RELAY–0" },
+  { code: "NADIR–7I", name: "SIEGE YARD", bossTitle: "HEAVY ASSET", bossName: "TITAN–12" },
+  { code: "NADIR–7J", name: "COMMAND BUNKER", bossTitle: "SITE DIRECTOR", bossName: "DIRECTOR KEST" },
 ] as const;
 
 export function sectorForWave(wave: number) {
   return SECTORS[(Math.max(1, wave || 1) - 1) % SECTORS.length]!;
+}
+
+/** Every boss alternates its death line on the next ten-sector cycle. */
+export function bossDeathVariantForWave(wave: number) {
+  const index = Math.max(0, wave - 1);
+  return (index + Math.floor(index / SECTORS.length)) % 2;
 }
 
 // v2 viewmodels: one 5x5 sheet per gun (25 cells of 512x384).
@@ -40,6 +50,12 @@ export const WEAPONS = [
   { id: 9, name: "HC-9 FORGE", role: "HECATE cutter · wide beam and impact splash", magSize: 14, lowAmmoAt: 3, reserve: 84, sheet: WEAPON_SHEETS[9]! },
   { id: 10, name: "CM-9 CHIMERA", role: "Specimen fan · acid bursts and a short pool", magSize: 5, lowAmmoAt: 1, reserve: 30, sheet: WEAPON_SHEETS[10]! },
   { id: 11, name: "AR-6 ARCHIVE", role: "Archivist rail · precise amber pulse", magSize: 9, lowAmmoAt: 2, reserve: 54, sheet: WEAPON_SHEETS[11]! },
+  { id: 12, name: "OR-7 PREDICTOR", role: "Oracle rail · accurate double pulse", magSize: 4, lowAmmoAt: 1, reserve: 24, sheet: WEAPON_SHEETS[12]! },
+  { id: 13, name: "GS-4 SINK", role: "Reactor scatter · dense pressure burst", magSize: 8, lowAmmoAt: 2, reserve: 48, sheet: WEAPON_SHEETS[13]! },
+  { id: 14, name: "CR-3 RIME", role: "Coolant launcher · three slowing slugs", magSize: 6, lowAmmoAt: 2, reserve: 36, sheet: WEAPON_SHEETS[14]! },
+  { id: 15, name: "SR-0 RELAY", role: "Signal carbine · rapid narrow burst", magSize: 24, lowAmmoAt: 6, reserve: 144, sheet: WEAPON_SHEETS[15]! },
+  { id: 16, name: "TS-12 TITAN", role: "Siege cannon · heavy explosive shell", magSize: 3, lowAmmoAt: 1, reserve: 18, sheet: WEAPON_SHEETS[16]! },
+  { id: 17, name: "KS-8 KEST", role: "Director rifle · precise triple burst", magSize: 30, lowAmmoAt: 8, reserve: 180, sheet: WEAPON_SHEETS[17]! },
 ];
 
 const HANDLER = [
@@ -49,6 +65,10 @@ const HANDLER = [
   "The data spine is feeding Oracle. Cut its prediction node before the core override.",
   "Reactor sink ahead. Isolate the coolant relay before you challenge the warden.",
   "The Null Archive is sealing its memory stacks. Cut the index node before the custodian wakes.",
+  "Cryo Reserve is above pressure. Isolate the coolant manifold before HALCYON comes online.",
+  "The Signal Crypt is broadcasting your position. Kill its relay node before RELAY finds you.",
+  "The Siege Yard still has a live hydraulic spine. Shut it down before TITAN wakes.",
+  "Director Kest is locking Command. Cut the command uplink and open the bunker.",
 ] as const;
 
 const LOCKDOWN = [
@@ -58,6 +78,10 @@ const LOCKDOWN = [
   "ORACLE–7: Your route has already been calculated. Core doors sealed.",
   "GRAVEMIND–4: Reactor doors sealed. This place dies with me.",
   "NULL ARCHIVIST: Memory vault closed. Your route has been erased.",
+  "HALCYON–3: Reserve sealed. Coolant pressure rising.",
+  "RELAY–0: Transmission contained. You have nowhere left to hide.",
+  "TITAN–12: Siege gate sealed. Structural load accepted.",
+  "DIRECTOR KEST: Command doors closed. No extraction for you.",
 ] as const;
 
 const NODE_DONE = [
@@ -67,6 +91,10 @@ const NODE_DONE = [
   "Prediction node offline. Oracle can no longer close the route.",
   "Coolant relay isolated. The reactor override is live.",
   "Index node severed. The memory vault override is live.",
+  "Coolant manifold isolated. Cryo override is live.",
+  "Signal relay cut. The crypt override is live.",
+  "Hydraulic spine offline. The siege gate override is live.",
+  "Command uplink severed. The bunker override is live.",
 ] as const;
 
 const MEMOS: Record<number, string> = {
@@ -82,6 +110,14 @@ const MEMOS: Record<number, string> = {
   27: "Handler: pressure is climbing. Keep the coolant corridor clear.",
   30: "Archive memo: records marked deleted remain on the other side of the wall.",
   31: "Custodian log: the last human operator signed out thirty years ago.",
+  34: "Cryo log: coolant pressure was used to suppress the whole reserve shift.",
+  35: "Maintenance: HALCYON's thaw sequence is longer than its targeting cycle.",
+  38: "Signal log: RELAY broadcasts on frequencies that are not in the manual.",
+  39: "Handler: the crypt keeps replaying voices of people who never entered it.",
+  42: "Siege record: TITAN was parked with its cannon still loaded.",
+  43: "Hydraulics inspection failed. Inspector reassigned to hydraulics.",
+  46: "Command memo: Kest approved every containment loss personally.",
+  47: "Handler: the bunker is the end of this chain. Break it.",
 };
 
 export function radioCopy(line: number, wave: number) {
@@ -89,7 +125,7 @@ export function radioCopy(line: number, wave: number) {
   if (line === 1) return { speaker: "HANDLER", text: HANDLER[sector]! };
   if (line === 2) return { speaker: "MALIK", text: LOCKDOWN[sector]! };
   if (line === 3) return {
-    speaker: ["MALIK", "HECATE–9", "CHIMERA–9", "ORACLE–7", "GRAVEMIND–4", "NULL ARCHIVIST"][sector]!,
+    speaker: ["MALIK", "HECATE–9", "CHIMERA–9", "ORACLE–7", "GRAVEMIND–4", "NULL ARCHIVIST", "HALCYON–3", "RELAY–0", "TITAN–12", "DIRECTOR KEST"][sector]!,
     text: [
       "Command surface exposed. That window will not last.",
       "Shield circuit open. Discharge imminent.",
@@ -97,6 +133,10 @@ export function radioCopy(line: number, wave: number) {
       "Prediction buffer severed. I cannot see your next move.",
       "Containment pressure falling. My armor is open.",
       "Shield memory fractured. This record will not survive.",
+      "Coolant shield fractured. The cold will not hold.",
+      "Carrier lost. Signal lattice exposed.",
+      "Hydraulic plate open. Cannon pressure falling.",
+      "Armor breached. The chain of command ends here.",
     ][sector]!,
   };
   if (line === 4) return { speaker: "HANDLER", text: NODE_DONE[sector]! };
@@ -108,23 +148,43 @@ export function radioCopy(line: number, wave: number) {
         "Veyran dropped the Override rail. Take it, and the sector opens.",
         "HECATE's forge cutter is on the deck. That is the way out.",
         "The specimen case is Chimera's sprayer. Pick it up to leave.",
-        "Oracle's Override rail is down. Take the case and clear the spine.",
-        "The warden dropped a forge cutter. Take it and leave the reactor.",
+        "Oracle's Predictor rail is down. Take the case and clear the spine.",
+        "The warden dropped a Sink cannon. Take it and leave the reactor.",
         "The Archivist dropped an Archive rail. Take it and clear the vault.",
+        "HALCYON dropped a Rime launcher. Claim the case and leave the reserve.",
+        "RELAY dropped a signal carbine. Claim the case and clear the crypt.",
+        "TITAN dropped a siege cannon. Claim the case and clear the yard.",
+        "Kest dropped her rifle. Claim it and leave Command.",
       ][sector]!,
     };
   }
   if (line === 8) {
-    // Speaker and copy mirror art/boss-voices.json (voiced kill lines).
-    const kill = [
+    // Speaker and copy mirror the two variants in art/boss-voices.json.
+    const first = [
       { speaker: "MALIK", text: "My vault... my blood. Take the rail, intruder. Let it remember who built this place." },
       { speaker: "HECATE–9", text: "Core failure. Warden protocol terminated. Forge cutter released. Do not let it cool." },
       { speaker: "CHIMERA–9", text: "You broke the cage. The toxin is yours now. Breathe carefully." },
-      { speaker: "ORACLE–7", text: "Prediction failed. Core access released." },
-      { speaker: "GRAVEMIND–4", text: "Containment... lost. Take the cutter. Seal the sink." },
+      { speaker: "ORACLE–7", text: "Prediction failed. The Predictor rail is yours." },
+      { speaker: "GRAVEMIND–4", text: "Containment... lost. Take the Sink cannon. Seal the reactor." },
       { speaker: "NULL ARCHIVIST", text: "Archive integrity lost. The rail is yours. Do not write me back." },
-    ][sector]!;
-    return kill;
+      { speaker: "HALCYON–3", text: "Coolant pressure collapsing. The Rime launcher is yours. Do not let it thaw." },
+      { speaker: "RELAY–0", text: "Signal lost. The Relay carbine is unbound." },
+      { speaker: "TITAN–12", text: "Hydraulics failed. Siege cannon released. The gate is yours." },
+      { speaker: "DIRECTOR KEST", text: "You have cut the chain of command. The Kest rifle is yours." },
+    ];
+    const second = [
+      { speaker: "MALIK", text: "My vault is yours. I buried the truth beneath that rail. Do not let them seal it again." },
+      { speaker: "HECATE–9", text: "Safety locks have failed. My forge cutter is yours. Keep clear of the discharge." },
+      { speaker: "CHIMERA–9", text: "Containment was never meant to save you. The compound still lives in the sprayer." },
+      { speaker: "ORACLE–7", text: "I saw every outcome except this one. The Predictor rifle is yours." },
+      { speaker: "GRAVEMIND–4", text: "Pressure gone. Take the Sink cannon. Keep the core from swallowing you." },
+      { speaker: "NULL ARCHIVIST", text: "Last record: I was here. Take the Archive rail and carry it out." },
+      { speaker: "HALCYON–3", text: "Containment ice gone. Keep the cold between you and the next chamber." },
+      { speaker: "RELAY–0", text: "No carrier. No command. Take my transmitter and make your own route." },
+      { speaker: "TITAN–12", text: "Load-bearing systems gone. Take the Titan cannon before the ceiling follows." },
+      { speaker: "DIRECTOR KEST", text: "I built this place to outlast us. Take the rifle. Prove me wrong." },
+    ];
+    return (bossDeathVariantForWave(wave) === 0 ? first : second)[sector]!;
   }
   const memo = MEMOS[line];
   if (memo) return { speaker: line >= 18 ? "LAB" : line >= 14 ? "FORGE" : "ARCHIVE", text: memo };
@@ -134,9 +194,9 @@ export function radioCopy(line: number, wave: number) {
 export function missionLine(hud: { prompt: number; objective: number; wave: number }) {
   const sector = (Math.max(1, hud.wave) - 1) % SECTORS.length;
   if (hud.prompt === 3) return "INITIATE OVERRIDE";
-  if (hud.prompt === 13) return ["USE THE LAB NODE", "VENT THE COOLANT", "PURGE THE LOCK", "CUT THE PREDICTION NODE", "ISOLATE THE COOLANT RELAY", "SEVER THE INDEX NODE"][sector]!;
+  if (hud.prompt === 13) return ["USE THE LAB NODE", "VENT THE COOLANT", "PURGE THE LOCK", "CUT THE PREDICTION NODE", "ISOLATE THE COOLANT RELAY", "SEVER THE INDEX NODE", "ISOLATE THE MANIFOLD", "CUT THE SIGNAL RELAY", "SHUT DOWN HYDRAULICS", "CUT THE COMMAND UPLINK"][sector]!;
   if (hud.prompt === 15 || hud.objective === 0) {
-    return ["RESTORE THE LAB NODE", "VENT THE COOLANT NODE", "PURGE THE SPECIMEN LOCK", "CUT THE PREDICTION NODE", "ISOLATE THE COOLANT RELAY", "SEVER THE INDEX NODE"][sector]!;
+    return ["RESTORE THE LAB NODE", "VENT THE COOLANT NODE", "PURGE THE SPECIMEN LOCK", "CUT THE PREDICTION NODE", "ISOLATE THE COOLANT RELAY", "SEVER THE INDEX NODE", "ISOLATE THE MANIFOLD", "CUT THE SIGNAL RELAY", "SHUT DOWN HYDRAULICS", "CUT THE COMMAND UPLINK"][sector]!;
   }
   if (hud.prompt === 6) return "REACH THE OVERRIDE";
   return "ELIMINATE THE SIGNAL";

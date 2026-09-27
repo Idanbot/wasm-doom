@@ -1,0 +1,14 @@
+{
+  "signature": "581b7bd34beb659c8d6ec2d8f8d081a2c8aae3ec31a758197db79b87f37834e2",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "No more borrowed weapons.",
+    "speaker": "saturn",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Human site director with calm tactical radio cadence",
+  "effect": "highpass=f=190,lowpass=f=4800",
+  "generatedAt": "2026-09-27T21:01:51.005Z"
+}

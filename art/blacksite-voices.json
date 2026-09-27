@@ -10,12 +10,30 @@
       "style": "American, clipped tactical radio",
       "effect": "radio",
       "lines": [
-        ["alert", "Contact! Lock this sector."],
-        ["alert", "Intruder. Weapons free."],
-        ["attack", "Hold still!"],
-        ["attack", "You're out of cover."],
-        ["pain", "I'm hit. Still in the fight."],
-        ["taunt", "Command wants you erased."]
+        [
+          "alert",
+          "Contact! Lock this sector."
+        ],
+        [
+          "alert",
+          "Intruder. Weapons free."
+        ],
+        [
+          "attack",
+          "Hold still!"
+        ],
+        [
+          "attack",
+          "You're out of cover."
+        ],
+        [
+          "pain",
+          "I'm hit. Still in the fight."
+        ],
+        [
+          "taunt",
+          "Command wants you erased."
+        ]
       ]
     },
     {
@@ -26,12 +44,30 @@
       "style": "Australian, close-range enforcer",
       "effect": "radio",
       "lines": [
-        ["alert", "There you are, mate."],
-        ["alert", "Seal the exits!"],
-        ["attack", "Too close. Bad choice."],
-        ["attack", "Knock, knock!"],
-        ["pain", "That all you've got?"],
-        ["taunt", "I'm coming through."]
+        [
+          "alert",
+          "There you are, mate."
+        ],
+        [
+          "alert",
+          "Seal the exits!"
+        ],
+        [
+          "attack",
+          "Too close. Bad choice."
+        ],
+        [
+          "attack",
+          "Knock, knock!"
+        ],
+        [
+          "pain",
+          "That all you've got?"
+        ],
+        [
+          "taunt",
+          "I'm coming through."
+        ]
       ]
     },
     {
@@ -49,12 +85,30 @@
       "style": "British, cold containment officer behind respirator",
       "effect": "respirator",
       "lines": [
-        ["alert", "Containment breach confirmed."],
-        ["alert", "Unclean. Do not approach."],
-        ["attack", "Begin sterilisation."],
-        ["attack", "Remain inside the burn zone."],
-        ["pain", "Suit integrity failing."],
-        ["taunt", "No samples leave this facility."]
+        [
+          "alert",
+          "Containment breach confirmed."
+        ],
+        [
+          "alert",
+          "Unclean. Do not approach."
+        ],
+        [
+          "attack",
+          "Begin sterilisation."
+        ],
+        [
+          "attack",
+          "Remain inside the burn zone."
+        ],
+        [
+          "pain",
+          "Suit integrity failing."
+        ],
+        [
+          "taunt",
+          "No samples leave this facility."
+        ]
       ]
     },
     {
@@ -65,12 +119,30 @@
       "style": "American, deep heavy-weapons veteran",
       "effect": "heavy",
       "lines": [
-        ["alert", "I've got the whole corridor."],
-        ["alert", "Come on. Make it interesting."],
-        ["attack", "Suppressing!"],
-        ["attack", "Meet the heavy end."],
-        ["pain", "Armour took it."],
-        ["taunt", "I've got rounds to spare."]
+        [
+          "alert",
+          "I've got the whole corridor."
+        ],
+        [
+          "alert",
+          "Come on. Make it interesting."
+        ],
+        [
+          "attack",
+          "Suppressing!"
+        ],
+        [
+          "attack",
+          "Meet the heavy end."
+        ],
+        [
+          "pain",
+          "Armour took it."
+        ],
+        [
+          "taunt",
+          "I've got rounds to spare."
+        ]
       ]
     },
     {
@@ -81,12 +153,30 @@
       "style": "Industrial machine, low metallic service voice",
       "effect": "robot-low",
       "lines": [
-        ["alert", "Organic obstruction detected."],
-        ["alert", "Work area. Restricted."],
-        ["attack", "Applying crushing force."],
-        ["attack", "Clearance denied."],
-        ["pain", "Hydraulic pressure critical."],
-        ["taunt", "Safety interlocks disabled."]
+        [
+          "alert",
+          "Organic obstruction detected."
+        ],
+        [
+          "alert",
+          "Work area. Restricted."
+        ],
+        [
+          "attack",
+          "Applying crushing force."
+        ],
+        [
+          "attack",
+          "Clearance denied."
+        ],
+        [
+          "pain",
+          "Hydraulic pressure critical."
+        ],
+        [
+          "taunt",
+          "Safety interlocks disabled."
+        ]
       ]
     },
     {
@@ -104,12 +194,30 @@
       "style": "British, measured quiet baritone",
       "effect": "comms",
       "lines": [
-        ["alert", "Visual confirmed."],
-        ["alert", "One target. One correction."],
-        ["attack", "Exhale."],
-        ["attack", "Sight picture. Perfect."],
-        ["pain", "Repositioning."],
-        ["taunt", "You cannot outrun a sightline."]
+        [
+          "alert",
+          "Visual confirmed."
+        ],
+        [
+          "alert",
+          "One target. One correction."
+        ],
+        [
+          "attack",
+          "Exhale."
+        ],
+        [
+          "attack",
+          "Sight picture. Perfect."
+        ],
+        [
+          "pain",
+          "Repositioning."
+        ],
+        [
+          "taunt",
+          "You cannot outrun a sightline."
+        ]
       ]
     },
     {
@@ -120,15 +228,39 @@
       "style": "Bright synthetic targeting computer",
       "effect": "robot-high",
       "lines": [
-        ["alert", "Target signature acquired."],
-        ["alert", "Airspace violation."],
-        ["attack", "Firing solution locked."],
-        ["attack", "Evasion predicted."],
-        ["pain", "Stabiliser fault."],
-        ["taunt", "Your trajectory is inefficient."]
+        [
+          "alert",
+          "Target signature acquired."
+        ],
+        [
+          "alert",
+          "Airspace violation."
+        ],
+        [
+          "attack",
+          "Firing solution locked."
+        ],
+        [
+          "attack",
+          "Evasion predicted."
+        ],
+        [
+          "pain",
+          "Stabiliser fault."
+        ],
+        [
+          "taunt",
+          "Your trajectory is inefficient."
+        ]
       ]
     },
-    { "skin": 9, "id": "hound", "name": "Hound", "style": "Nonverbal, servo snarl", "lines": [] },
+    {
+      "skin": 9,
+      "id": "hound",
+      "name": "Hound",
+      "style": "Nonverbal, servo snarl",
+      "lines": []
+    },
     {
       "skin": 10,
       "id": "spitter",
@@ -144,12 +276,30 @@
       "style": "Unsettling calm synthetic warning",
       "effect": "robot-high",
       "lines": [
-        ["alert", "Please remain nearby."],
-        ["alert", "Payload ready for delivery."],
-        ["attack", "Minimum safe distance. Zero."],
-        ["attack", "Thank you for your proximity."],
-        ["pain", "Casing compromised."],
-        ["taunt", "Your safety is not our priority."]
+        [
+          "alert",
+          "Please remain nearby."
+        ],
+        [
+          "alert",
+          "Payload ready for delivery."
+        ],
+        [
+          "attack",
+          "Minimum safe distance. Zero."
+        ],
+        [
+          "attack",
+          "Thank you for your proximity."
+        ],
+        [
+          "pain",
+          "Casing compromised."
+        ],
+        [
+          "taunt",
+          "Your safety is not our priority."
+        ]
       ]
     },
     {
@@ -160,12 +310,30 @@
       "style": "Augmented commander, dark layered baritone",
       "effect": "overlord",
       "lines": [
-        ["alert", "You have entered my nervous system."],
-        ["alert", "Nadir belongs to me."],
-        ["attack", "Kneel before the signal."],
-        ["attack", "I will rewrite your bones."],
-        ["pain", "Pain is obsolete."],
-        ["taunt", "There is no outside. Only me."]
+        [
+          "alert",
+          "You have entered my nervous system."
+        ],
+        [
+          "alert",
+          "Nadir belongs to me."
+        ],
+        [
+          "attack",
+          "Kneel before the signal."
+        ],
+        [
+          "attack",
+          "I will rewrite your bones."
+        ],
+        [
+          "pain",
+          "Pain is obsolete."
+        ],
+        [
+          "taunt",
+          "There is no outside. Only me."
+        ]
       ]
     },
     {
@@ -176,13 +344,34 @@
       "style": "Industrial machine warden, clipped low synthetic voice with electrical hum",
       "effect": "robot-low",
       "lines": [
-        ["alert", "Unauthorized lifeform in the forge."],
-        ["alert", "Production halt. Threat priority maximum."],
-        ["attack", "Arc lattice armed."],
-        ["attack", "Your movement has been solved."],
-        ["pain", "Cooling loop compromised."],
-        ["taunt", "Every corridor belongs to my factory."],
-        ["taunt", "You are an inefficient input."]
+        [
+          "alert",
+          "Unauthorized lifeform in the forge."
+        ],
+        [
+          "alert",
+          "Production halt. Threat priority maximum."
+        ],
+        [
+          "attack",
+          "Arc lattice armed."
+        ],
+        [
+          "attack",
+          "Your movement has been solved."
+        ],
+        [
+          "pain",
+          "Cooling loop compromised."
+        ],
+        [
+          "taunt",
+          "Every corridor belongs to my factory."
+        ],
+        [
+          "taunt",
+          "You are an inefficient input."
+        ]
       ]
     },
     {
@@ -193,13 +382,34 @@
       "style": "Bioengineered containment giant, wet rasping voice through a damaged respirator",
       "effect": "respirator",
       "lines": [
-        ["alert", "The lights hurt my eyes."],
-        ["alert", "You smell like the outside."],
-        ["attack", "Hold still. Let it spread."],
-        ["attack", "The green remembers your shape."],
-        ["pain", "The cage is breaking."],
-        ["taunt", "Come closer. I can hear your blood."],
-        ["taunt", "Nothing grows here but me."]
+        [
+          "alert",
+          "The lights hurt my eyes."
+        ],
+        [
+          "alert",
+          "You smell like the outside."
+        ],
+        [
+          "attack",
+          "Hold still. Let it spread."
+        ],
+        [
+          "attack",
+          "The green remembers your shape."
+        ],
+        [
+          "pain",
+          "The cage is breaking."
+        ],
+        [
+          "taunt",
+          "Come closer. I can hear your blood."
+        ],
+        [
+          "taunt",
+          "Nothing grows here but me."
+        ]
       ]
     },
     {
@@ -210,12 +420,30 @@
       "style": "Cold predictive core, precise high synthetic voice",
       "effect": "robot-high",
       "lines": [
-        ["alert", "Your arrival was scheduled."],
-        ["alert", "Every route ends at this core."],
-        ["attack", "Trajectory confirmed."],
-        ["attack", "Correction applied."],
-        ["pain", "Prediction variance detected."],
-        ["taunt", "I have already seen your next move."]
+        [
+          "alert",
+          "Your arrival was scheduled."
+        ],
+        [
+          "alert",
+          "Every route ends at this core."
+        ],
+        [
+          "attack",
+          "Trajectory confirmed."
+        ],
+        [
+          "attack",
+          "Correction applied."
+        ],
+        [
+          "pain",
+          "Prediction variance detected."
+        ],
+        [
+          "taunt",
+          "I have already seen your next move."
+        ]
       ]
     },
     {
@@ -226,12 +454,30 @@
       "style": "Dying reactor engineer inside a heavy respirator, slow human rasp",
       "effect": "respirator",
       "lines": [
-        ["alert", "You should have stayed above ground."],
-        ["alert", "The core is mine to bury."],
-        ["attack", "Feel the pressure rise."],
-        ["attack", "Stay where the heat can find you."],
-        ["pain", "The shielding is cracking."],
-        ["taunt", "I can outlast the alarms. Can you?"]
+        [
+          "alert",
+          "You should have stayed above ground."
+        ],
+        [
+          "alert",
+          "The core is mine to bury."
+        ],
+        [
+          "attack",
+          "Feel the pressure rise."
+        ],
+        [
+          "attack",
+          "Stay where the heat can find you."
+        ],
+        [
+          "pain",
+          "The shielding is cracking."
+        ],
+        [
+          "taunt",
+          "I can outlast the alarms. Can you?"
+        ]
       ]
     },
     {
@@ -242,12 +488,166 @@
       "style": "Ancient memory custodian, low synthetic voice with worn human cadence",
       "effect": "robot-low",
       "lines": [
-        ["alert", "Unauthorized memory access."],
-        ["alert", "Your identity is not in the archive."],
-        ["attack", "Record this impact."],
-        ["attack", "Shield index restored."],
-        ["pain", "My memory is fragmenting."],
-        ["taunt", "I kept the names they tried to erase."]
+        [
+          "alert",
+          "Unauthorized memory access."
+        ],
+        [
+          "alert",
+          "Your identity is not in the archive."
+        ],
+        [
+          "attack",
+          "Record this impact."
+        ],
+        [
+          "attack",
+          "Shield index restored."
+        ],
+        [
+          "pain",
+          "My memory is fragmenting."
+        ],
+        [
+          "taunt",
+          "I kept the names they tried to erase."
+        ]
+      ]
+    },
+    {
+      "skin": 18,
+      "id": "halcyon",
+      "name": "HALCYON–3",
+      "speaker": "neptune",
+      "style": "Cryogenic sentry with low synthetic voice",
+      "effect": "robot-low",
+      "lines": [
+        [
+          "alert",
+          "Thermal breach detected."
+        ],
+        [
+          "alert",
+          "Reserve pressure is under my control."
+        ],
+        [
+          "attack",
+          "Coolant volley armed."
+        ],
+        [
+          "attack",
+          "Hold still for the cold."
+        ],
+        [
+          "pain",
+          "My shield is losing pressure."
+        ],
+        [
+          "taunt",
+          "The ice will keep your name."
+        ]
+      ]
+    },
+    {
+      "skin": 19,
+      "id": "relay",
+      "name": "RELAY–0",
+      "speaker": "electra",
+      "style": "Interference robot with sharp synthetic voice",
+      "effect": "robot-high",
+      "lines": [
+        [
+          "alert",
+          "Unknown signal entering the crypt."
+        ],
+        [
+          "alert",
+          "I have your frequency."
+        ],
+        [
+          "attack",
+          "Interference burst incoming."
+        ],
+        [
+          "attack",
+          "Your position is public."
+        ],
+        [
+          "pain",
+          "Carrier integrity compromised."
+        ],
+        [
+          "taunt",
+          "You cannot hide from a transmission."
+        ]
+      ]
+    },
+    {
+      "skin": 20,
+      "id": "titan",
+      "name": "TITAN–12",
+      "speaker": "draco",
+      "style": "Hydraulic siege walker with deep synthetic roar",
+      "effect": "heavy",
+      "lines": [
+        [
+          "alert",
+          "Siege platform online."
+        ],
+        [
+          "alert",
+          "Target locked beyond the gate."
+        ],
+        [
+          "attack",
+          "Heavy shell loaded."
+        ],
+        [
+          "attack",
+          "Brace for impact."
+        ],
+        [
+          "pain",
+          "Hydraulic line severed."
+        ],
+        [
+          "taunt",
+          "This yard was built to hold you."
+        ]
+      ]
+    },
+    {
+      "skin": 21,
+      "id": "kest",
+      "name": "DIRECTOR KEST",
+      "speaker": "saturn",
+      "style": "Human site director with calm tactical radio cadence",
+      "effect": "comms",
+      "lines": [
+        [
+          "alert",
+          "You reached Command. That took longer than expected."
+        ],
+        [
+          "alert",
+          "Security, I will handle this personally."
+        ],
+        [
+          "attack",
+          "Move left. I know your pattern."
+        ],
+        [
+          "attack",
+          "No more borrowed weapons."
+        ],
+        [
+          "pain",
+          "Armor hit. Staying on task."
+        ],
+        [
+          "taunt",
+          "Every door you opened was mine."
+        ]
       ]
     }
   ]

@@ -1,0 +1,14 @@
+{
+  "signature": "d08e402d42ffa62386a5920a6d89841cc5a2784abac244b183af5a396ba81f0d",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Thermal breach detected.",
+    "speaker": "neptune",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Cryogenic sentry with low synthetic voice",
+  "effect": "asetrate=20400,aresample=24000,atempo=1.12,aeval=val(0)*(0.72+0.28*sin(2*PI*48*t)),highpass=f=120,lowpass=f=3600",
+  "generatedAt": "2026-09-27T21:01:26.743Z"
+}

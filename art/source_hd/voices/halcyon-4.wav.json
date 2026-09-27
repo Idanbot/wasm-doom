@@ -1,0 +1,14 @@
+{
+  "signature": "0c9a00de130f49ffbc664db8bc4a30e6c1d6d67937f4f0f0da146fdb200b0e1f",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Hold still for the cold.",
+    "speaker": "neptune",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Cryogenic sentry with low synthetic voice",
+  "effect": "asetrate=20400,aresample=24000,atempo=1.12,aeval=val(0)*(0.72+0.28*sin(2*PI*48*t)),highpass=f=120,lowpass=f=3600",
+  "generatedAt": "2026-09-27T21:01:29.839Z"
+}

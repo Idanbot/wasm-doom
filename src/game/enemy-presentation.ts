@@ -176,7 +176,7 @@ export class VoiceDirector {
             : "taunt";
       if (cue === "taunt" && now < state.next + 4) continue;
       const priority =
-        ([12, 13, 14, 15, 16].includes(enemy.skin) ? 10 : 0) +
+        (enemy.skin >= 12 && enemy.skin <= 21 ? 10 : 0) +
         (cue === "alert" ? 4 : cue === "pain" ? 3 : cue === "attack" ? 2 : 1) -
         enemy.distance * 0.04;
       if (!chosen || priority > chosen.priority)

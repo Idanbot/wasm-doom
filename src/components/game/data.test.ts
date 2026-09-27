@@ -13,6 +13,7 @@ import {
   WEAPONS,
   gridPos,
   sectorForWave,
+  bossDeathVariantForWave,
 } from "./data.ts";
 import { DEFAULT_GFX, RES_MODES } from "../../game/types.ts";
 import { WEAPON_SHEETS, WEAPON_THUMBNAILS } from "../../game/weapon-assets.ts";
@@ -52,28 +53,34 @@ describe("fmtTime", () => {
 });
 
 describe("sectorForWave", () => {
-  it("cycles through six distinct sectors and bosses", () => {
-    assert.deepEqual([1, 2, 3, 4, 5, 6].map((wave) => sectorForWave(wave).name), [
+  it("cycles through ten distinct sectors and bosses", () => {
+    assert.deepEqual(Array.from({ length: 10 }, (_, i) => sectorForWave(i + 1).name), [
       "UPPER WORKS",
       "CRYOGENIC FOUNDRY",
       "BIOFORGE DEPTHS",
       "DATA SPINE",
       "REACTOR SINK",
       "NULL ARCHIVE",
+      "CRYO RESERVE",
+      "SIGNAL CRYPT",
+      "SIEGE YARD",
+      "COMMAND BUNKER",
     ]);
-    assert.equal(new Set([1, 2, 3, 4, 5, 6].map((wave) => sectorForWave(wave).bossName)).size, 6);
-    assert.equal(sectorForWave(7).name, "UPPER WORKS");
-    assert.equal(sectorForWave(19).name, "UPPER WORKS");
+    assert.equal(new Set(Array.from({ length: 10 }, (_, i) => sectorForWave(i + 1).bossName)).size, 10);
+    assert.equal(sectorForWave(11).name, "UPPER WORKS");
+    assert.equal(sectorForWave(21).name, "UPPER WORKS");
   });
 });
 
 describe("radioCopy", () => {
-  it("has one distinct boss-kill line per sector", () => {
-    const lines = [1, 2, 3, 4, 5, 6].map((wave) => radioCopy(8, wave));
+  it("has two matching death lines for every boss across cycles", () => {
+    const lines = Array.from({ length: 20 }, (_, i) => radioCopy(8, i + 1));
     for (const line of lines) {
       assert.ok(line && line.speaker.length > 0 && line.text.length > 0);
     }
-    assert.equal(new Set(lines.map((l) => l!.text)).size, 6);
+    assert.equal(new Set(lines.map((l) => l!.text)).size, 20);
+    assert.equal(bossDeathVariantForWave(1), 0);
+    assert.equal(bossDeathVariantForWave(11), 1);
   });
 });
 
@@ -96,11 +103,11 @@ describe("gridPos", () => {
 });
 
 describe("WEAPONS", () => {
-  it("has twelve entries with v2 5x5 sheets and reserve caps", () => {
-    assert.equal(WEAPONS.length, 12);
+  it("has eighteen entries with v2 5x5 sheets and reserve caps", () => {
+    assert.equal(WEAPONS.length, 18);
     assert.deepEqual(
       WEAPONS.map((w) => w.id),
-      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+      Array.from({ length: 18 }, (_, i) => i),
     );
     assert.deepEqual(WEAPONS.map((weapon) => weapon.sheet), WEAPON_SHEETS);
     assert.equal(WEAPON_THUMBNAILS.length, WEAPONS.length);
@@ -113,11 +120,11 @@ describe("WEAPONS", () => {
     }
     assert.deepEqual(
       WEAPONS.map((w) => w.magSize),
-      [12, 8, 36, 5, 4, 10, 90, 6, 4, 14, 5, 9],
+      [12, 8, 36, 5, 4, 10, 90, 6, 4, 14, 5, 9, 4, 8, 6, 24, 3, 30],
     );
     assert.deepEqual(
       WEAPONS.map((w) => w.reserve),
-      [120, 48, 216, 20, 16, 80, 450, 36, 24, 84, 30, 54],
+      [120, 48, 216, 20, 16, 80, 450, 36, 24, 84, 30, 54, 24, 48, 36, 144, 18, 180],
     );
   });
 });

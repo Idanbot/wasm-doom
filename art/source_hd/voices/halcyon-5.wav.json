@@ -1,0 +1,14 @@
+{
+  "signature": "da0f71d2604588c975e2dc59935f96097a34381f74711013f2461368fc81dc80",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "My shield is losing pressure.",
+    "speaker": "neptune",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Cryogenic sentry with low synthetic voice",
+  "effect": "asetrate=20400,aresample=24000,atempo=1.12,aeval=val(0)*(0.72+0.28*sin(2*PI*48*t)),highpass=f=120,lowpass=f=3600",
+  "generatedAt": "2026-09-27T21:01:30.877Z"
+}

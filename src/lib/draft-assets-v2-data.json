@@ -636,5 +636,65 @@
     "width": 1024,
     "height": 768,
     "group": "items"
+  },
+  {
+    "file": "/game/draft/v2/cases/case_or7.png",
+    "name": "case_or7_v2.png",
+    "size": 904475,
+    "hash": "f9606ce40aa46d2277163ea6d21da912f8607c6374b367894b6fef80992a9bd7",
+    "shortHash": "f9606ce4",
+    "width": 1024,
+    "height": 768,
+    "group": "items"
+  },
+  {
+    "file": "/game/draft/v2/cases/case_gs4.png",
+    "name": "case_gs4_v2.png",
+    "size": 906849,
+    "hash": "d8a900857e0dd303eda3db00f7de78231a87c482f19c0ebe37ce1d948ad2a2d9",
+    "shortHash": "d8a90085",
+    "width": 1024,
+    "height": 768,
+    "group": "items"
+  },
+  {
+    "file": "/game/draft/v2/cases/case_cr3.png",
+    "name": "case_cr3_v2.png",
+    "size": 913115,
+    "hash": "b8ee332950dd260d495e1f7d7aa2265a22e4d08c624d2834d4f40ae0ea71bcd8",
+    "shortHash": "b8ee3329",
+    "width": 1024,
+    "height": 768,
+    "group": "items"
+  },
+  {
+    "file": "/game/draft/v2/cases/case_sr0.png",
+    "name": "case_sr0_v2.png",
+    "size": 902653,
+    "hash": "7fc03e0c30777536b6998e159b27a21ae7f248c7b968126999d81cbb1d5211a2",
+    "shortHash": "7fc03e0c",
+    "width": 1024,
+    "height": 768,
+    "group": "items"
+  },
+  {
+    "file": "/game/draft/v2/cases/case_ts12.png",
+    "name": "case_ts12_v2.png",
+    "size": 913759,
+    "hash": "c8a037ee20706039afd13ae644a8b8e278c92633b6bade1718a947f24d387bc8",
+    "shortHash": "c8a037ee",
+    "width": 1024,
+    "height": 768,
+    "group": "items"
+  },
+  {
+    "file": "/game/draft/v2/cases/case_ks8.png",
+    "name": "case_ks8_v2.png",
+    "size": 904265,
+    "hash": "372fd2dd78b9dafb4b34665daf3cc19e2a7fc9bad4a32812f3a2e2abb0886d30",
+    "shortHash": "372fd2dd",
+    "width": 1024,
+    "height": 768,
+    "group": "items"
   }
 ]

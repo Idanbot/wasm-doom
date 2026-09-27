@@ -8,6 +8,10 @@ SOURCES = {
     "oracle": ROOT / "art/bosses/oracle-source.png",
     "gravemind": ROOT / "art/bosses/gravemind-source.png",
     "archivist": ROOT / "art/bosses/archivist-source.png",
+    "halcyon": ROOT / "art/bosses/halcyon-source.png",
+    "relay": ROOT / "art/bosses/relay-source.png",
+    "titan": ROOT / "art/bosses/titan-source.png",
+    "kest": ROOT / "art/bosses/kest-source.png",
 }
 ACTIONS = ("idle", "move", "pain", "fire", "reload", "dead", "special")
 

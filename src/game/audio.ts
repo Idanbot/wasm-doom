@@ -24,7 +24,7 @@ export type GameAudio = {
   setVolumes: (master: number, music: number, sfx: number, menu: number) => void;
   setMusic: (on: boolean) => void;
   setMenuBed: (on: boolean) => void;
-  bossKill: (sector: number) => void;
+  bossKill: (sector: number, variant: number) => void;
   setBoss: (on: boolean) => void;
   hushBoss: () => void;
   dropBoss: () => void;
@@ -78,9 +78,9 @@ export function createAudio(): GameAudio {
   let sfxLoadPromise: Promise<void> | null = null;
   let musicLoadPromise: Promise<void> | null = null;
   const MUSIC_URLS = [
-    asset("/game/music/bgm-menu.ogg"),
-    asset("/game/music/bgm-remix.ogg"),
-    asset("/game/music/boss.ogg"),
+    asset("/game/music/menu.mp3"),
+    asset("/game/music/bgm-remix.mp3"),
+    asset("/game/music/boss.mp3"),
   ];
   const SFX_URLS: Record<string, string> = {
     fire0: asset("/game/sfx/fire0.ogg"),
@@ -101,12 +101,13 @@ export function createAudio(): GameAudio {
     boom: asset("/game/sfx/boom.ogg"),
     door: asset("/game/sfx/door.ogg?v=2"),
     hurt: asset("/game/sfx/hurt.ogg"),
-    bossKill0: asset("/game/voices/boss-veyran.mp3"),
-    bossKill1: asset("/game/voices/boss-hecate.mp3"),
-    bossKill2: asset("/game/voices/boss-chimera.mp3"),
-    bossKill3: asset("/game/voices/boss-oracle.mp3"),
-    bossKill4: asset("/game/voices/boss-gravemind.mp3"),
-    bossKill5: asset("/game/voices/boss-archivist.mp3"),
+    ...Object.fromEntries(
+      ["veyran", "hecate", "chimera", "oracle", "gravemind", "archivist", "halcyon", "relay", "titan", "kest"]
+        .flatMap((id, sector) => [0, 1].map((variant) => [
+          `bossKill${sector}_${variant}`,
+          asset(`/game/voices/boss-${id}${variant ? "-v2" : ""}.mp3`),
+        ])),
+    ),
   };
 
   function ensure() {
@@ -506,8 +507,8 @@ export function createAudio(): GameAudio {
 
   function ensureBed() {
     if (!ctx || !music || bedFailed) return;
-    if (!bed) bed = hookBed(asset("/game/music/bgm-remix.ogg"));
-    if (!bossBed) bossBed = hookBed(asset("/game/music/boss.ogg"));
+    if (!bed) bed = hookBed(asset("/game/music/bgm-remix.mp3"));
+    if (!bossBed) bossBed = hookBed(asset("/game/music/boss.mp3"));
     if (!bed && !bossBed) bedFailed = true;
   }
 
@@ -573,7 +574,7 @@ export function createAudio(): GameAudio {
       playEl(bed);
       return;
     }
-    startSynth();
+    // Every background bed is an MP3; no generated fallback music.
   }
 
   function startSynth() {
@@ -709,7 +710,7 @@ export function createAudio(): GameAudio {
       resume();
       menuBedWanted = on;
       if (on) {
-        if (!menuBed) menuBed = hookMasterBed(asset("/game/music/bgm-menu.ogg"));
+        if (!menuBed) menuBed = hookMasterBed(asset("/game/music/menu.mp3"));
         if (menuBed) {
           bed?.pause();
           bossBed?.pause();
@@ -764,9 +765,9 @@ export function createAudio(): GameAudio {
       beep(740, 0.05, "square", 0.04, -80);
       beep(980, 0.07, "sine", 0.035, 40);
     },
-    bossKill(sector) {
+    bossKill(sector, variant) {
       resume();
-      const clip = sector >= 0 && sector < 6 ? `bossKill${sector}` : null;
+      const clip = sector >= 0 && sector < 10 ? `bossKill${sector}_${variant === 1 ? 1 : 0}` : null;
       if (clip && sample(clip, 1.35)) return;
       beep(523, 0.12, "triangle", 0.09, 80);
       beep(784, 0.16, "square", 0.07, 60);

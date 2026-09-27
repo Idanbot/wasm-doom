@@ -1,0 +1,14 @@
+{
+  "signature": "98d00eaee1de64fa63873f9c88284ac01dd1fce8a89a7ba82db0831c11682191",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The ice will keep your name.",
+    "speaker": "neptune",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Cryogenic sentry with low synthetic voice",
+  "effect": "asetrate=20400,aresample=24000,atempo=1.12,aeval=val(0)*(0.72+0.28*sin(2*PI*48*t)),highpass=f=120,lowpass=f=3600",
+  "generatedAt": "2026-09-27T21:01:31.775Z"
+}

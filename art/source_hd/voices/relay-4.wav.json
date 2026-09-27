@@ -1,0 +1,14 @@
+{
+  "signature": "dd18b066617cb2fa861739626f7934f8c91e7d4185baa7a76edb0074e0bc6b57",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Your position is public.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Interference robot with sharp synthetic voice",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-09-27T21:01:36.477Z"
+}

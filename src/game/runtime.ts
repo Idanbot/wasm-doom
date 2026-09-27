@@ -16,6 +16,12 @@ import {
   T_GUN10,
   T_GUN11,
   T_GUN12,
+  T_GUN13,
+  T_GUN14,
+  T_GUN15,
+  T_GUN16,
+  T_GUN17,
+  T_GUN18,
   T_PROP_REACTOR,
   T_PROP_SERVER,
   T_PROP_AC,
@@ -40,7 +46,7 @@ import {
   type EnemySubtitle,
 } from "./enemy-presentation";
 import { DEFAULT_GFX, DEFAULT_HUD, type GfxOpts, type HudState, type ResMode } from "./types";
-import type { RunSave } from "@/components/game/data";
+import { bossDeathVariantForWave, type RunSave } from "@/components/game/data";
 
 export { HUD_SIZE };
 
@@ -121,6 +127,12 @@ const IN = {
   W10: 524288,
   W11: 1048576,
   W12: 2097152,
+  W13: 4194304,
+  W14: 8388608,
+  W15: 16777216,
+  W16: 33554432,
+  W17: 67108864,
+  W18: 134217728,
 };
 
 const CODE_BITS: Record<string, number> = {
@@ -148,6 +160,12 @@ const CODE_BITS: Record<string, number> = {
   Digit0: IN.W10,
   Minus: IN.W11,
   Equal: IN.W12,
+  BracketLeft: IN.W13,
+  BracketRight: IN.W14,
+  Backslash: IN.W15,
+  Semicolon: IN.W16,
+  Quote: IN.W17,
+  Backquote: IN.W18,
   ArrowLeft: IN.TURNL,
   KeyQ: IN.TURNL,
   ArrowRight: IN.TURNR,
@@ -173,6 +191,10 @@ const ENEMY_SKINS = [
   "oracle",
   "gravemind",
   "archivist",
+  "halcyon",
+  "relay",
+  "titan",
+  "kest",
 ] as const;
 const ENEMY_ANIMATIONS = ["idle", "move", "pain", "fire", "reload", "dead", "special"] as const;
 
@@ -218,6 +240,12 @@ const TEX_FILES: { id: number; src: string }[] = [
   { id: T_GUN10, src: "/game/spr_gun_hc9.png" },
   { id: T_GUN11, src: "/game/spr_gun_cm9.png" },
   { id: T_GUN12, src: "/game/spr_gun_ar6.png" },
+  { id: T_GUN13, src: "/game/spr_gun_or7.png" },
+  { id: T_GUN14, src: "/game/spr_gun_gs4.png" },
+  { id: T_GUN15, src: "/game/spr_gun_cr3.png" },
+  { id: T_GUN16, src: "/game/spr_gun_sr0.png" },
+  { id: T_GUN17, src: "/game/spr_gun_ts12.png" },
+  { id: T_GUN18, src: "/game/spr_gun_ks8.png" },
   { id: T_PROP_REACTOR, src: "/game/spr_prop_reactor.png" },
   { id: T_PROP_SERVER, src: "/game/spr_prop_server.png" },
   { id: T_PROP_AC, src: "/game/spr_prop_ac.png" },
@@ -652,13 +680,19 @@ export class HellscanRuntime {
       this.hud.hasW10,
       this.hud.hasW11,
       this.hud.hasW12,
+      this.hud.hasW13,
+      this.hud.hasW14,
+      this.hud.hasW15,
+      this.hud.hasW16,
+      this.hud.hasW17,
+      this.hud.hasW18,
     ];
     const count = owned.length;
     const step = dir >= 0 ? 1 : count - 1;
     for (let n = 1; n <= count; n++) {
       const next = (this.hud.weapon + step * n) % count;
       if (owned[next]) {
-        const bit = [IN.W1, IN.W2, IN.W3, IN.W4, IN.W5, IN.W6, IN.W7, IN.W8, IN.W9, IN.W10, IN.W11, IN.W12][next];
+        const bit = [IN.W1, IN.W2, IN.W3, IN.W4, IN.W5, IN.W6, IN.W7, IN.W8, IN.W9, IN.W10, IN.W11, IN.W12, IN.W13, IN.W14, IN.W15, IN.W16, IN.W17, IN.W18][next];
         if (bit) this.weaponPulse = bit;
         return;
       }
@@ -1018,6 +1052,12 @@ export class HellscanRuntime {
       hasW10: dv.getInt32(172, true) !== 0,
       hasW11: dv.getInt32(176, true) !== 0,
       hasW12: dv.getInt32(192, true) !== 0,
+      hasW13: dv.getInt32(196, true) !== 0,
+      hasW14: dv.getInt32(200, true) !== 0,
+      hasW15: dv.getInt32(204, true) !== 0,
+      hasW16: dv.getInt32(208, true) !== 0,
+      hasW17: dv.getInt32(212, true) !== 0,
+      hasW18: dv.getInt32(216, true) !== 0,
       objective: dv.getInt32(144, true),
       radioSeq: dv.getInt32(148, true),
       radioLine: dv.getInt32(152, true),
@@ -1133,13 +1173,12 @@ export class HellscanRuntime {
       blit.draw(this.fbView, w, h, fx);
     }
 
-    // Radio feedback is frame-level (not per-substep): a boss-kill line
-    // plays its voice clip, every other line gets the comms blip.
+    // Radio text persists across frames and sector transitions. Boss death
+    // audio is driven by the one-tick engine event in sfxFromEvents instead.
     if (hud.radioSeq !== this.prevRadioSeq) {
       this.prevRadioSeq = hud.radioSeq;
       if (hud.radioSeq !== 0) {
-        if (hud.radioLine === 8) this.audio.bossKill((hud.wave - 1) % 6);
-        else this.audio.radio();
+        if (hud.radioLine !== 8) this.audio.radio();
       }
     }
     this.hud = hud;
@@ -1189,6 +1228,7 @@ export class HellscanRuntime {
       if (ev & 4096) this.audio.kill();
       if (ev & 8192) this.audio.hushBoss();
       if (ev & 16384) this.audio.dropBoss();
+      if (ev & 32768) this.audio.bossKill((this.hud.wave - 1) % 10, bossDeathVariantForWave(this.hud.wave));
     } catch {
       /* keep the sim running if a sound fails */
     }

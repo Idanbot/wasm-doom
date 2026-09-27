@@ -1,0 +1,14 @@
+{
+  "signature": "f0f361e1d2d2560fe6ef7a0078727e0bf7473ff00ab429817d73b89fcaac7756",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Security, I will handle this personally.",
+    "speaker": "saturn",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Human site director with calm tactical radio cadence",
+  "effect": "highpass=f=190,lowpass=f=4800",
+  "generatedAt": "2026-09-27T21:01:48.649Z"
+}

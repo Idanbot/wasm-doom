@@ -1,0 +1,14 @@
+{
+  "signature": "ad86846281f91538ed8478ddb31be45175bd6367f6ffebb5a36233b99fc47d94",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You cannot hide from a transmission.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Interference robot with sharp synthetic voice",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-09-27T21:01:39.039Z"
+}

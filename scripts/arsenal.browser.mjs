@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { chromium } from "playwright";
 
 const baseUrl = process.env.BLACKSITE_TEST_URL ?? "http://127.0.0.1:8080";
-const slugs = ["mk23s", "br12", "kx9", "mr4", "vlk6", "ax12", "m91", "hx8", "vr9", "hc9", "cm9", "ar6"];
+const slugs = ["mk23s", "br12", "kx9", "mr4", "vlk6", "ax12", "m91", "hx8", "vr9", "hc9", "cm9", "ar6", "or7", "gs4", "cr3", "sr0", "ts12", "ks8"];
 let browser;
 
 before(async () => { browser = await chromium.launch({ headless: true }); });
@@ -13,7 +13,7 @@ async function checkpointPage() {
   const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
   await page.addInitScript(() => localStorage.setItem("hellscan-checkpoint", JSON.stringify({
     wave: 2, health: 100, armor: 0, weapon: 0, flags: 1,
-    ammo: Array(12).fill(12), mag: Array(12).fill(12),
+    ammo: Array(18).fill(12), mag: Array(18).fill(12),
   })));
   await page.goto(baseUrl);
   await page.locator(".deploy-button").waitFor();
@@ -54,9 +54,9 @@ test("loading screen fetches and decodes every weapon sheet and thumbnail before
     for (const path of [
       "/game/ui/hud-panel.webp",
       "/game/ui/menu-reactor.webp",
-      "/game/music/bgm-menu.ogg",
-      "/game/music/bgm-remix.ogg",
-      "/game/music/boss.ogg",
+      "/game/music/menu.mp3",
+      "/game/music/bgm-remix.mp3",
+      "/game/music/boss.mp3",
       "/game/sfx/fire0.ogg",
     ]) assert.ok(requested.has(path), `${path} was not loaded before deployment`);
   } finally { releaseThumbnail(); await page.close(); }
@@ -90,7 +90,7 @@ test("mouse-wheel arsenal renders readable transparent gun thumbnails", async ()
       host.id = "arsenal-test-host";
       host.style.cssText = "position:absolute;inset:0;pointer-events:none";
       document.querySelector("main")?.appendChild(host);
-      const hud = { weapon: 5, ...Object.fromEntries(Array.from({ length: 11 }, (_, i) => [`hasW${i + 2}`, true])) };
+      const hud = { weapon: 5, ...Object.fromEntries(Array.from({ length: 17 }, (_, i) => [`hasW${i + 2}`, true])) };
       createRoot(host).render(React.createElement(WeaponSpiral, { hud, visible: true }));
     });
     await page.locator("#arsenal-test-host .weapon-spiral-slot img").first().waitFor();
@@ -112,7 +112,7 @@ test("mouse-wheel arsenal renders readable transparent gun thumbnails", async ()
         })),
       };
     }, slugs);
-    assert.equal(result.images.length, 12);
+    assert.equal(result.images.length, 18);
     for (const image of result.images) assert.ok(image.width > 0 && image.height > 0, `${image.slug} failed to decode`);
     assert.equal(result.slots.length, 5, "the compact wheel should show the selected gun and two neighbors on each side");
     for (const slot of result.slots) {

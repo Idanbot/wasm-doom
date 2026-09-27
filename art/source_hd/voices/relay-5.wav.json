@@ -1,0 +1,14 @@
+{
+  "signature": "10fda64b444f00b19519a0ea834a3120dca050d4e36a54c7f8f1c8b85be6c90f",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Carrier integrity compromised.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Interference robot with sharp synthetic voice",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-09-27T21:01:37.721Z"
+}

@@ -261,7 +261,7 @@ export class EnemyAudio {
     // Slower machines and commander delivery improve intelligibility, while
     // small human variation keeps the roster from sharing one cadence.
     const rate =
-      [12, 13, 14, 15, 16, 17].includes(enemy.skin)
+      enemy.skin >= 12 && enemy.skin <= 21
         ? 0.88
         : [5, 8, 11].includes(enemy.skin)
           ? 0.93

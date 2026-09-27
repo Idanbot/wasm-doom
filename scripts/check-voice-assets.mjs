@@ -33,10 +33,12 @@ console.log(
 
 // Boss-kill lines live outside the enemy manifest (art/boss-voices.json).
 const bossPlan = JSON.parse(readFileSync("art/boss-voices.json", "utf8"));
-assert.equal(bossPlan.bosses.length, 6);
-const bossIds = ["boss-veyran", "boss-hecate", "boss-chimera", "boss-oracle", "boss-gravemind", "boss-archivist"];
+assert.equal(bossPlan.bosses.length, 20);
+const bossIds = ["veyran", "hecate", "chimera", "oracle", "gravemind", "archivist", "halcyon", "relay", "titan", "kest"];
 for (const [i, boss] of bossPlan.bosses.entries()) {
-  assert.equal(boss.id, bossIds[i]);
+  const name = i < 6 ? bossIds[i] : i < 12 ? bossIds[i - 6] : bossIds[6 + Math.floor((i - 12) / 2)];
+  const variant = i >= 6 && i < 12 || i >= 12 && (i - 12) % 2 === 1;
+  assert.equal(boss.id, `boss-${name}${variant ? "-v2" : ""}`);
   assert.ok(boss.text.length > 10);
   const bytes = readFileSync(`public/game/voices/${boss.id}.mp3`);
   assert.ok(

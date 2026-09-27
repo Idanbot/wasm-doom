@@ -1,0 +1,14 @@
+{
+  "signature": "9a24ac2c2cb0e195a9bc382b31bb07d0297ce1b1fd2e19b7090fa899f7cf5405",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Every door you opened was mine.",
+    "speaker": "saturn",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Human site director with calm tactical radio cadence",
+  "effect": "highpass=f=190,lowpass=f=4800",
+  "generatedAt": "2026-09-27T21:01:53.483Z"
+}

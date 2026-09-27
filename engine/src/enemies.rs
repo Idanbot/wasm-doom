@@ -89,6 +89,10 @@ pub(crate) const ENEMY_SKINS: &[EnemySkin] = &[
     EnemySkin { id: SKIN_ORACLE, name: "ORACLE–7", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 15, scale: 2.08, zoff: 8.0, special: "predictive crossfire" },
     EnemySkin { id: SKIN_GRAVEMIND, name: "GRAVEMIND–4", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 16, scale: 2.18, zoff: 8.0, special: "reactor pulse" },
     EnemySkin { id: SKIN_ARCHIVIST, name: "NULL ARCHIVIST", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 17, scale: 2.16, zoff: 8.0, special: "memory fracture" },
+    EnemySkin { id: SKIN_HALCYON, name: "HALCYON–3", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 18, scale: 2.22, zoff: 8.0, special: "coolant shield" },
+    EnemySkin { id: SKIN_RELAY, name: "RELAY–0", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 19, scale: 2.08, zoff: 8.0, special: "signal relocation" },
+    EnemySkin { id: SKIN_TITAN, name: "TITAN–12", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 20, scale: 2.34, zoff: 8.0, special: "siege shock" },
+    EnemySkin { id: SKIN_KEST, name: "DIRECTOR KEST", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 21, scale: 1.96, zoff: 8.0, special: "command rush" },
 ];
 
 pub(crate) fn skin_def(id: u8) -> Option<&'static EnemySkin> {
@@ -145,6 +149,12 @@ pub(crate) const ENEMY_DEFS: &[EnemyDef] = &[
     EnemyDef { kind: EK_GUN10, name: "HC-9 case", role: "pickup", hp: 1, radius: 0.26, zoff: 30.0, scale: 0.58, texture: T_GUN10, sheet4: false, hostile: false, cleared_on_wave: false },
     EnemyDef { kind: EK_GUN11, name: "CM-9 case", role: "pickup", hp: 1, radius: 0.26, zoff: 30.0, scale: 0.60, texture: T_GUN11, sheet4: false, hostile: false, cleared_on_wave: false },
     EnemyDef { kind: EK_GUN12, name: "AR-6 case", role: "pickup", hp: 1, radius: 0.26, zoff: 30.0, scale: 0.60, texture: T_GUN12, sheet4: false, hostile: false, cleared_on_wave: false },
+    EnemyDef { kind: EK_GUN13, name: "OR-7 case", role: "pickup", hp: 1, radius: 0.26, zoff: 30.0, scale: 0.60, texture: T_GUN13, sheet4: false, hostile: false, cleared_on_wave: false },
+    EnemyDef { kind: EK_GUN14, name: "GS-4 case", role: "pickup", hp: 1, radius: 0.26, zoff: 30.0, scale: 0.60, texture: T_GUN14, sheet4: false, hostile: false, cleared_on_wave: false },
+    EnemyDef { kind: EK_GUN15, name: "CR-3 case", role: "pickup", hp: 1, radius: 0.26, zoff: 30.0, scale: 0.60, texture: T_GUN15, sheet4: false, hostile: false, cleared_on_wave: false },
+    EnemyDef { kind: EK_GUN16, name: "SR-0 case", role: "pickup", hp: 1, radius: 0.26, zoff: 30.0, scale: 0.60, texture: T_GUN16, sheet4: false, hostile: false, cleared_on_wave: false },
+    EnemyDef { kind: EK_GUN17, name: "TS-12 case", role: "pickup", hp: 1, radius: 0.26, zoff: 30.0, scale: 0.60, texture: T_GUN17, sheet4: false, hostile: false, cleared_on_wave: false },
+    EnemyDef { kind: EK_GUN18, name: "KS-8 case", role: "pickup", hp: 1, radius: 0.26, zoff: 30.0, scale: 0.60, texture: T_GUN18, sheet4: false, hostile: false, cleared_on_wave: false },
     EnemyDef { kind: EK_POWER, name: "Power cell", role: "pickup", hp: 1, radius: 0.24, zoff: 28.0, scale: 0.55, texture: T_ARMOR, sheet4: false, hostile: false, cleared_on_wave: false },
     EnemyDef { kind: EK_BARREL, name: "Barrel", role: "prop", hp: 14, radius: 0.3, zoff: 78.0, scale: 0.72, texture: T_BARREL, sheet4: false, hostile: false, cleared_on_wave: false },
     EnemyDef { kind: EK_GIB, name: "Gib", role: "fx", hp: 1, radius: 0.08, zoff: 0.0, scale: 0.18, texture: T_SPLAT, sheet4: false, hostile: false, cleared_on_wave: false },

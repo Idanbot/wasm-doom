@@ -760,6 +760,210 @@
           "duration": 2.208
         }
       ]
+    },
+    {
+      "skin": 18,
+      "id": "halcyon",
+      "name": "HALCYON–3",
+      "style": "Cryogenic sentry with low synthetic voice",
+      "speaker": "neptune",
+      "lines": [
+        {
+          "id": "halcyon-1",
+          "cue": "alert",
+          "text": "Thermal breach detected.",
+          "url": "/game/voices/halcyon-1.mp3",
+          "duration": 1.536
+        },
+        {
+          "id": "halcyon-2",
+          "cue": "alert",
+          "text": "Reserve pressure is under my control.",
+          "url": "/game/voices/halcyon-2.mp3",
+          "duration": 2.256
+        },
+        {
+          "id": "halcyon-3",
+          "cue": "attack",
+          "text": "Coolant volley armed.",
+          "url": "/game/voices/halcyon-3.mp3",
+          "duration": 1.584
+        },
+        {
+          "id": "halcyon-4",
+          "cue": "attack",
+          "text": "Hold still for the cold.",
+          "url": "/game/voices/halcyon-4.mp3",
+          "duration": 1.488
+        },
+        {
+          "id": "halcyon-5",
+          "cue": "pain",
+          "text": "My shield is losing pressure.",
+          "url": "/game/voices/halcyon-5.mp3",
+          "duration": 1.8
+        },
+        {
+          "id": "halcyon-6",
+          "cue": "taunt",
+          "text": "The ice will keep your name.",
+          "url": "/game/voices/halcyon-6.mp3",
+          "duration": 1.464
+        }
+      ]
+    },
+    {
+      "skin": 19,
+      "id": "relay",
+      "name": "RELAY–0",
+      "style": "Interference robot with sharp synthetic voice",
+      "speaker": "electra",
+      "lines": [
+        {
+          "id": "relay-1",
+          "cue": "alert",
+          "text": "Unknown signal entering the crypt.",
+          "url": "/game/voices/relay-1.mp3",
+          "duration": 2.496
+        },
+        {
+          "id": "relay-2",
+          "cue": "alert",
+          "text": "I have your frequency.",
+          "url": "/game/voices/relay-2.mp3",
+          "duration": 1.656
+        },
+        {
+          "id": "relay-3",
+          "cue": "attack",
+          "text": "Interference burst incoming.",
+          "url": "/game/voices/relay-3.mp3",
+          "duration": 2.304
+        },
+        {
+          "id": "relay-4",
+          "cue": "attack",
+          "text": "Your position is public.",
+          "url": "/game/voices/relay-4.mp3",
+          "duration": 1.584
+        },
+        {
+          "id": "relay-5",
+          "cue": "pain",
+          "text": "Carrier integrity compromised.",
+          "url": "/game/voices/relay-5.mp3",
+          "duration": 2.328
+        },
+        {
+          "id": "relay-6",
+          "cue": "taunt",
+          "text": "You cannot hide from a transmission.",
+          "url": "/game/voices/relay-6.mp3",
+          "duration": 2.424
+        }
+      ]
+    },
+    {
+      "skin": 20,
+      "id": "titan",
+      "name": "TITAN–12",
+      "style": "Hydraulic siege walker with deep synthetic roar",
+      "speaker": "draco",
+      "lines": [
+        {
+          "id": "titan-1",
+          "cue": "alert",
+          "text": "Siege platform online.",
+          "url": "/game/voices/titan-1.mp3",
+          "duration": 2.16
+        },
+        {
+          "id": "titan-2",
+          "cue": "alert",
+          "text": "Target locked beyond the gate.",
+          "url": "/game/voices/titan-2.mp3",
+          "duration": 2.28
+        },
+        {
+          "id": "titan-3",
+          "cue": "attack",
+          "text": "Heavy shell loaded.",
+          "url": "/game/voices/titan-3.mp3",
+          "duration": 1.224
+        },
+        {
+          "id": "titan-4",
+          "cue": "attack",
+          "text": "Brace for impact.",
+          "url": "/game/voices/titan-4.mp3",
+          "duration": 1.536
+        },
+        {
+          "id": "titan-5",
+          "cue": "pain",
+          "text": "Hydraulic line severed.",
+          "url": "/game/voices/titan-5.mp3",
+          "duration": 1.92
+        },
+        {
+          "id": "titan-6",
+          "cue": "taunt",
+          "text": "This yard was built to hold you.",
+          "url": "/game/voices/titan-6.mp3",
+          "duration": 2.568
+        }
+      ]
+    },
+    {
+      "skin": 21,
+      "id": "kest",
+      "name": "DIRECTOR KEST",
+      "style": "Human site director with calm tactical radio cadence",
+      "speaker": "saturn",
+      "lines": [
+        {
+          "id": "kest-1",
+          "cue": "alert",
+          "text": "You reached Command. That took longer than expected.",
+          "url": "/game/voices/kest-1.mp3",
+          "duration": 3.168
+        },
+        {
+          "id": "kest-2",
+          "cue": "alert",
+          "text": "Security, I will handle this personally.",
+          "url": "/game/voices/kest-2.mp3",
+          "duration": 2.568
+        },
+        {
+          "id": "kest-3",
+          "cue": "attack",
+          "text": "Move left. I know your pattern.",
+          "url": "/game/voices/kest-3.mp3",
+          "duration": 2.208
+        },
+        {
+          "id": "kest-4",
+          "cue": "attack",
+          "text": "No more borrowed weapons.",
+          "url": "/game/voices/kest-4.mp3",
+          "duration": 1.704
+        },
+        {
+          "id": "kest-5",
+          "cue": "pain",
+          "text": "Armor hit. Staying on task.",
+          "url": "/game/voices/kest-5.mp3",
+          "duration": 2.376
+        },
+        {
+          "id": "kest-6",
+          "cue": "taunt",
+          "text": "Every door you opened was mine.",
+          "url": "/game/voices/kest-6.mp3",
+          "duration": 2.016
+        }
+      ]
     }
   ]
 }

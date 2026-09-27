@@ -1,0 +1,14 @@
+{
+  "signature": "f42b5dbc3face5a3863d70e0301882360a8e27e9863ce2a3449dc17cd9f22529",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Interference burst incoming.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Interference robot with sharp synthetic voice",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-09-27T21:01:35.438Z"
+}

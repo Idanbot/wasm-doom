@@ -1,0 +1,14 @@
+{
+  "signature": "6ed888d4c2d65ed864113000a5c1ba0017e8a90c660898b53f2492d5e164fd7d",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Heavy shell loaded.",
+    "speaker": "draco",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Hydraulic siege walker with deep synthetic roar",
+  "effect": "asetrate=22080,aresample=24000,atempo=1.04,highpass=f=110,lowpass=f=5200",
+  "generatedAt": "2026-09-27T21:01:42.319Z"
+}

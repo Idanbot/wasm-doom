@@ -9,7 +9,7 @@
  */
 
 /** Byte size of the Hud struct. Must match `HUD_SIZE` in engine/src/hud.rs. */
-export const HUD_SIZE = 196;
+export const HUD_SIZE = 220;
 /** Byte offsets of key fields inside the HUD struct. */
 export const HUD_OFFSETS = {
   state: 24,
@@ -29,4 +29,10 @@ export const HUD_OFFSETS = {
   radioSeq: 148,
   splash: 188,
   hasW12: 192,
+  hasW13: 196,
+  hasW14: 200,
+  hasW15: 204,
+  hasW16: 208,
+  hasW17: 212,
+  hasW18: 216,
 } as const;
