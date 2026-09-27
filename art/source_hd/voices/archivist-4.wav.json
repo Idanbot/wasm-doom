@@ -1,0 +1,14 @@
+{
+  "signature": "b1dcef75cf830366f22f9d2bdadd7a2bf348cee777bbb94bb719f7059953ece2",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Shield index restored.",
+    "speaker": "neptune",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Ancient memory custodian, low synthetic voice with worn human cadence",
+  "effect": "asetrate=20400,aresample=24000,atempo=1.12,aeval=val(0)*(0.72+0.28*sin(2*PI*48*t)),highpass=f=120,lowpass=f=3600",
+  "generatedAt": "2026-09-27T16:49:44.822Z"
+}

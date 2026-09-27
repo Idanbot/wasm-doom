@@ -1,0 +1,14 @@
+{
+  "signature": "f7439e73e3774c16c250bd00bdc391886438ee6c63d52d4ca3fbe56020c9aab1",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Record this impact.",
+    "speaker": "neptune",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Ancient memory custodian, low synthetic voice with worn human cadence",
+  "effect": "asetrate=20400,aresample=24000,atempo=1.12,aeval=val(0)*(0.72+0.28*sin(2*PI*48*t)),highpass=f=120,lowpass=f=3600",
+  "generatedAt": "2026-09-27T16:49:43.777Z"
+}

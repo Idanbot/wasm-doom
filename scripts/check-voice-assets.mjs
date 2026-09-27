@@ -33,8 +33,8 @@ console.log(
 
 // Boss-kill lines live outside the enemy manifest (art/boss-voices.json).
 const bossPlan = JSON.parse(readFileSync("art/boss-voices.json", "utf8"));
-assert.equal(bossPlan.bosses.length, 5);
-const bossIds = ["boss-veyran", "boss-hecate", "boss-chimera", "boss-oracle", "boss-gravemind"];
+assert.equal(bossPlan.bosses.length, 6);
+const bossIds = ["boss-veyran", "boss-hecate", "boss-chimera", "boss-oracle", "boss-gravemind", "boss-archivist"];
 for (const [i, boss] of bossPlan.bosses.entries()) {
   assert.equal(boss.id, bossIds[i]);
   assert.ok(boss.text.length > 10);

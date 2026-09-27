@@ -233,6 +233,22 @@
         ["pain", "The shielding is cracking."],
         ["taunt", "I can outlast the alarms. Can you?"]
       ]
+    },
+    {
+      "skin": 17,
+      "id": "archivist",
+      "name": "NULL ARCHIVIST",
+      "speaker": "neptune",
+      "style": "Ancient memory custodian, low synthetic voice with worn human cadence",
+      "effect": "robot-low",
+      "lines": [
+        ["alert", "Unauthorized memory access."],
+        ["alert", "Your identity is not in the archive."],
+        ["attack", "Record this impact."],
+        ["attack", "Shield index restored."],
+        ["pain", "My memory is fragmenting."],
+        ["taunt", "I kept the names they tried to erase."]
+      ]
     }
   ]
 }

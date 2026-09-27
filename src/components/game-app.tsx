@@ -203,13 +203,13 @@ export function GameApp() {
             if (save) {
               // Winning keeps every unlocked weapon, restores full health
               // and full ammo, and preserves armor clamped to [0, 100].
-              const sizes = [12, 8, 36, 5, 4, 10, 90, 6, 4, 14, 5];
-              const full = [120, 48, 216, 20, 16, 80, 450, 36, 24, 84, 30];
-              const mag = [...save.mag, ...Array(11).fill(0)].slice(0, 11);
-              const ammo = [...save.ammo, ...Array(11).fill(0)].slice(0, 11);
+              const sizes = [12, 8, 36, 5, 4, 10, 90, 6, 4, 14, 5, 9];
+              const full = [120, 48, 216, 20, 16, 80, 450, 36, 24, 84, 30, 54];
+              const mag = [...save.mag, ...Array(12).fill(0)].slice(0, 12);
+              const ammo = [...save.ammo, ...Array(12).fill(0)].slice(0, 12);
               mag[0] = sizes[0]!;
               ammo[0] = full[0]!;
-              for (let i = 1; i < 11; i++) {
+              for (let i = 1; i < 12; i++) {
                 if (save.flags & (1 << (i - 1))) {
                   mag[i] = sizes[i]!;
                   ammo[i] = full[i]!;

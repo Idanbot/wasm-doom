@@ -36,6 +36,13 @@
       "style": "Dying reactor engineer, exhausted human rasp",
       "effect": "respirator",
       "text": "Containment... lost. Take the cutter. Seal the sink."
+    },
+    {
+      "id": "boss-archivist",
+      "speaker": "neptune",
+      "style": "Ancient memory custodian, calm synthetic voice breaking into human regret",
+      "effect": "robot-low",
+      "text": "Archive integrity lost. The rail is yours. Do not write me back."
     }
   ]
 }

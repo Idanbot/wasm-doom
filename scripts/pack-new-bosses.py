@@ -7,6 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCES = {
     "oracle": ROOT / "art/bosses/oracle-source.png",
     "gravemind": ROOT / "art/bosses/gravemind-source.png",
+    "archivist": ROOT / "art/bosses/archivist-source.png",
 }
 ACTIONS = ("idle", "move", "pain", "fire", "reload", "dead", "special")
 

@@ -88,6 +88,7 @@ pub(crate) const ENEMY_SKINS: &[EnemySkin] = &[
     EnemySkin { id: SKIN_CHIMERA, name: "CHIMERA–9", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 14, scale: 2.05, zoff: 8.0, special: "corrosive nova" },
     EnemySkin { id: SKIN_ORACLE, name: "ORACLE–7", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 15, scale: 2.08, zoff: 8.0, special: "predictive crossfire" },
     EnemySkin { id: SKIN_GRAVEMIND, name: "GRAVEMIND–4", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 16, scale: 2.18, zoff: 8.0, special: "reactor pulse" },
+    EnemySkin { id: SKIN_ARCHIVIST, name: "NULL ARCHIVIST", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 17, scale: 2.16, zoff: 8.0, special: "memory fracture" },
 ];
 
 pub(crate) fn skin_def(id: u8) -> Option<&'static EnemySkin> {
@@ -143,6 +144,7 @@ pub(crate) const ENEMY_DEFS: &[EnemyDef] = &[
     EnemyDef { kind: EK_GUN9, name: "VR-9 case", role: "pickup", hp: 1, radius: 0.26, zoff: 30.0, scale: 0.62, texture: T_GUN9, sheet4: false, hostile: false, cleared_on_wave: false },
     EnemyDef { kind: EK_GUN10, name: "HC-9 case", role: "pickup", hp: 1, radius: 0.26, zoff: 30.0, scale: 0.58, texture: T_GUN10, sheet4: false, hostile: false, cleared_on_wave: false },
     EnemyDef { kind: EK_GUN11, name: "CM-9 case", role: "pickup", hp: 1, radius: 0.26, zoff: 30.0, scale: 0.60, texture: T_GUN11, sheet4: false, hostile: false, cleared_on_wave: false },
+    EnemyDef { kind: EK_GUN12, name: "AR-6 case", role: "pickup", hp: 1, radius: 0.26, zoff: 30.0, scale: 0.60, texture: T_GUN12, sheet4: false, hostile: false, cleared_on_wave: false },
     EnemyDef { kind: EK_POWER, name: "Power cell", role: "pickup", hp: 1, radius: 0.24, zoff: 28.0, scale: 0.55, texture: T_ARMOR, sheet4: false, hostile: false, cleared_on_wave: false },
     EnemyDef { kind: EK_BARREL, name: "Barrel", role: "prop", hp: 14, radius: 0.3, zoff: 78.0, scale: 0.72, texture: T_BARREL, sheet4: false, hostile: false, cleared_on_wave: false },
     EnemyDef { kind: EK_GIB, name: "Gib", role: "fx", hp: 1, radius: 0.08, zoff: 0.0, scale: 0.18, texture: T_SPLAT, sheet4: false, hostile: false, cleared_on_wave: false },

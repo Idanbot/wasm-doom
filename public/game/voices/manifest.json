@@ -709,6 +709,57 @@
           "duration": 2.592
         }
       ]
+    },
+    {
+      "skin": 17,
+      "id": "archivist",
+      "name": "NULL ARCHIVIST",
+      "style": "Ancient memory custodian, low synthetic voice with worn human cadence",
+      "speaker": "neptune",
+      "lines": [
+        {
+          "id": "archivist-1",
+          "cue": "alert",
+          "text": "Unauthorized memory access.",
+          "url": "/game/voices/archivist-1.mp3",
+          "duration": 1.968
+        },
+        {
+          "id": "archivist-2",
+          "cue": "alert",
+          "text": "Your identity is not in the archive.",
+          "url": "/game/voices/archivist-2.mp3",
+          "duration": 2.16
+        },
+        {
+          "id": "archivist-3",
+          "cue": "attack",
+          "text": "Record this impact.",
+          "url": "/game/voices/archivist-3.mp3",
+          "duration": 1.368
+        },
+        {
+          "id": "archivist-4",
+          "cue": "attack",
+          "text": "Shield index restored.",
+          "url": "/game/voices/archivist-4.mp3",
+          "duration": 1.824
+        },
+        {
+          "id": "archivist-5",
+          "cue": "pain",
+          "text": "My memory is fragmenting.",
+          "url": "/game/voices/archivist-5.mp3",
+          "duration": 1.536
+        },
+        {
+          "id": "archivist-6",
+          "cue": "taunt",
+          "text": "I kept the names they tried to erase.",
+          "url": "/game/voices/archivist-6.mp3",
+          "duration": 2.208
+        }
+      ]
     }
   ]
 }

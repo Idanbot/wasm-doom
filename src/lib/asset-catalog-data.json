@@ -4511,5 +4511,171 @@
     "size": 20205,
     "hash": "619ca8ce0fc1458b59eec20aa6ffdb9dbd9539ea2b4933a36edd320c78b3d176",
     "shortHash": "619ca8ce"
+  },
+  {
+    "file": "/game/draft/v2/weap_ar6_5x5.png",
+    "name": "weap_ar6_5x5.png",
+    "size": 1911391,
+    "hash": "056da04f6159a6e86117f21d554ce90785db4e0e5f3faec9e2ee237ef0cf1e8d",
+    "shortHash": "056da04f",
+    "width": 2560,
+    "height": 1920
+  },
+  {
+    "file": "/game/draft/v2/weap_ar6_aim.png",
+    "name": "weap_ar6_aim.png",
+    "size": 105440,
+    "hash": "59dda5ed5fc5eef9e03bd7cc4a7babda5a2d54a8846488f3dfbc93ecb1822657",
+    "shortHash": "59dda5ed",
+    "width": 512,
+    "height": 384
+  },
+  {
+    "file": "/game/draft/v2/masters/ar6.png",
+    "name": "ar6.png",
+    "size": 1153381,
+    "hash": "5376099c971b6925ad7fcfda93177d986a920bd171663619154cb8ea523f79d4",
+    "shortHash": "5376099c",
+    "width": 1448,
+    "height": 1086
+  },
+  {
+    "file": "/game/draft/v2/cases/case_ar6.png",
+    "name": "case_ar6.png",
+    "size": 963530,
+    "hash": "102d4c02d516fa92b4b29e79f777f739097da0d6b80f0f154f682bbba3973ec0",
+    "shortHash": "102d4c02",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "file": "/game/spr_gun_ar6.png",
+    "name": "spr_gun_ar6.png",
+    "size": 69911,
+    "hash": "2aa5329e3963f9bf8be819f9ea61dc95c65558f8f7a7549442d77c9685e7478d",
+    "shortHash": "2aa5329e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/ui/weapon-thumbs/ar6.png",
+    "name": "ar6.png",
+    "size": 68727,
+    "hash": "6c5f205a68cf8d32da1232dff7e6b4b699d5649384bcc4259c7607707d3c2fe5",
+    "shortHash": "6c5f205a",
+    "width": 384,
+    "height": 192
+  },
+  {
+    "file": "/game/voices/boss-archivist.mp3",
+    "name": "boss-archivist.mp3",
+    "size": 54765,
+    "hash": "8a6c63389c0c01af589534fd3c1a90bef575f7d5e3128641855cd43f60c1a3fb",
+    "shortHash": "8a6c6338"
+  },
+  {
+    "file": "/game/enemy_archivist_idle.png",
+    "name": "enemy_archivist_idle.png",
+    "size": 41939,
+    "hash": "9bf0c3f0e7ec338b5bbfc11a787f1d5288e78588d4ba3b1f3f5ee8cff7314a45",
+    "shortHash": "9bf0c3f0",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_archivist_move.png",
+    "name": "enemy_archivist_move.png",
+    "size": 42044,
+    "hash": "0a0a51f0869a592f3090e461b7cb7e242f96345a8ce36afe5241648e3003307e",
+    "shortHash": "0a0a51f0",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_archivist_pain.png",
+    "name": "enemy_archivist_pain.png",
+    "size": 35466,
+    "hash": "475cbafd6ef21e991f5f1350640945b8418d7379669eaffbfd195ad46e315852",
+    "shortHash": "475cbafd",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_archivist_fire.png",
+    "name": "enemy_archivist_fire.png",
+    "size": 67407,
+    "hash": "9c462d5fb44e1f8927bac9c021a28ede62679780aa014303d8270a2956a168bf",
+    "shortHash": "9c462d5f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_archivist_reload.png",
+    "name": "enemy_archivist_reload.png",
+    "size": 35326,
+    "hash": "e277abdc75151975531d9693b857f339c69c11c8a8fbc53732a84b364d148ca1",
+    "shortHash": "e277abdc",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_archivist_dead.png",
+    "name": "enemy_archivist_dead.png",
+    "size": 48395,
+    "hash": "4eec2e995dc159a8bfa44d75cc5141da92834f907ea833a26ca34cff1c402786",
+    "shortHash": "4eec2e99",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_archivist_special.png",
+    "name": "enemy_archivist_special.png",
+    "size": 71566,
+    "hash": "711d8732958f37335e4fc2fa605e67f7fc48f1d6dad816be1abe30e500be3294",
+    "shortHash": "711d8732",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/voices/archivist-1.mp3",
+    "name": "archivist-1.mp3",
+    "size": 15981,
+    "hash": "e52c28d57f1064e1c03b13e9c3889c3e62605bf379fc45f53b1f28f10601c56e",
+    "shortHash": "e52c28d5"
+  },
+  {
+    "file": "/game/voices/archivist-2.mp3",
+    "name": "archivist-2.mp3",
+    "size": 17517,
+    "hash": "18ee006503e0a6cc21fe6550197b10ddd21110d513354ff63e38783caa7016a6",
+    "shortHash": "18ee0065"
+  },
+  {
+    "file": "/game/voices/archivist-3.mp3",
+    "name": "archivist-3.mp3",
+    "size": 11181,
+    "hash": "2e5e417dbc440d914d7494a60082dcb68b87b8c7ba67de82e8f2d8f7f2277d5f",
+    "shortHash": "2e5e417d"
+  },
+  {
+    "file": "/game/voices/archivist-4.mp3",
+    "name": "archivist-4.mp3",
+    "size": 14829,
+    "hash": "5a8380903a341b0115ba6045d064ba2cda877fa5a4764d2784050f7e1a35144e",
+    "shortHash": "5a838090"
+  },
+  {
+    "file": "/game/voices/archivist-5.mp3",
+    "name": "archivist-5.mp3",
+    "size": 12525,
+    "hash": "a10444d7caa665cf2cb554648bc95536ff3450b1137702a991458476ee74e2c0",
+    "shortHash": "a10444d7"
+  },
+  {
+    "file": "/game/voices/archivist-6.mp3",
+    "name": "archivist-6.mp3",
+    "size": 17901,
+    "hash": "a8ce19f7795a03898d1f29768f11a12c6f60c8329f6907b371ff097b84c62c97",
+    "shortHash": "a8ce19f7"
   }
 ]

@@ -15,6 +15,7 @@ export const SECTORS = [
   { code: "NADIR–7C", name: "BIOFORGE DEPTHS", bossTitle: "SPECIMEN PRIME", bossName: "CHIMERA–9" },
   { code: "NADIR–7D", name: "DATA SPINE", bossTitle: "PREDICTIVE CORE", bossName: "ORACLE–7" },
   { code: "NADIR–7E", name: "REACTOR SINK", bossTitle: "REACTOR WARDEN", bossName: "GRAVEMIND–4" },
+  { code: "NADIR–7F", name: "NULL ARCHIVE", bossTitle: "MEMORY CUSTODIAN", bossName: "NULL ARCHIVIST" },
 ] as const;
 
 export function sectorForWave(wave: number) {
@@ -38,6 +39,7 @@ export const WEAPONS = [
   { id: 8, name: "VR-9 OVERRIDE", role: "Veyran rail · pierces the lane, then bursts", magSize: 4, lowAmmoAt: 1, reserve: 24, sheet: WEAPON_SHEETS[8]! },
   { id: 9, name: "HC-9 FORGE", role: "HECATE cutter · wide beam and impact splash", magSize: 14, lowAmmoAt: 3, reserve: 84, sheet: WEAPON_SHEETS[9]! },
   { id: 10, name: "CM-9 CHIMERA", role: "Specimen fan · acid bursts and a short pool", magSize: 5, lowAmmoAt: 1, reserve: 30, sheet: WEAPON_SHEETS[10]! },
+  { id: 11, name: "AR-6 ARCHIVE", role: "Archivist rail · precise amber pulse", magSize: 9, lowAmmoAt: 2, reserve: 54, sheet: WEAPON_SHEETS[11]! },
 ];
 
 const HANDLER = [
@@ -46,6 +48,7 @@ const HANDLER = [
   "Specimen lock first. Containment will not open until the ring is purged.",
   "The data spine is feeding Oracle. Cut its prediction node before the core override.",
   "Reactor sink ahead. Isolate the coolant relay before you challenge the warden.",
+  "The Null Archive is sealing its memory stacks. Cut the index node before the custodian wakes.",
 ] as const;
 
 const LOCKDOWN = [
@@ -54,6 +57,7 @@ const LOCKDOWN = [
   "MALIK: Containment sealed. The specimen is authorized to finish this.",
   "ORACLE–7: Your route has already been calculated. Core doors sealed.",
   "GRAVEMIND–4: Reactor doors sealed. This place dies with me.",
+  "NULL ARCHIVIST: Memory vault closed. Your route has been erased.",
 ] as const;
 
 const NODE_DONE = [
@@ -62,6 +66,7 @@ const NODE_DONE = [
   "Specimen lock purged. Containment will answer.",
   "Prediction node offline. Oracle can no longer close the route.",
   "Coolant relay isolated. The reactor override is live.",
+  "Index node severed. The memory vault override is live.",
 ] as const;
 
 const MEMOS: Record<number, string> = {
@@ -75,6 +80,8 @@ const MEMOS: Record<number, string> = {
   23: "Operator note: unplugging the racks did not stop the core from answering.",
   26: "Reactor log: the warden locked himself inside before the containment alarm.",
   27: "Handler: pressure is climbing. Keep the coolant corridor clear.",
+  30: "Archive memo: records marked deleted remain on the other side of the wall.",
+  31: "Custodian log: the last human operator signed out thirty years ago.",
 };
 
 export function radioCopy(line: number, wave: number) {
@@ -82,13 +89,14 @@ export function radioCopy(line: number, wave: number) {
   if (line === 1) return { speaker: "HANDLER", text: HANDLER[sector]! };
   if (line === 2) return { speaker: "MALIK", text: LOCKDOWN[sector]! };
   if (line === 3) return {
-    speaker: ["MALIK", "HECATE–9", "CHIMERA–9", "ORACLE–7", "GRAVEMIND–4"][sector]!,
+    speaker: ["MALIK", "HECATE–9", "CHIMERA–9", "ORACLE–7", "GRAVEMIND–4", "NULL ARCHIVIST"][sector]!,
     text: [
       "Command surface exposed. That window will not last.",
       "Shield circuit open. Discharge imminent.",
       "Containment breached. The specimen is vulnerable.",
       "Prediction buffer severed. I cannot see your next move.",
       "Containment pressure falling. My armor is open.",
+      "Shield memory fractured. This record will not survive.",
     ][sector]!,
   };
   if (line === 4) return { speaker: "HANDLER", text: NODE_DONE[sector]! };
@@ -102,6 +110,7 @@ export function radioCopy(line: number, wave: number) {
         "The specimen case is Chimera's sprayer. Pick it up to leave.",
         "Oracle's Override rail is down. Take the case and clear the spine.",
         "The warden dropped a forge cutter. Take it and leave the reactor.",
+        "The Archivist dropped an Archive rail. Take it and clear the vault.",
       ][sector]!,
     };
   }
@@ -113,6 +122,7 @@ export function radioCopy(line: number, wave: number) {
       { speaker: "CHIMERA–9", text: "You broke the cage. The toxin is yours now. Breathe carefully." },
       { speaker: "ORACLE–7", text: "Prediction failed. Core access released." },
       { speaker: "GRAVEMIND–4", text: "Containment... lost. Take the cutter. Seal the sink." },
+      { speaker: "NULL ARCHIVIST", text: "Archive integrity lost. The rail is yours. Do not write me back." },
     ][sector]!;
     return kill;
   }
@@ -124,9 +134,9 @@ export function radioCopy(line: number, wave: number) {
 export function missionLine(hud: { prompt: number; objective: number; wave: number }) {
   const sector = (Math.max(1, hud.wave) - 1) % SECTORS.length;
   if (hud.prompt === 3) return "INITIATE OVERRIDE";
-  if (hud.prompt === 13) return ["USE THE LAB NODE", "VENT THE COOLANT", "PURGE THE LOCK", "CUT THE PREDICTION NODE", "ISOLATE THE COOLANT RELAY"][sector]!;
+  if (hud.prompt === 13) return ["USE THE LAB NODE", "VENT THE COOLANT", "PURGE THE LOCK", "CUT THE PREDICTION NODE", "ISOLATE THE COOLANT RELAY", "SEVER THE INDEX NODE"][sector]!;
   if (hud.prompt === 15 || hud.objective === 0) {
-    return ["RESTORE THE LAB NODE", "VENT THE COOLANT NODE", "PURGE THE SPECIMEN LOCK", "CUT THE PREDICTION NODE", "ISOLATE THE COOLANT RELAY"][sector]!;
+    return ["RESTORE THE LAB NODE", "VENT THE COOLANT NODE", "PURGE THE SPECIMEN LOCK", "CUT THE PREDICTION NODE", "ISOLATE THE COOLANT RELAY", "SEVER THE INDEX NODE"][sector]!;
   }
   if (hud.prompt === 6) return "REACH THE OVERRIDE";
   return "ELIMINATE THE SIGNAL";
@@ -257,10 +267,10 @@ export function loadCheckpoint(): RunSave | null {
     if (!v || !Array.isArray(v.ammo) || !Array.isArray(v.mag)) {
       return null;
     }
-    // Current saves hold 11 weapons; legacy 8-slot saves are padded.
-    if (v.ammo.length !== 8 && v.ammo.length !== 11) return null;
-    if (v.mag.length !== 8 && v.mag.length !== 11) return null;
-    const pad11 = (a: number[]) => [...a, ...Array(11).fill(0)].slice(0, 11);
+    // Old 8- and 11-slot checkpoints remain loadable after adding AR-6.
+    if (![8, 11, 12].includes(v.ammo.length)) return null;
+    if (![8, 11, 12].includes(v.mag.length)) return null;
+    const pad12 = (a: number[]) => [...a, ...Array(12).fill(0)].slice(0, 12);
     return {
       wave: Math.min(999, Math.max(1, v.wave || 1)),
       health: v.health || 100,
@@ -270,8 +280,8 @@ export function loadCheckpoint(): RunSave | null {
       kills: v.kills || 0,
       secrets: v.secrets || 0,
       elapsedMs: v.elapsedMs || 0,
-      ammo: pad11(v.ammo),
-      mag: pad11(v.mag),
+      ammo: pad12(v.ammo),
+      mag: pad12(v.mag),
     };
   } catch {
     return null;

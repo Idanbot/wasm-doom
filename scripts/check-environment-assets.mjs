@@ -70,7 +70,7 @@ if (plan) {
 }
 
 function checkDraftV2() {
-  const ids = ["ax12", "br12", "cm9", "hc9", "hx8", "kx9", "m91", "mk23s", "mr4", "vlk6", "vr9"];
+  const ids = ["ar6", "ax12", "br12", "cm9", "hc9", "hx8", "kx9", "m91", "mk23s", "mr4", "vlk6", "vr9"];
   const themes = ["hangar", "plaza", "security", "datacenter", "foundry", "biotech", "nuclear", "vault"];
   const dim = (relative, w, h, alpha = false) => {
     const full = join(root, relative);

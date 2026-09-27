@@ -262,5 +262,29 @@
     "alt_fire_desc": "Visual draft for review.",
     "alt_available": true,
     "ammo_visual": "Distinct full, half, low, empty and magazine/canister removed aim states."
+  },
+  {
+    "id": "ar6",
+    "sheet_file": "/game/draft/v2/weap_ar6_5x5.png",
+    "sheet_hash": "056da04f6159a6e86117f21d554ce90785db4e0e5f3faec9e2ee237ef0cf1e8d",
+    "sheet_short_hash": "056da04f",
+    "aim_file": "/game/draft/v2/weap_ar6_aim.png",
+    "aim_hash": "59dda5ed5fc5eef9e03bd7cc4a7babda5a2d54a8846488f3dfbc93ecb1822657",
+    "aim_short_hash": "59dda5ed",
+    "gen_master_file": "/game/draft/v2/masters/ar6.png",
+    "gen_master_hash": "5376099c971b6925ad7fcfda93177d986a920bd171663619154cb8ea523f79d4",
+    "gen_master_short_hash": "5376099c",
+    "cell_w": 512,
+    "cell_h": 384,
+    "cols": 5,
+    "rows": 5,
+    "frames_total": 25,
+    "name": "AR-6 ARCHIVE",
+    "slot": 11,
+    "is_boss": true,
+    "alt_fire_name": "Archive pulse",
+    "alt_fire_desc": "Amber precision rail pulse.",
+    "alt_available": false,
+    "ammo_visual": "Amber capacitor full, half, low, empty and removed."
   }
 ]

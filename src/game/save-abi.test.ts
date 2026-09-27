@@ -8,8 +8,8 @@ import { SAVE_AMMO_BASE, SAVE_MAG_BASE, SAVE_SIZE, SAVE_SLOTS } from "./save-abi
  * both files together when WEP_N changes.
  */
 describe("RunSave ABI", () => {
-  it("covers all eleven weapons", () => {
-    assert.equal(SAVE_SLOTS, 11);
+  it("covers all twelve weapons", () => {
+    assert.equal(SAVE_SLOTS, 12);
   });
 
   it("struct size matches the Rust repr(C) layout", () => {

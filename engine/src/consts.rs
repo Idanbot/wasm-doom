@@ -7,9 +7,9 @@ pub(crate) const MAX_H: usize = 2160;
 pub(crate) const TEX: usize = 256;
 pub(crate) const TEXM: i32 = (TEX as i32) - 1;
 /// Atlas layers: the original 29 world layers plus seven animation sheets
-/// for each of the seventeen BLACKSITE enemy skins.
+/// for each of the eighteen BLACKSITE enemy skins.
 pub(crate) const ENEMY_ANIM_COUNT: usize = 7;
-pub(crate) const ENEMY_SKIN_COUNT: usize = 17;
+pub(crate) const ENEMY_SKIN_COUNT: usize = 18;
 pub(crate) const ENEMY_TEX_BASE: usize = 29;
 pub(crate) const T_ORDNANCE: usize = ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT;
 pub(crate) const T_GUN3: usize = T_ORDNANCE + 1;
@@ -24,7 +24,8 @@ pub(crate) const T_GUN8: usize = T_CONSOLE_BIOFORGE + 1;
 pub(crate) const T_GUN9: usize = T_GUN8 + 1;
 pub(crate) const T_GUN10: usize = T_GUN8 + 2;
 pub(crate) const T_GUN11: usize = T_GUN8 + 3;
-pub(crate) const T_PROP_REACTOR: usize = T_GUN11 + 1;
+pub(crate) const T_GUN12: usize = T_GUN11 + 1;
+pub(crate) const T_PROP_REACTOR: usize = T_GUN12 + 1;
 pub(crate) const T_PROP_SERVER: usize = T_GUN11 + 2;
 pub(crate) const T_PROP_AC: usize = T_GUN11 + 3;
 pub(crate) const T_PROP_VENT: usize = T_GUN11 + 4;
@@ -112,6 +113,7 @@ pub(crate) const EK_PROP_VENT: u8 = 39;
 pub(crate) const EK_PROP_WLIGHT_C: u8 = 40;
 pub(crate) const EK_PROP_WLIGHT_W: u8 = 41;
 pub(crate) const EK_PROP_BEACON: u8 = 42;
+pub(crate) const EK_GUN12: u8 = 43;
 pub(crate) const SKIN_CONSOLE_UPPER: u8 = 240;
 pub(crate) const SKIN_CONSOLE_FOUNDRY: u8 = 241;
 pub(crate) const SKIN_CONSOLE_BIOFORGE: u8 = 242;
@@ -145,6 +147,7 @@ pub(crate) const SKIN_HECATE: u8 = 13;
 pub(crate) const SKIN_CHIMERA: u8 = 14;
 pub(crate) const SKIN_ORACLE: u8 = 15;
 pub(crate) const SKIN_GRAVEMIND: u8 = 16;
+pub(crate) const SKIN_ARCHIVIST: u8 = 17;
 
 pub(crate) const IN_W: u32 = 1;
 pub(crate) const IN_S: u32 = 2;
@@ -167,10 +170,11 @@ pub(crate) const IN_W8: u32 = 131072;
 pub(crate) const IN_W9: u32 = 262144;
 pub(crate) const IN_W10: u32 = 524288;
 pub(crate) const IN_W11: u32 = 1048576;
+pub(crate) const IN_W12: u32 = 2097152;
 
-pub(crate) const WEP_N: usize = 11;
-pub(crate) const MAG_SZ: [i32; WEP_N] = [12, 8, 36, 5, 4, 10, 90, 6, 4, 14, 5];
-pub(crate) const RELOAD_T: [f32; WEP_N] = [0.95, 1.75, 1.30, 1.60, 1.95, 1.55, 2.45, 1.85, 1.70, 1.35, 1.55];
+pub(crate) const WEP_N: usize = 12;
+pub(crate) const MAG_SZ: [i32; WEP_N] = [12, 8, 36, 5, 4, 10, 90, 6, 4, 14, 5, 9];
+pub(crate) const RELOAD_T: [f32; WEP_N] = [0.95, 1.75, 1.30, 1.60, 1.95, 1.55, 2.45, 1.85, 1.70, 1.35, 1.55, 1.8];
 pub(crate) const MAP_CELLS: usize = MAP_W * MAP_H;
 pub(crate) const FX_CAP: usize = 64;
 
@@ -185,7 +189,7 @@ mod tests {
     }
 
     #[test]
-    fn weapon_tables_cover_all_eleven_guns() {
+    fn weapon_tables_cover_all_twelve_guns() {
         assert_eq!(MAG_SZ.len(), WEP_N);
         assert_eq!(RELOAD_T.len(), WEP_N);
         for m in MAG_SZ {
@@ -200,7 +204,7 @@ mod tests {
     fn input_bits_are_unique_powers_of_two() {
         let bits = [
             IN_W, IN_S, IN_A, IN_D, IN_FIRE, IN_SPRINT, IN_USE, IN_W1, IN_W2, IN_W3, IN_TURNL,
-            IN_TURNR, IN_RELOAD, IN_W4, IN_W5, IN_W6, IN_W7, IN_W8, IN_W9, IN_W10, IN_W11,
+            IN_TURNR, IN_RELOAD, IN_W4, IN_W5, IN_W6, IN_W7, IN_W8, IN_W9, IN_W10, IN_W11, IN_W12,
         ];
         for (i, a) in bits.iter().enumerate() {
             assert_ne!(*a, 0);

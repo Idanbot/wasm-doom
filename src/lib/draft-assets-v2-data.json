@@ -626,5 +626,15 @@
     "shortHash": "a597cfde",
     "width": 512,
     "height": 512
+  },
+  {
+    "file": "/game/draft/v2/cases/case_ar6.png",
+    "name": "case_ar6.png",
+    "size": 963530,
+    "hash": "102d4c02d516fa92b4b29e79f777f739097da0d6b80f0f154f682bbba3973ec0",
+    "shortHash": "102d4c02",
+    "width": 1024,
+    "height": 768,
+    "group": "items"
   }
 ]

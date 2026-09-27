@@ -24,6 +24,11 @@
       "id": "boss-gravemind",
       "url": "/game/voices/boss-gravemind.mp3",
       "duration": 4.608
+    },
+    {
+      "id": "boss-archivist",
+      "url": "/game/voices/boss-archivist.mp3",
+      "duration": 4.536
     }
   ]
 }

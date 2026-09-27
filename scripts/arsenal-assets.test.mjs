@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { chromium } from "playwright";
 
-const slugs = ["mk23s", "br12", "kx9", "mr4", "vlk6", "ax12", "m91", "hx8", "vr9", "hc9", "cm9"];
+const slugs = ["mk23s", "br12", "kx9", "mr4", "vlk6", "ax12", "m91", "hx8", "vr9", "hc9", "cm9", "ar6"];
 
 test("every arsenal thumbnail decodes as a visible transparent gun cutout", async () => {
   const browser = await chromium.launch({ headless: true });
@@ -39,7 +39,7 @@ test("every arsenal thumbnail decodes as a visible transparent gun cutout", asyn
         cornerAlpha: rgba[3],
       };
     })), files);
-    assert.equal(results.length, 11);
+    assert.equal(results.length, 12);
     for (const image of results) {
       assert.equal(image.width, 640, `${image.slug} width`);
       assert.equal(image.height, 300, `${image.slug} height`);

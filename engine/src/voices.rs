@@ -62,7 +62,7 @@ pub(crate) fn snapshot_bars(e: &Engine, out: &mut [BarCue]) -> usize {
         let scale = skin_def(crate::field::visual_skin(enemy.skin)).map(|s| s.scale).unwrap_or(0.9);
         let head = (horizon + enemy.zoff / depth) / e.h as f32 - scale / (2.0 * depth) - 0.02;
         let (frac, layer) = if enemy.shield_hp > 0 {
-            (enemy.shield_hp as f32 / crate::enemies::SHIELD_CAP as f32, 2.0)
+            (enemy.shield_hp as f32 / if enemy.kind == EK_BOSS && enemy.skin == SKIN_ARCHIVIST { 80.0 } else { crate::enemies::SHIELD_CAP as f32 }, 2.0)
         } else if enemy.armor_hp > 0 {
             let cap = crate::enemies::armor_cap(enemy.kind, enemy.skin).max(1) as f32;
             (enemy.armor_hp as f32 / cap, 1.0)

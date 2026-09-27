@@ -15,6 +15,7 @@ import {
   T_GUN9,
   T_GUN10,
   T_GUN11,
+  T_GUN12,
   T_PROP_REACTOR,
   T_PROP_SERVER,
   T_PROP_AC,
@@ -119,6 +120,7 @@ const IN = {
   W9: 262144,
   W10: 524288,
   W11: 1048576,
+  W12: 2097152,
 };
 
 const CODE_BITS: Record<string, number> = {
@@ -145,6 +147,7 @@ const CODE_BITS: Record<string, number> = {
   Digit9: IN.W9,
   Digit0: IN.W10,
   Minus: IN.W11,
+  Equal: IN.W12,
   ArrowLeft: IN.TURNL,
   KeyQ: IN.TURNL,
   ArrowRight: IN.TURNR,
@@ -169,6 +172,7 @@ const ENEMY_SKINS = [
   "chimera",
   "oracle",
   "gravemind",
+  "archivist",
 ] as const;
 const ENEMY_ANIMATIONS = ["idle", "move", "pain", "fire", "reload", "dead", "special"] as const;
 
@@ -213,6 +217,7 @@ const TEX_FILES: { id: number; src: string }[] = [
   { id: T_GUN9, src: "/game/spr_gun_vr9.png" },
   { id: T_GUN10, src: "/game/spr_gun_hc9.png" },
   { id: T_GUN11, src: "/game/spr_gun_cm9.png" },
+  { id: T_GUN12, src: "/game/spr_gun_ar6.png" },
   { id: T_PROP_REACTOR, src: "/game/spr_prop_reactor.png" },
   { id: T_PROP_SERVER, src: "/game/spr_prop_server.png" },
   { id: T_PROP_AC, src: "/game/spr_prop_ac.png" },
@@ -646,13 +651,14 @@ export class HellscanRuntime {
       this.hud.hasW9,
       this.hud.hasW10,
       this.hud.hasW11,
+      this.hud.hasW12,
     ];
     const count = owned.length;
     const step = dir >= 0 ? 1 : count - 1;
     for (let n = 1; n <= count; n++) {
       const next = (this.hud.weapon + step * n) % count;
       if (owned[next]) {
-        const bit = [IN.W1, IN.W2, IN.W3, IN.W4, IN.W5, IN.W6, IN.W7, IN.W8, IN.W9, IN.W10, IN.W11][next];
+        const bit = [IN.W1, IN.W2, IN.W3, IN.W4, IN.W5, IN.W6, IN.W7, IN.W8, IN.W9, IN.W10, IN.W11, IN.W12][next];
         if (bit) this.weaponPulse = bit;
         return;
       }
@@ -1011,6 +1017,7 @@ export class HellscanRuntime {
       hasW9: dv.getInt32(168, true) !== 0,
       hasW10: dv.getInt32(172, true) !== 0,
       hasW11: dv.getInt32(176, true) !== 0,
+      hasW12: dv.getInt32(192, true) !== 0,
       objective: dv.getInt32(144, true),
       radioSeq: dv.getInt32(148, true),
       radioLine: dv.getInt32(152, true),
@@ -1131,7 +1138,7 @@ export class HellscanRuntime {
     if (hud.radioSeq !== this.prevRadioSeq) {
       this.prevRadioSeq = hud.radioSeq;
       if (hud.radioSeq !== 0) {
-        if (hud.radioLine === 8) this.audio.bossKill((hud.wave - 1) % 5);
+        if (hud.radioLine === 8) this.audio.bossKill((hud.wave - 1) % 6);
         else this.audio.radio();
       }
     }
