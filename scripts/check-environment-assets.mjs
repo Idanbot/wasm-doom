@@ -105,6 +105,10 @@ function checkDraftV2() {
     // Opaque world surfaces: no alpha channel by design.
     dim(`public/game/${name}`, 256, 256, false);
   }
+  const draftReport = JSON.parse(readFileSync(join(root, "public/game/draft/v2/textures/processing-report.json"), "utf8"));
+  for (const [name, entry] of [...Object.entries(draftReport.global), ...Object.entries(draftReport.theme)]) {
+    if (entry.seam !== 0) errors.push(`${name}: runtime texture has a visible wrap seam (${entry.seam})`);
+  }
 }
 checkDraftV2();
 

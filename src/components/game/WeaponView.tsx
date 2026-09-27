@@ -1,6 +1,3 @@
-import { asset } from "@/lib/asset";
-import { WEAPONS } from "./data";
-
 export function WeaponView({
   weaponRef,
   missing,
@@ -10,10 +7,8 @@ export function WeaponView({
   missing?: boolean;
   name?: string;
 }) {
-  // The weapon sheet is owned imperatively by the runtime frame loop
-  // (idle / fire / reload cells switch every frame). React must not set
-  // backgroundImage here: re-rendering on HUD state would reset the sheet
-  // to idle mid-burst and kill fire/reload animation with flicker.
+  // The frame loop draws one 512x384 sheet cell into this canvas. Drawing the
+  // full 5x5 sheet as a 500% CSS background delayed first paint in production.
   if (missing) {
     // Art failed to decode: show a labeled plate instead of nothing.
     return (
@@ -30,13 +25,9 @@ export function WeaponView({
     <div
       ref={weaponRef}
       className="weapon-view pointer-events-none absolute bottom-[-2%] left-1/2 origin-bottom select-none"
-      style={{
-        backgroundImage: `url(${asset(WEAPONS[0]!.sheet)})`,
-        backgroundSize: "500% 500%",
-        backgroundPosition: "0% 0%",
-        backgroundRepeat: "no-repeat",
-        transform: "translate(-50%, 0)",
-      }}
-    />
+      style={{ transform: "translate(-50%, 0)" }}
+    >
+      <canvas width={512} height={384} aria-hidden="true" />
+    </div>
   );
 }

@@ -13,6 +13,7 @@ import json
 from pathlib import Path
 
 from PIL import Image
+import numpy as np
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,6 +22,7 @@ COMBAT_V3 = ROOT / "art" / "source_hd" / "combat_v3"
 MASTER = SOURCE / "projectile_effects_4x4.png"
 CELLS = SOURCE / "cells"
 RUNTIME = ROOT / "public" / "game"
+DRAFT_FX = RUNTIME / "draft" / "v2" / "fx"
 
 
 # Source grid coordinates (column, row). Each runtime sheet uses four 256px
@@ -58,6 +60,40 @@ V3_SHEETS = {
     "spr_impact.png": SOURCE / "impact_v3_2x2.png",
     "spr_flame.png": SOURCE / "ambient_v3_2x2.png",
 }
+
+# The v2 catalog cells share the renderer's existing four-frame effect slots.
+# A few legacy ambient cells have no draft counterpart and stay in place.
+DRAFT_CELLS = {
+    "plasma_bolt": "projectile_rail",
+    "incendiary_projectile": "projectile_rocket",
+    "lance_beam": "projectile_arc",
+    "acid_seeker": "projectile_acid",
+    "pistol_muzzle": "muzzle_suppressed",
+    "shotgun_muzzle": "muzzle_ballistic",
+    "smg_muzzle": "muzzle_ballistic",
+    "rifle_muzzle": "muzzle_rocket",
+    "metal_impact": "impact_sparks",
+    "plasma_impact": "impact_electric",
+    "explosive_impact": "explosion_core",
+    "acid_impact": "impact_acid",
+    "smoke_puff": "smoke_explosion",
+    "electric_sparks": "impact_electric",
+}
+
+
+def draft_cell(name: str) -> Image.Image:
+    source = Image.open(DRAFT_FX / f"{name}.png").convert("RGBA")
+    if source.size != (512, 512):
+        raise ValueError(f"draft effect {name} must be 512x512")
+    if name.startswith("muzzle_"):
+        # Generated muzzle art has a low-alpha black canvas. Strip that canvas
+        # before downsampling so it cannot appear as a dark square in play.
+        pixels = np.asarray(source).copy()
+        brightness = pixels[:, :, :3].max(axis=2).astype(np.float32)
+        fade = np.clip((brightness - 18.0) / 55.0, 0, 1)
+        pixels[:, :, 3] = np.rint(pixels[:, :, 3] * fade).astype(np.uint8)
+        source = Image.fromarray(pixels, "RGBA")
+    return source.resize((256, 256), Image.Resampling.LANCZOS)
 
 
 def key_magenta(image: Image.Image) -> Image.Image:
@@ -148,6 +184,12 @@ def main() -> None:
             target = (column * 256, row * 256)
             master.paste((0, 0, 0, 0), (*target, target[0] + 256, target[1] + 256))
             master.alpha_composite(panel, target)
+    for name, draft_name in DRAFT_CELLS.items():
+        replacement = draft_cell(draft_name)
+        column, row = CELL_COORDS[name]
+        target = (column * 256, row * 256)
+        master.paste((0, 0, 0, 0), (*target, target[0] + 256, target[1] + 256))
+        master.alpha_composite(replacement, target)
     master.save(MASTER, format="PNG", optimize=False)
 
     cell_records: dict[str, dict[str, object]] = {}
@@ -174,6 +216,7 @@ def main() -> None:
         "alpha": "true RGBA transparency preserved from the generated master",
         "replacedFromCombatV3": sorted(replacements),
         "replacedFromV3Atlases": sorted(name for name, path in V3_SHEETS.items() if path.exists()),
+        "replacedFromDraftV2": DRAFT_CELLS,
     }
     (SOURCE / "processing-report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, indent=2))

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { asset } from "@/lib/asset";
-import { HellscanRuntime } from "@/game/runtime";
+import { HellscanRuntime, weaponSheetImage } from "@/game/runtime";
 import { DEFAULT_HUD, type GfxOpts, type HudState, type ResMode } from "@/game/types";
 import { Crosshair } from "./game/Crosshair";
 import {
@@ -15,8 +15,6 @@ import {
   saveBoard,
   saveCheckpoint,
   sectorForWave,
-  gridPos,
-  sheetPos,
   WEAPONS,
   type RunSave,
   type Score,
@@ -137,22 +135,19 @@ export function GameApp() {
           weapEl.style.transform = `translate(-50%, ${bobY}px) translateX(${bobX}px) rotate(${roll}deg)`;
           weapEl.style.filter = h.muzzle > 0.05 ? `brightness(${1 + h.muzzle * 0.22})` : "";
           const wpn = WEAPONS[h.weapon] ?? WEAPONS[0]!;
-          // Missing art renders the React fallback plate instead: never
-          // paint a broken URL over it (invisible gun, zero signal).
           const artMissing = missingRef.current.includes(wpn.sheet);
-          if (artMissing) weapEl.style.backgroundImage = "";
           // Engine weapFrame is a v2 5x5 cell index (0-24); one sheet
           // covers idle, dry, pickup, reload and fire states.
           const fr = Math.max(0, Math.min(24, h.weapFrame | 0));
-          if (artMissing) {
-            weapEl.style.backgroundSize = "contain";
-            weapEl.style.backgroundPosition = "center bottom";
-          } else {
-            weapEl.style.backgroundImage = `url(${asset(wpn.sheet)})`;
-            weapEl.style.backgroundSize = "500% 500%";
-            weapEl.style.backgroundPosition = gridPos(fr, 5, 5);
+          const sheet = artMissing ? null : weaponSheetImage(wpn.sheet);
+          const frameCanvas = weapEl.querySelector("canvas");
+          const frameContext = frameCanvas?.getContext("2d");
+          if (frameContext) {
+            frameContext.clearRect(0, 0, 512, 384);
+            if (sheet) {
+              frameContext.drawImage(sheet, (fr % 5) * 512, Math.floor(fr / 5) * 384, 512, 384, 0, 0, 512, 384);
+            }
           }
-          weapEl.style.backgroundRepeat = "no-repeat";
         }
         const now = performance.now();
         // Discrete combat state (ammo, health, weapon, kills, prompts)
@@ -465,14 +460,18 @@ export function GameApp() {
     rtRef.current?.setSens(sens);
     try {
       localStorage.setItem("blacksite-sensitivity", String(sens));
-    } catch {}
+    } catch {
+      /* ignore unavailable storage */
+    }
   }, [sens]);
 
   useEffect(() => {
     rtRef.current?.setEnemyOptions(enemyOptions);
     try {
       localStorage.setItem("blacksite-enemy-options", JSON.stringify(enemyOptions));
-    } catch {}
+    } catch {
+      /* ignore unavailable storage */
+    }
   }, [enemyOptions]);
 
   useEffect(() => {

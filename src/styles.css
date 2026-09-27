@@ -69,17 +69,21 @@
 }
 
 .weapon-view {
-  width: min(70vw, 680px);
-  height: min(50vw, 480px);
+  width: min(84vw, 860px);
+  aspect-ratio: 4 / 3;
+  height: auto;
+  margin-left: min(4vw, 46px);
+}
+.weapon-view canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 .weapon-missing {
   display: grid;
   align-items: end;
-  justify-items: center;
-  padding-bottom: 18px;
-  background:
-    repeating-linear-gradient(45deg, #10191e 0 14px, #19262c 14px 28px);
-  border: 1px dashed var(--color-primary);
+  justify-items: end;
+  padding: 0 24px 32px 0;
   box-sizing: border-box;
 }
 .weapon-missing span {
@@ -87,6 +91,7 @@
   letter-spacing: 0.2em;
   color: var(--color-primary);
   background: var(--color-bg);
+  border: 1px dashed var(--color-primary);
   padding: 8px 14px;
 }
 
@@ -1000,6 +1005,13 @@ select:focus-visible {
   min-width: 0;
   text-shadow: 0 1px 3px var(--color-bg);
 }
+.hud-ammo {
+  position: absolute;
+  top: 320px;
+  right: 24px;
+  width: 252px;
+  padding: 22px 27px 28px;
+}
 .hud-health {
   display: flex;
   gap: 12px;
@@ -1341,7 +1353,7 @@ select:focus-visible {
   }
   .radio-card {
     top: auto;
-    bottom: 178px;
+    bottom: 225px;
     left: 12px;
     right: 12px;
     max-width: none;
@@ -1365,6 +1377,12 @@ select:focus-visible {
   .hud-plate {
     width: calc(50% - 4px);
     padding: 18px 18px 22px;
+  }
+  .hud-ammo {
+    top: 330px;
+    right: 12px;
+    width: 180px;
+    padding: 16px 18px 20px;
   }
   .hud-health {
     gap: 6px;

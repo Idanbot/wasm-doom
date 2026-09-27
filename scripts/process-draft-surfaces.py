@@ -4,7 +4,8 @@
 Global replacements overwrite their live slots (same names, same dims).
 Per-theme walls/doors go to public/game/theme/ and are swapped into the
 T_TECH/T_DOOR atlas slots at runtime by wave (see hs_apply_theme).
-Square center-crops keep the seamless tiling intact.
+Square center-crops preserve surface detail; opposite edges are blended so
+the published runtime cells really wrap after the crop.
 """
 from __future__ import annotations
 
@@ -12,6 +13,7 @@ import json
 from pathlib import Path
 
 from PIL import Image, ImageStat
+import numpy as np
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -32,7 +34,7 @@ GLOBAL = {
 THEMES = ("hangar", "plaza", "security", "datacenter", "foundry", "biotech", "nuclear", "vault")
 
 
-def to_tile(source: Path) -> Image.Image:
+def to_tile(source: Path, seamless: bool = True) -> Image.Image:
     image = Image.open(source).convert("RGB")
     side = min(image.width, image.height)
     left = (image.width - side) // 2
@@ -40,6 +42,22 @@ def to_tile(source: Path) -> Image.Image:
     tile = image.crop((left, top, left + side, top + side)).resize(
         (256, 256), Image.Resampling.LANCZOS
     )
+    if seamless:
+        pixels = np.asarray(tile).astype(np.float32)
+        band = 16
+        for offset in range(band):
+            amount = 0.5 * (1 - offset / band) ** 2
+            left_edge = pixels[:, offset].copy()
+            right_edge = pixels[:, -1 - offset].copy()
+            pixels[:, offset] = left_edge * (1 - amount) + right_edge * amount
+            pixels[:, -1 - offset] = right_edge * (1 - amount) + left_edge * amount
+        for offset in range(band):
+            amount = 0.5 * (1 - offset / band) ** 2
+            top_edge = pixels[offset, :].copy()
+            bottom_edge = pixels[-1 - offset, :].copy()
+            pixels[offset, :] = top_edge * (1 - amount) + bottom_edge * amount
+            pixels[-1 - offset, :] = bottom_edge * (1 - amount) + top_edge * amount
+        tile = Image.fromarray(np.rint(pixels).astype(np.uint8), "RGB")
     # Opaque alpha channel: the legacy environment gate requires RGBA
     # runtime files, and the engine ignores alpha on world surfaces.
     out = Image.new("RGBA", (256, 256), (0, 0, 0, 255))
@@ -73,7 +91,7 @@ def main() -> None:
     for theme in THEMES:
         for kind in ("wall", "door"):
             name = f"{kind}_{theme}_sector_1080p.png" if kind == "wall" else f"{kind}_{theme}_1080p.png"
-            tile = to_tile(SOURCE / name)
+            tile = to_tile(SOURCE / name, seamless=kind == "wall")
             target = THEME_OUT / f"{kind}_{theme}.png"
             tile.save(target, optimize=True)
             seam = tiling_seam(tile) if kind == "wall" else 0.0

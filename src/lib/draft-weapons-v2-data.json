@@ -218,14 +218,14 @@
   {
     "id": "hc9",
     "sheet_file": "/game/draft/v2/weap_hc9_5x5.png",
-    "sheet_hash": "19e61d2d27ea19affaf6f44cdabb4b29daff45bd85e7d16df5d89db88eff14ed",
-    "sheet_short_hash": "19e61d2d",
+    "sheet_hash": "e591c9fb83faebc1ac02f9b26cb96b24f26e142a4c9d06f870088569142a98ae",
+    "sheet_short_hash": "e591c9fb",
     "aim_file": "/game/draft/v2/weap_hc9_aim.png",
-    "aim_hash": "c593fd2e42a99e412da056495c8049734d28e29166876fbab4b1fb161d7bc188",
-    "aim_short_hash": "c593fd2e",
+    "aim_hash": "2c75bb0e1e31e24264b060511ae1ce9aae779d0dafe73f4beb2b9db498327f60",
+    "aim_short_hash": "2c75bb0e",
     "gen_master_file": "/game/draft/v2/masters/hc9.png",
-    "gen_master_hash": "71a77f6ee76be94952491ea2f9a675ac951c42484c2a1ee9d302159f9f284a34",
-    "gen_master_short_hash": "71a77f6e",
+    "gen_master_hash": "41f24522eca12231f3ee06921f924657b098ebbc53ed6855f61b459f5d53ed79",
+    "gen_master_short_hash": "41f24522",
     "cell_w": 512,
     "cell_h": 384,
     "cols": 5,
@@ -237,7 +237,7 @@
     "alt_fire_name": "Boss special",
     "alt_fire_desc": "Visual draft for review.",
     "alt_available": true,
-    "ammo_visual": "Distinct full, half, low, empty and magazine/canister removed aim states."
+    "ammo_visual": "Visual draft: mechanical magazine/charge state progression."
   },
   {
     "id": "cm9",
