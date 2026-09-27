@@ -262,6 +262,16 @@ fn sigil_rgba(level: usize, u: f32, v: f32) -> [u32; 4] {
             let mote = if ((u - 0.28).powi(2) + (v - 0.1).powi(2)).sqrt() < 0.07 { 1.0 } else { 0.0 };
             (89, 242, 107, ring.max(edge).max(mote))
         }
+        3 => {
+            let bus = if (u.abs() - 0.33).abs() < 0.025 || (v.abs() - 0.33).abs() < 0.025 { 1.0 } else { 0.0 };
+            let core = if u.abs() < 0.1 && v.abs() < 0.1 { 0.8 } else { 0.0 };
+            (70, 209, 250, ring.max(bus).max(core))
+        }
+        4 => {
+            let core = if d < 0.18 { 0.85 } else { 0.0 };
+            let spoke = if (u.abs() < 0.025 || v.abs() < 0.025) && d < 0.55 { 1.0 } else { 0.0 };
+            (255, 169, 55, ring.max(core).max(spoke))
+        }
         _ => {
             let slit = if u.abs() < 0.035 && v.abs() < 0.36 { 1.0 } else { 0.0 };
             let iris = if ((u * 1.4).powi(2) + v * v).sqrt() < 0.15 { 0.85 } else { 0.0 };
@@ -669,7 +679,7 @@ impl Engine {
     }
 
     fn boss_intro_duration(&self) -> f32 {
-        [4.0, 5.2, 4.6][map::level_index(self.wave)]
+        [4.0, 5.2, 4.6, 4.8, 5.0][map::level_index(self.wave)]
     }
 
     fn boss_intro_effect(&mut self, stage: u8) {
@@ -688,6 +698,23 @@ impl Engine {
                 for n in 0..12 {
                     let a = n as f32 * core::f32::consts::TAU / 12.0;
                     self.spawn_timed(EK_SPARK, x + a.cos() * 1.8, y + a.sin() * 1.8, 0.65, -30.0);
+                }
+            }
+            3 => {
+                self.shake = (self.shake + if stage == 1 { 0.2 } else { 0.08 }).min(1.0);
+                for n in 0..16 {
+                    let a = n as f32 * core::f32::consts::TAU / 16.0;
+                    let r = if stage == 1 { 1.9 } else { 0.9 };
+                    self.spawn_timed(EK_SPARK, x + a.cos() * r, y + a.sin() * r, 0.55, -24.0);
+                }
+            }
+            4 => {
+                self.shake = (self.shake + if stage == 1 { 0.46 } else { 0.25 }).min(1.0);
+                self.spawn_smoke_cloud(x - 1.3, y);
+                self.spawn_smoke_cloud(x + 1.3, y);
+                for n in 0..6 {
+                    let a = n as f32 * core::f32::consts::TAU / 6.0;
+                    self.spawn_timed(EK_SPARK, x + a.cos() * 1.3, y + a.sin() * 1.3, 0.75, -8.0);
                 }
             }
             _ => {
@@ -1708,7 +1735,7 @@ impl Engine {
         }
         let sector = map::level_index(self.wave);
         let entry = map::boss_spots(self.wave)[0];
-        let burst = [14, 22, 10][sector];
+        let burst = [14, 22, 10, 18, 20][sector];
         if sector == 1 {
             self.spawn_smoke_cloud(entry.0, entry.1);
             self.spawn_smoke_cloud(entry.0 + 1.8, entry.1 - 1.2);
@@ -1727,6 +1754,8 @@ impl Engine {
         let escorts = match map::level_index(self.wave) {
             1 => [(EK_WRAITH, SKIN_HORNET, -2.4, -1.6), (EK_MARTYR, SKIN_MARTYR, 2.4, -1.6), (EK_HUSK, SKIN_GUNNER, -2.8, 1.8), (EK_BRUTE, SKIN_HAZMAT, 2.8, 1.8)],
             2 => [(EK_HUSK, SKIN_HOUND, -2.4, -1.6), (EK_WRAITH, SKIN_SPITTER, 2.4, -1.6), (EK_HUSK, SKIN_SUBJECT, -2.8, 1.8), (EK_BRUTE, SKIN_VATBRUTE, 2.8, 1.8)],
+            3 => [(EK_WRAITH, SKIN_MARKSMAN, -2.4, -1.6), (EK_WRAITH, SKIN_HORNET, 2.4, -1.6), (EK_HUSK, SKIN_RIFLEMAN, -2.8, 1.8), (EK_BRUTE, SKIN_GUNNER, 2.8, 1.8)],
+            4 => [(EK_BRUTE, SKIN_HAZMAT, -2.4, -1.6), (EK_WRAITH, SKIN_HORNET, 2.4, -1.6), (EK_HUSK, SKIN_GUNNER, -2.8, 1.8), (EK_BRUTE, SKIN_LOADER, 2.8, 1.8)],
             _ => [(EK_WRAITH, SKIN_HORNET, -2.4, -1.6), (EK_WRAITH, SKIN_MARKSMAN, 2.4, -1.6), (EK_HUSK, SKIN_RIFLEMAN, -2.8, 1.8), (EK_BRUTE, SKIN_LOADER, 2.8, 1.8)],
         };
         for &(kind, skin, ox, oy) in &escorts[..(2 + self.wave.min(2) as usize)] {
@@ -1797,7 +1826,7 @@ impl Engine {
 
     /// Theme index shared with THEME order in src/game/runtime.ts.
     fn theme_index(wave: i32) -> usize {
-        ((wave - 1).rem_euclid(8)) as usize
+        [0, 4, 5, 3, 6][map::level_index(wave)]
     }
 
     /// Copy the wave's wall/door variants into the live T_TECH/T_DOOR
@@ -3518,6 +3547,10 @@ impl Engine {
                     (1, _) => [(EK_MARTYR, SKIN_MARTYR), (EK_WRAITH, SKIN_HORNET)],
                     (2, 1) => [(EK_HUSK, SKIN_HOUND), (EK_WRAITH, SKIN_SPITTER)],
                     (2, _) => [(EK_BRUTE, SKIN_VATBRUTE), (EK_HUSK, SKIN_HOUND)],
+                    (3, 1) => [(EK_WRAITH, SKIN_MARKSMAN), (EK_WRAITH, SKIN_HORNET)],
+                    (3, _) => [(EK_HUSK, SKIN_GUNNER), (EK_WRAITH, SKIN_MARKSMAN)],
+                    (4, 1) => [(EK_BRUTE, SKIN_HAZMAT), (EK_HUSK, SKIN_GUNNER)],
+                    (4, _) => [(EK_BRUTE, SKIN_LOADER), (EK_MARTYR, SKIN_MARTYR)],
                     (_, 1) => [(EK_WRAITH, SKIN_HORNET), (EK_HUSK, SKIN_RIFLEMAN)],
                     _ => [(EK_MARTYR, SKIN_MARTYR), (EK_BRUTE, SKIN_LOADER)],
                 };
@@ -3536,16 +3569,17 @@ impl Engine {
                 // launches a slower corrosive nova before its support closes.
                 if map::level_index(self.wave) > 0 {
                     if let Some((bx, by)) = self.ents.iter().find(|e| e.kind == EK_BOSS && e.hp > 0).map(|e| (e.x, e.y)) {
-                        let count = if map::level_index(self.wave) == 1 { 8 } else { 6 };
+                        let sector = map::level_index(self.wave);
+                        let count = [0, 8, 6, 10, 12][sector];
                         for n in 0..count {
                             let a = n as f32 * core::f32::consts::TAU / count as f32 + phase as f32 * 0.18;
                             if let Some(i) = self.spawn(EK_PROJ, bx, by) {
-                                let speed = if map::level_index(self.wave) == 1 { 6.7 } else { 4.1 };
+                                let speed = [0.0, 6.7, 4.1, 7.5, 3.6][sector];
                                 self.ents[i].vx = a.cos() * speed;
                                 self.ents[i].vy = a.sin() * speed;
                                 self.ents[i].timer = 3.2;
                                 self.ents[i].hp = if phase == 2 { 18 } else { 12 };
-                                self.ents[i].effect_tick = if map::level_index(self.wave) == 2 { 3.0 } else { 0.0 };
+                                self.ents[i].effect_tick = if sector == 2 { 3.0 } else { 0.0 };
                             }
                         }
                     }
@@ -3596,7 +3630,8 @@ impl Engine {
             prompt = 3;
         }
         if self.boss_intro > 0.0 {
-            prompt = 7 + map::level_index(self.wave) as i32 * 2
+            let sector = map::level_index(self.wave) as i32;
+            prompt = (if sector < 3 { 7 + sector * 2 } else { 17 + (sector - 3) * 2 })
                 + if self.boss_intro <= self.boss_intro_duration() * 0.5 { 1 } else { 0 };
         }
         if self.boss_intro <= 0.0 && self.ents.iter().any(|e| field::is_boss_case(e.kind)) {
@@ -3790,6 +3825,8 @@ impl Engine {
                 match map::level_index(self.wave) {
                     1 => [0.55, 0.22, 0.05],
                     2 => [0.12, 0.48, 0.16],
+                    3 => [0.05, 0.44, 0.62],
+                    4 => [0.62, 0.28, 0.04],
                     _ => [0.55, 0.28, 0.08],
                 }
             } else if e.kind == EK_PROJ && (e.effect_tick == 3.0 || e.effect_tick == 4.0) {
@@ -5316,7 +5353,7 @@ mod tests {
     }
 
     #[test]
-    fn theme_swap_follows_wave_mod_eight() {
+    fn theme_swap_follows_sector_cycle() {
         let mut e = Engine::new(160, 100);
         for slot in 0..16 {
             for px in e.theme_tex[slot * TEX * TEX..(slot + 1) * TEX * TEX].iter_mut() {
@@ -5327,11 +5364,15 @@ mod tests {
         let tech = e.tex[T_TECH * TEX * TEX];
         let door = e.tex[T_DOOR * TEX * TEX];
         assert_eq!((tech, door), (0xFF000000, 0xFF000008));
-        e.apply_theme(9);
-        assert_eq!(e.tex[T_TECH * TEX * TEX], tech, "wave 9 reuses wave 1 theme");
+        e.apply_theme(6);
+        assert_eq!(e.tex[T_TECH * TEX * TEX], tech, "wave 6 reuses wave 1 theme");
         e.apply_theme(2);
-        assert_eq!(e.tex[T_TECH * TEX * TEX], 0xFF000001);
-        assert_eq!(e.tex[T_DOOR * TEX * TEX], 0xFF000009);
+        assert_eq!(e.tex[T_TECH * TEX * TEX], 0xFF000004);
+        assert_eq!(e.tex[T_DOOR * TEX * TEX], 0xFF00000C);
+        e.apply_theme(4);
+        assert_eq!(e.tex[T_TECH * TEX * TEX], 0xFF000003);
+        e.apply_theme(5);
+        assert_eq!(e.tex[T_TECH * TEX * TEX], 0xFF000006);
     }
 
     #[test]
@@ -5388,20 +5429,20 @@ mod tests {
     fn waves_are_endless_and_keep_scaling() {
         // Hub at 4x fields a 64-strong roster (plus its zone cast), so the
         // deep-wave budget is a range: every roster spawn must succeed, with
-        // headroom left for transient FX ents. Waves 4/7/10 already run hot
+        // headroom left for transient FX ents. Later cycles still run hot
         // in production; endless mode just keeps doing it.
         let mut e = Engine::new(160, 100);
-        e.wave = 12;
+        e.wave = 15;
         e.next_wave();
-        assert_eq!(e.wave, 13, "waves climb past the old cap");
+        assert_eq!(e.wave, 16, "waves climb past the old cap");
         assert_eq!(map::level_index(e.wave), 0, "sectors cycle back to the start");
         let living = map::living_hostiles(&e);
         assert!(living >= 64, "the full 4x hub roster spawns, got {living}");
         assert!(living <= 120, "FX headroom remains, got {living}");
         assert_eq!(e.boss_max_health(), 6000, "boss health grows into the new cap");
-        e.wave = 40;
+        e.wave = 41;
         e.next_wave();
-        assert_eq!(e.wave, 41);
+        assert_eq!(e.wave, 42);
         let living = map::living_hostiles(&e);
         assert!(living >= 56, "the full 4x foundry roster spawns, got {living}");
         assert!(living <= 120, "FX headroom remains, got {living}");
@@ -6076,6 +6117,16 @@ mod tests {
         assert_eq!(e.boss_intro_duration(), 4.6);
         e.boss_intro_effect(0);
         assert!(e.fx_q[..e.fx_n].iter().any(|fx| fx.kind == EK_SPARK));
+        e.fx_n = 0;
+        e.wave = 4;
+        assert_eq!(e.boss_intro_duration(), 4.8);
+        e.boss_intro_effect(0);
+        assert!(e.fx_q[..e.fx_n].iter().any(|fx| fx.kind == EK_SPARK));
+        e.fx_n = 0;
+        e.wave = 5;
+        assert_eq!(e.boss_intro_duration(), 5.0);
+        e.boss_intro_effect(0);
+        assert!(e.smokes.iter().filter(|smoke| smoke.age >= 0.0).count() >= 2);
     }
 
     #[test]
@@ -6126,6 +6177,17 @@ mod tests {
         bioforge.tick(1.0 / 60.0);
         assert_eq!(bioforge.ents.iter().filter(|e| e.kind == EK_PROJ && e.effect_tick == 3.0).count(), 6);
         assert!(bioforge.ents.iter().any(|e| e.skin == SKIN_CHIMERA && e.kind == EK_BOSS));
+
+        for (wave, skin, hp, barrage) in [(4, SKIN_ORACLE, 1000, 10), (5, SKIN_GRAVEMIND, 1600, 12)] {
+            let mut level = arena();
+            level.wave = wave;
+            level.boss_spawned = true;
+            let boss = level.spawn_with_skin(EK_BOSS, map::boss_skin(wave), 9.5, 4.5).unwrap();
+            level.ents[boss].hp = hp;
+            level.tick(1.0 / 60.0);
+            assert_eq!(level.ents.iter().filter(|e| e.kind == EK_PROJ).count(), barrage);
+            assert!(level.ents.iter().any(|e| e.skin == skin && e.kind == EK_BOSS));
+        }
     }
 
     #[test]
@@ -6323,7 +6385,7 @@ mod tests {
     #[test]
     fn hostiles_spawn_in_open_space_on_every_sector() {
         let mut e = Engine::new(160, 100);
-        for wave in 1..=3 {
+        for wave in 1..=map::LEVEL_COUNT as i32 {
             e.wave = wave;
             e.build_map();
             e.place_ents();

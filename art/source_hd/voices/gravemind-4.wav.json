@@ -1,0 +1,14 @@
+{
+  "signature": "1d45fa710927dafee8288e312fbd5879e84a3a3b5bdccb4859cb47d4a3bf0284",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Stay where the heat can find you.",
+    "speaker": "saturn",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Dying reactor engineer inside a heavy respirator, slow human rasp",
+  "effect": "highpass=f=380,lowpass=f=2600,aecho=0.8:0.6:18:0.16",
+  "generatedAt": "2026-09-27T14:59:50.017Z"
+}

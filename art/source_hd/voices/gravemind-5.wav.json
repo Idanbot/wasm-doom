@@ -1,0 +1,14 @@
+{
+  "signature": "e45303efc7041f191587f9caf7d463e857e08ce0380ca8171839890162439c08",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The shielding is cracking.",
+    "speaker": "saturn",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Dying reactor engineer inside a heavy respirator, slow human rasp",
+  "effect": "highpass=f=380,lowpass=f=2600,aecho=0.8:0.6:18:0.16",
+  "generatedAt": "2026-09-27T14:59:51.640Z"
+}

@@ -1,0 +1,14 @@
+{
+  "signature": "8dc016dcd880548437927ab6a858fe9a974eafc013f11e32bd34374e6314b3c4",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "I have already seen your next move.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Cold predictive core, precise high synthetic voice",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-09-27T14:59:43.312Z"
+}

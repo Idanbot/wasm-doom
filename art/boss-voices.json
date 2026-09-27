@@ -22,6 +22,20 @@
       "style": "Infected specimen; breathless, predatory, almost human",
       "effect": "bio",
       "text": "You broke the cage. The toxin is yours now. Breathe carefully."
+    },
+    {
+      "id": "boss-oracle",
+      "speaker": "electra",
+      "style": "Predictive machine core collapsing into static",
+      "effect": "robot-high",
+      "text": "Prediction failed. Core access released."
+    },
+    {
+      "id": "boss-gravemind",
+      "speaker": "saturn",
+      "style": "Dying reactor engineer, exhausted human rasp",
+      "effect": "respirator",
+      "text": "Containment... lost. Take the cutter. Seal the sink."
     }
   ]
 }

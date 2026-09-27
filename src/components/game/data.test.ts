@@ -52,25 +52,27 @@ describe("fmtTime", () => {
 });
 
 describe("sectorForWave", () => {
-  it("cycles through three distinct sectors and bosses", () => {
-    assert.deepEqual([1, 2, 3].map((wave) => sectorForWave(wave).name), [
+  it("cycles through five distinct sectors and bosses", () => {
+    assert.deepEqual([1, 2, 3, 4, 5].map((wave) => sectorForWave(wave).name), [
       "UPPER WORKS",
       "CRYOGENIC FOUNDRY",
       "BIOFORGE DEPTHS",
+      "DATA SPINE",
+      "REACTOR SINK",
     ]);
-    assert.equal(new Set([1, 2, 3].map((wave) => sectorForWave(wave).bossName)).size, 3);
-    assert.equal(sectorForWave(4).name, "UPPER WORKS");
-    assert.equal(sectorForWave(13).name, "UPPER WORKS");
+    assert.equal(new Set([1, 2, 3, 4, 5].map((wave) => sectorForWave(wave).bossName)).size, 5);
+    assert.equal(sectorForWave(6).name, "UPPER WORKS");
+    assert.equal(sectorForWave(16).name, "UPPER WORKS");
   });
 });
 
 describe("radioCopy", () => {
   it("has one distinct boss-kill line per sector", () => {
-    const lines = [1, 2, 3].map((wave) => radioCopy(8, wave));
+    const lines = [1, 2, 3, 4, 5].map((wave) => radioCopy(8, wave));
     for (const line of lines) {
       assert.ok(line && line.speaker.length > 0 && line.text.length > 0);
     }
-    assert.equal(new Set(lines.map((l) => l!.text)).size, 3);
+    assert.equal(new Set(lines.map((l) => l!.text)).size, 5);
   });
 });
 

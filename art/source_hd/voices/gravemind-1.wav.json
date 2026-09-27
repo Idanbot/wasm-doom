@@ -1,0 +1,14 @@
+{
+  "signature": "967011fa60d3e14e465220b7dee1f9adb8a16a8ed0a8258844eba2eac6831745",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You should have stayed above ground.",
+    "speaker": "saturn",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Dying reactor engineer inside a heavy respirator, slow human rasp",
+  "effect": "highpass=f=380,lowpass=f=2600,aecho=0.8:0.6:18:0.16",
+  "generatedAt": "2026-09-27T14:59:44.970Z"
+}

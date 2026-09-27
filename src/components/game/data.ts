@@ -13,6 +13,8 @@ export const SECTORS = [
   { code: "NADIR–7A", name: "UPPER WORKS", bossTitle: "VAULT MASTER", bossName: "MALIK VEYRAN" },
   { code: "NADIR–7B", name: "CRYOGENIC FOUNDRY", bossTitle: "FORGE WARDEN", bossName: "HECATE–9" },
   { code: "NADIR–7C", name: "BIOFORGE DEPTHS", bossTitle: "SPECIMEN PRIME", bossName: "CHIMERA–9" },
+  { code: "NADIR–7D", name: "DATA SPINE", bossTitle: "PREDICTIVE CORE", bossName: "ORACLE–7" },
+  { code: "NADIR–7E", name: "REACTOR SINK", bossTitle: "REACTOR WARDEN", bossName: "GRAVEMIND–4" },
 ] as const;
 
 export function sectorForWave(wave: number) {
@@ -42,18 +44,24 @@ const HANDLER = [
   "Ward. Restore the lab node before the vault console will answer.",
   "Coolant node is still live. Vent it, or the foundry cooks you with the warden.",
   "Specimen lock first. Containment will not open until the ring is purged.",
+  "The data spine is feeding Oracle. Cut its prediction node before the core override.",
+  "Reactor sink ahead. Isolate the coolant relay before you challenge the warden.",
 ] as const;
 
 const LOCKDOWN = [
   "MALIK: Vault doors sealed. You are the remaining variable.",
   "MALIK: Forge circuit closed. The floor is now part of the weapon.",
   "MALIK: Containment sealed. The specimen is authorized to finish this.",
+  "ORACLE–7: Your route has already been calculated. Core doors sealed.",
+  "GRAVEMIND–4: Reactor doors sealed. This place dies with me.",
 ] as const;
 
 const NODE_DONE = [
   "Power restored. The vault will take a USE now.",
   "Coolant dumped. Override is armed.",
   "Specimen lock purged. Containment will answer.",
+  "Prediction node offline. Oracle can no longer close the route.",
+  "Coolant relay isolated. The reactor override is live.",
 ] as const;
 
 const MEMOS: Record<number, string> = {
@@ -63,13 +71,26 @@ const MEMOS: Record<number, string> = {
   15: "Procurement: do not stand on the electrical floor. The floor was not informed.",
   18: "Lab note: subject 9 asked to be filed as equipment. Request pending.",
   19: "MALIK: biological leadership remains an operational vulnerability.",
+  22: "Archive: Oracle compares every intrusion to the routes that failed before it.",
+  23: "Operator note: unplugging the racks did not stop the core from answering.",
+  26: "Reactor log: the warden locked himself inside before the containment alarm.",
+  27: "Handler: pressure is climbing. Keep the coolant corridor clear.",
 };
 
 export function radioCopy(line: number, wave: number) {
-  const sector = (Math.max(1, wave) - 1) % 3;
+  const sector = (Math.max(1, wave) - 1) % SECTORS.length;
   if (line === 1) return { speaker: "HANDLER", text: HANDLER[sector]! };
   if (line === 2) return { speaker: "MALIK", text: LOCKDOWN[sector]! };
-  if (line === 3) return { speaker: "MALIK", text: "Command surface exposed. That window will not last." };
+  if (line === 3) return {
+    speaker: ["MALIK", "HECATE–9", "CHIMERA–9", "ORACLE–7", "GRAVEMIND–4"][sector]!,
+    text: [
+      "Command surface exposed. That window will not last.",
+      "Shield circuit open. Discharge imminent.",
+      "Containment breached. The specimen is vulnerable.",
+      "Prediction buffer severed. I cannot see your next move.",
+      "Containment pressure falling. My armor is open.",
+    ][sector]!,
+  };
   if (line === 4) return { speaker: "HANDLER", text: NODE_DONE[sector]! };
   if (line === 5) return { speaker: "HANDLER", text: "Cache behind the panel. Someone signed for it twice." };
   if (line === 6) {
@@ -79,6 +100,8 @@ export function radioCopy(line: number, wave: number) {
         "Veyran dropped the Override rail. Take it, and the sector opens.",
         "HECATE's forge cutter is on the deck. That is the way out.",
         "The specimen case is Chimera's sprayer. Pick it up to leave.",
+        "Oracle's Override rail is down. Take the case and clear the spine.",
+        "The warden dropped a forge cutter. Take it and leave the reactor.",
       ][sector]!,
     };
   }
@@ -88,6 +111,8 @@ export function radioCopy(line: number, wave: number) {
       { speaker: "MALIK", text: "My vault... my blood. Take the rail, intruder. Let it remember who built this place." },
       { speaker: "HECATE–9", text: "Core failure. Warden protocol terminated. Forge cutter released. Do not let it cool." },
       { speaker: "CHIMERA–9", text: "You broke the cage. The toxin is yours now. Breathe carefully." },
+      { speaker: "ORACLE–7", text: "Prediction failed. Core access released." },
+      { speaker: "GRAVEMIND–4", text: "Containment... lost. Take the cutter. Seal the sink." },
     ][sector]!;
     return kill;
   }
@@ -97,11 +122,11 @@ export function radioCopy(line: number, wave: number) {
 }
 
 export function missionLine(hud: { prompt: number; objective: number; wave: number }) {
-  const sector = (Math.max(1, hud.wave) - 1) % 3;
+  const sector = (Math.max(1, hud.wave) - 1) % SECTORS.length;
   if (hud.prompt === 3) return "INITIATE OVERRIDE";
-  if (hud.prompt === 13) return ["USE THE LAB NODE", "VENT THE COOLANT", "PURGE THE LOCK"][sector]!;
+  if (hud.prompt === 13) return ["USE THE LAB NODE", "VENT THE COOLANT", "PURGE THE LOCK", "CUT THE PREDICTION NODE", "ISOLATE THE COOLANT RELAY"][sector]!;
   if (hud.prompt === 15 || hud.objective === 0) {
-    return ["RESTORE THE LAB NODE", "VENT THE COOLANT NODE", "PURGE THE SPECIMEN LOCK"][sector]!;
+    return ["RESTORE THE LAB NODE", "VENT THE COOLANT NODE", "PURGE THE SPECIMEN LOCK", "CUT THE PREDICTION NODE", "ISOLATE THE COOLANT RELAY"][sector]!;
   }
   if (hud.prompt === 6) return "REACH THE OVERRIDE";
   return "ELIMINATE THE SIGNAL";

@@ -108,6 +108,7 @@ test("mouse-wheel arsenal renders readable transparent gun thumbnails", async ()
           loaded: thumb.complete && thumb.naturalWidth > 0,
           filter: getComputedStyle(thumb).filter,
           opacity: Number(getComputedStyle(thumb.closest(".weapon-spiral-slot")).opacity),
+          selected: thumb.closest(".weapon-spiral-slot").classList.contains("active"),
         })),
       };
     }, slugs);
@@ -117,7 +118,7 @@ test("mouse-wheel arsenal renders readable transparent gun thumbnails", async ()
     for (const slot of result.slots) {
       assert.ok(slot.loaded, "a wheel thumbnail did not load");
       assert.ok(Number(slot.filter.match(/brightness\(([^)]+)\)/)?.[1]) >= 1.8, `wheel gun lacks contrast: ${slot.filter}`);
-      assert.ok(slot.opacity >= 0.95, `wheel gun is faded: ${slot.opacity}`);
+      assert.ok(Math.abs(slot.opacity - (slot.selected ? 1 : 0.5)) < 0.01, `incorrect wheel opacity: ${slot.opacity}`);
     }
   } finally { await page.close(); }
 });

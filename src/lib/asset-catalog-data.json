@@ -4287,5 +4287,229 @@
     "size": 22893,
     "hash": "1bab191886a1e810ab801b5280249d37858173107c50220ca3585e3d1d5d4195",
     "shortHash": "1bab1918"
+  },
+  {
+    "file": "/game/enemy_gravemind_dead.png",
+    "name": "enemy_gravemind_dead.png",
+    "size": 56856,
+    "hash": "1c08201be8acb88f3f1e711cbf9f708b754e3fc663db79dc76dde70b702aab25",
+    "shortHash": "1c08201b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_gravemind_fire.png",
+    "name": "enemy_gravemind_fire.png",
+    "size": 78753,
+    "hash": "d0d89004b2b2ed206e2a1928931c859b0b80e19cae7972c3d33e08c62801448b",
+    "shortHash": "d0d89004",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_gravemind_idle.png",
+    "name": "enemy_gravemind_idle.png",
+    "size": 51603,
+    "hash": "f23f1c4e9eb3b1160f8bdc6411307566181186390e2b49a188838d613af626f3",
+    "shortHash": "f23f1c4e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_gravemind_move.png",
+    "name": "enemy_gravemind_move.png",
+    "size": 51709,
+    "hash": "672e4edbd5cd6b1abb060126dc50994638e2e760d61facab74a892f4f69b29bb",
+    "shortHash": "672e4edb",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_gravemind_pain.png",
+    "name": "enemy_gravemind_pain.png",
+    "size": 41728,
+    "hash": "3aa1acb90ff913804792464a6d3215939b6811b0c9036bf98fb1839390ad95ec",
+    "shortHash": "3aa1acb9",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_gravemind_reload.png",
+    "name": "enemy_gravemind_reload.png",
+    "size": 41643,
+    "hash": "c83bc984de7f4058a2b530b22a6d96cd2ed396edf9e64a447ae41a2a04080ed5",
+    "shortHash": "c83bc984",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_gravemind_special.png",
+    "name": "enemy_gravemind_special.png",
+    "size": 84888,
+    "hash": "4fab3877e94fcc2d899afcc2235ecb0af38ec7c85f8ab5e89f5d7f1e1177a523",
+    "shortHash": "4fab3877",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_oracle_dead.png",
+    "name": "enemy_oracle_dead.png",
+    "size": 48211,
+    "hash": "f5ba6074eac9a73577d69a1324f09476c51413ac748284c9f4d2d94750f7bd0a",
+    "shortHash": "f5ba6074",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_oracle_fire.png",
+    "name": "enemy_oracle_fire.png",
+    "size": 57615,
+    "hash": "8cf7290dcb3d1cb458024df5fd5dcb42970f79fadcf444216f5d86082537e402",
+    "shortHash": "8cf7290d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_oracle_idle.png",
+    "name": "enemy_oracle_idle.png",
+    "size": 38663,
+    "hash": "f15d1cdb5bd069bb779cb4e3a18108dc8c66022618690b806ffdb6ea75fed7c4",
+    "shortHash": "f15d1cdb",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_oracle_move.png",
+    "name": "enemy_oracle_move.png",
+    "size": 38806,
+    "hash": "215def5ea1da1febff34dc54efb319be6d8d71567e4fd37131aa6007a6cf9994",
+    "shortHash": "215def5e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_oracle_pain.png",
+    "name": "enemy_oracle_pain.png",
+    "size": 31505,
+    "hash": "994e46cdbfd93fbe119b0b8aa1e3745924cd80fbabdfb364a1429b7a909c9562",
+    "shortHash": "994e46cd",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_oracle_reload.png",
+    "name": "enemy_oracle_reload.png",
+    "size": 31571,
+    "hash": "d57466b8d5cb6a16914a666168dfd34c08f1f054ceb70d7be34d50c15d63b60b",
+    "shortHash": "d57466b8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_oracle_special.png",
+    "name": "enemy_oracle_special.png",
+    "size": 63195,
+    "hash": "a76ed58efb5c9aa2ab0f328e550a2848ecbe8da4bffd7437da668af67d8c63d8",
+    "shortHash": "a76ed58e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/voices/boss-gravemind.mp3",
+    "name": "boss-gravemind.mp3",
+    "size": 55629,
+    "hash": "302e20a2ecee9aee5aad9c798d1e6ecde5848e39fe8d269a9644fe6503bdb9f9",
+    "shortHash": "302e20a2"
+  },
+  {
+    "file": "/game/voices/boss-oracle.mp3",
+    "name": "boss-oracle.mp3",
+    "size": 43821,
+    "hash": "74ba0368a169a63a5e9245e296798905648a6dd4c95b3844788fedecad576343",
+    "shortHash": "74ba0368"
+  },
+  {
+    "file": "/game/voices/gravemind-1.mp3",
+    "name": "gravemind-1.mp3",
+    "size": 15981,
+    "hash": "21af9e5ecd35d3b847b6225fa4a1a9d29cb487abef9b8fd9b75307564ad354bb",
+    "shortHash": "21af9e5e"
+  },
+  {
+    "file": "/game/voices/gravemind-2.mp3",
+    "name": "gravemind-2.mp3",
+    "size": 15597,
+    "hash": "9db8b999cc1bf2b66641236f272af9eda4d87f5731b1067473281d78b71888e3",
+    "shortHash": "9db8b999"
+  },
+  {
+    "file": "/game/voices/gravemind-3.mp3",
+    "name": "gravemind-3.mp3",
+    "size": 13101,
+    "hash": "38f935548237da00fc069155153c36dc7f9203df1f5f58e4e1b53f7af23d5909",
+    "shortHash": "38f93554"
+  },
+  {
+    "file": "/game/voices/gravemind-4.mp3",
+    "name": "gravemind-4.mp3",
+    "size": 15021,
+    "hash": "71891072d7b65eda7073b22ed236efd6efc17c9914abc1f9a0a2e8d5e65ee6a9",
+    "shortHash": "71891072"
+  },
+  {
+    "file": "/game/voices/gravemind-5.mp3",
+    "name": "gravemind-5.mp3",
+    "size": 14253,
+    "hash": "fc583155d916a8818f3af09659cc518a34db5e618125f04428bc6f38bcb17a8b",
+    "shortHash": "fc583155"
+  },
+  {
+    "file": "/game/voices/gravemind-6.mp3",
+    "name": "gravemind-6.mp3",
+    "size": 20973,
+    "hash": "5d58b365093b0a6a2d102abffa211c9c3d936bbe6246dcd940300aa72fc119c4",
+    "shortHash": "5d58b365"
+  },
+  {
+    "file": "/game/voices/oracle-1.mp3",
+    "name": "oracle-1.mp3",
+    "size": 15021,
+    "hash": "9dd3da432f139c449a4e685e88930448949c0884cb3d856d3b3a64b4fe2a6569",
+    "shortHash": "9dd3da43"
+  },
+  {
+    "file": "/game/voices/oracle-2.mp3",
+    "name": "oracle-2.mp3",
+    "size": 20781,
+    "hash": "0c557b51ed60c8e1c12f2f7dba5d7611d98cc0a438a141a77e5620dbb2cf740e",
+    "shortHash": "0c557b51"
+  },
+  {
+    "file": "/game/voices/oracle-3.mp3",
+    "name": "oracle-3.mp3",
+    "size": 14829,
+    "hash": "02c60c3b770fea00c4464be873b342a34b2563054405428038674a8cffae513f",
+    "shortHash": "02c60c3b"
+  },
+  {
+    "file": "/game/voices/oracle-4.mp3",
+    "name": "oracle-4.mp3",
+    "size": 10989,
+    "hash": "13f495a8010050345953694ebb4932c8255a6a0264a070ccead9ed30a5ddf04b",
+    "shortHash": "13f495a8"
+  },
+  {
+    "file": "/game/voices/oracle-5.mp3",
+    "name": "oracle-5.mp3",
+    "size": 17709,
+    "hash": "b706351eb6f52f34757e1d2c7d28d25ed7454dc1a2776436d7720b51652e494f",
+    "shortHash": "b706351e"
+  },
+  {
+    "file": "/game/voices/oracle-6.mp3",
+    "name": "oracle-6.mp3",
+    "size": 20205,
+    "hash": "619ca8ce0fc1458b59eec20aa6ffdb9dbd9539ea2b4933a36edd320c78b3d176",
+    "shortHash": "619ca8ce"
   }
 ]

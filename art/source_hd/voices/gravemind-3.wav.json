@@ -1,0 +1,14 @@
+{
+  "signature": "2e233f489fe04e4c3dea1ef1de990f7d71094a2c5d3b7d1c23feb273d12a7759",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Feel the pressure rise.",
+    "speaker": "saturn",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Dying reactor engineer inside a heavy respirator, slow human rasp",
+  "effect": "highpass=f=380,lowpass=f=2600,aecho=0.8:0.6:18:0.16",
+  "generatedAt": "2026-09-27T14:59:48.399Z"
+}

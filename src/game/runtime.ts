@@ -167,6 +167,8 @@ const ENEMY_SKINS = [
   "veyran",
   "hecate",
   "chimera",
+  "oracle",
+  "gravemind",
 ] as const;
 const ENEMY_ANIMATIONS = ["idle", "move", "pain", "fire", "reload", "dead", "special"] as const;
 
@@ -1129,7 +1131,7 @@ export class HellscanRuntime {
     if (hud.radioSeq !== this.prevRadioSeq) {
       this.prevRadioSeq = hud.radioSeq;
       if (hud.radioSeq !== 0) {
-        if (hud.radioLine === 8) this.audio.bossKill((hud.wave - 1) % 3);
+        if (hud.radioLine === 8) this.audio.bossKill((hud.wave - 1) % 5);
         else this.audio.radio();
       }
     }

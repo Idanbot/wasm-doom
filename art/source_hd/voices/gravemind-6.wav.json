@@ -1,0 +1,14 @@
+{
+  "signature": "f31bda44f1bf6fd322fec662d20c1fe221647a1d9881324c25fe4d91fe2effed",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "I can outlast the alarms. Can you?",
+    "speaker": "saturn",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Dying reactor engineer inside a heavy respirator, slow human rasp",
+  "effect": "highpass=f=380,lowpass=f=2600,aecho=0.8:0.6:18:0.16",
+  "generatedAt": "2026-09-27T14:59:53.600Z"
+}

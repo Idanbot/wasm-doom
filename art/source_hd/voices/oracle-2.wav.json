@@ -1,0 +1,14 @@
+{
+  "signature": "35d5c55871351dd5e2dba027b2fbf11c5211d01ba75a13a92562ce28d457be2d",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Every route ends at this core.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Cold predictive core, precise high synthetic voice",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-09-27T14:59:36.047Z"
+}

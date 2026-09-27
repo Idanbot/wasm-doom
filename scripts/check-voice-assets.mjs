@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 const plan = JSON.parse(readFileSync("art/blacksite-voices.json", "utf8"));
 const manifest = JSON.parse(readFileSync("public/game/voices/manifest.json", "utf8"));
 assert.equal(manifest.model, "@cf/deepgram/aura-2-en");
-assert.equal(manifest.enemies.length, 15);
+assert.equal(manifest.enemies.length, plan.enemies.length);
 const all = [];
 for (const enemy of manifest.enemies) {
   const source = plan.enemies.find((p) => p.skin === enemy.skin);
@@ -22,18 +22,19 @@ for (const enemy of manifest.enemies) {
     all.push(line);
   }
 }
-assert.equal(all.length, 68);
-assert.equal(new Set(all.map((line) => line.id)).size, 68);
-assert.equal(new Set(all.map((line) => line.text)).size, 68);
+const expectedLines = plan.enemies.reduce((count, enemy) => count + enemy.lines.length, 0);
+assert.equal(all.length, expectedLines);
+assert.equal(new Set(all.map((line) => line.id)).size, expectedLines);
+assert.equal(new Set(all.map((line) => line.text)).size, expectedLines);
 assert.equal(manifest.enemies.filter((e) => !e.lines.length).length, 4);
 console.log(
-  "[check:voices] 68 Cloudflare clips, 11 speaking profiles and 4 nonverbal profiles verified.",
+  `[check:voices] ${expectedLines} Cloudflare clips, ${plan.enemies.length - 4} speaking profiles and 4 nonverbal profiles verified.`,
 );
 
 // Boss-kill lines live outside the enemy manifest (art/boss-voices.json).
 const bossPlan = JSON.parse(readFileSync("art/boss-voices.json", "utf8"));
-assert.equal(bossPlan.bosses.length, 3);
-const bossIds = ["boss-veyran", "boss-hecate", "boss-chimera"];
+assert.equal(bossPlan.bosses.length, 5);
+const bossIds = ["boss-veyran", "boss-hecate", "boss-chimera", "boss-oracle", "boss-gravemind"];
 for (const [i, boss] of bossPlan.bosses.entries()) {
   assert.equal(boss.id, bossIds[i]);
   assert.ok(boss.text.length > 10);
@@ -43,4 +44,4 @@ for (const [i, boss] of bossPlan.bosses.entries()) {
     `${boss.id}.mp3 must be a real MP3`,
   );
 }
-console.log("[check:voices] 3 boss-kill lines verified.");
+console.log(`[check:voices] ${bossPlan.bosses.length} boss-kill lines verified.`);

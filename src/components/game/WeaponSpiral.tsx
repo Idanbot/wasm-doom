@@ -21,7 +21,7 @@ export function WeaponSpiral({ hud, visible }: { hud: HudState; visible: boolean
               style={{
                 transform: `translate(${distance * 92}px, ${Math.abs(distance) * 18 - 10}px) scale(${1 - Math.abs(distance) * 0.14}) rotate(${distance * -8}deg)`,
                 zIndex: 5 - Math.abs(distance),
-                opacity: 1,
+                opacity: distance === 0 ? 1 : 0.5,
               }}
             >
               <img src={asset(WEAPON_THUMBNAILS[index]!)} alt="" loading="eager" decoding="sync" />

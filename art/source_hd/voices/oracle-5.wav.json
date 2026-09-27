@@ -1,0 +1,14 @@
+{
+  "signature": "ad89b3a0a53b90fd84356d676ba08470ddc6001e0833ec1cb99c0715a4856d52",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Prediction variance detected.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Cold predictive core, precise high synthetic voice",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-09-27T14:59:41.379Z"
+}

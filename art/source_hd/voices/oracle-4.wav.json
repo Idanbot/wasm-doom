@@ -1,0 +1,14 @@
+{
+  "signature": "e4e276c6ed38ecabf7c07f4d4e0ec800a96c7060a5cb30610e926dd0a802fe29",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Correction applied.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Cold predictive core, precise high synthetic voice",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-09-27T14:59:39.493Z"
+}

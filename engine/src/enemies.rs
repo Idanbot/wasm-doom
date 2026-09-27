@@ -86,6 +86,8 @@ pub(crate) const ENEMY_SKINS: &[EnemySkin] = &[
     EnemySkin { id: SKIN_VEYRAN, name: "VEYRAN // MALIK", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 12, scale: 2.00, zoff: 8.0, special: "override surge" },
     EnemySkin { id: SKIN_HECATE, name: "HECATE–9", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 13, scale: 2.10, zoff: 8.0, special: "arc barrage" },
     EnemySkin { id: SKIN_CHIMERA, name: "CHIMERA–9", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 14, scale: 2.05, zoff: 8.0, special: "corrosive nova" },
+    EnemySkin { id: SKIN_ORACLE, name: "ORACLE–7", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 15, scale: 2.08, zoff: 8.0, special: "predictive crossfire" },
+    EnemySkin { id: SKIN_GRAVEMIND, name: "GRAVEMIND–4", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 16, scale: 2.18, zoff: 8.0, special: "reactor pulse" },
 ];
 
 pub(crate) fn skin_def(id: u8) -> Option<&'static EnemySkin> {

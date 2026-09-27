@@ -104,6 +104,8 @@ export function createAudio(): GameAudio {
     bossKill0: asset("/game/voices/boss-veyran.mp3"),
     bossKill1: asset("/game/voices/boss-hecate.mp3"),
     bossKill2: asset("/game/voices/boss-chimera.mp3"),
+    bossKill3: asset("/game/voices/boss-oracle.mp3"),
+    bossKill4: asset("/game/voices/boss-gravemind.mp3"),
   };
 
   function ensure() {
@@ -763,8 +765,8 @@ export function createAudio(): GameAudio {
     },
     bossKill(sector) {
       resume();
-      const clip = `bossKill${((sector % 3) + 3) % 3}`;
-      if (sample(clip, 1.35)) return;
+      const clip = sector >= 0 && sector < 5 ? `bossKill${sector}` : null;
+      if (clip && sample(clip, 1.35)) return;
       beep(523, 0.12, "triangle", 0.09, 80);
       beep(784, 0.16, "square", 0.07, 60);
     },

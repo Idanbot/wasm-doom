@@ -201,6 +201,38 @@
         ["taunt", "Come closer. I can hear your blood."],
         ["taunt", "Nothing grows here but me."]
       ]
+    },
+    {
+      "skin": 15,
+      "id": "oracle",
+      "name": "ORACLE–7",
+      "speaker": "electra",
+      "style": "Cold predictive core, precise high synthetic voice",
+      "effect": "robot-high",
+      "lines": [
+        ["alert", "Your arrival was scheduled."],
+        ["alert", "Every route ends at this core."],
+        ["attack", "Trajectory confirmed."],
+        ["attack", "Correction applied."],
+        ["pain", "Prediction variance detected."],
+        ["taunt", "I have already seen your next move."]
+      ]
+    },
+    {
+      "skin": 16,
+      "id": "gravemind",
+      "name": "GRAVEMIND–4",
+      "speaker": "saturn",
+      "style": "Dying reactor engineer inside a heavy respirator, slow human rasp",
+      "effect": "respirator",
+      "lines": [
+        ["alert", "You should have stayed above ground."],
+        ["alert", "The core is mine to bury."],
+        ["attack", "Feel the pressure rise."],
+        ["attack", "Stay where the heat can find you."],
+        ["pain", "The shielding is cracking."],
+        ["taunt", "I can outlast the alarms. Can you?"]
+      ]
     }
   ]
 }

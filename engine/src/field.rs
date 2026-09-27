@@ -1,7 +1,7 @@
 //! Sector objectives, shield facing, lockdown doors, and radio line ids.
 //!
 //! Map geometry stays in `map.rs`. This module is the contract for the
-//! systems layered on top of those three sectors: a required node before the
+//! systems layered on top of the five sectors: a required node before the
 //! override, readable terminals, secret-cache interiors, and the doors a
 //! boss phase seals.
 
@@ -42,13 +42,15 @@ pub(crate) fn shield_blocks(face: f32, ex: f32, ey: f32, hx: f32, hy: f32) -> bo
 }
 
 pub(crate) fn node_point(wave: i32) -> (f32, f32) {
-    [(19.5, 4.5), (16.5, 10.5), (13.5, 15.5)][level_index(wave)]
+    [(19.5, 4.5), (16.5, 10.5), (13.5, 15.5), (19.5, 8.5), (19.5, 22.5)][level_index(wave)]
 }
 
 pub(crate) fn terminals(wave: i32) -> &'static [(f32, f32)] {
     match level_index(wave) {
         1 => &[(6.5, 6.5), (38.5, 19.5)],
         2 => &[(6.5, 15.5), (36.5, 16.5)],
+        3 => &[(6.5, 6.5), (36.5, 7.5)],
+        4 => &[(6.5, 25.5), (38.5, 8.5)],
         _ => &[(8.5, 15.5), (33.5, 15.5)],
     }
 }
@@ -61,6 +63,8 @@ pub(crate) fn lockdown_doors(wave: i32) -> &'static [(i32, i32)] {
     match level_index(wave) {
         1 => &[(28, 23), (28, 24), (37, 14), (38, 14)],
         2 => &[(30, 10), (30, 11), (30, 15), (30, 16), (30, 21), (30, 22)],
+        3 => &[(28, 22), (28, 23)],
+        4 => &[(31, 22), (31, 23)],
         _ => &[(36, 18), (37, 18), (36, 19), (37, 19)],
     }
 }
@@ -102,6 +106,14 @@ pub(crate) fn resupply(wave: i32) -> &'static [(u8, f32, f32)] {
             (EK_AMMO, 38.5, 15.5),
             (EK_GUN8, 40.5, 16.5),
         ],
+        3 => &[
+            (EK_MED, 7.5, 4.5), (EK_ARMOR, 21.5, 21.5),
+            (EK_AMMO, 41.5, 22.5), (EK_GUN8, 36.5, 10.5),
+        ],
+        4 => &[
+            (EK_MED, 7.5, 27.5), (EK_ARMOR, 25.5, 14.5),
+            (EK_AMMO, 41.5, 25.5), (EK_GUN8, 36.5, 9.5),
+        ],
         _ => &[
             (EK_MED, 7.5, 17.5),
             (EK_ARMOR, 10.5, 14.5),
@@ -112,7 +124,7 @@ pub(crate) fn resupply(wave: i32) -> &'static [(u8, f32, f32)] {
 }
 
 pub(crate) fn boss_case(wave: i32) -> u8 {
-    [EK_GUN9, EK_GUN10, EK_GUN11][level_index(wave)]
+    [EK_GUN9, EK_GUN10, EK_GUN11, EK_GUN9, EK_GUN10][level_index(wave)]
 }
 
 pub(crate) fn is_boss_case(kind: u8) -> bool {
@@ -129,11 +141,11 @@ pub(crate) fn boss_slot(kind: u8) -> usize {
 
 /// One secret powerup per sector, behind a secret door.
 pub(crate) fn powerup_point(wave: i32) -> (f32, f32) {
-    [(5.5, 21.5), (31.5, 29.5), (46.5, 15.5)][level_index(wave)]
+    [(5.5, 21.5), (31.5, 29.5), (46.5, 15.5), (25.5, 26.5), (9.5, 27.5)][level_index(wave)]
 }
 
 pub(crate) fn power_kind(wave: i32) -> u8 {
-    [POWER_OVERDRIVE, POWER_FEED, POWER_AEGIS][level_index(wave)]
+    [POWER_OVERDRIVE, POWER_FEED, POWER_AEGIS, POWER_FEED, POWER_AEGIS][level_index(wave)]
 }
 
 #[cfg(test)]

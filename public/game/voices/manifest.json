@@ -607,6 +607,108 @@
           "duration": 1.8
         }
       ]
+    },
+    {
+      "skin": 15,
+      "id": "oracle",
+      "name": "ORACLE–7",
+      "style": "Cold predictive core, precise high synthetic voice",
+      "speaker": "electra",
+      "lines": [
+        {
+          "id": "oracle-1",
+          "cue": "alert",
+          "text": "Your arrival was scheduled.",
+          "url": "/game/voices/oracle-1.mp3",
+          "duration": 1.848
+        },
+        {
+          "id": "oracle-2",
+          "cue": "alert",
+          "text": "Every route ends at this core.",
+          "url": "/game/voices/oracle-2.mp3",
+          "duration": 2.568
+        },
+        {
+          "id": "oracle-3",
+          "cue": "attack",
+          "text": "Trajectory confirmed.",
+          "url": "/game/voices/oracle-3.mp3",
+          "duration": 1.824
+        },
+        {
+          "id": "oracle-4",
+          "cue": "attack",
+          "text": "Correction applied.",
+          "url": "/game/voices/oracle-4.mp3",
+          "duration": 1.344
+        },
+        {
+          "id": "oracle-5",
+          "cue": "pain",
+          "text": "Prediction variance detected.",
+          "url": "/game/voices/oracle-5.mp3",
+          "duration": 2.184
+        },
+        {
+          "id": "oracle-6",
+          "cue": "taunt",
+          "text": "I have already seen your next move.",
+          "url": "/game/voices/oracle-6.mp3",
+          "duration": 2.496
+        }
+      ]
+    },
+    {
+      "skin": 16,
+      "id": "gravemind",
+      "name": "GRAVEMIND–4",
+      "style": "Dying reactor engineer inside a heavy respirator, slow human rasp",
+      "speaker": "saturn",
+      "lines": [
+        {
+          "id": "gravemind-1",
+          "cue": "alert",
+          "text": "You should have stayed above ground.",
+          "url": "/game/voices/gravemind-1.mp3",
+          "duration": 1.968
+        },
+        {
+          "id": "gravemind-2",
+          "cue": "alert",
+          "text": "The core is mine to bury.",
+          "url": "/game/voices/gravemind-2.mp3",
+          "duration": 1.92
+        },
+        {
+          "id": "gravemind-3",
+          "cue": "attack",
+          "text": "Feel the pressure rise.",
+          "url": "/game/voices/gravemind-3.mp3",
+          "duration": 1.608
+        },
+        {
+          "id": "gravemind-4",
+          "cue": "attack",
+          "text": "Stay where the heat can find you.",
+          "url": "/game/voices/gravemind-4.mp3",
+          "duration": 1.848
+        },
+        {
+          "id": "gravemind-5",
+          "cue": "pain",
+          "text": "The shielding is cracking.",
+          "url": "/game/voices/gravemind-5.mp3",
+          "duration": 1.752
+        },
+        {
+          "id": "gravemind-6",
+          "cue": "taunt",
+          "text": "I can outlast the alarms. Can you?",
+          "url": "/game/voices/gravemind-6.mp3",
+          "duration": 2.592
+        }
+      ]
     }
   ]
 }

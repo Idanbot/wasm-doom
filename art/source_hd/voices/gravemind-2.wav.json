@@ -1,0 +1,14 @@
+{
+  "signature": "3576a74a8f05f7e288902925c869ce099438c7489a5e255b3313212536d19618",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The core is mine to bury.",
+    "speaker": "saturn",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Dying reactor engineer inside a heavy respirator, slow human rasp",
+  "effect": "highpass=f=380,lowpass=f=2600,aecho=0.8:0.6:18:0.16",
+  "generatedAt": "2026-09-27T14:59:46.778Z"
+}

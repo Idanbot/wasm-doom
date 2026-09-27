@@ -23,7 +23,7 @@ const KNOWN_KINDS = new Set([
   "EK_BARREL",
   "EK_MARTYR",
 ]);
-const ATLAS_SLOTS = 121; // World + 13 × 7 enemy animation layers + ordnance
+const ATLAS_SLOTS = 149; // World + 17 × 7 enemy animation layers + ordnance
 const STATUSES = new Set(["planned", "ready"]);
 
 export function isSnakePng(name) {
