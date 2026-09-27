@@ -595,7 +595,7 @@ export class HellscanRuntime {
   }
 
   nextWave() {
-    this.audio.clearEnemies(true);
+    this.audio.advanceSectorVoices();
     this.wasm?.hs_next_wave();
     this.prevRadioSeq = 0;
     this.audio.setBoss(false);
@@ -1228,7 +1228,7 @@ export class HellscanRuntime {
       if (ev & 4096) this.audio.kill();
       if (ev & 8192) this.audio.hushBoss();
       if (ev & 16384) this.audio.dropBoss();
-      if (ev & 32768) this.audio.bossKill((this.hud.wave - 1) % 10, bossDeathVariantForWave(this.hud.wave));
+      if (ev & 65536) this.audio.bossKill((this.hud.wave - 1) % 10, bossDeathVariantForWave(this.hud.wave));
     } catch {
       /* keep the sim running if a sound fails */
     }
@@ -1271,6 +1271,7 @@ export class HellscanRuntime {
       getReserve: () => this.hud.reserve,
       getReloading: () => this.hud.reloading,
       getWeapon: () => this.hud.weapon,
+      getWeaponFrame: () => this.hud.weapFrame,
       getSpread: () => this.hud.spread,
       getFirePatches: () => this.wasm?.hs_fire_patches() ?? 0,
       grantWeapons: () => {
@@ -1326,6 +1327,7 @@ declare global {
       getReserve?: () => number;
       getReloading?: () => number;
       getWeapon?: () => number;
+      getWeaponFrame?: () => number;
       getSpread?: () => number;
       getFirePatches?: () => number;
       grantWeapons?: () => void;

@@ -25,7 +25,10 @@ try {
   await page.screenshot({ path: "screenshots/refine-game-over.png" });
   await page.getByRole("button", { name: /Start again/ }).click();
   await page.waitForFunction(() => document.body.innerText.includes("HEALTH"));
-  await page.evaluate(() => window.__controlsTest.triggerEnd(2));
+  await page.evaluate(() => {
+    window.__controlsTest.setKeys(["KeyW"]);
+    window.__controlsTest.triggerEnd(2);
+  });
   await page.getByText("SITE SECURED", { exact: true }).waitFor();
   await page.screenshot({ path: "screenshots/refine-level-won.png" });
 

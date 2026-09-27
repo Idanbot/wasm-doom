@@ -1307,14 +1307,9 @@ impl Engine {
 
     fn pay_secret(&mut self, cx: i32, cy: i32) {
         let Some((x, y)) = field::secret_interior(cx, cy) else { return };
-        let before = self.ents.iter().filter(|e| matches!(e.kind, EK_MED | EK_ARMOR | EK_AMMO) && (e.x - x).powi(2) + (e.y - y).powi(2) < 2.2).count();
         self.ensure_drop(EK_MED, x, y);
         self.ensure_drop(EK_ARMOR, x + 0.7, y);
         self.ensure_drop(EK_AMMO, x, y + 0.7);
-        let after = self.ents.iter().filter(|e| matches!(e.kind, EK_MED | EK_ARMOR | EK_AMMO) && (e.x - x).powi(2) + (e.y - y).powi(2) < 2.2).count();
-        if after > before {
-            self.say(field::RADIO_SECRET);
-        }
     }
 
     fn boss_pos(&self) -> Option<(f32, f32)> {
@@ -1428,7 +1423,7 @@ impl Engine {
         let kind = field::boss_case(self.wave);
         // A one-tick event lets the client play the death voice at the kill,
         // without replaying the persistent radio line on the next sector.
-        self.events |= 32768;
+        self.events |= EV_BOSS_VOICE;
         if self.spawn(kind, x, y).is_some() {
             self.say(field::RADIO_BOSS_KILL);
             self.shake = (self.shake + 0.4).min(1.0);
@@ -6125,6 +6120,31 @@ mod tests {
         assert_eq!(e.secrets, 1);
         e.tick(1.0 / 60.0);
         assert_eq!(e.secrets, 1, "holding use must not recount the secret");
+        assert_eq!(e.events & EV_BOSS_VOICE, 0, "doors never play a boss voice");
+        assert_ne!(e.radio_line, 5, "secret doors never announce a voice line");
+    }
+
+    #[test]
+    fn node_and_terminal_announcements_fire_once_per_interactable() {
+        let mut e = arena();
+        let (nx, ny) = field::node_point(e.wave);
+        (e.px, e.py) = (nx, ny);
+        e.use_field();
+        let node_seq = e.radio_seq;
+        assert_eq!(e.events & EV_BOSS_VOICE, 0, "the node cannot trigger a boss death voice");
+        e.use_field();
+        assert_eq!(e.radio_seq, node_seq, "the same node cannot speak twice");
+
+        let (tx, ty) = field::terminals(e.wave)[0];
+        let terminal = e.spawn(EK_TERMINAL, tx, ty).unwrap();
+        (e.px, e.py) = (tx, ty);
+        e.use_field();
+        let terminal_seq = e.radio_seq;
+        assert_eq!(e.events & EV_BOSS_VOICE, 0, "the terminal cannot trigger a boss death voice");
+        assert!(terminal_seq > node_seq);
+        assert!(e.ents[terminal].timer < 0.0);
+        e.use_field();
+        assert_eq!(e.radio_seq, terminal_seq, "the same terminal cannot speak twice");
     }
 
     #[test]
@@ -6147,13 +6167,13 @@ mod tests {
         let boss = e.spawn(EK_BOSS, 6.5, 4.5).unwrap();
         e.ents[boss].hp = 1;
         e.hurt_ent(boss, 5, e.px, e.py);
-        assert_ne!(e.events & 32768, 0, "boss death emits one voice event");
+        assert_ne!(e.events & EV_BOSS_VOICE, 0, "boss death emits one voice event");
         assert_eq!(e.ents[boss].anim, ANIM_DEAD);
         assert_eq!(e.state, 0, "the boss drops a weapon instead of ending the sector");
         assert!(e.ents.iter().any(|en| field::is_boss_case(en.kind)));
         assert_eq!(e.kills, 1);
         e.tick(1.0 / 60.0);
-        assert_eq!(e.events & 32768, 0, "voice event clears on the next tick");
+        assert_eq!(e.events & EV_BOSS_VOICE, 0, "voice event clears on the next tick");
         for _ in 1..45 { e.tick(1.0 / 60.0); }
         assert_eq!(e.ents[boss].kind, EK_NONE);
 

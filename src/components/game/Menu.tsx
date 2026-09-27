@@ -79,7 +79,7 @@ export function Menu(
         >
           <span>
             Asset Catalog & Weapon Preview
-            <small>Inspect Gun 1–11 rewrites, frame loops & hashes</small>
+            <small>Inspect all 18 current guns, frame loops & hashes</small>
           </span>
         </button>
       )}

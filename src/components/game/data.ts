@@ -140,7 +140,6 @@ export function radioCopy(line: number, wave: number) {
     ][sector]!,
   };
   if (line === 4) return { speaker: "HANDLER", text: NODE_DONE[sector]! };
-  if (line === 5) return { speaker: "HANDLER", text: "Cache behind the panel. Someone signed for it twice." };
   if (line === 6) {
     return {
       speaker: "HANDLER",

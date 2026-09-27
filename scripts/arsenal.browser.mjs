@@ -107,6 +107,7 @@ test("mouse-wheel arsenal renders readable transparent gun thumbnails", async ()
         slots: thumbs.map((thumb) => ({
           loaded: thumb.complete && thumb.naturalWidth > 0,
           filter: getComputedStyle(thumb).filter,
+          transform: getComputedStyle(thumb).transform,
           opacity: Number(getComputedStyle(thumb.closest(".weapon-spiral-slot")).opacity),
           selected: thumb.closest(".weapon-spiral-slot").classList.contains("active"),
         })),
@@ -119,6 +120,21 @@ test("mouse-wheel arsenal renders readable transparent gun thumbnails", async ()
       assert.ok(slot.loaded, "a wheel thumbnail did not load");
       assert.ok(Number(slot.filter.match(/brightness\(([^)]+)\)/)?.[1]) >= 1.8, `wheel gun lacks contrast: ${slot.filter}`);
       assert.ok(Math.abs(slot.opacity - (slot.selected ? 1 : 0.5)) < 0.01, `incorrect wheel opacity: ${slot.opacity}`);
+      if (slot.selected) assert.match(slot.transform, /matrix\(1\.2, 0, 0, 1\.2, 0, 0\)/);
+      else assert.match(slot.filter, /saturate\(0\.5\)/);
     }
+  } finally { await page.close(); }
+});
+
+test("dev catalog shows the current eighteen weapon sheets and frame controls", async () => {
+  const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+  try {
+    await page.goto(`${baseUrl}/catalog`);
+    await page.getByText("LATEST 5×5 WEAPON SET · 18 GUNS").waitFor();
+    await page.getByRole("button", { name: /18\. KS-8 KEST/ }).click();
+    await page.getByRole("button", { name: "Reload" }).click();
+    await page.getByRole("button", { name: "4", exact: true }).click();
+    await page.getByRole("img", { name: "KS-8 KEST Reload frame 4" }).waitFor();
+    assert.equal(await page.locator(".weapon-spiral-slot").count(), 0);
   } finally { await page.close(); }
 });

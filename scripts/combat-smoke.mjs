@@ -62,9 +62,8 @@ try {
   ];
   for (const [slot, name, magazine, code] of slots) {
     if (slot === 0) {
-      const locked = await page.locator(".weapon-slot.locked").allTextContents();
-      assert.ok(locked.some((text) => text.includes("6") && text.includes("AX-12 VOLT")));
-      assert.ok(locked.some((text) => text.includes("7") && text.includes("M91 CYCLONE")));
+      // The old weapon bar is gone. Locked weapons are verified through the
+      // current input contract: selecting one cannot change the equipped gun.
       await page.evaluate(() => window.__controlsTest.setKeys(["Digit6"]));
       await page.waitForTimeout(80);
       assert.equal(await page.evaluate(() => window.__controlsTest.getWeapon()), 0);
@@ -81,20 +80,15 @@ try {
     assert.equal(await page.evaluate(() => window.__controlsTest.getAmmo()), magazine);
     await page.waitForFunction((name) => document.body.innerText.includes(name), name);
     await page.evaluate(() => window.__controlsTest.setKeys(["Space"]));
-    // v2 5x5 sheet: sample every presented frame for a fire-row cell
-    // (row y = 75%). rAF sampling cannot alias past brief mid-burst
-    // cells the way interval polling can at low headless frame rates.
+    // The viewmodel is canvas-drawn; inspect its presented 5x5 cell index.
     const seenFire = await page.evaluate(
       () =>
         new Promise((resolve) => {
           const seen = new Set();
           const t0 = performance.now();
           const tick = () => {
-            const weapon = document.querySelector(".weapon-view");
-            if (weapon?.style.backgroundImage.includes("_5x5.png")) {
-              seen.add(`${weapon.style.backgroundSize}|${weapon.style.backgroundPosition}`);
-            }
-            if ([...seen].some((s) => /% 75%$/.test(s)) || performance.now() - t0 > 8000) {
+            seen.add(window.__controlsTest.getWeaponFrame());
+            if ([...seen].some((cell) => cell >= 15 && cell <= 19) || performance.now() - t0 > 8000) {
               resolve([...seen]);
             } else {
               requestAnimationFrame(tick);
@@ -104,26 +98,21 @@ try {
         }),
     );
     assert.ok(
-      seenFire.some((s) => s.startsWith("500% 500%") && /% 75%$/.test(s)),
+      seenFire.some((cell) => cell >= 15 && cell <= 19),
       `no fire cell seen for ${name}: ${seenFire.join(", ")}`,
     );
     // Capture an actual recoil/flash frame rather than the settled tail of
     // the shot, which can already be back on the idle sheet after ammo drops.
-    await page.screenshot({ path: `screenshots/combat-weapon-${slot}.png` });
+    if (process.env.BLACKSITE_CAPTURE_COMBAT === "1") await page.screenshot({ path: `screenshots/combat-weapon-${slot}.png` });
     await page.waitForFunction((mag) => window.__controlsTest.getAmmo() < mag, magazine);
     await page.evaluate(() => window.__controlsTest.setKeys(["KeyR"]));
     await page.waitForFunction(() => window.__controlsTest.getReloading() > 0);
     await page.waitForFunction(() => {
-      // v2 5x5 sheet: any reload-row cell (row y = 50%).
-      const weapon = document.querySelector(".weapon-view");
-      return (
-        weapon?.style.backgroundImage.includes("_5x5.png") &&
-        weapon?.style.backgroundSize === "500% 500%" &&
-        /% 50%$/.test(weapon.style.backgroundPosition)
-      );
+      const cell = window.__controlsTest.getWeaponFrame();
+      return cell >= 10 && cell <= 14;
     });
     await page.waitForTimeout(220);
-    await page.screenshot({ path: `screenshots/combat-weapon-${slot}-reload.png` });
+    if (process.env.BLACKSITE_CAPTURE_COMBAT === "1") await page.screenshot({ path: `screenshots/combat-weapon-${slot}-reload.png` });
     await page.evaluate(() => window.__controlsTest.setKeys([]));
     await page.waitForFunction(
       (mag) =>
@@ -172,7 +161,7 @@ try {
   }));
   assert.match(boss.label, /480\s*\/\s*480/);
   assert.ok(boss.width > 200, "the full boss health track should be visible");
-  await page.screenshot({ path: "screenshots/combat-boss-hud.png" });
+  if (process.env.BLACKSITE_CAPTURE_COMBAT === "1") await page.screenshot({ path: "screenshots/combat-boss-hud.png" });
 
   await page.evaluate(() => window.__controlsTest.nextWave());
   await page.waitForFunction(() => document.body.innerText.includes("CRYOGENIC FOUNDRY"));
@@ -182,7 +171,7 @@ try {
     window.__controlsTest.setKeys([]);
   });
   await page.waitForFunction(() => document.body.innerText.includes("HECATE–9"));
-  await page.screenshot({ path: "screenshots/sector-foundry.png" });
+  if (process.env.BLACKSITE_CAPTURE_COMBAT === "1") await page.screenshot({ path: "screenshots/sector-foundry.png" });
   await page.evaluate(() => window.__controlsTest.nextWave());
   await page.waitForFunction(() => document.body.innerText.includes("BIOFORGE DEPTHS"));
   await page.evaluate(() => {
@@ -191,7 +180,7 @@ try {
     window.__controlsTest.setKeys([]);
   });
   await page.waitForFunction(() => document.body.innerText.includes("CHIMERA–9"));
-  await page.screenshot({ path: "screenshots/sector-bioforge.png" });
+  if (process.env.BLACKSITE_CAPTURE_COMBAT === "1") await page.screenshot({ path: "screenshots/sector-bioforge.png" });
 
   await page.goto(url.href);
   await page.waitForFunction(
@@ -207,7 +196,7 @@ try {
   await page.waitForFunction(() => window.__controlsTest.getAmmo() <= 3);
   assert.match(await page.locator(".hud-ammo-heading").innerText(), /LOW AMMO/);
   await page.evaluate(() => window.__controlsTest.setKeys([]));
-  await page.screenshot({ path: "screenshots/combat-low-ammo.png" });
+  if (process.env.BLACKSITE_CAPTURE_COMBAT === "1") await page.screenshot({ path: "screenshots/combat-low-ammo.png" });
   await assertHudTextContained(page, "desktop");
 
   const mobile = await browser.newPage({
@@ -232,7 +221,7 @@ try {
   await mobile.waitForFunction(() => document.body.innerText.includes("PHASE 1 / 3"));
   assert.ok(await mobile.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
   await assertHudTextContained(mobile, "mobile");
-  await mobile.screenshot({ path: "screenshots/combat-boss-hud-mobile.png" });
+  if (process.env.BLACKSITE_CAPTURE_COMBAT === "1") await mobile.screenshot({ path: "screenshots/combat-boss-hud-mobile.png" });
 
   const narrow = await browser.newPage({ viewport: { width: 320, height: 700 } });
   narrow.on("pageerror", (error) => errors.push(error.message));
@@ -245,7 +234,7 @@ try {
   );
   assert.ok(await narrow.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
   await assertHudTextContained(narrow, "320px");
-  await narrow.screenshot({ path: "screenshots/combat-hud-320.png" });
+  if (process.env.BLACKSITE_CAPTURE_COMBAT === "1") await narrow.screenshot({ path: "screenshots/combat-hud-320.png" });
   assert.deepEqual(errors, []);
   console.log(
     JSON.stringify(

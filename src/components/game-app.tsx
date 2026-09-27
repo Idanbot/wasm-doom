@@ -91,6 +91,7 @@ export function GameApp() {
   const [renderer, setRenderer] = useState("webgl2");
   const [checkpoint, setCheckpoint] = useState<RunSave | null>(loadCheckpoint);
   const [radio, setRadio] = useState<{ speaker: string; text: string } | null>(null);
+  const shownRadioSeq = useRef(0);
   const [missingArt, setMissingArt] = useState<string[]>([]);
   const missingRef = useRef<string[]>([]);
   missingRef.current = missingArt;
@@ -388,7 +389,9 @@ export function GameApp() {
   }, [hud.wave, screen]);
 
   useEffect(() => {
-    if (screen !== "play" || !hud.radioSeq) return;
+    if (!hud.radioSeq) { shownRadioSeq.current = 0; return; }
+    if (screen !== "play" || hud.radioSeq === shownRadioSeq.current) return;
+    shownRadioSeq.current = hud.radioSeq;
     const copy = radioCopy(hud.radioLine, hud.wave);
     if (!copy) return;
     setRadio(copy);

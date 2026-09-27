@@ -1,4 +1,5 @@
 import { asset } from "@/lib/asset";
+import { VoiceGate } from "./voice-gate";
 import {
   DEFAULT_ENEMY_OPTIONS,
   VoiceDirector,
@@ -20,6 +21,7 @@ type SpatialSound = {
   end: number;
   line?: VoiceLine;
   profile?: VoiceProfile;
+  releaseVoice?: () => void;
 };
 
 type ListenerPose = { x: number; y: number; fx: number; fy: number };
@@ -86,6 +88,7 @@ export class EnemyAudio {
     private ctx: AudioContext,
     master: GainNode,
     private sfxBus: GainNode,
+    private voiceGate: VoiceGate,
   ) {
     this.voiceBus = ctx.createGain();
     this.voiceBus.connect(master);
@@ -153,7 +156,7 @@ export class EnemyAudio {
     };
   }
   preview(skin: number) {
-    this.silence();
+    if (this.voiceGate.busy) return;
     void this.ctx.resume();
     const profile = this.profiles.get(skin);
     if (!profile?.lines[0]) return;
@@ -188,12 +191,28 @@ export class EnemyAudio {
       this.previous.clear();
     }
   }
+  advanceSector() {
+    for (const sound of [...this.active]) {
+      if (sound.line) {
+        // Let the current sentence finish even if the old enemy despawns.
+        sound.id = -999;
+        continue;
+      }
+      try { sound.source.stop(); } catch {}
+      this.dispose(sound);
+    }
+    this.subtitles = [];
+    this.director.reset();
+    this.previous.clear();
+  }
   close() {
     this.closed = true;
     this.silence(true);
     this.voiceBus.disconnect();
   }
   private dispose(sound: SpatialSound) {
+    sound.releaseVoice?.();
+    sound.releaseVoice = undefined;
     sound.source.disconnect();
     sound.panner.disconnect();
     sound.filter.disconnect();
@@ -222,6 +241,7 @@ export class EnemyAudio {
     duration: number,
     line?: VoiceLine,
     profile?: VoiceProfile,
+    releaseVoice?: () => void,
   ) {
     const panner = this.ctx.createPanner();
     panner.distanceModel = "inverse";
@@ -246,6 +266,7 @@ export class EnemyAudio {
       end: this.ctx.currentTime + duration,
       line,
       profile,
+      releaseVoice,
     };
     this.place(sound, enemy);
     this.active.push(sound);
@@ -255,9 +276,7 @@ export class EnemyAudio {
   }
   private speak(enemy: EnemyCue, profile: VoiceProfile, line: VoiceLine) {
     const buffer = this.buffers.get(line.id);
-    if (!buffer || this.active.some((s) => s.line)) return;
-    const source = this.ctx.createBufferSource();
-    source.buffer = buffer;
+    if (!buffer) return;
     // Slower machines and commander delivery improve intelligibility, while
     // small human variation keeps the roster from sharing one cadence.
     const rate =
@@ -266,8 +285,12 @@ export class EnemyAudio {
         : [5, 8, 11].includes(enemy.skin)
           ? 0.93
           : 0.96 + (enemy.skin % 3) * 0.025;
-    source.playbackRate.value = rate;
-    this.connect(source, enemy, buffer.duration / rate, line, profile);
+    this.voiceGate.tryStart((done) => {
+      const source = this.ctx.createBufferSource();
+      source.buffer = buffer;
+      source.playbackRate.value = rate;
+      this.connect(source, enemy, buffer.duration / rate, line, profile, done);
+    });
   }
   private enemySound(enemy: EnemyCue, pain: boolean) {
     if (this.active.filter((s) => !s.line).length >= 6 || enemy.distance > 16) return;
@@ -299,21 +322,21 @@ export class EnemyAudio {
     this.subtitles = [];
     for (const sound of [...this.active]) {
       const enemy = byId.get(sound.id);
-      if (!enemy || enemy.hp <= 0 || enemy.skin !== sound.skin || t >= sound.end) {
+      if (t >= sound.end || (!sound.line && (!enemy || enemy.hp <= 0 || enemy.skin !== sound.skin))) {
         try {
           sound.source.stop();
         } catch {}
         this.dispose(sound);
         continue;
       }
-      this.place(sound, enemy);
-      if (this.options.subtitles && sound.line && sound.profile) {
+      if (enemy && enemy.hp > 0 && enemy.skin === sound.skin) this.place(sound, enemy);
+      if (enemy && this.options.subtitles && sound.line && sound.profile) {
         const caption = subtitleFor(enemy, sound.profile, sound.line);
         if (caption) this.subtitles.push(caption);
       }
     }
     if (this.ctx.state !== "running") return;
-    if (!this.active.some((s) => s.line)) {
+    if (!this.voiceGate.busy) {
       const chosen = this.director.choose(enemies, this.profiles, t);
       if (chosen) this.speak(chosen.enemy, chosen.profile, chosen.line);
     }

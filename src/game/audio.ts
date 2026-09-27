@@ -1,5 +1,6 @@
 import { asset } from "@/lib/asset";
 import { EnemyAudio } from "./enemy-audio";
+import { VoiceGate } from "./voice-gate";
 import {
   DEFAULT_ENEMY_OPTIONS,
   type EnemyCue,
@@ -18,6 +19,7 @@ export type GameAudio = {
     player: { x: number; y: number; yaw: number },
   ) => EnemySubtitle[];
   clearEnemies: (reset?: boolean) => void;
+  advanceSectorVoices: () => void;
   dispose: () => void;
   unlock: () => void;
   setMuted: (m: boolean) => void;
@@ -48,6 +50,7 @@ const BEAT = 60 / BPM;
 export function createAudio(): GameAudio {
   let ctx: AudioContext | null = null;
   let enemies: EnemyAudio | null = null;
+  const voiceGate = new VoiceGate();
   let enemyOptions = { ...DEFAULT_ENEMY_OPTIONS };
   let master: GainNode | null = null;
   let sfx: GainNode | null = null;
@@ -123,7 +126,7 @@ export function createAudio(): GameAudio {
     sfx.connect(master);
     music.connect(master);
     master.connect(ctx.destination);
-    enemies = new EnemyAudio(ctx, master, sfx);
+    enemies = new EnemyAudio(ctx, master, sfx, voiceGate);
     enemies.configure(enemyOptions);
     applyGains();
     const data = new Float32Array(ctx.sampleRate * 1.2);
@@ -239,6 +242,27 @@ export function createAudio(): GameAudio {
 
   function sample(name: string, vol = 1, rate = 1) {
     return playFile(name, vol, rate);
+  }
+
+  function playVoiceClip(name: string, done: () => void) {
+    const buffer = buffers[name];
+    if (buffer && ctx && sfx && !muted) {
+      const source = ctx.createBufferSource();
+      const gain = ctx.createGain();
+      source.buffer = buffer;
+      gain.gain.value = 1;
+      source.connect(gain);
+      gain.connect(sfx);
+      source.onended = () => { source.disconnect(); gain.disconnect(); done(); };
+      source.start();
+      return;
+    }
+    const url = SFX_URLS[name];
+    if (!url || muted) { done(); return; }
+    const element = new Audio(url);
+    element.volume = Math.min(1, 1.35 * sfxV * masterV);
+    element.onended = done;
+    void element.play().catch(done);
   }
 
   function beep(
@@ -673,8 +697,12 @@ export function createAudio(): GameAudio {
     clearEnemies(reset = false) {
       enemies?.silence(reset);
     },
+    advanceSectorVoices() {
+      enemies?.advanceSector();
+    },
     dispose() {
       musicOn = false;
+      voiceGate.clearPending();
       stopGate();
       enemies?.close();
       if (ctx) void ctx.close();
@@ -768,9 +796,7 @@ export function createAudio(): GameAudio {
     bossKill(sector, variant) {
       resume();
       const clip = sector >= 0 && sector < 10 ? `bossKill${sector}_${variant === 1 ? 1 : 0}` : null;
-      if (clip && sample(clip, 1.35)) return;
-      beep(523, 0.12, "triangle", 0.09, 80);
-      beep(784, 0.16, "square", 0.07, 60);
+      if (clip) voiceGate.enqueue((done) => playVoiceClip(clip, done));
     },
     fire(weapon) {
       resume();
