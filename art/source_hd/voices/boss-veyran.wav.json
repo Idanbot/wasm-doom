@@ -1,7 +1,7 @@
 {
-  "signature": "64615ee5eb9e4592f1a918bb616226bea8d03b3db1025aabcc6bb48446106aa6",
+  "signature": "d6ccd2b1779802474aaf3d36693af9a5197591d0b1de20964e756526fb5e2ecd",
   "model": "@cf/deepgram/aura-2-en",
   "speaker": "saturn",
-  "effect": "asetrate=21120,aresample=24000,atempo=1.05,aecho=0.8:0.6:44:0.18,highpass=f=100,lowpass=f=5200",
-  "generatedAt": "2026-09-26T15:00:47.680Z"
+  "effect": "asetrate=22500,aresample=24000,aecho=0.8:0.55:42:0.10,highpass=f=95,lowpass=f=6200",
+  "generatedAt": "2026-09-27T10:48:29.233Z"
 }

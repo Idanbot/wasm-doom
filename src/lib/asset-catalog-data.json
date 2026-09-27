@@ -1028,9 +1028,9 @@
   {
     "file": "/game/spr_ball.png",
     "name": "spr_ball.png",
-    "size": 70983,
-    "hash": "eae07827569aa45daa60825479aa79bfdf2e3aa9f677b2df35abb8c46d98b344",
-    "shortHash": "eae07827",
+    "size": 99651,
+    "hash": "ae9446bd64883028ff08720487a21d3368b5b2ef3cf5065c4fb2c693c3f26cad",
+    "shortHash": "ae9446bd",
     "width": 256,
     "height": 256
   },
@@ -1064,9 +1064,9 @@
   {
     "file": "/game/spr_crate.png",
     "name": "spr_crate.png",
-    "size": 85693,
-    "hash": "2261718673fef6be66fd52c73d05c997052ea2a842e847fafbedbe7f74db5b0e",
-    "shortHash": "22617186",
+    "size": 95363,
+    "hash": "df8f4c10d837f2b90d7795673504a59762bcd0b3ffe5d81b21dcf9153cbd18b4",
+    "shortHash": "df8f4c10",
     "width": 256,
     "height": 256
   },
@@ -1253,9 +1253,9 @@
   {
     "file": "/game/spr_ordnance.png",
     "name": "spr_ordnance.png",
-    "size": 228272,
-    "hash": "23fa7edb8652c4ae4d8c4becd7fcbc094e690a1821812e24b7ae5d2119e07a37",
-    "shortHash": "23fa7edb",
+    "size": 329734,
+    "hash": "f5c46b79537499b2daf017efc25291c6a056611a3824eced90ff2ca30023c5ff",
+    "shortHash": "f5c46b79",
     "width": 512,
     "height": 512
   },
@@ -3794,23 +3794,23 @@
   {
     "file": "/game/voices/boss-chimera.mp3",
     "name": "boss-chimera.mp3",
-    "size": 61869,
-    "hash": "68d658b4c2a6cd0f448f2a21ee8dd970767115496a400bb7ac6fc1e563b5d5dc",
-    "shortHash": "68d658b4"
+    "size": 60525,
+    "hash": "698a3f9d2e732b49b4b88e179d588e7e9c04aa103025c9a4d29a88f26c7d5b40",
+    "shortHash": "698a3f9d"
   },
   {
     "file": "/game/voices/boss-hecate.mp3",
     "name": "boss-hecate.mp3",
-    "size": 59949,
-    "hash": "23d1e8f496ef6d74aede45a0f14dde8b9a968b2886da28670d7c2000745d0660",
-    "shortHash": "23d1e8f4"
+    "size": 82125,
+    "hash": "93ff98ce2d4136f99b025191723abd0f846e9c49df36801eeec5b7a21c3e5ff8",
+    "shortHash": "93ff98ce"
   },
   {
     "file": "/game/voices/boss-veyran.mp3",
     "name": "boss-veyran.mp3",
-    "size": 54381,
-    "hash": "a8466595c9868ff23ad19fb6a17017bdf6ef3c24a3945fb61309b931ac30801b",
-    "shortHash": "a8466595"
+    "size": 75789,
+    "hash": "69fb2d35a477b2c925f10fc08f5ee1c027e8de0e5ceeb2928fbe1a189d3434a4",
+    "shortHash": "69fb2d35"
   },
   {
     "file": "/game/voices/breacher-1.mp3",

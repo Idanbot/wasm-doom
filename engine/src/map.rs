@@ -426,9 +426,14 @@ pub(crate) fn place_hub_spoke(e: &mut Engine) {
     e.spawn(EK_MED, 32.5, 25.5);
     e.spawn(EK_GUN6, 41.5, 24.5);
     e.spawn(EK_GUN7, 4.5, 20.5);
-    // Hangar machinery: server rack and worklight by the start bay.
-    prop(e, EK_PROP_SERVER, 6.5, 14.5);
-    prop(e, EK_PROP_WLIGHT_W, 3.5, 16.5);
+    // Upper works: data racks and white service lights throughout the facility.
+    for &(kind, x, y) in &[
+        (EK_PROP_SERVER, 6.5, 14.5), (EK_PROP_SERVER, 19.5, 13.5),
+        (EK_PROP_SERVER, 26.5, 13.5), (EK_PROP_SERVER, 33.5, 13.5),
+        (EK_PROP_SERVER, 37.5, 23.5), (EK_PROP_WLIGHT_W, 3.5, 16.5),
+        (EK_PROP_WLIGHT_W, 20.5, 17.5), (EK_PROP_WLIGHT_W, 28.5, 17.5),
+        (EK_PROP_WLIGHT_W, 36.5, 26.5),
+    ] { prop(e, kind, x, y); }
 }
 
 fn reset_level_entities(e: &mut Engine) {
@@ -495,10 +500,14 @@ fn place_foundry(e: &mut Engine) {
     ] {
         e.spawn(kind, x, y);
     }
-    // Foundry machinery: reactor and AC by the intake, cyan worklight.
-    prop(e, EK_PROP_REACTOR, 6.5, 6.5);
-    prop(e, EK_PROP_AC, 4.5, 8.5);
-    prop(e, EK_PROP_WLIGHT_C, 8.5, 7.5);
+    // Foundry: reactor banks, power distribution and cyan maintenance lights.
+    for &(kind, x, y) in &[
+        (EK_PROP_REACTOR, 6.5, 6.5), (EK_PROP_REACTOR, 22.5, 8.5),
+        (EK_PROP_REACTOR, 35.5, 22.5), (EK_PROP_AC, 4.5, 8.5),
+        (EK_PROP_AC, 18.5, 21.5), (EK_PROP_AC, 40.5, 18.5),
+        (EK_PROP_WLIGHT_C, 8.5, 7.5), (EK_PROP_WLIGHT_C, 32.5, 5.5),
+        (EK_PROP_WLIGHT_C, 37.5, 26.5),
+    ] { prop(e, kind, x, y); }
 }
 
 fn place_bioforge(e: &mut Engine) {
@@ -525,9 +534,13 @@ fn place_bioforge(e: &mut Engine) {
     ] {
         e.spawn(kind, x, y);
     }
-    // Bioforge machinery: ventilation and warning beacon by the dock.
-    prop(e, EK_PROP_VENT, 6.5, 15.5);
-    prop(e, EK_PROP_BEACON, 4.5, 17.5);
+    // Bioforge: specimen ventilation and sealed security sensor pylons.
+    for &(kind, x, y) in &[
+        (EK_PROP_VENT, 6.5, 15.5), (EK_PROP_VENT, 18.5, 14.5),
+        (EK_PROP_VENT, 29.5, 16.5), (EK_PROP_VENT, 38.5, 20.5),
+        (EK_PROP_BEACON, 4.5, 17.5), (EK_PROP_BEACON, 20.5, 9.5),
+        (EK_PROP_BEACON, 34.5, 17.5), (EK_PROP_BEACON, 42.5, 18.5),
+    ] { prop(e, kind, x, y); }
 }
 
 /// Static v2 machinery: nearest-open seating keeps a hand-authored
@@ -751,15 +764,23 @@ mod tests {
     #[test]
     fn each_sector_places_its_machinery_props() {
         let mut e = Engine::new(160, 100);
-        let expected: [(i32, &[u8]); 3] = [
-            (1, &[EK_PROP_SERVER, EK_PROP_WLIGHT_W]),
-            (2, &[EK_PROP_REACTOR, EK_PROP_AC, EK_PROP_WLIGHT_C]),
-            (3, &[EK_PROP_VENT, EK_PROP_BEACON]),
+        let expected: [(i32, &[u8], usize); 3] = [
+            (1, &[EK_PROP_SERVER, EK_PROP_WLIGHT_W], 9),
+            (2, &[EK_PROP_REACTOR, EK_PROP_AC, EK_PROP_WLIGHT_C], 9),
+            (3, &[EK_PROP_VENT, EK_PROP_BEACON], 8),
         ];
-        for (wave, kinds) in expected {
+        let all_kinds = [EK_PROP_SERVER, EK_PROP_WLIGHT_W, EK_PROP_REACTOR, EK_PROP_AC,
+            EK_PROP_WLIGHT_C, EK_PROP_VENT, EK_PROP_BEACON];
+        for (wave, kinds, count) in expected {
             e.wave = wave;
             build_level(&mut e);
             place_level(&mut e);
+            assert_eq!(e.ents.iter().filter(|en| all_kinds.contains(&en.kind)).count(), count);
+            for &kind in &all_kinds {
+                if !kinds.contains(&kind) {
+                    assert!(!e.ents.iter().any(|en| en.kind == kind), "wave {wave} leaked prop kind {kind}");
+                }
+            }
             for &kind in kinds {
                 let en = e.ents.iter().find(|en| en.kind == kind && en.hp > 0);
                 assert!(en.is_some(), "wave {wave} places prop kind {kind}");

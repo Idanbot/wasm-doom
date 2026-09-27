@@ -19,13 +19,13 @@ export function WeaponSpiral({ hud, visible }: { hud: HudState; visible: boolean
               className={`weapon-spiral-slot ${distance === 0 ? "active" : ""}`}
               key={weapon.id}
               style={{
-                transform: `translate(${distance * 72}px, ${Math.abs(distance) * 20 - 10}px) scale(${1 - Math.abs(distance) * 0.16}) rotate(${distance * -10}deg)`,
+                transform: `translate(${distance * 92}px, ${Math.abs(distance) * 18 - 10}px) scale(${1 - Math.abs(distance) * 0.14}) rotate(${distance * -8}deg)`,
                 zIndex: 5 - Math.abs(distance),
                 opacity: 1 - Math.abs(distance) * 0.22,
               }}
             >
               <img src={`/game/draft/v2/weap_${SLUGS[index]}_aim.png`} alt="" />
-              <span>{index + 1} · {weapon.name}</span>
+              <span>{index + 1} · {weapon.name.split(" ")[0]}</span>
             </div>
           );
         })}

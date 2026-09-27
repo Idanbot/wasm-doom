@@ -23,10 +23,11 @@ const effects = {
   heavy: "asetrate=22080,aresample=24000,atempo=1.04,highpass=f=110,lowpass=f=5200",
   comms: "highpass=f=190,lowpass=f=4800",
   "robot-low":
-    "asetrate=20400,aresample=24000,atempo=1.12,aeval=val(0)*(0.72+0.28*sin(2*PI*48*t)),highpass=f=120,lowpass=f=3600",
+    "asetrate=22050,aresample=24000,aeval=val(0)*(0.88+0.12*sin(2*PI*42*t)),highpass=f=100,lowpass=f=5200",
   "robot-high": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
   overlord:
-    "asetrate=21120,aresample=24000,atempo=1.05,aecho=0.8:0.6:44:0.18,highpass=f=100,lowpass=f=5200",
+    "asetrate=22500,aresample=24000,aecho=0.8:0.55:42:0.10,highpass=f=95,lowpass=f=6200",
+  bio: "asetrate=23000,aresample=24000,highpass=f=120,lowpass=f=6500,aecho=0.7:0.35:36:0.10",
 };
 await mkdir("art/source_hd/voices", { recursive: true });
 await mkdir("public/game/voices", { recursive: true });
@@ -75,8 +76,8 @@ for (const boss of plan.bosses) {
   const encode = spawnSync(
     "ffmpeg",
     ["-hide_banner", "-loglevel", "error", "-y", "-i", raw, "-af",
-      `${effects[boss.effect]},loudnorm=I=-18:TP=-2:LRA=7,afade=t=in:d=0.015`,
-      "-ac", "1", "-ar", "24000", "-codec:a", "libmp3lame", "-b:a", "64k", path],
+      `${effects[boss.effect]},loudnorm=I=-16:TP=-1.5:LRA=7,afade=t=in:d=0.015`,
+      "-ac", "1", "-ar", "24000", "-codec:a", "libmp3lame", "-b:a", "96k", path],
     { encoding: "utf8" },
   );
   if (encode.status !== 0) throw new Error(encode.stderr);
@@ -91,3 +92,14 @@ for (const boss of plan.bosses) {
   console.log(`${cached ? "cached" : "generated"} ${boss.id}: ${duration.toFixed(2)}s`);
 }
 await writeFile("art/source_hd/voices/boss-usage.json", JSON.stringify({ report }, null, 2) + "\n");
+const catalogPath = "src/lib/asset-catalog-data.json";
+const catalog = JSON.parse(await readFile(catalogPath, "utf8"));
+for (const boss of plan.bosses) {
+  const row = catalog.find((item) => item.file === `/game/voices/${boss.id}.mp3`);
+  if (!row) continue;
+  const bytes = await readFile(`public/game/voices/${boss.id}.mp3`);
+  row.size = bytes.length;
+  row.hash = createHash("sha256").update(bytes).digest("hex");
+  row.shortHash = row.hash.slice(0, 8);
+}
+await writeFile(catalogPath, JSON.stringify(catalog, null, 2) + "\n");

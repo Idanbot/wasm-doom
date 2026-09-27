@@ -2486,14 +2486,10 @@ impl Engine {
         }
         let w = self.weapon as usize;
         if self.mag[w] <= 0 {
-            if self.ammo[w] > 0 {
-                self.begin_reload();
-            } else {
-                self.cooldown = 0.22;
-                self.ev_weapon = self.weapon;
-                self.events |= EV_EMPTY;
-                self.dry_t = 0.35;
-            }
+            self.cooldown = 0.22;
+            self.ev_weapon = self.weapon;
+            self.events |= EV_EMPTY;
+            self.dry_t = 0.35;
             return;
         }
         self.mag[w] -= 1;
@@ -2949,11 +2945,6 @@ impl Engine {
             if self.reload_t <= 0.0 {
                 self.finish_reload();
             }
-        } else {
-            let w = self.weapon as usize;
-            if self.mag[w] <= 0 && self.ammo[w] > 0 && self.cooldown <= 0.0 {
-                self.begin_reload();
-            }
         }
         self.iframes = (self.iframes - dt).max(0.0);
         self.dry_t = (self.dry_t - dt).max(0.0);
@@ -3396,8 +3387,15 @@ impl Engine {
                     e.y += e.vy * dt;
                     e.timer -= dt;
                     e.frame += dt * 6.0;
+                    e.effect_tick += dt;
+                    let trail = e.effect_tick >= 0.08;
+                    if trail { e.effect_tick -= 0.08; }
                     let (ex, ey, dead) = (e.x, e.y, e.timer <= 0.0);
                     let _ = e;
+                    if trail && !dead {
+                        // Small puffs trace the missile's flight and expire within one second.
+                        self.spawn_timed(EK_SMOKE, old_x, old_y, 0.9, 10.0);
+                    }
                     if dead || !self.los(old_x, old_y, ex, ey) {
                         self.ents[i].kind = 0;
                         self.explode(old_x, old_y, 4.8, 65.0);
@@ -3634,9 +3632,9 @@ impl Engine {
         } else if mag_now >= mag_max {
             0
         } else if mag_now == 0 && self.ammo[wpn] == 0 {
-            3
-        } else if mag_now == 0 {
             4
+        } else if mag_now == 0 {
+            3
         } else if mag_now * 2 >= mag_max {
             1
         } else {
@@ -5431,6 +5429,41 @@ mod tests {
         assert_eq!(e.ents[covered].hp, 78);
         assert!(!e.ents.iter().any(|p| p.kind == EK_FIREPATCH), "missiles no longer leave floating flame patches");
         assert!(e.ents.iter().any(|p| p.kind == EK_IMPACT && p.effect_tick == 2.0));
+    }
+
+    #[test]
+    fn empty_magazine_waits_for_manual_reload_and_dry_fires() {
+        let mut e = arena();
+        e.mag[0] = 0;
+        e.ammo[0] = 9;
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.hud.weap_frame, 3, "reserve ammo keeps the empty-mag pose");
+        e.fire();
+        assert_eq!(e.reload_t, 0.0);
+        assert!(e.dry_t > 0.0);
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.hud.weap_frame, 5, "an empty trigger pull clicks");
+        e.begin_reload();
+        assert!(e.reload_t > 0.0, "reload remains available on explicit input");
+
+        e.reload_t = 0.0;
+        e.dry_t = 0.0;
+        e.ammo[0] = 0;
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.hud.weap_frame, 4, "zero magazine and reserve use no-ammo pose");
+    }
+
+    #[test]
+    fn player_missile_smoke_trail_expires_within_one_second() {
+        let mut e = arena();
+        e.weapon = 4;
+        e.mag[4] = 1;
+        e.fire();
+        e.tick(0.1);
+        assert!(e.ents.iter().any(|en| en.kind == EK_SMOKE), "missile leaves a small puff");
+        for en in &mut e.ents { if en.kind == EK_BOLT { en.kind = EK_NONE; } }
+        for _ in 0..70 { e.tick(1.0 / 60.0); }
+        assert!(!e.ents.iter().any(|en| en.kind == EK_SMOKE), "trail disappears after flight");
     }
 
     #[test]

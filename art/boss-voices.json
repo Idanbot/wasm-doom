@@ -5,23 +5,23 @@
     {
       "id": "boss-veyran",
       "speaker": "saturn",
-      "style": "Dying overlord, arrogant to the last syllable",
+      "style": "Wounded human commander; intimate, bitter and still proud",
       "effect": "overlord",
-      "text": "Impossible. The vault was mine. Take the override rail. It still remembers my hand."
+      "text": "My vault... my blood. Take the rail, intruder. Let it remember who built this place."
     },
     {
       "id": "boss-hecate",
       "speaker": "neptune",
-      "style": "Machine warden shutting down, flat and final",
+      "style": "Damaged machine warden; measured shutdown with power failing",
       "effect": "robot-low",
-      "text": "Core integrity zero. Forge power is... cold. Take the arc cannon. Do not touch the coils."
+      "text": "Core failure. Warden protocol terminated. Forge cutter released. Do not let it cool."
     },
     {
       "id": "boss-chimera",
       "speaker": "draco",
-      "style": "Clipped command channel, professional",
-      "effect": "comms",
-      "text": "Specimen containment failed. Take the corrosive carbine. The green will outlive us both."
+      "style": "Infected specimen; breathless, predatory, almost human",
+      "effect": "bio",
+      "text": "You broke the cage. The toxin is yours now. Breathe carefully."
     }
   ]
 }

@@ -199,9 +199,9 @@
     "spr_ordnance.png"
   ],
   "replacedFromDraftV2": {
-    "plasma_bolt": "projectile_rail",
+    "plasma_bolt": "projectile_ball",
     "incendiary_projectile": "projectile_rocket",
-    "lance_beam": "projectile_arc",
+    "lance_beam": "projectile_rail",
     "acid_seeker": "projectile_acid",
     "pistol_muzzle": "muzzle_suppressed",
     "shotgun_muzzle": "muzzle_ballistic",

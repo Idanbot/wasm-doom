@@ -361,6 +361,9 @@ def texture(name,base,seed,kind):
     return Image.fromarray(ar,'RGB')
 
 def particle(name,color,kind):
+    v5=ROOT/'art/source_hd/combat_v5'/f'{name}.png'
+    if v5.exists():
+        return Image.open(v5).convert('RGBA').resize((512,512),Image.Resampling.LANCZOS)
     v4=ROOT/'art/source_hd/combat_v4'
     if (v4/f'{name}.png').exists():
         return Image.open(v4/f'{name}.png').convert('RGBA').resize((512,512),Image.Resampling.LANCZOS)
@@ -551,7 +554,7 @@ def main():
         name=f'door_{sector}'
         path=OUT/'textures'/f'{name}_1080p.png';h,s=save(door_texture(sector),path)
         extras.append(dict(file=f'/game/draft/v2/textures/{name}_1080p.png',name=f'{name}_v2_1080p.png',size=path.stat().st_size,hash=h,shortHash=s,width=1920,height=1080,group='textures',seamless=False))
-    for name,color,kind in [('muzzle_ballistic',(255,187,71),'flash'),('muzzle_suppressed',(184,200,179),'flash'),('muzzle_rocket',(255,107,42),'flash'),('impact_sparks',(255,201,107),'spark'),('impact_electric',(70,208,255),'spark'),('impact_acid',(149,234,87),'spark'),('impact_shrapnel',(255,200,130),'spark'),('projectile_rocket',(255,135,53),'trail'),('projectile_rail',(253,174,64),'trail'),('projectile_arc',(103,224,255),'trail'),('projectile_acid',(144,230,80),'orb'),('smoke_muzzle',(146,151,149),'smoke'),('smoke_explosion',(77,83,83),'smoke'),('shockwave',(150,214,232),'ring'),('explosion_core',(255,134,47),'orb')]:
+    for name,color,kind in [('muzzle_ballistic',(255,187,71),'flash'),('muzzle_suppressed',(184,200,179),'flash'),('muzzle_rocket',(255,107,42),'flash'),('impact_sparks',(255,201,107),'spark'),('impact_electric',(70,208,255),'spark'),('impact_acid',(149,234,87),'spark'),('impact_shrapnel',(255,200,130),'spark'),('projectile_ball',(255,187,71),'orb'),('projectile_rocket',(255,135,53),'trail'),('projectile_rail',(253,174,64),'trail'),('projectile_arc',(103,224,255),'trail'),('projectile_acid',(144,230,80),'orb'),('smoke_muzzle',(146,151,149),'smoke'),('smoke_explosion',(77,83,83),'smoke'),('shockwave',(150,214,232),'ring'),('explosion_core',(255,134,47),'orb')]:
         path=OUT/'fx'/f'{name}.png';h,s=save(particle(name,color,kind),path)
         extras.append(dict(file=f'/game/draft/v2/fx/{name}.png',name=f'{name}_v2.png',size=path.stat().st_size,hash=h,shortHash=s,width=512,height=512,group='particles'))
     for name,color in [('lantern_amber',(255,188,100)),('lantern_red',(234,81,67)),('worklight_white',(249,245,204)),('worklight_cyan',(138,225,242)),('security_sensor_pylon',(255,112,57)),('medkit',(211,78,72)),('ammo_cache',(209,169,73))]:

@@ -84,9 +84,9 @@ export function radioCopy(line: number, wave: number) {
   if (line === 8) {
     // Speaker and copy mirror art/boss-voices.json (voiced kill lines).
     const kill = [
-      { speaker: "MALIK", text: "Impossible. The vault was mine. Take the override rail. It still remembers my hand." },
-      { speaker: "HECATE–9", text: "Core integrity zero. Forge power is... cold. Take the arc cannon. Do not touch the coils." },
-      { speaker: "CHIMERA–9", text: "Specimen containment failed. Take the corrosive carbine. The green will outlive us both." },
+      { speaker: "MALIK", text: "My vault... my blood. Take the rail, intruder. Let it remember who built this place." },
+      { speaker: "HECATE–9", text: "Core failure. Warden protocol terminated. Forge cutter released. Do not let it cool." },
+      { speaker: "CHIMERA–9", text: "You broke the cage. The toxin is yours now. Breathe carefully." },
     ][sector]!;
     return kill;
   }

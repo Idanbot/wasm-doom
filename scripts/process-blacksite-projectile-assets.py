@@ -64,9 +64,9 @@ V3_SHEETS = {
 # The v2 catalog cells share the renderer's existing four-frame effect slots.
 # A few legacy ambient cells have no draft counterpart and stay in place.
 DRAFT_CELLS = {
-    "plasma_bolt": "projectile_rail",
+    "plasma_bolt": "projectile_ball",
     "incendiary_projectile": "projectile_rocket",
-    "lance_beam": "projectile_arc",
+    "lance_beam": "projectile_rail",
     "acid_seeker": "projectile_acid",
     "pistol_muzzle": "muzzle_suppressed",
     "shotgun_muzzle": "muzzle_ballistic",

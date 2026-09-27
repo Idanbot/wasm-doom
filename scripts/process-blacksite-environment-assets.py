@@ -66,7 +66,6 @@ PROMOTIONS = {
     "spr_med.png": "combat_compact_medkit.png",
     "spr_ammo.png": "combat_shotgun_shell_bundle.png",
     "spr_armor.png": "combat_armor_plate.png",
-    "spr_crate.png": "hangar_breakable_supply_crate.png",
     "spr_lamp.png": "hangar_warning_lamp.png",
     "spr_chain.png": "hangar_cargo_hook.png",
 }
@@ -263,6 +262,12 @@ def promote_existing_slots() -> None:
         if not source.exists():
             raise FileNotFoundError(f"promotion source missing: {source}")
         Image.open(source).convert("RGBA").save(RUNTIME / destination, format="PNG", optimize=False)
+    # The combat v5 crate has a complete opaque body and clean exterior alpha.
+    crate = Image.open(ROOT / "art/source_hd/combat_v5/crate.png").convert("RGBA")
+    crate.thumbnail((236, 236), Image.Resampling.LANCZOS)
+    canvas = Image.new("RGBA", (256, 256))
+    canvas.alpha_composite(crate, ((256 - crate.width) // 2, (256 - crate.height) // 2))
+    canvas.save(RUNTIME / "spr_crate.png", format="PNG", optimize=False)
 
 
 def main() -> None:
