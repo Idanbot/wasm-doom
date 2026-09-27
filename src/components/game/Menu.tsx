@@ -11,7 +11,6 @@ export function Menu(
     muted: boolean;
     setMuted: (v: boolean) => void;
     onStart: () => void;
-    onContinue?: () => void;
     onOpenCatalog?: () => void;
   },
 ) {
@@ -71,14 +70,6 @@ export function Menu(
         </span>
         <ArrowUpRight size={24} />
       </button>
-      {p.onContinue && (
-        <button type="button" className="menu-secondary" onClick={p.onContinue}>
-          <span>
-            Resume last sector
-            <small>Weapons and supplies carry</small>
-          </span>
-        </button>
-      )}
       {p.onOpenCatalog && (
         <button
           type="button"

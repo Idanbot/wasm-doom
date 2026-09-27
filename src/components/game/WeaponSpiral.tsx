@@ -13,7 +13,7 @@ export function WeaponSpiral({ hud, visible }: { hud: HudState; visible: boolean
       <div className="weapon-spiral-orbit">
         {slots.map(({ weapon, index }, order) => {
           const distance = ((order - selected + slots.length + Math.floor(slots.length / 2)) % slots.length) - Math.floor(slots.length / 2);
-          if (Math.abs(distance) > 3) return null;
+          if (Math.abs(distance) > 2) return null;
           return (
             <div
               className={`weapon-spiral-slot ${distance === 0 ? "active" : ""}`}
@@ -21,7 +21,7 @@ export function WeaponSpiral({ hud, visible }: { hud: HudState; visible: boolean
               style={{
                 transform: `translate(${distance * 92}px, ${Math.abs(distance) * 18 - 10}px) scale(${1 - Math.abs(distance) * 0.14}) rotate(${distance * -8}deg)`,
                 zIndex: 5 - Math.abs(distance),
-                opacity: 1 - Math.abs(distance) * 0.22,
+                opacity: 1,
               }}
             >
               <img src={`/game/ui/weapon-thumbs/${SLUGS[index]}.png`} alt="" />

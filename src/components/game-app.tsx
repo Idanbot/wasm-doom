@@ -639,7 +639,6 @@ export function GameApp() {
                 setEnemyOptions={setEnemyOptions}
                 onPreviewVoice={(skin) => rtRef.current?.previewEnemy(skin)}
                 onStart={start}
-                onContinue={import.meta.env.DEV && checkpoint ? continueRun : undefined}
                 onOpenCatalog={catalogEnabled ? () => setView("catalog") : undefined}
                 ready={ready}
                 load={load}

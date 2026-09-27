@@ -1138,8 +1138,8 @@ select:focus-visible {
 }
 .weapon-spiral {
   position: absolute;
-  left: 50%;
-  bottom: 155px;
+  left: 45%;
+  bottom: 205px;
   width: min(510px, 94vw);
   height: 165px;
   transform: translateX(-50%) translateY(18px) scale(.8);
@@ -1148,6 +1148,13 @@ select:focus-visible {
   pointer-events: none;
   z-index: 26;
   text-align: center;
+}
+.weapon-spiral::before {
+  content: "";
+  position: absolute;
+  inset: 34px -25px 0;
+  background: radial-gradient(ellipse, rgb(2 7 11 / 90%) 0%, rgb(2 7 11 / 72%) 55%, transparent 80%);
+  filter: blur(10px);
 }
 .weapon-spiral.visible { opacity: 1; transform: translateX(-50%) translateY(0) scale(.8); }
 .weapon-spiral-caption { color: var(--color-steel); font: 700 9px var(--font-display); letter-spacing: .13em; text-shadow: 0 2px 5px #000; }
@@ -1164,8 +1171,8 @@ select:focus-visible {
   justify-content: flex-end;
   transition: transform 240ms cubic-bezier(.2,.8,.2,1), opacity 240ms;
 }
-.weapon-spiral-slot img { width: 230px; height: 108px; max-width: none; flex-shrink: 0; object-fit: contain; filter: brightness(1.28) contrast(1.08) drop-shadow(0 5px 5px #000) drop-shadow(0 0 12px #000); }
-.weapon-spiral-slot.active img { filter: brightness(1.45) contrast(1.08) drop-shadow(0 5px 5px #000) drop-shadow(0 0 10px var(--color-primary)); }
+.weapon-spiral-slot img { width: 250px; height: 118px; max-width: none; flex-shrink: 0; object-fit: contain; filter: brightness(1.9) contrast(1.14) drop-shadow(0 0 2px #b7dcea) drop-shadow(0 5px 6px #000); }
+.weapon-spiral-slot.active img { filter: brightness(2.25) contrast(1.14) drop-shadow(0 0 3px #83ddf7) drop-shadow(0 5px 6px #000); }
 .weapon-spiral-slot span { position: absolute; z-index: 2; bottom: 0; max-width: 150px; padding: 2px 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--color-fg); background: rgb(4 10 14 / 90%); border-bottom: 1px solid var(--color-steel); font: 700 10px var(--font-display); text-shadow: 0 1px 3px #000; }
 .weapon-spiral-slot.active span { color: var(--color-primary); border-color: var(--color-primary); }
 .enemy-subtitles {
@@ -1370,7 +1377,7 @@ select:focus-visible {
     width: 50%;
   }
   .weapon-view { bottom: 5%; }
-  .weapon-spiral { bottom: 125px; transform: translateX(-50%) translateY(18px) scale(.576); }
+  .weapon-spiral { left: 50%; bottom: 150px; transform: translateX(-50%) translateY(18px) scale(.576); }
   .weapon-spiral.visible { transform: translateX(-50%) translateY(0) scale(.576); }
   .hud-health {
     gap: 6px;
