@@ -127,7 +127,7 @@ With the development server running:
 
 ```sh
 npm run test:browser
-node scripts/browser-smoke.mjs
+node scripts/browser-smoke.mjs http://127.0.0.1:8080/ screenshots/qa-menu.png
 node scripts/combat-smoke.mjs
 node scripts/end-screen-smoke.mjs
 ```
