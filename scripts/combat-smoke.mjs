@@ -59,6 +59,7 @@ try {
     [8, "VR-9 OVERRIDE", 4, "Digit9"],
     [9, "HC-9 FORGE", 14, "Digit0"],
     [10, "CM-9 CHIMERA", 5, "Minus"],
+    [18, "MN-6 ECHO", 12, "Comma"],
   ];
   for (const [slot, name, magazine, code] of slots) {
     if (slot === 0) {
@@ -181,6 +182,18 @@ try {
   });
   await page.waitForFunction(() => document.body.innerText.includes("CHIMERA–9"));
   if (process.env.BLACKSITE_CAPTURE_COMBAT === "1") await page.screenshot({ path: "screenshots/sector-bioforge.png" });
+  await page.evaluate(() => {
+    const t = window.__controlsTest;
+    for (let wave = 3; wave < 11; wave++) t.nextWave();
+    t.setKeys(["KeyW"]);
+    t.visitObjective();
+    t.triggerBoss(0);
+    t.setKeys([]);
+  });
+  await page.waitForFunction(() => document.body.innerText.includes("MNEMOSYNE–6"));
+  await assertHudTextContained(page, "obsidian vault");
+  if (process.env.BLACKSITE_CAPTURE_COMBAT === "1") await page.screenshot({ path: "screenshots/sector-obsidian.png" });
+
 
   await page.goto(url.href);
   await page.waitForFunction(

@@ -339,7 +339,7 @@
     {
       "skin": 13,
       "id": "hecate",
-      "name": "HECATE–9",
+      "name": "HECATE\u20139",
       "speaker": "neptune",
       "style": "Industrial machine warden, clipped low synthetic voice with electrical hum",
       "effect": "robot-low",
@@ -377,7 +377,7 @@
     {
       "skin": 14,
       "id": "chimera",
-      "name": "CHIMERA–9",
+      "name": "CHIMERA\u20139",
       "speaker": "hyperion",
       "style": "Bioengineered containment giant, wet rasping voice through a damaged respirator",
       "effect": "respirator",
@@ -415,7 +415,7 @@
     {
       "skin": 15,
       "id": "oracle",
-      "name": "ORACLE–7",
+      "name": "ORACLE\u20137",
       "speaker": "electra",
       "style": "Cold predictive core, precise high synthetic voice",
       "effect": "robot-high",
@@ -449,7 +449,7 @@
     {
       "skin": 16,
       "id": "gravemind",
-      "name": "GRAVEMIND–4",
+      "name": "GRAVEMIND\u20134",
       "speaker": "saturn",
       "style": "Dying reactor engineer inside a heavy respirator, slow human rasp",
       "effect": "respirator",
@@ -517,7 +517,7 @@
     {
       "skin": 18,
       "id": "halcyon",
-      "name": "HALCYON–3",
+      "name": "HALCYON\u20133",
       "speaker": "neptune",
       "style": "Cryogenic sentry with low synthetic voice",
       "effect": "robot-low",
@@ -551,7 +551,7 @@
     {
       "skin": 19,
       "id": "relay",
-      "name": "RELAY–0",
+      "name": "RELAY\u20130",
       "speaker": "electra",
       "style": "Interference robot with sharp synthetic voice",
       "effect": "robot-high",
@@ -585,7 +585,7 @@
     {
       "skin": 20,
       "id": "titan",
-      "name": "TITAN–12",
+      "name": "TITAN\u201312",
       "speaker": "draco",
       "style": "Hydraulic siege walker with deep synthetic roar",
       "effect": "heavy",
@@ -647,6 +647,40 @@
         [
           "taunt",
           "Every door you opened was mine."
+        ]
+      ]
+    },
+    {
+      "skin": 22,
+      "id": "mnemosyne",
+      "name": "MNEMOSYNE\u20136",
+      "speaker": "luna",
+      "style": "Calm synthetic archivist, deliberate and unsettling",
+      "effect": "robot-high",
+      "lines": [
+        [
+          "alert",
+          "Intrusion recorded. Your memory is mine."
+        ],
+        [
+          "alert",
+          "Echo keeper online. The vault is sealed."
+        ],
+        [
+          "attack",
+          "Pulse sequence armed."
+        ],
+        [
+          "attack",
+          "Your previous mistakes return."
+        ],
+        [
+          "pain",
+          "Memory fracture. Reconstructing."
+        ],
+        [
+          "taunt",
+          "Every failure is preserved here."
         ]
       ]
     }

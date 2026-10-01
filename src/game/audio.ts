@@ -105,7 +105,7 @@ export function createAudio(): GameAudio {
     door: asset("/game/sfx/door.ogg?v=2"),
     hurt: asset("/game/sfx/hurt.ogg"),
     ...Object.fromEntries(
-      ["veyran", "hecate", "chimera", "oracle", "gravemind", "archivist", "halcyon", "relay", "titan", "kest"]
+      ["veyran", "hecate", "chimera", "oracle", "gravemind", "archivist", "halcyon", "relay", "titan", "kest", "mnemosyne"]
         .flatMap((id, sector) => [0, 1].map((variant) => [
           `bossKill${sector}_${variant}`,
           asset(`/game/voices/boss-${id}${variant ? "-v2" : ""}.mp3`),
@@ -795,7 +795,7 @@ export function createAudio(): GameAudio {
     },
     bossKill(sector, variant) {
       resume();
-      const clip = sector >= 0 && sector < 10 ? `bossKill${sector}_${variant === 1 ? 1 : 0}` : null;
+      const clip = sector >= 0 && sector < 11 ? `bossKill${sector}_${variant === 1 ? 1 : 0}` : null;
       if (clip) voiceGate.enqueue((done) => playVoiceClip(clip, done));
     },
     fire(weapon) {

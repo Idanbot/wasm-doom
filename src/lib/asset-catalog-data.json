@@ -5519,5 +5519,178 @@
     "size": 5540253,
     "hash": "db63b9e593b5325384eb8b5f0b3c9b7b46cddc56120132e22c2b7a52fbf255ba",
     "shortHash": "db63b9e5"
+  },
+  {
+    "file": "/game/draft/v2/weap_mn6_5x5.png",
+    "name": "weap_mn6_5x5.png",
+    "size": 2245660,
+    "hash": "7c143df0ddc8e2a5517abe57d4424d31a0fa7e7ddab513a312e75021c57c6831",
+    "shortHash": "7c143df0",
+    "width": 2560,
+    "height": 1920
+  },
+  {
+    "file": "/game/draft/v2/weap_mn6_aim.png",
+    "name": "weap_mn6_aim.png",
+    "size": 125739,
+    "hash": "7494c05b30e4766b3a16e1c6ab78ab2aee21cbb363e78dee565eb2adc4d7399b",
+    "shortHash": "7494c05b",
+    "width": 512,
+    "height": 384
+  },
+  {
+    "file": "/game/draft/v2/masters/mn6.png",
+    "name": "mn6.png",
+    "size": 1475992,
+    "hash": "97b121a384667b6fed60b68201e03ca67714ef2a14066d81f53759f39b0175f1",
+    "shortHash": "97b121a3",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "file": "/game/draft/v2/cases/case_mn6.png",
+    "name": "case_mn6.png",
+    "size": 919772,
+    "hash": "0f82268b38bbed0c78648a67a7aa1ebc35f0a99b66c89c3da99f3663cd6bddf5",
+    "shortHash": "0f82268b",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "file": "/game/spr_gun_mn6.png",
+    "name": "spr_gun_mn6.png",
+    "size": 61358,
+    "hash": "54a048419580ff2a0c8bf9f8d9075844b3b8354545cd43f8b1f6377b1a3d9a30",
+    "shortHash": "54a04841",
+    "width": 256,
+    "height": 192
+  },
+  {
+    "file": "/game/ui/weapon-thumbs/mn6.png",
+    "name": "mn6.png",
+    "size": 128142,
+    "hash": "75474a7ba61a718f908c0ece3ab34655ce1ab9cc81e2f4dbab3c3ebc634f561c",
+    "shortHash": "75474a7b",
+    "width": 640,
+    "height": 300
+  },
+  {
+    "file": "/game/enemy_mnemosyne_idle.png",
+    "name": "enemy_mnemosyne_idle.png",
+    "size": 43930,
+    "hash": "895f956f9f15655ddbfc4055df7fad04265c7ce9fab0cb1416b8d3cac91adf47",
+    "shortHash": "895f956f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_mnemosyne_move.png",
+    "name": "enemy_mnemosyne_move.png",
+    "size": 44022,
+    "hash": "1a6bd392c3d258490f958032c67fca1c6d5ac4e566158eb0114615965f9ae448",
+    "shortHash": "1a6bd392",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_mnemosyne_pain.png",
+    "name": "enemy_mnemosyne_pain.png",
+    "size": 36839,
+    "hash": "e7b8e73b086f128712ed1c4c2229e5512fc41dfc701d816d1a4a88b9af6a9527",
+    "shortHash": "e7b8e73b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_mnemosyne_fire.png",
+    "name": "enemy_mnemosyne_fire.png",
+    "size": 70684,
+    "hash": "d3a7b1fd36fb907f02600c3c7fdecf5d5ca28b434574240e81246b9c026556cf",
+    "shortHash": "d3a7b1fd",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_mnemosyne_reload.png",
+    "name": "enemy_mnemosyne_reload.png",
+    "size": 36864,
+    "hash": "428521abf8b0f2b86672018320882d3014e3afae7f66a134e5ffbb183ea840a1",
+    "shortHash": "428521ab",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_mnemosyne_dead.png",
+    "name": "enemy_mnemosyne_dead.png",
+    "size": 47485,
+    "hash": "fa54badfd1ff2d6b3abcf1578f5d9d6d23745120a5c3728d6ed619e2b010ce50",
+    "shortHash": "fa54badf",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_mnemosyne_special.png",
+    "name": "enemy_mnemosyne_special.png",
+    "size": 76191,
+    "hash": "0b3d032273185994bd2a3d8311c05432afbecceecf44bab4ee6ca0dc52ae706f",
+    "shortHash": "0b3d0322",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/voices/mnemosyne-1.mp3",
+    "name": "mnemosyne-1.mp3",
+    "size": 25965,
+    "hash": "6c76d401a4cd3e663a6a70117277a8beb90041d0ab6dc78486e0193288fab072",
+    "shortHash": "6c76d401"
+  },
+  {
+    "file": "/game/voices/mnemosyne-2.mp3",
+    "name": "mnemosyne-2.mp3",
+    "size": 25005,
+    "hash": "c82a8d28be7862c7cad1574a75e9952aaed1dfad1c538d5f914f65d3aa5be9ee",
+    "shortHash": "c82a8d28"
+  },
+  {
+    "file": "/game/voices/mnemosyne-3.mp3",
+    "name": "mnemosyne-3.mp3",
+    "size": 14061,
+    "hash": "3171cea24dda2c61a05a308ee762f54f7c9677500ba4438ac1af77a9ce858aca",
+    "shortHash": "3171cea2"
+  },
+  {
+    "file": "/game/voices/mnemosyne-4.mp3",
+    "name": "mnemosyne-4.mp3",
+    "size": 16749,
+    "hash": "25731266c4eeba2ee1c62cb7411e34e49dce9d4e365f59bc61022beac07b5786",
+    "shortHash": "25731266"
+  },
+  {
+    "file": "/game/voices/mnemosyne-5.mp3",
+    "name": "mnemosyne-5.mp3",
+    "size": 19629,
+    "hash": "82a987ad2c34da2b0cbe4b4d784b81dfba4066533a99461fadd1fc89c9aaf5e5",
+    "shortHash": "82a987ad"
+  },
+  {
+    "file": "/game/voices/mnemosyne-6.mp3",
+    "name": "mnemosyne-6.mp3",
+    "size": 16365,
+    "hash": "5d73dbacb022a7a5892b0530160b25bd4abcf3fa599fe5291a439ae1924ddf29",
+    "shortHash": "5d73dbac"
+  },
+  {
+    "file": "/game/voices/boss-mnemosyne-v2.mp3",
+    "name": "boss-mnemosyne-v2.mp3",
+    "size": 63981,
+    "hash": "49abac83301aebfdc1c41cf685e7748bef2ec696af45073a867083c9f70e721f",
+    "shortHash": "49abac83"
+  },
+  {
+    "file": "/game/voices/boss-mnemosyne.mp3",
+    "name": "boss-mnemosyne.mp3",
+    "size": 53901,
+    "hash": "9034c87d4e01fd6bf2a8d3d660aaae9dce913337c85f595496763d443d871115",
+    "shortHash": "9034c87d"
   }
 ]

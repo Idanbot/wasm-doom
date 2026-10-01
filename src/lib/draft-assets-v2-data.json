@@ -696,5 +696,15 @@
     "width": 1024,
     "height": 768,
     "group": "items"
+  },
+  {
+    "file": "/game/draft/v2/cases/case_mn6.png",
+    "name": "case_mn6_v2.png",
+    "size": 919772,
+    "hash": "0f82268b38bbed0c78648a67a7aa1ebc35f0a99b66c89c3da99f3663cd6bddf5",
+    "shortHash": "0f82268b",
+    "width": 1024,
+    "height": 768,
+    "group": "items"
   }
 ]

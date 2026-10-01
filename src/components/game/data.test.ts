@@ -53,8 +53,8 @@ describe("fmtTime", () => {
 });
 
 describe("sectorForWave", () => {
-  it("cycles through ten distinct sectors and bosses", () => {
-    assert.deepEqual(Array.from({ length: 10 }, (_, i) => sectorForWave(i + 1).name), [
+  it("cycles through eleven distinct sectors and bosses", () => {
+    assert.deepEqual(Array.from({ length: 11 }, (_, i) => sectorForWave(i + 1).name), [
       "UPPER WORKS",
       "CRYOGENIC FOUNDRY",
       "BIOFORGE DEPTHS",
@@ -65,22 +65,23 @@ describe("sectorForWave", () => {
       "SIGNAL CRYPT",
       "SIEGE YARD",
       "COMMAND BUNKER",
+      "OBSIDIAN VAULT",
     ]);
-    assert.equal(new Set(Array.from({ length: 10 }, (_, i) => sectorForWave(i + 1).bossName)).size, 10);
-    assert.equal(sectorForWave(11).name, "UPPER WORKS");
-    assert.equal(sectorForWave(21).name, "UPPER WORKS");
+    assert.equal(new Set(Array.from({ length: 11 }, (_, i) => sectorForWave(i + 1).bossName)).size, 11);
+    assert.equal(sectorForWave(12).name, "UPPER WORKS");
+    assert.equal(sectorForWave(23).name, "UPPER WORKS");
   });
 });
 
 describe("radioCopy", () => {
   it("has two matching death lines for every boss across cycles", () => {
-    const lines = Array.from({ length: 20 }, (_, i) => radioCopy(8, i + 1));
+    const lines = Array.from({ length: 22 }, (_, i) => radioCopy(8, i + 1));
     for (const line of lines) {
       assert.ok(line && line.speaker.length > 0 && line.text.length > 0);
     }
-    assert.equal(new Set(lines.map((l) => l!.text)).size, 20);
+    assert.equal(new Set(lines.map((l) => l!.text)).size, 22);
     assert.equal(bossDeathVariantForWave(1), 0);
-    assert.equal(bossDeathVariantForWave(11), 1);
+    assert.equal(bossDeathVariantForWave(12), 1);
   });
 });
 
@@ -103,11 +104,11 @@ describe("gridPos", () => {
 });
 
 describe("WEAPONS", () => {
-  it("has eighteen entries with v2 5x5 sheets and reserve caps", () => {
-    assert.equal(WEAPONS.length, 18);
+  it("has nineteen entries with v2 5x5 sheets and reserve caps", () => {
+    assert.equal(WEAPONS.length, 19);
     assert.deepEqual(
       WEAPONS.map((w) => w.id),
-      Array.from({ length: 18 }, (_, i) => i),
+      Array.from({ length: 19 }, (_, i) => i),
     );
     assert.deepEqual(WEAPONS.map((weapon) => weapon.sheet), WEAPON_SHEETS);
     assert.equal(WEAPON_THUMBNAILS.length, WEAPONS.length);
@@ -120,11 +121,11 @@ describe("WEAPONS", () => {
     }
     assert.deepEqual(
       WEAPONS.map((w) => w.magSize),
-      [12, 8, 36, 5, 4, 10, 90, 6, 4, 14, 5, 9, 4, 8, 6, 24, 3, 30],
+      [12, 8, 36, 5, 4, 10, 90, 6, 4, 14, 5, 9, 4, 8, 6, 24, 3, 30, 12],
     );
     assert.deepEqual(
       WEAPONS.map((w) => w.reserve),
-      [120, 48, 216, 20, 16, 80, 450, 36, 24, 84, 30, 54, 24, 48, 36, 144, 18, 180],
+      [120, 48, 216, 20, 16, 80, 450, 36, 24, 84, 30, 54, 24, 48, 36, 144, 18, 180, 72],
     );
   });
 });

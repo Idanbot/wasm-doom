@@ -22,6 +22,7 @@ import {
   T_GUN16,
   T_GUN17,
   T_GUN18,
+  T_GUN19,
   T_PROP_REACTOR,
   T_PROP_SERVER,
   T_PROP_AC,
@@ -133,6 +134,7 @@ const IN = {
   W16: 33554432,
   W17: 67108864,
   W18: 134217728,
+  W19: 268435456,
 };
 
 const CODE_BITS: Record<string, number> = {
@@ -166,6 +168,7 @@ const CODE_BITS: Record<string, number> = {
   Semicolon: IN.W16,
   Quote: IN.W17,
   Backquote: IN.W18,
+  Comma: IN.W19,
   ArrowLeft: IN.TURNL,
   KeyQ: IN.TURNL,
   ArrowRight: IN.TURNR,
@@ -195,6 +198,7 @@ const ENEMY_SKINS = [
   "relay",
   "titan",
   "kest",
+  "mnemosyne",
 ] as const;
 const ENEMY_ANIMATIONS = ["idle", "move", "pain", "fire", "reload", "dead", "special"] as const;
 
@@ -246,6 +250,7 @@ const TEX_FILES: { id: number; src: string }[] = [
   { id: T_GUN16, src: "/game/spr_gun_sr0.png" },
   { id: T_GUN17, src: "/game/spr_gun_ts12.png" },
   { id: T_GUN18, src: "/game/spr_gun_ks8.png" },
+  { id: T_GUN19, src: "/game/spr_gun_mn6.png" },
   { id: T_PROP_REACTOR, src: "/game/spr_prop_reactor.png" },
   { id: T_PROP_SERVER, src: "/game/spr_prop_server.png" },
   { id: T_PROP_AC, src: "/game/spr_prop_ac.png" },
@@ -686,13 +691,14 @@ export class HellscanRuntime {
       this.hud.hasW16,
       this.hud.hasW17,
       this.hud.hasW18,
+      this.hud.hasW19,
     ];
     const count = owned.length;
     const step = dir >= 0 ? 1 : count - 1;
     for (let n = 1; n <= count; n++) {
       const next = (this.hud.weapon + step * n) % count;
       if (owned[next]) {
-        const bit = [IN.W1, IN.W2, IN.W3, IN.W4, IN.W5, IN.W6, IN.W7, IN.W8, IN.W9, IN.W10, IN.W11, IN.W12, IN.W13, IN.W14, IN.W15, IN.W16, IN.W17, IN.W18][next];
+        const bit = [IN.W1, IN.W2, IN.W3, IN.W4, IN.W5, IN.W6, IN.W7, IN.W8, IN.W9, IN.W10, IN.W11, IN.W12, IN.W13, IN.W14, IN.W15, IN.W16, IN.W17, IN.W18, IN.W19][next];
         if (bit) this.weaponPulse = bit;
         return;
       }
@@ -1058,6 +1064,7 @@ export class HellscanRuntime {
       hasW16: dv.getInt32(208, true) !== 0,
       hasW17: dv.getInt32(212, true) !== 0,
       hasW18: dv.getInt32(216, true) !== 0,
+      hasW19: dv.getInt32(220, true) !== 0,
       objective: dv.getInt32(144, true),
       radioSeq: dv.getInt32(148, true),
       radioLine: dv.getInt32(152, true),
@@ -1228,7 +1235,7 @@ export class HellscanRuntime {
       if (ev & 4096) this.audio.kill();
       if (ev & 8192) this.audio.hushBoss();
       if (ev & 16384) this.audio.dropBoss();
-      if (ev & 65536) this.audio.bossKill((this.hud.wave - 1) % 10, bossDeathVariantForWave(this.hud.wave));
+      if (ev & 65536) this.audio.bossKill((this.hud.wave - 1) % 11, bossDeathVariantForWave(this.hud.wave));
     } catch {
       /* keep the sim running if a sound fails */
     }

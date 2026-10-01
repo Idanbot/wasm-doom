@@ -1,0 +1,14 @@
+{
+  "signature": "52077139d289bf1621c8e48fbaf28b2f81961faa73638dc130ebfa0341d32785",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Echo keeper online. The vault is sealed.",
+    "speaker": "luna",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Calm synthetic archivist, deliberate and unsettling",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-10-01T15:40:52.709Z"
+}

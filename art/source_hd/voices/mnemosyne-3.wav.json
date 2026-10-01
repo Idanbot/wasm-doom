@@ -1,0 +1,14 @@
+{
+  "signature": "199bece7dd9d2bab0221bec8883552f9350de94c9924c583c6a4137ad0b6014a",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Pulse sequence armed.",
+    "speaker": "luna",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Calm synthetic archivist, deliberate and unsettling",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-10-01T15:40:54.387Z"
+}

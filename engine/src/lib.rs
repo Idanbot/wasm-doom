@@ -68,6 +68,7 @@ struct Engine {
     has_w16: bool,
     has_w17: bool,
     has_w18: bool,
+    has_w19: bool,
     power: u8,
     power_t: f32,
     shield_pool: i32,
@@ -412,8 +413,8 @@ impl Engine {
             pr: 0.22,
             health: 100,
             armor: 0,
-            ammo: [36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            mag: [12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            ammo: [36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            mag: [12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             weapon: 0,
             has_w2: false,
             has_w3: false,
@@ -432,6 +433,7 @@ impl Engine {
             has_w16: false,
             has_w17: false,
             has_w18: false,
+            has_w19: false,
             power: 0,
             power_t: 0.0,
             shield_pool: 0,
@@ -504,6 +506,7 @@ impl Engine {
                 has_w16: 0,
                 has_w17: 0,
                 has_w18: 0,
+                has_w19: 0,
                 power: 0,
                 power_t: 0.0,
                 splash: 0.0,
@@ -701,7 +704,7 @@ impl Engine {
     }
 
     fn boss_intro_duration(&self) -> f32 {
-        [4.0, 5.2, 4.6, 4.8, 5.0, 5.4, 5.6, 4.4, 6.0, 4.2][map::level_index(self.wave)]
+        [4.0, 5.2, 4.6, 4.8, 5.0, 5.4, 5.6, 4.4, 6.0, 4.2, 5.8][map::level_index(self.wave)]
     }
 
     fn boss_intro_effect(&mut self, stage: u8) {
@@ -1387,6 +1390,7 @@ impl Engine {
             15 => self.has_w16 = true,
             16 => self.has_w17 = true,
             17 => self.has_w18 = true,
+            18 => self.has_w19 = true,
             _ => return,
         }
         let grant = MAG_SZ[slot] * 2;
@@ -1597,7 +1601,7 @@ impl Engine {
         let owned = [
             self.has_w2, self.has_w3, self.has_w4, self.has_w5, self.has_w6,
             self.has_w7, self.has_w8, self.has_w9, self.has_w10, self.has_w11, self.has_w12,
-            self.has_w13, self.has_w14, self.has_w15, self.has_w16, self.has_w17, self.has_w18,
+            self.has_w13, self.has_w14, self.has_w15, self.has_w16, self.has_w17, self.has_w18, self.has_w19,
         ];
         let slot = |kind: u8| match kind {
             EK_GUN2 => Some(0),
@@ -1617,6 +1621,7 @@ impl Engine {
             EK_GUN16 => Some(14),
             EK_GUN17 => Some(15),
             EK_GUN18 => Some(16),
+            EK_GUN19 => Some(17),
             _ => None,
         };
         let mut n = 0i32;
@@ -1728,7 +1733,7 @@ impl Engine {
             self.mag[11] = MAG_SZ[11];
             self.ammo[11] = MAG_SZ[11] * 6;
         }
-        for (slot, owned) in [(12, self.has_w13), (13, self.has_w14), (14, self.has_w15), (15, self.has_w16), (16, self.has_w17), (17, self.has_w18)] {
+        for (slot, owned) in [(12, self.has_w13), (13, self.has_w14), (14, self.has_w15), (15, self.has_w16), (16, self.has_w17), (17, self.has_w18), (18, self.has_w19)] {
             if owned { self.mag[slot] = MAG_SZ[slot]; self.ammo[slot] = MAG_SZ[slot] * 6; }
         }
         self.node_done = false;
@@ -1784,7 +1789,7 @@ impl Engine {
         }
         let sector = map::level_index(self.wave);
         let entry = map::boss_spots(self.wave)[0];
-        let burst = [14, 22, 10, 18, 20, 24][sector];
+        let burst = [14, 22, 10, 18, 20, 24, 18, 16, 28, 12, 24][sector];
         if sector == 1 {
             self.spawn_smoke_cloud(entry.0, entry.1);
             self.spawn_smoke_cloud(entry.0 + 1.8, entry.1 - 1.2);
@@ -1876,7 +1881,7 @@ impl Engine {
 
     /// Theme index shared with THEME order in src/game/runtime.ts.
     fn theme_index(wave: i32) -> usize {
-        [0, 4, 5, 3, 6, 7, 4, 3, 6, 0][map::level_index(wave)]
+        [0, 4, 5, 3, 6, 7, 4, 3, 6, 0, 7][map::level_index(wave)]
     }
 
     /// Copy the wave's wall/door variants into the live T_TECH/T_DOOR
@@ -2750,6 +2755,16 @@ impl Engine {
                 for n in -1..=1 { self.hitscan(self.pa + n as f32 * 0.025, 14, 22.0); }
                 self.eject_casing();
             }
+            18 => {
+                self.muzzle = 1.0;
+                self.fire_lance();
+                self.cooldown = 0.52;
+                self.kick = 0.95;
+                for n in 1..=12 {
+                    let t = n as f32 * 0.9;
+                    self.spawn_timed(EK_RAY, self.px+self.pa.cos()*t, self.py+self.pa.sin()*t, 0.16, 15.0);
+                }
+            }
             _ => {}
         }
         if self.power == field::POWER_FEED {
@@ -2966,7 +2981,7 @@ impl Engine {
                 if self.has_w8 {
                     self.ammo[7] = (self.ammo[7] + 6).min(36);
                 }
-                for (slot, owned) in [(8, self.has_w9), (9, self.has_w10), (10, self.has_w11), (11, self.has_w12), (12, self.has_w13), (13, self.has_w14), (14, self.has_w15), (15, self.has_w16), (16, self.has_w17), (17, self.has_w18)] {
+                for (slot, owned) in [(8, self.has_w9), (9, self.has_w10), (10, self.has_w11), (11, self.has_w12), (12, self.has_w13), (13, self.has_w14), (14, self.has_w15), (15, self.has_w16), (16, self.has_w17), (17, self.has_w18), (18, self.has_w19)] {
                     if owned {
                         self.ammo[slot] = (self.ammo[slot] + MAG_SZ[slot]).min(MAG_SZ[slot] * 6);
                     }
@@ -3048,7 +3063,7 @@ impl Engine {
                 self.pickup_t = 0.6;
                 self.events |= EV_PICK_GOLD;
             }
-            EK_GUN9 | EK_GUN10 | EK_GUN11 | EK_GUN12 | EK_GUN13 | EK_GUN14 | EK_GUN15 | EK_GUN16 | EK_GUN17 | EK_GUN18 => {
+            EK_GUN9 | EK_GUN10 | EK_GUN11 | EK_GUN12 | EK_GUN13 | EK_GUN14 | EK_GUN15 | EK_GUN16 | EK_GUN17 | EK_GUN18 | EK_GUN19 => {
                 self.grant_slot(field::boss_slot(kind));
                 self.state = 2;
             }
@@ -3080,7 +3095,7 @@ impl Engine {
                 || (self.has_w10 && self.ammo[9] < MAG_SZ[9] * 6)
                 || (self.has_w11 && self.ammo[10] < MAG_SZ[10] * 6)
                 || (self.has_w12 && self.ammo[11] < MAG_SZ[11] * 6)
-                || [(12, self.has_w13), (13, self.has_w14), (14, self.has_w15), (15, self.has_w16), (16, self.has_w17), (17, self.has_w18)].iter().any(|&(slot, owned)| owned && self.ammo[slot] < MAG_SZ[slot] * 6),
+                || [(12, self.has_w13), (13, self.has_w14), (14, self.has_w15), (15, self.has_w16), (16, self.has_w17), (17, self.has_w18), (18, self.has_w19)].iter().any(|&(slot, owned)| owned && self.ammo[slot] < MAG_SZ[slot] * 6),
             _ => true,
         }
     }
@@ -3195,10 +3210,10 @@ impl Engine {
                 self.weapon = 11;
                 self.reload_t = 0.0;
             }
-            for (bit, slot, owned) in [(IN_W13, 12, self.has_w13), (IN_W14, 13, self.has_w14), (IN_W15, 14, self.has_w15), (IN_W16, 15, self.has_w16), (IN_W17, 16, self.has_w17), (IN_W18, 17, self.has_w18)] {
+            for (bit, slot, owned) in [(IN_W13, 12, self.has_w13), (IN_W14, 13, self.has_w14), (IN_W15, 14, self.has_w15), (IN_W16, 15, self.has_w16), (IN_W17, 16, self.has_w17), (IN_W18, 17, self.has_w18), (IN_W19, 18, self.has_w19)] {
                 if bits & bit != 0 && owned && self.wpn_latched & bit == 0 { self.weapon = slot; self.reload_t = 0.0; }
             }
-            self.wpn_latched = bits & (IN_W1 | IN_W2 | IN_W3 | IN_W4 | IN_W5 | IN_W6 | IN_W7 | IN_W8 | IN_W9 | IN_W10 | IN_W11 | IN_W12 | IN_W13 | IN_W14 | IN_W15 | IN_W16 | IN_W17 | IN_W18);
+            self.wpn_latched = bits & (IN_W1 | IN_W2 | IN_W3 | IN_W4 | IN_W5 | IN_W6 | IN_W7 | IN_W8 | IN_W9 | IN_W10 | IN_W11 | IN_W12 | IN_W13 | IN_W14 | IN_W15 | IN_W16 | IN_W17 | IN_W18 | IN_W19);
 
             if bits & IN_RELOAD != 0 {
                 if !self.reload_latched {
@@ -3704,6 +3719,14 @@ impl Engine {
                             self.spawn_smoke_cloud(x, y);
                         }
                     }
+                    10 => {
+                        if let Some((x, y)) = self.boss_pos() {
+                            for n in 0..8 {
+                                let a = n as f32 * core::f32::consts::TAU / 8.0;
+                                let _ = self.spawn_with_skin(EK_MARTYR, SKIN_MARTYR, x+a.cos()*2.2, y+a.sin()*2.2);
+                            }
+                        }
+                    }
                     8 => {
                         self.shake = 1.0;
                         if let Some((x, y)) = self.boss_pos() { self.spawn_smoke_cloud(x, y); }
@@ -3748,11 +3771,11 @@ impl Engine {
                 if map::level_index(self.wave) > 0 {
                     if let Some((bx, by)) = self.ents.iter().find(|e| e.kind == EK_BOSS && e.hp > 0).map(|e| (e.x, e.y)) {
                         let sector = map::level_index(self.wave);
-                        let count = [0, 8, 6, 10, 12, 14, 12, 16, 10, 18][sector];
+                        let count = [0, 8, 6, 10, 12, 14, 12, 16, 10, 18, 20][sector];
                         for n in 0..count {
                             let a = n as f32 * core::f32::consts::TAU / count as f32 + phase as f32 * 0.18;
                             if let Some(i) = self.spawn(EK_PROJ, bx, by) {
-                                let speed = if sector == 5 { if n % 2 == 0 { 6.2 } else { 4.3 } } else { [0.0, 6.7, 4.1, 7.5, 3.6, 0.0, 4.2, 7.4, 3.5, 8.0][sector] };
+                                let speed = if sector == 5 { if n % 2 == 0 { 6.2 } else { 4.3 } } else { [0.0, 6.7, 4.1, 7.5, 3.6, 0.0, 4.2, 7.4, 3.5, 8.0, 5.4][sector] };
                                 self.ents[i].vx = a.cos() * speed;
                                 self.ents[i].vy = a.sin() * speed;
                                 self.ents[i].timer = 3.2;
@@ -3934,6 +3957,7 @@ impl Engine {
             has_w16: if self.has_w16 { 1 } else { 0 },
             has_w17: if self.has_w17 { 1 } else { 0 },
             has_w18: if self.has_w18 { 1 } else { 0 },
+            has_w19: if self.has_w19 { 1 } else { 0 },
             power: self.power as i32,
             power_t: self.power_t,
             splash,
@@ -5055,6 +5079,7 @@ fn capture_save(e: &Engine) -> RunSave {
     if e.has_w16 { flags |= 16384; }
     if e.has_w17 { flags |= 32768; }
     if e.has_w18 { flags |= 65536; }
+    if e.has_w19 { flags |= 131072; }
     RunSave {
         wave: e.wave,
         health: e.health,
@@ -5093,11 +5118,12 @@ fn apply_save(e: &mut Engine, s: &RunSave) {
     e.has_w16 = s.flags & 16384 != 0;
     e.has_w17 = s.flags & 32768 != 0;
     e.has_w18 = s.flags & 65536 != 0;
+    e.has_w19 = s.flags & 131072 != 0;
     e.ammo = s.ammo;
     e.mag = s.mag;
     let owned = [
         true, e.has_w2, e.has_w3, e.has_w4, e.has_w5, e.has_w6, e.has_w7, e.has_w8, e.has_w9, e.has_w10, e.has_w11, e.has_w12,
-        e.has_w13, e.has_w14, e.has_w15, e.has_w16, e.has_w17, e.has_w18,
+        e.has_w13, e.has_w14, e.has_w15, e.has_w16, e.has_w17, e.has_w18, e.has_w19,
     ];
     e.weapon = if (0..WEP_N as i32).contains(&s.weapon) && owned[s.weapon as usize] { s.weapon } else { 0 };
     e.state = 0;
@@ -5255,8 +5281,9 @@ pub extern "C" fn hs_qa_armory() {
     e.has_w16 = true;
     e.has_w17 = true;
     e.has_w18 = true;
+    e.has_w19 = true;
     e.mag = MAG_SZ;
-    e.ammo = [120, 40, 200, 16, 24, 48, 320, 24, 8, 28, 10, 18, 12, 24, 18, 72, 9, 90];
+    e.ammo = [120, 40, 200, 16, 24, 48, 320, 24, 8, 28, 10, 18, 12, 24, 18, 72, 9, 90, 36];
 }
 
 /// QA-only full heal so long single-page smokes don't die mid-run.
@@ -5571,7 +5598,7 @@ mod tests {
         let tech = e.tex[T_TECH * TEX * TEX];
         let door = e.tex[T_DOOR * TEX * TEX];
         assert_eq!((tech, door), (0xFF000000, 0xFF000008));
-        e.apply_theme(11);
+        e.apply_theme(12);
         assert_eq!(e.tex[T_TECH * TEX * TEX], tech, "wave 11 reuses wave 1 theme");
         e.apply_theme(6);
         assert_eq!(e.tex[T_TECH * TEX * TEX], 0xFF000007);
@@ -5585,17 +5612,63 @@ mod tests {
     }
 
     #[test]
+    fn every_sector_boss_entry_and_phase_is_safe() {
+        let mut e = Engine::new(160, 100);
+        for wave in 1..=map::LEVEL_COUNT as i32 {
+            e.wave = wave;
+            map::build_level(&mut e);
+            map::place_level(&mut e);
+            e.boss_spawned = false;
+            e.boss_phase = 0;
+            e.state = 0;
+            e.maybe_spawn_boss();
+            let i = e.ents.iter().position(|x| x.kind == EK_BOSS).expect("boss spawns");
+            assert_eq!(e.ents[i].skin, map::boss_skin(wave));
+            e.ents[i].hp = e.boss_max_health() / 2;
+            e.tick(0.016);
+            assert_eq!(e.boss_phase, 1);
+            if wave == 11 {
+                assert!(e.ents.iter().any(|x| x.kind == EK_MARTYR && x.hp > 0));
+            }
+        }
+    }
+
+    #[test]
+    fn echo_reward_unlocks_fires_and_survives_save() {
+        let mut e = arena();
+        assert!(!e.has_w19);
+        e.pickup(EK_GUN19);
+        assert!(e.has_w19);
+        assert_eq!(e.weapon, 18);
+        assert_eq!(e.mag[18], MAG_SZ[18]);
+        e.pa = 0.0;
+        e.state = 0;
+        e.cooldown = 0.0;
+        let target = e.spawn(EK_BRUTE, 6.5, 4.5).unwrap();
+        let before = e.ents[target].hp;
+        e.fire();
+        assert!(e.ents[target].hp < before);
+        assert_eq!(e.mag[18], MAG_SZ[18] - 1);
+        let save = capture_save(&e);
+        let mut restored = arena();
+        apply_save(&mut restored, &save);
+        assert!(restored.has_w19);
+        assert_eq!(restored.mag[18], e.mag[18]);
+        assert_eq!(restored.weapon, 18);
+    }
+
+    #[test]
     fn run_save_layout_matches_ts_side() {
         // Pinned against SAVE_SIZE/SAVE_AMMO_BASE/SAVE_MAG_BASE in
         // src/game/save-abi.ts. Update both files together when WEP_N changes.
-        assert_eq!(core::mem::size_of::<RunSave>(), 176);
+        assert_eq!(core::mem::size_of::<RunSave>(), 184);
         let s = RunSave {
             wave: 0, health: 0, armor: 0, weapon: 0, flags: 0, kills: 0,
             secrets: 0, elapsed_ms: 0, ammo: [0; WEP_N], mag: [0; WEP_N],
         };
         let base = &s as *const RunSave as usize;
         assert_eq!(&s.ammo as *const _ as usize - base, 32);
-        assert_eq!(&s.mag as *const _ as usize - base, 104);
+        assert_eq!(&s.mag as *const _ as usize - base, 108);
     }
 
     #[test]
@@ -5612,8 +5685,8 @@ mod tests {
     #[test]
     fn next_wave_stays_within_entity_budget() {
         let mut e = Engine::new(160, 100);
-        for _ in 0..11 { e.next_wave(); }
-        assert_eq!(e.wave, 12);
+        for _ in 0..10 { e.next_wave(); }
+        assert_eq!(e.wave, 11);
         assert!(map::living_hostiles(&e) <= 60, "wave spawn must leave FX slots free");
         e.maybe_spawn_boss();
         let boss = e.ents.iter().find(|x| x.kind == EK_BOSS).expect("boss spawns");
@@ -5641,17 +5714,17 @@ mod tests {
         // headroom left for transient FX ents. Later cycles still run hot
         // in production; endless mode just keeps doing it.
         let mut e = Engine::new(160, 100);
-        e.wave = 30;
+        e.wave = 33;
         e.next_wave();
-        assert_eq!(e.wave, 31, "waves climb past the old cap");
+        assert_eq!(e.wave, 34, "waves climb past the old cap");
         assert_eq!(map::level_index(e.wave), 0, "sectors cycle back to the start");
         let living = map::living_hostiles(&e);
         assert!(living >= 64, "the full 4x hub roster spawns, got {living}");
         assert!(living <= 120, "FX headroom remains, got {living}");
         assert_eq!(e.boss_max_health(), 6000, "boss health grows into the new cap");
-        e.wave = 41;
+        e.wave = 45;
         e.next_wave();
-        assert_eq!(e.wave, 42);
+        assert_eq!(e.wave, 46);
         let living = map::living_hostiles(&e);
         assert!(living >= 56, "the full 4x foundry roster spawns, got {living}");
         assert!(living <= 120, "FX headroom remains, got {living}");
@@ -6310,9 +6383,9 @@ mod tests {
         let item = e.spawn(EK_AMMO, e.px, e.py).unwrap();
         e.tick(1.0 / 60.0);
         assert_eq!(e.ents[item].kind, EK_NONE, "a useful ammo crate is collected");
-        assert_eq!(e.ammo, [18, 10, 45, 5, 2, 15, 90, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+        assert_eq!(e.ammo, [18, 10, 45, 5, 2, 15, 90, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 
-        e.ammo = [120, 48, 216, 20, 16, 80, 450, 36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        e.ammo = [120, 48, 216, 20, 16, 80, 450, 36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         let full = e.spawn(EK_AMMO, e.px, e.py).unwrap();
         e.tick(1.0 / 60.0);
         assert_eq!(e.ents[full].kind, EK_AMMO, "a full arsenal leaves supplies available");

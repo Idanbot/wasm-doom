@@ -141,6 +141,20 @@
       "style": "Wounded site director",
       "effect": "comms",
       "text": "I built this place to outlast us. Take the rifle. Prove me wrong."
+    },
+    {
+      "id": "boss-mnemosyne",
+      "speaker": "luna",
+      "style": "Synthetic archivist shutting down with calm regret",
+      "effect": "robot-high",
+      "text": "Memory core erased. Take the Echo lance. Let the vault forget."
+    },
+    {
+      "id": "boss-mnemosyne-v2",
+      "speaker": "luna",
+      "style": "Synthetic archivist shutting down with calm regret",
+      "effect": "robot-high",
+      "text": "This is my final memory. The Echo lance is yours. Carry it beyond these walls."
     }
   ]
 }

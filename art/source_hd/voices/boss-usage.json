@@ -99,6 +99,16 @@
       "id": "boss-kest-v2",
       "url": "/game/voices/boss-kest-v2.mp3",
       "duration": 4.608
+    },
+    {
+      "id": "boss-mnemosyne",
+      "url": "/game/voices/boss-mnemosyne.mp3",
+      "duration": 4.464
+    },
+    {
+      "id": "boss-mnemosyne-v2",
+      "url": "/game/voices/boss-mnemosyne-v2.mp3",
+      "duration": 5.304
     }
   ]
 }

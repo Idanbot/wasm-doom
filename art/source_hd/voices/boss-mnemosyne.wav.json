@@ -1,0 +1,7 @@
+{
+  "signature": "a78730e5463145c0cad755da86595074e640e5ff681b09633d4675dc7dafe027",
+  "model": "@cf/deepgram/aura-2-en",
+  "speaker": "luna",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-10-01T15:39:56.829Z"
+}

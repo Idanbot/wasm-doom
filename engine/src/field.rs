@@ -1,7 +1,7 @@
 //! Sector objectives, shield facing, lockdown doors, and radio line ids.
 //!
 //! Map geometry stays in `map.rs`. This module is the contract for the
-//! systems layered on top of the ten sectors: a required node before the
+//! systems layered on top of the eleven sectors: a required node before the
 //! override, readable terminals, secret-cache interiors, and the doors a
 //! boss phase seals.
 
@@ -42,7 +42,7 @@ pub(crate) fn shield_blocks(face: f32, ex: f32, ey: f32, hx: f32, hy: f32) -> bo
 
 pub(crate) fn node_point(wave: i32) -> (f32, f32) {
     [(19.5, 4.5), (16.5, 10.5), (13.5, 15.5), (19.5, 8.5), (19.5, 22.5), (21.5, 5.5),
-     (21.5, 6.5), (21.5, 25.5), (22.5, 16.5), (21.5, 6.5)][level_index(wave)]
+     (21.5, 6.5), (21.5, 25.5), (22.5, 16.5), (21.5, 6.5), (20.5, 7.5)][level_index(wave)]
 }
 
 pub(crate) fn terminals(wave: i32) -> &'static [(f32, f32)] {
@@ -56,6 +56,7 @@ pub(crate) fn terminals(wave: i32) -> &'static [(f32, f32)] {
         7 => &[(6.5, 25.5), (39.5, 25.5)],
         8 => &[(6.5, 16.5), (22.5, 26.5)],
         9 => &[(6.5, 5.5), (39.5, 7.5)],
+        10 => &[(6.5, 15.5), (38.5, 12.5)],
         _ => &[(8.5, 15.5), (33.5, 15.5)],
     }
 }
@@ -71,7 +72,7 @@ pub(crate) fn lockdown_doors(wave: i32) -> &'static [(i32, i32)] {
         3 => &[(28, 22), (28, 23)],
         4 => &[(31, 22), (31, 23)],
         5 => &[(31, 25), (31, 26)],
-        6..=9 => &[],
+        6..=10 => &[],
         _ => &[(36, 18), (37, 18), (36, 19), (37, 19)],
     }
 }
@@ -129,6 +130,7 @@ pub(crate) fn resupply(wave: i32) -> &'static [(u8, f32, f32)] {
         7 => &[(EK_MED, 7.5, 25.5), (EK_ARMOR, 25.5, 7.5), (EK_AMMO, 41.5, 8.5), (EK_GUN8, 38.5, 25.5)],
         8 => &[(EK_MED, 7.5, 15.5), (EK_ARMOR, 25.5, 6.5), (EK_AMMO, 41.5, 15.5), (EK_GUN8, 25.5, 26.5)],
         9 => &[(EK_MED, 7.5, 5.5), (EK_ARMOR, 25.5, 25.5), (EK_AMMO, 41.5, 25.5), (EK_GUN8, 38.5, 6.5)],
+        10 => &[(EK_MED,7.5,16.5),(EK_ARMOR,25.5,24.5),(EK_AMMO,41.5,15.5),(EK_GUN8,23.5,9.5)],
         _ => &[
             (EK_MED, 7.5, 17.5),
             (EK_ARMOR, 10.5, 14.5),
@@ -139,11 +141,11 @@ pub(crate) fn resupply(wave: i32) -> &'static [(u8, f32, f32)] {
 }
 
 pub(crate) fn boss_case(wave: i32) -> u8 {
-    [EK_GUN9, EK_GUN10, EK_GUN11, EK_GUN13, EK_GUN14, EK_GUN12, EK_GUN15, EK_GUN16, EK_GUN17, EK_GUN18][level_index(wave)]
+    [EK_GUN9, EK_GUN10, EK_GUN11, EK_GUN13, EK_GUN14, EK_GUN12, EK_GUN15, EK_GUN16, EK_GUN17, EK_GUN18, EK_GUN19][level_index(wave)]
 }
 
 pub(crate) fn is_boss_case(kind: u8) -> bool {
-    matches!(kind, EK_GUN9 | EK_GUN10 | EK_GUN11 | EK_GUN12 | EK_GUN13 | EK_GUN14 | EK_GUN15 | EK_GUN16 | EK_GUN17 | EK_GUN18)
+    matches!(kind, EK_GUN9 | EK_GUN10 | EK_GUN11 | EK_GUN12 | EK_GUN13 | EK_GUN14 | EK_GUN15 | EK_GUN16 | EK_GUN17 | EK_GUN18 | EK_GUN19)
 }
 
 pub(crate) fn boss_slot(kind: u8) -> usize {
@@ -157,6 +159,7 @@ pub(crate) fn boss_slot(kind: u8) -> usize {
         EK_GUN16 => 15,
         EK_GUN17 => 16,
         EK_GUN18 => 17,
+        EK_GUN19 => 18,
         _ => 8,
     }
 }
@@ -164,12 +167,12 @@ pub(crate) fn boss_slot(kind: u8) -> usize {
 /// One secret powerup per sector, behind a secret door.
 pub(crate) fn powerup_point(wave: i32) -> (f32, f32) {
     [(5.5, 21.5), (31.5, 29.5), (46.5, 15.5), (25.5, 26.5), (9.5, 27.5), (10.5, 18.5),
-     (19.5, 25.5), (19.5, 8.5), (22.5, 5.5), (19.5, 25.5)][level_index(wave)]
+     (19.5, 25.5), (19.5, 8.5), (22.5, 5.5), (19.5, 25.5), (26.5, 26.5)][level_index(wave)]
 }
 
 pub(crate) fn power_kind(wave: i32) -> u8 {
     [POWER_OVERDRIVE, POWER_FEED, POWER_AEGIS, POWER_FEED, POWER_AEGIS, POWER_OVERDRIVE,
-     POWER_AEGIS, POWER_FEED, POWER_OVERDRIVE, POWER_AEGIS][level_index(wave)]
+     POWER_AEGIS, POWER_FEED, POWER_OVERDRIVE, POWER_AEGIS, POWER_FEED][level_index(wave)]
 }
 
 #[cfg(test)]
@@ -180,7 +183,7 @@ mod tests {
     fn every_sector_drops_a_distinct_boss_reward() {
         let cases: Vec<u8> = (1..=crate::map::LEVEL_COUNT as i32).map(boss_case).collect();
         let unique: std::collections::HashSet<u8> = cases.iter().copied().collect();
-        assert_eq!(unique.len(), 10);
+        assert_eq!(unique.len(), crate::map::LEVEL_COUNT);
         for (wave, kind) in cases.into_iter().enumerate() {
             assert!(is_boss_case(kind));
             assert!((8..WEP_N).contains(&boss_slot(kind)), "wave {} reward slot", wave + 1);

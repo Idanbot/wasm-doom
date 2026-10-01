@@ -1,9 +1,9 @@
 {
   "model": "@cf/deepgram/aura-2-en",
-  "clips": 110,
-  "characters": 2827,
-  "estimatedUsd": 0.08481,
-  "estimatedNeurons": 7710,
-  "generatedThisRun": 24,
+  "clips": 116,
+  "characters": 3022,
+  "estimatedUsd": 0.09065999999999999,
+  "estimatedNeurons": 8242,
+  "generatedThisRun": 6,
   "note": "Estimated character billing, not measured account usage. Cached assets do not call Cloudflare."
 }

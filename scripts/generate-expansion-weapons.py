@@ -1,6 +1,7 @@
 """Build only the six expansion sheets and matching pickups from concept cutouts."""
 import importlib.util
 import json
+import sys
 from pathlib import Path
 from PIL import Image, ImageEnhance
 
@@ -14,6 +15,8 @@ weapons = json.loads(weapons_path.read_text())
 assets = json.loads(assets_path.read_text())
 
 for slug, name, slot, boss, color, muzzle in draft.SPECS[12:]:
+    if len(sys.argv) > 1 and slug not in sys.argv[1:]:
+        continue
     meta = draft.make_sheet(slug, boss, color, muzzle)
     meta.update(name=name, slot=slot, is_boss=True, alt_fire_name='Boss special',
                 alt_fire_desc='Visual draft for review.', alt_available=True,

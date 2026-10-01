@@ -20,16 +20,17 @@ export const SECTORS = [
   { code: "NADIR–7H", name: "SIGNAL CRYPT", bossTitle: "TRANSMISSION GHOST", bossName: "RELAY–0" },
   { code: "NADIR–7I", name: "SIEGE YARD", bossTitle: "HEAVY ASSET", bossName: "TITAN–12" },
   { code: "NADIR–7J", name: "COMMAND BUNKER", bossTitle: "SITE DIRECTOR", bossName: "DIRECTOR KEST" },
+  { code: "NADIR–7K", name: "OBSIDIAN VAULT", bossTitle: "ECHO KEEPER", bossName: "MNEMOSYNE–6" },
 ] as const;
 
 export function sectorForWave(wave: number) {
   return SECTORS[(Math.max(1, wave || 1) - 1) % SECTORS.length]!;
 }
 
-/** Every boss alternates its death line on the next ten-sector cycle. */
+/** Every boss alternates its death line on the next eleven-sector cycle. */
 export function bossDeathVariantForWave(wave: number) {
   const index = Math.max(0, wave - 1);
-  return (index + Math.floor(index / SECTORS.length)) % 2;
+  return (index % SECTORS.length + Math.floor(index / SECTORS.length)) % 2;
 }
 
 // v2 viewmodels: one 5x5 sheet per gun (25 cells of 512x384).
@@ -56,6 +57,7 @@ export const WEAPONS = [
   { id: 15, name: "SR-0 RELAY", role: "Signal carbine · rapid narrow burst", magSize: 24, lowAmmoAt: 6, reserve: 144, sheet: WEAPON_SHEETS[15]! },
   { id: 16, name: "TS-12 TITAN", role: "Siege cannon · heavy explosive shell", magSize: 3, lowAmmoAt: 1, reserve: 18, sheet: WEAPON_SHEETS[16]! },
   { id: 17, name: "KS-8 KEST", role: "Director rifle · precise triple burst", magSize: 30, lowAmmoAt: 8, reserve: 180, sheet: WEAPON_SHEETS[17]! },
+  { id: 18, name: "MN-6 ECHO", role: "Memory lance · pierces three targets", magSize: 12, lowAmmoAt: 3, reserve: 72, sheet: WEAPON_SHEETS[18]! },
 ];
 
 const HANDLER = [
@@ -69,6 +71,7 @@ const HANDLER = [
   "The Signal Crypt is broadcasting your position. Kill its relay node before RELAY finds you.",
   "The Siege Yard still has a live hydraulic spine. Shut it down before TITAN wakes.",
   "Director Kest is locking Command. Cut the command uplink and open the bunker.",
+  "Cut the memory bus before MNEMOSYNE wakes. Dodge its echo mines and pulse rings.",
 ] as const;
 
 const LOCKDOWN = [
@@ -82,6 +85,7 @@ const LOCKDOWN = [
   "RELAY–0: Transmission contained. You have nowhere left to hide.",
   "TITAN–12: Siege gate sealed. Structural load accepted.",
   "DIRECTOR KEST: Command doors closed. No extraction for you.",
+  "MNEMOSYNE–6: Your memory belongs to the vault. Echo sequence armed.",
 ] as const;
 
 const NODE_DONE = [
@@ -95,6 +99,7 @@ const NODE_DONE = [
   "Signal relay cut. The crypt override is live.",
   "Hydraulic spine offline. The siege gate override is live.",
   "Command uplink severed. The bunker override is live.",
+  "Memory bus severed. The vault override is live.",
 ] as const;
 
 const MEMOS: Record<number, string> = {
@@ -117,7 +122,9 @@ const MEMOS: Record<number, string> = {
   42: "Siege record: TITAN was parked with its cannon still loaded.",
   43: "Hydraulics inspection failed. Inspector reassigned to hydraulics.",
   46: "Command memo: Kest approved every containment loss personally.",
-  47: "Handler: the bunker is the end of this chain. Break it.",
+  47: "Handler: the bunker leads to the memory vault. Keep moving.",
+  50: "Vault log: MNEMOSYNE preserves every failed intrusion as a training echo.",
+  51: "Handler: those mines are moving memories. Keep your distance when they charge.",
 };
 
 export function radioCopy(line: number, wave: number) {
@@ -125,7 +132,7 @@ export function radioCopy(line: number, wave: number) {
   if (line === 1) return { speaker: "HANDLER", text: HANDLER[sector]! };
   if (line === 2) return { speaker: "MALIK", text: LOCKDOWN[sector]! };
   if (line === 3) return {
-    speaker: ["MALIK", "HECATE–9", "CHIMERA–9", "ORACLE–7", "GRAVEMIND–4", "NULL ARCHIVIST", "HALCYON–3", "RELAY–0", "TITAN–12", "DIRECTOR KEST"][sector]!,
+    speaker: ["MALIK", "HECATE–9", "CHIMERA–9", "ORACLE–7", "GRAVEMIND–4", "NULL ARCHIVIST", "HALCYON–3", "RELAY–0", "TITAN–12", "DIRECTOR KEST", "MNEMOSYNE–6"][sector]!,
     text: [
       "Command surface exposed. That window will not last.",
       "Shield circuit open. Discharge imminent.",
@@ -137,6 +144,7 @@ export function radioCopy(line: number, wave: number) {
       "Carrier lost. Signal lattice exposed.",
       "Hydraulic plate open. Cannon pressure falling.",
       "Armor breached. The chain of command ends here.",
+      "Core exposed. I cannot preserve this memory.",
     ][sector]!,
   };
   if (line === 4) return { speaker: "HANDLER", text: NODE_DONE[sector]! };
@@ -154,6 +162,7 @@ export function radioCopy(line: number, wave: number) {
         "RELAY dropped a signal carbine. Claim the case and clear the crypt.",
         "TITAN dropped a siege cannon. Claim the case and clear the yard.",
         "Kest dropped her rifle. Claim it and leave Command.",
+        "MNEMOSYNE dropped the Echo lance. Claim it and leave the vault.",
       ][sector]!,
     };
   }
@@ -170,6 +179,7 @@ export function radioCopy(line: number, wave: number) {
       { speaker: "RELAY–0", text: "Signal lost. The Relay carbine is unbound." },
       { speaker: "TITAN–12", text: "Hydraulics failed. Siege cannon released. The gate is yours." },
       { speaker: "DIRECTOR KEST", text: "You have cut the chain of command. The Kest rifle is yours." },
+      { speaker: "MNEMOSYNE–6", text: "Memory core erased. Take the Echo lance. Let the vault forget." },
     ];
     const second = [
       { speaker: "MALIK", text: "My vault is yours. I buried the truth beneath that rail. Do not let them seal it again." },
@@ -182,6 +192,7 @@ export function radioCopy(line: number, wave: number) {
       { speaker: "RELAY–0", text: "No carrier. No command. Take my transmitter and make your own route." },
       { speaker: "TITAN–12", text: "Load-bearing systems gone. Take the Titan cannon before the ceiling follows." },
       { speaker: "DIRECTOR KEST", text: "I built this place to outlast us. Take the rifle. Prove me wrong." },
+      { speaker: "MNEMOSYNE–6", text: "This is my final memory. The Echo lance is yours. Carry it beyond these walls." },
     ];
     return (bossDeathVariantForWave(wave) === 0 ? first : second)[sector]!;
   }
@@ -193,9 +204,9 @@ export function radioCopy(line: number, wave: number) {
 export function missionLine(hud: { prompt: number; objective: number; wave: number }) {
   const sector = (Math.max(1, hud.wave) - 1) % SECTORS.length;
   if (hud.prompt === 3) return "INITIATE OVERRIDE";
-  if (hud.prompt === 13) return ["USE THE LAB NODE", "VENT THE COOLANT", "PURGE THE LOCK", "CUT THE PREDICTION NODE", "ISOLATE THE COOLANT RELAY", "SEVER THE INDEX NODE", "ISOLATE THE MANIFOLD", "CUT THE SIGNAL RELAY", "SHUT DOWN HYDRAULICS", "CUT THE COMMAND UPLINK"][sector]!;
+  if (hud.prompt === 13) return ["USE THE LAB NODE", "VENT THE COOLANT", "PURGE THE LOCK", "CUT THE PREDICTION NODE", "ISOLATE THE COOLANT RELAY", "SEVER THE INDEX NODE", "ISOLATE THE MANIFOLD", "CUT THE SIGNAL RELAY", "SHUT DOWN HYDRAULICS", "CUT THE COMMAND UPLINK", "SEVER THE MEMORY BUS"][sector]!;
   if (hud.prompt === 15 || hud.objective === 0) {
-    return ["RESTORE THE LAB NODE", "VENT THE COOLANT NODE", "PURGE THE SPECIMEN LOCK", "CUT THE PREDICTION NODE", "ISOLATE THE COOLANT RELAY", "SEVER THE INDEX NODE", "ISOLATE THE MANIFOLD", "CUT THE SIGNAL RELAY", "SHUT DOWN HYDRAULICS", "CUT THE COMMAND UPLINK"][sector]!;
+    return ["RESTORE THE LAB NODE", "VENT THE COOLANT NODE", "PURGE THE SPECIMEN LOCK", "CUT THE PREDICTION NODE", "ISOLATE THE COOLANT RELAY", "SEVER THE INDEX NODE", "ISOLATE THE MANIFOLD", "CUT THE SIGNAL RELAY", "SHUT DOWN HYDRAULICS", "CUT THE COMMAND UPLINK", "SEVER THE MEMORY BUS"][sector]!;
   }
   if (hud.prompt === 6) return "REACH THE OVERRIDE";
   return "ELIMINATE THE SIGNAL";
@@ -327,9 +338,9 @@ export function loadCheckpoint(): RunSave | null {
       return null;
     }
     // Old 8- and 11-slot checkpoints remain loadable after adding AR-6.
-    if (![8, 11, 12].includes(v.ammo.length)) return null;
-    if (![8, 11, 12].includes(v.mag.length)) return null;
-    const pad12 = (a: number[]) => [...a, ...Array(12).fill(0)].slice(0, 12);
+    if (![8, 11, 12, 18, 19].includes(v.ammo.length)) return null;
+    if (![8, 11, 12, 18, 19].includes(v.mag.length)) return null;
+    const padSlots = (a: number[]) => [...a, ...Array(19).fill(0)].slice(0, 19);
     return {
       wave: Math.min(999, Math.max(1, v.wave || 1)),
       health: v.health || 100,
@@ -339,8 +350,8 @@ export function loadCheckpoint(): RunSave | null {
       kills: v.kills || 0,
       secrets: v.secrets || 0,
       elapsedMs: v.elapsedMs || 0,
-      ammo: pad12(v.ammo),
-      mag: pad12(v.mag),
+      ammo: padSlots(v.ammo),
+      mag: padSlots(v.mag),
     };
   } catch {
     return null;

@@ -1,0 +1,14 @@
+{
+  "signature": "2e8f6df278bb307231a6f3c60e395d574bc3e749e352094e5348b50a932892a5",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Your previous mistakes return.",
+    "speaker": "luna",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "style": "Calm synthetic archivist, deliberate and unsettling",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-10-01T15:40:56.062Z"
+}

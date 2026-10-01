@@ -7,9 +7,9 @@ pub(crate) const MAX_H: usize = 2160;
 pub(crate) const TEX: usize = 256;
 pub(crate) const TEXM: i32 = (TEX as i32) - 1;
 /// Atlas layers: the original 29 world layers plus seven animation sheets
-/// for each of the twenty-two BLACKSITE enemy skins.
+/// for each of the twenty-three BLACKSITE enemy skins.
 pub(crate) const ENEMY_ANIM_COUNT: usize = 7;
-pub(crate) const ENEMY_SKIN_COUNT: usize = 22;
+pub(crate) const ENEMY_SKIN_COUNT: usize = 23;
 pub(crate) const ENEMY_TEX_BASE: usize = 29;
 pub(crate) const T_ORDNANCE: usize = ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT;
 pub(crate) const T_GUN3: usize = T_ORDNANCE + 1;
@@ -31,13 +31,14 @@ pub(crate) const T_GUN15: usize = T_GUN14 + 1;
 pub(crate) const T_GUN16: usize = T_GUN15 + 1;
 pub(crate) const T_GUN17: usize = T_GUN16 + 1;
 pub(crate) const T_GUN18: usize = T_GUN17 + 1;
-pub(crate) const T_PROP_REACTOR: usize = T_GUN18 + 1;
-pub(crate) const T_PROP_SERVER: usize = T_GUN18 + 2;
-pub(crate) const T_PROP_AC: usize = T_GUN18 + 3;
-pub(crate) const T_PROP_VENT: usize = T_GUN18 + 4;
-pub(crate) const T_PROP_WLIGHT_C: usize = T_GUN18 + 5;
-pub(crate) const T_PROP_WLIGHT_W: usize = T_GUN18 + 6;
-pub(crate) const T_PROP_BEACON: usize = T_GUN18 + 7;
+pub(crate) const T_GUN19: usize = T_GUN18 + 1;
+pub(crate) const T_PROP_REACTOR: usize = T_GUN19 + 1;
+pub(crate) const T_PROP_SERVER: usize = T_GUN19 + 2;
+pub(crate) const T_PROP_AC: usize = T_GUN19 + 3;
+pub(crate) const T_PROP_VENT: usize = T_GUN19 + 4;
+pub(crate) const T_PROP_WLIGHT_C: usize = T_GUN19 + 5;
+pub(crate) const T_PROP_WLIGHT_W: usize = T_GUN19 + 6;
+pub(crate) const T_PROP_BEACON: usize = T_GUN19 + 7;
 pub(crate) const TEX_N: usize = T_PROP_BEACON + 1;
 pub(crate) const ENT_N: usize = 192;
 pub(crate) const T_BRICK: usize = 0;
@@ -164,6 +165,9 @@ pub(crate) const SKIN_HALCYON: u8 = 18;
 pub(crate) const SKIN_RELAY: u8 = 19;
 pub(crate) const SKIN_TITAN: u8 = 20;
 pub(crate) const SKIN_KEST: u8 = 21;
+pub(crate) const SKIN_MNEMOSYNE: u8 = 22;
+pub(crate) const EK_GUN19: u8 = 50;
+pub(crate) const IN_W19: u32 = 268435456;
 
 pub(crate) const IN_W: u32 = 1;
 pub(crate) const IN_S: u32 = 2;
@@ -194,9 +198,9 @@ pub(crate) const IN_W16: u32 = 33554432;
 pub(crate) const IN_W17: u32 = 67108864;
 pub(crate) const IN_W18: u32 = 134217728;
 
-pub(crate) const WEP_N: usize = 18;
-pub(crate) const MAG_SZ: [i32; WEP_N] = [12, 8, 36, 5, 4, 10, 90, 6, 4, 14, 5, 9, 4, 8, 6, 24, 3, 30];
-pub(crate) const RELOAD_T: [f32; WEP_N] = [0.95, 1.75, 1.30, 1.60, 1.95, 1.55, 2.45, 1.85, 1.70, 1.35, 1.55, 1.8, 2.0, 2.1, 2.15, 1.7, 2.6, 1.6];
+pub(crate) const WEP_N: usize = 19;
+pub(crate) const MAG_SZ: [i32; WEP_N] = [12, 8, 36, 5, 4, 10, 90, 6, 4, 14, 5, 9, 4, 8, 6, 24, 3, 30, 12];
+pub(crate) const RELOAD_T: [f32; WEP_N] = [0.95, 1.75, 1.30, 1.60, 1.95, 1.55, 2.45, 1.85, 1.70, 1.35, 1.55, 1.8, 2.0, 2.1, 2.15, 1.7, 2.6, 1.6, 1.9];
 pub(crate) const MAP_CELLS: usize = MAP_W * MAP_H;
 pub(crate) const FX_CAP: usize = 64;
 
@@ -211,7 +215,7 @@ mod tests {
     }
 
     #[test]
-    fn weapon_tables_cover_all_eighteen_guns() {
+    fn weapon_tables_cover_all_nineteen_guns() {
         assert_eq!(MAG_SZ.len(), WEP_N);
         assert_eq!(RELOAD_T.len(), WEP_N);
         for m in MAG_SZ {
@@ -227,7 +231,7 @@ mod tests {
         let bits = [
             IN_W, IN_S, IN_A, IN_D, IN_FIRE, IN_SPRINT, IN_USE, IN_W1, IN_W2, IN_W3, IN_TURNL,
             IN_TURNR, IN_RELOAD, IN_W4, IN_W5, IN_W6, IN_W7, IN_W8, IN_W9, IN_W10, IN_W11, IN_W12,
-            IN_W13, IN_W14, IN_W15, IN_W16, IN_W17, IN_W18,
+            IN_W13, IN_W14, IN_W15, IN_W16, IN_W17, IN_W18, IN_W19,
         ];
         for (i, a) in bits.iter().enumerate() {
             assert_ne!(*a, 0);
@@ -242,7 +246,7 @@ mod tests {
     fn texture_slots_cover_the_known_atlas() {
         assert_eq!(
             TEX_N,
-            ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT + 27
+            ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT + 28
         );
         assert_eq!(TEX, 256);
         assert_eq!(TEXM, 255);

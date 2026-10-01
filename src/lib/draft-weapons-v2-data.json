@@ -430,5 +430,29 @@
     "alt_fire_desc": "Visual draft for review.",
     "alt_available": true,
     "ammo_visual": "Charge progression"
+  },
+  {
+    "id": "mn6",
+    "sheet_file": "/game/draft/v2/weap_mn6_5x5.png",
+    "sheet_hash": "7c143df0ddc8e2a5517abe57d4424d31a0fa7e7ddab513a312e75021c57c6831",
+    "sheet_short_hash": "7c143df0",
+    "aim_file": "/game/draft/v2/weap_mn6_aim.png",
+    "aim_hash": "7494c05b30e4766b3a16e1c6ab78ab2aee21cbb363e78dee565eb2adc4d7399b",
+    "aim_short_hash": "7494c05b",
+    "gen_master_file": "/game/draft/v2/masters/mn6.png",
+    "gen_master_hash": "97b121a384667b6fed60b68201e03ca67714ef2a14066d81f53759f39b0175f1",
+    "gen_master_short_hash": "97b121a3",
+    "cell_w": 512,
+    "cell_h": 384,
+    "cols": 5,
+    "rows": 5,
+    "frames_total": 25,
+    "name": "MN-6 ECHO",
+    "slot": 18,
+    "is_boss": true,
+    "alt_fire_name": "Boss special",
+    "alt_fire_desc": "Visual draft for review.",
+    "alt_available": true,
+    "ammo_visual": "Charge progression"
   }
 ]

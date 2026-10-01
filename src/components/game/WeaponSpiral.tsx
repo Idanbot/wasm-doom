@@ -4,7 +4,7 @@ import { asset } from "@/lib/asset";
 import { WEAPONS } from "./data";
 
 export function WeaponSpiral({ hud, visible }: { hud: HudState; visible: boolean }) {
-  const owned = [true, hud.hasW2, hud.hasW3, hud.hasW4, hud.hasW5, hud.hasW6, hud.hasW7, hud.hasW8, hud.hasW9, hud.hasW10, hud.hasW11, hud.hasW12, hud.hasW13, hud.hasW14, hud.hasW15, hud.hasW16, hud.hasW17, hud.hasW18];
+  const owned = [true, hud.hasW2, hud.hasW3, hud.hasW4, hud.hasW5, hud.hasW6, hud.hasW7, hud.hasW8, hud.hasW9, hud.hasW10, hud.hasW11, hud.hasW12, hud.hasW13, hud.hasW14, hud.hasW15, hud.hasW16, hud.hasW17, hud.hasW18, hud.hasW19];
   const slots = WEAPONS.map((weapon, index) => ({ weapon, index })).filter(({ index }) => owned[index]);
   const selected = slots.findIndex(({ index }) => index === hud.weapon);
   return (

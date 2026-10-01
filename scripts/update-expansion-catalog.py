@@ -12,7 +12,7 @@ rows = [row for row in rows if row['file'] not in {
 }]
 index = {row['file']: row for row in rows}
 files = []
-for slug in ('or7', 'gs4', 'cr3', 'sr0', 'ts12', 'ks8'):
+for slug in ('or7', 'gs4', 'cr3', 'sr0', 'ts12', 'ks8', 'mn6'):
     files += [
         f'game/draft/v2/weap_{slug}_5x5.png',
         f'game/draft/v2/weap_{slug}_aim.png',
@@ -21,14 +21,14 @@ for slug in ('or7', 'gs4', 'cr3', 'sr0', 'ts12', 'ks8'):
         f'game/spr_gun_{slug}.png',
         f'game/ui/weapon-thumbs/{slug}.png',
     ]
-for boss in ('halcyon', 'relay', 'titan', 'kest'):
+for boss in ('halcyon', 'relay', 'titan', 'kest', 'mnemosyne'):
     files += [f'game/enemy_{boss}_{state}.png' for state in
               ('idle', 'move', 'pain', 'fire', 'reload', 'dead', 'special')]
     files += [f'game/voices/{boss}-{n}.mp3' for n in range(1, 7)]
 for boss in ('veyran', 'hecate', 'chimera', 'oracle', 'gravemind', 'archivist',
-             'halcyon', 'relay', 'titan', 'kest'):
+             'halcyon', 'relay', 'titan', 'kest', 'mnemosyne'):
     files.append(f'game/voices/boss-{boss}-v2.mp3')
-for boss in ('oracle', 'gravemind', 'halcyon', 'relay', 'titan', 'kest'):
+for boss in ('oracle', 'gravemind', 'halcyon', 'relay', 'titan', 'kest', 'mnemosyne'):
     files.append(f'game/voices/boss-{boss}.mp3')
 files += ['game/music/menu.mp3', 'game/music/bgm-remix.mp3', 'game/music/boss.mp3']
 

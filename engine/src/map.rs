@@ -22,11 +22,11 @@ use crate::Engine;
 
 /// Player spawn: hangar floor, facing east into the west lane.
 pub(crate) const PLAYER_START: (f32, f32, f32) = (4.5, 15.5, 0.0);
-pub(crate) const LEVEL_COUNT: usize = 10;
+pub(crate) const LEVEL_COUNT: usize = 11;
 
 const PLAYER_STARTS: [(f32, f32, f32); LEVEL_COUNT] =
     [PLAYER_START, (4.5, 6.5, 0.0), (4.5, 15.5, 0.0), (4.5, 6.5, 0.0), (4.5, 25.5, 0.0), (4.5, 16.5, 0.0),
-     (4.5, 5.5, 0.0), (4.5, 25.5, 0.0), (4.5, 15.5, 0.0), (4.5, 5.5, 0.0)];
+     (4.5, 5.5, 0.0), (4.5, 25.5, 0.0), (4.5, 15.5, 0.0), (4.5, 5.5, 0.0), (4.5, 15.5, 0.0)];
 const BOSS_SPOTS_BY_LEVEL: [[(f32, f32); 2]; LEVEL_COUNT] = [
     [(40.5, 24.5), (43.5, 27.5)],
     [(38.5, 23.5), (43.5, 25.5)],
@@ -38,9 +38,10 @@ const BOSS_SPOTS_BY_LEVEL: [[(f32, f32); 2]; LEVEL_COUNT] = [
     [(39.5, 8.5), (43.5, 7.5)],
     [(42.5, 15.5), (43.5, 18.5)],
     [(40.5, 26.5), (43.5, 25.5)],
+    [(40.5, 15.5), (43.5, 19.5)],
 ];
 const OVERRIDES: [(f32, f32); LEVEL_COUNT] = [(40.5, 21.5), (43.5, 27.5), (43.5, 15.5), (40.5, 21.5), (39.5, 20.5), (40.5, 20.5),
-    (40.5, 23.5), (40.5, 6.5), (40.5, 13.5), (40.5, 23.5)];
+    (40.5, 23.5), (40.5, 6.5), (40.5, 13.5), (40.5, 23.5), (36.5, 15.5)];
 
 pub(crate) fn level_index(wave: i32) -> usize {
     (wave.saturating_sub(1) as usize) % LEVEL_COUNT
@@ -60,7 +61,7 @@ pub(crate) fn override_point(wave: i32) -> (f32, f32) {
 
 pub(crate) fn boss_skin(wave: i32) -> u8 {
     [SKIN_VEYRAN, SKIN_HECATE, SKIN_CHIMERA, SKIN_ORACLE, SKIN_GRAVEMIND, SKIN_ARCHIVIST,
-     SKIN_HALCYON, SKIN_RELAY, SKIN_TITAN, SKIN_KEST][level_index(wave)]
+     SKIN_HALCYON, SKIN_RELAY, SKIN_TITAN, SKIN_KEST, SKIN_MNEMOSYNE][level_index(wave)]
 }
 
 pub(crate) type HostileSpawn = (u8, u8, f32, f32);
@@ -171,7 +172,7 @@ const HOSTILES_COMMAND: &[HostileSpawn] = &[
 
 pub(crate) fn hostiles(wave: i32) -> &'static [HostileSpawn] {
     [HOSTILES_UPPER, HOSTILES_FOUNDRY, HOSTILES_BIOFORGE, HOSTILES_DATACENTER, HOSTILES_REACTOR, HOSTILES_ARCHIVE,
-     HOSTILES_CRYO, HOSTILES_SIGNAL, HOSTILES_SIEGE, HOSTILES_COMMAND][level_index(wave)]
+     HOSTILES_CRYO, HOSTILES_SIGNAL, HOSTILES_SIEGE, HOSTILES_COMMAND, HOSTILES_VAULT][level_index(wave)]
 }
 
 /// One ambush: a player zone rect plus the group that spawns once.
@@ -241,9 +242,20 @@ const SIGNAL_AMBUSHES: &[AmbushDef] = &[AmbushDef { zone: (14.0, 20.0, 29.0, 29.
 const SIEGE_AMBUSHES: &[AmbushDef] = &[AmbushDef { zone: (15.0, 12.0, 29.0, 21.0), group: &[(EK_BRUTE, 25.5, 6.5), (EK_MARTYR, 25.5, 25.5)] }];
 const COMMAND_AMBUSHES: &[AmbushDef] = &[AmbushDef { zone: (15.0, 2.0, 29.0, 11.0), group: &[(EK_WRAITH, 23.5, 25.5), (EK_HUSK, 20.5, 24.5)] }];
 
+const HOSTILES_VAULT: &[HostileSpawn] = &[
+    (EK_HUSK, SKIN_RIFLEMAN, 8.5, 15.5), (EK_WRAITH, SKIN_MARKSMAN, 17.5, 8.5),
+    (EK_HUSK, SKIN_GUNNER | field::SHIELD_BIT, 25.5, 7.5),
+    (EK_MARTYR, SKIN_MARTYR, 21.5, 25.5), (EK_BRUTE, SKIN_GUNNER, 35.5, 15.5),
+    (EK_WRAITH, SKIN_HORNET, 43.5, 20.5),
+];
+const VAULT_AMBUSHES: &[AmbushDef] = &[AmbushDef {
+    zone: (14.0, 4.0, 29.0, 12.0),
+    group: &[(EK_MARTYR, 23.5, 24.5), (EK_WRAITH, 26.5, 24.5)],
+}];
+
 fn ambush_defs(wave: i32) -> &'static [AmbushDef] {
     [AMBUSH_DEFS, FOUNDRY_AMBUSHES, BIOFORGE_AMBUSHES, DATACENTER_AMBUSHES, REACTOR_AMBUSHES, ARCHIVE_AMBUSHES,
-     CRYO_AMBUSHES, SIGNAL_AMBUSHES, SIEGE_AMBUSHES, COMMAND_AMBUSHES][level_index(wave)]
+     CRYO_AMBUSHES, SIGNAL_AMBUSHES, SIEGE_AMBUSHES, COMMAND_AMBUSHES, VAULT_AMBUSHES][level_index(wave)]
 }
 
 /// Carve the hub-and-spoke shell. Idempotent per fresh map fill.
@@ -548,6 +560,34 @@ fn build_command(e: &mut Engine) {
     mark_override(e, OVERRIDES[9]);
 }
 
+/// Twin memory galleries reconnect at a wide vault; central walls force flanking.
+fn build_vault(e: &mut Engine) {
+    e.map.fill(1); e.floor.fill(0); e.decal.fill(0);
+    for &(x,y,w,h,t) in &[(1,11,11,10,4),(14,3,16,10,6),(14,20,16,10,6),(32,9,14,15,4)] {
+        e.room(x,y,w,h,t,1);
+    }
+    e.hall_h(10,20,15,12); e.hall_v(19,11,21,17);
+    e.hall_h(29,35,10,31); e.hall_h(29,35,23,31);
+    for (x,y) in [(17,5),(27,5),(17,27),(27,27),(35,11),(44,11),(35,21),(44,21),(40,17)] {
+        e.pillar(x,y,6);
+    }
+    mark_override(e, OVERRIDES[10]);
+}
+
+fn place_vault(e: &mut Engine) {
+    reset_level_entities(e);
+    for &(kind,x,y) in &[
+        (EK_PROP_SERVER,16.5,6.5),(EK_PROP_SERVER,28.5,6.5),
+        (EK_PROP_SERVER,16.5,25.5),(EK_PROP_SERVER,28.5,25.5),
+        (EK_PROP_SERVER,34.5,12.5),(EK_PROP_SERVER,44.5,12.5),
+        (EK_PROP_AC,22.5,4.5),(EK_PROP_AC,22.5,28.5),
+        (EK_PROP_WLIGHT_C,7.5,12.5),(EK_PROP_WLIGHT_C,7.5,19.5),
+        (EK_PROP_WLIGHT_C,38.5,10.5),(EK_PROP_WLIGHT_C,42.5,22.5),
+        (EK_CRATE,10.5,18.5),(EK_BARREL,24.5,24.5),
+        (EK_MED,41.5,20.5),(EK_AMMO,38.5,20.5),
+    ] { prop(e,kind,x,y); }
+}
+
 fn mark_override(e: &mut Engine, point: (f32, f32)) {
     let cx = point.0.floor() as i32;
     let cy = point.1.floor() as i32;
@@ -571,6 +611,7 @@ pub(crate) fn build_level(e: &mut Engine) {
         7 => build_signal(e),
         8 => build_siege(e),
         9 => build_command(e),
+        10 => build_vault(e),
         _ => build_hub_spoke(e),
     }
 }
@@ -851,11 +892,12 @@ pub(crate) fn place_level(e: &mut Engine) {
         4 => place_reactor(e),
         5 => place_archive(e),
         6..=9 => place_expansion(e, level_index(e.wave)),
+        10 => place_vault(e),
         _ => place_hub_spoke(e),
     }
     let (x, y) = override_point(e.wave);
     let skin = [SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_BIOFORGE, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER,
-                SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER][level_index(e.wave)];
+                SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_UPPER][level_index(e.wave)];
     e.spawn_with_skin(EK_OVERRIDE_CONSOLE, skin, x, y);
     let (nx, ny) = field::node_point(e.wave);
     e.spawn_with_skin(EK_NODE, skin, nx, ny);
@@ -1097,7 +1139,7 @@ mod tests {
     fn each_sector_has_a_distinct_boss_and_enemy_cast() {
         let skins: Vec<u8> = (1..=LEVEL_COUNT as i32).map(boss_skin).collect();
         assert_eq!(skins, vec![SKIN_VEYRAN, SKIN_HECATE, SKIN_CHIMERA, SKIN_ORACLE, SKIN_GRAVEMIND, SKIN_ARCHIVIST,
-            SKIN_HALCYON, SKIN_RELAY, SKIN_TITAN, SKIN_KEST]);
+            SKIN_HALCYON, SKIN_RELAY, SKIN_TITAN, SKIN_KEST, SKIN_MNEMOSYNE]);
         assert!(hostiles(1).len() > 10 && hostiles(2).len() > 10 && hostiles(3).len() > 10);
         assert_ne!(hostiles(1), hostiles(2));
         assert_ne!(hostiles(2), hostiles(3));
@@ -1114,7 +1156,7 @@ mod tests {
             assert_eq!(consoles.len(), 1);
             assert_eq!((consoles[0].x, consoles[0].y), override_point(wave));
             assert_eq!(consoles[0].skin, [SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_BIOFORGE, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER,
-                SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER][level_index(wave)]);
+                SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_UPPER][level_index(wave)]);
             assert!(boss_spots(wave).iter().all(|spot| *spot != override_point(wave)));
         }
     }

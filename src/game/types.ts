@@ -40,6 +40,7 @@ export type HudState = {
   hasW16: boolean;
   hasW17: boolean;
   hasW18: boolean;
+  hasW19: boolean;
   objective: number;
   radioSeq: number;
   radioLine: number;
@@ -130,6 +131,7 @@ export const DEFAULT_HUD: HudState = {
   hasW16: false,
   hasW17: false,
   hasW18: false,
+  hasW19: false,
   objective: 0,
   radioSeq: 0,
   radioLine: 0,

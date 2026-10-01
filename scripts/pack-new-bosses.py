@@ -12,6 +12,7 @@ SOURCES = {
     "relay": ROOT / "art/bosses/relay-source.png",
     "titan": ROOT / "art/bosses/titan-source.png",
     "kest": ROOT / "art/bosses/kest-source.png",
+    "mnemosyne": ROOT / "art/bosses/mnemosyne-source.png",
 }
 ACTIONS = ("idle", "move", "pain", "fire", "reload", "dead", "special")
 
