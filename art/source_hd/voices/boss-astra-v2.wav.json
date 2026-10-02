@@ -1,0 +1,7 @@
+{
+  "signature": "959655365a2ba2130501275d9d3886c8b5b5eae6cef50e7c56d09a3bcbe8c289",
+  "model": "@cf/deepgram/aura-2-en",
+  "speaker": "electra",
+  "effect": "aeval=val(0)*(0.7+0.3*sin(2*PI*76*t)),highpass=f=350,lowpass=f=6000",
+  "generatedAt": "2026-10-02T22:08:04.841Z"
+}

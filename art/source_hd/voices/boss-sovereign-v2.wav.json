@@ -1,0 +1,7 @@
+{
+  "signature": "41b24b1b62c520b1a34f96c8758ea3ca9700db5b6b893e40e4b2e86a4de8714a",
+  "model": "@cf/deepgram/aura-2-en",
+  "speaker": "saturn",
+  "effect": "asetrate=22080,aresample=24000,atempo=1.04,highpass=f=110,lowpass=f=5200",
+  "generatedAt": "2026-10-02T22:08:40.363Z"
+}
