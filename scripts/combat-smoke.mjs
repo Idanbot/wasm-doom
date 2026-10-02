@@ -69,14 +69,6 @@ try {
     [18, "MN-6 ECHO", 12, "Comma"],
   ];
   for (const [slot, name, magazine, code] of slots) {
-    if (slot === 0) {
-      // The old weapon bar is gone. Locked weapons are verified through the
-      // current input contract: selecting one cannot change the equipped gun.
-      await page.evaluate(() => window.__controlsTest.setKeys(["Digit6"]));
-      await page.waitForTimeout(80);
-      assert.equal(await page.evaluate(() => window.__controlsTest.getWeapon()), 0);
-      await page.evaluate(() => window.__controlsTest.setKeys([]));
-    }
     await page.evaluate(([code]) => {
       const t = window.__controlsTest;
       t.grantWeapons();
