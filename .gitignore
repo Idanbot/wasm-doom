@@ -23,3 +23,10 @@ screenshots/*.json
 public/game/draft/v2/masters/
 *.log
 .DS_Store
+
+# Local review captures, Python caches and unused music candidates
+screenshots/*.png
+__pycache__/
+*.pyc
+.grok/*.pid
+art/music-candidates/

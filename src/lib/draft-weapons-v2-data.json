@@ -194,8 +194,8 @@
   {
     "id": "vr9",
     "sheet_file": "/game/draft/v2/weap_vr9_5x5.png",
-    "sheet_hash": "d7c602da50d9e51684d62545da3bbe69b4e0fc317c49051dfb15fcba3566e0d2",
-    "sheet_short_hash": "d7c602da",
+    "sheet_hash": "a2a990d4b3a673c45bb5fee54c4490b00b7ed1547652a732ee4c19a85e9b5e7c",
+    "sheet_short_hash": "a2a990d4",
     "aim_file": "/game/draft/v2/weap_vr9_aim.png",
     "aim_hash": "f6b2e8d646ff86b999747036453e160abd41c52f97dcb47b7171acb342278363",
     "aim_short_hash": "f6b2e8d6",
@@ -213,13 +213,14 @@
     "alt_fire_name": "Boss special",
     "alt_fire_desc": "Visual draft for review.",
     "alt_available": true,
-    "ammo_visual": "Distinct full, half, low, empty and magazine/canister removed aim states."
+    "ammo_visual": "Approved full aim; depleted charge states; generated empty feed and feed removed poses.",
+    "animation_version": 3
   },
   {
     "id": "hc9",
     "sheet_file": "/game/draft/v2/weap_hc9_5x5.png",
-    "sheet_hash": "59401e0fa366023c63b413c480daa3102edfd3a08a48bce28c7f16c65a5dd387",
-    "sheet_short_hash": "59401e0f",
+    "sheet_hash": "93019918190ae6bc0c3548ead6eb7e148102cc4624f48e3437b1d9d51cc23660",
+    "sheet_short_hash": "93019918",
     "aim_file": "/game/draft/v2/weap_hc9_aim.png",
     "aim_hash": "2c75bb0e1e31e24264b060511ae1ce9aae779d0dafe73f4beb2b9db498327f60",
     "aim_short_hash": "2c75bb0e",
@@ -237,13 +238,14 @@
     "alt_fire_name": "Boss special",
     "alt_fire_desc": "Visual draft for review.",
     "alt_available": true,
-    "ammo_visual": "Visual draft: mechanical magazine/charge state progression."
+    "ammo_visual": "Approved full aim; depleted charge states; generated empty feed and feed removed poses.",
+    "animation_version": 3
   },
   {
     "id": "cm9",
     "sheet_file": "/game/draft/v2/weap_cm9_5x5.png",
-    "sheet_hash": "faeb6353046687b5e44a765cbe40de11f8f8516d9b62886a6eaf85ec60fbd4f1",
-    "sheet_short_hash": "faeb6353",
+    "sheet_hash": "090ec8c73d9cd0cdf64dcead977ea2fc43011a87dcd43d7172b0704e5cd4e967",
+    "sheet_short_hash": "090ec8c7",
     "aim_file": "/game/draft/v2/weap_cm9_aim.png",
     "aim_hash": "84d8b30bf9a6a32a0b99ab48bd2de13e35f24d398397b4e771386353cc51905d",
     "aim_short_hash": "84d8b30b",
@@ -261,13 +263,14 @@
     "alt_fire_name": "Boss special",
     "alt_fire_desc": "Visual draft for review.",
     "alt_available": true,
-    "ammo_visual": "Distinct full, half, low, empty and magazine/canister removed aim states."
+    "ammo_visual": "Approved full aim; depleted charge states; generated empty feed and feed removed poses.",
+    "animation_version": 3
   },
   {
     "id": "ar6",
     "sheet_file": "/game/draft/v2/weap_ar6_5x5.png",
-    "sheet_hash": "056da04f6159a6e86117f21d554ce90785db4e0e5f3faec9e2ee237ef0cf1e8d",
-    "sheet_short_hash": "056da04f",
+    "sheet_hash": "b10889aae1e2dc649d2681f4d343f4b6828f5377b607a2c28034f9a5487d351e",
+    "sheet_short_hash": "b10889aa",
     "aim_file": "/game/draft/v2/weap_ar6_aim.png",
     "aim_hash": "59dda5ed5fc5eef9e03bd7cc4a7babda5a2d54a8846488f3dfbc93ecb1822657",
     "aim_short_hash": "59dda5ed",
@@ -285,13 +288,14 @@
     "alt_fire_name": "Archive pulse",
     "alt_fire_desc": "Amber precision rail pulse.",
     "alt_available": false,
-    "ammo_visual": "Amber capacitor full, half, low, empty and removed."
+    "ammo_visual": "Approved full aim; depleted charge states; generated empty feed and feed removed poses.",
+    "animation_version": 3
   },
   {
     "id": "or7",
     "sheet_file": "/game/draft/v2/weap_or7_5x5.png",
-    "sheet_hash": "3f469daec9a9f708a5ea7512a0b5a44d731795515b687a1b0bd3f472f1b45a48",
-    "sheet_short_hash": "3f469dae",
+    "sheet_hash": "f10d65bafd211e9614e3144dbbc30509727f772ff9c9ca7dc65e0f3770f1e4ec",
+    "sheet_short_hash": "f10d65ba",
     "aim_file": "/game/draft/v2/weap_or7_aim.png",
     "aim_hash": "c0eff28a058b1416f93e0b86ef23cbd4cae48f2477ba1da9c8d8fbad2c3f9a18",
     "aim_short_hash": "c0eff28a",
@@ -309,13 +313,14 @@
     "alt_fire_name": "Boss special",
     "alt_fire_desc": "Visual draft for review.",
     "alt_available": true,
-    "ammo_visual": "Charge progression"
+    "ammo_visual": "Approved full aim; depleted charge states; generated empty feed and feed removed poses.",
+    "animation_version": 3
   },
   {
     "id": "gs4",
     "sheet_file": "/game/draft/v2/weap_gs4_5x5.png",
-    "sheet_hash": "d417ad576c8ed4954bfbbc4afc00cdd28d25711e98a2082b9fb6144cea8079f0",
-    "sheet_short_hash": "d417ad57",
+    "sheet_hash": "6f86522414e6c1869f814d2dccd64bab6551e221dd562687b0ce4f1b7f135bbb",
+    "sheet_short_hash": "6f865224",
     "aim_file": "/game/draft/v2/weap_gs4_aim.png",
     "aim_hash": "4aaeddc58d1f722497e5842f4882827bce4524a2ea8a1ee7b2e79eabb883e9cc",
     "aim_short_hash": "4aaeddc5",
@@ -333,13 +338,14 @@
     "alt_fire_name": "Boss special",
     "alt_fire_desc": "Visual draft for review.",
     "alt_available": true,
-    "ammo_visual": "Charge progression"
+    "ammo_visual": "Approved full aim; depleted charge states; generated empty feed and feed removed poses.",
+    "animation_version": 3
   },
   {
     "id": "cr3",
     "sheet_file": "/game/draft/v2/weap_cr3_5x5.png",
-    "sheet_hash": "6fee195554af90da87af224df3ff2e6b9a7996919c27486f6214b2807912bf7d",
-    "sheet_short_hash": "6fee1955",
+    "sheet_hash": "03782ed7060e941a1f05593d57af0970b4143486db23e7ba28520fe3004f9261",
+    "sheet_short_hash": "03782ed7",
     "aim_file": "/game/draft/v2/weap_cr3_aim.png",
     "aim_hash": "05a363012b47be0375e42f1ca7de2e002118fa74eb1b57f9840972e2f5a730d3",
     "aim_short_hash": "05a36301",
@@ -357,13 +363,14 @@
     "alt_fire_name": "Boss special",
     "alt_fire_desc": "Visual draft for review.",
     "alt_available": true,
-    "ammo_visual": "Charge progression"
+    "ammo_visual": "Approved full aim; depleted charge states; generated empty feed and feed removed poses.",
+    "animation_version": 3
   },
   {
     "id": "sr0",
     "sheet_file": "/game/draft/v2/weap_sr0_5x5.png",
-    "sheet_hash": "df612fed6a303f9db47aa30ce40a3348ebb8921d11b591024b46e02e4278dd9d",
-    "sheet_short_hash": "df612fed",
+    "sheet_hash": "afecfb35a722d402d6af2ed4adb751b5dc2405c19ca7f21c7f17f037a8a5a42f",
+    "sheet_short_hash": "afecfb35",
     "aim_file": "/game/draft/v2/weap_sr0_aim.png",
     "aim_hash": "932850e79d81c1179e7dbb2da5e29d6a42db0e12770a174697d984b30e2e52fb",
     "aim_short_hash": "932850e7",
@@ -381,13 +388,14 @@
     "alt_fire_name": "Boss special",
     "alt_fire_desc": "Visual draft for review.",
     "alt_available": true,
-    "ammo_visual": "Charge progression"
+    "ammo_visual": "Approved full aim; depleted charge states; generated empty feed and feed removed poses.",
+    "animation_version": 3
   },
   {
     "id": "ts12",
     "sheet_file": "/game/draft/v2/weap_ts12_5x5.png",
-    "sheet_hash": "f9d56373fc9329424d3a37a2bf8cf9e93919283104d9460dfe2c707bb3d5d5ec",
-    "sheet_short_hash": "f9d56373",
+    "sheet_hash": "ac3059727f2521db830bdffbf6ea2c8df2a0169bc4ba6bd60d562ca5f268454c",
+    "sheet_short_hash": "ac305972",
     "aim_file": "/game/draft/v2/weap_ts12_aim.png",
     "aim_hash": "2621c983b6634eee5a2ef7d9fd6574214feb7c2392b83ea697f5747375d1007a",
     "aim_short_hash": "2621c983",
@@ -405,13 +413,14 @@
     "alt_fire_name": "Boss special",
     "alt_fire_desc": "Visual draft for review.",
     "alt_available": true,
-    "ammo_visual": "Charge progression"
+    "ammo_visual": "Approved full aim; depleted charge states; generated empty feed and feed removed poses.",
+    "animation_version": 3
   },
   {
     "id": "ks8",
     "sheet_file": "/game/draft/v2/weap_ks8_5x5.png",
-    "sheet_hash": "dc429e3af74a72046077dccfee19393605b47b5007c194919ebfa19a1c20d821",
-    "sheet_short_hash": "dc429e3a",
+    "sheet_hash": "d44da6f5432926b64f27a22d222db431094868fee6c31692996ebe67a5291622",
+    "sheet_short_hash": "d44da6f5",
     "aim_file": "/game/draft/v2/weap_ks8_aim.png",
     "aim_hash": "d976838d3910bf0d698c6dda75bae776096309e0dfb0ca2b25de62183bc0d99d",
     "aim_short_hash": "d976838d",
@@ -429,13 +438,14 @@
     "alt_fire_name": "Boss special",
     "alt_fire_desc": "Visual draft for review.",
     "alt_available": true,
-    "ammo_visual": "Charge progression"
+    "ammo_visual": "Approved full aim; depleted charge states; generated empty feed and feed removed poses.",
+    "animation_version": 3
   },
   {
     "id": "mn6",
     "sheet_file": "/game/draft/v2/weap_mn6_5x5.png",
-    "sheet_hash": "7c143df0ddc8e2a5517abe57d4424d31a0fa7e7ddab513a312e75021c57c6831",
-    "sheet_short_hash": "7c143df0",
+    "sheet_hash": "2d3d776f7f0928d42201b6decdfa80f1d4d9052c166ab4ea271b969e9474f069",
+    "sheet_short_hash": "2d3d776f",
     "aim_file": "/game/draft/v2/weap_mn6_aim.png",
     "aim_hash": "7494c05b30e4766b3a16e1c6ab78ab2aee21cbb363e78dee565eb2adc4d7399b",
     "aim_short_hash": "7494c05b",
@@ -453,6 +463,7 @@
     "alt_fire_name": "Boss special",
     "alt_fire_desc": "Visual draft for review.",
     "alt_available": true,
-    "ammo_visual": "Charge progression"
+    "ammo_visual": "Approved full aim; depleted charge states; generated empty feed and feed removed poses.",
+    "animation_version": 3
   }
 ]

@@ -4494,9 +4494,9 @@
   {
     "file": "/game/draft/v2/weap_ar6_5x5.png",
     "name": "weap_ar6_5x5.png",
-    "size": 1911391,
-    "hash": "056da04f6159a6e86117f21d554ce90785db4e0e5f3faec9e2ee237ef0cf1e8d",
-    "shortHash": "056da04f",
+    "size": 2403578,
+    "hash": "b10889aae1e2dc649d2681f4d343f4b6828f5377b607a2c28034f9a5487d351e",
+    "shortHash": "b10889aa",
     "width": 2560,
     "height": 1920
   },
@@ -4660,9 +4660,9 @@
   {
     "file": "/game/draft/v2/weap_or7_5x5.png",
     "name": "weap_or7_5x5.png",
-    "size": 2800042,
-    "hash": "3f469daec9a9f708a5ea7512a0b5a44d731795515b687a1b0bd3f472f1b45a48",
-    "shortHash": "3f469dae",
+    "size": 3061611,
+    "hash": "f10d65bafd211e9614e3144dbbc30509727f772ff9c9ca7dc65e0f3770f1e4ec",
+    "shortHash": "f10d65ba",
     "width": 2560,
     "height": 1920
   },
@@ -4714,9 +4714,9 @@
   {
     "file": "/game/draft/v2/weap_gs4_5x5.png",
     "name": "weap_gs4_5x5.png",
-    "size": 2570107,
-    "hash": "d417ad576c8ed4954bfbbc4afc00cdd28d25711e98a2082b9fb6144cea8079f0",
-    "shortHash": "d417ad57",
+    "size": 2723965,
+    "hash": "6f86522414e6c1869f814d2dccd64bab6551e221dd562687b0ce4f1b7f135bbb",
+    "shortHash": "6f865224",
     "width": 2560,
     "height": 1920
   },
@@ -4768,9 +4768,9 @@
   {
     "file": "/game/draft/v2/weap_cr3_5x5.png",
     "name": "weap_cr3_5x5.png",
-    "size": 2667744,
-    "hash": "6fee195554af90da87af224df3ff2e6b9a7996919c27486f6214b2807912bf7d",
-    "shortHash": "6fee1955",
+    "size": 2889978,
+    "hash": "03782ed7060e941a1f05593d57af0970b4143486db23e7ba28520fe3004f9261",
+    "shortHash": "03782ed7",
     "width": 2560,
     "height": 1920
   },
@@ -4822,9 +4822,9 @@
   {
     "file": "/game/draft/v2/weap_sr0_5x5.png",
     "name": "weap_sr0_5x5.png",
-    "size": 2596785,
-    "hash": "df612fed6a303f9db47aa30ce40a3348ebb8921d11b591024b46e02e4278dd9d",
-    "shortHash": "df612fed",
+    "size": 2836015,
+    "hash": "afecfb35a722d402d6af2ed4adb751b5dc2405c19ca7f21c7f17f037a8a5a42f",
+    "shortHash": "afecfb35",
     "width": 2560,
     "height": 1920
   },
@@ -4876,9 +4876,9 @@
   {
     "file": "/game/draft/v2/weap_ts12_5x5.png",
     "name": "weap_ts12_5x5.png",
-    "size": 2831737,
-    "hash": "f9d56373fc9329424d3a37a2bf8cf9e93919283104d9460dfe2c707bb3d5d5ec",
-    "shortHash": "f9d56373",
+    "size": 3017931,
+    "hash": "ac3059727f2521db830bdffbf6ea2c8df2a0169bc4ba6bd60d562ca5f268454c",
+    "shortHash": "ac305972",
     "width": 2560,
     "height": 1920
   },
@@ -4930,9 +4930,9 @@
   {
     "file": "/game/draft/v2/weap_ks8_5x5.png",
     "name": "weap_ks8_5x5.png",
-    "size": 2849254,
-    "hash": "dc429e3af74a72046077dccfee19393605b47b5007c194919ebfa19a1c20d821",
-    "shortHash": "dc429e3a",
+    "size": 3032752,
+    "hash": "d44da6f5432926b64f27a22d222db431094868fee6c31692996ebe67a5291622",
+    "shortHash": "d44da6f5",
     "width": 2560,
     "height": 1920
   },
@@ -5523,9 +5523,9 @@
   {
     "file": "/game/draft/v2/weap_mn6_5x5.png",
     "name": "weap_mn6_5x5.png",
-    "size": 2245660,
-    "hash": "7c143df0ddc8e2a5517abe57d4424d31a0fa7e7ddab513a312e75021c57c6831",
-    "shortHash": "7c143df0",
+    "size": 2715636,
+    "hash": "2d3d776f7f0928d42201b6decdfa80f1d4d9052c166ab4ea271b969e9474f069",
+    "shortHash": "2d3d776f",
     "width": 2560,
     "height": 1920
   },

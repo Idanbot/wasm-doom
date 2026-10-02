@@ -51,6 +51,7 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
       - run: npx playwright install chromium --with-deps
+      - run: node --test scripts/boss-animation-assets.test.mjs
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: stable

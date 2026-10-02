@@ -126,7 +126,7 @@ test("mouse-wheel arsenal renders readable transparent gun thumbnails", async ()
   } finally { await page.close(); }
 });
 
-test("dev catalog shows the current eighteen weapon sheets and frame controls", async () => {
+test("dev catalog shows the current nineteen weapon sheets and frame controls", async () => {
   const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
   try {
     await page.goto(`${baseUrl}/catalog`);

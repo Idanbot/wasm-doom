@@ -1,0 +1,152 @@
+{
+  "version": 3,
+  "provider": "imagegen",
+  "generated_date": "2026-10-02",
+  "source_grid": [
+    3,
+    3
+  ],
+  "runtime_grid": [
+    5,
+    5
+  ],
+  "runtime_cell": [
+    512,
+    384
+  ],
+  "approved_aim_preserved": true,
+  "weapons": [
+    {
+      "id": "vr9",
+      "prompt": "Create a production FPS animation pose source sheet for the EXACT amber rail rifle and tactical gloves in the reference. Preserve its detailed design, materials and first-person perspective aiming from bottom right toward upper-left center. Transparent background, EXACTLY 3 columns by 3 rows, nine isolated equally sized panels, no borders, no text. No extra guns or detached floating parts. Weapon held by right hand in all frames, gloved left hand performs operations. Row1: lowered pickup with left hand reaching; lifting weapon; shouldering toward aim. Row2: reload spent rectangular rail power magazine pulled completely out by left hand; left hand bringing fresh rectangular rail power magazine from below with feed socket open; fresh rectangular rail power magazine guiding into receiver. Row3: left hand operating charging handle or locking feed latch with new rectangular rail power magazine seated; aim with visibly depleted empty rectangular rail power magazine still attached; aim with rectangular rail power magazine COMPLETELY REMOVED, dark unpowered gun and empty feed socket. Nine genuinely distinct mechanically coherent poses. Preserve weapon identity in every cell, realistic mechanical detail, neutral studio lighting matching reference. Landscape canvas ideally 3072x2304. Uniform framing, fit each full silhouette inside its own panel. Transparent space above and left, no scenery, no muzzle flash.",
+      "source": "art/weapon-animations-v3/vr9-poses.png",
+      "reference": "public/game/draft/v2/weap_vr9_aim.png",
+      "source_sha256": "ec951212b1fb808dc19cb55006bde4d868bc91c2b5af0d97f3bbdc7cdc9c3625",
+      "reference_sha256": "f6b2e8d646ff86b999747036453e160abd41c52f97dcb47b7171acb342278363",
+      "source_dimensions": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "id": "hc9",
+      "prompt": "Create a production FPS animation pose source sheet for the EXACT cyan rotary induction cutter with three barrels and tactical gloves in the reference. Preserve its detailed design, materials and first-person perspective aiming from bottom right toward upper-left center. Transparent background, EXACTLY 3 columns by 3 rows, nine isolated equally sized panels, no borders, no text. No extra guns or detached floating parts. Weapon held by right hand in all frames, gloved left hand performs operations. Row1: lowered pickup with left hand reaching; lifting weapon; shouldering toward aim. Row2: reload spent cyan induction cartridge pulled completely out by left hand; left hand bringing fresh cyan induction cartridge from below with feed socket open; fresh cyan induction cartridge guiding into receiver. Row3: left hand operating charging handle or locking feed latch with new cyan induction cartridge seated; aim with visibly depleted empty cyan induction cartridge still attached; aim with cyan induction cartridge COMPLETELY REMOVED, dark unpowered gun and empty feed socket. Nine genuinely distinct mechanically coherent poses. Preserve weapon identity in every cell, realistic mechanical detail, neutral studio lighting matching reference. Landscape canvas ideally 3072x2304. Uniform framing, fit each full silhouette inside its own panel. Transparent space above and left, no scenery, no muzzle flash.",
+      "source": "art/weapon-animations-v3/hc9-poses.png",
+      "reference": "public/game/draft/v2/weap_hc9_aim.png",
+      "source_sha256": "add2ed5b51ab599fce4880bbae3192b9812b267a7aee3ae680eb9c9c8e635d27",
+      "reference_sha256": "2c75bb0e1e31e24264b060511ae1ce9aae779d0dafe73f4beb2b9db498327f60",
+      "source_dimensions": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "id": "cm9",
+      "prompt": "Create a production FPS animation pose source sheet for the EXACT green chemical launcher with twin transparent acid bottles and tactical gloves in the reference. Preserve its detailed design, materials and first-person perspective aiming from bottom right toward upper-left center. Transparent background, EXACTLY 3 columns by 3 rows, nine isolated equally sized panels, no borders, no text. No extra guns or detached floating parts. Weapon held by right hand in all frames, gloved left hand performs operations. Row1: lowered pickup with left hand reaching; lifting weapon; shouldering toward aim. Row2: reload spent paired green acid bottle cassette pulled completely out by left hand; left hand bringing fresh paired green acid bottle cassette from below with feed socket open; fresh paired green acid bottle cassette guiding into receiver. Row3: left hand operating charging handle or locking feed latch with new paired green acid bottle cassette seated; aim with visibly depleted empty paired green acid bottle cassette still attached; aim with paired green acid bottle cassette COMPLETELY REMOVED, dark unpowered gun and empty feed socket. Nine genuinely distinct mechanically coherent poses. Preserve weapon identity in every cell, realistic mechanical detail, neutral studio lighting matching reference. Landscape canvas ideally 3072x2304. Uniform framing, fit each full silhouette inside its own panel. Transparent space above and left, no scenery, no muzzle flash.",
+      "source": "art/weapon-animations-v3/cm9-poses.png",
+      "reference": "public/game/draft/v2/weap_cm9_aim.png",
+      "source_sha256": "8aee2e0b9e7fcc7e98bedef492c2dd9195fb8807aec012a6373bd1a9c2c3d6b1",
+      "reference_sha256": "84d8b30bf9a6a32a0b99ab48bd2de13e35f24d398397b4e771386353cc51905d",
+      "source_dimensions": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "id": "ar6",
+      "prompt": "Create a production FPS animation pose source sheet for the EXACT amber archive energy carbine and tactical gloves in the reference. Preserve its detailed design, materials and first-person perspective aiming from bottom right toward upper-left center. Transparent background, EXACTLY 3 columns by 3 rows, nine isolated equally sized panels, no borders, no text. No extra guns or detached floating parts. Weapon held by right hand in all frames, gloved left hand performs operations. Row1: lowered pickup with left hand reaching; lifting weapon; shouldering toward aim. Row2: reload spent amber power magazine pulled completely out by left hand; left hand bringing fresh amber power magazine from below with feed socket open; fresh amber power magazine guiding into receiver. Row3: left hand operating charging handle or locking feed latch with new amber power magazine seated; aim with visibly depleted empty amber power magazine still attached; aim with amber power magazine COMPLETELY REMOVED, dark unpowered gun and empty feed socket. Nine genuinely distinct mechanically coherent poses. Preserve weapon identity in every cell, realistic mechanical detail, neutral studio lighting matching reference. Landscape canvas ideally 3072x2304. Uniform framing, fit each full silhouette inside its own panel. Transparent space above and left, no scenery, no muzzle flash.",
+      "source": "art/weapon-animations-v3/ar6-poses.png",
+      "reference": "public/game/draft/v2/weap_ar6_aim.png",
+      "source_sha256": "a6f8562ef9d7c3f7c87eb903428a4c8546f2f7ad32c08826caafdb1ddab4e86e",
+      "reference_sha256": "59dda5ed5fc5eef9e03bd7cc4a7babda5a2d54a8846488f3dfbc93ecb1822657",
+      "source_dimensions": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "id": "gs4",
+      "prompt": "Create a production FPS animation pose source sheet for the EXACT copper pressure scatter cannon and tactical gloves in the reference. Preserve its detailed design, materials and first-person perspective aiming from bottom right toward upper-left center. Transparent background, EXACTLY 3 columns by 3 rows, nine isolated equally sized panels, no borders, no text. No extra guns or detached floating parts. Weapon held by right hand in all frames, gloved left hand performs operations. Row1: lowered pickup with left hand reaching; lifting weapon; shouldering toward aim. Row2: reload spent copper pressure cartridge pulled completely out by left hand; left hand bringing fresh copper pressure cartridge from below with feed socket open; fresh copper pressure cartridge guiding into receiver. Row3: left hand operating charging handle or locking feed latch with new copper pressure cartridge seated; aim with visibly depleted empty copper pressure cartridge still attached; aim with copper pressure cartridge COMPLETELY REMOVED, dark unpowered gun and empty feed socket. Nine genuinely distinct mechanically coherent poses. Preserve weapon identity in every cell, realistic mechanical detail, neutral studio lighting matching reference. Landscape canvas ideally 3072x2304. Uniform framing, fit each full silhouette inside its own panel. Transparent space above and left, no scenery, no muzzle flash.",
+      "source": "art/weapon-animations-v3/gs4-poses.png",
+      "reference": "public/game/draft/v2/weap_gs4_aim.png",
+      "source_sha256": "29e11af35beeb6002577e04e959053cf94e5b7bb5ff05e2573beb6c7a8975836",
+      "reference_sha256": "4aaeddc58d1f722497e5842f4882827bce4524a2ea8a1ee7b2e79eabb883e9cc",
+      "source_dimensions": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "id": "cr3",
+      "prompt": "Create a production FPS animation pose source sheet for the EXACT white cyan coolant launcher and tactical gloves in the reference. Preserve its detailed design, materials and first-person perspective aiming from bottom right toward upper-left center. Transparent background, EXACTLY 3 columns by 3 rows, nine isolated equally sized panels, no borders, no text. No extra guns or detached floating parts. Weapon held by right hand in all frames, gloved left hand performs operations. Row1: lowered pickup with left hand reaching; lifting weapon; shouldering toward aim. Row2: reload spent large coolant cylinder pulled completely out by left hand; left hand bringing fresh large coolant cylinder from below with feed socket open; fresh large coolant cylinder guiding into receiver. Row3: left hand operating charging handle or locking feed latch with new large coolant cylinder seated; aim with visibly depleted empty large coolant cylinder still attached; aim with large coolant cylinder COMPLETELY REMOVED, dark unpowered gun and empty feed socket. Nine genuinely distinct mechanically coherent poses. Preserve weapon identity in every cell, realistic mechanical detail, neutral studio lighting matching reference. Landscape canvas ideally 3072x2304. Uniform framing, fit each full silhouette inside its own panel. Transparent space above and left, no scenery, no muzzle flash.",
+      "source": "art/weapon-animations-v3/cr3-poses.png",
+      "reference": "public/game/draft/v2/weap_cr3_aim.png",
+      "source_sha256": "ce8697445b706be1398eca8dbc3b1050eb75941abca07b4757712fda5924650c",
+      "reference_sha256": "05a363012b47be0375e42f1ca7de2e002118fa74eb1b57f9840972e2f5a730d3",
+      "source_dimensions": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "id": "sr0",
+      "prompt": "Create a production FPS animation pose source sheet for the EXACT pink signal carbine with antennae and tactical gloves in the reference. Preserve its detailed design, materials and first-person perspective aiming from bottom right toward upper-left center. Transparent background, EXACTLY 3 columns by 3 rows, nine isolated equally sized panels, no borders, no text. No extra guns or detached floating parts. Weapon held by right hand in all frames, gloved left hand performs operations. Row1: lowered pickup with left hand reaching; lifting weapon; shouldering toward aim. Row2: reload spent pink power magazine pulled completely out by left hand; left hand bringing fresh pink power magazine from below with feed socket open; fresh pink power magazine guiding into receiver. Row3: left hand operating charging handle or locking feed latch with new pink power magazine seated; aim with visibly depleted empty pink power magazine still attached; aim with pink power magazine COMPLETELY REMOVED, dark unpowered gun and empty feed socket. Nine genuinely distinct mechanically coherent poses. Preserve weapon identity in every cell, realistic mechanical detail, neutral studio lighting matching reference. Landscape canvas ideally 3072x2304. Uniform framing, fit each full silhouette inside its own panel. Transparent space above and left, no scenery, no muzzle flash.",
+      "source": "art/weapon-animations-v3/sr0-poses.png",
+      "reference": "public/game/draft/v2/weap_sr0_aim.png",
+      "source_sha256": "6dfd1352f589b79da9f2acd62c7628520b7cf4c615931b2fb662aed64c4d326f",
+      "reference_sha256": "932850e79d81c1179e7dbb2da5e29d6a42db0e12770a174697d984b30e2e52fb",
+      "source_dimensions": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "id": "ts12",
+      "prompt": "Create a production FPS animation pose source sheet for the EXACT yellow black industrial heavy shell cannon and tactical gloves in the reference. Preserve its detailed design, materials and first-person perspective aiming from bottom right toward upper-left center. Transparent background, EXACTLY 3 columns by 3 rows, nine isolated equally sized panels, no borders, no text. No extra guns or detached floating parts. Weapon held by right hand in all frames, gloved left hand performs operations. Row1: lowered pickup with left hand reaching; lifting weapon; shouldering toward aim. Row2: reload spent heavy shell cassette pulled completely out by left hand; left hand bringing fresh heavy shell cassette from below with feed socket open; fresh heavy shell cassette guiding into receiver. Row3: left hand operating charging handle or locking feed latch with new heavy shell cassette seated; aim with visibly depleted empty heavy shell cassette still attached; aim with heavy shell cassette COMPLETELY REMOVED, dark unpowered gun and empty feed socket. Nine genuinely distinct mechanically coherent poses. Preserve weapon identity in every cell, realistic mechanical detail, neutral studio lighting matching reference. Landscape canvas ideally 3072x2304. Uniform framing, fit each full silhouette inside its own panel. Transparent space above and left, no scenery, no muzzle flash.",
+      "source": "art/weapon-animations-v3/ts12-poses.png",
+      "reference": "public/game/draft/v2/weap_ts12_aim.png",
+      "source_sha256": "6f7fe0ba4fda4e36b964e8446ac95ff6d4abf1fdaf9d5dce1fa837f401fcfa28",
+      "reference_sha256": "2621c983b6634eee5a2ef7d9fd6574214feb7c2392b83ea697f5747375d1007a",
+      "source_dimensions": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "id": "ks8",
+      "prompt": "Create a production FPS animation pose source sheet for the EXACT black red tactical assault rifle and tactical gloves in the reference. Preserve its detailed design, materials and first-person perspective aiming from bottom right toward upper-left center. Transparent background, EXACTLY 3 columns by 3 rows, nine isolated equally sized panels, no borders, no text. No extra guns or detached floating parts. Weapon held by right hand in all frames, gloved left hand performs operations. Row1: lowered pickup with left hand reaching; lifting weapon; shouldering toward aim. Row2: reload spent ballistic box magazine pulled completely out by left hand; left hand bringing fresh ballistic box magazine from below with feed socket open; fresh ballistic box magazine guiding into receiver. Row3: left hand operating charging handle or locking feed latch with new ballistic box magazine seated; aim with visibly depleted empty ballistic box magazine still attached; aim with ballistic box magazine COMPLETELY REMOVED, dark unpowered gun and empty feed socket. Nine genuinely distinct mechanically coherent poses. Preserve weapon identity in every cell, realistic mechanical detail, neutral studio lighting matching reference. Landscape canvas ideally 3072x2304. Uniform framing, fit each full silhouette inside its own panel. Transparent space above and left, no scenery, no muzzle flash.",
+      "source": "art/weapon-animations-v3/ks8-poses.png",
+      "reference": "public/game/draft/v2/weap_ks8_aim.png",
+      "source_sha256": "2ee58fff926be9fbc400afe3b6746ffddcdb6c3e53b110e0234b0ede6cb1bff3",
+      "reference_sha256": "d976838d3910bf0d698c6dda75bae776096309e0dfb0ca2b25de62183bc0d99d",
+      "source_dimensions": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "id": "mn6",
+      "prompt": "Create a production FPS animation pose source sheet for the EXACT violet echo energy rifle and tactical gloves in the reference. Preserve its detailed design, materials and first-person perspective aiming from bottom right toward upper-left center. Transparent background, EXACTLY 3 columns by 3 rows, nine isolated equally sized panels, no borders, no text. No extra guns or detached floating parts. Weapon held by right hand in all frames, gloved left hand performs operations. Row1: lowered pickup with left hand reaching; lifting weapon; shouldering toward aim. Row2: reload spent violet power cell pulled completely out by left hand; left hand bringing fresh violet power cell from below with feed socket open; fresh violet power cell guiding into receiver. Row3: left hand operating charging handle or locking feed latch with new violet power cell seated; aim with visibly depleted empty violet power cell still attached; aim with violet power cell COMPLETELY REMOVED, dark unpowered gun and empty feed socket. Nine genuinely distinct mechanically coherent poses. Preserve weapon identity in every cell, realistic mechanical detail, neutral studio lighting matching reference. Landscape canvas ideally 3072x2304. Uniform framing, fit each full silhouette inside its own panel. Transparent space above and left, no scenery, no muzzle flash.",
+      "source": "art/weapon-animations-v3/mn6-poses.png",
+      "reference": "public/game/draft/v2/weap_mn6_aim.png",
+      "source_sha256": "bac1c7c8b1d7205c22fd6e50dcff78ab3f97162c4e01e68382ea81f7c2632f19",
+      "reference_sha256": "7494c05b30e4766b3a16e1c6ab78ab2aee21cbb363e78dee565eb2adc4d7399b",
+      "source_dimensions": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "id": "or7",
+      "prompt": "Create a production FPS animation pose source sheet for the EXACT cyan scoped OR-7 rifle and black tactical gloves in the reference. Preserve its realistic detailed design and first-person perspective aiming from bottom right toward upper-left center. Transparent background, exactly 3 columns by 3 rows, nine isolated equally sized panels, no borders or text. Each panel contains the whole gun and hands without cropping or bleeding across cells. Row1: lowered pickup with hand reaching; lifting weapon; shouldering toward aim. Row2: reload old power magazine being pulled out by left hand; left hand bringing fresh magazine from below; fresh magazine being inserted. Row3: left hand operating charging handle with magazine seated; aim with visibly empty power cell; aim with power magazine completely removed. Nine genuinely distinct mechanically coherent poses; high quality photorealistic materials matching reference. Landscape canvas ideally 3072x2304. Clear transparent space above and left; no scenery, no muzzle flash.",
+      "source": "art/weapon-animations-v3/or7-poses.png",
+      "reference": "public/game/draft/v2/weap_or7_aim.png",
+      "source_sha256": "c69d51be6a7357da29252f7cf068f6596dd66f82f5fc4f83d3848858af7f20c1",
+      "reference_sha256": "c0eff28a058b1416f93e0b86ef23cbd4cae48f2477ba1da9c8d8fbad2c3f9a18",
+      "source_dimensions": [
+        1448,
+        1086
+      ]
+    }
+  ]
+}

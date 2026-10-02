@@ -75,7 +75,7 @@ def flare(im,at,color,scale=1,kind=None):
     source=muzzle_art(color,kind)
     w,h=round(88*scale),round(88*scale)
     art=source.resize((w,h),Image.Resampling.LANCZOS)
-    if color[2]>color[0]*1.1 or color[1]>color[0]*1.2:
+    if kind=='signal' or color[2]>color[0]*1.1 or color[1]>color[0]*1.2:
         a=np.array(art)
         intensity=a[:,:,:3].max(axis=2).astype(np.float32)/255
         for c in range(3):a[:,:,c]=np.clip(color[c]*intensity+35,0,255)
@@ -243,6 +243,18 @@ def variant_frame(slug,kind):
     return variant
 
 def make_sheet(slug,boss,color,muzzle):
+    reviewed = ROOT/'art/weapon-animations-v3'/f'{slug}-poses.png'
+    if boss and reviewed.exists():
+        # Broad asset regeneration must not overwrite approved v3 boss poses.
+        import importlib.util
+        spec=importlib.util.spec_from_file_location('boss_animations',ROOT/'scripts/rework-boss-animations.py')
+        pipeline=importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(pipeline)
+        digest=pipeline.build(slug,color)
+        metadata=json.loads((ROOT/'src/lib/draft-weapons-v2-data.json').read_text())
+        row=next(row.copy() for row in metadata if row['id']==slug)
+        row.update(sheet_hash=digest,sheet_short_hash=digest[:8],animation_version=3)
+        return row
     source=OUT/'masters'/f'{slug}.png'
     if not source.exists(): raise FileNotFoundError(source)
     raw=Image.open(source).convert('RGBA')

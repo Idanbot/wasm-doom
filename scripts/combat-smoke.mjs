@@ -59,6 +59,13 @@ try {
     [8, "VR-9 OVERRIDE", 4, "Digit9"],
     [9, "HC-9 FORGE", 14, "Digit0"],
     [10, "CM-9 CHIMERA", 5, "Minus"],
+    [11, "AR-6 ARCHIVE", 9, "Equal"],
+    [12, "OR-7 PREDICTOR", 4, "BracketLeft"],
+    [13, "GS-4 SINK", 8, "BracketRight"],
+    [14, "CR-3 RIME", 6, "Backslash"],
+    [15, "SR-0 RELAY", 24, "Semicolon"],
+    [16, "TS-12 TITAN", 3, "Quote"],
+    [17, "KS-8 KEST", 30, "Backquote"],
     [18, "MN-6 ECHO", 12, "Comma"],
   ];
   for (const [slot, name, magazine, code] of slots) {
