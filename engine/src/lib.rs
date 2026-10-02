@@ -350,12 +350,13 @@ fn sprite_style(e: &Ent) -> (usize, f32, bool, i32) {
 fn is_pickup(k: u8) -> bool {
     matches!(
         k,
-        EK_MED | EK_AMMO | EK_ARMOR | EK_POWER | EK_GUN2 | EK_GUN3 | EK_GUN4 | EK_GUN5 | EK_GUN6 | EK_GUN7 | EK_GUN8 | EK_GUN9 | EK_GUN10 | EK_GUN11 | EK_GUN12 | EK_GUN13 | EK_GUN14 | EK_GUN15 | EK_GUN16 | EK_GUN17 | EK_GUN18
-    )
+        EK_MED | EK_AMMO | EK_ARMOR | EK_POWER
+    ) || is_weapon_item(k)
 }
 
 fn is_weapon_item(k: u8) -> bool {
-    matches!(k, EK_GUN2 | EK_GUN3 | EK_GUN4 | EK_GUN5 | EK_GUN6 | EK_GUN7 | EK_GUN8 | EK_GUN9 | EK_GUN10 | EK_GUN11 | EK_GUN12 | EK_GUN13 | EK_GUN14 | EK_GUN15 | EK_GUN16 | EK_GUN17 | EK_GUN18)
+    matches!(k, EK_GUN2 | EK_GUN3 | EK_GUN4 | EK_GUN5 | EK_GUN6 | EK_GUN7 | EK_GUN8)
+        || field::is_boss_case(k)
 }
 
 impl Engine {
@@ -5292,6 +5293,16 @@ pub extern "C" fn hs_qa_heal() {
     eng().qa_heal();
 }
 
+/// QA-only replay of the real boss reward spawn and world-overlap pickup path.
+#[no_mangle]
+pub extern "C" fn hs_qa_reward() {
+    let e = eng();
+    if !e.qa { return; }
+    e.qa_heal();
+    e.boss_intro = 0.0;
+    e.drop_boss_case(e.px + e.pa.cos(), e.py + e.pa.sin());
+}
+
 #[no_mangle]
 pub extern "C" fn hs_qa_end(state: i32) {
     let e = eng();
@@ -5630,6 +5641,23 @@ mod tests {
             if wave == 11 {
                 assert!(e.ents.iter().any(|x| x.kind == EK_MARTYR && x.hp > 0));
             }
+        }
+    }
+
+    #[test]
+    fn every_boss_case_is_collected_by_world_overlap() {
+        let mut e = arena();
+        for wave in 1..=11 {
+            e.state = 0;
+            e.wave = wave;
+            let kind = field::boss_case(wave);
+            let slot = field::boss_slot(kind);
+            assert!(is_weapon_item(kind), "wave {wave} reward isn't a weapon pickup");
+            let index = e.spawn(kind, e.px, e.py).unwrap();
+            e.tick(0.016);
+            assert_eq!(e.ents[index].kind, EK_NONE, "wave {wave} case wasn't collected");
+            assert_eq!(e.weapon as usize, slot, "wave {wave} equipped wrong reward");
+            assert_eq!(e.state, 2, "wave {wave} didn't complete after collection");
         }
     }
 

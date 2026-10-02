@@ -10,17 +10,17 @@ export type Vol = { master: number; music: number; sfx: number; menu: number };
 export const DEFAULT_VOL: Vol = { master: 0.85, music: 0.42, sfx: 0.75, menu: 0.7 };
 
 export const SECTORS = [
-  { code: "NADIR–7A", name: "UPPER WORKS", bossTitle: "VAULT MASTER", bossName: "MALIK VEYRAN" },
-  { code: "NADIR–7B", name: "CRYOGENIC FOUNDRY", bossTitle: "FORGE WARDEN", bossName: "HECATE–9" },
-  { code: "NADIR–7C", name: "BIOFORGE DEPTHS", bossTitle: "SPECIMEN PRIME", bossName: "CHIMERA–9" },
-  { code: "NADIR–7D", name: "DATA SPINE", bossTitle: "PREDICTIVE CORE", bossName: "ORACLE–7" },
-  { code: "NADIR–7E", name: "REACTOR SINK", bossTitle: "REACTOR WARDEN", bossName: "GRAVEMIND–4" },
-  { code: "NADIR–7F", name: "NULL ARCHIVE", bossTitle: "MEMORY CUSTODIAN", bossName: "NULL ARCHIVIST" },
-  { code: "NADIR–7G", name: "CRYO RESERVE", bossTitle: "COOLANT SENTINEL", bossName: "HALCYON–3" },
-  { code: "NADIR–7H", name: "SIGNAL CRYPT", bossTitle: "TRANSMISSION GHOST", bossName: "RELAY–0" },
-  { code: "NADIR–7I", name: "SIEGE YARD", bossTitle: "HEAVY ASSET", bossName: "TITAN–12" },
-  { code: "NADIR–7J", name: "COMMAND BUNKER", bossTitle: "SITE DIRECTOR", bossName: "DIRECTOR KEST" },
-  { code: "NADIR–7K", name: "OBSIDIAN VAULT", bossTitle: "ECHO KEEPER", bossName: "MNEMOSYNE–6" },
+  { code: "NADIR–7A", name: "UPPER WORKS", rewardSlot: 8, bossTitle: "VAULT MASTER", bossName: "MALIK VEYRAN" },
+  { code: "NADIR–7B", name: "CRYOGENIC FOUNDRY", rewardSlot: 9, bossTitle: "FORGE WARDEN", bossName: "HECATE–9" },
+  { code: "NADIR–7C", name: "BIOFORGE DEPTHS", rewardSlot: 10, bossTitle: "SPECIMEN PRIME", bossName: "CHIMERA–9" },
+  { code: "NADIR–7D", name: "DATA SPINE", rewardSlot: 12, bossTitle: "PREDICTIVE CORE", bossName: "ORACLE–7" },
+  { code: "NADIR–7E", name: "REACTOR SINK", rewardSlot: 13, bossTitle: "REACTOR WARDEN", bossName: "GRAVEMIND–4" },
+  { code: "NADIR–7F", name: "NULL ARCHIVE", rewardSlot: 11, bossTitle: "MEMORY CUSTODIAN", bossName: "NULL ARCHIVIST" },
+  { code: "NADIR–7G", name: "CRYO RESERVE", rewardSlot: 14, bossTitle: "COOLANT SENTINEL", bossName: "HALCYON–3" },
+  { code: "NADIR–7H", name: "SIGNAL CRYPT", rewardSlot: 15, bossTitle: "TRANSMISSION GHOST", bossName: "RELAY–0" },
+  { code: "NADIR–7I", name: "SIEGE YARD", rewardSlot: 16, bossTitle: "HEAVY ASSET", bossName: "TITAN–12" },
+  { code: "NADIR–7J", name: "COMMAND BUNKER", rewardSlot: 17, bossTitle: "SITE DIRECTOR", bossName: "DIRECTOR KEST" },
+  { code: "NADIR–7K", name: "OBSIDIAN VAULT", rewardSlot: 18, bossTitle: "ECHO KEEPER", bossName: "MNEMOSYNE–6" },
 ] as const;
 
 export function sectorForWave(wave: number) {
@@ -59,6 +59,10 @@ export const WEAPONS = [
   { id: 17, name: "KS-8 KEST", role: "Director rifle · precise triple burst", magSize: 30, lowAmmoAt: 8, reserve: 180, sheet: WEAPON_SHEETS[17]! },
   { id: 18, name: "MN-6 ECHO", role: "Memory lance · pierces three targets", magSize: 12, lowAmmoAt: 3, reserve: 72, sheet: WEAPON_SHEETS[18]! },
 ];
+
+export function bossRewardForWave(wave: number) {
+  return WEAPONS[sectorForWave(wave).rewardSlot]!;
+}
 
 const HANDLER = [
   "Ward. Restore the lab node before the vault console will answer.",

@@ -15,6 +15,7 @@ import {
   saveBoard,
   saveCheckpoint,
   sectorForWave,
+  bossRewardForWave,
   WEAPONS,
   type RunSave,
   type Score,
@@ -82,6 +83,7 @@ export function GameApp() {
   const [vol, setVol] = useState(loadVol);
   const [requireGpu, setRequireGpu] = useState(gpuEnabled);
   const qaRef = useRef(false);
+  const hadPointerLock = useRef(false);
   const [gfx, setGfx] = useState<GfxOpts>(loadGfx);
   const [board, setBoard] = useState<Score[]>([]);
   const [err, setErr] = useState<string | null>(null);
@@ -399,8 +401,9 @@ export function GameApp() {
     const id = window.setTimeout(() => setRadio(null), 5600);
     return () => window.clearTimeout(id);
   }, [hud.radioSeq, hud.radioLine, hud.wave, screen]);
-  useEffect(() => {
+  useLayoutEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (e.repeat) return;
       if (
         document.querySelector('[role="dialog"]') ||
         /INPUT|SELECT|TEXTAREA/.test((e.target as HTMLElement)?.tagName)
@@ -410,7 +413,8 @@ export function GameApp() {
         if (screen === "play") {
           e.preventDefault();
           pause();
-        } else if (screen === "pause" && e.code === "KeyP") {
+        } else if (screen === "pause") {
+          e.preventDefault();
           resume();
         }
       }
@@ -436,10 +440,13 @@ export function GameApp() {
 
   useEffect(() => {
     const onLock = () => {
-      if (qaRef.current) return;
-      // Touch devices never take pointer lock — never auto-pause them here.
-      if (window.matchMedia("(pointer: coarse)").matches) return;
-      if (screen === "play" && !document.pointerLockElement) pause();
+      const locked = document.pointerLockElement === canvasRef.current;
+      const lostLock = hadPointerLock.current && !locked;
+      hadPointerLock.current = locked;
+      // Browsers can consume Escape before keydown when releasing capture.
+      // Pause on an actual loss of our lock, including local QA sessions.
+      // Touch devices that never captured the mouse don't enter this path.
+      if (screen === "play" && lostLock) pause();
     };
     document.addEventListener("pointerlockchange", onLock);
     return () => document.removeEventListener("pointerlockchange", onLock);
@@ -591,9 +598,7 @@ export function GameApp() {
             <p className="pointer-events-none absolute bottom-28 left-1/2 -translate-x-1/2 font-display text-sm tracking-[0.2em] text-primary">
               CLAIM THE{" "}
               {
-                [WEAPONS[8], WEAPONS[9], WEAPONS[10]][
-                  (Math.max(1, hud.wave) - 1) % 3
-                ]!.name
+                bossRewardForWave(hud.wave).name
               }{" "}
               — SECTOR OPEN
             </p>

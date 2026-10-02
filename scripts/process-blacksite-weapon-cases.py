@@ -15,7 +15,7 @@ SOURCE = ROOT / "art" / "source_hd" / "weapon_cases"
 # and are processed second so they win the runtime sprite slots.
 V2_SOURCE = ROOT / "public" / "game" / "draft" / "v2" / "cases"
 OUT = ROOT / "public" / "game"
-WEAPONS = ("mk23s", "br12", "kx9", "mr4", "vlk6", "ax12", "m91", "hx8", "vr9", "hc9", "cm9")
+WEAPONS = ("mk23s", "br12", "kx9", "mr4", "vlk6", "ax12", "m91", "hx8", "vr9", "hc9", "cm9", "ar6", "or7", "gs4", "cr3", "sr0", "ts12", "ks8", "mn6")
 
 
 def key_magenta(image: Image.Image) -> Image.Image:
@@ -88,9 +88,13 @@ def main() -> None:
         v2 = V2_SOURCE / f"case_{slug}.png"
         if v2.exists():
             source = v2
+            # Native transparent renders can contain legitimate pink signal
+            # accents. Chroma-keying these assets cuts holes in the gun.
+            image = Image.open(source).convert("RGBA")
         else:
             source = SOURCE / (f"{slug}.png" if (SOURCE / f"{slug}.png").exists() else f"{slug}.jpg")
-        sprite = fit(despill(key_magenta(Image.open(source))))
+            image = despill(key_magenta(Image.open(source)))
+        sprite = fit(image)
         target = OUT / f"spr_gun_{slug}.png"
         sprite.save(target, "PNG", optimize=True)
         report[slug] = {

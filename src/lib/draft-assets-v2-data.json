@@ -82,9 +82,9 @@
   {
     "file": "/game/draft/v2/cases/case_vr9.png",
     "name": "case_vr9_v2.png",
-    "size": 890974,
-    "hash": "f9b291f70fd34878ef0841e5c624d9c7008e04834f049e8e26a52385ae49c4c9",
-    "shortHash": "f9b291f7",
+    "size": 1105368,
+    "hash": "c82885eca158e0b0455fdd0ffe3915a82f2345419f777a736e899c8c05d9c6a9",
+    "shortHash": "c82885ec",
     "width": 1024,
     "height": 768,
     "group": "items"
@@ -92,9 +92,9 @@
   {
     "file": "/game/draft/v2/cases/case_hc9.png",
     "name": "case_hc9_v2.png",
-    "size": 972059,
-    "hash": "9f021e0bd12da281743e2c6dce83644779b1c28ca72ef13dd8c860c660536d78",
-    "shortHash": "9f021e0b",
+    "size": 1237067,
+    "hash": "aa8e3dcd11f4a0dbf7f9169a5560dc6529d76fa1937a2aa82af9e37f0a052236",
+    "shortHash": "aa8e3dcd",
     "width": 1024,
     "height": 768,
     "group": "items"
@@ -102,9 +102,9 @@
   {
     "file": "/game/draft/v2/cases/case_cm9.png",
     "name": "case_cm9_v2.png",
-    "size": 909521,
-    "hash": "5804da6db7b980861e5672d2da327a2778f80747885c86f39b60576000221bfc",
-    "shortHash": "5804da6d",
+    "size": 1237841,
+    "hash": "131e41e964f9815d6159037e06ed6ff88dba6d1d1bde14f4dd28186b4e35f566",
+    "shortHash": "131e41e9",
     "width": 1024,
     "height": 768,
     "group": "items"
@@ -630,9 +630,9 @@
   {
     "file": "/game/draft/v2/cases/case_ar6.png",
     "name": "case_ar6.png",
-    "size": 963530,
-    "hash": "102d4c02d516fa92b4b29e79f777f739097da0d6b80f0f154f682bbba3973ec0",
-    "shortHash": "102d4c02",
+    "size": 1144314,
+    "hash": "64dc7326a45474c019a5fda5f1a2fdc2bd825dc7a2aed742245d8d0fcff63a46",
+    "shortHash": "64dc7326",
     "width": 1024,
     "height": 768,
     "group": "items"
@@ -640,9 +640,9 @@
   {
     "file": "/game/draft/v2/cases/case_or7.png",
     "name": "case_or7_v2.png",
-    "size": 904475,
-    "hash": "f9606ce40aa46d2277163ea6d21da912f8607c6374b367894b6fef80992a9bd7",
-    "shortHash": "f9606ce4",
+    "size": 1089798,
+    "hash": "efe048e3e8939d3738484b8912e7dc4c37b152ee9a0b6bc2fdf693bdd034c52f",
+    "shortHash": "efe048e3",
     "width": 1024,
     "height": 768,
     "group": "items"
@@ -650,9 +650,9 @@
   {
     "file": "/game/draft/v2/cases/case_gs4.png",
     "name": "case_gs4_v2.png",
-    "size": 906849,
-    "hash": "d8a900857e0dd303eda3db00f7de78231a87c482f19c0ebe37ce1d948ad2a2d9",
-    "shortHash": "d8a90085",
+    "size": 1149436,
+    "hash": "440eca2f687a78077669782b3f0e9efc943146798705e0a60e63b1f36666f7a1",
+    "shortHash": "440eca2f",
     "width": 1024,
     "height": 768,
     "group": "items"
@@ -660,9 +660,9 @@
   {
     "file": "/game/draft/v2/cases/case_cr3.png",
     "name": "case_cr3_v2.png",
-    "size": 913115,
-    "hash": "b8ee332950dd260d495e1f7d7aa2265a22e4d08c624d2834d4f40ae0ea71bcd8",
-    "shortHash": "b8ee3329",
+    "size": 1235316,
+    "hash": "dd0a2e4c16c499a2310dfce4c8ffb0368d918abd47a475541898492f647bca92",
+    "shortHash": "dd0a2e4c",
     "width": 1024,
     "height": 768,
     "group": "items"
@@ -670,9 +670,9 @@
   {
     "file": "/game/draft/v2/cases/case_sr0.png",
     "name": "case_sr0_v2.png",
-    "size": 902653,
-    "hash": "7fc03e0c30777536b6998e159b27a21ae7f248c7b968126999d81cbb1d5211a2",
-    "shortHash": "7fc03e0c",
+    "size": 1156391,
+    "hash": "c4bfa39867dc7d0980c04b54018e897e9720551b1f4c90348ac09ac3bdbd51ec",
+    "shortHash": "c4bfa398",
     "width": 1024,
     "height": 768,
     "group": "items"
@@ -680,9 +680,9 @@
   {
     "file": "/game/draft/v2/cases/case_ts12.png",
     "name": "case_ts12_v2.png",
-    "size": 913759,
-    "hash": "c8a037ee20706039afd13ae644a8b8e278c92633b6bade1718a947f24d387bc8",
-    "shortHash": "c8a037ee",
+    "size": 1126452,
+    "hash": "d0e6efdd67e8bfc12ce9ad5cef49ccc49147096f37234aa0896e1a9606f71e06",
+    "shortHash": "d0e6efdd",
     "width": 1024,
     "height": 768,
     "group": "items"
@@ -690,9 +690,9 @@
   {
     "file": "/game/draft/v2/cases/case_ks8.png",
     "name": "case_ks8_v2.png",
-    "size": 904265,
-    "hash": "372fd2dd78b9dafb4b34665daf3cc19e2a7fc9bad4a32812f3a2e2abb0886d30",
-    "shortHash": "372fd2dd",
+    "size": 1097978,
+    "hash": "44941fa698689ecefe8cc3587d44027b6ec24bedeca73485f8ae3a569d654b4c",
+    "shortHash": "44941fa6",
     "width": 1024,
     "height": 768,
     "group": "items"
@@ -700,9 +700,9 @@
   {
     "file": "/game/draft/v2/cases/case_mn6.png",
     "name": "case_mn6_v2.png",
-    "size": 919772,
-    "hash": "0f82268b38bbed0c78648a67a7aa1ebc35f0a99b66c89c3da99f3663cd6bddf5",
-    "shortHash": "0f82268b",
+    "size": 1222570,
+    "hash": "bb55ea34cdf25405bac8bce7fef63cdb7274b3010d4365d2432f6fb3fceca2ae",
+    "shortHash": "bb55ea34",
     "width": 1024,
     "height": 768,
     "group": "items"

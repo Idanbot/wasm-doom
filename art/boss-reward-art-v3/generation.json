@@ -1,0 +1,248 @@
+{
+  "provider": "imagegen",
+  "date": "2026-10-02",
+  "assets": [
+    {
+      "id": "vr9",
+      "kind": "case",
+      "file": "art/boss-reward-art-v3/vr9-case.png",
+      "prompt": "Photorealistic BLACKSITE boss reward pickup asset. Reference image identifies the exact amber rail rifle; preserve its recognizable silhouette, optics, mechanism and accent colors. Create ONE open premium GOLDEN military hard weapon case containing this exact gun, without hands. Gold anodized metal exterior, golden reinforced rim and latches, dark charcoal custom-cut foam, gun clearly visible and fitted to its size. Three-quarter top view, lid opened behind the base, realistic tactical industrial construction, restrained gold finish with crisp highlights. Entire case and lid fit inside frame with generous transparent margin. Transparent background, no ground, no scene, no text, no labels, no watermark. Landscape 4:3 composition, detailed high quality render intended for 1024x768 PNG.",
+      "sha256": "f7774d92733561c93410caf9c0340c09dfa87aa126dad78214a6ec2a7b31618c",
+      "size": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "id": "vr9",
+      "kind": "side",
+      "file": "art/boss-reward-art-v3/vr9-side.png",
+      "prompt": "Photorealistic BLACKSITE arsenal wheel thumbnail. Use reference solely for the identity of the exact amber rail rifle; preserve its recognizable mechanics, optics, proportions, material details and original accent colors. Create ONE isolated FULL STRICT SIDE PROFILE of this weapon, orthographic camera, muzzle pointing LEFT and stock/rear to RIGHT, level horizontal barrel. Entire gun visible, no perspective foreshortening, no hands or person, no case. Bright neutral studio highlights make black tactical metal legible on dark UI. Transparent background, generous margins, landscape composition approximately 2.13:1, highly detailed realistic render, no scenery, no text or labels or watermark. This is a weapon selection silhouette, NOT a first-person viewmodel.",
+      "sha256": "db8f8238736e6f3bd02178da75148aed4277bf0b5cb6b57c01f2407bc380b885",
+      "size": [
+        1828,
+        860
+      ]
+    },
+    {
+      "id": "hc9",
+      "kind": "case",
+      "file": "art/boss-reward-art-v3/hc9-case.png",
+      "prompt": "Photorealistic BLACKSITE boss reward pickup asset. Reference image identifies the exact cyan rotary induction cutter; preserve its recognizable silhouette, optics, mechanism and accent colors. Create ONE open premium GOLDEN military hard weapon case containing this exact gun, without hands. Gold anodized metal exterior, golden reinforced rim and latches, dark charcoal custom-cut foam, gun clearly visible and fitted to its size. Three-quarter top view, lid opened behind the base, realistic tactical industrial construction, restrained gold finish with crisp highlights. Entire case and lid fit inside frame with generous transparent margin. Transparent background, no ground, no scene, no text, no labels, no watermark. Landscape 4:3 composition, detailed high quality render intended for 1024x768 PNG.",
+      "sha256": "ee6db55a5c5d1c0c06448e7f9899adfe10f6fda1088e595cf4d235acdafad8d7",
+      "size": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "id": "hc9",
+      "kind": "side",
+      "file": "art/boss-reward-art-v3/hc9-side.png",
+      "prompt": "Photorealistic BLACKSITE arsenal wheel thumbnail. Use reference solely for the identity of the exact cyan rotary induction cutter; preserve its recognizable mechanics, optics, proportions, material details and original accent colors. Create ONE isolated FULL STRICT SIDE PROFILE of this weapon, orthographic camera, muzzle pointing LEFT and stock/rear to RIGHT, level horizontal barrel. Entire gun visible, no perspective foreshortening, no hands or person, no case. Bright neutral studio highlights make black tactical metal legible on dark UI. Transparent background, generous margins, landscape composition approximately 2.13:1, highly detailed realistic render, no scenery, no text or labels or watermark. This is a weapon selection silhouette, NOT a first-person viewmodel.",
+      "sha256": "d9c53fa59a403b7e6869575670bfcd818df247a3ce3e6bfcc9fecfb6b5a72e32",
+      "size": [
+        1828,
+        860
+      ]
+    },
+    {
+      "id": "cm9",
+      "kind": "case",
+      "file": "art/boss-reward-art-v3/cm9-case.png",
+      "prompt": "Photorealistic BLACKSITE boss reward pickup asset. Reference image identifies the exact green twin-bottle acid launcher; preserve its recognizable silhouette, optics, mechanism and accent colors. Create ONE open premium GOLDEN military hard weapon case containing this exact gun, without hands. Gold anodized metal exterior, golden reinforced rim and latches, dark charcoal custom-cut foam, gun clearly visible and fitted to its size. Three-quarter top view, lid opened behind the base, realistic tactical industrial construction, restrained gold finish with crisp highlights. Entire case and lid fit inside frame with generous transparent margin. Transparent background, no ground, no scene, no text, no labels, no watermark. Landscape 4:3 composition, detailed high quality render intended for 1024x768 PNG.",
+      "sha256": "e35a53251c23063577615f4976dc1941ce2050d3ec9ab8bf5319bf5b2245fe8a",
+      "size": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "id": "cm9",
+      "kind": "side",
+      "file": "art/boss-reward-art-v3/cm9-side.png",
+      "prompt": "Photorealistic BLACKSITE arsenal wheel thumbnail. Use reference solely for the identity of the exact green twin-bottle acid launcher; preserve its recognizable mechanics, optics, proportions, material details and original accent colors. Create ONE isolated FULL STRICT SIDE PROFILE of this weapon, orthographic camera, muzzle pointing LEFT and stock/rear to RIGHT, level horizontal barrel. Entire gun visible, no perspective foreshortening, no hands or person, no case. Bright neutral studio highlights make black tactical metal legible on dark UI. Transparent background, generous margins, landscape composition approximately 2.13:1, highly detailed realistic render, no scenery, no text or labels or watermark. This is a weapon selection silhouette, NOT a first-person viewmodel.",
+      "sha256": "03e7e411b41a679e4f8cceb3ce8cb6384633244e433eca942ccc67b7a0f3ab72",
+      "size": [
+        1832,
+        859
+      ]
+    },
+    {
+      "id": "ar6",
+      "kind": "case",
+      "file": "art/boss-reward-art-v3/ar6-case.png",
+      "prompt": "Photorealistic BLACKSITE boss reward pickup asset. Reference image identifies the exact amber energy carbine; preserve its recognizable silhouette, optics, mechanism and accent colors. Create ONE open premium GOLDEN military hard weapon case containing this exact gun, without hands. Gold anodized metal exterior, golden reinforced rim and latches, dark charcoal custom-cut foam, gun clearly visible and fitted to its size. Three-quarter top view, lid opened behind the base, realistic tactical industrial construction, restrained gold finish with crisp highlights. Entire case and lid fit inside frame with generous transparent margin. Transparent background, no ground, no scene, no text, no labels, no watermark. Landscape 4:3 composition, detailed high quality render intended for 1024x768 PNG.",
+      "sha256": "c313f7942238c547569ef11d8e3b9216ab013308ada796a7902532f4740fdb34",
+      "size": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "id": "ar6",
+      "kind": "side",
+      "file": "art/boss-reward-art-v3/ar6-side.png",
+      "prompt": "Photorealistic BLACKSITE arsenal wheel thumbnail. Use reference solely for the identity of the exact amber energy carbine; preserve its recognizable mechanics, optics, proportions, material details and original accent colors. Create ONE isolated FULL STRICT SIDE PROFILE of this weapon, orthographic camera, muzzle pointing LEFT and stock/rear to RIGHT, level horizontal barrel. Entire gun visible, no perspective foreshortening, no hands or person, no case. Bright neutral studio highlights make black tactical metal legible on dark UI. Transparent background, generous margins, landscape composition approximately 2.13:1, highly detailed realistic render, no scenery, no text or labels or watermark. This is a weapon selection silhouette, NOT a first-person viewmodel.",
+      "sha256": "be1f57625ab56ca4979affce0bcd22ef158122c4192c02e7c51ad37a3897247c",
+      "size": [
+        1828,
+        860
+      ]
+    },
+    {
+      "id": "or7",
+      "kind": "case",
+      "file": "art/boss-reward-art-v3/or7-case.png",
+      "prompt": "Photorealistic BLACKSITE boss reward pickup asset. Reference image identifies the exact cyan scoped rail rifle; preserve its recognizable silhouette, optics, mechanism and accent colors. Create ONE open premium GOLDEN military hard weapon case containing this exact gun, without hands. Gold anodized metal exterior, golden reinforced rim and latches, dark charcoal custom-cut foam, gun clearly visible and fitted to its size. Three-quarter top view, lid opened behind the base, realistic tactical industrial construction, restrained gold finish with crisp highlights. Entire case and lid fit inside frame with generous transparent margin. Transparent background, no ground, no scene, no text, no labels, no watermark. Landscape 4:3 composition, detailed high quality render intended for 1024x768 PNG.",
+      "sha256": "fac99ef3f1931d6934560f603dcb2a6c160099a9bca6cdfacdc81f89d71fbc4a",
+      "size": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "id": "or7",
+      "kind": "side",
+      "file": "art/boss-reward-art-v3/or7-side.png",
+      "prompt": "Photorealistic BLACKSITE arsenal wheel thumbnail. Use reference solely for the identity of the exact cyan scoped rail rifle; preserve its recognizable mechanics, optics, proportions, material details and original accent colors. Create ONE isolated FULL STRICT SIDE PROFILE of this weapon, orthographic camera, muzzle pointing LEFT and stock/rear to RIGHT, level horizontal barrel. Entire gun visible, no perspective foreshortening, no hands or person, no case. Bright neutral studio highlights make black tactical metal legible on dark UI. Transparent background, generous margins, landscape composition approximately 2.13:1, highly detailed realistic render, no scenery, no text or labels or watermark. This is a weapon selection silhouette, NOT a first-person viewmodel.",
+      "sha256": "85c8740f6780b958ad1c4ea7211af50901ba56ee98594cf13d3249f60b051571",
+      "size": [
+        1829,
+        860
+      ]
+    },
+    {
+      "id": "gs4",
+      "kind": "case",
+      "file": "art/boss-reward-art-v3/gs4-case.png",
+      "prompt": "Photorealistic BLACKSITE boss reward pickup asset. Reference image identifies the exact copper pressure scatter cannon; preserve its recognizable silhouette, optics, mechanism and accent colors. Create ONE open premium GOLDEN military hard weapon case containing this exact gun, without hands. Gold anodized metal exterior, golden reinforced rim and latches, dark charcoal custom-cut foam, gun clearly visible and fitted to its size. Three-quarter top view, lid opened behind the base, realistic tactical industrial construction, restrained gold finish with crisp highlights. Entire case and lid fit inside frame with generous transparent margin. Transparent background, no ground, no scene, no text, no labels, no watermark. Landscape 4:3 composition, detailed high quality render intended for 1024x768 PNG.",
+      "sha256": "3d3c208958c367b956283999fed8f2a06490bb1aef897c98b6bbaeed3f1fa0d8",
+      "size": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "id": "gs4",
+      "kind": "side",
+      "file": "art/boss-reward-art-v3/gs4-side.png",
+      "prompt": "Photorealistic BLACKSITE arsenal wheel thumbnail. Use reference solely for the identity of the exact copper pressure scatter cannon; preserve its recognizable mechanics, optics, proportions, material details and original accent colors. Create ONE isolated FULL STRICT SIDE PROFILE of this weapon, orthographic camera, muzzle pointing LEFT and stock/rear to RIGHT, level horizontal barrel. Entire gun visible, no perspective foreshortening, no hands or person, no case. Bright neutral studio highlights make black tactical metal legible on dark UI. Transparent background, generous margins, landscape composition approximately 2.13:1, highly detailed realistic render, no scenery, no text or labels or watermark. This is a weapon selection silhouette, NOT a first-person viewmodel.",
+      "sha256": "17205292d9733b541ea46d880fa50c8d8792e8bd249b27f4032921c6e206d6ce",
+      "size": [
+        1829,
+        860
+      ]
+    },
+    {
+      "id": "cr3",
+      "kind": "case",
+      "file": "art/boss-reward-art-v3/cr3-case.png",
+      "prompt": "Photorealistic BLACKSITE boss reward pickup asset. Reference image identifies the exact white cyan coolant launcher; preserve its recognizable silhouette, optics, mechanism and accent colors. Create ONE open premium GOLDEN military hard weapon case containing this exact gun, without hands. Gold anodized metal exterior, golden reinforced rim and latches, dark charcoal custom-cut foam, gun clearly visible and fitted to its size. Three-quarter top view, lid opened behind the base, realistic tactical industrial construction, restrained gold finish with crisp highlights. Entire case and lid fit inside frame with generous transparent margin. Transparent background, no ground, no scene, no text, no labels, no watermark. Landscape 4:3 composition, detailed high quality render intended for 1024x768 PNG.",
+      "sha256": "f7f702c8e1a7003facb330980c6374f5c1d0b6086bb19ea880f75d03a4345b6b",
+      "size": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "id": "cr3",
+      "kind": "side",
+      "file": "art/boss-reward-art-v3/cr3-side.png",
+      "prompt": "Photorealistic BLACKSITE arsenal wheel thumbnail. Use reference solely for the identity of the exact white cyan coolant launcher; preserve its recognizable mechanics, optics, proportions, material details and original accent colors. Create ONE isolated FULL STRICT SIDE PROFILE of this weapon, orthographic camera, muzzle pointing LEFT and stock/rear to RIGHT, level horizontal barrel. Entire gun visible, no perspective foreshortening, no hands or person, no case. Bright neutral studio highlights make black tactical metal legible on dark UI. Transparent background, generous margins, landscape composition approximately 2.13:1, highly detailed realistic render, no scenery, no text or labels or watermark. This is a weapon selection silhouette, NOT a first-person viewmodel.",
+      "sha256": "a3bd767edfb9ea220541b9e850fd6054cbec266f208a3f31ea026827e4f64b5e",
+      "size": [
+        1829,
+        860
+      ]
+    },
+    {
+      "id": "sr0",
+      "kind": "case",
+      "file": "art/boss-reward-art-v3/sr0-case.png",
+      "prompt": "Photorealistic BLACKSITE boss reward pickup asset. Reference image identifies the exact pink antenna signal carbine; preserve its recognizable silhouette, optics, mechanism and accent colors. Create ONE open premium GOLDEN military hard weapon case containing this exact gun, without hands. Gold anodized metal exterior, golden reinforced rim and latches, dark charcoal custom-cut foam, gun clearly visible and fitted to its size. Three-quarter top view, lid opened behind the base, realistic tactical industrial construction, restrained gold finish with crisp highlights. Entire case and lid fit inside frame with generous transparent margin. Transparent background, no ground, no scene, no text, no labels, no watermark. Landscape 4:3 composition, detailed high quality render intended for 1024x768 PNG.",
+      "sha256": "8c4c8b509fa14a19dd493d43479e41d2d65a691813a9ffa24b2e8192c05bcfb9",
+      "size": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "id": "sr0",
+      "kind": "side",
+      "file": "art/boss-reward-art-v3/sr0-side.png",
+      "prompt": "Photorealistic BLACKSITE arsenal wheel thumbnail. Use reference solely for the identity of the exact pink antenna signal carbine; preserve its recognizable mechanics, optics, proportions, material details and original accent colors. Create ONE isolated FULL STRICT SIDE PROFILE of this weapon, orthographic camera, muzzle pointing LEFT and stock/rear to RIGHT, level horizontal barrel. Entire gun visible, no perspective foreshortening, no hands or person, no case. Bright neutral studio highlights make black tactical metal legible on dark UI. Transparent background, generous margins, landscape composition approximately 2.13:1, highly detailed realistic render, no scenery, no text or labels or watermark. This is a weapon selection silhouette, NOT a first-person viewmodel.",
+      "sha256": "4cb958f14ca7a7908f19c797e174c231038dcd9e21b3c07935190cb5aed8857a",
+      "size": [
+        1832,
+        858
+      ]
+    },
+    {
+      "id": "ts12",
+      "kind": "case",
+      "file": "art/boss-reward-art-v3/ts12-case.png",
+      "prompt": "Photorealistic BLACKSITE boss reward pickup asset. Reference image identifies the exact yellow industrial heavy cannon; preserve its recognizable silhouette, optics, mechanism and accent colors. Create ONE open premium GOLDEN military hard weapon case containing this exact gun, without hands. Gold anodized metal exterior, golden reinforced rim and latches, dark charcoal custom-cut foam, gun clearly visible and fitted to its size. Three-quarter top view, lid opened behind the base, realistic tactical industrial construction, restrained gold finish with crisp highlights. Entire case and lid fit inside frame with generous transparent margin. Transparent background, no ground, no scene, no text, no labels, no watermark. Landscape 4:3 composition, detailed high quality render intended for 1024x768 PNG.",
+      "sha256": "06a0cb14d96466dbd96d73f7c2cae49ba6cffd7054af8914351cef7d45856683",
+      "size": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "id": "ts12",
+      "kind": "side",
+      "file": "art/boss-reward-art-v3/ts12-side.png",
+      "prompt": "Photorealistic BLACKSITE arsenal wheel thumbnail. Use reference solely for the identity of the exact yellow industrial heavy cannon; preserve its recognizable mechanics, optics, proportions, material details and original accent colors. Create ONE isolated FULL STRICT SIDE PROFILE of this weapon, orthographic camera, muzzle pointing LEFT and stock/rear to RIGHT, level horizontal barrel. Entire gun visible, no perspective foreshortening, no hands or person, no case. Bright neutral studio highlights make black tactical metal legible on dark UI. Transparent background, generous margins, landscape composition approximately 2.13:1, highly detailed realistic render, no scenery, no text or labels or watermark. This is a weapon selection silhouette, NOT a first-person viewmodel.",
+      "sha256": "76c592a1ef70c4a441917778d1664d43171e0ae5af79cd277a3f885b517d2d54",
+      "size": [
+        1829,
+        860
+      ]
+    },
+    {
+      "id": "ks8",
+      "kind": "case",
+      "file": "art/boss-reward-art-v3/ks8-case.png",
+      "prompt": "Photorealistic BLACKSITE boss reward pickup asset. Reference image identifies the exact black red tactical assault rifle; preserve its recognizable silhouette, optics, mechanism and accent colors. Create ONE open premium GOLDEN military hard weapon case containing this exact gun, without hands. Gold anodized metal exterior, golden reinforced rim and latches, dark charcoal custom-cut foam, gun clearly visible and fitted to its size. Three-quarter top view, lid opened behind the base, realistic tactical industrial construction, restrained gold finish with crisp highlights. Entire case and lid fit inside frame with generous transparent margin. Transparent background, no ground, no scene, no text, no labels, no watermark. Landscape 4:3 composition, detailed high quality render intended for 1024x768 PNG.",
+      "sha256": "f8f0a8e3c944527445a5debaab73d30330d65fc3d792ee741ab746d25361667e",
+      "size": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "id": "ks8",
+      "kind": "side",
+      "file": "art/boss-reward-art-v3/ks8-side.png",
+      "prompt": "Photorealistic BLACKSITE arsenal wheel thumbnail. Use reference solely for the identity of the exact black red tactical assault rifle; preserve its recognizable mechanics, optics, proportions, material details and original accent colors. Create ONE isolated FULL STRICT SIDE PROFILE of this weapon, orthographic camera, muzzle pointing LEFT and stock/rear to RIGHT, level horizontal barrel. Entire gun visible, no perspective foreshortening, no hands or person, no case. Bright neutral studio highlights make black tactical metal legible on dark UI. Transparent background, generous margins, landscape composition approximately 2.13:1, highly detailed realistic render, no scenery, no text or labels or watermark. This is a weapon selection silhouette, NOT a first-person viewmodel.",
+      "sha256": "9e78ccc7bf79cc13e6e7e94bdb8bd3d456135cc6c992f6f936311dbb31aabb67",
+      "size": [
+        1828,
+        860
+      ]
+    },
+    {
+      "id": "mn6",
+      "kind": "case",
+      "file": "art/boss-reward-art-v3/mn6-case.png",
+      "prompt": "Photorealistic BLACKSITE boss reward pickup asset. Reference image identifies the exact violet echo energy rifle; preserve its recognizable silhouette, optics, mechanism and accent colors. Create ONE open premium GOLDEN military hard weapon case containing this exact gun, without hands. Gold anodized metal exterior, golden reinforced rim and latches, dark charcoal custom-cut foam, gun clearly visible and fitted to its size. Three-quarter top view, lid opened behind the base, realistic tactical industrial construction, restrained gold finish with crisp highlights. Entire case and lid fit inside frame with generous transparent margin. Transparent background, no ground, no scene, no text, no labels, no watermark. Landscape 4:3 composition, detailed high quality render intended for 1024x768 PNG.",
+      "sha256": "03f15e9a58122fc7bbd9b29235c300b121342425bfd0c921c31f093d64ebc6c9",
+      "size": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "id": "mn6",
+      "kind": "side",
+      "file": "art/boss-reward-art-v3/mn6-side.png",
+      "prompt": "Photorealistic BLACKSITE arsenal wheel thumbnail. Use reference solely for the identity of the exact violet echo energy rifle; preserve its recognizable mechanics, optics, proportions, material details and original accent colors. Create ONE isolated FULL STRICT SIDE PROFILE of this weapon, orthographic camera, muzzle pointing LEFT and stock/rear to RIGHT, level horizontal barrel. Entire gun visible, no perspective foreshortening, no hands or person, no case. Bright neutral studio highlights make black tactical metal legible on dark UI. Transparent background, generous margins, landscape composition approximately 2.13:1, highly detailed realistic render, no scenery, no text or labels or watermark. This is a weapon selection silhouette, NOT a first-person viewmodel.",
+      "sha256": "eaa418678ab67bf28dd317fc31cea6d83d40f72d6ec63f1dd0290d37b2c4958c",
+      "size": [
+        1828,
+        860
+      ]
+    }
+  ]
+}

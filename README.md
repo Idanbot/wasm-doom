@@ -53,6 +53,7 @@ The standard arsenal is MK23-S, BR-12 Breaker, KX-9 Vector, MR-4 Longbow, VLK-6 
 - `public/game/music/menu.mp3` covers menus, pause, settings and other non-game screens. `bgm-remix.mp3` and `boss.mp3` provide gameplay music.
 - The minimap sits below the handler panel; health and ammunition cards share a compact lower-left layout. Settings persist locally and include an enemy-subtitles toggle. The main menu has no resume-sector option.
 - The asset catalog is available from the start menu only in local development. It shows the current weapon set and animation frames and is excluded from the production build.
+- Boss reward cases have golden hard-shell exteriors and matching fitted guns; their arsenal wheel icons are strict side-profile cutouts. Obsidian Vault drops MN-6 ECHO, and both Esc and P pause/resume the operation.
 - All eleven boss reward guns use regenerated pickup and mechanical reload poses in transparent 5×5 sheets (2560×1920, 512×384 cells), retaining their approved aim images. Source boards and packing details are in [the boss animation guide](docs/BOSS_WEAPON_ANIMATIONS.md).
 
 | Folder | Contents |
@@ -133,7 +134,7 @@ node scripts/combat-smoke.mjs
 node scripts/end-screen-smoke.mjs
 ```
 
-The engine has **102 Rust tests**. Coverage includes sector reachability, all boss entries and phases, distinct reward drops, Echo firing and save roundtrips, manual reload behavior, projectiles and movement direction. Browser checks cover asset preload and failure handling, arsenal thumbnails, firing/reload frames, HUD containment, bosses, desktop/mobile rendering and end screens.
+The engine has **103 Rust tests**. Coverage includes sector reachability, all boss entries and phases, distinct reward drops, Echo firing and save roundtrips, manual reload behavior, projectiles and movement direction. Browser checks cover asset preload and failure handling, arsenal thumbnails, firing/reload frames, HUD containment, bosses, desktop/mobile rendering and end screens.
 
 [CI](.github/workflows/ci.yml) runs typechecking, WASM synchronization, asset validation, production build, renderer performance checks, TypeScript/Rust tests and browser smoke checks on pushes and pull requests.
 

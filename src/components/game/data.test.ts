@@ -13,6 +13,7 @@ import {
   WEAPONS,
   gridPos,
   sectorForWave,
+  bossRewardForWave,
   bossDeathVariantForWave,
 } from "./data.ts";
 import { DEFAULT_GFX, RES_MODES } from "../../game/types.ts";
@@ -207,5 +208,13 @@ describe("loadGfx", () => {
   it("merges stored toggles over defaults", () => {
     installMemoryStorage({ "hellscan-gfx": JSON.stringify({ bloom: false }) });
     assert.deepEqual(loadGfx(), { ...DEFAULT_GFX, bloom: false });
+  });
+});
+
+describe("boss reward labels", () => {
+  it("matches all eleven sector rewards, including repeated Obsidian Vault cycles", () => {
+    assert.deepEqual(Array.from({length: 11}, (_, i) => bossRewardForWave(i + 1).id), [8, 9, 10, 12, 13, 11, 14, 15, 16, 17, 18]);
+    assert.equal(bossRewardForWave(11).name, "MN-6 ECHO");
+    assert.equal(bossRewardForWave(22).name, "MN-6 ECHO");
   });
 });

@@ -1118,18 +1118,18 @@
   {
     "file": "/game/spr_gun_cm9.png",
     "name": "spr_gun_cm9.png",
-    "size": 68266,
-    "hash": "c7bd00fdafbe4bcc3c9b85476eff0b4b584caaf96323175b23ac82d290a7ed72",
-    "shortHash": "c7bd00fd",
+    "size": 73306,
+    "hash": "8b31e51fa1b390465a4e115e990c764b3352ba356416105392993a649fba5fd1",
+    "shortHash": "8b31e51f",
     "width": 256,
     "height": 256
   },
   {
     "file": "/game/spr_gun_hc9.png",
     "name": "spr_gun_hc9.png",
-    "size": 87943,
-    "hash": "ba03f3714b4e08dbbbdcfe855356e6d4e448d2ed679ef3b5e7746404ad696312",
-    "shortHash": "ba03f371",
+    "size": 75233,
+    "hash": "0f9f73ed71741185bf01532efe48db9533ff78d1d4fa86eca2b4d643c57ac4b0",
+    "shortHash": "0f9f73ed",
     "width": 256,
     "height": 256
   },
@@ -1190,9 +1190,9 @@
   {
     "file": "/game/spr_gun_vr9.png",
     "name": "spr_gun_vr9.png",
-    "size": 48193,
-    "hash": "570c043a818848ad6d9187c751d9f3743d46741ede2a6b7d864125be767fbd68",
-    "shortHash": "570c043a",
+    "size": 68952,
+    "hash": "beada6f5e9f9a9de159bc1a0302df9e64d3d5136826409ca1d887037ff385f4b",
+    "shortHash": "beada6f5",
     "width": 256,
     "height": 256
   },
@@ -4521,29 +4521,29 @@
   {
     "file": "/game/draft/v2/cases/case_ar6.png",
     "name": "case_ar6.png",
-    "size": 963530,
-    "hash": "102d4c02d516fa92b4b29e79f777f739097da0d6b80f0f154f682bbba3973ec0",
-    "shortHash": "102d4c02",
+    "size": 1144314,
+    "hash": "64dc7326a45474c019a5fda5f1a2fdc2bd825dc7a2aed742245d8d0fcff63a46",
+    "shortHash": "64dc7326",
     "width": 1024,
     "height": 768
   },
   {
     "file": "/game/spr_gun_ar6.png",
     "name": "spr_gun_ar6.png",
-    "size": 69911,
-    "hash": "2aa5329e3963f9bf8be819f9ea61dc95c65558f8f7a7549442d77c9685e7478d",
-    "shortHash": "2aa5329e",
+    "size": 71330,
+    "hash": "8d1fbf8f727a239336ff2c7d71dbdc0d22350800e3d4c25d43673407cbfbedf7",
+    "shortHash": "8d1fbf8f",
     "width": 256,
     "height": 256
   },
   {
     "file": "/game/ui/weapon-thumbs/ar6.png",
     "name": "ar6.png",
-    "size": 68727,
-    "hash": "6c5f205a68cf8d32da1232dff7e6b4b699d5649384bcc4259c7607707d3c2fe5",
-    "shortHash": "6c5f205a",
-    "width": 384,
-    "height": 192
+    "size": 108927,
+    "hash": "7f7d664bf6d0a087ec59db3a19858ed50e9cb0c1e7ec43560344cb1f022f077d",
+    "shortHash": "7f7d664b",
+    "width": 640,
+    "height": 300
   },
   {
     "file": "/game/voices/boss-archivist.mp3",
@@ -4687,27 +4687,27 @@
   {
     "file": "/game/draft/v2/cases/case_or7.png",
     "name": "case_or7.png",
-    "size": 904475,
-    "hash": "f9606ce40aa46d2277163ea6d21da912f8607c6374b367894b6fef80992a9bd7",
-    "shortHash": "f9606ce4",
+    "size": 1089798,
+    "hash": "efe048e3e8939d3738484b8912e7dc4c37b152ee9a0b6bc2fdf693bdd034c52f",
+    "shortHash": "efe048e3",
     "width": 1024,
     "height": 768
   },
   {
     "file": "/game/spr_gun_or7.png",
     "name": "spr_gun_or7.png",
-    "size": 60487,
-    "hash": "8882656f4d62669c573a2fe786452025cebd2cfcb5582274966f9219a636bc83",
-    "shortHash": "8882656f",
+    "size": 70193,
+    "hash": "e283173b160681fb1b9a52989b3ad797c80e69e75f9e741a81011c8a3aa1024a",
+    "shortHash": "e283173b",
     "width": 256,
-    "height": 192
+    "height": 256
   },
   {
     "file": "/game/ui/weapon-thumbs/or7.png",
     "name": "or7.png",
-    "size": 144538,
-    "hash": "60e46d33b523936f4dd7b8e262c7d02f4312da6e15a537c95321268c00ca18ca",
-    "shortHash": "60e46d33",
+    "size": 92655,
+    "hash": "2195b01b50314cde6b176b99081bf9c538fcf3bbd18ae715d5c1ca20f20c0198",
+    "shortHash": "2195b01b",
     "width": 640,
     "height": 300
   },
@@ -4741,27 +4741,27 @@
   {
     "file": "/game/draft/v2/cases/case_gs4.png",
     "name": "case_gs4.png",
-    "size": 906849,
-    "hash": "d8a900857e0dd303eda3db00f7de78231a87c482f19c0ebe37ce1d948ad2a2d9",
-    "shortHash": "d8a90085",
+    "size": 1149436,
+    "hash": "440eca2f687a78077669782b3f0e9efc943146798705e0a60e63b1f36666f7a1",
+    "shortHash": "440eca2f",
     "width": 1024,
     "height": 768
   },
   {
     "file": "/game/spr_gun_gs4.png",
     "name": "spr_gun_gs4.png",
-    "size": 60241,
-    "hash": "cb0d622f031f773e6a1581fb8fd33e11fc4193be91ac374d9913fec6d7e4b4ec",
-    "shortHash": "cb0d622f",
+    "size": 76600,
+    "hash": "06ee73ea8067e2d5f730664258b1b070811246dbef605cc327da7e57ed143af4",
+    "shortHash": "06ee73ea",
     "width": 256,
-    "height": 192
+    "height": 256
   },
   {
     "file": "/game/ui/weapon-thumbs/gs4.png",
     "name": "gs4.png",
-    "size": 131675,
-    "hash": "24a96d6b6d338be182e564a148b311c7a44595dd7be6df182e48632e2f3d20d2",
-    "shortHash": "24a96d6b",
+    "size": 115177,
+    "hash": "3d7549cda50654b49835360dac9bfbf5c9f1a470bbb4bb67685cacef4a9c6d90",
+    "shortHash": "3d7549cd",
     "width": 640,
     "height": 300
   },
@@ -4795,27 +4795,27 @@
   {
     "file": "/game/draft/v2/cases/case_cr3.png",
     "name": "case_cr3.png",
-    "size": 913115,
-    "hash": "b8ee332950dd260d495e1f7d7aa2265a22e4d08c624d2834d4f40ae0ea71bcd8",
-    "shortHash": "b8ee3329",
+    "size": 1235316,
+    "hash": "dd0a2e4c16c499a2310dfce4c8ffb0368d918abd47a475541898492f647bca92",
+    "shortHash": "dd0a2e4c",
     "width": 1024,
     "height": 768
   },
   {
     "file": "/game/spr_gun_cr3.png",
     "name": "spr_gun_cr3.png",
-    "size": 60639,
-    "hash": "a7dbbb8bda67e43a79c2126d4d4258fa3ef6df1fe8ad15559b2264cad1a5fe73",
-    "shortHash": "a7dbbb8b",
+    "size": 75999,
+    "hash": "f35f184cc5848552b4502156bdd78561bf8019af9ad23ce438b23dd68d2b740d",
+    "shortHash": "f35f184c",
     "width": 256,
-    "height": 192
+    "height": 256
   },
   {
     "file": "/game/ui/weapon-thumbs/cr3.png",
     "name": "cr3.png",
-    "size": 132912,
-    "hash": "1e1f9872b40e66c549399cbdab8f53c4e1b191eb25136c8dc9c161fa8b774969",
-    "shortHash": "1e1f9872",
+    "size": 123396,
+    "hash": "dda7c62135555a1f72754f932d595ad2dbbeaec8077b66095136b7062d66410f",
+    "shortHash": "dda7c621",
     "width": 640,
     "height": 300
   },
@@ -4849,27 +4849,27 @@
   {
     "file": "/game/draft/v2/cases/case_sr0.png",
     "name": "case_sr0.png",
-    "size": 902653,
-    "hash": "7fc03e0c30777536b6998e159b27a21ae7f248c7b968126999d81cbb1d5211a2",
-    "shortHash": "7fc03e0c",
+    "size": 1156391,
+    "hash": "c4bfa39867dc7d0980c04b54018e897e9720551b1f4c90348ac09ac3bdbd51ec",
+    "shortHash": "c4bfa398",
     "width": 1024,
     "height": 768
   },
   {
     "file": "/game/spr_gun_sr0.png",
     "name": "spr_gun_sr0.png",
-    "size": 60092,
-    "hash": "9723fd3b163ef04be9288bae2946762737e7cd0f3891386d4c28baaf45ef9b14",
-    "shortHash": "9723fd3b",
+    "size": 74251,
+    "hash": "f43667147ea1d436ce80f8e8ac4784f5b456399e823c73283ef6738a772c8497",
+    "shortHash": "f4366714",
     "width": 256,
-    "height": 192
+    "height": 256
   },
   {
     "file": "/game/ui/weapon-thumbs/sr0.png",
     "name": "sr0.png",
-    "size": 142476,
-    "hash": "edefac8a66a12a27865d0e2c1fcf7a83eb8e7f8b0958c15b162d8a1cdeef6cd8",
-    "shortHash": "edefac8a",
+    "size": 110403,
+    "hash": "e85716c5ced08eff0f36aa8b124e2a18df86154bb5da78dd080d3f10870a3805",
+    "shortHash": "e85716c5",
     "width": 640,
     "height": 300
   },
@@ -4903,27 +4903,27 @@
   {
     "file": "/game/draft/v2/cases/case_ts12.png",
     "name": "case_ts12.png",
-    "size": 913759,
-    "hash": "c8a037ee20706039afd13ae644a8b8e278c92633b6bade1718a947f24d387bc8",
-    "shortHash": "c8a037ee",
+    "size": 1126452,
+    "hash": "d0e6efdd67e8bfc12ce9ad5cef49ccc49147096f37234aa0896e1a9606f71e06",
+    "shortHash": "d0e6efdd",
     "width": 1024,
     "height": 768
   },
   {
     "file": "/game/spr_gun_ts12.png",
     "name": "spr_gun_ts12.png",
-    "size": 61213,
-    "hash": "b5feea5370ad0a5e77ad7697915f37b73e7f857cb2bf567f678c4edde7c09c94",
-    "shortHash": "b5feea53",
+    "size": 73655,
+    "hash": "cd0fdce03cce0701a30c9299fc9449b9e07f8869baf5e255c4bbdf7f5b659364",
+    "shortHash": "cd0fdce0",
     "width": 256,
-    "height": 192
+    "height": 256
   },
   {
     "file": "/game/ui/weapon-thumbs/ts12.png",
     "name": "ts12.png",
-    "size": 144501,
-    "hash": "38949e2c07da4384835f7df36406c95f38a8a7daacdf5bab8cd9913d2eee015a",
-    "shortHash": "38949e2c",
+    "size": 137374,
+    "hash": "5afd58b405a46bec651d0ea603997f3ad5d07d4eb3f4c98502db8f863c80dac2",
+    "shortHash": "5afd58b4",
     "width": 640,
     "height": 300
   },
@@ -4957,27 +4957,27 @@
   {
     "file": "/game/draft/v2/cases/case_ks8.png",
     "name": "case_ks8.png",
-    "size": 904265,
-    "hash": "372fd2dd78b9dafb4b34665daf3cc19e2a7fc9bad4a32812f3a2e2abb0886d30",
-    "shortHash": "372fd2dd",
+    "size": 1097978,
+    "hash": "44941fa698689ecefe8cc3587d44027b6ec24bedeca73485f8ae3a569d654b4c",
+    "shortHash": "44941fa6",
     "width": 1024,
     "height": 768
   },
   {
     "file": "/game/spr_gun_ks8.png",
     "name": "spr_gun_ks8.png",
-    "size": 60441,
-    "hash": "860bfacb79109f67075c6e94884da5aa6417db57ac00afb94fb2e6d5ac400d2f",
-    "shortHash": "860bfacb",
+    "size": 76137,
+    "hash": "d5c77df424b37554705c4c65f95b71e388f69b159be33d067898ade0b1906ecb",
+    "shortHash": "d5c77df4",
     "width": 256,
-    "height": 192
+    "height": 256
   },
   {
     "file": "/game/ui/weapon-thumbs/ks8.png",
     "name": "ks8.png",
-    "size": 144850,
-    "hash": "e931394c93d9192dc9da38b4c7bd466dbd3433e1bc9a03d7716f0f3e30439b90",
-    "shortHash": "e931394c",
+    "size": 116378,
+    "hash": "64338679d552b24a31a476b5e1c1a0fe0f6a7440e169a3372c65e5a75dd36c28",
+    "shortHash": "64338679",
     "width": 640,
     "height": 300
   },
@@ -5550,27 +5550,27 @@
   {
     "file": "/game/draft/v2/cases/case_mn6.png",
     "name": "case_mn6.png",
-    "size": 919772,
-    "hash": "0f82268b38bbed0c78648a67a7aa1ebc35f0a99b66c89c3da99f3663cd6bddf5",
-    "shortHash": "0f82268b",
+    "size": 1222570,
+    "hash": "bb55ea34cdf25405bac8bce7fef63cdb7274b3010d4365d2432f6fb3fceca2ae",
+    "shortHash": "bb55ea34",
     "width": 1024,
     "height": 768
   },
   {
     "file": "/game/spr_gun_mn6.png",
     "name": "spr_gun_mn6.png",
-    "size": 61358,
-    "hash": "54a048419580ff2a0c8bf9f8d9075844b3b8354545cd43f8b1f6377b1a3d9a30",
-    "shortHash": "54a04841",
+    "size": 74387,
+    "hash": "abe39d8b8ed74532f093317001d3ef3084ac0f11418a9e1aaad6285390078c3f",
+    "shortHash": "abe39d8b",
     "width": 256,
-    "height": 192
+    "height": 256
   },
   {
     "file": "/game/ui/weapon-thumbs/mn6.png",
     "name": "mn6.png",
-    "size": 128142,
-    "hash": "75474a7ba61a718f908c0ece3ab34655ce1ab9cc81e2f4dbab3c3ebc634f561c",
-    "shortHash": "75474a7b",
+    "size": 122648,
+    "hash": "f812486135d25591dcacd3e922466a8c8331d8495e54a80426501bc4f50ad176",
+    "shortHash": "f8124861",
     "width": 640,
     "height": 300
   },

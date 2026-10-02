@@ -94,6 +94,7 @@ type WasmExports = {
   hs_bars: () => number;
   hs_qa_end: (state: number) => void;
   hs_qa_heal: () => void;
+  hs_qa_reward: () => void;
   hs_qa_boss: (phase: number) => void;
   hs_qa_objective: () => void;
   hs_save_ptr: () => number;
@@ -1294,6 +1295,10 @@ export class HellscanRuntime {
         this.wasm?.hs_qa_heal();
       },
       triggerBoss: (phase = 0) => this.wasm?.hs_qa_boss(phase),
+      dropBossReward: () => {
+        this.wasm?.hs_qa(0, 1);
+        this.wasm?.hs_qa_reward();
+      },
       visitObjective: () => this.wasm?.hs_qa_objective(),
       nextWave: () => this.nextWave(),
     };
@@ -1341,6 +1346,7 @@ declare global {
       triggerEnd?: (state: 1 | 2) => void;
       heal?: () => void;
       triggerBoss?: (phase?: number) => void;
+      dropBossReward?: () => void;
       visitObjective?: () => void;
       nextWave?: () => void;
     };

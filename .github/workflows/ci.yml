@@ -51,7 +51,7 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
       - run: npx playwright install chromium --with-deps
-      - run: node --test scripts/boss-animation-assets.test.mjs
+      - run: node --test scripts/boss-animation-assets.test.mjs scripts/boss-reward-art.test.mjs
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: stable
@@ -68,5 +68,6 @@ jobs:
           curl -sf http://127.0.0.1:8080/ > /dev/null
       - run: node scripts/browser-smoke.mjs http://127.0.0.1:8080/ screenshots/ci-menu.png
       - run: node scripts/combat-smoke.mjs http://127.0.0.1:8080/
+      - run: node --test scripts/reward-pause.browser.mjs
       - run: node scripts/end-screen-smoke.mjs http://127.0.0.1:8080/
       - run: pkill -f "vite dev" || true
