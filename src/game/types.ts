@@ -41,6 +41,7 @@ export type HudState = {
   hasW17: boolean;
   hasW18: boolean;
   hasW19: boolean;
+  extraWeapons: number;
   objective: number;
   radioSeq: number;
   radioLine: number;
@@ -132,6 +133,7 @@ export const DEFAULT_HUD: HudState = {
   hasW17: false,
   hasW18: false,
   hasW19: false,
+  extraWeapons: 0,
   objective: 0,
   radioSeq: 0,
   radioLine: 0,

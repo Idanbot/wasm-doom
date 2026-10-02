@@ -54,7 +54,7 @@ describe("fmtTime", () => {
 });
 
 describe("sectorForWave", () => {
-  it("cycles through eleven distinct sectors and bosses", () => {
+  it("cycles through twenty-five distinct sectors and bosses", () => {
     assert.deepEqual(Array.from({ length: 11 }, (_, i) => sectorForWave(i + 1).name), [
       "UPPER WORKS",
       "CRYOGENIC FOUNDRY",
@@ -68,21 +68,21 @@ describe("sectorForWave", () => {
       "COMMAND BUNKER",
       "OBSIDIAN VAULT",
     ]);
-    assert.equal(new Set(Array.from({ length: 11 }, (_, i) => sectorForWave(i + 1).bossName)).size, 11);
-    assert.equal(sectorForWave(12).name, "UPPER WORKS");
-    assert.equal(sectorForWave(23).name, "UPPER WORKS");
+    assert.equal(new Set(Array.from({ length: 25 }, (_, i) => sectorForWave(i + 1).bossName)).size, 25);
+    assert.equal(sectorForWave(26).name, "UPPER WORKS");
+    assert.equal(sectorForWave(51).name, "UPPER WORKS");
   });
 });
 
 describe("radioCopy", () => {
   it("has two matching death lines for every boss across cycles", () => {
-    const lines = Array.from({ length: 22 }, (_, i) => radioCopy(8, i + 1));
+    const lines = Array.from({ length: 50 }, (_, i) => radioCopy(8, i + 1));
     for (const line of lines) {
       assert.ok(line && line.speaker.length > 0 && line.text.length > 0);
     }
-    assert.equal(new Set(lines.map((l) => l!.text)).size, 22);
+    assert.equal(new Set(lines.map((l) => l!.text)).size, 50);
     assert.equal(bossDeathVariantForWave(1), 0);
-    assert.equal(bossDeathVariantForWave(12), 1);
+    assert.equal(bossDeathVariantForWave(26), 1);
   });
 });
 
@@ -105,11 +105,11 @@ describe("gridPos", () => {
 });
 
 describe("WEAPONS", () => {
-  it("has nineteen entries with v2 5x5 sheets and reserve caps", () => {
-    assert.equal(WEAPONS.length, 19);
+  it("has thirty-three entries with v2 5x5 sheets and reserve caps", () => {
+    assert.equal(WEAPONS.length, 33);
     assert.deepEqual(
       WEAPONS.map((w) => w.id),
-      Array.from({ length: 19 }, (_, i) => i),
+      Array.from({ length: 33 }, (_, i) => i),
     );
     assert.deepEqual(WEAPONS.map((weapon) => weapon.sheet), WEAPON_SHEETS);
     assert.equal(WEAPON_THUMBNAILS.length, WEAPONS.length);
@@ -121,11 +121,11 @@ describe("WEAPONS", () => {
       assert.ok(w.reserve >= w.magSize);
     }
     assert.deepEqual(
-      WEAPONS.map((w) => w.magSize),
+      WEAPONS.slice(0,19).map((w) => w.magSize),
       [12, 8, 36, 5, 4, 10, 90, 6, 4, 14, 5, 9, 4, 8, 6, 24, 3, 30, 12],
     );
     assert.deepEqual(
-      WEAPONS.map((w) => w.reserve),
+      WEAPONS.slice(0,19).map((w) => w.reserve),
       [120, 48, 216, 20, 16, 80, 450, 36, 24, 84, 30, 54, 24, 48, 36, 144, 18, 180, 72],
     );
   });
@@ -212,9 +212,9 @@ describe("loadGfx", () => {
 });
 
 describe("boss reward labels", () => {
-  it("matches all eleven sector rewards, including repeated Obsidian Vault cycles", () => {
-    assert.deepEqual(Array.from({length: 11}, (_, i) => bossRewardForWave(i + 1).id), [8, 9, 10, 12, 13, 11, 14, 15, 16, 17, 18]);
+  it("matches all twenty-five sector rewards, including repeated Obsidian Vault cycles", () => {
+    assert.deepEqual(Array.from({length: 25}, (_, i) => bossRewardForWave(i + 1).id), [8, 9, 10, 12, 13, 11, 14, 15, 16, 17, 18, ...Array.from({length:14}, (_,i) => 19+i)]);
     assert.equal(bossRewardForWave(11).name, "MN-6 ECHO");
-    assert.equal(bossRewardForWave(22).name, "MN-6 ECHO");
+    assert.equal(bossRewardForWave(36).name, "MN-6 ECHO");
   });
 });

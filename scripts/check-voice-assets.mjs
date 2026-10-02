@@ -33,17 +33,13 @@ console.log(
 
 // Boss-kill lines live outside the enemy manifest (art/boss-voices.json).
 const bossPlan = JSON.parse(readFileSync("art/boss-voices.json", "utf8"));
-assert.equal(bossPlan.bosses.length, 22);
-const bossIds = ["veyran", "hecate", "chimera", "oracle", "gravemind", "archivist", "halcyon", "relay", "titan", "kest", "mnemosyne"];
-for (const [i, boss] of bossPlan.bosses.entries()) {
-  const name = i < 6 ? bossIds[i] : i < 12 ? bossIds[i - 6] : bossIds[6 + Math.floor((i - 12) / 2)];
-  const variant = i >= 6 && i < 12 || i >= 12 && (i - 12) % 2 === 1;
-  assert.equal(boss.id, `boss-${name}${variant ? "-v2" : ""}`);
+const expansion = JSON.parse(readFileSync("art/campaign25/specs.json", "utf8"));
+const expectedBossIds = ["veyran", "hecate", "chimera", "oracle", "gravemind", "archivist", "halcyon", "relay", "titan", "kest", "mnemosyne", ...expansion.map(b => b.slug)].flatMap(id => [`boss-${id}`, `boss-${id}-v2`]);
+assert.equal(bossPlan.bosses.length, 50);
+assert.deepEqual(bossPlan.bosses.map(b => b.id).sort(), expectedBossIds.sort());
+for (const boss of bossPlan.bosses) {
   assert.ok(boss.text.length > 10);
   const bytes = readFileSync(`public/game/voices/${boss.id}.mp3`);
-  assert.ok(
-    bytes.length > 1000 && (bytes.subarray(0, 3).toString() === "ID3" || bytes[0] === 255),
-    `${boss.id}.mp3 must be a real MP3`,
-  );
+  assert.ok(bytes.length > 1000 && (bytes.subarray(0, 3).toString() === "ID3" || bytes[0] === 255), `${boss.id}.mp3 must be a real MP3`);
 }
 console.log(`[check:voices] ${bossPlan.bosses.length} boss-kill lines verified.`);

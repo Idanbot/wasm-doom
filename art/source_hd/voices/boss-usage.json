@@ -109,6 +109,146 @@
       "id": "boss-mnemosyne-v2",
       "url": "/game/voices/boss-mnemosyne-v2.mp3",
       "duration": 5.304
+    },
+    {
+      "id": "boss-vulcan",
+      "url": "/game/voices/boss-vulcan.mp3",
+      "duration": 4.68
+    },
+    {
+      "id": "boss-vulcan-v2",
+      "url": "/game/voices/boss-vulcan-v2.mp3",
+      "duration": 5.544
+    },
+    {
+      "id": "boss-leviathan",
+      "url": "/game/voices/boss-leviathan.mp3",
+      "duration": 4.872
+    },
+    {
+      "id": "boss-leviathan-v2",
+      "url": "/game/voices/boss-leviathan-v2.mp3",
+      "duration": 5.496
+    },
+    {
+      "id": "boss-prism",
+      "url": "/game/voices/boss-prism.mp3",
+      "duration": 5.736
+    },
+    {
+      "id": "boss-prism-v2",
+      "url": "/game/voices/boss-prism-v2.mp3",
+      "duration": 5.928
+    },
+    {
+      "id": "boss-magnus",
+      "url": "/game/voices/boss-magnus.mp3",
+      "duration": 6.528
+    },
+    {
+      "id": "boss-magnus-v2",
+      "url": "/game/voices/boss-magnus-v2.mp3",
+      "duration": 6.36
+    },
+    {
+      "id": "boss-broodmother",
+      "url": "/game/voices/boss-broodmother.mp3",
+      "duration": 5.16
+    },
+    {
+      "id": "boss-broodmother-v2",
+      "url": "/game/voices/boss-broodmother-v2.mp3",
+      "duration": 5.448
+    },
+    {
+      "id": "boss-mycelium",
+      "url": "/game/voices/boss-mycelium.mp3",
+      "duration": 4.296
+    },
+    {
+      "id": "boss-mycelium-v2",
+      "url": "/game/voices/boss-mycelium-v2.mp3",
+      "duration": 5.88
+    },
+    {
+      "id": "boss-astra",
+      "url": "/game/voices/boss-astra.mp3",
+      "duration": 5.256
+    },
+    {
+      "id": "boss-astra-v2",
+      "url": "/game/voices/boss-astra-v2.mp3",
+      "duration": 6.024
+    },
+    {
+      "id": "boss-scrapper",
+      "url": "/game/voices/boss-scrapper.mp3",
+      "duration": 6.096
+    },
+    {
+      "id": "boss-scrapper-v2",
+      "url": "/game/voices/boss-scrapper-v2.mp3",
+      "duration": 5.616
+    },
+    {
+      "id": "boss-umbra",
+      "url": "/game/voices/boss-umbra.mp3",
+      "duration": 4.968
+    },
+    {
+      "id": "boss-umbra-v2",
+      "url": "/game/voices/boss-umbra-v2.mp3",
+      "duration": 5.376
+    },
+    {
+      "id": "boss-sol",
+      "url": "/game/voices/boss-sol.mp3",
+      "duration": 5.208
+    },
+    {
+      "id": "boss-sol-v2",
+      "url": "/game/voices/boss-sol-v2.mp3",
+      "duration": 5.544
+    },
+    {
+      "id": "boss-nautilus",
+      "url": "/game/voices/boss-nautilus.mp3",
+      "duration": 5.544
+    },
+    {
+      "id": "boss-nautilus-v2",
+      "url": "/game/voices/boss-nautilus-v2.mp3",
+      "duration": 5.496
+    },
+    {
+      "id": "boss-chronos",
+      "url": "/game/voices/boss-chronos.mp3",
+      "duration": 5.616
+    },
+    {
+      "id": "boss-chronos-v2",
+      "url": "/game/voices/boss-chronos-v2.mp3",
+      "duration": 5.688
+    },
+    {
+      "id": "boss-boreas",
+      "url": "/game/voices/boss-boreas.mp3",
+      "duration": 5.688
+    },
+    {
+      "id": "boss-boreas-v2",
+      "url": "/game/voices/boss-boreas-v2.mp3",
+      "duration": 5.808
+    },
+    {
+      "id": "boss-sovereign",
+      "url": "/game/voices/boss-sovereign.mp3",
+      "duration": 5.736
+    },
+    {
+      "id": "boss-sovereign-v2",
+      "url": "/game/voices/boss-sovereign-v2.mp3",
+      "duration": 6.096
     }
   ]
 }

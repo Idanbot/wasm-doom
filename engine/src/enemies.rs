@@ -94,6 +94,20 @@ pub(crate) const ENEMY_SKINS: &[EnemySkin] = &[
     EnemySkin { id: SKIN_TITAN, name: "TITAN–12", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 20, scale: 2.34, zoff: 8.0, special: "siege shock" },
     EnemySkin { id: SKIN_MNEMOSYNE, name: "MNEMOSYNE–6", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 22, scale: 2.2, zoff: 8.0, special: "echo mine nova" },
     EnemySkin { id: SKIN_KEST, name: "DIRECTOR KEST", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 21, scale: 1.96, zoff: 8.0, special: "command rush" },
+    EnemySkin { id: 23, name: "VULCAN–2", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 23, scale: 2.0, zoff: 8.0, special: "telegraphed ember lanes" },
+    EnemySkin { id: 24, name: "LEVIATHAN–8", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 24, scale: 2.1, zoff: 8.0, special: "pressure harpoon fan" },
+    EnemySkin { id: 25, name: "PRISM–5", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 25, scale: 2.2, zoff: 8.0, special: "refracted crossfire" },
+    EnemySkin { id: 26, name: "MAGNUS–4", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 26, scale: 2.3, zoff: 8.0, special: "charged magnetic sweep" },
+    EnemySkin { id: 27, name: "BROODMOTHER–3", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 27, scale: 2.0, zoff: 8.0, special: "drone reinforcement swarm" },
+    EnemySkin { id: 28, name: "MYCELIUM–9", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 28, scale: 2.1, zoff: 8.0, special: "corrosive spore clusters" },
+    EnemySkin { id: 29, name: "ASTRA–7", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 29, scale: 2.2, zoff: 8.0, special: "delayed missile barrage" },
+    EnemySkin { id: 30, name: "SCRAPPER–6", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 30, scale: 2.3, zoff: 8.0, special: "flechette wall sweep" },
+    EnemySkin { id: 31, name: "UMBRA–1", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 31, scale: 2.0, zoff: 8.0, special: "phase relocation and ambush" },
+    EnemySkin { id: 32, name: "SOL–12", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 32, scale: 2.1, zoff: 8.0, special: "solar pulse rings" },
+    EnemySkin { id: 33, name: "NAUTILUS–4", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 33, scale: 2.2, zoff: 8.0, special: "pressure torpedo volleys" },
+    EnemySkin { id: 34, name: "CHRONOS–8", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 34, scale: 2.3, zoff: 8.0, special: "staggered echo shots" },
+    EnemySkin { id: 35, name: "BOREAS–11", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 35, scale: 2.0, zoff: 8.0, special: "cryo shard fan and shielding" },
+    EnemySkin { id: 36, name: "THE SOVEREIGN", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 36, scale: 2.1, zoff: 8.0, special: "command escorts and converging salvos" },
 ];
 
 pub(crate) fn skin_def(id: u8) -> Option<&'static EnemySkin> {

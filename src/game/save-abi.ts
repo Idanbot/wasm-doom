@@ -3,7 +3,7 @@
  *
  * The struct is `#[repr(C)]`: eight header i32s (wave, health, armor,
  * weapon, flags, kills, secrets, elapsed_ms), then `ammo[WEP_N]` and
- * `mag[WEP_N]` with WEP_N = 19.
+ * `mag[WEP_N]` with WEP_N = 33, followed by the expansion ownership bitset.
  *
  * Keep these in sync with the engine. `run_save_layout_matches_ts_side`
  * in `engine/src/lib.rs` pins the same numbers on the Rust side; if either
@@ -12,10 +12,12 @@
  */
 
 /** Weapon slots persisted per save. Must match WEP_N in engine/src/consts.rs. */
-export const SAVE_SLOTS = 19;
+export const SAVE_SLOTS = 33;
 /** Byte size of the RunSave struct. */
-export const SAVE_SIZE = 184;
+export const SAVE_SIZE = 300;
 /** Byte offset of the ammo array (8 header i32s). */
 export const SAVE_AMMO_BASE = 32;
-/** Byte offset of the mag array (ammo base + 19 i32s). */
-export const SAVE_MAG_BASE = 108;
+/** Byte offset of the mag array (ammo base + 33 i32s). */
+export const SAVE_MAG_BASE = 164;
+
+export const SAVE_EXTRA_BASE = 296;

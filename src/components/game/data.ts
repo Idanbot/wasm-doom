@@ -9,6 +9,8 @@ export type Vol = { master: number; music: number; sfx: number; menu: number };
 
 export const DEFAULT_VOL: Vol = { master: 0.85, music: 0.42, sfx: 0.75, menu: 0.7 };
 
+import { CAMPAIGN_EXPANSION } from "../../game/campaign25.ts";
+
 export const SECTORS = [
   { code: "NADIR–7A", name: "UPPER WORKS", rewardSlot: 8, bossTitle: "VAULT MASTER", bossName: "MALIK VEYRAN" },
   { code: "NADIR–7B", name: "CRYOGENIC FOUNDRY", rewardSlot: 9, bossTitle: "FORGE WARDEN", bossName: "HECATE–9" },
@@ -21,13 +23,14 @@ export const SECTORS = [
   { code: "NADIR–7I", name: "SIEGE YARD", rewardSlot: 16, bossTitle: "HEAVY ASSET", bossName: "TITAN–12" },
   { code: "NADIR–7J", name: "COMMAND BUNKER", rewardSlot: 17, bossTitle: "SITE DIRECTOR", bossName: "DIRECTOR KEST" },
   { code: "NADIR–7K", name: "OBSIDIAN VAULT", rewardSlot: 18, bossTitle: "ECHO KEEPER", bossName: "MNEMOSYNE–6" },
+  ...CAMPAIGN_EXPANSION.map((boss, i) => ({ code: `NADIR–${i + 12}`, name: boss.sector, rewardSlot: i + 19, bossTitle: boss.ability.toUpperCase(), bossName: boss.boss })),
 ] as const;
 
 export function sectorForWave(wave: number) {
   return SECTORS[(Math.max(1, wave || 1) - 1) % SECTORS.length]!;
 }
 
-/** Every boss alternates its death line on the next eleven-sector cycle. */
+/** Every boss alternates its death line on the next twenty-five-sector cycle. */
 export function bossDeathVariantForWave(wave: number) {
   const index = Math.max(0, wave - 1);
   return (index % SECTORS.length + Math.floor(index / SECTORS.length)) % 2;
@@ -58,6 +61,7 @@ export const WEAPONS = [
   { id: 16, name: "TS-12 TITAN", role: "Siege cannon · heavy explosive shell", magSize: 3, lowAmmoAt: 1, reserve: 18, sheet: WEAPON_SHEETS[16]! },
   { id: 17, name: "KS-8 KEST", role: "Director rifle · precise triple burst", magSize: 30, lowAmmoAt: 8, reserve: 180, sheet: WEAPON_SHEETS[17]! },
   { id: 18, name: "MN-6 ECHO", role: "Memory lance · pierces three targets", magSize: 12, lowAmmoAt: 3, reserve: 72, sheet: WEAPON_SHEETS[18]! },
+  ...CAMPAIGN_EXPANSION.map((boss, i) => ({ id: i + 19, name: boss.gun, role: boss.ability, magSize: boss.mag, lowAmmoAt: Math.max(1, Math.floor(boss.mag * .25)), reserve: boss.mag * 6, sheet: WEAPON_SHEETS[i + 19]! })),
 ];
 
 export function bossRewardForWave(wave: number) {
@@ -133,6 +137,16 @@ const MEMOS: Record<number, string> = {
 
 export function radioCopy(line: number, wave: number) {
   const sector = (Math.max(1, wave) - 1) % SECTORS.length;
+  if (sector >= 11) {
+    const boss = CAMPAIGN_EXPANSION[sector - 11]!;
+    if (line === 1) return { speaker: "HANDLER", text: `${boss.sector}. ${boss.boss} controls this sector. Disable the node and initiate the override.` };
+    if (line === 2) return { speaker: boss.boss, text: `${boss.ability}. You have entered my sector.` };
+    if (line === 3) return { speaker: boss.boss, text: "Armor circuit exposed. Recalibrating defenses." };
+    if (line === 4) return { speaker: "HANDLER", text: "Node isolated. The override console is live." };
+    if (line === 6) return { speaker: "HANDLER", text: `${boss.gun} is on the deck. Claim the golden case to leave.` };
+    if (line === 8) return { speaker: boss.boss, text: bossDeathVariantForWave(wave) ? `My systems are gone. Take ${boss.gun}. Carry it beyond this sector.` : `Core failure. ${boss.gun} released. The sector is yours.` };
+    return line >= 10 ? { speaker: "ARCHIVE", text: `${boss.sector}: ${boss.ability}. Keep cover between you and the firing lanes.` } : null;
+  }
   if (line === 1) return { speaker: "HANDLER", text: HANDLER[sector]! };
   if (line === 2) return { speaker: "MALIK", text: LOCKDOWN[sector]! };
   if (line === 3) return {
@@ -207,6 +221,12 @@ export function radioCopy(line: number, wave: number) {
 
 export function missionLine(hud: { prompt: number; objective: number; wave: number }) {
   const sector = (Math.max(1, hud.wave) - 1) % SECTORS.length;
+  if (sector >= 11) {
+    if (hud.prompt === 3) return "INITIATE OVERRIDE";
+    if (hud.prompt === 13 || hud.prompt === 15 || hud.objective === 0) return "ISOLATE THE SECTOR NODE";
+    if (hud.prompt === 6) return "REACH THE OVERRIDE";
+    return `ELIMINATE ${SECTORS[sector]!.bossName}`;
+  }
   if (hud.prompt === 3) return "INITIATE OVERRIDE";
   if (hud.prompt === 13) return ["USE THE LAB NODE", "VENT THE COOLANT", "PURGE THE LOCK", "CUT THE PREDICTION NODE", "ISOLATE THE COOLANT RELAY", "SEVER THE INDEX NODE", "ISOLATE THE MANIFOLD", "CUT THE SIGNAL RELAY", "SHUT DOWN HYDRAULICS", "CUT THE COMMAND UPLINK", "SEVER THE MEMORY BUS"][sector]!;
   if (hud.prompt === 15 || hud.objective === 0) {
@@ -324,6 +344,7 @@ export type RunSave = {
   armor: number;
   weapon: number;
   flags: number;
+  extraWeapons?: number;
   kills: number;
   secrets: number;
   elapsedMs: number;
@@ -342,15 +363,16 @@ export function loadCheckpoint(): RunSave | null {
       return null;
     }
     // Old 8- and 11-slot checkpoints remain loadable after adding AR-6.
-    if (![8, 11, 12, 18, 19].includes(v.ammo.length)) return null;
-    if (![8, 11, 12, 18, 19].includes(v.mag.length)) return null;
-    const padSlots = (a: number[]) => [...a, ...Array(19).fill(0)].slice(0, 19);
+    if (![8, 11, 12, 18, 19, 33].includes(v.ammo.length)) return null;
+    if (![8, 11, 12, 18, 19, 33].includes(v.mag.length)) return null;
+    const padSlots = (a: number[]) => [...a, ...Array(33).fill(0)].slice(0, 33);
     return {
-      wave: Math.min(999, Math.max(1, v.wave || 1)),
+      wave: Math.min(2147483647, Math.max(1, Math.floor(v.wave || 1))),
       health: v.health || 100,
       armor: Math.min(100, Math.max(0, v.armor || 0)),
       weapon: v.weapon || 0,
       flags: v.flags || 0,
+      extraWeapons: (v.extraWeapons || 0) & 16383,
       kills: v.kills || 0,
       secrets: v.secrets || 0,
       elapsedMs: v.elapsedMs || 0,

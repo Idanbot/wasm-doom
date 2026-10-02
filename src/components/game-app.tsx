@@ -208,21 +208,21 @@ export function GameApp() {
             if (save) {
               // Winning keeps every unlocked weapon, restores full health
               // and full ammo, and preserves armor clamped to [0, 100].
-              const sizes = [12, 8, 36, 5, 4, 10, 90, 6, 4, 14, 5, 9, 4, 8, 6, 24, 3, 30, 12];
-              const full = [120, 48, 216, 20, 16, 80, 450, 36, 24, 84, 30, 54, 24, 48, 36, 144, 18, 180, 72];
-              const mag = [...save.mag, ...Array(19).fill(0)].slice(0, 19);
-              const ammo = [...save.ammo, ...Array(19).fill(0)].slice(0, 19);
+              const sizes = WEAPONS.map(weapon => weapon.magSize);
+              const full = WEAPONS.map(weapon => weapon.reserve);
+              const mag = [...save.mag, ...Array(33).fill(0)].slice(0, 33);
+              const ammo = [...save.ammo, ...Array(33).fill(0)].slice(0, 33);
               mag[0] = sizes[0]!;
               ammo[0] = full[0]!;
-              for (let i = 1; i < 19; i++) {
-                if (save.flags & (1 << (i - 1))) {
+              for (let i = 1; i < WEAPONS.length; i++) {
+                if (i < 19 ? save.flags & (1 << (i - 1)) : (save.extraWeapons || 0) & (1 << (i - 19))) {
                   mag[i] = sizes[i]!;
                   ammo[i] = full[i]!;
                 }
               }
               persistRef.current({
                 ...save,
-                wave: Math.min(999, save.wave + 1),
+                wave: Math.min(2147483647, save.wave + 1),
                 health: 100,
                 armor: Math.min(100, Math.max(0, save.armor)),
                 mag,

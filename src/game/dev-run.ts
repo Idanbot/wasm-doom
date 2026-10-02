@@ -5,5 +5,5 @@ export function localQaRun(search: string, development: boolean, hostname: strin
   if (params.get('qa') !== '1') return null;
   const value = params.get('lvl');
   const level = value !== null && /^\d+$/.test(value) ? Number(value) : 1;
-  return { level: Number.isInteger(level) && level >= 1 && level <= 11 ? level : 1 };
+  return { level: Number.isInteger(level) && level >= 1 && level <= 25 ? level : 1 };
 }

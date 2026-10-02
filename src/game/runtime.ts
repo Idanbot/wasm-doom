@@ -1,3 +1,4 @@
+import { CAMPAIGN_EXPANSION } from "./campaign25";
 import { asset } from "@/lib/asset";
 import { createAudio, type GameAudio } from "./audio";
 import { createBlitter, type BlitKind, type Blitter } from "./blit";
@@ -23,6 +24,9 @@ import {
   T_GUN17,
   T_GUN18,
   T_GUN19,
+  T_EXPANSION_CASE,
+  T_PROJECTILE_NEW,
+  T_IMPACT_NEW,
   T_PROP_REACTOR,
   T_PROP_SERVER,
   T_PROP_AC,
@@ -56,6 +60,7 @@ type WasmExports = {
   hs_init: (w: number, h: number) => number;
   hs_restart: () => void;
   hs_next_wave: () => void;
+  hs_select_weapon: (slot: number) => void;
   hs_resize: (w: number, h: number) => void;
   hs_fb_ptr: () => number;
   hs_fb_w: () => number;
@@ -199,7 +204,7 @@ const ENEMY_SKINS = [
   "relay",
   "titan",
   "kest",
-  "mnemosyne",
+  "mnemosyne", ...CAMPAIGN_EXPANSION.map(boss => boss.slug),
 ] as const;
 const ENEMY_ANIMATIONS = ["idle", "move", "pain", "fire", "reload", "dead", "special"] as const;
 
@@ -259,6 +264,9 @@ const TEX_FILES: { id: number; src: string }[] = [
   { id: T_PROP_WLIGHT_C, src: "/game/spr_prop_worklight_cyan.png" },
   { id: T_PROP_WLIGHT_W, src: "/game/spr_prop_worklight_white.png" },
   { id: T_PROP_BEACON, src: "/game/spr_prop_beacon.png" },
+  ...CAMPAIGN_EXPANSION.map((boss, i) => ({ id: T_EXPANSION_CASE + i, src: `/game/spr_gun_${boss.weapon}.png` })),
+  ...["rocket-forward", "ion-bolt", "cryo-shard", "spore-cluster", "phase-orb"].map((name, i) => ({ id: T_PROJECTILE_NEW + i, src: `/game/fx25/${name}.png` })),
+  ...["ember-impact", "pressure-impact", "magnetic-impact", "solar-impact"].map((name, i) => ({ id: T_IMPACT_NEW + i, src: `/game/fx25/${name}.png` })),
   ...ENEMY_SKINS.flatMap((skin, skinIndex) =>
     ENEMY_ANIMATIONS.map((animation, animationIndex) => ({
       id: ENEMY_TEX_BASE + skinIndex * ENEMY_ANIM_COUNT + animationIndex,
@@ -607,11 +615,11 @@ export class HellscanRuntime {
     this.audio.setBoss(false);
   }
 
-  /** Local QA starts from a clean sector and grants all nineteen weapons. */
+  /** Local QA starts from a clean sector and grants all thirty-three weapons. */
   startQaRun(level: number) {
     if (!import.meta.env.DEV) return;
     this.restart();
-    const sector = Number.isInteger(level) && level >= 1 && level <= 11 ? level : 1;
+    const sector = Number.isInteger(level) && level >= 1 && level <= 25 ? level : 1;
     for (let wave = 1; wave < sector; wave++) this.nextWave();
     this.wasm?.hs_qa(0, 1);
     this.wasm?.hs_qa_armory();
@@ -704,14 +712,14 @@ export class HellscanRuntime {
       this.hud.hasW17,
       this.hud.hasW18,
       this.hud.hasW19,
+      ...CAMPAIGN_EXPANSION.map((_, i) => (this.hud.extraWeapons & (1 << i)) !== 0),
     ];
     const count = owned.length;
     const step = dir >= 0 ? 1 : count - 1;
     for (let n = 1; n <= count; n++) {
       const next = (this.hud.weapon + step * n) % count;
       if (owned[next]) {
-        const bit = [IN.W1, IN.W2, IN.W3, IN.W4, IN.W5, IN.W6, IN.W7, IN.W8, IN.W9, IN.W10, IN.W11, IN.W12, IN.W13, IN.W14, IN.W15, IN.W16, IN.W17, IN.W18, IN.W19][next];
-        if (bit) this.weaponPulse = bit;
+        this.wasm?.hs_select_weapon(next);
         return;
       }
     }
@@ -739,6 +747,7 @@ export class HellscanRuntime {
       armor: dv.getInt32(8, true),
       weapon: dv.getInt32(12, true),
       flags: dv.getInt32(16, true),
+      extraWeapons: size >= SAVE_SIZE ? dv.getUint32(296, true) : 0,
       kills: dv.getInt32(20, true),
       secrets: dv.getInt32(24, true),
       elapsedMs: dv.getInt32(28, true),
@@ -771,6 +780,7 @@ export class HellscanRuntime {
     dv.setInt32(28, save.elapsedMs, true);
     ammo.forEach((n, i) => dv.setInt32(SAVE_AMMO_BASE + i * 4, n, true));
     mag.forEach((n, i) => dv.setInt32(magBase + i * 4, n, true));
+    dv.setUint32(296, save.extraWeapons || 0, true);
     wasm.hs_load_run();
     this.refreshThemeLayers(save.wave);
     this.hud = this.readHud();
@@ -1077,6 +1087,7 @@ export class HellscanRuntime {
       hasW17: dv.getInt32(212, true) !== 0,
       hasW18: dv.getInt32(216, true) !== 0,
       hasW19: dv.getInt32(220, true) !== 0,
+      extraWeapons: dv.getUint32(224, true),
       objective: dv.getInt32(144, true),
       radioSeq: dv.getInt32(148, true),
       radioLine: dv.getInt32(152, true),
@@ -1247,7 +1258,7 @@ export class HellscanRuntime {
       if (ev & 4096) this.audio.kill();
       if (ev & 8192) this.audio.hushBoss();
       if (ev & 16384) this.audio.dropBoss();
-      if (ev & 65536) this.audio.bossKill((this.hud.wave - 1) % 11, bossDeathVariantForWave(this.hud.wave));
+      if (ev & 65536) this.audio.bossKill((this.hud.wave - 1) % 25, bossDeathVariantForWave(this.hud.wave));
     } catch {
       /* keep the sim running if a sound fails */
     }
@@ -1290,6 +1301,7 @@ export class HellscanRuntime {
       getReserve: () => this.hud.reserve,
       getReloading: () => this.hud.reloading,
       getWeapon: () => this.hud.weapon,
+      selectWeapon: (slot: number) => this.wasm?.hs_select_weapon(slot),
       getWeaponFrame: () => this.hud.weapFrame,
       getSpread: () => this.hud.spread,
       getFirePatches: () => this.wasm?.hs_fire_patches() ?? 0,
@@ -1350,6 +1362,7 @@ declare global {
       getReserve?: () => number;
       getReloading?: () => number;
       getWeapon?: () => number;
+      selectWeapon?: (slot: number) => void;
       getWeaponFrame?: () => number;
       getSpread?: () => number;
       getFirePatches?: () => number;

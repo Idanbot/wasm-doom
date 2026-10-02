@@ -1,7 +1,7 @@
 [
   {
     "file": "/game/draft/v2/cases/case_mk23s.png",
-    "name": "case_mk23s_v2.png",
+    "name": "case_mk23s.png",
     "size": 709777,
     "hash": "49f97985417c2f59933c4f9519a985d136ca720cb6e923fce59bb61d3d8be960",
     "shortHash": "49f97985",
@@ -11,7 +11,7 @@
   },
   {
     "file": "/game/draft/v2/cases/case_br12.png",
-    "name": "case_br12_v2.png",
+    "name": "case_br12.png",
     "size": 851759,
     "hash": "94031b43449dd27c0f452b1b048fa2e0898d0649a794e85a7665ddd6ef83b8d1",
     "shortHash": "94031b43",
@@ -21,7 +21,7 @@
   },
   {
     "file": "/game/draft/v2/cases/case_kx9.png",
-    "name": "case_kx9_v2.png",
+    "name": "case_kx9.png",
     "size": 686999,
     "hash": "728c503979b9e3230a95247de6556f74c67c0459d133ac39b39681e83dd8b7f9",
     "shortHash": "728c5039",
@@ -31,7 +31,7 @@
   },
   {
     "file": "/game/draft/v2/cases/case_mr4.png",
-    "name": "case_mr4_v2.png",
+    "name": "case_mr4.png",
     "size": 890974,
     "hash": "f9b291f70fd34878ef0841e5c624d9c7008e04834f049e8e26a52385ae49c4c9",
     "shortHash": "f9b291f7",
@@ -41,7 +41,7 @@
   },
   {
     "file": "/game/draft/v2/cases/case_vlk6.png",
-    "name": "case_vlk6_v2.png",
+    "name": "case_vlk6.png",
     "size": 991841,
     "hash": "4e87b6983a245b4e02d39f72adc4aa0bea96d270699bd1865c8113f834568442",
     "shortHash": "4e87b698",
@@ -51,7 +51,7 @@
   },
   {
     "file": "/game/draft/v2/cases/case_ax12.png",
-    "name": "case_ax12_v2.png",
+    "name": "case_ax12.png",
     "size": 890974,
     "hash": "f9b291f70fd34878ef0841e5c624d9c7008e04834f049e8e26a52385ae49c4c9",
     "shortHash": "f9b291f7",
@@ -61,7 +61,7 @@
   },
   {
     "file": "/game/draft/v2/cases/case_m91.png",
-    "name": "case_m91_v2.png",
+    "name": "case_m91.png",
     "size": 972059,
     "hash": "9f021e0bd12da281743e2c6dce83644779b1c28ca72ef13dd8c860c660536d78",
     "shortHash": "9f021e0b",
@@ -71,7 +71,7 @@
   },
   {
     "file": "/game/draft/v2/cases/case_hx8.png",
-    "name": "case_hx8_v2.png",
+    "name": "case_hx8.png",
     "size": 950457,
     "hash": "86da6f09dbe0fcb3e1175156dca1c1391f48794eb1118499bb140b9d8526145b",
     "shortHash": "86da6f09",
@@ -81,7 +81,7 @@
   },
   {
     "file": "/game/draft/v2/cases/case_vr9.png",
-    "name": "case_vr9_v2.png",
+    "name": "case_vr9.png",
     "size": 1105368,
     "hash": "c82885eca158e0b0455fdd0ffe3915a82f2345419f777a736e899c8c05d9c6a9",
     "shortHash": "c82885ec",
@@ -91,7 +91,7 @@
   },
   {
     "file": "/game/draft/v2/cases/case_hc9.png",
-    "name": "case_hc9_v2.png",
+    "name": "case_hc9.png",
     "size": 1237067,
     "hash": "aa8e3dcd11f4a0dbf7f9169a5560dc6529d76fa1937a2aa82af9e37f0a052236",
     "shortHash": "aa8e3dcd",
@@ -101,7 +101,7 @@
   },
   {
     "file": "/game/draft/v2/cases/case_cm9.png",
-    "name": "case_cm9_v2.png",
+    "name": "case_cm9.png",
     "size": 1237841,
     "hash": "131e41e964f9815d6159037e06ed6ff88dba6d1d1bde14f4dd28186b4e35f566",
     "shortHash": "131e41e9",
@@ -111,7 +111,7 @@
   },
   {
     "file": "/game/draft/v2/textures/wall_dark_alloy_1080p.png",
-    "name": "wall_dark_alloy_v2_1080p.png",
+    "name": "wall_dark_alloy_1080p.png",
     "size": 884312,
     "hash": "43abf29e2f66d92848f74df1ac32142bf76dda37500759b104356c1d66890037",
     "shortHash": "43abf29e",
@@ -121,7 +121,7 @@
   },
   {
     "file": "/game/draft/v2/textures/wall_service_concrete_1080p.png",
-    "name": "wall_service_concrete_v2_1080p.png",
+    "name": "wall_service_concrete_1080p.png",
     "size": 875231,
     "hash": "f3c9d6476bb562f92bee6429af841eee18a0506a74a90c6e17c306c84a28e422",
     "shortHash": "f3c9d647",
@@ -131,7 +131,7 @@
   },
   {
     "file": "/game/draft/v2/textures/floor_military_grate_1080p.png",
-    "name": "floor_military_grate_v2_1080p.png",
+    "name": "floor_military_grate_1080p.png",
     "size": 1115220,
     "hash": "1d7265a087b2dae55c4c5c41e82e666ef1735d1b742c5cc938cc6944636edd13",
     "shortHash": "1d7265a0",
@@ -141,7 +141,7 @@
   },
   {
     "file": "/game/draft/v2/textures/floor_hazard_steel_1080p.png",
-    "name": "floor_hazard_steel_v2_1080p.png",
+    "name": "floor_hazard_steel_1080p.png",
     "size": 1100708,
     "hash": "e06260d11296080bc3a41486f0956c0257c1f01eac833c4978588969a93ca08c",
     "shortHash": "e06260d1",
@@ -151,7 +151,7 @@
   },
   {
     "file": "/game/draft/v2/textures/wall_medical_ceramic_1080p.png",
-    "name": "wall_medical_ceramic_v2_1080p.png",
+    "name": "wall_medical_ceramic_1080p.png",
     "size": 882116,
     "hash": "aa9c12fddd31f981394b18768a02cbf171a85e14fa89a747f6854c51e7d16585",
     "shortHash": "aa9c12fd",
@@ -161,7 +161,7 @@
   },
   {
     "file": "/game/draft/v2/textures/wall_old_brick_1080p.png",
-    "name": "wall_old_brick_v2_1080p.png",
+    "name": "wall_old_brick_1080p.png",
     "size": 875191,
     "hash": "9ba944b401ff11c4a734ecdaa6b7c12d0f9f87f36cadbffdb56e94ad195a7752",
     "shortHash": "9ba944b4",
@@ -171,7 +171,7 @@
   },
   {
     "file": "/game/draft/v2/textures/ceil_dark_panels_1080p.png",
-    "name": "ceil_dark_panels_v2_1080p.png",
+    "name": "ceil_dark_panels_1080p.png",
     "size": 884443,
     "hash": "6a5936c6e6ca037173fabc0133ac1f4d305ccddaa6f0fe5a86a2f5d6b1d56d19",
     "shortHash": "6a5936c6",
@@ -181,7 +181,7 @@
   },
   {
     "file": "/game/draft/v2/textures/floor_service_concrete_1080p.png",
-    "name": "floor_service_concrete_v2_1080p.png",
+    "name": "floor_service_concrete_1080p.png",
     "size": 841019,
     "hash": "955b8fa228b2ddb854fabdedf7f5f90ac4fef50054d3b11f9290e750d6e0cb81",
     "shortHash": "955b8fa2",
@@ -191,7 +191,7 @@
   },
   {
     "file": "/game/draft/v2/textures/wall_hangar_sector_1080p.png",
-    "name": "wall_hangar_sector_v2_1080p.png",
+    "name": "wall_hangar_sector_1080p.png",
     "size": 425519,
     "hash": "d6d374f835fbfb3700e8df13e55e8e9b7743844a0637be5cc5805b5d28c29e14",
     "shortHash": "d6d374f8",
@@ -201,7 +201,7 @@
   },
   {
     "file": "/game/draft/v2/textures/door_hangar_1080p.png",
-    "name": "door_hangar_v2_1080p.png",
+    "name": "door_hangar_1080p.png",
     "size": 2813677,
     "hash": "c17692aeb0a02f8fb510a38261bcda03785ad2dc68c2ac4bd0c1e16877640d73",
     "shortHash": "c17692ae",
@@ -212,7 +212,7 @@
   },
   {
     "file": "/game/draft/v2/textures/wall_plaza_sector_1080p.png",
-    "name": "wall_plaza_sector_v2_1080p.png",
+    "name": "wall_plaza_sector_1080p.png",
     "size": 415911,
     "hash": "10538d92b7bf6b47b401733047efedc2427fbb1927995dd7746c6cbe3a5db949",
     "shortHash": "10538d92",
@@ -222,7 +222,7 @@
   },
   {
     "file": "/game/draft/v2/textures/door_plaza_1080p.png",
-    "name": "door_plaza_v2_1080p.png",
+    "name": "door_plaza_1080p.png",
     "size": 3252407,
     "hash": "f192cf43694f8199c14deac7a78319f70897e5fe252cd78e5bd651fe4d5c72f9",
     "shortHash": "f192cf43",
@@ -233,7 +233,7 @@
   },
   {
     "file": "/game/draft/v2/textures/wall_security_sector_1080p.png",
-    "name": "wall_security_sector_v2_1080p.png",
+    "name": "wall_security_sector_1080p.png",
     "size": 399640,
     "hash": "59ac9cc0a23993af6cf1ccc8f28363969b47c771d5fe63b035f515fb0ab1423b",
     "shortHash": "59ac9cc0",
@@ -243,7 +243,7 @@
   },
   {
     "file": "/game/draft/v2/textures/door_security_1080p.png",
-    "name": "door_security_v2_1080p.png",
+    "name": "door_security_1080p.png",
     "size": 3193782,
     "hash": "08cddec1cc4aea155ff98cd9e3b74feda5062821898fe4d8601b4f0e12c1ba6c",
     "shortHash": "08cddec1",
@@ -254,7 +254,7 @@
   },
   {
     "file": "/game/draft/v2/textures/wall_datacenter_sector_1080p.png",
-    "name": "wall_datacenter_sector_v2_1080p.png",
+    "name": "wall_datacenter_sector_1080p.png",
     "size": 427968,
     "hash": "6bf1359184cba922be0c6e3111b8596c106cad7c5a338b277992d781234c3273",
     "shortHash": "6bf13591",
@@ -264,7 +264,7 @@
   },
   {
     "file": "/game/draft/v2/textures/door_datacenter_1080p.png",
-    "name": "door_datacenter_v2_1080p.png",
+    "name": "door_datacenter_1080p.png",
     "size": 2680274,
     "hash": "fa77a1295e1832825ab73a245c85fd60ee25d853ff3f9d72a7a66254531729ca",
     "shortHash": "fa77a129",
@@ -275,7 +275,7 @@
   },
   {
     "file": "/game/draft/v2/textures/wall_foundry_sector_1080p.png",
-    "name": "wall_foundry_sector_v2_1080p.png",
+    "name": "wall_foundry_sector_1080p.png",
     "size": 417341,
     "hash": "941ee7a869f0ee2fbf2b7f5fc31a7f64d4c1911e02f5c6ac164bda474d3a1078",
     "shortHash": "941ee7a8",
@@ -285,7 +285,7 @@
   },
   {
     "file": "/game/draft/v2/textures/door_foundry_1080p.png",
-    "name": "door_foundry_v2_1080p.png",
+    "name": "door_foundry_1080p.png",
     "size": 2973745,
     "hash": "add25e116272c98941d4d66db97fcaad3a751a5807c534f4523c0ea3fb4c6828",
     "shortHash": "add25e11",
@@ -296,7 +296,7 @@
   },
   {
     "file": "/game/draft/v2/textures/wall_biotech_sector_1080p.png",
-    "name": "wall_biotech_sector_v2_1080p.png",
+    "name": "wall_biotech_sector_1080p.png",
     "size": 413073,
     "hash": "acbc241e6a126bfcdce37df9c3f9df86670d5b182e0f6e4a9ce457aff3782c57",
     "shortHash": "acbc241e",
@@ -306,7 +306,7 @@
   },
   {
     "file": "/game/draft/v2/textures/door_biotech_1080p.png",
-    "name": "door_biotech_v2_1080p.png",
+    "name": "door_biotech_1080p.png",
     "size": 2920511,
     "hash": "48bc72c7ddedd1db05ac1d64e50ae7ba4950f03712dcc14aa02a8fb6266c8c6f",
     "shortHash": "48bc72c7",
@@ -317,7 +317,7 @@
   },
   {
     "file": "/game/draft/v2/textures/wall_nuclear_sector_1080p.png",
-    "name": "wall_nuclear_sector_v2_1080p.png",
+    "name": "wall_nuclear_sector_1080p.png",
     "size": 415177,
     "hash": "066b1744845b706cd763a6022d7a43b4351c5de77ba94395d46167bd8afc8a15",
     "shortHash": "066b1744",
@@ -327,7 +327,7 @@
   },
   {
     "file": "/game/draft/v2/textures/door_nuclear_1080p.png",
-    "name": "door_nuclear_v2_1080p.png",
+    "name": "door_nuclear_1080p.png",
     "size": 2796643,
     "hash": "b61fcdcdcb0c516bd8fd57e26681ef601eab404bc2bba49cdefcba4c1b9fce29",
     "shortHash": "b61fcdcd",
@@ -338,7 +338,7 @@
   },
   {
     "file": "/game/draft/v2/textures/wall_vault_sector_1080p.png",
-    "name": "wall_vault_sector_v2_1080p.png",
+    "name": "wall_vault_sector_1080p.png",
     "size": 411189,
     "hash": "0c5f612a630e661e391f24e231402e1e980fc04a1bfd3691590eef357b364901",
     "shortHash": "0c5f612a",
@@ -348,7 +348,7 @@
   },
   {
     "file": "/game/draft/v2/textures/door_vault_1080p.png",
-    "name": "door_vault_v2_1080p.png",
+    "name": "door_vault_1080p.png",
     "size": 3074283,
     "hash": "f5e68240d66ff8108e5b14575966edf68dbace6ae4234b38bd1966830ea967d4",
     "shortHash": "f5e68240",
@@ -359,7 +359,7 @@
   },
   {
     "file": "/game/draft/v2/fx/muzzle_ballistic.png",
-    "name": "muzzle_ballistic_v2.png",
+    "name": "muzzle_ballistic.png",
     "size": 159943,
     "hash": "25f899f0535b326b552f1e51244e4f6e93e59d60c2d11ea849b274e2de7ff901",
     "shortHash": "25f899f0",
@@ -369,7 +369,7 @@
   },
   {
     "file": "/game/draft/v2/fx/muzzle_suppressed.png",
-    "name": "muzzle_suppressed_v2.png",
+    "name": "muzzle_suppressed.png",
     "size": 46428,
     "hash": "f1938701754acff1356ca9ab34ee0ae5945f12e88a584df4ec8057460b43d3b6",
     "shortHash": "f1938701",
@@ -379,7 +379,7 @@
   },
   {
     "file": "/game/draft/v2/fx/muzzle_rocket.png",
-    "name": "muzzle_rocket_v2.png",
+    "name": "muzzle_rocket.png",
     "size": 209316,
     "hash": "8aee8cc98958271dfde8aac4e6bc1752eed8a81ffea4304e4372a8c345ef8709",
     "shortHash": "8aee8cc9",
@@ -389,7 +389,7 @@
   },
   {
     "file": "/game/draft/v2/fx/impact_sparks.png",
-    "name": "impact_sparks_v2.png",
+    "name": "impact_sparks.png",
     "size": 412095,
     "hash": "62aa0941287a7ecc85cac1755c806228491ad946379796c3269b7daa7a408f47",
     "shortHash": "62aa0941",
@@ -399,7 +399,7 @@
   },
   {
     "file": "/game/draft/v2/fx/impact_electric.png",
-    "name": "impact_electric_v2.png",
+    "name": "impact_electric.png",
     "size": 460511,
     "hash": "a27fbe049190574ec38d224937599db83c2ecf75500e3ae4e8328ae571d93bfc",
     "shortHash": "a27fbe04",
@@ -409,7 +409,7 @@
   },
   {
     "file": "/game/draft/v2/fx/impact_acid.png",
-    "name": "impact_acid_v2.png",
+    "name": "impact_acid.png",
     "size": 446932,
     "hash": "e914d23423a8cff45978895451e29c9f32e07d75e46a63bb7ba362340edefedf",
     "shortHash": "e914d234",
@@ -419,17 +419,17 @@
   },
   {
     "file": "/game/draft/v2/fx/projectile_rocket.png",
-    "name": "projectile_rocket_v2.png",
-    "size": 207670,
-    "hash": "70a1ec71a283f95af1e464979f94fec1f6f54a700d1bc49679f048cd5a3b2d42",
-    "shortHash": "70a1ec71",
+    "name": "projectile_rocket.png",
+    "size": 120572,
+    "hash": "43f2ca707bf29863b5b5c8518af32ed51ed0fe9ad8bce2c6db1c11ef2245eaca",
+    "shortHash": "43f2ca70",
     "width": 512,
     "height": 512,
     "group": "particles"
   },
   {
     "file": "/game/draft/v2/fx/projectile_rail.png",
-    "name": "projectile_rail_v2.png",
+    "name": "projectile_rail.png",
     "size": 180643,
     "hash": "0598b1b16bd7c59267cdfc055f87d6e8484168d79f87baeb7780680ef8f9d871",
     "shortHash": "0598b1b1",
@@ -439,7 +439,7 @@
   },
   {
     "file": "/game/draft/v2/fx/projectile_arc.png",
-    "name": "projectile_arc_v2.png",
+    "name": "projectile_arc.png",
     "size": 157680,
     "hash": "537868cc45f609c3654c732df8685f82b05856b2f3b271f32c1303b72991ca85",
     "shortHash": "537868cc",
@@ -449,7 +449,7 @@
   },
   {
     "file": "/game/draft/v2/fx/projectile_acid.png",
-    "name": "projectile_acid_v2.png",
+    "name": "projectile_acid.png",
     "size": 420422,
     "hash": "2b784ba8efbabb9ee6ddd9517e29827bf9271ff5b9aee6c29ceb60dc2e99a446",
     "shortHash": "2b784ba8",
@@ -459,7 +459,7 @@
   },
   {
     "file": "/game/draft/v2/fx/smoke_muzzle.png",
-    "name": "smoke_muzzle_v2.png",
+    "name": "smoke_muzzle.png",
     "size": 72588,
     "hash": "532c9a0d8bd4f1adc3d9df0cadf700a8515c6d484e79cc4b490a545b8468dabc",
     "shortHash": "532c9a0d",
@@ -469,7 +469,7 @@
   },
   {
     "file": "/game/draft/v2/fx/smoke_explosion.png",
-    "name": "smoke_explosion_v2.png",
+    "name": "smoke_explosion.png",
     "size": 394395,
     "hash": "30629986547bc5643a7a466c8de0e75ffeb9237df953b431c8c6b5b50b5c9f7d",
     "shortHash": "30629986",
@@ -479,7 +479,7 @@
   },
   {
     "file": "/game/draft/v2/fx/shockwave.png",
-    "name": "shockwave_v2.png",
+    "name": "shockwave.png",
     "size": 372699,
     "hash": "227fcfc16aed2abac481b15b4e504a297f159bb78fbffb1eb520145079bd11dc",
     "shortHash": "227fcfc1",
@@ -489,7 +489,7 @@
   },
   {
     "file": "/game/draft/v2/fx/explosion_core.png",
-    "name": "explosion_core_v2.png",
+    "name": "explosion_core.png",
     "size": 451418,
     "hash": "ed6af1a21845765ffc69edd7f674996c20881d2f6b178ccf142cce458731f2a2",
     "shortHash": "ed6af1a2",
@@ -499,7 +499,7 @@
   },
   {
     "file": "/game/draft/v2/items/lantern_amber.png",
-    "name": "lantern_amber_v2.png",
+    "name": "lantern_amber.png",
     "size": 720126,
     "hash": "f139e0bce70d558f784e48f993f959bb29bc6f46a0b2120fc37b66ea79fad58c",
     "shortHash": "f139e0bc",
@@ -509,7 +509,7 @@
   },
   {
     "file": "/game/draft/v2/items/lantern_red.png",
-    "name": "lantern_red_v2.png",
+    "name": "lantern_red.png",
     "size": 728879,
     "hash": "7b0da3c68826f5396d898867d1a838f79f23213b5504bb69c582bf768ecc0668",
     "shortHash": "7b0da3c6",
@@ -519,7 +519,7 @@
   },
   {
     "file": "/game/draft/v2/items/worklight_white.png",
-    "name": "worklight_white_v2.png",
+    "name": "worklight_white.png",
     "size": 301038,
     "hash": "9f25add775e7fa7fa52392378fc8f22c9767e113b8aef6855cf4e69fd94bfcd7",
     "shortHash": "9f25add7",
@@ -529,7 +529,7 @@
   },
   {
     "file": "/game/draft/v2/items/worklight_cyan.png",
-    "name": "worklight_cyan_v2.png",
+    "name": "worklight_cyan.png",
     "size": 296152,
     "hash": "45e157759546a56b6cb70a24bd2693d0ba992ffe7e21dab4ec0441c8315b262a",
     "shortHash": "45e15775",
@@ -539,7 +539,7 @@
   },
   {
     "file": "/game/draft/v2/items/security_sensor_pylon.png",
-    "name": "security_sensor_pylon_v2.png",
+    "name": "security_sensor_pylon.png",
     "size": 642498,
     "hash": "6feeaf1b53f4ab9bd33953354663341d2b114a9f839576ba49041af9387d6cab",
     "shortHash": "6feeaf1b",
@@ -549,7 +549,7 @@
   },
   {
     "file": "/game/draft/v2/items/medkit.png",
-    "name": "medkit_v2.png",
+    "name": "medkit.png",
     "size": 728426,
     "hash": "789c8efbe3a6fa1add2dc0ddccf01b8fc813eb03cb705592625a24b1297f1a98",
     "shortHash": "789c8efb",
@@ -559,7 +559,7 @@
   },
   {
     "file": "/game/draft/v2/items/ammo_cache.png",
-    "name": "ammo_cache_v2.png",
+    "name": "ammo_cache.png",
     "size": 490576,
     "hash": "3ccb104c9a41ac29896567393df864ccf2a9e0055b74c9810ea93e0cbb4ce6ee",
     "shortHash": "3ccb104c",
@@ -569,7 +569,7 @@
   },
   {
     "file": "/game/draft/v2/items/reactor_unit.png",
-    "name": "reactor_unit_v2.png",
+    "name": "reactor_unit.png",
     "size": 806050,
     "hash": "e42c1773eff07547760f14988bcf6545d98e7bb93e87f4ba14ec215dda0d5048",
     "shortHash": "e42c1773",
@@ -579,7 +579,7 @@
   },
   {
     "file": "/game/draft/v2/items/server_rack.png",
-    "name": "server_rack_v2.png",
+    "name": "server_rack.png",
     "size": 1145273,
     "hash": "523e3f032a9d767a9fdfe12326d9f2d3ef47fc3f3f0e0db1fe58d9c508fdb099",
     "shortHash": "523e3f03",
@@ -589,7 +589,7 @@
   },
   {
     "file": "/game/draft/v2/items/ac_power_unit.png",
-    "name": "ac_power_unit_v2.png",
+    "name": "ac_power_unit.png",
     "size": 823606,
     "hash": "1d75e505ae5a62b423d2a58ce4c9cd15c14385870e26279c1ccaedfe0425d4ae",
     "shortHash": "1d75e505",
@@ -599,7 +599,7 @@
   },
   {
     "file": "/game/draft/v2/items/ventilation_array.png",
-    "name": "ventilation_array_v2.png",
+    "name": "ventilation_array.png",
     "size": 679762,
     "hash": "b81f81361607c7542542245c35e70b17110764b3f859debfbe031a26276cf9cf",
     "shortHash": "b81f8136",
@@ -609,7 +609,7 @@
   },
   {
     "file": "/game/draft/v2/fx/impact_shrapnel.png",
-    "name": "impact_shrapnel_v2.png",
+    "name": "impact_shrapnel.png",
     "hash": "acf0c088cf0506e5a3930a7d4e4aadc9869a3a4b2ef095ecbf77d15c32092844",
     "shortHash": "acf0c088",
     "size": 270152,
@@ -619,7 +619,7 @@
   },
   {
     "file": "/game/draft/v2/fx/projectile_ball.png",
-    "name": "projectile_ball_v2.png",
+    "name": "projectile_ball.png",
     "group": "particles",
     "size": 352501,
     "hash": "a597cfde8d587f86636ae576aea0f9f36826af2ca982669f8375773f7eb9803f",
@@ -639,7 +639,7 @@
   },
   {
     "file": "/game/draft/v2/cases/case_or7.png",
-    "name": "case_or7_v2.png",
+    "name": "case_or7.png",
     "size": 1089798,
     "hash": "efe048e3e8939d3738484b8912e7dc4c37b152ee9a0b6bc2fdf693bdd034c52f",
     "shortHash": "efe048e3",
@@ -649,7 +649,7 @@
   },
   {
     "file": "/game/draft/v2/cases/case_gs4.png",
-    "name": "case_gs4_v2.png",
+    "name": "case_gs4.png",
     "size": 1149436,
     "hash": "440eca2f687a78077669782b3f0e9efc943146798705e0a60e63b1f36666f7a1",
     "shortHash": "440eca2f",
@@ -659,7 +659,7 @@
   },
   {
     "file": "/game/draft/v2/cases/case_cr3.png",
-    "name": "case_cr3_v2.png",
+    "name": "case_cr3.png",
     "size": 1235316,
     "hash": "dd0a2e4c16c499a2310dfce4c8ffb0368d918abd47a475541898492f647bca92",
     "shortHash": "dd0a2e4c",
@@ -669,7 +669,7 @@
   },
   {
     "file": "/game/draft/v2/cases/case_sr0.png",
-    "name": "case_sr0_v2.png",
+    "name": "case_sr0.png",
     "size": 1156391,
     "hash": "c4bfa39867dc7d0980c04b54018e897e9720551b1f4c90348ac09ac3bdbd51ec",
     "shortHash": "c4bfa398",
@@ -679,7 +679,7 @@
   },
   {
     "file": "/game/draft/v2/cases/case_ts12.png",
-    "name": "case_ts12_v2.png",
+    "name": "case_ts12.png",
     "size": 1126452,
     "hash": "d0e6efdd67e8bfc12ce9ad5cef49ccc49147096f37234aa0896e1a9606f71e06",
     "shortHash": "d0e6efdd",
@@ -689,7 +689,7 @@
   },
   {
     "file": "/game/draft/v2/cases/case_ks8.png",
-    "name": "case_ks8_v2.png",
+    "name": "case_ks8.png",
     "size": 1097978,
     "hash": "44941fa698689ecefe8cc3587d44027b6ec24bedeca73485f8ae3a569d654b4c",
     "shortHash": "44941fa6",
@@ -699,12 +699,242 @@
   },
   {
     "file": "/game/draft/v2/cases/case_mn6.png",
-    "name": "case_mn6_v2.png",
+    "name": "case_mn6.png",
     "size": 1222570,
     "hash": "bb55ea34cdf25405bac8bce7fef63cdb7274b3010d4365d2432f6fb3fceca2ae",
     "shortHash": "bb55ea34",
     "width": 1024,
     "height": 768,
     "group": "items"
+  },
+  {
+    "file": "/game/draft/v2/cases/case_vx2.png",
+    "name": "case_vx2.png",
+    "size": 997095,
+    "hash": "4e6495cb44ef483ead4a72bec86ea111b37b7fd6bbadfc7ac49a5c1cfb10482b",
+    "shortHash": "4e6495cb",
+    "width": 1024,
+    "height": 768,
+    "group": "items"
+  },
+  {
+    "file": "/game/draft/v2/cases/case_lv8.png",
+    "name": "case_lv8.png",
+    "size": 1028607,
+    "hash": "4972e5cb83e5c84127fde36ff7564775d97f13221554de7a593de8c2233ee8f0",
+    "shortHash": "4972e5cb",
+    "width": 1024,
+    "height": 768,
+    "group": "items"
+  },
+  {
+    "file": "/game/draft/v2/cases/case_pr5.png",
+    "name": "case_pr5.png",
+    "size": 1111587,
+    "hash": "186b6efcac7192e778fe48e9a151e63bf70a16b36dd208f4d0bea3e5052393d0",
+    "shortHash": "186b6efc",
+    "width": 1024,
+    "height": 768,
+    "group": "items"
+  },
+  {
+    "file": "/game/draft/v2/cases/case_mg4.png",
+    "name": "case_mg4.png",
+    "size": 990953,
+    "hash": "b080db9e96d4a6f516ad1debcb92453b817db11fd4c1ea5edc959d3d9560e20d",
+    "shortHash": "b080db9e",
+    "width": 1024,
+    "height": 768,
+    "group": "items"
+  },
+  {
+    "file": "/game/draft/v2/cases/case_bm3.png",
+    "name": "case_bm3.png",
+    "size": 1283232,
+    "hash": "ac176025bfd540243a861abfc17fabb93ff4910dc2402c3dc76da7841b5284ab",
+    "shortHash": "ac176025",
+    "width": 1024,
+    "height": 768,
+    "group": "items"
+  },
+  {
+    "file": "/game/draft/v2/cases/case_my9.png",
+    "name": "case_my9.png",
+    "size": 1132435,
+    "hash": "7c8d7470582b8aa6904b8b8bb1fc622323c10165d44c5045beb71b6e157b80f2",
+    "shortHash": "7c8d7470",
+    "width": 1024,
+    "height": 768,
+    "group": "items"
+  },
+  {
+    "file": "/game/draft/v2/cases/case_as7.png",
+    "name": "case_as7.png",
+    "size": 1006946,
+    "hash": "2a005789582049f1b37de65baf2bebfeecc04fc2af9a120e74f6b28b0c540587",
+    "shortHash": "2a005789",
+    "width": 1024,
+    "height": 768,
+    "group": "items"
+  },
+  {
+    "file": "/game/draft/v2/cases/case_sc6.png",
+    "name": "case_sc6.png",
+    "size": 1073010,
+    "hash": "2cc51f2989933c997ea1ac7fb59e7a48e0d48017dcbeff4e5c6942c67fd739c7",
+    "shortHash": "2cc51f29",
+    "width": 1024,
+    "height": 768,
+    "group": "items"
+  },
+  {
+    "file": "/game/draft/v2/cases/case_ub1.png",
+    "name": "case_ub1.png",
+    "size": 937497,
+    "hash": "c98749576c39dd6e217b1a1092bb9b7f1fa0fd568acc656dc7b9428470dc4d7c",
+    "shortHash": "c9874957",
+    "width": 1024,
+    "height": 768,
+    "group": "items"
+  },
+  {
+    "file": "/game/draft/v2/cases/case_sl12.png",
+    "name": "case_sl12.png",
+    "size": 1053286,
+    "hash": "5828233407b916e23c84efc8fa732ffa87982483004dfd3ea996338ac0810b3c",
+    "shortHash": "58282334",
+    "width": 1024,
+    "height": 768,
+    "group": "items"
+  },
+  {
+    "file": "/game/draft/v2/cases/case_nt4.png",
+    "name": "case_nt4.png",
+    "size": 1134835,
+    "hash": "4a28838ac3516b5b88bcd79a0824d73324b88cfe2e37e22365de0602a8193bda",
+    "shortHash": "4a28838a",
+    "width": 1024,
+    "height": 768,
+    "group": "items"
+  },
+  {
+    "file": "/game/draft/v2/cases/case_ch8.png",
+    "name": "case_ch8.png",
+    "size": 926471,
+    "hash": "6f1812844d481b7614aa5afd302006aed0714b1036502f51abd72e0c5d69cc07",
+    "shortHash": "6f181284",
+    "width": 1024,
+    "height": 768,
+    "group": "items"
+  },
+  {
+    "file": "/game/draft/v2/cases/case_bo11.png",
+    "name": "case_bo11.png",
+    "size": 1027205,
+    "hash": "2091fecd83ca0865da6b06c2f9ea216d83e2cfde212591455e4eb8480e7b4100",
+    "shortHash": "2091fecd",
+    "width": 1024,
+    "height": 768,
+    "group": "items"
+  },
+  {
+    "file": "/game/draft/v2/cases/case_sv25.png",
+    "name": "case_sv25.png",
+    "size": 972286,
+    "hash": "fe8db3940ddc6a6cf00552255eee7b90691deb910f7e78159818cac76e7ef3a3",
+    "shortHash": "fe8db394",
+    "width": 1024,
+    "height": 768,
+    "group": "items"
+  },
+  {
+    "file": "/game/fx25/spore-cluster.png",
+    "name": "spore-cluster.png",
+    "size": 92532,
+    "hash": "6b77cec9fab18ef107d912e8bac80247462c0d2ed710299af37e1aba93df3550",
+    "shortHash": "6b77cec9",
+    "width": 256,
+    "height": 256,
+    "group": "fx"
+  },
+  {
+    "file": "/game/fx25/ion-bolt.png",
+    "name": "ion-bolt.png",
+    "size": 35990,
+    "hash": "78295ad17c293d99c56f7d624d23b046313cc93447be660ab970ca1d085410e8",
+    "shortHash": "78295ad1",
+    "width": 256,
+    "height": 256,
+    "group": "fx"
+  },
+  {
+    "file": "/game/fx25/cryo-shard.png",
+    "name": "cryo-shard.png",
+    "size": 56633,
+    "hash": "6bf1c3b407cf59ba0bc3fece3832ee977ddd7afd37a6d04ef9b9caea753653c9",
+    "shortHash": "6bf1c3b4",
+    "width": 256,
+    "height": 256,
+    "group": "fx"
+  },
+  {
+    "file": "/game/fx25/solar-impact.png",
+    "name": "solar-impact.png",
+    "size": 85985,
+    "hash": "78cf0314618144f703b57c27d6f671f1de458158a8517e5608b80895b340c62f",
+    "shortHash": "78cf0314",
+    "width": 256,
+    "height": 256,
+    "group": "fx"
+  },
+  {
+    "file": "/game/fx25/rocket-forward.png",
+    "name": "rocket-forward.png",
+    "size": 59189,
+    "hash": "c7f1eebcb7f30547e565341954fb5a62bc7d7ad82cc80a5635574bce09fe0001",
+    "shortHash": "c7f1eebc",
+    "width": 256,
+    "height": 256,
+    "group": "fx"
+  },
+  {
+    "file": "/game/fx25/ember-impact.png",
+    "name": "ember-impact.png",
+    "size": 55267,
+    "hash": "69481051ecd2112f138637a088aafe7b6c84878289eb3053a92590a68af33778",
+    "shortHash": "69481051",
+    "width": 256,
+    "height": 256,
+    "group": "fx"
+  },
+  {
+    "file": "/game/fx25/pressure-impact.png",
+    "name": "pressure-impact.png",
+    "size": 92725,
+    "hash": "12fd4613d5717534b07b7b27a4d15cd3d008fb404d6c38a24d061755fd9bdc17",
+    "shortHash": "12fd4613",
+    "width": 256,
+    "height": 256,
+    "group": "fx"
+  },
+  {
+    "file": "/game/fx25/phase-orb.png",
+    "name": "phase-orb.png",
+    "size": 62948,
+    "hash": "8200bfaa320ad756e1e36ad50eb68559c0d3ad7cfb7d2d0e72bd2bf577d4b7c1",
+    "shortHash": "8200bfaa",
+    "width": 256,
+    "height": 256,
+    "group": "fx"
+  },
+  {
+    "file": "/game/fx25/magnetic-impact.png",
+    "name": "magnetic-impact.png",
+    "size": 69563,
+    "hash": "f13ca2af50bf116bb1fce14c5d575fda67b329eb2311a445d0896738e7b2c829",
+    "shortHash": "f13ca2af",
+    "width": 256,
+    "height": 256,
+    "group": "fx"
   }
 ]

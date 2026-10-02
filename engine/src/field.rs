@@ -41,6 +41,7 @@ pub(crate) fn shield_blocks(face: f32, ex: f32, ey: f32, hx: f32, hy: f32) -> bo
 }
 
 pub(crate) fn node_point(wave: i32) -> (f32, f32) {
+    if level_index(wave) >= 11 { return (20.5, 7.5); }
     [(19.5, 4.5), (16.5, 10.5), (13.5, 15.5), (19.5, 8.5), (19.5, 22.5), (21.5, 5.5),
      (21.5, 6.5), (21.5, 25.5), (22.5, 16.5), (21.5, 6.5), (20.5, 7.5)][level_index(wave)]
 }
@@ -72,7 +73,7 @@ pub(crate) fn lockdown_doors(wave: i32) -> &'static [(i32, i32)] {
         3 => &[(28, 22), (28, 23)],
         4 => &[(31, 22), (31, 23)],
         5 => &[(31, 25), (31, 26)],
-        6..=10 => &[],
+        6..=24 => &[],
         _ => &[(36, 18), (37, 18), (36, 19), (37, 19)],
     }
 }
@@ -102,6 +103,7 @@ pub(crate) fn secret_interior(cx: i32, cy: i32) -> Option<(f32, f32)> {
 /// gun style; later sectors can swap the kind without a new pickup path.
 pub(crate) fn resupply(wave: i32) -> &'static [(u8, f32, f32)] {
     match level_index(wave) {
+        11..=24 => &[(EK_MED, 7.5, 15.5), (EK_ARMOR, 21.5, 8.5), (EK_AMMO, 41.5, 24.5), (EK_GUN8, 36.5, 20.5)],
         1 => &[
             (EK_MED, 7.5, 4.5),
             (EK_ARMOR, 21.5, 7.5),
@@ -141,14 +143,16 @@ pub(crate) fn resupply(wave: i32) -> &'static [(u8, f32, f32)] {
 }
 
 pub(crate) fn boss_case(wave: i32) -> u8 {
+    if level_index(wave) >= 11 { return 51 + (level_index(wave) - 11) as u8; }
     [EK_GUN9, EK_GUN10, EK_GUN11, EK_GUN13, EK_GUN14, EK_GUN12, EK_GUN15, EK_GUN16, EK_GUN17, EK_GUN18, EK_GUN19][level_index(wave)]
 }
 
 pub(crate) fn is_boss_case(kind: u8) -> bool {
-    matches!(kind, EK_GUN9 | EK_GUN10 | EK_GUN11 | EK_GUN12 | EK_GUN13 | EK_GUN14 | EK_GUN15 | EK_GUN16 | EK_GUN17 | EK_GUN18 | EK_GUN19)
+    (51..=64).contains(&kind) || matches!(kind, EK_GUN9 | EK_GUN10 | EK_GUN11 | EK_GUN12 | EK_GUN13 | EK_GUN14 | EK_GUN15 | EK_GUN16 | EK_GUN17 | EK_GUN18 | EK_GUN19)
 }
 
 pub(crate) fn boss_slot(kind: u8) -> usize {
+    if (51..=64).contains(&kind) { return 19 + (kind - 51) as usize; }
     match kind {
         EK_GUN10 => 9,
         EK_GUN11 => 10,
@@ -166,11 +170,13 @@ pub(crate) fn boss_slot(kind: u8) -> usize {
 
 /// One secret powerup per sector, behind a secret door.
 pub(crate) fn powerup_point(wave: i32) -> (f32, f32) {
+    if level_index(wave) >= 11 { return (25.5, 26.5); }
     [(5.5, 21.5), (31.5, 29.5), (46.5, 15.5), (25.5, 26.5), (9.5, 27.5), (10.5, 18.5),
      (19.5, 25.5), (19.5, 8.5), (22.5, 5.5), (19.5, 25.5), (26.5, 26.5)][level_index(wave)]
 }
 
 pub(crate) fn power_kind(wave: i32) -> u8 {
+    if level_index(wave) >= 11 { return [POWER_FEED, POWER_AEGIS, POWER_OVERDRIVE][level_index(wave) % 3]; }
     [POWER_OVERDRIVE, POWER_FEED, POWER_AEGIS, POWER_FEED, POWER_AEGIS, POWER_OVERDRIVE,
      POWER_AEGIS, POWER_FEED, POWER_OVERDRIVE, POWER_AEGIS, POWER_FEED][level_index(wave)]
 }

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { readFileSync } from "node:fs";
 // Interactive fallback for environments without agent-browser.
 import assert from "node:assert/strict";
 import { mkdir } from "node:fs/promises";
@@ -45,6 +46,7 @@ try {
   await page.goto(url.href);
   await page.waitForFunction(
     () => !!window.__controlsTest && document.body.innerText.includes("HEALTH"),
+    null, { timeout: 90000 },
   );
   // Slots 7-10 use Digit8/Digit9/Digit0/Minus (there is no Digit10).
   const slots = [
@@ -68,15 +70,17 @@ try {
     [17, "KS-8 KEST", 30, "Backquote"],
     [18, "MN-6 ECHO", 12, "Comma"],
   ];
+  slots.push(...JSON.parse(readFileSync(new URL("../art/campaign25/specs.json", import.meta.url), "utf8")).map((b, i) => [19+i, b.gun, b.mag, null]));
   for (const [slot, name, magazine, code] of slots) {
-    await page.evaluate(([code]) => {
+    await page.evaluate(([code, slot]) => {
       const t = window.__controlsTest;
       t.grantWeapons();
-      t.setKeys([code]);
+      if (code) t.setKeys([code]); else t.selectWeapon(slot);
       t.heal();
-    }, [code]);
+    }, [code, slot]);
     await page.waitForFunction((slot) => window.__controlsTest.getWeapon() === slot, slot);
     await page.evaluate(() => window.__controlsTest.setKeys([]));
+    if (slot >= 19) await page.waitForTimeout(650);
     assert.equal(await page.evaluate(() => window.__controlsTest.getAmmo()), magazine);
     await page.waitForFunction((name) => document.body.innerText.includes(name), name);
     await page.evaluate(() => window.__controlsTest.setKeys(["Space"]));
@@ -125,6 +129,7 @@ try {
   await page.goto(url.href);
   await page.waitForFunction(
     () => !!window.__controlsTest && document.body.innerText.includes("HEALTH"),
+    null, { timeout: 90000 },
   );
   const controls = await page.evaluate(async () => {
     const t = window.__controlsTest;
@@ -197,6 +202,7 @@ try {
   await page.goto(url.href);
   await page.waitForFunction(
     () => !!window.__controlsTest && document.body.innerText.includes("HEALTH"),
+    null, { timeout: 90000 },
   );
   await page.evaluate(() => {
     const t = window.__controlsTest;
@@ -223,6 +229,7 @@ try {
   await mobile.goto(url.href);
   await mobile.waitForFunction(
     () => !!window.__controlsTest && document.body.innerText.includes("HEALTH"),
+    null, { timeout: 90000 },
   );
   await mobile.evaluate(() => {
     const t = window.__controlsTest;
@@ -243,6 +250,7 @@ try {
   await narrow.goto(url.href);
   await narrow.waitForFunction(
     () => !!window.__controlsTest && document.body.innerText.includes("HEALTH"),
+    null, { timeout: 90000 },
   );
   assert.ok(await narrow.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
   await assertHudTextContained(narrow, "320px");

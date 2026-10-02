@@ -9,7 +9,7 @@ pub(crate) const TEXM: i32 = (TEX as i32) - 1;
 /// Atlas layers: the original 29 world layers plus seven animation sheets
 /// for each of the twenty-three BLACKSITE enemy skins.
 pub(crate) const ENEMY_ANIM_COUNT: usize = 7;
-pub(crate) const ENEMY_SKIN_COUNT: usize = 23;
+pub(crate) const ENEMY_SKIN_COUNT: usize = 37;
 pub(crate) const ENEMY_TEX_BASE: usize = 29;
 pub(crate) const T_ORDNANCE: usize = ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT;
 pub(crate) const T_GUN3: usize = T_ORDNANCE + 1;
@@ -39,7 +39,10 @@ pub(crate) const T_PROP_VENT: usize = T_GUN19 + 4;
 pub(crate) const T_PROP_WLIGHT_C: usize = T_GUN19 + 5;
 pub(crate) const T_PROP_WLIGHT_W: usize = T_GUN19 + 6;
 pub(crate) const T_PROP_BEACON: usize = T_GUN19 + 7;
-pub(crate) const TEX_N: usize = T_PROP_BEACON + 1;
+pub(crate) const T_EXPANSION_CASE: usize = T_PROP_BEACON + 1;
+pub(crate) const T_PROJECTILE_NEW: usize = T_EXPANSION_CASE + 14;
+pub(crate) const T_IMPACT_NEW: usize = T_PROJECTILE_NEW + 5;
+pub(crate) const TEX_N: usize = T_IMPACT_NEW + 4;
 pub(crate) const ENT_N: usize = 192;
 pub(crate) const T_BRICK: usize = 0;
 pub(crate) const T_METAL: usize = 1;
@@ -198,9 +201,9 @@ pub(crate) const IN_W16: u32 = 33554432;
 pub(crate) const IN_W17: u32 = 67108864;
 pub(crate) const IN_W18: u32 = 134217728;
 
-pub(crate) const WEP_N: usize = 19;
-pub(crate) const MAG_SZ: [i32; WEP_N] = [12, 8, 36, 5, 4, 10, 90, 6, 4, 14, 5, 9, 4, 8, 6, 24, 3, 30, 12];
-pub(crate) const RELOAD_T: [f32; WEP_N] = [0.95, 1.75, 1.30, 1.60, 1.95, 1.55, 2.45, 1.85, 1.70, 1.35, 1.55, 1.8, 2.0, 2.1, 2.15, 1.7, 2.6, 1.6, 1.9];
+pub(crate) const WEP_N: usize = 33;
+pub(crate) const MAG_SZ: [i32; WEP_N] = [12, 8, 36, 5, 4, 10, 90, 6, 4, 14, 5, 9, 4, 8, 6, 24, 3, 30, 12, 8, 6, 15, 10, 12, 9, 4, 24, 14, 7, 5, 8, 10, 18];
+pub(crate) const RELOAD_T: [f32; WEP_N] = [0.95, 1.75, 1.30, 1.60, 1.95, 1.55, 2.45, 1.85, 1.70, 1.35, 1.55, 1.8, 2.0, 2.1, 2.15, 1.7, 2.6, 1.6, 1.9, 1.9, 2.1, 1.7, 2.0, 2.2, 1.8, 2.5, 2.1, 1.8, 2.2, 2.4, 1.9, 2.0, 2.3];
 pub(crate) const MAP_CELLS: usize = MAP_W * MAP_H;
 pub(crate) const FX_CAP: usize = 64;
 
@@ -215,7 +218,7 @@ mod tests {
     }
 
     #[test]
-    fn weapon_tables_cover_all_nineteen_guns() {
+    fn weapon_tables_cover_all_thirty_three_guns() {
         assert_eq!(MAG_SZ.len(), WEP_N);
         assert_eq!(RELOAD_T.len(), WEP_N);
         for m in MAG_SZ {
@@ -246,7 +249,7 @@ mod tests {
     fn texture_slots_cover_the_known_atlas() {
         assert_eq!(
             TEX_N,
-            ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT + 28
+            ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT + 51
         );
         assert_eq!(TEX, 256);
         assert_eq!(TEXM, 255);

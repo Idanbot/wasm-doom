@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { chromium } from "playwright";
 
 const baseUrl = process.env.BLACKSITE_TEST_URL ?? "http://127.0.0.1:8080";
-const slugs = ["mk23s", "br12", "kx9", "mr4", "vlk6", "ax12", "m91", "hx8", "vr9", "hc9", "cm9", "ar6", "or7", "gs4", "cr3", "sr0", "ts12", "ks8", "mn6"];
+const slugs = ["mk23s", "br12", "kx9", "mr4", "vlk6", "ax12", "m91", "hx8", "vr9", "hc9", "cm9", "ar6", "or7", "gs4", "cr3", "sr0", "ts12", "ks8", "mn6", "vx2", "lv8", "pr5", "mg4", "bm3", "my9", "as7", "sc6", "ub1", "sl12", "nt4", "ch8", "bo11", "sv25"];
 let browser;
 
 before(async () => { browser = await chromium.launch({ headless: true }); });
@@ -113,7 +113,7 @@ test("mouse-wheel arsenal renders readable transparent gun thumbnails", async ()
         })),
       };
     }, slugs);
-    assert.equal(result.images.length, 19);
+    assert.equal(result.images.length, 33);
     for (const image of result.images) assert.ok(image.width > 0 && image.height > 0, `${image.slug} failed to decode`);
     assert.equal(result.slots.length, 5, "the compact wheel should show the selected gun and two neighbors on each side");
     for (const slot of result.slots) {
@@ -126,11 +126,11 @@ test("mouse-wheel arsenal renders readable transparent gun thumbnails", async ()
   } finally { await page.close(); }
 });
 
-test("dev catalog shows the current nineteen weapon sheets and frame controls", async () => {
+test("dev catalog shows the current thirty-three weapon sheets and frame controls", async () => {
   const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
   try {
     await page.goto(`${baseUrl}/catalog`);
-    await page.getByText("LATEST 5×5 WEAPON SET · 19 GUNS").waitFor();
+    await page.getByText("LATEST 5×5 WEAPON SET · 33 GUNS").waitFor();
     await page.getByRole("button", { name: /18\. KS-8 KEST/ }).click();
     await page.getByRole("button", { name: "Reload" }).click();
     await page.getByRole("button", { name: "4", exact: true }).click();

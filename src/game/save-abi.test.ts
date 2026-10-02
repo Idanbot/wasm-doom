@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { SAVE_AMMO_BASE, SAVE_MAG_BASE, SAVE_SIZE, SAVE_SLOTS } from "./save-abi.ts";
+import { SAVE_AMMO_BASE, SAVE_MAG_BASE, SAVE_SIZE, SAVE_SLOTS, SAVE_EXTRA_BASE } from "./save-abi.ts";
 
 /**
  * Guards the RunSave WASM/TS wire contract. The Rust side pins the same
@@ -8,17 +8,18 @@ import { SAVE_AMMO_BASE, SAVE_MAG_BASE, SAVE_SIZE, SAVE_SLOTS } from "./save-abi
  * both files together when WEP_N changes.
  */
 describe("RunSave ABI", () => {
-  it("covers all nineteen weapons", () => {
-    assert.equal(SAVE_SLOTS, 19);
+  it("covers all thirty-three weapons", () => {
+    assert.equal(SAVE_SLOTS, 33);
   });
 
   it("struct size matches the Rust repr(C) layout", () => {
-    assert.equal(SAVE_SIZE, 32 + SAVE_SLOTS * 4 * 2);
+    assert.equal(SAVE_SIZE, 32 + SAVE_SLOTS * 4 * 2 + 4);
   });
 
   it("ammo and mag arrays sit back to back after the header", () => {
     assert.equal(SAVE_AMMO_BASE, 32);
     assert.equal(SAVE_MAG_BASE, SAVE_AMMO_BASE + SAVE_SLOTS * 4);
-    assert.equal(SAVE_MAG_BASE + SAVE_SLOTS * 4, SAVE_SIZE);
+    assert.equal(SAVE_MAG_BASE + SAVE_SLOTS * 4, SAVE_EXTRA_BASE);
+    assert.equal(SAVE_EXTRA_BASE + 4, SAVE_SIZE);
   });
 });

@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { chromium } from 'playwright';
 
-const bosses = ['vr9', 'hc9', 'cm9', 'ar6', 'or7', 'gs4', 'cr3', 'sr0', 'ts12', 'ks8', 'mn6'];
+const bosses = ['vr9', 'hc9', 'cm9', 'ar6', 'or7', 'gs4', 'cr3', 'sr0', 'ts12', 'ks8', 'mn6', ...JSON.parse(readFileSync(new URL('../art/campaign25/specs.json', import.meta.url))).map(b => b.weapon)];
 
 test('all boss cases are golden native-alpha pickups and wheel icons are wide side profiles', async () => {
   const browser = await chromium.launch({ headless: true });

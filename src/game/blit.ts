@@ -1,4 +1,4 @@
-import { compileShader, createWebGlWorld, createWebGpuWorld, type GpuWorld, type WorldFrame } from "./gpu-world";
+import { TEX_N, compileShader, createWebGlWorld, createWebGpuWorld, type GpuWorld, type WorldFrame } from "./gpu-world";
 import { DEFAULT_GFX, type GfxOpts } from "./types";
 
 export type BlitKind = "webgpu" | "webgl2" | "canvas2d";
@@ -313,7 +313,8 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
     try {
       const adapter = await gpuApi.requestAdapter({ powerPreference: "high-performance" });
       if (!adapter || my !== gen) return;
-      const dev = await adapter.requestDevice();
+      if (adapter.limits.maxTextureArrayLayers < TEX_N) throw new Error("GPU atlas layer limit is too small");
+      const dev = await adapter.requestDevice({ requiredLimits: { maxTextureArrayLayers: TEX_N } });
       if (my !== gen) {
         dev.destroy();
         return;

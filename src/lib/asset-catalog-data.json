@@ -2,11 +2,11 @@
   {
     "file": "/game/ceil_pipes.png",
     "name": "ceil_pipes.png",
-    "size": 27256,
-    "hash": "76475077bd10c63ffcd88bc41d080fa461b0ad01256e5cd4e893629bc0abe0d6",
-    "shortHash": "76475077",
-    "width": 128,
-    "height": 128
+    "size": 51230,
+    "hash": "be535b22dd05f9b6e508e0bdb7568767dcaaea181f6815b775b39be666456f5a",
+    "shortHash": "be535b22",
+    "width": 256,
+    "height": 256
   },
   {
     "file": "/game/enemy_breacher_dead.png",
@@ -965,18 +965,18 @@
   {
     "file": "/game/floor_concrete.png",
     "name": "floor_concrete.png",
-    "size": 150703,
-    "hash": "23e1d931e17d3d6e42ce00ddf4c01bbb32d23952a2c3427acf67f20d714cda5d",
-    "shortHash": "23e1d931",
+    "size": 45446,
+    "hash": "0f861f5fdcdf94acbc64d6a60ceebfa49e9d78cdc7cd4f8d8735e99557bd38b0",
+    "shortHash": "0f861f5f",
     "width": 256,
     "height": 256
   },
   {
     "file": "/game/floor_grate.png",
     "name": "floor_grate.png",
-    "size": 166888,
-    "hash": "244f9024d2828015ae2fbcc1dc98cbe8267b07f0e35560a30360653be8724b7b",
-    "shortHash": "244f9024",
+    "size": 75130,
+    "hash": "3521ad06800c27ec9f29e8628f45bad69b4d28f6d12b41ef79cc509872462025",
+    "shortHash": "3521ad06",
     "width": 256,
     "height": 256
   },
@@ -1010,9 +1010,9 @@
   {
     "file": "/game/spr_ammo.png",
     "name": "spr_ammo.png",
-    "size": 72401,
-    "hash": "ef96fde14b7b7f4b0a5e46142b1b4224ea2f585954961f0fe4f49f552579f1db",
-    "shortHash": "ef96fde1",
+    "size": 73634,
+    "hash": "6606b4c73af07693d64461658aa24420ee9a21f14b0d21c2675803e058e12a25",
+    "shortHash": "6606b4c7",
     "width": 256,
     "height": 256
   },
@@ -1082,36 +1082,36 @@
   {
     "file": "/game/spr_flame.png",
     "name": "spr_flame.png",
-    "size": 338961,
-    "hash": "9aad12562654ff9dc72dad67fa58d590748d73ba421ec18da70575a167d58500",
-    "shortHash": "9aad1256",
+    "size": 393348,
+    "hash": "edd11b21c8b80c8bd68f19189841c9ef735df25062585a142d774cee062f1c9b",
+    "shortHash": "edd11b21",
     "width": 512,
     "height": 512
   },
   {
     "file": "/game/spr_gun.png",
     "name": "spr_gun.png",
-    "size": 74310,
-    "hash": "f7c64495783eb2f41ee3fbe4fc89057e26feaa2f7d3642e76166ace95d759244",
-    "shortHash": "f7c64495",
+    "size": 55583,
+    "hash": "26a9b4731cd48bc7f3de9a1847ca9ed636c3ef87eb317c0f08b10f1edc3a35aa",
+    "shortHash": "26a9b473",
     "width": 256,
     "height": 256
   },
   {
     "file": "/game/spr_gun_ax12.png",
     "name": "spr_gun_ax12.png",
-    "size": 55598,
-    "hash": "2548590184f5ef443320cc93ba0aa628bc52c445230572a562f9d7af793c7b78",
-    "shortHash": "25485901",
+    "size": 55573,
+    "hash": "1510ead1ffb607027c1baaed4fdb237adec0f71d1c9a979f36fc4e06992af798",
+    "shortHash": "1510ead1",
     "width": 256,
     "height": 256
   },
   {
     "file": "/game/spr_gun_br12.png",
     "name": "spr_gun_br12.png",
-    "size": 74310,
-    "hash": "f7c64495783eb2f41ee3fbe4fc89057e26feaa2f7d3642e76166ace95d759244",
-    "shortHash": "f7c64495",
+    "size": 55583,
+    "hash": "26a9b4731cd48bc7f3de9a1847ca9ed636c3ef87eb317c0f08b10f1edc3a35aa",
+    "shortHash": "26a9b473",
     "width": 256,
     "height": 256
   },
@@ -1136,54 +1136,54 @@
   {
     "file": "/game/spr_gun_hx8.png",
     "name": "spr_gun_hx8.png",
-    "size": 76140,
-    "hash": "f6f61827d961adf24b2b7486741e961fbfa99d4701bbbc52be04e30d5cc7b96c",
-    "shortHash": "f6f61827",
+    "size": 55516,
+    "hash": "e7ff000d363c462eac2b891b62c96ca602e7ff52effa07578795c4f6d0c65e46",
+    "shortHash": "e7ff000d",
     "width": 256,
     "height": 256
   },
   {
     "file": "/game/spr_gun_kx9.png",
     "name": "spr_gun_kx9.png",
-    "size": 72965,
-    "hash": "aafe9e8ef2d3da7ffb58c19206b71bd14729e96d81d1e48b88562617985645ff",
-    "shortHash": "aafe9e8e",
+    "size": 55780,
+    "hash": "e76ee1b84f7c69031fe1f1e9a3860f2354539da27735d455137f5061f4d9672b",
+    "shortHash": "e76ee1b8",
     "width": 256,
     "height": 256
   },
   {
     "file": "/game/spr_gun_m91.png",
     "name": "spr_gun_m91.png",
-    "size": 87840,
-    "hash": "23b55ce6f8a2a6a238c7c85e59346bde27f18ae85da255349099976ba3597c63",
-    "shortHash": "23b55ce6",
+    "size": 55508,
+    "hash": "54da31f46b08617efecb519cab7378752e3134b6640ea6de0d2dc52446f12091",
+    "shortHash": "54da31f4",
     "width": 256,
     "height": 256
   },
   {
     "file": "/game/spr_gun_mk23s.png",
     "name": "spr_gun_mk23s.png",
-    "size": 67109,
-    "hash": "72bd8c0c793410e3af94fc9221f0970a1d23502aadab24feb1e62adfb7f1c671",
-    "shortHash": "72bd8c0c",
+    "size": 78995,
+    "hash": "9d90d307cbd040c2e039055c8a866fe60c1173fb5a1e4b431fa2d97135fc2cd3",
+    "shortHash": "9d90d307",
     "width": 256,
     "height": 256
   },
   {
     "file": "/game/spr_gun_mr4.png",
     "name": "spr_gun_mr4.png",
-    "size": 67009,
-    "hash": "e2d9e93226d45133f4a87e796f2808ad45d321c85134cd5e206d7227f4e69a80",
-    "shortHash": "e2d9e932",
+    "size": 55573,
+    "hash": "1510ead1ffb607027c1baaed4fdb237adec0f71d1c9a979f36fc4e06992af798",
+    "shortHash": "1510ead1",
     "width": 256,
     "height": 256
   },
   {
     "file": "/game/spr_gun_vlk6.png",
     "name": "spr_gun_vlk6.png",
-    "size": 62767,
-    "hash": "dbde2c80c0e1b5cb06f8b6e9a674285088a36b7d54e172600459591f5b098014",
-    "shortHash": "dbde2c80",
+    "size": 55022,
+    "hash": "ffed4b79933d7c6ff1b906e2e9b55b08171bfcdceb18dc6268497871525539a6",
+    "shortHash": "ffed4b79",
     "width": 256,
     "height": 256
   },
@@ -1208,27 +1208,27 @@
   {
     "file": "/game/spr_impact.png",
     "name": "spr_impact.png",
-    "size": 422966,
-    "hash": "d070aec3a72778c0e1862e1bf7d64c23db3aa411286bcd96e9f5a4f374e90056",
-    "shortHash": "d070aec3",
+    "size": 492232,
+    "hash": "1c0713ab294ecd30e0ec76520718bd4f39f5949b3771570871f81d3baa4b8de3",
+    "shortHash": "1c0713ab",
     "width": 512,
     "height": 512
   },
   {
     "file": "/game/spr_lamp.png",
     "name": "spr_lamp.png",
-    "size": 47454,
-    "hash": "8245c3701fdce8c4a8d4df3e4a9419e9f16f79dab18a2e7ac53cac43912b42be",
-    "shortHash": "8245c370",
+    "size": 46364,
+    "hash": "f344728c593cdd4730535042c79bab8f5f786946db328a30cf2e1b58854b1dac",
+    "shortHash": "f344728c",
     "width": 256,
     "height": 256
   },
   {
     "file": "/game/spr_med.png",
     "name": "spr_med.png",
-    "size": 100349,
-    "hash": "955ef79de370e9cf39ae3bd20dd2a8ba0c496f0515bd0b321dca40b135d1f252",
-    "shortHash": "955ef79d",
+    "size": 78877,
+    "hash": "112f5a3f531d8fa2032989259db68c6be3424a3528131c97bc3011648a431c1d",
+    "shortHash": "112f5a3f",
     "width": 256,
     "height": 256
   },
@@ -1244,18 +1244,18 @@
   {
     "file": "/game/spr_muzzle.png",
     "name": "spr_muzzle.png",
-    "size": 270867,
-    "hash": "df6398387ad6dc720fc202cc63117aca9b70f754674ec9427003fce2de3b36bf",
-    "shortHash": "df639838",
+    "size": 166218,
+    "hash": "087ca1ea4a4c0b81dd82a74cfd71d890e416eac8e1f4fe0f3dcbe718de1b9d28",
+    "shortHash": "087ca1ea",
     "width": 512,
     "height": 512
   },
   {
     "file": "/game/spr_ordnance.png",
     "name": "spr_ordnance.png",
-    "size": 329734,
-    "hash": "f5c46b79537499b2daf017efc25291c6a056611a3824eced90ff2ca30023c5ff",
-    "shortHash": "f5c46b79",
+    "size": 310495,
+    "hash": "591a94b1c3d8360815378d842264f7105b80908bba486752df000e71482f54af",
+    "shortHash": "591a94b1",
     "width": 512,
     "height": 512
   },
@@ -1296,9 +1296,9 @@
   {
     "file": "/game/wall_brick.png",
     "name": "wall_brick.png",
-    "size": 138145,
-    "hash": "e92ed20dd28456b3e3be1a059e934b92de1ffd89211f6cd225e7d926319ed521",
-    "shortHash": "e92ed20d",
+    "size": 50658,
+    "hash": "3d111337cfeee24ce0bf348fec8a38b56b1af7a12e63e4e251f842110b3a0ffe",
+    "shortHash": "3d111337",
     "width": 256,
     "height": 256
   },
@@ -1368,18 +1368,18 @@
   {
     "file": "/game/wall_hazard_tile2x2.png",
     "name": "wall_hazard_tile2x2.png",
-    "size": 127790,
-    "hash": "68f69982d62c5bad6d7aaadc1b3e2009505564813c36d9c995e398abbb068db9",
-    "shortHash": "68f69982",
+    "size": 67978,
+    "hash": "0d6f722a4388897f47ef5f37c33f80b3e342be922d39a76e77bdcb736bc8af2d",
+    "shortHash": "0d6f722a",
     "width": 256,
     "height": 256
   },
   {
     "file": "/game/wall_metal.png",
     "name": "wall_metal.png",
-    "size": 120715,
-    "hash": "e7e8ba36ab08f7e7bc3a6d3526906c444055fdc9dd7c71b15c8b23ff56f4f123",
-    "shortHash": "e7e8ba36",
+    "size": 50940,
+    "hash": "d7f6b67963231a207c3e64831d35021bbde57af3dade69c3fd5c3e827512f7cb",
+    "shortHash": "d7f6b679",
     "width": 256,
     "height": 256
   },
@@ -5692,5 +5692,1346 @@
     "size": 53901,
     "hash": "9034c87d4e01fd6bf2a8d3d660aaae9dce913337c85f595496763d443d871115",
     "shortHash": "9034c87d"
+  },
+  {
+    "file": "/game/draft/v2/cases/case_vx2.png",
+    "name": "case_vx2.png",
+    "size": 997095,
+    "hash": "4e6495cb44ef483ead4a72bec86ea111b37b7fd6bbadfc7ac49a5c1cfb10482b",
+    "shortHash": "4e6495cb",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "file": "/game/spr_gun_vx2.png",
+    "name": "spr_gun_vx2.png",
+    "size": 82317,
+    "hash": "711bf7bc5abd719551e29d6bec21c6923eaa68375cb4af1a809f0aeb883b1ca3",
+    "shortHash": "711bf7bc",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/ui/weapon-thumbs/vx2.png",
+    "name": "vx2.png",
+    "size": 138836,
+    "hash": "5063937d34521331779916d95be251d85e369cbe4c31e765d1491edd0c7b2b0d",
+    "shortHash": "5063937d",
+    "width": 640,
+    "height": 300
+  },
+  {
+    "file": "/game/enemy_vulcan_idle.png",
+    "name": "enemy_vulcan_idle.png",
+    "size": 103157,
+    "hash": "470d1368f675ac34a51b2086a5300503d83c0542b1b5a4827a5c61a2d2ffbcaf",
+    "shortHash": "470d1368",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_vulcan_move.png",
+    "name": "enemy_vulcan_move.png",
+    "size": 88166,
+    "hash": "246b286c1112f7c52e18e6f71e43d0beefe4fd1ae7db292ee7e71a43116a49de",
+    "shortHash": "246b286c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_vulcan_pain.png",
+    "name": "enemy_vulcan_pain.png",
+    "size": 111917,
+    "hash": "4fdb3582d8bee373fcbd477b6472e960fa746f3e406695e886fbb19312fbc9a6",
+    "shortHash": "4fdb3582",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_vulcan_fire.png",
+    "name": "enemy_vulcan_fire.png",
+    "size": 107875,
+    "hash": "f2978ec467e92fcb7457198abced2a3bdcafb547dc0d80ce3c8a199c30eafa81",
+    "shortHash": "f2978ec4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_vulcan_reload.png",
+    "name": "enemy_vulcan_reload.png",
+    "size": 107069,
+    "hash": "ebc142b36c6a5f54a9316082ef3803a50355339fffcbf6d58e7af21080f48cbf",
+    "shortHash": "ebc142b3",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_vulcan_dead.png",
+    "name": "enemy_vulcan_dead.png",
+    "size": 124090,
+    "hash": "0dc0908da9635c7e7a0f421f407434d24f936a06c81edab358d92b7e8a75a300",
+    "shortHash": "0dc0908d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_vulcan_special.png",
+    "name": "enemy_vulcan_special.png",
+    "size": 119641,
+    "hash": "98e82fbee35797aa4b54c7e1449ac4b5e2bdb5603708caf6d6c6022e85e73c48",
+    "shortHash": "98e82fbe",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/draft/v2/cases/case_lv8.png",
+    "name": "case_lv8.png",
+    "size": 1028607,
+    "hash": "4972e5cb83e5c84127fde36ff7564775d97f13221554de7a593de8c2233ee8f0",
+    "shortHash": "4972e5cb",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "file": "/game/spr_gun_lv8.png",
+    "name": "spr_gun_lv8.png",
+    "size": 86318,
+    "hash": "eb11855227ba51c59ceec7519a368e29df0980cbffd2f7c5d7ab988c9ed994d0",
+    "shortHash": "eb118552",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/ui/weapon-thumbs/lv8.png",
+    "name": "lv8.png",
+    "size": 132820,
+    "hash": "557b2f2887a980ec5433012e8dfceb3542d1770d42a4ea88388bea425e51ff3b",
+    "shortHash": "557b2f28",
+    "width": 640,
+    "height": 300
+  },
+  {
+    "file": "/game/enemy_leviathan_idle.png",
+    "name": "enemy_leviathan_idle.png",
+    "size": 96206,
+    "hash": "981f18f336dcd2d7bbdec81dba1e66a86f1d960b5243e19e7c7529627756fb0d",
+    "shortHash": "981f18f3",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_leviathan_move.png",
+    "name": "enemy_leviathan_move.png",
+    "size": 93358,
+    "hash": "9764de67391fbe92d3685aa883376a67c00b65257561ce00c962c78cb4f40633",
+    "shortHash": "9764de67",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_leviathan_pain.png",
+    "name": "enemy_leviathan_pain.png",
+    "size": 97927,
+    "hash": "92242a419aea6e7c01eb9d813c235a4c41b3a52cd074b406d5bd83c9db53b9ca",
+    "shortHash": "92242a41",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_leviathan_fire.png",
+    "name": "enemy_leviathan_fire.png",
+    "size": 101096,
+    "hash": "1156c35518be57d7f1d1c3d6cd4e5728182f928fae5a3589baa21c23db032889",
+    "shortHash": "1156c355",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_leviathan_reload.png",
+    "name": "enemy_leviathan_reload.png",
+    "size": 82476,
+    "hash": "c310dca917320df18f8efe5d963fffbfb22d894d4bf5572ae3813d82d0c09e41",
+    "shortHash": "c310dca9",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_leviathan_dead.png",
+    "name": "enemy_leviathan_dead.png",
+    "size": 95132,
+    "hash": "edad9306bbbe58d07962b7c21ac8da3a4e30dc1503ca955b168613723c2bc4b2",
+    "shortHash": "edad9306",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_leviathan_special.png",
+    "name": "enemy_leviathan_special.png",
+    "size": 98805,
+    "hash": "ff0d7e1e2aaff29b3bde310416807183877f908459ab042430ae6028615b00df",
+    "shortHash": "ff0d7e1e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/draft/v2/cases/case_pr5.png",
+    "name": "case_pr5.png",
+    "size": 1111587,
+    "hash": "186b6efcac7192e778fe48e9a151e63bf70a16b36dd208f4d0bea3e5052393d0",
+    "shortHash": "186b6efc",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "file": "/game/spr_gun_pr5.png",
+    "name": "spr_gun_pr5.png",
+    "size": 92050,
+    "hash": "1dae23009a184cb67f4c14da3ed4d4503c079966b56855f97a8fd6b6a77195af",
+    "shortHash": "1dae2300",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/ui/weapon-thumbs/pr5.png",
+    "name": "pr5.png",
+    "size": 147859,
+    "hash": "382e18816473c0c78ebc9a752c581bb7f913c46aea595301c9dc87ba4820f4b1",
+    "shortHash": "382e1881",
+    "width": 640,
+    "height": 300
+  },
+  {
+    "file": "/game/enemy_prism_idle.png",
+    "name": "enemy_prism_idle.png",
+    "size": 79483,
+    "hash": "e0c0bd503f813045ee4389e1409004dcfb4eddad109b0e6bff0fcfdef06c0df6",
+    "shortHash": "e0c0bd50",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_prism_move.png",
+    "name": "enemy_prism_move.png",
+    "size": 75742,
+    "hash": "f879a95cbc6be41a6bc9cf68c8550eca81713a3066e383ddc84aba17f06996c5",
+    "shortHash": "f879a95c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_prism_pain.png",
+    "name": "enemy_prism_pain.png",
+    "size": 89986,
+    "hash": "33028d94fc13b4eb7311b0bfe17fb6e9129c9c374d295ef8a0e544fcacef7b0a",
+    "shortHash": "33028d94",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_prism_fire.png",
+    "name": "enemy_prism_fire.png",
+    "size": 90487,
+    "hash": "489445e44e77fe9142b3e173f3c3c1e3cc9466ce2f58968a9e8029ba2f4a9d5d",
+    "shortHash": "489445e4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_prism_reload.png",
+    "name": "enemy_prism_reload.png",
+    "size": 75208,
+    "hash": "953a023615019953cb8ecf2e7da4b08fdb4610568ded76e9be6f9b3efcf0364d",
+    "shortHash": "953a0236",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_prism_dead.png",
+    "name": "enemy_prism_dead.png",
+    "size": 91684,
+    "hash": "22928548f98755b3fbe783a4714e38baa72f15a2dbb65c33ad81570c8219b535",
+    "shortHash": "22928548",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_prism_special.png",
+    "name": "enemy_prism_special.png",
+    "size": 119040,
+    "hash": "51f4e97e6e01d0f5fb1ae7c74a5b780777bb9ee3670b94c3ce4328bb7adab8af",
+    "shortHash": "51f4e97e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/draft/v2/cases/case_mg4.png",
+    "name": "case_mg4.png",
+    "size": 990953,
+    "hash": "b080db9e96d4a6f516ad1debcb92453b817db11fd4c1ea5edc959d3d9560e20d",
+    "shortHash": "b080db9e",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "file": "/game/spr_gun_mg4.png",
+    "name": "spr_gun_mg4.png",
+    "size": 83857,
+    "hash": "2dcb0a912fee86e7534e5e2c2c33f13bd07a8a9edd68980ff6c8108554cb9414",
+    "shortHash": "2dcb0a91",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/ui/weapon-thumbs/mg4.png",
+    "name": "mg4.png",
+    "size": 160342,
+    "hash": "e70014e791a1b80921bd6dc9b1723160494ab1f670a51b8dbc390e8ace43123a",
+    "shortHash": "e70014e7",
+    "width": 640,
+    "height": 300
+  },
+  {
+    "file": "/game/enemy_magnus_idle.png",
+    "name": "enemy_magnus_idle.png",
+    "size": 97095,
+    "hash": "2a2bd106381276084c250ae45c4d86a600d5095e99922f03467393dea0b7278e",
+    "shortHash": "2a2bd106",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_magnus_move.png",
+    "name": "enemy_magnus_move.png",
+    "size": 93055,
+    "hash": "2e4a3f61b5fe0ecc452b099fd28c32c52804a9db8f6a8ed67089cb400e6dd60d",
+    "shortHash": "2e4a3f61",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_magnus_pain.png",
+    "name": "enemy_magnus_pain.png",
+    "size": 102505,
+    "hash": "2a5f412426f2a410d84c2bfe74153dbd3f297e6bb4933faaa3d99340a1577fd8",
+    "shortHash": "2a5f4124",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_magnus_fire.png",
+    "name": "enemy_magnus_fire.png",
+    "size": 102763,
+    "hash": "7e32aba3ee72764bf2078075f4b559f6fc6826e9f738e15109bbe4206344f408",
+    "shortHash": "7e32aba3",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_magnus_reload.png",
+    "name": "enemy_magnus_reload.png",
+    "size": 87416,
+    "hash": "ebe1870f2c9e37a4b2c2b95552c0e87f7de47d5b1be77fc37e4887c1866063ff",
+    "shortHash": "ebe1870f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_magnus_dead.png",
+    "name": "enemy_magnus_dead.png",
+    "size": 98763,
+    "hash": "187f5c0df99cf83c29da4aba844fa046e20a88a18b923b4b7be6ddc68195d872",
+    "shortHash": "187f5c0d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_magnus_special.png",
+    "name": "enemy_magnus_special.png",
+    "size": 103122,
+    "hash": "bb6fda4d256bfefcfa89f384a44a23cf485970edf50d05540fecd4f6d41269c5",
+    "shortHash": "bb6fda4d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/draft/v2/cases/case_bm3.png",
+    "name": "case_bm3.png",
+    "size": 1283232,
+    "hash": "ac176025bfd540243a861abfc17fabb93ff4910dc2402c3dc76da7841b5284ab",
+    "shortHash": "ac176025",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "file": "/game/spr_gun_bm3.png",
+    "name": "spr_gun_bm3.png",
+    "size": 97508,
+    "hash": "8bb0bf2fa082051e111116426b30bce3acba9260ce668f6a5f7fb6368e3988dd",
+    "shortHash": "8bb0bf2f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/ui/weapon-thumbs/bm3.png",
+    "name": "bm3.png",
+    "size": 177114,
+    "hash": "99b5cd6f6b596af8ed6d0cc3b4675511175bc4b897fef559b5fde968c3368039",
+    "shortHash": "99b5cd6f",
+    "width": 640,
+    "height": 300
+  },
+  {
+    "file": "/game/enemy_broodmother_idle.png",
+    "name": "enemy_broodmother_idle.png",
+    "size": 98606,
+    "hash": "3669b92a277c95bbf0bfaf68dd2e73c58a064a5bf294dd4fe8fe16940f829df9",
+    "shortHash": "3669b92a",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_broodmother_move.png",
+    "name": "enemy_broodmother_move.png",
+    "size": 98052,
+    "hash": "0bb71d66404856da4ada3ee08ee554a92cff0c2e05268d9828dea0bbc46ccda5",
+    "shortHash": "0bb71d66",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_broodmother_pain.png",
+    "name": "enemy_broodmother_pain.png",
+    "size": 108709,
+    "hash": "9c4d19cb386dbe01017974252e93b4283fd2788ba55f9f13bf4a3f454a3c0d6d",
+    "shortHash": "9c4d19cb",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_broodmother_fire.png",
+    "name": "enemy_broodmother_fire.png",
+    "size": 107948,
+    "hash": "2396665a1e8fe7338a9ab5e5fa1f15f92ef2d3eda81042b1fc244b7d588dcdf4",
+    "shortHash": "2396665a",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_broodmother_reload.png",
+    "name": "enemy_broodmother_reload.png",
+    "size": 95471,
+    "hash": "5c3c1c0b1b41dc0d17c3f198da1a9067d4330ac5ab45822b48490fc3c4bebbcf",
+    "shortHash": "5c3c1c0b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_broodmother_dead.png",
+    "name": "enemy_broodmother_dead.png",
+    "size": 114064,
+    "hash": "e1a343eb41ca6fd151f6a5f6bed21dc28e10e5f528075f0f17441991afbc9ffd",
+    "shortHash": "e1a343eb",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_broodmother_special.png",
+    "name": "enemy_broodmother_special.png",
+    "size": 110712,
+    "hash": "7d6db5c9a94a7b4d2b077d1fcc1bbb9b81a7138ebfe32a8d2d4d95541b60ceea",
+    "shortHash": "7d6db5c9",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/draft/v2/cases/case_my9.png",
+    "name": "case_my9.png",
+    "size": 1132435,
+    "hash": "7c8d7470582b8aa6904b8b8bb1fc622323c10165d44c5045beb71b6e157b80f2",
+    "shortHash": "7c8d7470",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "file": "/game/spr_gun_my9.png",
+    "name": "spr_gun_my9.png",
+    "size": 91002,
+    "hash": "1bc3a69322de9a6e46605c6c713e68f48f0a3f9affb5dfb403b9e0c3b2768937",
+    "shortHash": "1bc3a693",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/ui/weapon-thumbs/my9.png",
+    "name": "my9.png",
+    "size": 144868,
+    "hash": "26d1d47db38eb744e19084e5a965a320d3d7a602d0aae8d8a79087ea47ff98e2",
+    "shortHash": "26d1d47d",
+    "width": 640,
+    "height": 300
+  },
+  {
+    "file": "/game/enemy_mycelium_idle.png",
+    "name": "enemy_mycelium_idle.png",
+    "size": 93512,
+    "hash": "83f0b809409cf0187cdcb494aae3cd7bb8aab8d1693dd370cc6d6f22948be422",
+    "shortHash": "83f0b809",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_mycelium_move.png",
+    "name": "enemy_mycelium_move.png",
+    "size": 90002,
+    "hash": "fd9614a71a665d00416da84da710f9e4f2a2ccd4d8ca3f8a355b91bc4bb814e6",
+    "shortHash": "fd9614a7",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_mycelium_pain.png",
+    "name": "enemy_mycelium_pain.png",
+    "size": 98388,
+    "hash": "ab5f2d14f174ff87db7a3232fc7610e377301454a7d381c5f6ba64ec4d528c38",
+    "shortHash": "ab5f2d14",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_mycelium_fire.png",
+    "name": "enemy_mycelium_fire.png",
+    "size": 103263,
+    "hash": "e5132eb01f9ab814774791ebe675cb650e9462700cd887f51e3dda25853733d7",
+    "shortHash": "e5132eb0",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_mycelium_reload.png",
+    "name": "enemy_mycelium_reload.png",
+    "size": 98294,
+    "hash": "f7bbfb6c6dbf3dc0900e530014eab0dfccc32db7df2964f3a8259974bf58660a",
+    "shortHash": "f7bbfb6c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_mycelium_dead.png",
+    "name": "enemy_mycelium_dead.png",
+    "size": 99299,
+    "hash": "4905cfdea2b56fa4d545cbb8d8672a7ca6656d37b9fe7f37b51f2b1c02dab180",
+    "shortHash": "4905cfde",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_mycelium_special.png",
+    "name": "enemy_mycelium_special.png",
+    "size": 103741,
+    "hash": "2a91084439e12b0aa971e9ab342064dd0a94d5f1642e683bdd9ff0c29ce1aa8b",
+    "shortHash": "2a910844",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/draft/v2/cases/case_as7.png",
+    "name": "case_as7.png",
+    "size": 1006946,
+    "hash": "2a005789582049f1b37de65baf2bebfeecc04fc2af9a120e74f6b28b0c540587",
+    "shortHash": "2a005789",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "file": "/game/spr_gun_as7.png",
+    "name": "spr_gun_as7.png",
+    "size": 82909,
+    "hash": "9acff4f2c4eca1c21c57c15ef80cacb9e91f39d075c822f098d67477935d10cc",
+    "shortHash": "9acff4f2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/ui/weapon-thumbs/as7.png",
+    "name": "as7.png",
+    "size": 142900,
+    "hash": "7efdd32a3ff49da51d9fbc48432870b66ad79a1e7df57ec71d6e643c312ed1a4",
+    "shortHash": "7efdd32a",
+    "width": 640,
+    "height": 300
+  },
+  {
+    "file": "/game/enemy_astra_idle.png",
+    "name": "enemy_astra_idle.png",
+    "size": 78610,
+    "hash": "79a7359b75510fb80c9d242cdec7d976046b0f12c7cda49319bcdbe959f7e966",
+    "shortHash": "79a7359b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_astra_move.png",
+    "name": "enemy_astra_move.png",
+    "size": 75482,
+    "hash": "649340d67cc5fc16da191488b226777bc88ff3df86483266990a25b16fe99f6d",
+    "shortHash": "649340d6",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_astra_pain.png",
+    "name": "enemy_astra_pain.png",
+    "size": 83184,
+    "hash": "a71dace40be37893e15a962e161700d8032d4fb14111774e675ec2e95a41c2e1",
+    "shortHash": "a71dace4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_astra_fire.png",
+    "name": "enemy_astra_fire.png",
+    "size": 81961,
+    "hash": "4b48835dedc0ab8678097dc76694a8739654f45bc14ae75c54c1bb6cf3f9b351",
+    "shortHash": "4b48835d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_astra_reload.png",
+    "name": "enemy_astra_reload.png",
+    "size": 88209,
+    "hash": "d4be64f175b21aa7c86a9c494aa307398cc3190ce063891602927cec05ca6b14",
+    "shortHash": "d4be64f1",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_astra_dead.png",
+    "name": "enemy_astra_dead.png",
+    "size": 90373,
+    "hash": "10b67f879733c9eae31d3d2e6a083d0bdd8f4fd8b8df6f69c1d487dffbcb4834",
+    "shortHash": "10b67f87",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_astra_special.png",
+    "name": "enemy_astra_special.png",
+    "size": 100408,
+    "hash": "9c925b574ae1bcb81a679d1c49716264fc5f301a97261d6995c1e41011a825a2",
+    "shortHash": "9c925b57",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/draft/v2/cases/case_sc6.png",
+    "name": "case_sc6.png",
+    "size": 1073010,
+    "hash": "2cc51f2989933c997ea1ac7fb59e7a48e0d48017dcbeff4e5c6942c67fd739c7",
+    "shortHash": "2cc51f29",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "file": "/game/spr_gun_sc6.png",
+    "name": "spr_gun_sc6.png",
+    "size": 90240,
+    "hash": "78d65372d788651783e696391951c4c7f31a2d8b9645075b826b8960e2905c18",
+    "shortHash": "78d65372",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/ui/weapon-thumbs/sc6.png",
+    "name": "sc6.png",
+    "size": 144054,
+    "hash": "f3f4c854ac862417aad6fce357952ed0934b66ca10eeb241d37b7ff807cfad74",
+    "shortHash": "f3f4c854",
+    "width": 640,
+    "height": 300
+  },
+  {
+    "file": "/game/enemy_scrapper_idle.png",
+    "name": "enemy_scrapper_idle.png",
+    "size": 111399,
+    "hash": "5b653a29faed3ff9404cc5c48f50e834c917c8b31531fbc3589b7fae820e509a",
+    "shortHash": "5b653a29",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_scrapper_move.png",
+    "name": "enemy_scrapper_move.png",
+    "size": 105847,
+    "hash": "9ed5859c7d5ca8823c0ce9eb99dfe9f9d698c78d5d006042fe7b27dca6b3a317",
+    "shortHash": "9ed5859c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_scrapper_pain.png",
+    "name": "enemy_scrapper_pain.png",
+    "size": 115523,
+    "hash": "48a561684a838d803999f343c34a79ad0ab9ebd7697b006fda45a58622728a2a",
+    "shortHash": "48a56168",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_scrapper_fire.png",
+    "name": "enemy_scrapper_fire.png",
+    "size": 119869,
+    "hash": "ba868cb76a4a10c3904281a7ae2b7848bcd5331abba9081645262031a1ccb4b6",
+    "shortHash": "ba868cb7",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_scrapper_reload.png",
+    "name": "enemy_scrapper_reload.png",
+    "size": 91006,
+    "hash": "0c371ac28cb4e2a944f20e96964ea98936b043075903a279d718f6c7713d64f8",
+    "shortHash": "0c371ac2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_scrapper_dead.png",
+    "name": "enemy_scrapper_dead.png",
+    "size": 113089,
+    "hash": "25d30ad25c98396e72efd2e05eb176632c22930abfa2341f35f19f709f5b384e",
+    "shortHash": "25d30ad2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_scrapper_special.png",
+    "name": "enemy_scrapper_special.png",
+    "size": 118893,
+    "hash": "0e9b4e6fe1d5a7e84a79a3e4264c5c8175373e629499d8d443e9fe5ff726e542",
+    "shortHash": "0e9b4e6f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/draft/v2/cases/case_ub1.png",
+    "name": "case_ub1.png",
+    "size": 937497,
+    "hash": "c98749576c39dd6e217b1a1092bb9b7f1fa0fd568acc656dc7b9428470dc4d7c",
+    "shortHash": "c9874957",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "file": "/game/spr_gun_ub1.png",
+    "name": "spr_gun_ub1.png",
+    "size": 82849,
+    "hash": "ace9658c77f39cfd82b84a22b0df85f12d974d557c1a15aa5e2e496736ffad5e",
+    "shortHash": "ace9658c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/ui/weapon-thumbs/ub1.png",
+    "name": "ub1.png",
+    "size": 112637,
+    "hash": "2074064ab09479b9ad17591e82b10ee2ff969a3aba7d853c7263c642b598f6fb",
+    "shortHash": "2074064a",
+    "width": 640,
+    "height": 300
+  },
+  {
+    "file": "/game/enemy_umbra_idle.png",
+    "name": "enemy_umbra_idle.png",
+    "size": 68387,
+    "hash": "f9b3544d65fbf69512b506dc92c8e706c9164d753e451d8af00d02cb988305e9",
+    "shortHash": "f9b3544d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_umbra_move.png",
+    "name": "enemy_umbra_move.png",
+    "size": 60488,
+    "hash": "820164a7c74a123904832c5fcfd520fafaa357f7240c3d210af8dc4551fa2397",
+    "shortHash": "820164a7",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_umbra_pain.png",
+    "name": "enemy_umbra_pain.png",
+    "size": 75218,
+    "hash": "e054fda770f51cb5f26a27dd29b1b1bb530ba56a02f2a7e77d11748b40bcadb8",
+    "shortHash": "e054fda7",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_umbra_fire.png",
+    "name": "enemy_umbra_fire.png",
+    "size": 77506,
+    "hash": "5ac803ef4e76659365a1c094be95d5f093a53a41c11f9178ba3750e5bf3cbb36",
+    "shortHash": "5ac803ef",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_umbra_reload.png",
+    "name": "enemy_umbra_reload.png",
+    "size": 64004,
+    "hash": "6042b6ce9bd27cfac4d9bdee3cb865680e0199a323220ab1848579708443cb48",
+    "shortHash": "6042b6ce",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_umbra_dead.png",
+    "name": "enemy_umbra_dead.png",
+    "size": 57225,
+    "hash": "ad84aa2b06395edd312004454754c947500ddcfb75cdb455023a648ee0edcd9a",
+    "shortHash": "ad84aa2b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_umbra_special.png",
+    "name": "enemy_umbra_special.png",
+    "size": 119545,
+    "hash": "a0f6ea94e7cd7d0d82bab8a5fd07642e410643eae08797a29b7c49bc28e4e7da",
+    "shortHash": "a0f6ea94",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/draft/v2/cases/case_sl12.png",
+    "name": "case_sl12.png",
+    "size": 1053286,
+    "hash": "5828233407b916e23c84efc8fa732ffa87982483004dfd3ea996338ac0810b3c",
+    "shortHash": "58282334",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "file": "/game/spr_gun_sl12.png",
+    "name": "spr_gun_sl12.png",
+    "size": 82484,
+    "hash": "734b47a1adec7ec4866889554f6c28d18b0c94600ad3f289eba90f39ac62789c",
+    "shortHash": "734b47a1",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/ui/weapon-thumbs/sl12.png",
+    "name": "sl12.png",
+    "size": 155257,
+    "hash": "2ee781df2876f4ae5d3f4dfde94b18ecd32bbb7b7f1b2fa7aafc1ce50a237e01",
+    "shortHash": "2ee781df",
+    "width": 640,
+    "height": 300
+  },
+  {
+    "file": "/game/enemy_sol_idle.png",
+    "name": "enemy_sol_idle.png",
+    "size": 100343,
+    "hash": "f70f07d4c1b6c627d4d5ef330da9a004392a9b6f028212205e4268391c378a1c",
+    "shortHash": "f70f07d4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_sol_move.png",
+    "name": "enemy_sol_move.png",
+    "size": 97527,
+    "hash": "811c7633336f9ef4430e7502dda0cd2cf6ad03ced2cedc5786c5264d88a30e1d",
+    "shortHash": "811c7633",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_sol_pain.png",
+    "name": "enemy_sol_pain.png",
+    "size": 117821,
+    "hash": "88dd86dceda4c19d9d2e21cf3159587122c832d080d8bb8feacc4468e7502dc3",
+    "shortHash": "88dd86dc",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_sol_fire.png",
+    "name": "enemy_sol_fire.png",
+    "size": 114972,
+    "hash": "02943a29f989f3b62c693e584d128ca9ea66fa3c789cec0cbf0359f7e28f77b7",
+    "shortHash": "02943a29",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_sol_reload.png",
+    "name": "enemy_sol_reload.png",
+    "size": 99721,
+    "hash": "5e696bba84ee6bb755f982b7bbc888e8df7585e85af7051f455ba4ab46118464",
+    "shortHash": "5e696bba",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_sol_dead.png",
+    "name": "enemy_sol_dead.png",
+    "size": 115160,
+    "hash": "7d557da0ed91bafd10b2693483b4cbbb80b4c93879fbcceb1ddf2fb481dcd606",
+    "shortHash": "7d557da0",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_sol_special.png",
+    "name": "enemy_sol_special.png",
+    "size": 130235,
+    "hash": "8a1ced569b9ec1c5235e4180d6882840679324280e5300042bcf6041f3ebc73f",
+    "shortHash": "8a1ced56",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/draft/v2/cases/case_nt4.png",
+    "name": "case_nt4.png",
+    "size": 1134835,
+    "hash": "4a28838ac3516b5b88bcd79a0824d73324b88cfe2e37e22365de0602a8193bda",
+    "shortHash": "4a28838a",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "file": "/game/spr_gun_nt4.png",
+    "name": "spr_gun_nt4.png",
+    "size": 89059,
+    "hash": "057cd2b112ceb1de8a8d10554050842fbdff2f0ef40b1d67d623e7b641324e93",
+    "shortHash": "057cd2b1",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/ui/weapon-thumbs/nt4.png",
+    "name": "nt4.png",
+    "size": 167520,
+    "hash": "b2cefe191925c30e1602da6fc31623925ee04a873dad3e1f4fe47e402209b310",
+    "shortHash": "b2cefe19",
+    "width": 640,
+    "height": 300
+  },
+  {
+    "file": "/game/enemy_nautilus_idle.png",
+    "name": "enemy_nautilus_idle.png",
+    "size": 97402,
+    "hash": "4b4d52e380a4573fdec01c9ee59cfb7dcfed320424b2d6cf6995a580be3bac73",
+    "shortHash": "4b4d52e3",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_nautilus_move.png",
+    "name": "enemy_nautilus_move.png",
+    "size": 96921,
+    "hash": "f7e9c61917fdcfeee2593c3934008f61e044994be82240b610bac82801703977",
+    "shortHash": "f7e9c619",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_nautilus_pain.png",
+    "name": "enemy_nautilus_pain.png",
+    "size": 105085,
+    "hash": "0f85b6c6dd57b76a9d7f1376b621f1f5f9fce4a34aaf58f1984c9a4337d67512",
+    "shortHash": "0f85b6c6",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_nautilus_fire.png",
+    "name": "enemy_nautilus_fire.png",
+    "size": 106135,
+    "hash": "328f3533cb378ea58b3124539db1f5f8007cfdfb46648aa9ac8fb7916c7cc59d",
+    "shortHash": "328f3533",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_nautilus_reload.png",
+    "name": "enemy_nautilus_reload.png",
+    "size": 86171,
+    "hash": "ad4a1b20cef1c4a4469908af8e0266d76ad2007932e50cbb5a8d0608dbabec0b",
+    "shortHash": "ad4a1b20",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_nautilus_dead.png",
+    "name": "enemy_nautilus_dead.png",
+    "size": 94379,
+    "hash": "9e32685fa2bde377460135eed9e213899c6a19d5cf54f2cb181a00e4bc34d20f",
+    "shortHash": "9e32685f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_nautilus_special.png",
+    "name": "enemy_nautilus_special.png",
+    "size": 107578,
+    "hash": "5a63b4c6b0c02c225797023ac4360513bf328be8b4ea2397870d89ed8dfaf898",
+    "shortHash": "5a63b4c6",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/draft/v2/cases/case_ch8.png",
+    "name": "case_ch8.png",
+    "size": 926471,
+    "hash": "6f1812844d481b7614aa5afd302006aed0714b1036502f51abd72e0c5d69cc07",
+    "shortHash": "6f181284",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "file": "/game/spr_gun_ch8.png",
+    "name": "spr_gun_ch8.png",
+    "size": 71709,
+    "hash": "2ab807c775e1bc1f9c8dc4f622632766513183d8f9af218ce771f12eb709af59",
+    "shortHash": "2ab807c7",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/ui/weapon-thumbs/ch8.png",
+    "name": "ch8.png",
+    "size": 116449,
+    "hash": "dd89f7b6e1bd0078a7189dcc31c6d583c393ad2d5d434c5c534f0067075d804d",
+    "shortHash": "dd89f7b6",
+    "width": 640,
+    "height": 300
+  },
+  {
+    "file": "/game/enemy_chronos_idle.png",
+    "name": "enemy_chronos_idle.png",
+    "size": 80468,
+    "hash": "12ee634a4679ab2456015b7df2da09ec78ef40182ecb4cde9b3bdde9374b16c8",
+    "shortHash": "12ee634a",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_chronos_move.png",
+    "name": "enemy_chronos_move.png",
+    "size": 69779,
+    "hash": "53a808e9df96a7f256c5aa0d6b11839b292c59937ecdcbe2788f57fbb1516f8f",
+    "shortHash": "53a808e9",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_chronos_pain.png",
+    "name": "enemy_chronos_pain.png",
+    "size": 87219,
+    "hash": "cb5e08341a081a9408ec166d73156c092544b52cafbcaf8c98ee75718426c9cc",
+    "shortHash": "cb5e0834",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_chronos_fire.png",
+    "name": "enemy_chronos_fire.png",
+    "size": 82030,
+    "hash": "80ce9af88e2c8126fd9f48f0013a391d0d16cdf5053f6263ff4aedc21a14354e",
+    "shortHash": "80ce9af8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_chronos_reload.png",
+    "name": "enemy_chronos_reload.png",
+    "size": 74716,
+    "hash": "e55c6b8d1924c4453cf6e8102a228f9b01ef39fbb990898d3a793f4b94c4cd49",
+    "shortHash": "e55c6b8d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_chronos_dead.png",
+    "name": "enemy_chronos_dead.png",
+    "size": 77795,
+    "hash": "3daf165c6df037e8de5ef0faa622473c993f352442f47bf8d0b5dbda5bb4e563",
+    "shortHash": "3daf165c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_chronos_special.png",
+    "name": "enemy_chronos_special.png",
+    "size": 111151,
+    "hash": "86acbd00a8913ac4f52f2c4c06ff5d47652e8510f774a00d7a8d09bce8c7dd85",
+    "shortHash": "86acbd00",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/draft/v2/cases/case_bo11.png",
+    "name": "case_bo11.png",
+    "size": 1027205,
+    "hash": "2091fecd83ca0865da6b06c2f9ea216d83e2cfde212591455e4eb8480e7b4100",
+    "shortHash": "2091fecd",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "file": "/game/spr_gun_bo11.png",
+    "name": "spr_gun_bo11.png",
+    "size": 82838,
+    "hash": "3980fe3fb096a2df43dddd83331ba47dc3f23266b473e1d9d65f943589bb7f87",
+    "shortHash": "3980fe3f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/ui/weapon-thumbs/bo11.png",
+    "name": "bo11.png",
+    "size": 146483,
+    "hash": "69e499233aea41adb3ab4f51de2e410987ce6feb4e8bf1f1a82492ddb5eabfb4",
+    "shortHash": "69e49923",
+    "width": 640,
+    "height": 300
+  },
+  {
+    "file": "/game/enemy_boreas_idle.png",
+    "name": "enemy_boreas_idle.png",
+    "size": 105950,
+    "hash": "d88b83eb9f9511b81a64c82bde3b03edf64f6ea670151418842ca2296b612e21",
+    "shortHash": "d88b83eb",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_boreas_move.png",
+    "name": "enemy_boreas_move.png",
+    "size": 99964,
+    "hash": "06fdeefe2dbeceee03361fb7fe18eedca252e42d03756aa2a3d63c011ba23c25",
+    "shortHash": "06fdeefe",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_boreas_pain.png",
+    "name": "enemy_boreas_pain.png",
+    "size": 107383,
+    "hash": "58ab35a378200b347e9dc5998c5272569f66e0e1cdcee2593b63d5e8a459f403",
+    "shortHash": "58ab35a3",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_boreas_fire.png",
+    "name": "enemy_boreas_fire.png",
+    "size": 120529,
+    "hash": "63452757ef12f8ac0b52c08f05a21bef173feeeee49d46cb8b40cac492ea1e45",
+    "shortHash": "63452757",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_boreas_reload.png",
+    "name": "enemy_boreas_reload.png",
+    "size": 108430,
+    "hash": "5ae1f51b5e4ecaff0dd1ef7d7a2470af76eab67da3228ab9096682631075b0e0",
+    "shortHash": "5ae1f51b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_boreas_dead.png",
+    "name": "enemy_boreas_dead.png",
+    "size": 114697,
+    "hash": "2a987d04a4380a1248ef9cd1b6426883626f6d159a77d23559c8dee7cd0a2176",
+    "shortHash": "2a987d04",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_boreas_special.png",
+    "name": "enemy_boreas_special.png",
+    "size": 132296,
+    "hash": "4c77cde74678c3a5fb2d9b5b229edd836c0e5c7c271db1856abdf24d8d12b3d9",
+    "shortHash": "4c77cde7",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/draft/v2/cases/case_sv25.png",
+    "name": "case_sv25.png",
+    "size": 972286,
+    "hash": "fe8db3940ddc6a6cf00552255eee7b90691deb910f7e78159818cac76e7ef3a3",
+    "shortHash": "fe8db394",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "file": "/game/spr_gun_sv25.png",
+    "name": "spr_gun_sv25.png",
+    "size": 81011,
+    "hash": "bb6a9781fd7200eb9c19295037d02a5ce5bcfed44fbba2f7ee368bfcef3c6015",
+    "shortHash": "bb6a9781",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/ui/weapon-thumbs/sv25.png",
+    "name": "sv25.png",
+    "size": 143270,
+    "hash": "9d3726bdec11943d33d51b21417224875e20efec68864486f741d4a535bc7eef",
+    "shortHash": "9d3726bd",
+    "width": 640,
+    "height": 300
+  },
+  {
+    "file": "/game/enemy_sovereign_idle.png",
+    "name": "enemy_sovereign_idle.png",
+    "size": 97062,
+    "hash": "fbfb5545ef15e6bdab23963e6bdbc449788b77f3162215fe66be86050e6a54c0",
+    "shortHash": "fbfb5545",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_sovereign_move.png",
+    "name": "enemy_sovereign_move.png",
+    "size": 90991,
+    "hash": "1c427e233926362f4f8c703757c1dd8fd992920c6f93d8a4f6d8e4ecb639c1f1",
+    "shortHash": "1c427e23",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_sovereign_pain.png",
+    "name": "enemy_sovereign_pain.png",
+    "size": 97353,
+    "hash": "7ede50e21722658e373ea74ea921e3e42a1e2e80a878c31cec36f622ee0fe38f",
+    "shortHash": "7ede50e2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_sovereign_fire.png",
+    "name": "enemy_sovereign_fire.png",
+    "size": 103830,
+    "hash": "66d71d097aaaa05f19ea4f0286b3bc9a7f40315afc73f7ddbc409a7547469490",
+    "shortHash": "66d71d09",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_sovereign_reload.png",
+    "name": "enemy_sovereign_reload.png",
+    "size": 93141,
+    "hash": "644e553adba5bc77b8f9f9e6555523d92de155b8afc4b226556b0292c5f50640",
+    "shortHash": "644e553a",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_sovereign_dead.png",
+    "name": "enemy_sovereign_dead.png",
+    "size": 92270,
+    "hash": "2e5b05ae375f2f67313f8c035d37a05783ad11f9e9c5646b11db1161a38655e0",
+    "shortHash": "2e5b05ae",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/enemy_sovereign_special.png",
+    "name": "enemy_sovereign_special.png",
+    "size": 124715,
+    "hash": "a17e4454efa41490404e3994b3a52772daa13f71ef242b3c9cedb0fa49f17349",
+    "shortHash": "a17e4454",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/fx25/spore-cluster.png",
+    "name": "spore-cluster.png",
+    "size": 92532,
+    "hash": "6b77cec9fab18ef107d912e8bac80247462c0d2ed710299af37e1aba93df3550",
+    "shortHash": "6b77cec9",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/fx25/ion-bolt.png",
+    "name": "ion-bolt.png",
+    "size": 35990,
+    "hash": "78295ad17c293d99c56f7d624d23b046313cc93447be660ab970ca1d085410e8",
+    "shortHash": "78295ad1",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/fx25/cryo-shard.png",
+    "name": "cryo-shard.png",
+    "size": 56633,
+    "hash": "6bf1c3b407cf59ba0bc3fece3832ee977ddd7afd37a6d04ef9b9caea753653c9",
+    "shortHash": "6bf1c3b4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/fx25/solar-impact.png",
+    "name": "solar-impact.png",
+    "size": 85985,
+    "hash": "78cf0314618144f703b57c27d6f671f1de458158a8517e5608b80895b340c62f",
+    "shortHash": "78cf0314",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/fx25/rocket-forward.png",
+    "name": "rocket-forward.png",
+    "size": 59189,
+    "hash": "c7f1eebcb7f30547e565341954fb5a62bc7d7ad82cc80a5635574bce09fe0001",
+    "shortHash": "c7f1eebc",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/fx25/ember-impact.png",
+    "name": "ember-impact.png",
+    "size": 55267,
+    "hash": "69481051ecd2112f138637a088aafe7b6c84878289eb3053a92590a68af33778",
+    "shortHash": "69481051",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/fx25/pressure-impact.png",
+    "name": "pressure-impact.png",
+    "size": 92725,
+    "hash": "12fd4613d5717534b07b7b27a4d15cd3d008fb404d6c38a24d061755fd9bdc17",
+    "shortHash": "12fd4613",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/fx25/phase-orb.png",
+    "name": "phase-orb.png",
+    "size": 62948,
+    "hash": "8200bfaa320ad756e1e36ad50eb68559c0d3ad7cfb7d2d0e72bd2bf577d4b7c1",
+    "shortHash": "8200bfaa",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/fx25/magnetic-impact.png",
+    "name": "magnetic-impact.png",
+    "size": 69563,
+    "hash": "f13ca2af50bf116bb1fce14c5d575fda67b329eb2311a445d0896738e7b2c829",
+    "shortHash": "f13ca2af",
+    "width": 256,
+    "height": 256
   }
 ]

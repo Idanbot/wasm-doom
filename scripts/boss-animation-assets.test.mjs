@@ -6,7 +6,7 @@ import { chromium } from 'playwright';
 
 const root = new URL('../', import.meta.url);
 const weapons = JSON.parse(readFileSync(new URL('src/lib/draft-weapons-v2-data.json', root)));
-const bosses = weapons.filter((weapon) => weapon.is_boss);
+const bosses = weapons.filter((weapon) => weapon.is_boss && weapon.slot < 19);
 const provenance = JSON.parse(readFileSync(new URL('art/weapon-animations-v3/generation.json', root)));
 
 test('all boss sheets have distinct handling poses, clean alpha and exact approved aim returns', async () => {

@@ -1,0 +1,424 @@
+[
+  {
+    "id": "vx2-sheet",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE first person shooter weapon animation sprite sheet. EXACT 5 columns x 5 rows, 25 equal cells, landscape 4:3 total canvas, ideally 2560x1920. Every cell transparent background, no separators, text, labels, borders or shadows on backdrop. Same highly detailed photoreal tactical boss weapon in every frame: industrial incendiary rail rifle, soot black steel, orange ceramic heat shields, removable rectangular power cell. Black tactical gloved hands. Camera is player's eyes: weapon from BOTTOM RIGHT pointing diagonally LEFT AND UP toward screen center, barrel tip around 48% width and 43% height of EACH cell. No side-on view. Keep center reticle clear. Consistent size, lens, silhouette, materials. Row 1: full aim, half-energy aim, low-energy aim, empty feed aim, no feed inserted aim. Row 2: empty aim, low pickup holding gun at waist, lifting from GOLDEN case, moving to shoulder, settled full aim. Row 3 MECHANICAL RELOAD five distinct poses: empty feed ejected down; fresh magazine or cell visible in off-hand below left; feed inserted in well; hand pulls charging handle; hand back on foregrip settled aim. NO duplicated static reload poses. Row 4: firing ignition at barrel tip, recoil, mechanism cycling, recoil recovering, settled aim. Row 5: special charge, maximum charge, discharge, cooling, settled aim. Realistic hard-surface gun design and high quality film/game art, tiny orange emissive cues. No floating gun, no giant flare covering entire gun, no center-facing barrel toward viewer, no detached weapon parts except appropriate reload feed.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-afb61e86-bda2-46ba-b569-4c2d5c41d77c.png",
+    "source": "art/campaign25/vx2-sheet.png",
+    "sha256": "d1a1bafd9486d11f1e1ea0aa5a82a9ecc6dd5139cf481005d799af4db8978d15",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "vulcan-boss",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE enemy animated sprite sheet. EXACT FOUR COLUMNS and SEVEN ROWS, 28 equal cells, portrait total canvas 4:7 aspect ratio. One full-body boss per cell, same design and proportions: armored railway demolition robot with twin steel chimneys, tracked feet and glowing ember furnace chest. Highly detailed photoreal dark tactical industrial horror game enemy, clean hard-surface materials, believable anatomy, vivid readable silhouette. Boss faces camera/player, complete body feet visible, center within each cell and 8% margin. Transparent background in every cell including arm/body gaps. NO text, grid lines, environment, ground shadow, borders or duplicate characters. Row1 four distinct idle breathing poses. Row2 four actual stepping/walking poses forming a loop. Row3 four staggered damaged recoil poses. Row4 four aiming, firing and recovering poses with attached weapon effect. Row5 four mechanical reload/charge poses. Row6 four actual falling-and-dead poses ending in collapsed body. Row7 four special windup, release and recovery poses for telegraphed ember lanes. Consistent detailed orange accents and tactical dark game art. Make each successive pose visibly different while maintaining identity.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-02a47da4-f1f0-40d4-8a1e-a39feec4b596.png",
+    "source": "art/campaign25/vulcan-boss.png",
+    "sha256": "97e9261c706a6b08024e98079865bf5cf076027baf6701edcec27df238a25613",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "lv8-sheet",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE first person shooter weapon animation sprite sheet. EXACT 5 columns x 5 rows, 25 equal cells, landscape 4:3 total canvas, ideally 2560x1920. Every cell transparent background, no separators, text, labels, borders or shadows on backdrop. Same highly detailed photoreal tactical boss weapon in every frame: brass and blue hydraulic harpoon launcher with visible pressure cylinder and removable compressed gas magazine. Black tactical gloved hands. Camera is player's eyes: weapon from BOTTOM RIGHT pointing diagonally LEFT AND UP toward screen center, barrel tip around 48% width and 43% height of EACH cell. No side-on view. Keep center reticle clear. Consistent size, lens, silhouette, materials. Row 1: full aim, half-energy aim, low-energy aim, empty feed aim, no feed inserted aim. Row 2: empty aim, low pickup holding gun at waist, lifting from GOLDEN case, moving to shoulder, settled full aim. Row 3 MECHANICAL RELOAD five distinct poses: empty feed ejected down; fresh magazine or cell visible in off-hand below left; feed inserted in well; hand pulls charging handle; hand back on foregrip settled aim. NO duplicated static reload poses. Row 4: firing ignition at barrel tip, recoil, mechanism cycling, recoil recovering, settled aim. Row 5: special charge, maximum charge, discharge, cooling, settled aim. Realistic hard-surface gun design and high quality film/game art, tiny blue emissive cues. No floating gun, no giant flare covering entire gun, no center-facing barrel toward viewer, no detached weapon parts except appropriate reload feed.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-0efe5682-d1eb-4bc3-b07f-ed1e9710a1b7.png",
+    "source": "art/campaign25/lv8-sheet.png",
+    "sha256": "9ae1c3dc2625cf7f1a42fbf149e919954a80943588d2a33a6029cb14c329ab10",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "leviathan-boss",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE enemy animated sprite sheet. EXACT FOUR COLUMNS and SEVEN ROWS, 28 equal cells, portrait total canvas 4:7 aspect ratio. One full-body boss per cell, same design and proportions: massive armored deep-sea pressure diver with brass porthole helmet, blue hydraulic hoses and harpoon arm. Highly detailed photoreal dark tactical industrial horror game enemy, clean hard-surface materials, believable anatomy, vivid readable silhouette. Boss faces camera/player, complete body feet visible, center within each cell and 8% margin. Transparent background in every cell including arm/body gaps. NO text, grid lines, environment, ground shadow, borders or duplicate characters. Row1 four distinct idle breathing poses. Row2 four actual stepping/walking poses forming a loop. Row3 four staggered damaged recoil poses. Row4 four aiming, firing and recovering poses with attached weapon effect. Row5 four mechanical reload/charge poses. Row6 four actual falling-and-dead poses ending in collapsed body. Row7 four special windup, release and recovery poses for pressure harpoon fan. Consistent detailed blue accents and tactical dark game art. Make each successive pose visibly different while maintaining identity.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-4090f66f-1373-4a22-80f1-7d0b0ce5c0eb.png",
+    "source": "art/campaign25/leviathan-boss.png",
+    "sha256": "2f761066a960dc2440d067d9e0665d780fbcd5f8577199e2963201a620966928",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "pr5-sheet",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE first person shooter weapon animation sprite sheet. EXACT 5 columns x 5 rows, 25 equal cells, landscape 4:3 total canvas, ideally 2560x1920. Every cell transparent background, no separators, text, labels, borders or shadows on backdrop. Same highly detailed photoreal tactical boss weapon in every frame: sleek chrome laser rifle with three cyan optical lenses, removable crystal battery and triangular receiver. Black tactical gloved hands. Camera is player's eyes: weapon from BOTTOM RIGHT pointing diagonally LEFT AND UP toward screen center, barrel tip around 48% width and 43% height of EACH cell. No side-on view. Keep center reticle clear. Consistent size, lens, silhouette, materials. Row 1: full aim, half-energy aim, low-energy aim, empty feed aim, no feed inserted aim. Row 2: empty aim, low pickup holding gun at waist, lifting from GOLDEN case, moving to shoulder, settled full aim. Row 3 MECHANICAL RELOAD five distinct poses: empty feed ejected down; fresh magazine or cell visible in off-hand below left; feed inserted in well; hand pulls charging handle; hand back on foregrip settled aim. NO duplicated static reload poses. Row 4: firing ignition at barrel tip, recoil, mechanism cycling, recoil recovering, settled aim. Row 5: special charge, maximum charge, discharge, cooling, settled aim. Realistic hard-surface gun design and high quality film/game art, tiny cyan emissive cues. No floating gun, no giant flare covering entire gun, no center-facing barrel toward viewer, no detached weapon parts except appropriate reload feed.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-bab7cfec-b9d5-40b9-ab97-98cf264c7698.png",
+    "source": "art/campaign25/pr5-sheet.png",
+    "sha256": "30dba59fced4cf9c70648bef549421c9ae6e6b121c0975ee087505335e29b368",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "prism-boss",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE enemy animated sprite sheet. EXACT FOUR COLUMNS and SEVEN ROWS, 28 equal cells, portrait total canvas 4:7 aspect ratio. One full-body boss per cell, same design and proportions: angular chrome optical combat android with three faceted cyan lens eyes, prism shoulder armor and laser emitter arms. Highly detailed photoreal dark tactical industrial horror game enemy, clean hard-surface materials, believable anatomy, vivid readable silhouette. Boss faces camera/player, complete body feet visible, center within each cell and 8% margin. Transparent background in every cell including arm/body gaps. NO text, grid lines, environment, ground shadow, borders or duplicate characters. Row1 four distinct idle breathing poses. Row2 four actual stepping/walking poses forming a loop. Row3 four staggered damaged recoil poses. Row4 four aiming, firing and recovering poses with attached weapon effect. Row5 four mechanical reload/charge poses. Row6 four actual falling-and-dead poses ending in collapsed body. Row7 four special windup, release and recovery poses for refracted crossfire. Consistent detailed cyan accents and tactical dark game art. Make each successive pose visibly different while maintaining identity.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-55101160-beed-475c-91c0-40e44286141a.png",
+    "source": "art/campaign25/prism-boss.png",
+    "sha256": "034f26864d56cb0f2aff505fd8791bccf21669268ba29c19ea5588c5c636dea5",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "mg4-sheet",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE first person shooter weapon animation sprite sheet. EXACT 5 columns x 5 rows, 25 equal cells, landscape 4:3 total canvas, ideally 2560x1920. Every cell transparent background, no separators, text, labels, borders or shadows on backdrop. Same highly detailed photoreal tactical boss weapon in every frame: copper coil accelerator rifle with two horseshoe barrel rails, red coil windings and removable energy block. Black tactical gloved hands. Camera is player's eyes: weapon from BOTTOM RIGHT pointing diagonally LEFT AND UP toward screen center, barrel tip around 48% width and 43% height of EACH cell. No side-on view. Keep center reticle clear. Consistent size, lens, silhouette, materials. Row 1: full aim, half-energy aim, low-energy aim, empty feed aim, no feed inserted aim. Row 2: empty aim, low pickup holding gun at waist, lifting from GOLDEN case, moving to shoulder, settled full aim. Row 3 MECHANICAL RELOAD five distinct poses: empty feed ejected down; fresh magazine or cell visible in off-hand below left; feed inserted in well; hand pulls charging handle; hand back on foregrip settled aim. NO duplicated static reload poses. Row 4: firing ignition at barrel tip, recoil, mechanism cycling, recoil recovering, settled aim. Row 5: special charge, maximum charge, discharge, cooling, settled aim. Realistic hard-surface gun design and high quality film/game art, tiny red emissive cues. No floating gun, no giant flare covering entire gun, no center-facing barrel toward viewer, no detached weapon parts except appropriate reload feed.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-c4e80c8f-e126-48ff-84b7-ef768fad5f71.png",
+    "source": "art/campaign25/mg4-sheet.png",
+    "sha256": "2d4e99f7dd4abe5115fe9a03ddef34d9ad66d965b9213e0ffb4aa2799e6552e6",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "magnus-boss",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE enemy animated sprite sheet. EXACT FOUR COLUMNS and SEVEN ROWS, 28 equal cells, portrait total canvas 4:7 aspect ratio. One full-body boss per cell, same design and proportions: hulking copper electromagnetic exoskeleton with horseshoe magnet forearms and red induction coils. Highly detailed photoreal dark tactical industrial horror game enemy, clean hard-surface materials, believable anatomy, vivid readable silhouette. Boss faces camera/player, complete body feet visible, center within each cell and 8% margin. Transparent background in every cell including arm/body gaps. NO text, grid lines, environment, ground shadow, borders or duplicate characters. Row1 four distinct idle breathing poses. Row2 four actual stepping/walking poses forming a loop. Row3 four staggered damaged recoil poses. Row4 four aiming, firing and recovering poses with attached weapon effect. Row5 four mechanical reload/charge poses. Row6 four actual falling-and-dead poses ending in collapsed body. Row7 four special windup, release and recovery poses for charged magnetic sweep. Consistent detailed red accents and tactical dark game art. Make each successive pose visibly different while maintaining identity.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-aeffd7c4-5e49-4a64-bee4-33c8368f5906.png",
+    "source": "art/campaign25/magnus-boss.png",
+    "sha256": "219d99bb2eb0dff62067a4d713a6c9b356f2d5e09e684a824a14f347ce8590a3",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "bm3-sheet",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE first person shooter weapon animation sprite sheet. EXACT 5 columns x 5 rows, 25 equal cells, landscape 4:3 total canvas, ideally 2560x1920. Every cell transparent background, no separators, text, labels, borders or shadows on backdrop. Same highly detailed photoreal tactical boss weapon in every frame: compact dark gunmetal microdrone launcher with six hexagonal launch tubes and removable amber cassette. Black tactical gloved hands. Camera is player's eyes: weapon from BOTTOM RIGHT pointing diagonally LEFT AND UP toward screen center, barrel tip around 48% width and 43% height of EACH cell. No side-on view. Keep center reticle clear. Consistent size, lens, silhouette, materials. Row 1: full aim, half-energy aim, low-energy aim, empty feed aim, no feed inserted aim. Row 2: empty aim, low pickup holding gun at waist, lifting from GOLDEN case, moving to shoulder, settled full aim. Row 3 MECHANICAL RELOAD five distinct poses: empty feed ejected down; fresh magazine or cell visible in off-hand below left; feed inserted in well; hand pulls charging handle; hand back on foregrip settled aim. NO duplicated static reload poses. Row 4: firing ignition at barrel tip, recoil, mechanism cycling, recoil recovering, settled aim. Row 5: special charge, maximum charge, discharge, cooling, settled aim. Realistic hard-surface gun design and high quality film/game art, tiny amber emissive cues. No floating gun, no giant flare covering entire gun, no center-facing barrel toward viewer, no detached weapon parts except appropriate reload feed.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-317ffe09-986a-4e17-b98f-a159855aba33.png",
+    "source": "art/campaign25/bm3-sheet.png",
+    "sha256": "1ab88688187585513f68e41352fbd94b49ee6c92eb3f8ff60bbb676fc7e59d96",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "broodmother-boss",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE enemy animated sprite sheet. EXACT FOUR COLUMNS and SEVEN ROWS, 28 equal cells, portrait total canvas 4:7 aspect ratio. One full-body boss per cell, same design and proportions: six-legged armored robot drone queen with amber sensor cluster and segmented drone launch bays on its back. Highly detailed photoreal dark tactical industrial horror game enemy, clean hard-surface materials, believable anatomy, vivid readable silhouette. Boss faces camera/player, complete body feet visible, center within each cell and 8% margin. Transparent background in every cell including arm/body gaps. NO text, grid lines, environment, ground shadow, borders or duplicate characters. Row1 four distinct idle breathing poses. Row2 four actual stepping/walking poses forming a loop. Row3 four staggered damaged recoil poses. Row4 four aiming, firing and recovering poses with attached weapon effect. Row5 four mechanical reload/charge poses. Row6 four actual falling-and-dead poses ending in collapsed body. Row7 four special windup, release and recovery poses for drone reinforcement swarm. Consistent detailed amber accents and tactical dark game art. Make each successive pose visibly different while maintaining identity.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-2831d3da-8dc7-4d38-b195-b66197fe4353.png",
+    "source": "art/campaign25/broodmother-boss.png",
+    "sha256": "88e812d1bdd80ea32d16db102581efc63705aad6f540b1cd59d55d698ec245f5",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "my9-sheet",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE first person shooter weapon animation sprite sheet. EXACT 5 columns x 5 rows, 25 equal cells, landscape 4:3 total canvas, ideally 2560x1920. Every cell transparent background, no separators, text, labels, borders or shadows on backdrop. Same highly detailed photoreal tactical boss weapon in every frame: sealed biohazard spore rifle with green fluid capsule, surgical steel receiver and detachable glass specimen feed. Black tactical gloved hands. Camera is player's eyes: weapon from BOTTOM RIGHT pointing diagonally LEFT AND UP toward screen center, barrel tip around 48% width and 43% height of EACH cell. No side-on view. Keep center reticle clear. Consistent size, lens, silhouette, materials. Row 1: full aim, half-energy aim, low-energy aim, empty feed aim, no feed inserted aim. Row 2: empty aim, low pickup holding gun at waist, lifting from GOLDEN case, moving to shoulder, settled full aim. Row 3 MECHANICAL RELOAD five distinct poses: empty feed ejected down; fresh magazine or cell visible in off-hand below left; feed inserted in well; hand pulls charging handle; hand back on foregrip settled aim. NO duplicated static reload poses. Row 4: firing ignition at barrel tip, recoil, mechanism cycling, recoil recovering, settled aim. Row 5: special charge, maximum charge, discharge, cooling, settled aim. Realistic hard-surface gun design and high quality film/game art, tiny green emissive cues. No floating gun, no giant flare covering entire gun, no center-facing barrel toward viewer, no detached weapon parts except appropriate reload feed.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-f8a72399-c47e-4c45-9aa8-5b2917654acb.png",
+    "source": "art/campaign25/my9-sheet.png",
+    "sha256": "baf7b9ff36d52a3c89b5b052bc286f7bd57498240ed8da7b378c98c22cb4e0c4",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "mycelium-boss",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE enemy animated sprite sheet. EXACT FOUR COLUMNS and SEVEN ROWS, 28 equal cells, portrait total canvas 4:7 aspect ratio. One full-body boss per cell, same design and proportions: mutated fungal research hazmat giant with pale mushrooms breaking through sealed armor and green bioluminescent sacs. Highly detailed photoreal dark tactical industrial horror game enemy, clean hard-surface materials, believable anatomy, vivid readable silhouette. Boss faces camera/player, complete body feet visible, center within each cell and 8% margin. Transparent background in every cell including arm/body gaps. NO text, grid lines, environment, ground shadow, borders or duplicate characters. Row1 four distinct idle breathing poses. Row2 four actual stepping/walking poses forming a loop. Row3 four staggered damaged recoil poses. Row4 four aiming, firing and recovering poses with attached weapon effect. Row5 four mechanical reload/charge poses. Row6 four actual falling-and-dead poses ending in collapsed body. Row7 four special windup, release and recovery poses for corrosive spore clusters. Consistent detailed green accents and tactical dark game art. Make each successive pose visibly different while maintaining identity.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-e2f27e9e-7853-46f6-b1f7-aeb18abd473a.png",
+    "source": "art/campaign25/mycelium-boss.png",
+    "sha256": "84d863a2fa23132f7cfd1631aacfdc9af12c854fd49b6e09781ee66cb31404e4",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "as7-sheet",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE first person shooter weapon animation sprite sheet. EXACT 5 columns x 5 rows, 25 equal cells, landscape 4:3 total canvas, ideally 2560x1920. Every cell transparent background, no separators, text, labels, borders or shadows on backdrop. Same highly detailed photoreal tactical boss weapon in every frame: black and violet smart missile launcher with compact shoulder receiver, detachable missile cassette and tactical targeting optic. Black tactical gloved hands. Camera is player's eyes: weapon from BOTTOM RIGHT pointing diagonally LEFT AND UP toward screen center, barrel tip around 48% width and 43% height of EACH cell. No side-on view. Keep center reticle clear. Consistent size, lens, silhouette, materials. Row 1: full aim, half-energy aim, low-energy aim, empty feed aim, no feed inserted aim. Row 2: empty aim, low pickup holding gun at waist, lifting from GOLDEN case, moving to shoulder, settled full aim. Row 3 MECHANICAL RELOAD five distinct poses: empty feed ejected down; fresh magazine or cell visible in off-hand below left; feed inserted in well; hand pulls charging handle; hand back on foregrip settled aim. NO duplicated static reload poses. Row 4: firing ignition at barrel tip, recoil, mechanism cycling, recoil recovering, settled aim. Row 5: special charge, maximum charge, discharge, cooling, settled aim. Realistic hard-surface gun design and high quality film/game art, tiny violet emissive cues. No floating gun, no giant flare covering entire gun, no center-facing barrel toward viewer, no detached weapon parts except appropriate reload feed.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-effb37d9-f55c-4f74-9131-7bf3f62c6d0f.png",
+    "source": "art/campaign25/as7-sheet.png",
+    "sha256": "a836b0b39f8988656469a62b80851e281c01f6a24681bd2a6a4e07ec47709f11",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "astra-boss",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE enemy animated sprite sheet. EXACT FOUR COLUMNS and SEVEN ROWS, 28 equal cells, portrait total canvas 4:7 aspect ratio. One full-body boss per cell, same design and proportions: military orbital targeting android with violet dish antenna helmet and compact shoulder missile pods. Highly detailed photoreal dark tactical industrial horror game enemy, clean hard-surface materials, believable anatomy, vivid readable silhouette. Boss faces camera/player, complete body feet visible, center within each cell and 8% margin. Transparent background in every cell including arm/body gaps. NO text, grid lines, environment, ground shadow, borders or duplicate characters. Row1 four distinct idle breathing poses. Row2 four actual stepping/walking poses forming a loop. Row3 four staggered damaged recoil poses. Row4 four aiming, firing and recovering poses with attached weapon effect. Row5 four mechanical reload/charge poses. Row6 four actual falling-and-dead poses ending in collapsed body. Row7 four special windup, release and recovery poses for delayed missile barrage. Consistent detailed violet accents and tactical dark game art. Make each successive pose visibly different while maintaining identity.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-5c1cfca9-213a-4f11-8906-ab274e81bdd6.png",
+    "source": "art/campaign25/astra-boss.png",
+    "sha256": "f089ab931d22eb628c6f6db24f4b4df927ba32190f434f67cebc15dbd9901a80",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "sc6-sheet",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE first person shooter weapon animation sprite sheet. EXACT 5 columns x 5 rows, 25 equal cells, landscape 4:3 total canvas, ideally 2560x1920. Every cell transparent background, no separators, text, labels, borders or shadows on backdrop. Same highly detailed photoreal tactical boss weapon in every frame: rugged copper and steel flechette cannon with perforated barrel shroud, detachable drum and industrial rivets. Black tactical gloved hands. Camera is player's eyes: weapon from BOTTOM RIGHT pointing diagonally LEFT AND UP toward screen center, barrel tip around 48% width and 43% height of EACH cell. No side-on view. Keep center reticle clear. Consistent size, lens, silhouette, materials. Row 1: full aim, half-energy aim, low-energy aim, empty feed aim, no feed inserted aim. Row 2: empty aim, low pickup holding gun at waist, lifting from GOLDEN case, moving to shoulder, settled full aim. Row 3 MECHANICAL RELOAD five distinct poses: empty feed ejected down; fresh magazine or cell visible in off-hand below left; feed inserted in well; hand pulls charging handle; hand back on foregrip settled aim. NO duplicated static reload poses. Row 4: firing ignition at barrel tip, recoil, mechanism cycling, recoil recovering, settled aim. Row 5: special charge, maximum charge, discharge, cooling, settled aim. Realistic hard-surface gun design and high quality film/game art, tiny copper emissive cues. No floating gun, no giant flare covering entire gun, no center-facing barrel toward viewer, no detached weapon parts except appropriate reload feed.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-5a73b343-92b8-4ffe-a23f-d9bf8820949b.png",
+    "source": "art/campaign25/sc6-sheet.png",
+    "sha256": "09256bdeae9378afb4e97a4ffa2c2a3d57d88f5715d18857fde08e7e029f27c2",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "scrapper-boss",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE enemy animated sprite sheet. EXACT FOUR COLUMNS and SEVEN ROWS, 28 equal cells, portrait total canvas 4:7 aspect ratio. One full-body boss per cell, same design and proportions: massive rusted scrap recycler robot with sawblade shoulders, steel claws and copper hydraulic pistons. Highly detailed photoreal dark tactical industrial horror game enemy, clean hard-surface materials, believable anatomy, vivid readable silhouette. Boss faces camera/player, complete body feet visible, center within each cell and 8% margin. Transparent background in every cell including arm/body gaps. NO text, grid lines, environment, ground shadow, borders or duplicate characters. Row1 four distinct idle breathing poses. Row2 four actual stepping/walking poses forming a loop. Row3 four staggered damaged recoil poses. Row4 four aiming, firing and recovering poses with attached weapon effect. Row5 four mechanical reload/charge poses. Row6 four actual falling-and-dead poses ending in collapsed body. Row7 four special windup, release and recovery poses for flechette wall sweep. Consistent detailed copper accents and tactical dark game art. Make each successive pose visibly different while maintaining identity.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-b23ccda9-678a-473d-9968-8bd18f9076a2.png",
+    "source": "art/campaign25/scrapper-boss.png",
+    "sha256": "6699ef402a3d9b0de68b6de62090d6dc7ef7d7889dba3672ca08595bfe4fccc5",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "ub1-sheet",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE first person shooter weapon animation sprite sheet. EXACT 5 columns x 5 rows, 25 equal cells, landscape 4:3 total canvas, ideally 2560x1920. Every cell transparent background, no separators, text, labels, borders or shadows on backdrop. Same highly detailed photoreal tactical boss weapon in every frame: matte obsidian phase rifle with purple containment ring, removable dark energy cell and segmented slim barrel. Black tactical gloved hands. Camera is player's eyes: weapon from BOTTOM RIGHT pointing diagonally LEFT AND UP toward screen center, barrel tip around 48% width and 43% height of EACH cell. No side-on view. Keep center reticle clear. Consistent size, lens, silhouette, materials. Row 1: full aim, half-energy aim, low-energy aim, empty feed aim, no feed inserted aim. Row 2: empty aim, low pickup holding gun at waist, lifting from GOLDEN case, moving to shoulder, settled full aim. Row 3 MECHANICAL RELOAD five distinct poses: empty feed ejected down; fresh magazine or cell visible in off-hand below left; feed inserted in well; hand pulls charging handle; hand back on foregrip settled aim. NO duplicated static reload poses. Row 4: firing ignition at barrel tip, recoil, mechanism cycling, recoil recovering, settled aim. Row 5: special charge, maximum charge, discharge, cooling, settled aim. Realistic hard-surface gun design and high quality film/game art, tiny purple emissive cues. No floating gun, no giant flare covering entire gun, no center-facing barrel toward viewer, no detached weapon parts except appropriate reload feed.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-4d68dc43-8acf-449e-927a-0667de3977f4.png",
+    "source": "art/campaign25/ub1-sheet.png",
+    "sha256": "41efa58f09f12d2e0a7aa1993eab4f01dfbf2c1efccbe7fa2b5005cb7eaa31ac",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "umbra-boss",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE enemy animated sprite sheet. EXACT FOUR COLUMNS and SEVEN ROWS, 28 equal cells, portrait total canvas 4:7 aspect ratio. One full-body boss per cell, same design and proportions: slender obsidian stealth android with purple illuminated slit visor, angular cloak panels and phase emitter hands. Highly detailed photoreal dark tactical industrial horror game enemy, clean hard-surface materials, believable anatomy, vivid readable silhouette. Boss faces camera/player, complete body feet visible, center within each cell and 8% margin. Transparent background in every cell including arm/body gaps. NO text, grid lines, environment, ground shadow, borders or duplicate characters. Row1 four distinct idle breathing poses. Row2 four actual stepping/walking poses forming a loop. Row3 four staggered damaged recoil poses. Row4 four aiming, firing and recovering poses with attached weapon effect. Row5 four mechanical reload/charge poses. Row6 four actual falling-and-dead poses ending in collapsed body. Row7 four special windup, release and recovery poses for phase relocation and ambush. Consistent detailed purple accents and tactical dark game art. Make each successive pose visibly different while maintaining identity.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-0de76a25-9680-42b8-a786-98c14d1e1b59.png",
+    "source": "art/campaign25/umbra-boss.png",
+    "sha256": "bcab8f7170f59e27788e2f915fd952bca1dc8c94b04bd8004dc92943a10e104d",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "sl12-sheet",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE first person shooter weapon animation sprite sheet. EXACT 5 columns x 5 rows, 25 equal cells, landscape 4:3 total canvas, ideally 2560x1920. Every cell transparent background, no separators, text, labels, borders or shadows on backdrop. Same highly detailed photoreal tactical boss weapon in every frame: white ceramic solar plasma cannon with gold containment rails and removable hexagonal reactor cell. Black tactical gloved hands. Camera is player's eyes: weapon from BOTTOM RIGHT pointing diagonally LEFT AND UP toward screen center, barrel tip around 48% width and 43% height of EACH cell. No side-on view. Keep center reticle clear. Consistent size, lens, silhouette, materials. Row 1: full aim, half-energy aim, low-energy aim, empty feed aim, no feed inserted aim. Row 2: empty aim, low pickup holding gun at waist, lifting from GOLDEN case, moving to shoulder, settled full aim. Row 3 MECHANICAL RELOAD five distinct poses: empty feed ejected down; fresh magazine or cell visible in off-hand below left; feed inserted in well; hand pulls charging handle; hand back on foregrip settled aim. NO duplicated static reload poses. Row 4: firing ignition at barrel tip, recoil, mechanism cycling, recoil recovering, settled aim. Row 5: special charge, maximum charge, discharge, cooling, settled aim. Realistic hard-surface gun design and high quality film/game art, tiny gold emissive cues. No floating gun, no giant flare covering entire gun, no center-facing barrel toward viewer, no detached weapon parts except appropriate reload feed.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-73d55198-5420-4799-a37e-0a8496ab21ec.png",
+    "source": "art/campaign25/sl12-sheet.png",
+    "sha256": "e3675903195a4de09433679c20f257571060166607958a1e15cabcc51396094f",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "sol-boss",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE enemy animated sprite sheet. EXACT FOUR COLUMNS and SEVEN ROWS, 28 equal cells, portrait total canvas 4:7 aspect ratio. One full-body boss per cell, same design and proportions: towering white ceramic fusion guardian with golden plasma chest core, heat radiator wings and heavy articulated feet. Highly detailed photoreal dark tactical industrial horror game enemy, clean hard-surface materials, believable anatomy, vivid readable silhouette. Boss faces camera/player, complete body feet visible, center within each cell and 8% margin. Transparent background in every cell including arm/body gaps. NO text, grid lines, environment, ground shadow, borders or duplicate characters. Row1 four distinct idle breathing poses. Row2 four actual stepping/walking poses forming a loop. Row3 four staggered damaged recoil poses. Row4 four aiming, firing and recovering poses with attached weapon effect. Row5 four mechanical reload/charge poses. Row6 four actual falling-and-dead poses ending in collapsed body. Row7 four special windup, release and recovery poses for solar pulse rings. Consistent detailed gold accents and tactical dark game art. Make each successive pose visibly different while maintaining identity.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-6e36ea27-d074-4dae-a477-b6b87a72fbfb.png",
+    "source": "art/campaign25/sol-boss.png",
+    "sha256": "ce24d214c0e67c4ebe99bc2c4334e092b7358e88fdb870d870250d62cbd9bf1a",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "nt4-sheet",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE first person shooter weapon animation sprite sheet. EXACT 5 columns x 5 rows, 25 equal cells, landscape 4:3 total canvas, ideally 2560x1920. Every cell transparent background, no separators, text, labels, borders or shadows on backdrop. Same highly detailed photoreal tactical boss weapon in every frame: teal naval pressure missile launcher with round steel receiver, replaceable torpedo tube feed and orange safety latches. Black tactical gloved hands. Camera is player's eyes: weapon from BOTTOM RIGHT pointing diagonally LEFT AND UP toward screen center, barrel tip around 48% width and 43% height of EACH cell. No side-on view. Keep center reticle clear. Consistent size, lens, silhouette, materials. Row 1: full aim, half-energy aim, low-energy aim, empty feed aim, no feed inserted aim. Row 2: empty aim, low pickup holding gun at waist, lifting from GOLDEN case, moving to shoulder, settled full aim. Row 3 MECHANICAL RELOAD five distinct poses: empty feed ejected down; fresh magazine or cell visible in off-hand below left; feed inserted in well; hand pulls charging handle; hand back on foregrip settled aim. NO duplicated static reload poses. Row 4: firing ignition at barrel tip, recoil, mechanism cycling, recoil recovering, settled aim. Row 5: special charge, maximum charge, discharge, cooling, settled aim. Realistic hard-surface gun design and high quality film/game art, tiny teal emissive cues. No floating gun, no giant flare covering entire gun, no center-facing barrel toward viewer, no detached weapon parts except appropriate reload feed.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-1e466c78-7e97-4a6d-a276-3f2117d2d026.png",
+    "source": "art/campaign25/nt4-sheet.png",
+    "sha256": "7be5f71f6d5b237e8f25b96dcc6a13c4f408c3050222f400801c0961cedceef3",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "nautilus-boss",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE enemy animated sprite sheet. EXACT FOUR COLUMNS and SEVEN ROWS, 28 equal cells, portrait total canvas 4:7 aspect ratio. One full-body boss per cell, same design and proportions: heavy teal naval combat robot with round pressure shell, armored mechanical legs and torpedo tube arms. Highly detailed photoreal dark tactical industrial horror game enemy, clean hard-surface materials, believable anatomy, vivid readable silhouette. Boss faces camera/player, complete body feet visible, center within each cell and 8% margin. Transparent background in every cell including arm/body gaps. NO text, grid lines, environment, ground shadow, borders or duplicate characters. Row1 four distinct idle breathing poses. Row2 four actual stepping/walking poses forming a loop. Row3 four staggered damaged recoil poses. Row4 four aiming, firing and recovering poses with attached weapon effect. Row5 four mechanical reload/charge poses. Row6 four actual falling-and-dead poses ending in collapsed body. Row7 four special windup, release and recovery poses for pressure torpedo volleys. Consistent detailed teal accents and tactical dark game art. Make each successive pose visibly different while maintaining identity.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-e30b65cc-8961-4aa3-8b02-3389d13aa335.png",
+    "source": "art/campaign25/nautilus-boss.png",
+    "sha256": "3736203f0243e1f0c9d305e484e8d7166de388fb62065977ccb5b650cde904ae",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "ch8-sheet",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE first person shooter weapon animation sprite sheet. EXACT 5 columns x 5 rows, 25 equal cells, landscape 4:3 total canvas, ideally 2560x1920. Every cell transparent background, no separators, text, labels, borders or shadows on backdrop. Same highly detailed photoreal tactical boss weapon in every frame: bronze precision chronal rifle with amber gyroscope cell, long straight barrel and removable narrow magazine. Black tactical gloved hands. Camera is player's eyes: weapon from BOTTOM RIGHT pointing diagonally LEFT AND UP toward screen center, barrel tip around 48% width and 43% height of EACH cell. No side-on view. Keep center reticle clear. Consistent size, lens, silhouette, materials. Row 1: full aim, half-energy aim, low-energy aim, empty feed aim, no feed inserted aim. Row 2: empty aim, low pickup holding gun at waist, lifting from GOLDEN case, moving to shoulder, settled full aim. Row 3 MECHANICAL RELOAD five distinct poses: empty feed ejected down; fresh magazine or cell visible in off-hand below left; feed inserted in well; hand pulls charging handle; hand back on foregrip settled aim. NO duplicated static reload poses. Row 4: firing ignition at barrel tip, recoil, mechanism cycling, recoil recovering, settled aim. Row 5: special charge, maximum charge, discharge, cooling, settled aim. Realistic hard-surface gun design and high quality film/game art, tiny amber emissive cues. No floating gun, no giant flare covering entire gun, no center-facing barrel toward viewer, no detached weapon parts except appropriate reload feed.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-d3aaa93f-212d-4ea1-923c-9f8383f4cd9d.png",
+    "source": "art/campaign25/ch8-sheet.png",
+    "sha256": "3e337109b2045d52c4ce3417e3ef621fccfdc327de9b65b9af6acef342777ea7",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "chronos-boss",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE enemy animated sprite sheet. EXACT FOUR COLUMNS and SEVEN ROWS, 28 equal cells, portrait total canvas 4:7 aspect ratio. One full-body boss per cell, same design and proportions: precise bronze temporal guardian android with amber clockwork gyroscope chest and articulated precision rifle arm. Highly detailed photoreal dark tactical industrial horror game enemy, clean hard-surface materials, believable anatomy, vivid readable silhouette. Boss faces camera/player, complete body feet visible, center within each cell and 8% margin. Transparent background in every cell including arm/body gaps. NO text, grid lines, environment, ground shadow, borders or duplicate characters. Row1 four distinct idle breathing poses. Row2 four actual stepping/walking poses forming a loop. Row3 four staggered damaged recoil poses. Row4 four aiming, firing and recovering poses with attached weapon effect. Row5 four mechanical reload/charge poses. Row6 four actual falling-and-dead poses ending in collapsed body. Row7 four special windup, release and recovery poses for staggered echo shots. Consistent detailed amber accents and tactical dark game art. Make each successive pose visibly different while maintaining identity.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-202304b4-aedc-40d4-8c54-96f188219c10.png",
+    "source": "art/campaign25/chronos-boss.png",
+    "sha256": "df699d88bd7abecae958e6174e4ec9b147a0b206e93287f6bc694d01b589035d",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "bo11-sheet",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE first person shooter weapon animation sprite sheet. EXACT 5 columns x 5 rows, 25 equal cells, landscape 4:3 total canvas, ideally 2560x1920. Every cell transparent background, no separators, text, labels, borders or shadows on backdrop. Same highly detailed photoreal tactical boss weapon in every frame: black cryogenic shard rifle with ice blue coolant chamber, angular insulated barrel and detachable coolant magazine. Black tactical gloved hands. Camera is player's eyes: weapon from BOTTOM RIGHT pointing diagonally LEFT AND UP toward screen center, barrel tip around 48% width and 43% height of EACH cell. No side-on view. Keep center reticle clear. Consistent size, lens, silhouette, materials. Row 1: full aim, half-energy aim, low-energy aim, empty feed aim, no feed inserted aim. Row 2: empty aim, low pickup holding gun at waist, lifting from GOLDEN case, moving to shoulder, settled full aim. Row 3 MECHANICAL RELOAD five distinct poses: empty feed ejected down; fresh magazine or cell visible in off-hand below left; feed inserted in well; hand pulls charging handle; hand back on foregrip settled aim. NO duplicated static reload poses. Row 4: firing ignition at barrel tip, recoil, mechanism cycling, recoil recovering, settled aim. Row 5: special charge, maximum charge, discharge, cooling, settled aim. Realistic hard-surface gun design and high quality film/game art, tiny ice blue emissive cues. No floating gun, no giant flare covering entire gun, no center-facing barrel toward viewer, no detached weapon parts except appropriate reload feed.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-5de8ceed-a8ff-4cda-b320-a97ae27eacda.png",
+    "source": "art/campaign25/bo11-sheet.png",
+    "sha256": "5a5691b3c9a9e610591177a5161406d2ef5294822116f6ba5b03f50d1d1f408a",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "boreas-boss",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE enemy animated sprite sheet. EXACT FOUR COLUMNS and SEVEN ROWS, 28 equal cells, portrait total canvas 4:7 aspect ratio. One full-body boss per cell, same design and proportions: huge black armored cryogenic sentinel with ice blue coolant tubing, frost-plated shoulders and crystalline gauntlets. Highly detailed photoreal dark tactical industrial horror game enemy, clean hard-surface materials, believable anatomy, vivid readable silhouette. Boss faces camera/player, complete body feet visible, center within each cell and 8% margin. Transparent background in every cell including arm/body gaps. NO text, grid lines, environment, ground shadow, borders or duplicate characters. Row1 four distinct idle breathing poses. Row2 four actual stepping/walking poses forming a loop. Row3 four staggered damaged recoil poses. Row4 four aiming, firing and recovering poses with attached weapon effect. Row5 four mechanical reload/charge poses. Row6 four actual falling-and-dead poses ending in collapsed body. Row7 four special windup, release and recovery poses for cryo shard fan and shielding. Consistent detailed ice blue accents and tactical dark game art. Make each successive pose visibly different while maintaining identity.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-c28a76e2-5856-46d3-9bc3-c8627c265b33.png",
+    "source": "art/campaign25/boreas-boss.png",
+    "sha256": "ff71118288075d3e3e92659bfcc4f60d8d6a2066f848d876272ba7e4325e6d8e",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "sv25-sheet",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE first person shooter weapon animation sprite sheet. EXACT 5 columns x 5 rows, 25 equal cells, landscape 4:3 total canvas, ideally 2560x1920. Every cell transparent background, no separators, text, labels, borders or shadows on backdrop. Same highly detailed photoreal tactical boss weapon in every frame: black and gold apex command battle rifle with twin containment rails, detachable gold power cassette and heavy precision optic. Black tactical gloved hands. Camera is player's eyes: weapon from BOTTOM RIGHT pointing diagonally LEFT AND UP toward screen center, barrel tip around 48% width and 43% height of EACH cell. No side-on view. Keep center reticle clear. Consistent size, lens, silhouette, materials. Row 1: full aim, half-energy aim, low-energy aim, empty feed aim, no feed inserted aim. Row 2: empty aim, low pickup holding gun at waist, lifting from GOLDEN case, moving to shoulder, settled full aim. Row 3 MECHANICAL RELOAD five distinct poses: empty feed ejected down; fresh magazine or cell visible in off-hand below left; feed inserted in well; hand pulls charging handle; hand back on foregrip settled aim. NO duplicated static reload poses. Row 4: firing ignition at barrel tip, recoil, mechanism cycling, recoil recovering, settled aim. Row 5: special charge, maximum charge, discharge, cooling, settled aim. Realistic hard-surface gun design and high quality film/game art, tiny gold emissive cues. No floating gun, no giant flare covering entire gun, no center-facing barrel toward viewer, no detached weapon parts except appropriate reload feed.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-510de833-b389-4ff4-8e94-302e256b62b5.png",
+    "source": "art/campaign25/sv25-sheet.png",
+    "sha256": "d1e9209724637c3baf3f811fe8d9244c453e5cc553dabe8e62b111619cf9cfe1",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "sovereign-boss",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE enemy animated sprite sheet. EXACT FOUR COLUMNS and SEVEN ROWS, 28 equal cells, portrait total canvas 4:7 aspect ratio. One full-body boss per cell, same design and proportions: regal black and gold armored command war machine with crown-like sensor array, layered heavy pauldrons and twin energy cannons. Highly detailed photoreal dark tactical industrial horror game enemy, clean hard-surface materials, believable anatomy, vivid readable silhouette. Boss faces camera/player, complete body feet visible, center within each cell and 8% margin. Transparent background in every cell including arm/body gaps. NO text, grid lines, environment, ground shadow, borders or duplicate characters. Row1 four distinct idle breathing poses. Row2 four actual stepping/walking poses forming a loop. Row3 four staggered damaged recoil poses. Row4 four aiming, firing and recovering poses with attached weapon effect. Row5 four mechanical reload/charge poses. Row6 four actual falling-and-dead poses ending in collapsed body. Row7 four special windup, release and recovery poses for command escorts and converging salvos. Consistent detailed gold accents and tactical dark game art. Make each successive pose visibly different while maintaining identity.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-433fc1a8-a3ca-45c6-9c26-a40679a34993.png",
+    "source": "art/campaign25/sovereign-boss.png",
+    "sha256": "6014028d5e6157b851e4c954c425055a6ee446187168c05a86400c7631d06d11",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "rocket-forward",
+    "prompt": "Use case: stylized-concept. Ultra detailed BLACKSITE FPS missile projectile sprite atlas, EXACT THREE EQUAL COLUMNS, one row, transparent background no text. Three views of SAME realistic tactical steel finned rocket with gold nose and dark fins. LEFT cell OUTGOING missile flying AWAY from viewer toward TOP CENTER of cell: 3/4 REAR above view, clearly show whole long missile BODY and fins foreshortened with nose farther toward top, exhaust behind at bottom. Nose points UP and INTO SCREEN. NOT a sideways horizontal missile. MIDDLE cell incoming frontal missile approaching viewer, nose centered visible with fins around it. RIGHT cell an outgoing heavier boss siege missile same upward-forward direction with visible armored body. Flame small at rear no giant flame hiding missile. Clean transparent isolated game sprites, studio lighting, no landscape, no vapor trail baked around entire canvas, realistic detailed machinery.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-27238ea9-d2e0-4321-a5c2-f0834fcca1a3.png",
+    "source": "art/campaign25/rocket-forward.png",
+    "sha256": "892baccbfe9ff5e574689b082a699cb4635cd8907f9ec503cb33ea84cfd924a5",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "ion-bolt",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE FPS projectile sprite, one isolated subject. tapered ion lance bolt with compact bright core and fine charged arcs. High quality realistic physically grounded sci-fi game VFX, cyan color, fine controlled bloom, readable compact core, genuine transparent background. Seen in perspective flying FORWARD AWAY FROM PLAYER toward TOP CENTER, slight upward tilt, never horizontal side-on. No text, black backdrop, checkerboard, environment, humans or gun.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-13cca74f-3026-47d2-aa69-9983b7a7c433.png",
+    "source": "art/campaign25/ion-bolt.png",
+    "sha256": "23592ec85c8ae0b8374251e698eaf80fa9d5fd7722c4b72c0e626b562987b9c9",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "cryo-shard",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE FPS projectile sprite, one isolated subject. pointed crystalline coolant shard flying upward forward with small frost spray. High quality realistic physically grounded sci-fi game VFX, ice blue color, fine controlled bloom, readable compact core, genuine transparent background. Seen in perspective flying FORWARD AWAY FROM PLAYER toward TOP CENTER, slight upward tilt, never horizontal side-on. No text, black backdrop, checkerboard, environment, humans or gun.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-694010e5-e4bb-413d-9d47-38ffbda84c78.png",
+    "source": "art/campaign25/cryo-shard.png",
+    "sha256": "0b3b7d489ffb5cdf624d8c596d8ed6dd7661452a37feebacff37767bcd7cae79",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "spore-cluster",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE FPS projectile sprite, one isolated subject. three acid coated biological spore capsules flying upward forward, small green droplets. High quality realistic physically grounded sci-fi game VFX, green color, fine controlled bloom, readable compact core, genuine transparent background. Seen in perspective flying FORWARD AWAY FROM PLAYER toward TOP CENTER, slight upward tilt, never horizontal side-on. No text, black backdrop, checkerboard, environment, humans or gun.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-290412ee-51b2-4580-9064-e6e45e2c57fe.png",
+    "source": "art/campaign25/spore-cluster.png",
+    "sha256": "9d588be0cf3ff6e0c49b640eb3035193de84a81f13cd3c395c830b9876829751",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "phase-orb",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE FPS projectile sprite, one isolated subject. compact dark void energy sphere contained in violet rippling rings. High quality realistic physically grounded sci-fi game VFX, purple color, fine controlled bloom, readable compact core, genuine transparent background. Seen in perspective flying FORWARD AWAY FROM PLAYER toward TOP CENTER, slight upward tilt, never horizontal side-on. No text, black backdrop, checkerboard, environment, humans or gun.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-64152946-10fd-4114-8c7a-8c384d6626b5.png",
+    "source": "art/campaign25/phase-orb.png",
+    "sha256": "8accb1bcb796e2b678ffb729ddf2f3942d53027e0b1f586ec8ab187aab802d2b",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "ember-impact",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE FPS four-frame impact FX sprite sheet EXACT FOUR EQUAL COLUMNS ONE ROW. four sequential compact bright ember hit bursts with orange sparks fading to ash. High quality realistic physically grounded sci-fi game VFX, orange color, fine controlled bloom, readable compact core, genuine transparent background. Each cell equal size, burst expands and fades across four distinct frames, never crosses cell boundaries. No text, black backdrop, checkerboard, environment, humans or gun.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-f80ae787-4387-4d00-9299-5b0bf18e801b.png",
+    "source": "art/campaign25/ember-impact.png",
+    "sha256": "66400d88461bcb68be9640fd9f65170bcb847eca54e32d9606ce37f25053243b",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "pressure-impact",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE FPS four-frame impact FX sprite sheet EXACT FOUR EQUAL COLUMNS ONE ROW. four sequential high pressure shock rings and sharp water vapor dissipating. High quality realistic physically grounded sci-fi game VFX, blue color, fine controlled bloom, readable compact core, genuine transparent background. Each cell equal size, burst expands and fades across four distinct frames, never crosses cell boundaries. No text, black backdrop, checkerboard, environment, humans or gun.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-0e9322cd-4b50-45ff-a2b2-fe0186f20c21.png",
+    "source": "art/campaign25/pressure-impact.png",
+    "sha256": "e37f0694602a4357fdb870cd21d950cd69941a2f2c11367f26b7f7c79a2a4ae4",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "magnetic-impact",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE FPS four-frame impact FX sprite sheet EXACT FOUR EQUAL COLUMNS ONE ROW. four sequential electrically charged metallic sparks with red magnetic arcs. High quality realistic physically grounded sci-fi game VFX, red color, fine controlled bloom, readable compact core, genuine transparent background. Each cell equal size, burst expands and fades across four distinct frames, never crosses cell boundaries. No text, black backdrop, checkerboard, environment, humans or gun.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-fee1ac97-913c-427f-8c6e-2288e862c2b4.png",
+    "source": "art/campaign25/magnetic-impact.png",
+    "sha256": "5795d953a46e77d7f0f740e7816e25744eaf3d495135070e15b200c4642e720c",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "solar-impact",
+    "prompt": "Use case: stylized-concept. Production BLACKSITE FPS four-frame impact FX sprite sheet EXACT FOUR EQUAL COLUMNS ONE ROW. four sequential gold plasma impact flares then tiny cooling particles. High quality realistic physically grounded sci-fi game VFX, gold color, fine controlled bloom, readable compact core, genuine transparent background. Each cell equal size, burst expands and fades across four distinct frames, never crosses cell boundaries. No text, black backdrop, checkerboard, environment, humans or gun.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-aca5c510-ce2c-461f-8c79-6c52eea4851e.png",
+    "source": "art/campaign25/solar-impact.png",
+    "sha256": "e597e3063b6dfabca933474ff0a7e7281739730efd8ef8a2a351547911f48880",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "vx2-reward",
+    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_vx2_aim.png",
+    "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and orange lighting must match in both panels: industrial incendiary rail rifle, soot black steel, orange ceramic heat shields, removable rectangular power cell. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-3e042a5e-8363-4838-b1a3-5925d316c0d3.png",
+    "source": "art/campaign25/vx2-reward.png",
+    "sha256": "9adec71f375099f70f58e4763cd3c5082969f475d121c91ea031ca385a52dc3b",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "lv8-reward",
+    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_lv8_aim.png",
+    "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and blue lighting must match in both panels: brass and blue hydraulic harpoon launcher with visible pressure cylinder and removable compressed gas magazine. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-c2206852-0a07-49c8-9995-0c24f6a964d4.png",
+    "source": "art/campaign25/lv8-reward.png",
+    "sha256": "51d66b704ef87e4dc6310b9864df9c56e5e929c536753a42efb0b4758d733b64",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "pr5-reward",
+    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_pr5_aim.png",
+    "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and cyan lighting must match in both panels: sleek chrome laser rifle with three cyan optical lenses, removable crystal battery and triangular receiver. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-763e0046-c4fc-4e53-b6be-14c4969d5bda.png",
+    "source": "art/campaign25/pr5-reward.png",
+    "sha256": "f9df6a0890621d07c68aaf5c72fba2da572a2da32515fcdbcd83401a39d02b42",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "mg4-reward",
+    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_mg4_aim.png",
+    "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and red lighting must match in both panels: copper coil accelerator rifle with two horseshoe barrel rails, red coil windings and removable energy block. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-64339ef6-5bb4-485d-a4ea-0a7611541ade.png",
+    "source": "art/campaign25/mg4-reward.png",
+    "sha256": "fdd625bae798528787772b1d8c08844ec460f4613ea066e4662c7a8c56b54b4e",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "bm3-reward",
+    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_bm3_aim.png",
+    "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and amber lighting must match in both panels: compact dark gunmetal microdrone launcher with six hexagonal launch tubes and removable amber cassette. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-1dbf64e6-540a-479e-a1eb-82cce9052869.png",
+    "source": "art/campaign25/bm3-reward.png",
+    "sha256": "2c366b345d9eb0d374fcd767ac07acfa5b8bf0a282a7ac29d8808e5630745f98",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "my9-reward",
+    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_my9_aim.png",
+    "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and green lighting must match in both panels: sealed biohazard spore rifle with green fluid capsule, surgical steel receiver and detachable glass specimen feed. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-40744556-48cd-4248-8a61-09738ee09de4.png",
+    "source": "art/campaign25/my9-reward.png",
+    "sha256": "5f8c7b18691b3e2c5dda227722446392bbed50ff1026cfc717037b07ed08faed",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "as7-reward",
+    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_as7_aim.png",
+    "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and violet lighting must match in both panels: black and violet smart missile launcher with compact shoulder receiver, detachable missile cassette and tactical targeting optic. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-ccffc4d2-3bad-4088-8ca9-2c081d8edcb8.png",
+    "source": "art/campaign25/as7-reward.png",
+    "sha256": "2950f3267f3bc510193169b39b9db10d369349ee5dbde42d1aa541cef72e921b",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "sc6-reward",
+    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_sc6_aim.png",
+    "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and copper lighting must match in both panels: rugged copper and steel flechette cannon with perforated barrel shroud, detachable drum and industrial rivets. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-e415757d-b6f2-4e8c-bc47-1b936de4de7c.png",
+    "source": "art/campaign25/sc6-reward.png",
+    "sha256": "8ed1176e7152d2e3ba084255f5384d2ca8035cd5bd6cd06f46011f6ff753e0c2",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "ub1-reward",
+    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_ub1_aim.png",
+    "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and purple lighting must match in both panels: matte obsidian phase rifle with purple containment ring, removable dark energy cell and segmented slim barrel. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-e621a9dd-e22c-45a2-b7df-b42cdcf8d523.png",
+    "source": "art/campaign25/ub1-reward.png",
+    "sha256": "8928acfbea94514010bd4480277732befd522afbd217b0b674b00a91f8337af8",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "sl12-reward",
+    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_sl12_aim.png",
+    "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and gold lighting must match in both panels: white ceramic solar plasma cannon with gold containment rails and removable hexagonal reactor cell. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-9c0d7336-a533-48f5-9905-6f34313d31e5.png",
+    "source": "art/campaign25/sl12-reward.png",
+    "sha256": "dac9bdc9980fa49ca1cd594d485c764d238b9027e2310ab90a1641fa109c1948",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "nt4-reward",
+    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_nt4_aim.png",
+    "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and teal lighting must match in both panels: teal naval pressure missile launcher with round steel receiver, replaceable torpedo tube feed and orange safety latches. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-5091cf83-2cde-4b11-90a7-61a2c8eaa02b.png",
+    "source": "art/campaign25/nt4-reward.png",
+    "sha256": "eac502f75b2622bf237cad6349327ccf465a3e6e06186ab9557da49b00101ea9",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "ch8-reward",
+    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_ch8_aim.png",
+    "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and amber lighting must match in both panels: bronze precision chronal rifle with amber gyroscope cell, long straight barrel and removable narrow magazine. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-608997c3-48c8-43a3-9e3f-6e853532b4b9.png",
+    "source": "art/campaign25/ch8-reward.png",
+    "sha256": "7d3a4617dd2fccf4dfdad9627bb415b5b54ee9d0678850e0b0ae33601aeefd8e",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "bo11-reward",
+    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_bo11_aim.png",
+    "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and ice blue lighting must match in both panels: black cryogenic shard rifle with ice blue coolant chamber, angular insulated barrel and detachable coolant magazine. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-fefa3a6a-524e-40a3-9595-a0f0f55230c7.png",
+    "source": "art/campaign25/bo11-reward.png",
+    "sha256": "4b5441e9ab3bf368c3595869579b7c1bc35b282e23742e219def48cbd84ba504",
+    "provider": "native imagegen"
+  },
+  {
+    "id": "sv25-reward",
+    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_sv25_aim.png",
+    "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and gold lighting must match in both panels: black and gold apex command battle rifle with twin containment rails, detachable gold power cassette and heavy precision optic. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
+    "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-a8c59fbb-5467-498a-b022-56c99b86c2d2.png",
+    "source": "art/campaign25/sv25-reward.png",
+    "sha256": "9cb5661a4be3ccb6b28d8ae460bb69da2ee21627a968d2e21fe02bf7ceea1046",
+    "provider": "native imagegen"
+  }
+]

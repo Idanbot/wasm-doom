@@ -1,4 +1,5 @@
 mod combat;
+mod campaign;
 mod field;
 mod voices;
 mod consts;
@@ -69,6 +70,10 @@ struct Engine {
     has_w17: bool,
     has_w18: bool,
     has_w19: bool,
+    extra_weapons: u32,
+    pending_hostiles: usize,
+    reinforcement_t: f32,
+    reinforcement_cursor: usize,
     power: u8,
     power_t: f32,
     shield_pool: i32,
@@ -293,6 +298,8 @@ fn sigil_rgba(level: usize, u: f32, v: f32) -> [u32; 4] {
 }
 
 fn sprite_style(e: &Ent) -> (usize, f32, bool, i32) {
+    if (51..=64).contains(&e.kind) { return (T_EXPANSION_CASE + (e.kind - 51) as usize, 0.5, false, 0); }
+    if e.kind == EK_IMPACT && (200..=203).contains(&e.skin) { return (T_IMPACT_NEW + (e.skin - 200) as usize, 0.45, true, ((e.frame * 12.0) as i32).min(3)); }
     let fx = matches!(
         e.kind,
         EK_PROJ | EK_RAY | EK_BOLT | EK_SMOKE | EK_FLAME | EK_FIREPATCH | EK_SPARK | EK_IMPACT | EK_GIB
@@ -316,13 +323,18 @@ fn sprite_style(e: &Ent) -> (usize, f32, bool, i32) {
     match e.kind {
         EK_RAY => return (T_BALL, if e.zoff >= 11.0 { 0.07 } else { 0.065 }, false, 0),
         EK_PROJ => {
+            if (230..=234).contains(&e.skin) {
+                let visual = (e.skin - 230) as usize;
+                return (T_PROJECTILE_NEW + visual, if visual == 0 { 0.40 } else { 0.22 }, visual == 0,
+                    if visual == 0 { if e.anim == 1 { 1 } else if e.hp >= 85 { 2 } else { 0 } } else { 0 });
+            }
             // 3 and 4 are the acid seeker. 4 stays allied so it never hits the shooter.
             let acid = e.effect_tick == 3.0 || e.effect_tick == 4.0;
             return (T_ORDNANCE, 0.28, true, if acid { 3 } else { 0 });
         }
         // The generated rear-view missile has a narrower silhouette than the
         // old fireball, so give it enough projected size to read in motion.
-        EK_BOLT => return (T_ORDNANCE, 0.42, true, 1),
+        EK_BOLT => return (T_PROJECTILE_NEW, 0.42, true, if e.anim == 1 { 1 } else if e.hp >= 85 { 2 } else { 0 }),
         EK_SMOKE => {
             if e.effect_tick >= 9.0 {
                 return (T_FLAME, 1.85 + e.frame.min(2.4) * 0.45, false, -1);
@@ -414,8 +426,8 @@ impl Engine {
             pr: 0.22,
             health: 100,
             armor: 0,
-            ammo: [36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            mag: [12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            ammo: { let mut a = [0; WEP_N]; a[0] = 36; a },
+            mag: { let mut a = [0; WEP_N]; a[0] = 12; a },
             weapon: 0,
             has_w2: false,
             has_w3: false,
@@ -435,6 +447,10 @@ impl Engine {
             has_w17: false,
             has_w18: false,
             has_w19: false,
+            extra_weapons: 0,
+            pending_hostiles: 0,
+            reinforcement_t: 0.0,
+            reinforcement_cursor: 0,
             power: 0,
             power_t: 0.0,
             shield_pool: 0,
@@ -508,6 +524,7 @@ impl Engine {
                 has_w17: 0,
                 has_w18: 0,
                 has_w19: 0,
+                extra_weapons: 0,
                 power: 0,
                 power_t: 0.0,
                 splash: 0.0,
@@ -705,7 +722,7 @@ impl Engine {
     }
 
     fn boss_intro_duration(&self) -> f32 {
-        [4.0, 5.2, 4.6, 4.8, 5.0, 5.4, 5.6, 4.4, 6.0, 4.2, 5.8][map::level_index(self.wave)]
+        [4.0, 5.2, 4.6, 4.8, 5.0, 5.4, 5.6, 4.4, 6.0, 4.2, 5.8].get(map::level_index(self.wave)).copied().unwrap_or(4.8)
     }
 
     fn boss_intro_effect(&mut self, stage: u8) {
@@ -1159,14 +1176,12 @@ impl Engine {
 
     fn spawn_with_skin(&mut self, kind: u8, skin: u8, x: f32, y: f32) -> Option<usize> {
         // Stats come from the roster table so new enemies need no code here.
-        // Past wave 12, hostiles also scale +2% HP per wave (endless mode).
+        // Health rises gradually across the campaign and without a gameplay cap after 25.
         let (mut hp, radius, zoff) = match enemy_def(kind) {
             Some(d) => (d.hp, d.radius, d.zoff),
             None => (1, 0.2, 0.0),
         };
-        if is_hostile_kind(kind) && self.wave > 12 {
-            hp = ((hp as f32) * (1.0 + 0.02 * (self.wave - 12) as f32)).round() as i32;
-        }
+        if is_hostile_kind(kind) { hp = ((hp as f32) * campaign::health_scale(self.wave)).round() as i32; }
         let zoff = skin_def(skin).map(|d| d.zoff).unwrap_or(zoff);
         for (i, e) in self.ents.iter_mut().enumerate() {
             if e.kind == 0 {
@@ -1205,7 +1220,7 @@ impl Engine {
         let face = (self.py - self.ents[i].y).atan2(self.px - self.ents[i].x);
         let e = &mut self.ents[i];
         e.shield = 1;
-        e.hp = (e.hp * 14 / 10).max(e.hp + 8);
+        e.hp = ((e.hp as i64 * 14 / 10).max(e.hp as i64 + 8)).min(i32::MAX as i64) as i32;
         e.shield_hp = enemies::SHIELD_CAP;
         e.face = face;
     }
@@ -1217,6 +1232,7 @@ impl Engine {
     }
 
     pub(crate) fn announce_sector(&mut self) {
+        for slot in 19..WEP_N { if self.owns_slot(slot) { self.mag[slot] = MAG_SZ[slot]; self.ammo[slot] = MAG_SZ[slot] * 6; } }
         self.node_done = false;
         self.lockdown = false;
         self.boss_vuln = 0.0;
@@ -1379,6 +1395,138 @@ impl Engine {
         }
     }
 
+    fn owns_slot(&self, slot: usize) -> bool {
+        if slot >= 19 { return slot < WEP_N && self.extra_weapons & (1 << (slot - 19)) != 0; }
+        [true, self.has_w2, self.has_w3, self.has_w4, self.has_w5, self.has_w6,
+         self.has_w7, self.has_w8, self.has_w9, self.has_w10, self.has_w11,
+         self.has_w12, self.has_w13, self.has_w14, self.has_w15, self.has_w16,
+         self.has_w17, self.has_w18, self.has_w19][slot]
+    }
+
+    fn select_weapon(&mut self, slot: usize) {
+        if slot < WEP_N && self.owns_slot(slot) && slot != self.weapon as usize {
+            self.weapon = slot as i32;
+            self.reload_t = 0.0;
+            self.pickup_t = 0.45;
+        }
+    }
+
+    fn campaign_impact(&mut self, x: f32, y: f32, variant: usize) {
+        if let Some(i) = self.spawn(EK_IMPACT, x, y) {
+            self.ents[i].skin = 200 + (variant % 4) as u8;
+            self.ents[i].timer = 0.34;
+            self.ents[i].zoff = -8.0;
+        }
+    }
+
+    fn projectile_impact(&mut self, x: f32, y: f32, visual: u8, palette: i32) {
+        if visual == 233 { self.effect(EK_IMPACT, 3, x, y, 0.28, -8.0); return; }
+        let effect = if palette == 10 || palette == 12 { 3 }
+            else if matches!(palette, 4 | 9 | 14) { 2 }
+            else if visual == 230 { 0 }
+            else if visual == 234 { 2 } else { 1 };
+        self.campaign_impact(x, y, effect);
+    }
+
+    fn campaign_projectile(&mut self, x: f32, y: f32, a: f32, weapon: campaign::Weapon, friendly: bool, visual: usize) {
+        if let Some(i) = self.spawn(EK_PROJ, x, y) {
+            let e = &mut self.ents[i];
+            e.vx = a.cos() * weapon.speed;
+            e.vy = a.sin() * weapon.speed;
+            e.hp = weapon.damage;
+            e.timer = 3.0;
+            e.effect_tick = if friendly { 6.0 } else { 0.0 };
+            e.skin = 230 + visual.min(4) as u8;
+            e.face = weapon.mode as f32 + 1.0;
+            e.zoff = 10.0;
+            e.aim = if friendly && weapon.mode == 4 { 1.0 } else { 0.0 };
+        }
+    }
+
+    fn fire_campaign_weapon(&mut self) {
+        let slot = self.weapon as usize;
+        let spec = campaign::WEAPONS[slot - 19];
+        self.cooldown = spec.cadence;
+        self.muzzle = 1.0;
+        self.kick = if matches!(spec.mode, 6 | 10) { 1.5 } else { 0.85 };
+        let visual = match spec.mode { 0 | 6 | 10 => 0, 1 | 12 => 2, 5 => 3, 8 | 13 => 4, _ => 1 };
+        let count = match spec.mode { 2 => 3, 4 => 3, 5 => 4, 7 => 5, 12 => 3, _ => 1 };
+        if matches!(spec.mode, 3 | 7 | 11) {
+            for n in 0..count {
+                let a = self.pa + (n as f32 - (count - 1) as f32 * 0.5) * 0.035;
+                self.hitscan(a, spec.damage, 25.0);
+            }
+            let t = self.wall_distance(self.px, self.py, self.pa.cos(), self.pa.sin(), 25.0);
+            self.campaign_impact(self.px + self.pa.cos() * t * 0.96, self.py + self.pa.sin() * t * 0.96, if spec.mode == 3 { 2 } else if spec.mode == 11 { 3 } else { 0 });
+            for n in 1..=12 {
+                let d = t.min(12.0) * n as f32 / 13.0;
+                self.spawn_timed(EK_RAY, self.px + self.pa.cos() * d, self.py + self.pa.sin() * d, 0.10, 14.0);
+            }
+        } else {
+            for n in 0..count {
+                let a = self.pa + (n as f32 - (count - 1) as f32 * 0.5) * 0.045;
+                self.campaign_projectile(self.px + a.cos() * 1.15, self.py + a.sin() * 1.15, a, spec, true, visual);
+            }
+        }
+    }
+
+    fn fire_campaign_boss(&mut self, i: usize) {
+        let shooter = self.ents[i];
+        let index = (shooter.skin - 23) as usize;
+        let mut spec = campaign::WEAPONS[index];
+        spec.damage = combat::profile(shooter.skin, EK_BOSS).damage;
+        spec.speed = (spec.speed * 0.48).max(3.5);
+        let visual = match spec.mode { 0 | 6 | 10 => 0, 1 | 12 => 2, 5 => 3, 8 | 13 => 4, _ => 1 };
+        set_anim(&mut self.ents[i], ANIM_FIRE, 0.3);
+        if spec.mode == 4 {
+            for n in 0..3 {
+                if map::living_hostiles(self) >= campaign::ACTIVE_HOSTILES { break; }
+                let a = shooter.aim + (n as f32 - 1.0) * 0.7;
+                let (x, y) = self.nearest_open(shooter.x + a.cos() * 1.6, shooter.y + a.sin() * 1.6, 0.28);
+                let _ = self.spawn_with_skin(EK_MARTYR, SKIN_MARTYR, x, y);
+                self.campaign_impact(x, y, 2);
+            }
+            return;
+        }
+        if spec.mode == 8 {
+            let a = shooter.aim + 1.3;
+            let (x, y) = self.nearest_open(shooter.x + a.cos() * 3.0, shooter.y + a.sin() * 3.0, shooter.radius);
+            self.campaign_impact(shooter.x, shooter.y, 3);
+            self.ents[i].x = x; self.ents[i].y = y;
+        }
+        if spec.mode == 12 && self.boss_phase > 0 {
+            self.ents[i].shield = 1;
+            self.ents[i].shield_hp = self.ents[i].shield_hp.max(35);
+            self.ents[i].face = shooter.aim;
+        }
+        if spec.mode == 3 {
+            let dx = shooter.x - self.px; let dy = shooter.y - self.py;
+            let distance = (dx * dx + dy * dy).sqrt();
+            if distance > 4.0 && self.los(shooter.x, shooter.y, self.px, self.py) {
+                self.try_move(self.px + dx / distance * 0.35, self.py + dy / distance * 0.35);
+                self.shake = self.shake.max(0.22);
+            }
+        }
+        if spec.mode == 13 && self.boss_phase > 0 {
+            let guards = self.ents.iter().filter(|ent| ent.kind == EK_BRUTE && ent.skin == SKIN_GUNNER && ent.shield != 0 && ent.hp > 0).count();
+            if guards < 4 && map::living_hostiles(self) < campaign::ACTIVE_HOSTILES {
+                let (x,y) = self.nearest_open(shooter.x + 2.0, shooter.y + 1.5, 0.34);
+                if let Some(guard) = self.spawn_with_skin(EK_BRUTE, SKIN_GUNNER, x, y) { self.arm_shield(guard); }
+                self.campaign_impact(x,y,2);
+            }
+        }
+        let count = [3, 1, 3, 5, 3, 4, 3, 7, 2, 8, 2, 3, 5, 6][index];
+        for n in 0..count {
+            let a = if spec.mode == 9 { n as f32 * core::f32::consts::TAU / count as f32 }
+                else { shooter.aim + (n as f32 - (count - 1) as f32 * 0.5) * (0.04 + (index % 4) as f32 * 0.025) };
+            let mut shot = spec;
+            if spec.mode == 11 { shot.speed *= 0.7 + n as f32 * 0.25; }
+            self.campaign_projectile(shooter.x, shooter.y, a, shot, false, visual);
+        }
+        self.campaign_impact(shooter.x, shooter.y, match spec.mode { 0 | 5 | 7 => 0, 1 | 2 | 12 => 1, 9 | 11 => 3, _ => 2 });
+        if self.boss_phase >= 2 { self.boss_vuln = self.boss_vuln.max(1.2); }
+    }
+
     fn grant_slot(&mut self, slot: usize) {
         match slot {
             8 => self.has_w9 = true,
@@ -1392,6 +1540,7 @@ impl Engine {
             16 => self.has_w17 = true,
             17 => self.has_w18 = true,
             18 => self.has_w19 = true,
+            19..=32 => self.extra_weapons |= 1 << (slot - 19),
             _ => return,
         }
         let grant = MAG_SZ[slot] * 2;
@@ -1412,6 +1561,7 @@ impl Engine {
     fn qa_heal(&mut self) {
         if !self.qa { return; }
         self.health = 100;
+        self.pending_hostiles = 0;
         self.iframes = 1.5;
         self.state = 0;
         for ent in &mut self.ents {
@@ -1641,32 +1791,54 @@ impl Engine {
     }
 
     fn spawn_hostiles(&mut self, mult: i32) {
-        let copies = mult.max(1);
-        for n in 0..copies {
-            for &(k, packed, x, y) in map::hostiles(self.wave) {
-                let shielded = field::is_shielded_spawn(packed);
-                let skin = field::visual_skin(packed);
-                let jx = if n == 0 { 0.0 } else { (self.rnd() - 0.5) * 2.2 };
-                let jy = if n == 0 { 0.0 } else { (self.rnd() - 0.5) * 2.2 };
-                let nx = x + jx;
-                let ny = y + jy;
-                let radius = enemy_def(k).map(|d| d.radius).unwrap_or(0.28);
-                let (sx, sy) = self.nearest_open(nx, ny, radius);
-                let spawned = self.spawn_with_skin(k, skin, sx, sy);
-                match spawned {
-                    Some(i) if shielded => self.arm_shield(i),
-                    Some(_) => {}
-                    None => return,
-                }
-            }
+        let roster = map::hostiles(self.wave).len();
+        self.pending_hostiles = if self.wave > 25 { campaign::hostile_total(self.wave, roster) }
+            else { roster * mult.max(1) as usize };
+        self.reinforcement_cursor = 0;
+        self.reinforcement_t = 1.25;
+        while self.pending_hostiles > 0 && map::living_hostiles(self) < campaign::ACTIVE_HOSTILES {
+            if !self.spawn_reinforcement(false) { break; }
         }
     }
 
+    fn spawn_reinforcement(&mut self, telegraph: bool) -> bool {
+        if self.pending_hostiles == 0 || map::living_hostiles(self) >= campaign::ACTIVE_HOSTILES { return false; }
+        let roster = map::hostiles(self.wave);
+        let mut point = roster[self.reinforcement_cursor % roster.len()];
+        if telegraph {
+            let mut safe = None;
+            for n in 0..roster.len() {
+                let candidate = roster[(self.reinforcement_cursor + n) % roster.len()];
+                if (candidate.2 - self.px).powi(2) + (candidate.3 - self.py).powi(2) > 64.0 {
+                    safe = Some(candidate); break;
+                }
+            }
+            let Some(candidate) = safe else { return false; };
+            point = candidate;
+        }
+        let (kind, packed, x, y) = point;
+        let copy = self.reinforcement_cursor / roster.len();
+        let jx = if copy == 0 { 0.0 } else { (self.rnd() - 0.5) * 2.2 };
+        let jy = if copy == 0 { 0.0 } else { (self.rnd() - 0.5) * 2.2 };
+        let radius = enemy_def(kind).map(|d| d.radius).unwrap_or(0.28);
+        let (sx, sy) = self.nearest_open(x + jx, y + jy, radius);
+        if telegraph && (sx - self.px).powi(2) + (sy - self.py).powi(2) < 49.0 { return false; }
+        let Some(i) = self.spawn_with_skin(kind, field::visual_skin(packed), sx, sy) else { return false; };
+        if field::is_shielded_spawn(packed) { self.arm_shield(i); }
+        if telegraph {
+            self.ents[i].stun = 0.9;
+            self.ents[i].timer = 1.2;
+            self.campaign_impact(sx, sy, 2);
+        }
+        self.pending_hostiles -= 1;
+        self.reinforcement_cursor = self.reinforcement_cursor.saturating_add(1);
+        true
+    }
+
     fn next_wave(&mut self) {
-        // Endless: waves climb without a cap, cycling the three sectors.
-        // Hostile count stays capped at 4x for the 192-entity budget;
-        // difficulty past wave 12 comes from boss health scaling.
-        self.wave = (self.wave + 1).min(999);
+        // Twenty-five authored sectors repeat in endless mode. Health and total
+        // enemies grow continuously; queued arrivals preserve effect slots.
+        self.wave = self.wave.saturating_add(1);
         // Capped at 4x (56 hostiles + ambushes): the uncapped 1<<8 shift
         // filled all 192 entity slots with hostiles and starved FX.
         let shift = (self.wave - 1).clamp(0, 2);
@@ -1790,7 +1962,7 @@ impl Engine {
         }
         let sector = map::level_index(self.wave);
         let entry = map::boss_spots(self.wave)[0];
-        let burst = [14, 22, 10, 18, 20, 24, 18, 16, 28, 12, 24][sector];
+        let burst = [14, 22, 10, 18, 20, 24, 18, 16, 28, 12, 24].get(sector).copied().unwrap_or(18);
         if sector == 1 {
             self.spawn_smoke_cloud(entry.0, entry.1);
             self.spawn_smoke_cloud(entry.0 + 1.8, entry.1 - 1.2);
@@ -1824,7 +1996,7 @@ impl Engine {
     }
 
     fn boss_max_health(&self) -> i32 {
-        (480.0 * 1.5f32.powi((self.wave - 1).max(0))).min(6000.0).round() as i32
+        campaign::boss_health(self.wave)
     }
 
     fn sample(&self, id: usize, u: i32, v: i32) -> u32 {
@@ -1882,7 +2054,7 @@ impl Engine {
 
     /// Theme index shared with THEME order in src/game/runtime.ts.
     fn theme_index(wave: i32) -> usize {
-        [0, 4, 5, 3, 6, 7, 4, 3, 6, 0, 7][map::level_index(wave)]
+        [0, 4, 5, 3, 6, 7, 4, 3, 6, 0, 7].get(map::level_index(wave)).copied().unwrap_or(3 + map::level_index(wave) % 4)
     }
 
     /// Copy the wave's wall/door variants into the live T_TECH/T_DOOR
@@ -2683,6 +2855,7 @@ impl Engine {
                     self.spawn_timed(EK_FLAME, self.px + a.cos() * t, self.py + a.sin() * t, 2.5, 8.0);
                 }
             }
+            19..=32 => self.fire_campaign_weapon(),
             8 => self.fire_override(),
             9 => self.fire_forge(),
             10 => self.fire_chimera(),
@@ -2730,6 +2903,7 @@ impl Engine {
                         self.ents[i].vx = a.cos()*6.1; self.ents[i].vy = a.sin()*6.1;
                         self.ents[i].timer = 2.4; self.ents[i].hp = 30; self.ents[i].zoff = 12.0;
                         self.ents[i].effect_tick = 5.0;
+                        self.ents[i].skin = 232;
                     }
                 }
             }
@@ -2852,6 +3026,7 @@ impl Engine {
                 e.timer = 0.7;
                 e.hp = 42;
                 e.effect_tick = 4.0;
+                e.skin = 233;
                 e.zoff = -6.0;
             }
         }
@@ -2929,6 +3104,10 @@ impl Engine {
     }
 
     fn enemy_shoot(&mut self, i: usize) {
+        if (23..=36).contains(&self.ents[i].skin) {
+            self.fire_campaign_boss(i);
+            return;
+        }
         let shooter = self.ents[i];
         let (x, y) = (shooter.x, shooter.y);
         let role = combat::profile(shooter.skin, shooter.kind);
@@ -2944,6 +3123,7 @@ impl Engine {
                 e.timer = 2.8;
                 e.hp = role.damage;
                 e.effect_tick = if shooter.skin == SKIN_SPITTER { 3.0 } else { 0.0 };
+                e.skin = match shooter.skin { SKIN_SPITTER | SKIN_CHIMERA => 233, SKIN_HECATE | SKIN_RELAY => 231, SKIN_HALCYON => 232, SKIN_MNEMOSYNE => 234, _ => SKIN_NONE };
                 e.zoff = zoff;
             }
         }
@@ -2954,6 +3134,11 @@ impl Engine {
     }
 
     fn pickup(&mut self, kind: u8) {
+        if kind == EK_AMMO {
+            for slot in 19..WEP_N {
+                if self.owns_slot(slot) { self.ammo[slot] = (self.ammo[slot] + MAG_SZ[slot] * 2).min(MAG_SZ[slot] * 6); }
+            }
+        }
         match kind {
             EK_MED => {
                 self.health = (self.health + 35).min(100);
@@ -3064,7 +3249,7 @@ impl Engine {
                 self.pickup_t = 0.6;
                 self.events |= EV_PICK_GOLD;
             }
-            EK_GUN9 | EK_GUN10 | EK_GUN11 | EK_GUN12 | EK_GUN13 | EK_GUN14 | EK_GUN15 | EK_GUN16 | EK_GUN17 | EK_GUN18 | EK_GUN19 => {
+            k if field::is_boss_case(k) => {
                 self.grant_slot(field::boss_slot(kind));
                 self.state = 2;
             }
@@ -3096,6 +3281,7 @@ impl Engine {
                 || (self.has_w10 && self.ammo[9] < MAG_SZ[9] * 6)
                 || (self.has_w11 && self.ammo[10] < MAG_SZ[10] * 6)
                 || (self.has_w12 && self.ammo[11] < MAG_SZ[11] * 6)
+                || (19..WEP_N).any(|slot| self.owns_slot(slot) && self.ammo[slot] < MAG_SZ[slot] * 6)
                 || [(12, self.has_w13), (13, self.has_w14), (14, self.has_w15), (15, self.has_w16), (16, self.has_w17), (17, self.has_w18), (18, self.has_w19)].iter().any(|&(slot, owned)| owned && self.ammo[slot] < MAG_SZ[slot] * 6),
             _ => true,
         }
@@ -3282,7 +3468,7 @@ impl Engine {
                 if !self.use_latched {
                     self.open_nearby_doors(true);
                     self.use_field();
-                    let clear = !self.ents.iter().any(|e| e.hp > 0 && is_hostile_kind(e.kind));
+                    let clear = self.pending_hostiles == 0 && !self.ents.iter().any(|e| e.hp > 0 && is_hostile_kind(e.kind));
                     if clear && self.node_done && self.near_override() && !self.boss_spawned && self.boss_intro <= 0.0 {
                         self.boss_intro = self.boss_intro_duration();
                         self.events |= EV_BOSS;
@@ -3332,6 +3518,22 @@ impl Engine {
             let e = self.ents[i];
             if e.kind == 0 {
                 continue;
+            }
+            if e.kind == EK_PROJ && e.effect_tick == 6.0 && e.aim == 1.0 {
+                let target = self.ents.iter().filter(|other| other.hp > 0 && is_hostile_kind(other.kind))
+                    .filter(|other| { let dx = other.x - e.x; let dy = other.y - e.y; dx * e.vx + dy * e.vy > 0.0 && dx * dx + dy * dy < 144.0 })
+                    .min_by(|a,b| ((a.x-e.x).powi(2)+(a.y-e.y).powi(2)).total_cmp(&((b.x-e.x).powi(2)+(b.y-e.y).powi(2))))
+                    .map(|other| (other.x,other.y));
+                if let Some((x,y)) = target {
+                    let a = (y-e.y).atan2(x-e.x); let speed = (e.vx*e.vx+e.vy*e.vy).sqrt();
+                    let blend = (dt*3.5).min(1.0);
+                    self.ents[i].vx += (a.cos()*speed-e.vx)*blend;
+                    self.ents[i].vy += (a.sin()*speed-e.vy)*blend;
+                }
+            }
+            if matches!(self.ents[i].kind, EK_PROJ | EK_BOLT) {
+                let shot = &mut self.ents[i];
+                shot.anim = if shot.vx * self.pa.cos() + shot.vy * self.pa.sin() < 0.0 { 1 } else { 0 };
             }
             let e = &mut self.ents[i];
             e.flash = (e.flash - dt).max(0.0);
@@ -3496,10 +3698,13 @@ impl Engine {
                     e.x += e.vx * dt;
                     e.y += e.vy * dt;
                     e.timer -= dt;
-                    let (ex, ey, dead, damage, variant) = (e.x, e.y, e.timer <= 0.0, e.hp, e.effect_tick);
+                    let (ex, ey, dead, damage, variant, visual, palette, trail) = (e.x, e.y, e.timer <= 0.0, e.hp, e.effect_tick, e.skin, e.face as i32, e.skin == 230 && (e.frame * 12.0).floor() != ((e.frame - dt) * 12.0).floor());
                     let _ = e;
+                    if trail && !dead { self.spawn_timed(EK_SMOKE, old_x, old_y, 0.75, 10.0); }
                     if dead || !self.los(old_x, old_y, ex, ey) {
                         self.ents[i].kind = 0;
+                        if (230..=234).contains(&visual) { self.projectile_impact(old_x, old_y, visual, palette); }
+                        if visual == 230 && !dead && variant == 6.0 { self.explode(old_x, old_y, 1.6, damage as f32 * 0.4); }
                         if variant == 4.0 {
                             self.chimera_burst(old_x, old_y);
                         } else if !dead {
@@ -3508,11 +3713,11 @@ impl Engine {
                     } else if pstate == 0 {
                         let d = segment_distance_sq(px, py, old_x, old_y, ex, ey);
                         if d < 0.22 {
-                            if variant != 4.0 && variant != 5.0 {
+                            if variant != 4.0 && variant != 5.0 && variant != 6.0 {
                                 self.ents[i].kind = 0;
                                 melee.push((i, damage));
                             }
-                        } else if variant == 4.0 || variant == 5.0 {
+                        } else if variant == 4.0 || variant == 5.0 || variant == 6.0 {
                             let mut hit = None;
                             for (j, o) in self.ents.iter().enumerate() {
                                 if o.hp <= 0 || !is_hostile_kind(o.kind) { continue; }
@@ -3522,6 +3727,10 @@ impl Engine {
                             if let Some(j) = hit {
                                 self.ents[i].kind = 0;
                                 self.hurt_ent(j, damage, ex, ey);
+                                if (230..=234).contains(&visual) {
+                                    self.projectile_impact(ex, ey, visual, palette);
+                                    if visual == 230 { self.explode(ex, ey, 1.6, damage as f32 * 0.4); }
+                                }
                                 if variant == 4.0 { self.chimera_burst(ex, ey); }
                                 else {
                                     self.ents[j].timer += 0.45;
@@ -3670,10 +3879,17 @@ impl Engine {
 
         self.flush_fx();
 
-        let mut living = 0;
+        if self.state == 0 && self.pending_hostiles > 0 {
+            self.reinforcement_t -= dt;
+            if self.reinforcement_t <= 0.0 {
+                self.reinforcement_t = 1.25;
+                self.spawn_reinforcement(true);
+            }
+        }
+        let mut living = self.pending_hostiles.min(i32::MAX as usize) as i32;
         for e in self.ents.iter() {
             if e.hp > 0 && is_hostile_kind(e.kind) {
-                living += 1;
+                living = living.saturating_add(1);
             }
         }
         if !self.boss_spawned && self.state == 0 {
@@ -3697,7 +3913,7 @@ impl Engine {
         if self.boss_spawned && self.state == 0 {
             let max_hp = self.boss_max_health();
             let boss_hp = self.ents.iter().find(|e| e.kind == EK_BOSS && e.hp > 0).map(|e| e.hp).unwrap_or(0);
-            let phase = if boss_hp > 0 && boss_hp * 3 <= max_hp { 2 } else if boss_hp > 0 && boss_hp * 3 <= max_hp * 2 { 1 } else { 0 };
+            let phase = if boss_hp > 0 && boss_hp as i64 * 3 <= max_hp as i64 { 2 } else if boss_hp > 0 && boss_hp as i64 * 3 <= max_hp as i64 * 2 { 1 } else { 0 };
             if phase > self.boss_phase {
                 let entered = phase;
                 self.boss_phase = phase;
@@ -3772,11 +3988,11 @@ impl Engine {
                 if map::level_index(self.wave) > 0 {
                     if let Some((bx, by)) = self.ents.iter().find(|e| e.kind == EK_BOSS && e.hp > 0).map(|e| (e.x, e.y)) {
                         let sector = map::level_index(self.wave);
-                        let count = [0, 8, 6, 10, 12, 14, 12, 16, 10, 18, 20][sector];
+                        let count = [0, 8, 6, 10, 12, 14, 12, 16, 10, 18, 20].get(sector).copied().unwrap_or(6 + (sector % 7) * 2);
                         for n in 0..count {
                             let a = n as f32 * core::f32::consts::TAU / count as f32 + phase as f32 * 0.18;
                             if let Some(i) = self.spawn(EK_PROJ, bx, by) {
-                                let speed = if sector == 5 { if n % 2 == 0 { 6.2 } else { 4.3 } } else { [0.0, 6.7, 4.1, 7.5, 3.6, 0.0, 4.2, 7.4, 3.5, 8.0, 5.4][sector] };
+                                let speed = if sector == 5 { if n % 2 == 0 { 6.2 } else { 4.3 } } else { [0.0, 6.7, 4.1, 7.5, 3.6, 0.0, 4.2, 7.4, 3.5, 8.0, 5.4].get(sector).copied().unwrap_or(4.2 + (sector % 5) as f32 * 0.4) };
                                 self.ents[i].vx = a.cos() * speed;
                                 self.ents[i].vy = a.sin() * speed;
                                 self.ents[i].timer = 3.2;
@@ -3959,6 +4175,7 @@ impl Engine {
             has_w17: if self.has_w17 { 1 } else { 0 },
             has_w18: if self.has_w18 { 1 } else { 0 },
             has_w19: if self.has_w19 { 1 } else { 0 },
+            extra_weapons: self.extra_weapons,
             power: self.power as i32,
             power_t: self.power_t,
             splash,
@@ -4032,7 +4249,9 @@ impl Engine {
         for e in &self.ents {
             if !matches!(e.kind, EK_PROJ | EK_RAY | EK_BOLT | EK_FIREPATCH | EK_IMPACT | EK_BOSS)
                 || (e.x - self.px).powi(2) + (e.y - self.py).powi(2) > 324.0 { continue; }
-            let rgb = if e.kind == EK_BOSS {
+            let rgb = if e.kind == EK_BOSS && (23..=36).contains(&e.skin) {
+                campaign::LIGHTS[(e.skin - 23) as usize]
+            } else if e.kind == EK_BOSS {
                 match map::level_index(self.wave) {
                     1 => [0.55, 0.22, 0.05],
                     2 => [0.12, 0.48, 0.16],
@@ -4040,6 +4259,8 @@ impl Engine {
                     4 => [0.62, 0.28, 0.04],
                     _ => [0.55, 0.28, 0.08],
                 }
+            } else if e.kind == EK_PROJ && (230..=234).contains(&e.skin) {
+                [[0.72,0.22,0.04],[0.08,0.55,0.72],[0.12,0.48,0.72],[0.14,0.62,0.08],[0.40,0.10,0.65]][(e.skin - 230) as usize]
             } else if e.kind == EK_PROJ && (e.effect_tick == 3.0 || e.effect_tick == 4.0) {
                 [0.12, 0.55, 0.08]
             } else if matches!(e.kind, EK_RAY | EK_PROJ) {
@@ -5006,6 +5227,11 @@ pub extern "C" fn hs_next_wave() {
 }
 
 #[no_mangle]
+pub extern "C" fn hs_select_weapon(slot: i32) {
+    if slot >= 0 { eng().select_weapon(slot as usize); }
+}
+
+#[no_mangle]
 pub extern "C" fn hs_resize(w: i32, h: i32) {
     let e = eng();
     e.w = (w as usize).clamp(160, MAX_W);
@@ -5059,6 +5285,7 @@ pub struct RunSave {
     pub elapsed_ms: i32,
     pub ammo: [i32; WEP_N],
     pub mag: [i32; WEP_N],
+    pub extra_weapons: u32,
 }
 
 fn capture_save(e: &Engine) -> RunSave {
@@ -5092,11 +5319,12 @@ fn capture_save(e: &Engine) -> RunSave {
         elapsed_ms: (e.elapsed * 1000.0) as i32,
         ammo: e.ammo,
         mag: e.mag,
+        extra_weapons: e.extra_weapons,
     }
 }
 
 fn apply_save(e: &mut Engine, s: &RunSave) {
-    e.wave = s.wave.clamp(1, 999);
+    e.wave = s.wave.max(1);
     e.health = s.health.clamp(1, 100);
     e.armor = s.armor.clamp(0, 100);
     e.kills = s.kills.max(0);
@@ -5122,11 +5350,8 @@ fn apply_save(e: &mut Engine, s: &RunSave) {
     e.has_w19 = s.flags & 131072 != 0;
     e.ammo = s.ammo;
     e.mag = s.mag;
-    let owned = [
-        true, e.has_w2, e.has_w3, e.has_w4, e.has_w5, e.has_w6, e.has_w7, e.has_w8, e.has_w9, e.has_w10, e.has_w11, e.has_w12,
-        e.has_w13, e.has_w14, e.has_w15, e.has_w16, e.has_w17, e.has_w18, e.has_w19,
-    ];
-    e.weapon = if (0..WEP_N as i32).contains(&s.weapon) && owned[s.weapon as usize] { s.weapon } else { 0 };
+    e.extra_weapons = s.extra_weapons & 16383;
+    e.weapon = if (0..WEP_N as i32).contains(&s.weapon) && e.owns_slot(s.weapon as usize) { s.weapon } else { 0 };
     e.state = 0;
     e.boss_spawned = false;
     e.boss_intro = 0.0;
@@ -5151,7 +5376,7 @@ fn apply_save(e: &mut Engine, s: &RunSave) {
 fn save_slot() -> &'static mut RunSave {
     static mut SAVE: RunSave = RunSave {
         wave: 1, health: 100, armor: 0, weapon: 0, flags: 0, kills: 0, secrets: 0, elapsed_ms: 0,
-        ammo: [0; WEP_N], mag: [0; WEP_N],
+        ammo: [0; WEP_N], mag: [0; WEP_N], extra_weapons: 0,
     };
     #[allow(static_mut_refs)]
     unsafe { &mut SAVE }
@@ -5160,7 +5385,7 @@ fn save_slot() -> &'static mut RunSave {
 fn load_slot() -> &'static mut RunSave {
     static mut LOAD: RunSave = RunSave {
         wave: 1, health: 100, armor: 0, weapon: 0, flags: 0, kills: 0, secrets: 0, elapsed_ms: 0,
-        ammo: [0; WEP_N], mag: [0; WEP_N],
+        ammo: [0; WEP_N], mag: [0; WEP_N], extra_weapons: 0,
     };
     #[allow(static_mut_refs)]
     unsafe { &mut LOAD }
@@ -5284,7 +5509,8 @@ pub extern "C" fn hs_qa_armory() {
     e.has_w18 = true;
     e.has_w19 = true;
     e.mag = MAG_SZ;
-    e.ammo = [120, 40, 200, 16, 24, 48, 320, 24, 8, 28, 10, 18, 12, 24, 18, 72, 9, 90, 36];
+    for slot in 0..WEP_N { e.ammo[slot] = MAG_SZ[slot] * 6; }
+    e.extra_weapons = 16383;
 }
 
 /// QA-only full heal so long single-page smokes don't die mid-run.
@@ -5319,7 +5545,7 @@ pub extern "C" fn hs_qa_boss(phase: i32) {
     let max_hp = e.boss_max_health();
     if let Some(boss) = e.ents.iter_mut().find(|enemy| enemy.kind == EK_BOSS && enemy.hp > 0) {
         boss.hp = match phase.clamp(0, 2) {
-            1 => max_hp * 2 / 3,
+            1 => (max_hp as i64 * 2 / 3) as i32,
             2 => max_hp / 3,
             _ => max_hp,
         };
@@ -5609,8 +5835,8 @@ mod tests {
         let tech = e.tex[T_TECH * TEX * TEX];
         let door = e.tex[T_DOOR * TEX * TEX];
         assert_eq!((tech, door), (0xFF000000, 0xFF000008));
-        e.apply_theme(12);
-        assert_eq!(e.tex[T_TECH * TEX * TEX], tech, "wave 11 reuses wave 1 theme");
+        e.apply_theme(26);
+        assert_eq!(e.tex[T_TECH * TEX * TEX], tech, "wave 26 reuses wave 1 theme");
         e.apply_theme(6);
         assert_eq!(e.tex[T_TECH * TEX * TEX], 0xFF000007);
         e.apply_theme(2);
@@ -5647,7 +5873,7 @@ mod tests {
     #[test]
     fn every_boss_case_is_collected_by_world_overlap() {
         let mut e = arena();
-        for wave in 1..=11 {
+        for wave in 1..=map::LEVEL_COUNT as i32 {
             e.state = 0;
             e.wave = wave;
             let kind = field::boss_case(wave);
@@ -5659,6 +5885,88 @@ mod tests {
             assert_eq!(e.weapon as usize, slot, "wave {wave} equipped wrong reward");
             assert_eq!(e.state, 2, "wave {wave} didn't complete after collection");
         }
+    }
+
+    #[test]
+    fn expansion_weapons_fire_reload_and_last_reward_survives_endless_transition() {
+        let mut e = arena();
+        e.select_weapon(32);
+        assert_eq!(e.weapon, 0, "locked rewards cannot be selected");
+        for slot in 19..WEP_N {
+            e.ents.iter_mut().for_each(|ent| ent.kind = EK_NONE);
+            e.grant_slot(slot);
+            e.state = 0; e.pickup_t = 0.0; e.cooldown = 0.0;
+            e.fire();
+            assert_eq!(e.mag[slot], MAG_SZ[slot] - 1);
+            assert!(e.muzzle > 0.0 && e.cooldown > 0.0);
+            e.mag[slot] = 0; e.ammo[slot] = 2; e.begin_reload();
+            assert!(e.reload_t > 0.0);
+            for _ in 0..60 { e.tick(0.08); }
+            assert_eq!(e.mag[slot], 2, "slot {slot} must reload from reserve");
+            assert_eq!(e.ammo[slot], 0);
+        }
+        e.wave = 25;
+        e.weapon = 32;
+        let save = capture_save(&e);
+        e.extra_weapons = 0;
+        apply_save(&mut e, &save);
+        assert_eq!(e.weapon, 32);
+        assert_eq!(e.extra_weapons, 16383);
+        e.next_wave();
+        assert_eq!(e.wave, 26);
+        assert_eq!(map::level_index(e.wave), 0);
+        assert_eq!(e.weapon, 32);
+        assert_eq!(e.mag[32], MAG_SZ[32]);
+    }
+
+    #[test]
+    fn reinforcement_queue_grows_and_replenishes_without_spawning_on_player() {
+        let mut e = arena();
+        e.wave = 1000;
+        e.spawn_hostiles(4);
+        let remaining = e.pending_hostiles;
+        assert!(remaining > 100);
+        assert_eq!(map::living_hostiles(&e), campaign::ACTIVE_HOSTILES);
+        assert!(!e.spawn_reinforcement(true));
+        assert_eq!(e.pending_hostiles, remaining);
+        for ent in &mut e.ents { if is_hostile_kind(ent.kind) { ent.kind = EK_NONE; break; } }
+        assert!(e.spawn_reinforcement(true));
+        assert_eq!(e.pending_hostiles, remaining - 1);
+        let arrival = e.ents.iter().find(|ent| is_hostile_kind(ent.kind) && ent.stun > 0.0).unwrap();
+        assert!((arrival.x - e.px).powi(2) + (arrival.y - e.py).powi(2) >= 49.0);
+        assert!(arrival.timer >= 1.0);
+    }
+
+    #[test]
+    fn rocket_art_selects_outgoing_incoming_and_heavy_views() {
+        let mut e = arena();
+        let i = e.spawn(EK_BOLT, 7.5, 4.5).unwrap();
+        e.ents[i].hp = 50; e.ents[i].timer = 2.0; e.ents[i].vx = 5.0;
+        e.tick(0.016);
+        assert_eq!(sprite_style(&e.ents[i]).3, 0);
+        e.ents[i].hp = 95;
+        assert_eq!(sprite_style(&e.ents[i]).3, 2);
+        e.ents[i].vx = -5.0;
+        e.tick(0.016);
+        assert_eq!(sprite_style(&e.ents[i]).3, 1);
+    }
+
+    #[test]
+    fn new_boss_attacks_have_distinct_summon_phase_and_shield_behaviors() {
+        let mut e = arena();
+        let brood = e.spawn_with_skin(EK_BOSS, 27, 9.5, 4.5).unwrap();
+        e.enemy_shoot(brood);
+        assert_eq!(e.ents.iter().filter(|ent| ent.kind == EK_MARTYR).count(), 3);
+        let umbra = e.spawn_with_skin(EK_BOSS, 31, 12.5, 6.5).unwrap();
+        let before = (e.ents[umbra].x, e.ents[umbra].y);
+        e.enemy_shoot(umbra);
+        assert_ne!((e.ents[umbra].x, e.ents[umbra].y), before);
+        assert!(e.ents.iter().any(|ent| ent.kind == EK_PROJ && ent.skin == 234));
+        let boreas = e.spawn_with_skin(EK_BOSS, 35, 15.5, 7.5).unwrap();
+        e.boss_phase = 1;
+        e.enemy_shoot(boreas);
+        assert!(e.ents[boreas].shield_hp >= 35);
+        assert!(e.ents.iter().any(|ent| ent.kind == EK_PROJ && ent.skin == 232));
     }
 
     #[test]
@@ -5689,14 +5997,14 @@ mod tests {
     fn run_save_layout_matches_ts_side() {
         // Pinned against SAVE_SIZE/SAVE_AMMO_BASE/SAVE_MAG_BASE in
         // src/game/save-abi.ts. Update both files together when WEP_N changes.
-        assert_eq!(core::mem::size_of::<RunSave>(), 184);
+        assert_eq!(core::mem::size_of::<RunSave>(), 300);
         let s = RunSave {
             wave: 0, health: 0, armor: 0, weapon: 0, flags: 0, kills: 0,
-            secrets: 0, elapsed_ms: 0, ammo: [0; WEP_N], mag: [0; WEP_N],
+            secrets: 0, elapsed_ms: 0, ammo: [0; WEP_N], mag: [0; WEP_N], extra_weapons: 0,
         };
         let base = &s as *const RunSave as usize;
         assert_eq!(&s.ammo as *const _ as usize - base, 32);
-        assert_eq!(&s.mag as *const _ as usize - base, 108);
+        assert_eq!(&s.mag as *const _ as usize - base, 164);
     }
 
     #[test]
@@ -5724,39 +6032,33 @@ mod tests {
     #[test]
     fn deep_waves_scale_hostile_health() {
         let mut e = arena();
-        e.wave = 12;
+        e.wave = 25;
         let base = e.spawn(EK_HUSK, 6.5, 4.5).unwrap();
         let base_hp = e.ents[base].hp;
-        e.wave = 22;
-        let scaled = e.spawn(EK_HUSK, 7.5, 4.5).unwrap();
-        assert_eq!(e.ents[scaled].hp, ((base_hp as f32) * 1.2).round() as i32);
-        e.wave = 12;
-        let flat = e.spawn(EK_HUSK, 8.5, 4.5).unwrap();
-        assert_eq!(e.ents[flat].hp, base_hp, "waves 1-12 keep roster stats");
+        e.wave = 26;
+        let next = e.spawn(EK_HUSK, 7.5, 4.5).unwrap();
+        assert!(e.ents[next].hp > base_hp);
+        assert!(e.ents[next].hp <= (base_hp as f32 * 1.06).ceil() as i32);
+        e.wave = 1000;
+        let deep = e.spawn(EK_HUSK, 8.5, 4.5).unwrap();
+        assert!(e.ents[deep].hp > base_hp * 20);
     }
 
     #[test]
     fn waves_are_endless_and_keep_scaling() {
-        // Hub at 4x fields a 64-strong roster (plus its zone cast), so the
-        // deep-wave budget is a range: every roster spawn must succeed, with
-        // headroom left for transient FX ents. Later cycles still run hot
-        // in production; endless mode just keeps doing it.
         let mut e = Engine::new(160, 100);
-        e.wave = 33;
+        e.wave = 25;
         e.next_wave();
-        assert_eq!(e.wave, 34, "waves climb past the old cap");
-        assert_eq!(map::level_index(e.wave), 0, "sectors cycle back to the start");
-        let living = map::living_hostiles(&e);
-        assert!(living >= 64, "the full 4x hub roster spawns, got {living}");
-        assert!(living <= 120, "FX headroom remains, got {living}");
-        assert_eq!(e.boss_max_health(), 6000, "boss health grows into the new cap");
-        e.wave = 45;
+        assert_eq!(e.wave, 26);
+        assert_eq!(map::level_index(e.wave), 0);
+        assert!(map::living_hostiles(&e) <= campaign::ACTIVE_HOSTILES);
+        let hp = e.boss_max_health();
+        e.wave = 999;
         e.next_wave();
-        assert_eq!(e.wave, 46);
-        let living = map::living_hostiles(&e);
-        assert!(living >= 56, "the full 4x foundry roster spawns, got {living}");
-        assert!(living <= 120, "FX headroom remains, got {living}");
-        assert_eq!(e.boss_max_health(), 6000, "boss health never exceeds the cap");
+        assert_eq!(e.wave, 1000);
+        assert!(e.boss_max_health() > 6000 && e.boss_max_health() > hp);
+        assert!(e.pending_hostiles > 0, "uncapped total is queued within the active budget");
+        assert!(map::living_hostiles(&e) <= campaign::ACTIVE_HOSTILES);
     }
 
     #[test]
@@ -5864,7 +6166,7 @@ mod tests {
     #[test]
     fn effects_keep_their_identity_over_lifetime() {
         let mut e = arena();
-        for (kind, texture, frame) in [(EK_SMOKE, T_FLAME, 1), (EK_FIREPATCH, T_FLAME, 0), (EK_BOLT, T_ORDNANCE, 1)] {
+        for (kind, texture, frame) in [(EK_SMOKE, T_FLAME, 1), (EK_FIREPATCH, T_FLAME, 0), (EK_BOLT, T_PROJECTILE_NEW, 0)] {
             let i = e.spawn(kind, 5.5, 5.5).unwrap();
             for age in [0.0, 0.3, 0.7, 1.1] {
                 e.ents[i].frame = age;
@@ -6411,9 +6713,10 @@ mod tests {
         let item = e.spawn(EK_AMMO, e.px, e.py).unwrap();
         e.tick(1.0 / 60.0);
         assert_eq!(e.ents[item].kind, EK_NONE, "a useful ammo crate is collected");
-        assert_eq!(e.ammo, [18, 10, 45, 5, 2, 15, 90, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+        assert_eq!(&e.ammo[..19], &[18, 10, 45, 5, 2, 15, 90, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+        assert!(e.ammo[19..].iter().all(|ammo| *ammo == 0));
 
-        e.ammo = [120, 48, 216, 20, 16, 80, 450, 36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        e.ammo[..19].copy_from_slice(&[120, 48, 216, 20, 16, 80, 450, 36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
         let full = e.spawn(EK_AMMO, e.px, e.py).unwrap();
         e.tick(1.0 / 60.0);
         assert_eq!(e.ents[full].kind, EK_AMMO, "a full arsenal leaves supplies available");
@@ -6434,7 +6737,7 @@ mod tests {
         for _ in 0..370 { e.tick(1.0 / 60.0); }
         let bosses: Vec<_> = e.ents.iter().filter(|en| en.kind == EK_BOSS).collect();
         assert_eq!(bosses.len(), 1);
-        assert_eq!(bosses[0].hp, 720);
+        assert_eq!(bosses[0].hp, campaign::boss_health(2));
         assert_eq!(bosses[0].skin, SKIN_HECATE);
         assert!(e.boss_spawned);
         assert!(e.hell);
@@ -6521,7 +6824,7 @@ mod tests {
         foundry.wave = 2;
         foundry.boss_spawned = true;
         let boss = foundry.spawn_with_skin(EK_BOSS, map::boss_skin(2), 9.5, 4.5).unwrap();
-        foundry.ents[boss].hp = 400;
+        foundry.ents[boss].hp = foundry.boss_max_health() / 2;
         foundry.tick(1.0 / 60.0);
         assert_eq!(foundry.ents.iter().filter(|e| e.kind == EK_PROJ).count(), 8);
         assert!(foundry.ents.iter().any(|e| e.skin == SKIN_HECATE && e.kind == EK_BOSS));
@@ -6530,17 +6833,17 @@ mod tests {
         bioforge.wave = 3;
         bioforge.boss_spawned = true;
         let boss = bioforge.spawn_with_skin(EK_BOSS, map::boss_skin(3), 9.5, 4.5).unwrap();
-        bioforge.ents[boss].hp = 700;
+        bioforge.ents[boss].hp = bioforge.boss_max_health() / 2;
         bioforge.tick(1.0 / 60.0);
         assert_eq!(bioforge.ents.iter().filter(|e| e.kind == EK_PROJ && e.effect_tick == 3.0).count(), 6);
         assert!(bioforge.ents.iter().any(|e| e.skin == SKIN_CHIMERA && e.kind == EK_BOSS));
 
-        for (wave, skin, hp, barrage) in [(4, SKIN_ORACLE, 1000, 10), (5, SKIN_GRAVEMIND, 1600, 12)] {
+        for (wave, skin, _hp, barrage) in [(4, SKIN_ORACLE, 1000, 10), (5, SKIN_GRAVEMIND, 1600, 12)] {
             let mut level = arena();
             level.wave = wave;
             level.boss_spawned = true;
             let boss = level.spawn_with_skin(EK_BOSS, map::boss_skin(wave), 9.5, 4.5).unwrap();
-            level.ents[boss].hp = hp;
+            level.ents[boss].hp = level.boss_max_health() / 2;
             level.tick(1.0 / 60.0);
             assert_eq!(level.ents.iter().filter(|e| e.kind == EK_PROJ).count(), barrage);
             assert!(level.ents.iter().any(|e| e.skin == skin && e.kind == EK_BOSS));

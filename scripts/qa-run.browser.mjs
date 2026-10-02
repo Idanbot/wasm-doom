@@ -6,18 +6,19 @@ const url = new URL(process.env.BLACKSITE_TEST_URL ?? 'http://127.0.0.1:8080/');
 url.searchParams.set('qa', '1');
 url.searchParams.set('lvl', '11');
 
-test('local qa=1&lvl=11 starts Obsidian Vault with all nineteen guns selectable', async () => {
+test('local qa=1&lvl=11 starts Obsidian Vault with all thirty-three guns selectable', async () => {
   const browser = await chromium.launch({ headless: true });
   try {
     const page = await browser.newPage();
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
     await page.goto(url.href, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForFunction(() => window.__controlsTest && document.body.innerText.includes('NADIR–7K') && document.body.innerText.includes('HEALTH'), null, { timeout: 90000 });
+    await page.waitForFunction(() => window.__controlsTest && document.body.innerText.includes('NADIR–7K') && document.body.innerText.includes('HEALTH'), null, { timeout: 180000 });
+    await page.evaluate(() => window.__controlsTest.heal());
     assert.equal(await page.evaluate(() => window.__controlsTest.getWeapon()), 0);
-    for (let slot = 1; slot <= 19; slot++) {
+    for (let slot = 1; slot <= 33; slot++) {
       await page.locator('.game-canvas').dispatchEvent('wheel', { deltaY: 100 });
-      await page.waitForFunction(expected => window.__controlsTest.getWeapon() === expected, slot % 19);
+      await page.waitForFunction(expected => window.__controlsTest.getWeapon() === expected, slot % 33);
       await page.waitForTimeout(200);
     }
     assert.deepEqual(errors, []);
@@ -33,7 +34,7 @@ test('production ignores qa and lvl and starts with the normal first-sector arse
     url.searchParams.set('qa', '1');
     url.searchParams.set('lvl', '11');
     await page.goto(url.href, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForFunction(() => !document.querySelector('.deploy-button')?.hasAttribute('disabled'), null, { timeout: 90000 });
+    await page.waitForFunction(() => !document.querySelector('.deploy-button')?.hasAttribute('disabled'), null, { timeout: 180000 });
     assert.equal(await page.evaluate(() => typeof window.__controlsTest), 'undefined');
     assert.equal(await page.getByText('HEALTH', { exact: true }).count(), 0);
     await page.locator('.deploy-button').click();

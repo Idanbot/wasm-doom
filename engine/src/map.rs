@@ -22,11 +22,11 @@ use crate::Engine;
 
 /// Player spawn: hangar floor, facing east into the west lane.
 pub(crate) const PLAYER_START: (f32, f32, f32) = (4.5, 15.5, 0.0);
-pub(crate) const LEVEL_COUNT: usize = 11;
+pub(crate) const LEVEL_COUNT: usize = crate::campaign::LEVELS;
 
 const PLAYER_STARTS: [(f32, f32, f32); LEVEL_COUNT] =
     [PLAYER_START, (4.5, 6.5, 0.0), (4.5, 15.5, 0.0), (4.5, 6.5, 0.0), (4.5, 25.5, 0.0), (4.5, 16.5, 0.0),
-     (4.5, 5.5, 0.0), (4.5, 25.5, 0.0), (4.5, 15.5, 0.0), (4.5, 5.5, 0.0), (4.5, 15.5, 0.0)];
+     (4.5, 5.5, 0.0), (4.5, 25.5, 0.0), (4.5, 15.5, 0.0), (4.5, 5.5, 0.0), (4.5, 15.5, 0.0), (4.5, 15.5, 0.0), (4.5, 15.5, 0.0), (4.5, 15.5, 0.0), (4.5, 15.5, 0.0), (4.5, 15.5, 0.0), (4.5, 15.5, 0.0), (4.5, 15.5, 0.0), (4.5, 15.5, 0.0), (4.5, 15.5, 0.0), (4.5, 15.5, 0.0), (4.5, 15.5, 0.0), (4.5, 15.5, 0.0), (4.5, 15.5, 0.0), (4.5, 15.5, 0.0)];
 const BOSS_SPOTS_BY_LEVEL: [[(f32, f32); 2]; LEVEL_COUNT] = [
     [(40.5, 24.5), (43.5, 27.5)],
     [(38.5, 23.5), (43.5, 25.5)],
@@ -39,9 +39,24 @@ const BOSS_SPOTS_BY_LEVEL: [[(f32, f32); 2]; LEVEL_COUNT] = [
     [(42.5, 15.5), (43.5, 18.5)],
     [(40.5, 26.5), (43.5, 25.5)],
     [(40.5, 15.5), (43.5, 19.5)],
+    [(40.5, 15.5), (43.5, 19.5)],
+    [(40.5, 15.5), (43.5, 19.5)],
+    [(40.5, 15.5), (43.5, 19.5)],
+    [(40.5, 15.5), (43.5, 19.5)],
+    [(40.5, 15.5), (43.5, 19.5)],
+    [(40.5, 15.5), (43.5, 19.5)],
+    [(40.5, 15.5), (43.5, 19.5)],
+    [(40.5, 15.5), (43.5, 19.5)],
+    [(40.5, 15.5), (43.5, 19.5)],
+    [(40.5, 15.5), (43.5, 19.5)],
+    [(40.5, 15.5), (43.5, 19.5)],
+    [(40.5, 15.5), (43.5, 19.5)],
+    [(40.5, 15.5), (43.5, 19.5)],
+    [(40.5, 15.5), (43.5, 19.5)],
+
 ];
 const OVERRIDES: [(f32, f32); LEVEL_COUNT] = [(40.5, 21.5), (43.5, 27.5), (43.5, 15.5), (40.5, 21.5), (39.5, 20.5), (40.5, 20.5),
-    (40.5, 23.5), (40.5, 6.5), (40.5, 13.5), (40.5, 23.5), (36.5, 15.5)];
+    (40.5, 23.5), (40.5, 6.5), (40.5, 13.5), (40.5, 23.5), (36.5, 15.5), (36.5, 15.5), (36.5, 15.5), (36.5, 15.5), (36.5, 15.5), (36.5, 15.5), (36.5, 15.5), (36.5, 15.5), (36.5, 15.5), (36.5, 15.5), (36.5, 15.5), (36.5, 15.5), (36.5, 15.5), (36.5, 15.5), (36.5, 15.5)];
 
 pub(crate) fn level_index(wave: i32) -> usize {
     (wave.saturating_sub(1) as usize) % LEVEL_COUNT
@@ -60,6 +75,7 @@ pub(crate) fn override_point(wave: i32) -> (f32, f32) {
 }
 
 pub(crate) fn boss_skin(wave: i32) -> u8 {
+    if level_index(wave) >= 11 { return 23 + (level_index(wave) - 11) as u8; }
     [SKIN_VEYRAN, SKIN_HECATE, SKIN_CHIMERA, SKIN_ORACLE, SKIN_GRAVEMIND, SKIN_ARCHIVIST,
      SKIN_HALCYON, SKIN_RELAY, SKIN_TITAN, SKIN_KEST, SKIN_MNEMOSYNE][level_index(wave)]
 }
@@ -171,6 +187,7 @@ const HOSTILES_COMMAND: &[HostileSpawn] = &[
 ];
 
 pub(crate) fn hostiles(wave: i32) -> &'static [HostileSpawn] {
+    if level_index(wave) >= 11 { return HOSTILES_EXTENDED; }
     [HOSTILES_UPPER, HOSTILES_FOUNDRY, HOSTILES_BIOFORGE, HOSTILES_DATACENTER, HOSTILES_REACTOR, HOSTILES_ARCHIVE,
      HOSTILES_CRYO, HOSTILES_SIGNAL, HOSTILES_SIEGE, HOSTILES_COMMAND, HOSTILES_VAULT][level_index(wave)]
 }
@@ -254,6 +271,7 @@ const VAULT_AMBUSHES: &[AmbushDef] = &[AmbushDef {
 }];
 
 fn ambush_defs(wave: i32) -> &'static [AmbushDef] {
+    if level_index(wave) >= 11 { return &[]; }
     [AMBUSH_DEFS, FOUNDRY_AMBUSHES, BIOFORGE_AMBUSHES, DATACENTER_AMBUSHES, REACTOR_AMBUSHES, ARCHIVE_AMBUSHES,
      CRYO_AMBUSHES, SIGNAL_AMBUSHES, SIEGE_AMBUSHES, COMMAND_AMBUSHES, VAULT_AMBUSHES][level_index(wave)]
 }
@@ -600,6 +618,64 @@ fn mark_override(e: &mut Engine, point: (f32, f32)) {
     }
 }
 
+const HOSTILES_EXTENDED: &[HostileSpawn] = &[
+    (EK_HUSK, SKIN_RIFLEMAN, 9.5, 15.5), (EK_HUSK, SKIN_BREACHER, 14.5, 16.5),
+    (EK_WRAITH, SKIN_MARKSMAN, 20.5, 5.5), (EK_BRUTE, SKIN_HAZMAT, 23.5, 8.5),
+    (EK_WRAITH, SKIN_HORNET, 27.5, 6.5), (EK_HUSK, SKIN_GUNNER, 20.5, 12.5),
+    (EK_HUSK, SKIN_HOUND, 24.5, 16.5), (EK_BRUTE, SKIN_LOADER, 28.5, 20.5),
+    (EK_HUSK, SKIN_RIFLEMAN, 32.5, 15.5), (EK_WRAITH, SKIN_SPITTER, 36.5, 12.5),
+    (EK_BRUTE, SKIN_GUNNER, 39.5, 23.5), (EK_HUSK, SKIN_BREACHER, 42.5, 12.5),
+    (EK_WRAITH, SKIN_HORNET, 43.5, 22.5), (EK_HUSK, SKIN_SUBJECT, 24.5, 25.5),
+    (EK_MARTYR, SKIN_MARTYR, 28.5, 27.5), (EK_BRUTE, SKIN_VATBRUTE, 40.5, 18.5),
+];
+
+/// Fourteen authored modular layouts. Rooms share required objective points,
+/// while branch widths, room depths, cover and side routes differ per sector.
+fn build_extended(e: &mut Engine) {
+    let variant = level_index(e.wave) - 11;
+    e.map.fill(1); e.floor.fill(0); e.decal.fill(0);
+    let wall = [1, 4, 7, 6, 4, 3, 7, 6, 4, 7, 4, 6, 7, 1][variant];
+    let floor = (variant % 2) as u8;
+    e.room(1, 10, 10, 12, wall, floor);
+    e.room(10, 13, 25, 6, wall, floor);
+    e.room(17, 3, 13, 20, wall, floor);
+    e.room(34, 8, 12, 21, wall, floor);
+    e.room(20, 22, 10, 8, wall, floor);
+    let north_width = 5 + (variant % 5) as i32;
+    let south_width = 5 + (variant % 4) as i32;
+    e.room(6, 2 + (variant % 3) as i32, north_width, 9, wall, floor);
+    e.room(10, 20, south_width, 10, wall, floor);
+    e.hall_v(9, 8, 14, -1);
+    e.hall_v(13, 17, 25, -1);
+    e.hall_h(27, 37, 6 + (variant % 2) as i32, -1);
+    e.hall_v(37, 6, 12, -1);
+    e.hall_h(27, 37, 25, -1);
+    for bit in 0..4 {
+        let x = 18 + bit * 3;
+        let y = if variant & (1 << bit) != 0 { 10 } else { 20 };
+        e.set_cell(x, y, wall);
+        e.set_cell(x, y + 1, wall);
+    }
+    for x in [35, 38, 42] { e.set_cell(x, 10 + (variant % 3) as i32, wall); }
+    e.hall_h(4, 44, 15, -1);
+    e.floor[15 * MAP_W + 36] = 2;
+    for &(_, _, x, y) in HOSTILES_EXTENDED { e.set_cell(x as i32, y as i32, 0); }
+    // Exact objective and boss coordinates remain walkable in every layout.
+    for (x,y) in [(4,15), (20,7), (36,15), (40,15), (43,19), (25,26)] { e.set_cell(x,y,0); }
+}
+
+fn place_extended(e: &mut Engine) {
+    e.ents.iter_mut().for_each(|ent| ent.kind = EK_NONE);
+    let variant = level_index(e.wave) - 11;
+    let machinery = match variant { 2 | 6 | 8 | 11 | 12 | 13 => EK_PROP_SERVER, 0 | 3 | 9 => EK_PROP_REACTOR, _ => EK_PROP_AC };
+    for (n, (x,y)) in [(3.5,11.5),(8.5,20.5),(18.5,4.5),(27.5,4.5),(18.5,21.5),(28.5,21.5),
+        (21.5,28.5),(28.5,28.5),(35.5,9.5),(44.5,9.5),(35.5,27.5),(44.5,27.5),
+        (11.5,14.5),(32.5,17.5),(37.5,20.5),(42.5,25.5)].iter().enumerate() {
+        let kind = match n % 5 { 0 => machinery, 1 => EK_PROP_VENT, 2 => EK_PROP_WLIGHT_C, 3 => EK_CRATE, _ => EK_BARREL };
+        if !e.blocked(*x as i32, *y as i32) { let _ = e.spawn(kind, *x, *y); }
+    }
+}
+
 pub(crate) fn build_level(e: &mut Engine) {
     match level_index(e.wave) {
         1 => build_foundry(e),
@@ -612,6 +688,7 @@ pub(crate) fn build_level(e: &mut Engine) {
         8 => build_siege(e),
         9 => build_command(e),
         10 => build_vault(e),
+        11..=24 => build_extended(e),
         _ => build_hub_spoke(e),
     }
 }
@@ -893,11 +970,12 @@ pub(crate) fn place_level(e: &mut Engine) {
         5 => place_archive(e),
         6..=9 => place_expansion(e, level_index(e.wave)),
         10 => place_vault(e),
+        11..=24 => place_extended(e),
         _ => place_hub_spoke(e),
     }
     let (x, y) = override_point(e.wave);
     let skin = [SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_BIOFORGE, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER,
-                SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_UPPER][level_index(e.wave)];
+                SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_UPPER].get(level_index(e.wave)).copied().unwrap_or(SKIN_CONSOLE_UPPER);
     e.spawn_with_skin(EK_OVERRIDE_CONSOLE, skin, x, y);
     let (nx, ny) = field::node_point(e.wave);
     e.spawn_with_skin(EK_NODE, skin, nx, ny);
@@ -1138,8 +1216,9 @@ mod tests {
     #[test]
     fn each_sector_has_a_distinct_boss_and_enemy_cast() {
         let skins: Vec<u8> = (1..=LEVEL_COUNT as i32).map(boss_skin).collect();
-        assert_eq!(skins, vec![SKIN_VEYRAN, SKIN_HECATE, SKIN_CHIMERA, SKIN_ORACLE, SKIN_GRAVEMIND, SKIN_ARCHIVIST,
+        assert_eq!(&skins[..11], &[SKIN_VEYRAN, SKIN_HECATE, SKIN_CHIMERA, SKIN_ORACLE, SKIN_GRAVEMIND, SKIN_ARCHIVIST,
             SKIN_HALCYON, SKIN_RELAY, SKIN_TITAN, SKIN_KEST, SKIN_MNEMOSYNE]);
+        assert_eq!(&skins[11..], &(23..37).collect::<Vec<u8>>());
         assert!(hostiles(1).len() > 10 && hostiles(2).len() > 10 && hostiles(3).len() > 10);
         assert_ne!(hostiles(1), hostiles(2));
         assert_ne!(hostiles(2), hostiles(3));
@@ -1156,7 +1235,7 @@ mod tests {
             assert_eq!(consoles.len(), 1);
             assert_eq!((consoles[0].x, consoles[0].y), override_point(wave));
             assert_eq!(consoles[0].skin, [SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_BIOFORGE, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER,
-                SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_UPPER][level_index(wave)]);
+                SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_UPPER].get(level_index(wave)).copied().unwrap_or(SKIN_CONSOLE_UPPER));
             assert!(boss_spots(wave).iter().all(|spot| *spot != override_point(wave)));
         }
     }

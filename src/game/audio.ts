@@ -1,3 +1,4 @@
+import { CAMPAIGN_EXPANSION } from "./campaign25";
 import { asset } from "@/lib/asset";
 import { EnemyAudio } from "./enemy-audio";
 import { VoiceGate } from "./voice-gate";
@@ -105,7 +106,7 @@ export function createAudio(): GameAudio {
     door: asset("/game/sfx/door.ogg?v=2"),
     hurt: asset("/game/sfx/hurt.ogg"),
     ...Object.fromEntries(
-      ["veyran", "hecate", "chimera", "oracle", "gravemind", "archivist", "halcyon", "relay", "titan", "kest", "mnemosyne"]
+      ["veyran", "hecate", "chimera", "oracle", "gravemind", "archivist", "halcyon", "relay", "titan", "kest", "mnemosyne", ...CAMPAIGN_EXPANSION.map(b => b.slug)]
         .flatMap((id, sector) => [0, 1].map((variant) => [
           `bossKill${sector}_${variant}`,
           asset(`/game/voices/boss-${id}${variant ? "-v2" : ""}.mp3`),
@@ -795,7 +796,7 @@ export function createAudio(): GameAudio {
     },
     bossKill(sector, variant) {
       resume();
-      const clip = sector >= 0 && sector < 11 ? `bossKill${sector}_${variant === 1 ? 1 : 0}` : null;
+      const clip = sector >= 0 && sector < 25 ? `bossKill${sector}_${variant === 1 ? 1 : 0}` : null;
       if (clip) voiceGate.enqueue((done) => playVoiceClip(clip, done));
     },
     fire(weapon) {

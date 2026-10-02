@@ -67,7 +67,7 @@ pub(crate) fn snapshot_bars(e: &Engine, out: &mut [BarCue]) -> usize {
             let cap = crate::enemies::armor_cap(enemy.kind, enemy.skin).max(1) as f32;
             (enemy.armor_hp as f32 / cap, 1.0)
         } else {
-            let cap = crate::enemies::health_cap(enemy.kind, enemy.shield != 0).max(1) as f32;
+            let cap = if enemy.kind == EK_BOSS { e.boss_max_health() as f32 } else { (crate::enemies::health_cap(enemy.kind, enemy.shield != 0).max(1) as f32 * crate::campaign::health_scale(e.wave)).round() };
             (enemy.hp as f32 / cap, 0.0)
         };
         let fade = if enemy.bar_t > 0.55 { 1.0 } else { enemy.bar_t / 0.55 };
