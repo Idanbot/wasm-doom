@@ -607,6 +607,17 @@ export class HellscanRuntime {
     this.audio.setBoss(false);
   }
 
+  /** Local QA starts from a clean sector and grants all nineteen weapons. */
+  startQaRun(level: number) {
+    if (!import.meta.env.DEV) return;
+    this.restart();
+    const sector = Number.isInteger(level) && level >= 1 && level <= 11 ? level : 1;
+    for (let wave = 1; wave < sector; wave++) this.nextWave();
+    this.wasm?.hs_qa(0, 1);
+    this.wasm?.hs_qa_armory();
+    this.wasm?.hs_qa(0, 0);
+  }
+
   stop() {
     this.aborted = true;
     this.running = false;

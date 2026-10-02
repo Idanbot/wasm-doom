@@ -106,7 +106,7 @@ npm run build:wasm   # compile the engine and update its source hash
 npm run dev         # development server on port 8080
 ```
 
-`startup.sh` starts development through `npm run dev` and rebuilds WASM when needed. After changing engine sources, run `npm run build:wasm` so the committed binary and source hash stay synchronized. Add `?qa=1` for the browser QA controls.
+`startup.sh` starts development through `npm run dev` and rebuilds WASM when needed. After changing engine sources, run `npm run build:wasm` so the committed binary and source hash stay synchronized. On the local development server, `?qa=1` starts a fresh run with all 19 weapons unlocked. Add `&lvl=x` to start at sector **1–11**, for example `http://localhost:8080/?qa=1&lvl=11` opens Obsidian Vault. Missing or invalid levels start at sector 1. These shortcuts are ignored in production and on non-local hosts.
 
 Asset-generation scripts use Python/Pillow and ffmpeg where applicable. Cloudflare voice generation requires a server-side `CF_API_KEY` and `CF_ACCOUNT_ID`; credentials stay in the ignored `.env` or process environment and never ship in browser assets. Existing voice files are cached to avoid repeat generation.
 

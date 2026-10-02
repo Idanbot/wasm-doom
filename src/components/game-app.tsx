@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { asset } from "@/lib/asset";
+import { localQaRun } from "@/game/dev-run";
 import { HellscanRuntime, weaponSheetImage } from "@/game/runtime";
 import { DEFAULT_HUD, type GfxOpts, type HudState, type ResMode } from "@/game/types";
 import { Crosshair } from "./game/Crosshair";
@@ -246,7 +247,7 @@ export function GameApp() {
     let dead = false;
     setErr(null);
     setReady(false);
-    const qa = new URLSearchParams(window.location.search).get("qa") === "1";
+    const qa = localQaRun(window.location.search, import.meta.env.DEV, window.location.hostname);
     const initialRes = loadRes();
     setRes(initialRes);
     const initialGpu = qa ? false : gpuEnabled();
@@ -258,6 +259,7 @@ export function GameApp() {
         setRenderer(rt.renderer);
         if (qa) {
           qaRef.current = true;
+          rt.startQaRun(qa.level);
           rt.setPlaying(true);
           setScreen("play");
         }
