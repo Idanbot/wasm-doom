@@ -71,6 +71,7 @@ def main():
  rocket=Image.open(OUT/'fx25/rocket-forward.png').convert('RGBA').crop((0,0,128,128))
  save(rocket.resize((512,512),Image.Resampling.LANCZOS),OUT/'draft/v2/fx/projectile_rocket.png')
  ordnance=Image.open(OUT/'spr_ordnance.png').convert('RGBA')
- ordnance.paste(rocket,(128,0));save(ordnance,OUT/'spr_ordnance.png')
+ cell=ordnance.width//2
+ ordnance.paste(rocket.resize((cell,cell),Image.Resampling.LANCZOS),(cell,0));save(ordnance,OUT/'spr_ordnance.png')
  print('Packed 14 boss animation sets, 14 weapon sheets and 9 effect assets')
 if __name__=='__main__':main()

@@ -42,7 +42,11 @@ pub(crate) const T_PROP_BEACON: usize = T_GUN19 + 7;
 pub(crate) const T_EXPANSION_CASE: usize = T_PROP_BEACON + 1;
 pub(crate) const T_PROJECTILE_NEW: usize = T_EXPANSION_CASE + 14;
 pub(crate) const T_IMPACT_NEW: usize = T_PROJECTILE_NEW + 5;
-pub(crate) const TEX_N: usize = T_IMPACT_NEW + 4;
+pub(crate) const T_ENEMY_PROJECTILE: usize = T_IMPACT_NEW + 4;
+pub(crate) const T_PLAYER_MISSILE: usize = T_ENEMY_PROJECTILE + ENEMY_SKIN_COUNT;
+pub(crate) const T_SECTOR_SURFACE: usize = T_PLAYER_MISSILE + 3;
+pub(crate) const T_SECTOR_PROP: usize = T_SECTOR_SURFACE + 25 * 5;
+pub(crate) const TEX_N: usize = T_SECTOR_PROP + 25 * 3;
 pub(crate) const ENT_N: usize = 192;
 pub(crate) const T_BRICK: usize = 0;
 pub(crate) const T_METAL: usize = 1;
@@ -249,7 +253,7 @@ mod tests {
     fn texture_slots_cover_the_known_atlas() {
         assert_eq!(
             TEX_N,
-            ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT + 51
+            ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT + 291
         );
         assert_eq!(TEX, 256);
         assert_eq!(TEXM, 255);

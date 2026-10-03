@@ -16,10 +16,11 @@ for name in ['asset-catalog-data','draft-assets-v2-data']:
   w=b['weapon']; files += [f'/game/draft/v2/cases/case_{w}.png',f'/game/spr_gun_{w}.png',f'/game/ui/weapon-thumbs/{w}.png']
   files += [f"/game/enemy_{b['slug']}_{state}.png" for state in ['idle','move','pain','fire','reload','dead','special']]
  files += ['/game/'+str(p.relative_to(ROOT/'public/game')) for p in (ROOT/'public/game/fx25').glob('*.png')]
+ files += ['/game/'+str(p.relative_to(ROOT/'public/game')) for folder in ['sectors','projectiles'] for p in (ROOT/'public/game'/folder).rglob('*') if p.suffix in ['.png','.webp']]
  for file in files:
-  if name=='draft-assets-v2-data' and '/cases/' not in file and '/fx25/' not in file:continue
+  if name=='draft-assets-v2-data' and '/cases/' not in file and '/fx25/' not in file and '/sectors/' not in file and '/projectiles/' not in file:continue
   indexed.setdefault(file,{}).update(info(file))
-  if name=='draft-assets-v2-data':indexed[file]['group']='items' if '/cases/' in file else 'fx'
+  if name=='draft-assets-v2-data':indexed[file]['group']='items' if '/cases/' in file or '/prop_' in file else 'textures' if '/sectors/' in file else 'fx'
  for row in indexed.values():
   if row['file'].endswith('.png') and (ROOT/'public'/row['file'].lstrip('/')).exists():row.update(info(row['file']))
  p.write_text(json.dumps(list(indexed.values()),indent=2)+'\n')

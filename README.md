@@ -62,7 +62,10 @@ The standard arsenal is MK23-S, BR-12 Breaker, KX-9 Vector, MR-4 Longbow, VLK-6 
 
 - Weapon viewmodels use **5×5 sheets of 25 frames**, 2560×1920 overall, with 512×384 cells for ammunition states, pickup, reload, firing and spare special frames. Aim poses enter from the lower right toward the crosshair.
 - **37 enemy skins** each have seven animation states with four frames per state: idle, movement, pain, fire, reload/charge, death and special. Runtime sheets are 256×256 with four 128×128 cells.
-- Nine new effect assets provide forward-facing missiles, ion bolts, cryo shards, spores, phase shots, and animated ember, pressure, magnetic and solar impacts. Weapon and enemy attack types select their matching effects. Outgoing and incoming rockets use different views; smoke trails expire within one second.
+- Enemy ranged attacks use **37 isolated, type-specific projectile textures**, including distinct boss projectiles. This fixes the legacy atlas patch that mixed a quarter missile into an orange orb. Melee enemies still use melee attacks.
+- Player missiles show their body and nose pointing upward/forward toward the target; enemy missiles show their nose head-on toward the player. Tactical, siege and naval designs have separate outgoing/incoming art, with smoke trails lasting less than a second. Nine campaign FX assets also provide ion bolts, cryo shards, spores, phase shots and animated impacts.
+- Every sector has **five exclusive material textures and three exclusive destructible prop types**: 125 materials and 75 prop designs total. Runtime tiles are seamless 256×256 PNGs; 1024×1024 WebP copies are available for asset review. Breaking machinery produces sparks and supply drops without increasing enemy kills. See [sector art and projectile details](docs/SECTOR_DETAIL.md).
+- All weapon handling sheets have cleaned alpha edges. Pickup and reload frames retain substantial detached hands/magazines while discarding neighboring-panel fragments. Approved aim poses and return-to-aim frames are preserved.
 - The loading screen fetches and decodes weapon sheets, thumbnails and game assets before deployment. The wheel uses transparent gun thumbnails; its selected weapon is larger and fully opaque, while other weapons are dimmed and desaturated.
 - **116 Cloudflare Aura-2 combat voice clips** cover 19 speaking profiles; four profiles are nonverbal. Bosses also have **50 death clips**, two per boss. Positional audio and enemy subtitles share the voice manifest. A shared voice gate prevents overlapping dialogue; interaction announcements and boss death events play once. Doors do not trigger dialogue.
 - `public/game/music/menu.mp3` covers menus, pause, settings and other non-game screens. `bgm-remix.mp3` and `boss.mp3` provide gameplay music.
@@ -82,6 +85,10 @@ The standard arsenal is MK23-S, BR-12 Breaker, KX-9 Vector, MR-4 Longbow, VLK-6 
 | `public/game/voices/` | Runtime MP3 voices and subtitle manifest |
 | `public/game/music/` | Runtime MP3 music |
 | `public/game/fx25/` | Campaign projectile and four-frame impact atlases |
+| `public/game/projectiles/` | Isolated enemy projectiles and outgoing/incoming missiles |
+| `public/game/sectors/<sector>/` | Five exclusive materials and three destructible prop sprites per sector |
+| `public/game/sectors/<sector>/hd/` | 1024×1024 WebP material review copies |
+| `art/sector-detail/` | Native source boards, full prompts, hashes, sector themes and projectile mappings |
 | `art/campaign25/` | Native source boards, full prompts, hashes and the level 12–25 roster |
 | `art/bosses/` | Boss source poses |
 | `art/source_hd/` | Source art and voice generation records |
@@ -112,7 +119,7 @@ src/components/game/        menus, HUD, arsenal, settings and touch controls
 src/components/catalog/     local-development asset review
 ```
 
-The HUD is a 228-byte Rust `#[repr(C)]` struct decoded with a DataView. Compile-time assertions, a boot-time `hs_hud_size` check and tests guard its layout. Saves cover 33 weapon slots in 300 bytes. Older supported checkpoints pad to the current slot count. The texture atlas has 339 layers.
+The HUD is a 228-byte Rust `#[repr(C)]` struct decoded with a DataView. Compile-time assertions, a boot-time `hs_hud_size` check and tests guard its layout. Saves cover 33 weapon slots in 300 bytes. Older supported checkpoints pad to the current slot count. The texture atlas has 579 layers.
 
 ## Develop
 
@@ -140,6 +147,7 @@ npm run check:environment
 npm run check:projectiles
 npm run check:voices
 npm run check:motion
+node --test scripts/sector-detail-assets.test.mjs scripts/weapon-frame-edges.test.mjs
 npm run build
 ```
 
@@ -147,12 +155,13 @@ With the development server running:
 
 ```sh
 npm run test:browser
+node --test scripts/projectile-presentation.browser.mjs
 node scripts/browser-smoke.mjs http://127.0.0.1:8080/ screenshots/qa-menu.png
 node scripts/combat-smoke.mjs
 node scripts/end-screen-smoke.mjs
 ```
 
-The engine has **108 Rust tests**. Coverage includes sector reachability, all boss entries and phases, distinct reward drops, Echo firing and save roundtrips, manual reload behavior, projectiles and movement direction. Browser checks cover asset preload and failure handling, arsenal thumbnails, firing/reload frames, HUD containment, bosses, desktop/mobile rendering and end screens.
+The engine has **110 Rust tests**. Coverage includes sector reachability, all boss entries and phases, distinct reward drops, Echo firing and save roundtrips, manual reload behavior, projectiles and movement direction. Browser checks cover asset preload and failure handling, arsenal thumbnails, firing/reload frames, HUD containment, bosses, desktop/mobile rendering and end screens.
 
 [CI](.github/workflows/ci.yml) runs typechecking, WASM synchronization, asset validation, production build, renderer performance checks, TypeScript/Rust tests and browser smoke checks on pushes and pull requests.
 

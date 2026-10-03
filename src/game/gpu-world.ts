@@ -38,7 +38,11 @@ export const T_PROP_BEACON = T_GUN19 + 7;
 export const T_EXPANSION_CASE = T_PROP_BEACON + 1;
 export const T_PROJECTILE_NEW = T_EXPANSION_CASE + 14;
 export const T_IMPACT_NEW = T_PROJECTILE_NEW + 5;
-export const TEX_N = T_IMPACT_NEW + 4;
+export const T_ENEMY_PROJECTILE = T_IMPACT_NEW + 4;
+export const T_PLAYER_MISSILE = T_ENEMY_PROJECTILE + ENEMY_SKIN_COUNT;
+export const T_SECTOR_SURFACE = T_PLAYER_MISSILE + 3;
+export const T_SECTOR_PROP = T_SECTOR_SURFACE + 25 * 5;
+export const TEX_N = T_SECTOR_PROP + 25 * 3;
 export const MAX_COLS = 3840;
 export const TEX = 256;
 export type WorldFrame = {
@@ -213,7 +217,7 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
       let level = i32(view.v[3].z);
       let c = sigil_center(level);
       let mark = sigil(level, (fx - c.x) / 1.55, (fy - c.y) / 1.55);
-      id = 6;
+      id = select(${T_SECTOR_SURFACE} + i32(view.v[3].z) * 5 + 3, 6, hell > 0.5);
       u = fx;
       v = fy;
       var rgb = sample_atlas(id, u, v).rgb;
@@ -229,6 +233,7 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
   } else {
     id = select(7, 3, hell > 0.5);
   }
+  if (hell < 0.5) { id = ${T_SECTOR_SURFACE} + i32(view.v[3].z) * 5 + select(4, 3, on_floor); }
   var rgb = sample_atlas(id, u, v).rgb;
   let shade_k = select(0.78, 0.72 + 0.2 / (1.0 + dist * 0.2) + muzzle * 0.45 / (1.0 + dist * dist), on_floor);
   rgb = clamp(rgb * clamp(vec3<f32>(shade_k) + light_at(fx, fy), vec3<f32>(0.18), vec3<f32>(1.8)), vec3<f32>(0.0), vec3<f32>(1.0));
@@ -302,7 +307,7 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
   var uv = inp.uv;
   if (frame >= 0.0) {
     let fr = i32(frame);
-    uv = vec2<f32>(f32(fr & 1), f32(fr >> 1)) * 0.5 + inp.uv * 0.5;
+    uv = vec2<f32>(f32(fr & 1), f32(fr >> 1)) * 0.5 + clamp(inp.uv, vec2<f32>(0.5 / 128.0), vec2<f32>(127.5 / 128.0)) * 0.5;
   }
   var rgb: vec3<f32>;
   var a: f32;
@@ -644,7 +649,8 @@ void main() {
       vec2 c = level == 1 ? vec2(43.5, 27.5) : level == 2 ? vec2(43.5, 15.5) : vec2(40.5, 21.5);
       vec2 p = (vec2(fx, fy) - c) / 1.55;
       vec4 mark = sigilMark(level, p);
-      vec3 sealed = sampleAtlas(6, vec2(fx, fy)).rgb;
+      int floorId = view2.x > 0.5 ? 6 : ${T_SECTOR_SURFACE} + int(view3.z) * 5 + 3;
+      vec3 sealed = sampleAtlas(floorId, vec2(fx, fy)).rgb;
       sealed = mix(sealed, mark.rgb, mark.a * (1.0 - smoothstep(0.92, 1.02, length(p))));
       float shadeK = 0.72 + 0.2 / (1.0 + dist * 0.2) + view2.y * 0.45 / (1.0 + dist * dist);
       sealed = clamp(sealed * clamp(vec3(shadeK) + lightAt(vec2(fx, fy)) * 1.35, vec3(0.16), vec3(2.2)), vec3(0.0), vec3(1.0));
@@ -654,6 +660,7 @@ void main() {
   } else {
     id = view2.x > 0.5 ? 3 : 7;
   }
+  if (view2.x < 0.5) id = ${T_SECTOR_SURFACE} + int(view3.z) * 5 + (onFloor ? 3 : 4);
   vec3 rgb = sampleAtlas(id, uv).rgb;
   float shadeK = onFloor ? 0.72 + 0.2 / (1.0 + dist * 0.2) + view2.y * 0.45 / (1.0 + dist * dist) : 0.78;
   rgb = clamp(rgb * clamp(vec3(shadeK) + lightAt(vec2(fx, fy)), vec3(0.18), vec3(1.8)), vec3(0.0), vec3(1.0));
@@ -713,7 +720,7 @@ void main() {
   vec2 uv = vUv;
   if (frame >= 0.0) {
     int fr = int(frame);
-    uv = vec2(float(fr & 1), float(fr >> 1)) * 0.5 + vUv * 0.5;
+    uv = vec2(float(fr & 1), float(fr >> 1)) * 0.5 + clamp(vUv, vec2(0.5 / 128.0), vec2(127.5 / 128.0)) * 0.5;
   }
   vec3 rgb;
   if (int(kind) == 21) {

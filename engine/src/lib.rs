@@ -298,6 +298,13 @@ fn sigil_rgba(level: usize, u: f32, v: f32) -> [u32; 4] {
 }
 
 fn sprite_style(e: &Ent) -> (usize, f32, bool, i32) {
+    if e.kind == EK_CRATE && (150..=224).contains(&e.skin) {
+        return (T_SECTOR_PROP + (e.skin - 150) as usize, 0.85, false, 0);
+    }
+    if e.kind == EK_PROJ && (100..=136).contains(&e.skin) {
+        let skin = (e.skin - 100) as usize;
+        return (T_ENEMY_PROJECTILE + skin, if matches!(skin, 20 | 29 | 33) { 0.36 } else { 0.22 }, false, 0);
+    }
     if (51..=64).contains(&e.kind) { return (T_EXPANSION_CASE + (e.kind - 51) as usize, 0.5, false, 0); }
     if e.kind == EK_IMPACT && (200..=203).contains(&e.skin) { return (T_IMPACT_NEW + (e.skin - 200) as usize, 0.45, true, ((e.frame * 12.0) as i32).min(3)); }
     let fx = matches!(
@@ -325,16 +332,15 @@ fn sprite_style(e: &Ent) -> (usize, f32, bool, i32) {
         EK_PROJ => {
             if (230..=234).contains(&e.skin) {
                 let visual = (e.skin - 230) as usize;
-                return (T_PROJECTILE_NEW + visual, if visual == 0 { 0.40 } else { 0.22 }, visual == 0,
-                    if visual == 0 { if e.anim == 1 { 1 } else if e.hp >= 85 { 2 } else { 0 } } else { 0 });
+                return (if visual == 0 { T_PLAYER_MISSILE + if e.face as i32 == 11 { 2 } else { 0 } } else { T_PROJECTILE_NEW + visual }, if visual == 0 { 0.40 } else { 0.22 }, false, 0);
             }
             // 3 and 4 are the acid seeker. 4 stays allied so it never hits the shooter.
             let acid = e.effect_tick == 3.0 || e.effect_tick == 4.0;
-            return (T_ORDNANCE, 0.28, true, if acid { 3 } else { 0 });
+            return (if acid { T_PROJECTILE_NEW + 3 } else { T_ENEMY_PROJECTILE }, 0.22, false, 0);
         }
         // The generated rear-view missile has a narrower silhouette than the
         // old fireball, so give it enough projected size to read in motion.
-        EK_BOLT => return (T_PROJECTILE_NEW, 0.42, true, if e.anim == 1 { 1 } else if e.hp >= 85 { 2 } else { 0 }),
+        EK_BOLT => return (T_PLAYER_MISSILE + usize::from(e.hp >= 85), 0.42, false, 0),
         EK_SMOKE => {
             if e.effect_tick >= 9.0 {
                 return (T_FLAME, 1.85 + e.frame.min(2.4) * 0.45, false, -1);
@@ -848,6 +854,12 @@ impl Engine {
 
     fn gen_textures(&mut self) {
         for id in 0..TEX_N {
+            // Authored extension layers have a flat fallback until preload completes.
+            // Filling directly avoids hashing millions of pixels for unused noise.
+            if id >= T_ENEMY_PROJECTILE {
+                self.tex[id * TEX * TEX..(id + 1) * TEX * TEX].fill(Self::pack(22, 14, 12, 255));
+                continue;
+            }
             for y in 0..TEX {
                 for x in 0..TEX {
                     let n = Self::nbit(id as u32 + 3, x as i32, y as i32);
@@ -1420,7 +1432,7 @@ impl Engine {
     }
 
     fn projectile_impact(&mut self, x: f32, y: f32, visual: u8, palette: i32) {
-        if visual == 233 { self.effect(EK_IMPACT, 3, x, y, 0.28, -8.0); return; }
+        if visual == 110 || visual == 114 || visual == 128 || visual == 233 { self.effect(EK_IMPACT, 3, x, y, 0.28, -8.0); return; }
         let effect = if palette == 10 || palette == 12 { 3 }
             else if matches!(palette, 4 | 9 | 14) { 2 }
             else if visual == 230 { 0 }
@@ -1436,7 +1448,7 @@ impl Engine {
             e.hp = weapon.damage;
             e.timer = 3.0;
             e.effect_tick = if friendly { 6.0 } else { 0.0 };
-            e.skin = 230 + visual.min(4) as u8;
+            e.skin = if friendly { 230 + visual.min(4) as u8 } else { 123 + weapon.mode };
             e.face = weapon.mode as f32 + 1.0;
             e.zoff = 10.0;
             e.aim = if friendly && weapon.mode == 4 { 1.0 } else { 0.0 };
@@ -2288,6 +2300,10 @@ impl Engine {
     }
 
     fn wall_tex(&self, c: u8, _x: i32, _y: i32) -> usize {
+        if !self.hell {
+            let base = T_SECTOR_SURFACE + map::level_index(self.wave) * 5;
+            return base + if matches!(c, 8 | 9) { 2 } else if matches!(c, 4 | 6) { 1 } else { 0 };
+        }
         let id = match c {
             1 => T_METAL,
             2 => T_BRICK,
@@ -2565,6 +2581,11 @@ impl Engine {
             self.explode(x, y, 2.6, 55.0);
         }
         if kind == EK_CRATE {
+            if (150..=224).contains(&skin) {
+                self.campaign_impact(x, y, if (skin - 150) % 3 == 1 { 1 } else { 2 });
+                self.burst_fx(x, y, EK_SPARK, 5, 0.22);
+                self.light_dirty = true;
+            }
             let roll = (self.rnd() * 3.0) as i32;
             let drop = [EK_AMMO, EK_MED, EK_ARMOR][roll.clamp(0, 2) as usize];
             self.ensure_drop(drop, x, y + 0.35);
@@ -3123,7 +3144,7 @@ impl Engine {
                 e.timer = 2.8;
                 e.hp = role.damage;
                 e.effect_tick = if shooter.skin == SKIN_SPITTER { 3.0 } else { 0.0 };
-                e.skin = match shooter.skin { SKIN_SPITTER | SKIN_CHIMERA => 233, SKIN_HECATE | SKIN_RELAY => 231, SKIN_HALCYON => 232, SKIN_MNEMOSYNE => 234, _ => SKIN_NONE };
+                e.skin = 100 + shooter.skin.min(36);
                 e.zoff = zoff;
             }
         }
@@ -3531,10 +3552,6 @@ impl Engine {
                     self.ents[i].vy += (a.sin()*speed-e.vy)*blend;
                 }
             }
-            if matches!(self.ents[i].kind, EK_PROJ | EK_BOLT) {
-                let shot = &mut self.ents[i];
-                shot.anim = if shot.vx * self.pa.cos() + shot.vy * self.pa.sin() < 0.0 { 1 } else { 0 };
-            }
             let e = &mut self.ents[i];
             e.flash = (e.flash - dt).max(0.0);
             e.bar_t = (e.bar_t - dt).max(0.0);
@@ -3698,12 +3715,12 @@ impl Engine {
                     e.x += e.vx * dt;
                     e.y += e.vy * dt;
                     e.timer -= dt;
-                    let (ex, ey, dead, damage, variant, visual, palette, trail) = (e.x, e.y, e.timer <= 0.0, e.hp, e.effect_tick, e.skin, e.face as i32, e.skin == 230 && (e.frame * 12.0).floor() != ((e.frame - dt) * 12.0).floor());
+                    let (ex, ey, dead, damage, variant, visual, palette, trail) = (e.x, e.y, e.timer <= 0.0, e.hp, e.effect_tick, e.skin, e.face as i32, matches!(e.skin, 120 | 129 | 133 | 230) && (e.frame * 12.0).floor() != ((e.frame - dt) * 12.0).floor());
                     let _ = e;
                     if trail && !dead { self.spawn_timed(EK_SMOKE, old_x, old_y, 0.75, 10.0); }
                     if dead || !self.los(old_x, old_y, ex, ey) {
                         self.ents[i].kind = 0;
-                        if (230..=234).contains(&visual) { self.projectile_impact(old_x, old_y, visual, palette); }
+                        if (100..=136).contains(&visual) || (230..=234).contains(&visual) { self.projectile_impact(old_x, old_y, visual, palette); }
                         if visual == 230 && !dead && variant == 6.0 { self.explode(old_x, old_y, 1.6, damage as f32 * 0.4); }
                         if variant == 4.0 {
                             self.chimera_burst(old_x, old_y);
@@ -3720,7 +3737,7 @@ impl Engine {
                         } else if variant == 4.0 || variant == 5.0 || variant == 6.0 {
                             let mut hit = None;
                             for (j, o) in self.ents.iter().enumerate() {
-                                if o.hp <= 0 || !is_hostile_kind(o.kind) { continue; }
+                                if o.hp <= 0 || !target_kind(o.kind) { continue; }
                                 let d2 = segment_distance_sq(o.x, o.y, old_x, old_y, ex, ey);
                                 if d2 < (o.radius + 0.25).powi(2) { hit = Some(j); break; }
                             }
@@ -4259,6 +4276,10 @@ impl Engine {
                     4 => [0.62, 0.28, 0.04],
                     _ => [0.55, 0.28, 0.08],
                 }
+            } else if e.kind == EK_PROJ && (100..=136).contains(&e.skin) {
+                let source = e.skin - 100;
+                if source >= 23 { campaign::LIGHTS[(source - 23) as usize] }
+                else { match source { 10 | 14 => [0.14,0.62,0.08], 18 => [0.12,0.48,0.72], 22 => [0.40,0.10,0.65], 12 | 17 => [0.72,0.32,0.04], 20 => [0.72,0.22,0.04], _ => [0.08,0.55,0.72] } }
             } else if e.kind == EK_PROJ && (230..=234).contains(&e.skin) {
                 [[0.72,0.22,0.04],[0.08,0.55,0.72],[0.12,0.48,0.72],[0.14,0.62,0.08],[0.40,0.10,0.65]][(e.skin - 230) as usize]
             } else if e.kind == EK_PROJ && (e.effect_tick == 3.0 || e.effect_tick == 4.0) {
@@ -4423,6 +4444,9 @@ impl Engine {
     fn plane_sample(&self, floor: bool, fx: f32, fy: f32, level: usize) -> (usize, i32, i32, usize) {
         let tx = (fx * TEX as f32).floor() as i32;
         let ty = (fy * TEX as f32).floor() as i32;
+        if !self.hell {
+            return (T_SECTOR_SURFACE + map::level_index(self.wave) * 5 + if floor { 3 } else { 4 }, tx, ty, level);
+        }
         if !floor {
             return (if self.hell { T_SKULL } else { T_CEIL }, tx, ty, level);
         }
@@ -5766,7 +5790,7 @@ mod tests {
         e.ents[bolt].effect_tick = 4.0;
         e.ents[bolt].skin = SKIN_SUBJECT;
         let (tex, _, _, frame) = sprite_style(&e.ents[bolt]);
-        assert_eq!((tex, frame), (T_ORDNANCE, 3));
+        assert_eq!((tex, frame), (T_PROJECTILE_NEW + 3, 0));
         let pool = e.spawn(EK_FIREPATCH, 5.0, 4.0).unwrap();
         e.ents[pool].skin = 2;
         let (tex, _, sheet, _) = sprite_style(&e.ents[pool]);
@@ -5938,17 +5962,65 @@ mod tests {
     }
 
     #[test]
-    fn rocket_art_selects_outgoing_incoming_and_heavy_views() {
+    fn rocket_art_keeps_outgoing_model_when_camera_turns() {
         let mut e = arena();
         let i = e.spawn(EK_BOLT, 7.5, 4.5).unwrap();
         e.ents[i].hp = 50; e.ents[i].timer = 2.0; e.ents[i].vx = 5.0;
         e.tick(0.016);
-        assert_eq!(sprite_style(&e.ents[i]).3, 0);
+        assert_eq!(sprite_style(&e.ents[i]).0, T_PLAYER_MISSILE);
+        assert!(!sprite_style(&e.ents[i]).2);
         e.ents[i].hp = 95;
-        assert_eq!(sprite_style(&e.ents[i]).3, 2);
+        assert_eq!(sprite_style(&e.ents[i]).0, T_PLAYER_MISSILE + 1);
         e.ents[i].vx = -5.0;
         e.tick(0.016);
-        assert_eq!(sprite_style(&e.ents[i]).3, 1);
+        assert_eq!(sprite_style(&e.ents[i]).0, T_PLAYER_MISSILE + 1);
+    }
+
+    #[test]
+    fn every_sector_has_exclusive_surfaces_and_three_breakable_types() {
+        let mut e = arena();
+        for wave in 1..=25 {
+            e.wave = wave;
+            e.build_map();
+            for ent in &mut e.ents { ent.kind = EK_NONE; }
+            map::place_level(&mut e);
+            let base = T_SECTOR_SURFACE + (wave as usize - 1) * 5;
+            assert_eq!(e.wall_tex(1, 1, 1), base);
+            assert_eq!(e.wall_tex(6, 1, 1), base + 1);
+            assert_eq!(e.wall_tex(8, 1, 1), base + 2);
+            assert_eq!(e.plane_sample(true, 4.5, 4.5, 0).0, base + 3);
+            assert_eq!(e.plane_sample(false, 4.5, 4.5, 0).0, base + 4);
+            for ty in 0..3 {
+                let skin = 150 + ((wave - 1) * 3 + ty) as u8;
+                let i = e.ents.iter().position(|ent| ent.kind == EK_CRATE && ent.skin == skin).expect("missing exclusive prop type");
+                assert_eq!(sprite_style(&e.ents[i]).0, T_SECTOR_PROP + ((wave - 1) * 3 + ty) as usize);
+                assert!(!e.blocked(e.ents[i].x as i32, e.ents[i].y as i32));
+                let kills = e.kills;
+                e.hurt_ent(i, 1000, e.px, e.py);
+                assert_eq!(e.ents[i].hp, 0);
+                assert_eq!(e.kills, kills, "breaking scenery must not count as an enemy kill");
+            }
+        }
+        e.wave = 26;
+        assert_eq!(e.wall_tex(1, 1, 1), T_SECTOR_SURFACE);
+    }
+
+    #[test]
+    fn enemy_attacks_use_isolated_type_specific_projectiles() {
+        let mut e = arena();
+        for skin in [0, 1, 3, 4, 7, 8, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 28, 29, 30, 31, 32, 33, 34, 35, 36] {
+            for ent in &mut e.ents { ent.kind = EK_NONE; }
+            let shooter = e.spawn_with_skin(EK_BOSS, skin, 9.5, 4.5).unwrap();
+            e.ents[shooter].aim = core::f32::consts::PI;
+            e.enemy_shoot(shooter);
+            let shots: Vec<_> = e.ents.iter().filter(|ent| ent.kind == EK_PROJ).collect();
+            assert!(!shots.is_empty(), "skin {skin} did not shoot");
+            for shot in shots {
+                let (texture, _, sheet, _) = sprite_style(shot);
+                assert_eq!(texture, T_ENEMY_PROJECTILE + skin as usize, "skin {skin} shares or mixes another projectile");
+                assert!(!sheet, "enemy shots must sample one isolated complete image");
+            }
+        }
     }
 
     #[test]
@@ -5961,12 +6033,12 @@ mod tests {
         let before = (e.ents[umbra].x, e.ents[umbra].y);
         e.enemy_shoot(umbra);
         assert_ne!((e.ents[umbra].x, e.ents[umbra].y), before);
-        assert!(e.ents.iter().any(|ent| ent.kind == EK_PROJ && ent.skin == 234));
+        assert!(e.ents.iter().any(|ent| ent.kind == EK_PROJ && ent.skin == 131));
         let boreas = e.spawn_with_skin(EK_BOSS, 35, 15.5, 7.5).unwrap();
         e.boss_phase = 1;
         e.enemy_shoot(boreas);
         assert!(e.ents[boreas].shield_hp >= 35);
-        assert!(e.ents.iter().any(|ent| ent.kind == EK_PROJ && ent.skin == 232));
+        assert!(e.ents.iter().any(|ent| ent.kind == EK_PROJ && ent.skin == 135));
     }
 
     #[test]
@@ -6166,7 +6238,7 @@ mod tests {
     #[test]
     fn effects_keep_their_identity_over_lifetime() {
         let mut e = arena();
-        for (kind, texture, frame) in [(EK_SMOKE, T_FLAME, 1), (EK_FIREPATCH, T_FLAME, 0), (EK_BOLT, T_PROJECTILE_NEW, 0)] {
+        for (kind, texture, frame) in [(EK_SMOKE, T_FLAME, 1), (EK_FIREPATCH, T_FLAME, 0), (EK_BOLT, T_PLAYER_MISSILE, 0)] {
             let i = e.spawn(kind, 5.5, 5.5).unwrap();
             for age in [0.0, 0.3, 0.7, 1.1] {
                 e.ents[i].frame = age;
@@ -6352,7 +6424,8 @@ mod tests {
     fn horizontal_planes_preserve_wall_pixels() {
         let mut e = arena();
         for y in 0..MAP_H { e.set_cell(8, y as i32, 2); }
-        e.tex[T_BRICK * TEX * TEX..(T_BRICK + 1) * TEX * TEX].fill(Engine::pack(200, 0, 0, 255));
+        let wall = e.wall_tex(2, 8, 4);
+        e.tex[wall * TEX * TEX..(wall + 1) * TEX * TEX].fill(Engine::pack(200, 0, 0, 255));
         e.tex[T_SKULL * TEX * TEX..(T_SKULL + 1) * TEX * TEX].fill(Engine::pack(200, 0, 0, 255));
         e.rebuild_mipmaps();
         e.render();
@@ -6869,8 +6942,8 @@ mod tests {
     #[test]
     fn hell_swaps_walls_and_keeps_override_doors_legible() {
         let mut e = arena();
-        assert_eq!(e.wall_tex(2, 1, 1), T_BRICK);
-        assert_eq!(e.wall_tex(8, 36, 18), T_DOOR);
+        assert_eq!(e.wall_tex(2, 1, 1), T_SECTOR_SURFACE);
+        assert_eq!(e.wall_tex(8, 36, 18), T_SECTOR_SURFACE + 2);
         e.hell = true;
         assert_eq!(e.wall_tex(2, 1, 1), T_FLESH);
         assert_eq!(e.wall_tex(6, 1, 1), T_FLESH, "tech becomes flesh, not skull");

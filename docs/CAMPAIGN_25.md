@@ -50,3 +50,5 @@ Up to 72 hostiles are active simultaneously. Remaining enemies stay in a queue a
 ## Verification
 
 Rust checks all 25 distinct layouts and reachable objectives, all 25 reward pickups, expansion firing/reloads/save ownership, endless growth, reinforcement arrival safety and rocket view selection. Asset checks cover all 33 visible thumbnails, all 25 golden cases, native-alpha handling poses and exact aim returns. Browser checks exercise the expanded wheel, loading failures, every gun's firing/reload, and the Sovereign reward-to-level-26 transition. Production ignores local `qa`/`lvl` shortcuts.
+
+Sector-specific surfaces, destructible props, isolated enemy projectiles and corrected missile directions are documented in [sector detail](SECTOR_DETAIL.md). The current atlas has 579 layers. Run its packer and weapon edge cleanup after this original campaign packer so repaired art and catalog hashes stay current.

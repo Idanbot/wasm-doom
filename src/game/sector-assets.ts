@@ -1,0 +1,28 @@
+export const SECTOR_SLUGS = [
+  "upper-works",
+  "cryogenic-foundry",
+  "bioforge-depths",
+  "data-spine",
+  "reactor-sink",
+  "null-archive",
+  "cryo-reserve",
+  "signal-crypt",
+  "siege-yard",
+  "command-bunker",
+  "obsidian-vault",
+  "ashen-transit",
+  "tidal-pumpstation",
+  "optics-array",
+  "magnetic-forge",
+  "drone-hatchery",
+  "fungal-research",
+  "orbital-uplink",
+  "waste-reclaimer",
+  "shadow-lab",
+  "fusion-chamber",
+  "flooded-silo",
+  "chrono-archive",
+  "black-ice-core",
+  "apex-control"
+] as const;
+export const SECTOR_SURFACES = ["wall", "service", "door", "floor", "ceiling"] as const;

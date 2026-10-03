@@ -30,3 +30,5 @@ __pycache__/
 *.pyc
 .grok/*.pid
 art/music-candidates/
+
+art/sector-detail/.generation.lock

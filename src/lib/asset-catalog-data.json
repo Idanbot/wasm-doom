@@ -1253,9 +1253,9 @@
   {
     "file": "/game/spr_ordnance.png",
     "name": "spr_ordnance.png",
-    "size": 310495,
-    "hash": "591a94b1c3d8360815378d842264f7105b80908bba486752df000e71482f54af",
-    "shortHash": "591a94b1",
+    "size": 230212,
+    "hash": "dc28f7cba8a418a5d56a313d462781392fd320bea20fcff337b4a8a6f7b3af8b",
+    "shortHash": "dc28f7cb",
     "width": 512,
     "height": 512
   },
@@ -4494,9 +4494,9 @@
   {
     "file": "/game/draft/v2/weap_ar6_5x5.png",
     "name": "weap_ar6_5x5.png",
-    "size": 2403578,
-    "hash": "b10889aae1e2dc649d2681f4d343f4b6828f5377b607a2c28034f9a5487d351e",
-    "shortHash": "b10889aa",
+    "size": 2390850,
+    "hash": "c547d01b36fe62776a19a6c0889510dd66a68632aba46a104c02b16ad1d6bdc8",
+    "shortHash": "c547d01b",
     "width": 2560,
     "height": 1920
   },
@@ -4660,9 +4660,9 @@
   {
     "file": "/game/draft/v2/weap_or7_5x5.png",
     "name": "weap_or7_5x5.png",
-    "size": 3061611,
-    "hash": "f10d65bafd211e9614e3144dbbc30509727f772ff9c9ca7dc65e0f3770f1e4ec",
-    "shortHash": "f10d65ba",
+    "size": 3047338,
+    "hash": "321e6c75e647a5f8e39b1ca1fc1b194d4620205ba6d70bb7ddfaedaeccf1e89b",
+    "shortHash": "321e6c75",
     "width": 2560,
     "height": 1920
   },
@@ -4714,9 +4714,9 @@
   {
     "file": "/game/draft/v2/weap_gs4_5x5.png",
     "name": "weap_gs4_5x5.png",
-    "size": 2723965,
-    "hash": "6f86522414e6c1869f814d2dccd64bab6551e221dd562687b0ce4f1b7f135bbb",
-    "shortHash": "6f865224",
+    "size": 2711539,
+    "hash": "8bdd2e66466f79b2df74f12eb5dfbc007795d53bac2c2d434f4e0fe3542a7488",
+    "shortHash": "8bdd2e66",
     "width": 2560,
     "height": 1920
   },
@@ -4768,9 +4768,9 @@
   {
     "file": "/game/draft/v2/weap_cr3_5x5.png",
     "name": "weap_cr3_5x5.png",
-    "size": 2889978,
-    "hash": "03782ed7060e941a1f05593d57af0970b4143486db23e7ba28520fe3004f9261",
-    "shortHash": "03782ed7",
+    "size": 2878667,
+    "hash": "9677bc185290de7cf9377305551f9b03390fc8fae53d718127074b008fcd2d18",
+    "shortHash": "9677bc18",
     "width": 2560,
     "height": 1920
   },
@@ -4822,9 +4822,9 @@
   {
     "file": "/game/draft/v2/weap_sr0_5x5.png",
     "name": "weap_sr0_5x5.png",
-    "size": 2836015,
-    "hash": "afecfb35a722d402d6af2ed4adb751b5dc2405c19ca7f21c7f17f037a8a5a42f",
-    "shortHash": "afecfb35",
+    "size": 2821915,
+    "hash": "0b7790a63cec4fbe989e34188423b7576f16dec6101cec6769ba51cc7da17b5e",
+    "shortHash": "0b7790a6",
     "width": 2560,
     "height": 1920
   },
@@ -4876,9 +4876,9 @@
   {
     "file": "/game/draft/v2/weap_ts12_5x5.png",
     "name": "weap_ts12_5x5.png",
-    "size": 3017931,
-    "hash": "ac3059727f2521db830bdffbf6ea2c8df2a0169bc4ba6bd60d562ca5f268454c",
-    "shortHash": "ac305972",
+    "size": 3006248,
+    "hash": "824bbde7767fb3f52dab7d5f675610cdf18c44ac363d8ed1df10b199b48daaae",
+    "shortHash": "824bbde7",
     "width": 2560,
     "height": 1920
   },
@@ -4930,9 +4930,9 @@
   {
     "file": "/game/draft/v2/weap_ks8_5x5.png",
     "name": "weap_ks8_5x5.png",
-    "size": 3032752,
-    "hash": "d44da6f5432926b64f27a22d222db431094868fee6c31692996ebe67a5291622",
-    "shortHash": "d44da6f5",
+    "size": 3020100,
+    "hash": "71adea3c572f097e4db7a254fa7eb2b4900074325ae24f5dbf8d0d500cacf788",
+    "shortHash": "71adea3c",
     "width": 2560,
     "height": 1920
   },
@@ -5523,9 +5523,9 @@
   {
     "file": "/game/draft/v2/weap_mn6_5x5.png",
     "name": "weap_mn6_5x5.png",
-    "size": 2715636,
-    "hash": "2d3d776f7f0928d42201b6decdfa80f1d4d9052c166ab4ea271b969e9474f069",
-    "shortHash": "2d3d776f",
+    "size": 2704226,
+    "hash": "c5121a38edf59d8c286288627993cd5ef0a2407cbe940d48e3ff6a20bbf2ed1f",
+    "shortHash": "c5121a38",
     "width": 2560,
     "height": 1920
   },
@@ -7031,6 +7031,3318 @@
     "size": 69563,
     "hash": "f13ca2af50bf116bb1fce14c5d575fda67b329eb2311a445d0896738e7b2c829",
     "shortHash": "f13ca2af",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/cryogenic-foundry/ceiling.png",
+    "name": "ceiling.png",
+    "size": 149550,
+    "hash": "f75b6c8af8f885e3e67873d6ea1c9e556ab7a4dc21b4d6b2b1e73cc34c9110a3",
+    "shortHash": "f75b6c8a",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/cryogenic-foundry/prop_2.png",
+    "name": "prop_2.png",
+    "size": 106758,
+    "hash": "f5934fc9de86c97360fc6de16202618277425c538f99f83faf8549bdc04cf320",
+    "shortHash": "f5934fc9",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/cryogenic-foundry/service.png",
+    "name": "service.png",
+    "size": 147759,
+    "hash": "e1dea8815506d2bf404ef6f42d33533de2e428a9c7bcc8f59eb1cc04419e247e",
+    "shortHash": "e1dea881",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/cryogenic-foundry/prop_3.png",
+    "name": "prop_3.png",
+    "size": 96316,
+    "hash": "1040bad8b1ebb12d30da0f45b4332c4865e24aec9845bd933c518463197b9268",
+    "shortHash": "1040bad8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/cryogenic-foundry/prop_1.png",
+    "name": "prop_1.png",
+    "size": 89988,
+    "hash": "da3820aec100883da718c2ba7814c241f1d443bc07e74b1a97e160514237322f",
+    "shortHash": "da3820ae",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/cryogenic-foundry/wall.png",
+    "name": "wall.png",
+    "size": 141700,
+    "hash": "3ff33a44e829457a532ac5db6601ed2b6320f2c2e5284fac4b088f3793d0ce23",
+    "shortHash": "3ff33a44",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/cryogenic-foundry/floor.png",
+    "name": "floor.png",
+    "size": 156131,
+    "hash": "004bba1e2db7fb283752b1173a9ebe8fde3dc18673b08f72bbda81d6a8e41af2",
+    "shortHash": "004bba1e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/cryogenic-foundry/door.png",
+    "name": "door.png",
+    "size": 134747,
+    "hash": "1983b836169939d735273d91199173a7ad8f8c7b08675ce0904fc75ef422159b",
+    "shortHash": "1983b836",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/command-bunker/ceiling.png",
+    "name": "ceiling.png",
+    "size": 85798,
+    "hash": "9ecbfd7588afc8a708b8194f9c2046f5528f0966fdcc2dd206a70e53208b1d37",
+    "shortHash": "9ecbfd75",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/command-bunker/prop_2.png",
+    "name": "prop_2.png",
+    "size": 92079,
+    "hash": "7f4bd88e026a2bb08ff35a3ee3fa5ab6ef0a77a0c5f043ccf89aa51027914a03",
+    "shortHash": "7f4bd88e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/command-bunker/service.png",
+    "name": "service.png",
+    "size": 108702,
+    "hash": "7cad1218a89c9f6b2df12063cf060184c6568c41544312b38adbfb64b383da13",
+    "shortHash": "7cad1218",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/command-bunker/prop_3.png",
+    "name": "prop_3.png",
+    "size": 81163,
+    "hash": "116a91794194c60332ee4397d17a7845afdc99511d2196d2b4ee0c63aa395041",
+    "shortHash": "116a9179",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/command-bunker/prop_1.png",
+    "name": "prop_1.png",
+    "size": 90096,
+    "hash": "6e19aa41186a3b2bfae4fd0469ca22f14c021128e54d86bec15146e3544006a1",
+    "shortHash": "6e19aa41",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/command-bunker/wall.png",
+    "name": "wall.png",
+    "size": 105250,
+    "hash": "20830ea35d30074289265aabac010d119ecd7e938e5ee818ec2b148bcd7bb84f",
+    "shortHash": "20830ea3",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/command-bunker/floor.png",
+    "name": "floor.png",
+    "size": 132118,
+    "hash": "610c0efc4c1f8a25e6576019b6d856b41ff1782b4f6d70850288c8ed37e5c7f9",
+    "shortHash": "610c0efc",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/command-bunker/door.png",
+    "name": "door.png",
+    "size": 125921,
+    "hash": "81c24e88dd02f995a387dcfbe155468a70037d170ae060726100bc8480fa0313",
+    "shortHash": "81c24e88",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/bioforge-depths/ceiling.png",
+    "name": "ceiling.png",
+    "size": 162507,
+    "hash": "7354419a0b90fcfa889a6dcc3bcfbbcf105a5626db6ccdd900f57976f8c686f4",
+    "shortHash": "7354419a",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/bioforge-depths/prop_2.png",
+    "name": "prop_2.png",
+    "size": 87721,
+    "hash": "f9964f97400abc2634d3f6eb6f6053c49c3953638920adf7dd0918cfbdce2ba4",
+    "shortHash": "f9964f97",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/bioforge-depths/service.png",
+    "name": "service.png",
+    "size": 133933,
+    "hash": "f6a40cc50b65379169f65b5341f2f7ac8b286c6533b2561acd2ff5c6a9d4f32c",
+    "shortHash": "f6a40cc5",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/bioforge-depths/prop_3.png",
+    "name": "prop_3.png",
+    "size": 84171,
+    "hash": "e8f916d5d626331cb098b3edc43f6d6bc8e199824682746ddf28b27a3b22b373",
+    "shortHash": "e8f916d5",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/bioforge-depths/prop_1.png",
+    "name": "prop_1.png",
+    "size": 83831,
+    "hash": "d2e14794107c1617e4e443aad79bcfaef0782d6f842db3e416d2b58733a55fac",
+    "shortHash": "d2e14794",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/bioforge-depths/wall.png",
+    "name": "wall.png",
+    "size": 125855,
+    "hash": "6a6c3aa2cd26659f7ec21c5a8984b41167f4e11361732fc48a666645b73744ad",
+    "shortHash": "6a6c3aa2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/bioforge-depths/floor.png",
+    "name": "floor.png",
+    "size": 154646,
+    "hash": "8b607bab1fbb96ae8fce1af0d8156361868e72e155b65fd39c24ef83e9250f34",
+    "shortHash": "8b607bab",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/bioforge-depths/door.png",
+    "name": "door.png",
+    "size": 134294,
+    "hash": "78cafec2ec7b98fd4b8f8deeb3e3be3ee556cb01569f15fa15b8056b337538c1",
+    "shortHash": "78cafec2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/data-spine/ceiling.png",
+    "name": "ceiling.png",
+    "size": 140773,
+    "hash": "3db391834ac7c79f6a2ef522efd0c9afd6cc42e51a3c64a30ee12b6cf192498f",
+    "shortHash": "3db39183",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/data-spine/prop_2.png",
+    "name": "prop_2.png",
+    "size": 76264,
+    "hash": "a0f39d4b41804611d3ab10e280dbeb9b00253630eedaec126a8a63166c794a93",
+    "shortHash": "a0f39d4b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/data-spine/service.png",
+    "name": "service.png",
+    "size": 120904,
+    "hash": "b1a1668da7c5fc223cf15a875b1453ccaa4a008ec8cf1585e821f490ff46a14c",
+    "shortHash": "b1a1668d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/data-spine/prop_3.png",
+    "name": "prop_3.png",
+    "size": 69411,
+    "hash": "84ea5b544048c4358f7262b05f75938f26168bb550a59cd12a6c4a555488c092",
+    "shortHash": "84ea5b54",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/data-spine/prop_1.png",
+    "name": "prop_1.png",
+    "size": 59285,
+    "hash": "d527d7b680e2d6deb5bc98c7788c617ac7bc839d24b2e2ab11380c6b58b22354",
+    "shortHash": "d527d7b6",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/data-spine/wall.png",
+    "name": "wall.png",
+    "size": 108120,
+    "hash": "385e99c816938a258e7f9a3f62979e3613895429267ddc40144796c2de1cb744",
+    "shortHash": "385e99c8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/data-spine/floor.png",
+    "name": "floor.png",
+    "size": 137962,
+    "hash": "abd8ab7dd3dee7d6123aa4f6beab759727e0cde160af18365babedab32938b43",
+    "shortHash": "abd8ab7d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/data-spine/door.png",
+    "name": "door.png",
+    "size": 111676,
+    "hash": "43bfb1af7f33f11e720040e87f8bca72e5201b1670fe58bb212969ad8a5e5dab",
+    "shortHash": "43bfb1af",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/ashen-transit/ceiling.png",
+    "name": "ceiling.png",
+    "size": 153006,
+    "hash": "16b11f5cf1d8447516e92b7afdbc1d72d422ea8245438a6fd8f2d5cb1ca3ad55",
+    "shortHash": "16b11f5c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/ashen-transit/prop_2.png",
+    "name": "prop_2.png",
+    "size": 98198,
+    "hash": "c66364cb4156fa39c23801e7f73b467ad3ceb1fa00a75b2f850f8221daf61474",
+    "shortHash": "c66364cb",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/ashen-transit/service.png",
+    "name": "service.png",
+    "size": 151775,
+    "hash": "38440a9835748f31797b77776c3ea9259c2dc00cac43d432a2952a73ce649f21",
+    "shortHash": "38440a98",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/ashen-transit/prop_3.png",
+    "name": "prop_3.png",
+    "size": 103763,
+    "hash": "5e829ee9463696f6a1ad61d9baf4b6823670eb1c3c0f0d02b053c86726a6605c",
+    "shortHash": "5e829ee9",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/ashen-transit/prop_1.png",
+    "name": "prop_1.png",
+    "size": 96816,
+    "hash": "aa48be9da8945c71d4bc315a021f3255867fc5167781a56cd5cb1e2dd3556ab4",
+    "shortHash": "aa48be9d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/ashen-transit/wall.png",
+    "name": "wall.png",
+    "size": 143230,
+    "hash": "2e7cecc6012485cb4b3101a7a0e178ce030a029e7c1a325ea750c7952a0defb5",
+    "shortHash": "2e7cecc6",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/ashen-transit/floor.png",
+    "name": "floor.png",
+    "size": 166511,
+    "hash": "99804843cba6d3878e7e1f214312d3995380932f54fe82df15b53856aaf7207d",
+    "shortHash": "99804843",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/ashen-transit/door.png",
+    "name": "door.png",
+    "size": 146879,
+    "hash": "1317fee82a3322ab9d835b344b48f225a764ab595646f9604d2df756b2f87dd7",
+    "shortHash": "1317fee8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/chrono-archive/ceiling.png",
+    "name": "ceiling.png",
+    "size": 112124,
+    "hash": "f7de7dd4feb969695f58f8d785597c9ceb6c748a99653058c0f74fd5d5313f97",
+    "shortHash": "f7de7dd4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/chrono-archive/prop_2.png",
+    "name": "prop_2.png",
+    "size": 107108,
+    "hash": "14754201a2634dd7801eb3f2d44a4273c86de2bab95e4a96f0540c0520c61603",
+    "shortHash": "14754201",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/chrono-archive/service.png",
+    "name": "service.png",
+    "size": 128746,
+    "hash": "3cf3d816f6c7871ae01cf34d6869f1c7eca16f47e03f45afb21fff3ba357a060",
+    "shortHash": "3cf3d816",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/chrono-archive/prop_3.png",
+    "name": "prop_3.png",
+    "size": 86024,
+    "hash": "f9dfef4d543d930e969c8e9bbe83e0dff46806e73620fb1b8082073b08c371c6",
+    "shortHash": "f9dfef4d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/chrono-archive/prop_1.png",
+    "name": "prop_1.png",
+    "size": 102190,
+    "hash": "ec8c49199eddcbc3c9202c75e424c2f99e309b4a3ed36582449c33a8b3792842",
+    "shortHash": "ec8c4919",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/chrono-archive/wall.png",
+    "name": "wall.png",
+    "size": 126163,
+    "hash": "e9a264abd1ec689fa4678a10e6cb2b7b76d56c02d1e1c820e8b3864d172de420",
+    "shortHash": "e9a264ab",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/chrono-archive/floor.png",
+    "name": "floor.png",
+    "size": 144422,
+    "hash": "9654b9e5849dcdc498868b039bfa0c7d189c0adc28be6048a043222d306a54b9",
+    "shortHash": "9654b9e5",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/chrono-archive/door.png",
+    "name": "door.png",
+    "size": 135343,
+    "hash": "00840736ba6fc08604cc47304faeff546facbad440823fd7cd93e490baf2b222",
+    "shortHash": "00840736",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/fusion-chamber/ceiling.png",
+    "name": "ceiling.png",
+    "size": 156129,
+    "hash": "41c5b5621fe75d1f501c4258bae78a02ee71f1bd5e407ce724d5977709c8f497",
+    "shortHash": "41c5b562",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/fusion-chamber/prop_2.png",
+    "name": "prop_2.png",
+    "size": 99043,
+    "hash": "fe290d2f242a283ee4c40c23eb46e8b8e83d48638a95ef00831998ec865f92e9",
+    "shortHash": "fe290d2f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/fusion-chamber/service.png",
+    "name": "service.png",
+    "size": 136632,
+    "hash": "a65f69ae12faf332131947959f15554d19b612d82a18ca0f68d54696937377d6",
+    "shortHash": "a65f69ae",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/fusion-chamber/prop_3.png",
+    "name": "prop_3.png",
+    "size": 89472,
+    "hash": "f3f3982da50fe1892f3ebf622ca7461ed4986a8565dd6a82855afe6965188610",
+    "shortHash": "f3f3982d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/fusion-chamber/prop_1.png",
+    "name": "prop_1.png",
+    "size": 104932,
+    "hash": "c869e6b9e038c04fb662c52c4a162ac950d00aa9aae5efc227271515b18193a1",
+    "shortHash": "c869e6b9",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/fusion-chamber/wall.png",
+    "name": "wall.png",
+    "size": 113928,
+    "hash": "6ba6f03ee037d4f1d163f1455db5301770901bd099f08a938960bd3683b56f50",
+    "shortHash": "6ba6f03e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/fusion-chamber/floor.png",
+    "name": "floor.png",
+    "size": 136202,
+    "hash": "dd6c168eff937aae1f860526b4262d93a26f0369fb8e2e63cfaaaa7af20a8fa9",
+    "shortHash": "dd6c168e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/fusion-chamber/door.png",
+    "name": "door.png",
+    "size": 124321,
+    "hash": "07f58f4636e259518804812e679938e10281030e77c1be717f10c7e505aa5298",
+    "shortHash": "07f58f46",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/upper-works/ceiling.png",
+    "name": "ceiling.png",
+    "size": 153945,
+    "hash": "e40134a6834e5776e4959e76daf2fa4da410c14a688fbc6605116f537d732feb",
+    "shortHash": "e40134a6",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/upper-works/prop_2.png",
+    "name": "prop_2.png",
+    "size": 68847,
+    "hash": "207b89ec6d221e122b8fb9da7176001a7d5b9cb7119e53669f1ffcbb3c5545a8",
+    "shortHash": "207b89ec",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/upper-works/service.png",
+    "name": "service.png",
+    "size": 142790,
+    "hash": "109ffb35ea0f87424c02a84734ba1069d9c9253b17df8c058606ccae8e51caf8",
+    "shortHash": "109ffb35",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/upper-works/prop_3.png",
+    "name": "prop_3.png",
+    "size": 68411,
+    "hash": "36fe236a6d1b3f3e0380ae578320c6d3e3a53d7e7360c82e22066624a122e02d",
+    "shortHash": "36fe236a",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/upper-works/prop_1.png",
+    "name": "prop_1.png",
+    "size": 84978,
+    "hash": "09fc13326acbe5ea59a571c90811d7fea22383e7291db57eb79e3670bb3a52ed",
+    "shortHash": "09fc1332",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/upper-works/wall.png",
+    "name": "wall.png",
+    "size": 147459,
+    "hash": "b7a2595c41be960c235ec571a0316fbe53afd6b55da7ca5a8313c910f1802074",
+    "shortHash": "b7a2595c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/upper-works/floor.png",
+    "name": "floor.png",
+    "size": 156262,
+    "hash": "94c612c81075b328ce35f8b4256f73b50fc9137ee764818223890f4f67874cd0",
+    "shortHash": "94c612c8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/upper-works/door.png",
+    "name": "door.png",
+    "size": 134408,
+    "hash": "5a2496614d93e33f88dfa42410ce9a3c799757e3621240a376e5cd91f8ad7146",
+    "shortHash": "5a249661",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/fungal-research/ceiling.png",
+    "name": "ceiling.png",
+    "size": 124269,
+    "hash": "4993e4f29639ce0bf682c35dc01a9c8a12129b30162d36ce37f677f4de5c1c7d",
+    "shortHash": "4993e4f2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/fungal-research/prop_2.png",
+    "name": "prop_2.png",
+    "size": 95806,
+    "hash": "05bed78bee61081ee72682c460fdeacd804404191cfc930fd6797971d3e566f0",
+    "shortHash": "05bed78b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/fungal-research/service.png",
+    "name": "service.png",
+    "size": 138092,
+    "hash": "ca851184177a5b08ade93bc7d742e1fa8a71c0a72f784d53c080f2be92a9b78b",
+    "shortHash": "ca851184",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/fungal-research/prop_3.png",
+    "name": "prop_3.png",
+    "size": 104001,
+    "hash": "71727410047bc142ded63b3305f80c8c7aa0b0684b87ad2e073c0e0b48887bb5",
+    "shortHash": "71727410",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/fungal-research/prop_1.png",
+    "name": "prop_1.png",
+    "size": 92071,
+    "hash": "423018e60c4d775468847c9df7349b882512b8423c2357510e7c5fc7e4d8c374",
+    "shortHash": "423018e6",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/fungal-research/wall.png",
+    "name": "wall.png",
+    "size": 149639,
+    "hash": "43f548a20a7ed7b68639c941728d239a1e2a2216ecd0b96b737aec380fdd7579",
+    "shortHash": "43f548a2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/fungal-research/floor.png",
+    "name": "floor.png",
+    "size": 153947,
+    "hash": "bdb8246b34e70be59517847562ef883164974b1ce778729bb705db6f7dab6bef",
+    "shortHash": "bdb8246b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/fungal-research/door.png",
+    "name": "door.png",
+    "size": 143239,
+    "hash": "ebb454063de4df99d70a3c935cfedf089ce95e6a1b59b5fbb9ef035896af6918",
+    "shortHash": "ebb45406",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/tidal-pumpstation/ceiling.png",
+    "name": "ceiling.png",
+    "size": 138855,
+    "hash": "99ba2b16f48ac900e790f849540ca5878a8be76067eb1fdb50bc8646ef15e28a",
+    "shortHash": "99ba2b16",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/tidal-pumpstation/prop_2.png",
+    "name": "prop_2.png",
+    "size": 66868,
+    "hash": "89376d4912cb1f4890fe8603a27ec71fc96941a4a1acc0e62f1f11c8e8aa83d8",
+    "shortHash": "89376d49",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/tidal-pumpstation/service.png",
+    "name": "service.png",
+    "size": 152262,
+    "hash": "232396bbefe70f3c64dd0037d33cdd45d42f94787c57d711b1a03f4f3568cc5d",
+    "shortHash": "232396bb",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/tidal-pumpstation/prop_3.png",
+    "name": "prop_3.png",
+    "size": 91093,
+    "hash": "a4d935bf3eefb891701d6662976c002edeb076807951da833980dc5ce4e19cc9",
+    "shortHash": "a4d935bf",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/tidal-pumpstation/prop_1.png",
+    "name": "prop_1.png",
+    "size": 96943,
+    "hash": "5e8312b4e9f90f866cb1d9e04d60f850dd7b83f40be124b33f45344d0b7d254d",
+    "shortHash": "5e8312b4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/tidal-pumpstation/wall.png",
+    "name": "wall.png",
+    "size": 144653,
+    "hash": "47e8fc3912e9c7861b7eaf3cef62afe71faa0f0793eea1766398d03d34adcefa",
+    "shortHash": "47e8fc39",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/tidal-pumpstation/floor.png",
+    "name": "floor.png",
+    "size": 163674,
+    "hash": "64357b2dffdb222eb8080e3f5e87f1b5b5b5da212dc41aba674febafb3ef2727",
+    "shortHash": "64357b2d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/tidal-pumpstation/door.png",
+    "name": "door.png",
+    "size": 148601,
+    "hash": "98f79c171253363718d64c53a1fb8e49a1d387bfdf35be8517bccc08531ddb02",
+    "shortHash": "98f79c17",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/null-archive/ceiling.png",
+    "name": "ceiling.png",
+    "size": 660,
+    "hash": "9e40bcc812c70432bd0afc8ddfdec7f9c34adf8d364227bdac9b80c76c07b93a",
+    "shortHash": "9e40bcc8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/null-archive/prop_2.png",
+    "name": "prop_2.png",
+    "size": 78035,
+    "hash": "4238f8956af9b2c44695510022154ee0ba966b54010af4b5190609ae0e0f687b",
+    "shortHash": "4238f895",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/null-archive/service.png",
+    "name": "service.png",
+    "size": 127953,
+    "hash": "a94c808bdd2edbd54f6f01b52acd7748a8dc052bf079c5fa32a81d045fd5fd1c",
+    "shortHash": "a94c808b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/null-archive/prop_3.png",
+    "name": "prop_3.png",
+    "size": 100590,
+    "hash": "229e3d3c98a9df7345b0e0b31a1da11461fa19569d79a7e2e58118c3ea6504c9",
+    "shortHash": "229e3d3c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/null-archive/prop_1.png",
+    "name": "prop_1.png",
+    "size": 85369,
+    "hash": "d14ee3b1d62383a9a68b54b33d9f00222e0f4fb652e8b734ade9f717ac445aeb",
+    "shortHash": "d14ee3b1",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/null-archive/wall.png",
+    "name": "wall.png",
+    "size": 110922,
+    "hash": "c90b34561c0ecd2bbf674e8627ab911f493f0dd2b58004536ae261c7d65fc5f0",
+    "shortHash": "c90b3456",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/null-archive/floor.png",
+    "name": "floor.png",
+    "size": 138335,
+    "hash": "c332ca17e57d4f8f7081b7613ab40dce0d6473c7353bbdb801130df43321f578",
+    "shortHash": "c332ca17",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/null-archive/door.png",
+    "name": "door.png",
+    "size": 137564,
+    "hash": "b4bfb87e41f114539104c15269df866b83dc9859b16bff1f4e385233a7ea7684",
+    "shortHash": "b4bfb87e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/orbital-uplink/ceiling.png",
+    "name": "ceiling.png",
+    "size": 162015,
+    "hash": "eeed99d320cffdc8c8875300342fca5312d1666d8583fa42445043bbf8d74eec",
+    "shortHash": "eeed99d3",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/orbital-uplink/prop_2.png",
+    "name": "prop_2.png",
+    "size": 74758,
+    "hash": "4551eaf88a3d8eef73b4d0a281c9814f6a766059e3850c3b418faae99b445db2",
+    "shortHash": "4551eaf8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/orbital-uplink/service.png",
+    "name": "service.png",
+    "size": 130882,
+    "hash": "4268dfdb9a23c41e0bc4573499d8dc4b198df40ee7653319d7232255258ce2a9",
+    "shortHash": "4268dfdb",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/orbital-uplink/prop_3.png",
+    "name": "prop_3.png",
+    "size": 67807,
+    "hash": "749d0957fac0dcd387f59711a37c54c9f86b50feb2abfb7f01ed7efdcdf2548e",
+    "shortHash": "749d0957",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/orbital-uplink/prop_1.png",
+    "name": "prop_1.png",
+    "size": 77113,
+    "hash": "952624e1a721cc6e684bfda9710257e21ae23a6a321defa87e5da177434ccaff",
+    "shortHash": "952624e1",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/orbital-uplink/wall.png",
+    "name": "wall.png",
+    "size": 121994,
+    "hash": "8d4c65eed0240d3c6ed9fc6f187ced521ba6d4583fbb3d21589fca4f17149341",
+    "shortHash": "8d4c65ee",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/orbital-uplink/floor.png",
+    "name": "floor.png",
+    "size": 137658,
+    "hash": "016c984500cd53837e2a3fa20f65150990733acf0c6f429fd6d6b1176392c0f6",
+    "shortHash": "016c9845",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/orbital-uplink/door.png",
+    "name": "door.png",
+    "size": 120931,
+    "hash": "fdba50a2828987e29e1ac1f85ba9b2cf1e550d8c13772fb137fa7f4a36f4623b",
+    "shortHash": "fdba50a2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/apex-control/ceiling.png",
+    "name": "ceiling.png",
+    "size": 116154,
+    "hash": "0650c6489ab448d987c98ec47c3cb8e921cf851a258cfd1f7fa04ed5637b5a0e",
+    "shortHash": "0650c648",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/apex-control/prop_2.png",
+    "name": "prop_2.png",
+    "size": 85893,
+    "hash": "bffa585cfc3eb4acab1054d7125e2adab6ccfe1c234c5ad9ebb96b85a3dc4aa4",
+    "shortHash": "bffa585c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/apex-control/service.png",
+    "name": "service.png",
+    "size": 116084,
+    "hash": "fb959df2ec178bdd0aa920777b7a32b076791b89c0588cb5133089448d6985d5",
+    "shortHash": "fb959df2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/apex-control/prop_3.png",
+    "name": "prop_3.png",
+    "size": 92020,
+    "hash": "a5f7ad5db4ceffea90ad7ad568ce138fb66d03b095a486be9caa9e09c9274844",
+    "shortHash": "a5f7ad5d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/apex-control/prop_1.png",
+    "name": "prop_1.png",
+    "size": 89663,
+    "hash": "9eb6b1e95eda24aaff3e93a3f24b995cbd794bd8afddad5ecf6c0cc947a88b4c",
+    "shortHash": "9eb6b1e9",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/apex-control/wall.png",
+    "name": "wall.png",
+    "size": 116192,
+    "hash": "254d0f03445f34c022c9cd9aae2ad9f7af1fcbf0c0d690d9e4efa926066c8a41",
+    "shortHash": "254d0f03",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/apex-control/floor.png",
+    "name": "floor.png",
+    "size": 126352,
+    "hash": "96e09a51acff8587b6de16753f3a1a01b86d01ef3ee265bb9cd4fe1218370822",
+    "shortHash": "96e09a51",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/apex-control/door.png",
+    "name": "door.png",
+    "size": 123273,
+    "hash": "2d73d092b6217e8e8c9ff892a139372037f058113e0c4b34f7f5f662add88948",
+    "shortHash": "2d73d092",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/optics-array/ceiling.png",
+    "name": "ceiling.png",
+    "size": 96524,
+    "hash": "d68d41b1d690ba6b22ab8eaae0679d3c09aa2cfcc9547ac34d5c6c3fca9d8d59",
+    "shortHash": "d68d41b1",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/optics-array/prop_2.png",
+    "name": "prop_2.png",
+    "size": 100396,
+    "hash": "8e93d6105c69948c4d715e2692b9124b5fea32735280c8e9b79cc0a525c0b640",
+    "shortHash": "8e93d610",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/optics-array/service.png",
+    "name": "service.png",
+    "size": 118585,
+    "hash": "ed724a3243ac6bf18e9aeae125959bc86c0564dbb9afeaf3f19fdaae870756e4",
+    "shortHash": "ed724a32",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/optics-array/prop_3.png",
+    "name": "prop_3.png",
+    "size": 78006,
+    "hash": "d27acdbeab7da30762732d3e3d77deaa7ad248cfc1dbc3ae75a81f6cb97d8a1e",
+    "shortHash": "d27acdbe",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/optics-array/prop_1.png",
+    "name": "prop_1.png",
+    "size": 101345,
+    "hash": "bb6673fd84c988482898fc860af7b2dcb6fec61480d4db65388c2303740a6058",
+    "shortHash": "bb6673fd",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/optics-array/wall.png",
+    "name": "wall.png",
+    "size": 102776,
+    "hash": "8f31195451c14a28753faf05f6924ebc05230e43bfa77eae3472ccafd2e361f7",
+    "shortHash": "8f311954",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/optics-array/floor.png",
+    "name": "floor.png",
+    "size": 138704,
+    "hash": "a5b9d3be4472d3c2592e57aa2aec363cd67ff7c80bb2123e08af9bb21afc22d5",
+    "shortHash": "a5b9d3be",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/optics-array/door.png",
+    "name": "door.png",
+    "size": 129727,
+    "hash": "728cc2699583db29f8236f8c54065c7971515d57c834f52c6ae88f8b48db86fd",
+    "shortHash": "728cc269",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/signal-crypt/ceiling.png",
+    "name": "ceiling.png",
+    "size": 135579,
+    "hash": "45050d049a2817aa576ccb566ab6e7a4c258b955b94338bce895bb3ee8ab1a12",
+    "shortHash": "45050d04",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/signal-crypt/prop_2.png",
+    "name": "prop_2.png",
+    "size": 68020,
+    "hash": "3dfa16f7906aed66342086e9108669485a8e984a9624c5137353f17b47719806",
+    "shortHash": "3dfa16f7",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/signal-crypt/service.png",
+    "name": "service.png",
+    "size": 131067,
+    "hash": "c8a1e20434eb796b579959c49f83a7863bd0507db4622b20f6dd0e2a554363f0",
+    "shortHash": "c8a1e204",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/signal-crypt/prop_3.png",
+    "name": "prop_3.png",
+    "size": 63962,
+    "hash": "e00f85e2ad9764346e3a540a1772165a5276d3c004125032736e25b33c2e040b",
+    "shortHash": "e00f85e2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/signal-crypt/prop_1.png",
+    "name": "prop_1.png",
+    "size": 72602,
+    "hash": "96966d31279471b3c500450a415d32bcc9d85b5facea296b81a878d88921e8db",
+    "shortHash": "96966d31",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/signal-crypt/wall.png",
+    "name": "wall.png",
+    "size": 122710,
+    "hash": "ec064ea81002c1a9651eb016edd7f9987e485538562df35866e0b7f6b9a84c88",
+    "shortHash": "ec064ea8",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/signal-crypt/floor.png",
+    "name": "floor.png",
+    "size": 143868,
+    "hash": "35d61efedf31ab324f03f323d2f6976523aa5c20277d08c34be00bd5a5366668",
+    "shortHash": "35d61efe",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/signal-crypt/door.png",
+    "name": "door.png",
+    "size": 122120,
+    "hash": "ceff8fe1d46450d6ff2701b9dc2dfbea9eb3da91dbe7c7f7ac4c7d772b22a2d4",
+    "shortHash": "ceff8fe1",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/shadow-lab/ceiling.png",
+    "name": "ceiling.png",
+    "size": 127165,
+    "hash": "2288137f62203fe0e8558fd92beb6ac7e28fa76dfd1661fb0978e37130570704",
+    "shortHash": "2288137f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/shadow-lab/prop_2.png",
+    "name": "prop_2.png",
+    "size": 85594,
+    "hash": "2df38b0d286480286152121b77b2fb39f878b1769b9c4f13db49d625dda678e6",
+    "shortHash": "2df38b0d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/shadow-lab/service.png",
+    "name": "service.png",
+    "size": 131416,
+    "hash": "2979c0b511c57413c55bbda7a8460be123aaf2c5a7f5b12ef95672ccbe2af6e4",
+    "shortHash": "2979c0b5",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/shadow-lab/prop_3.png",
+    "name": "prop_3.png",
+    "size": 84202,
+    "hash": "75a63385a6bf567293f7913d1f64d9b273b7b49f6074076cc1526077652419d5",
+    "shortHash": "75a63385",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/shadow-lab/prop_1.png",
+    "name": "prop_1.png",
+    "size": 93131,
+    "hash": "5ebce56266e3bc5249d60dd772d2684f8023e54dfb00075c0424fe47af34dc60",
+    "shortHash": "5ebce562",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/shadow-lab/wall.png",
+    "name": "wall.png",
+    "size": 122830,
+    "hash": "fff484e53cc3c71652156b091a5f96b08f0ae6bee674b1a6ab1b1d1413b9bedc",
+    "shortHash": "fff484e5",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/shadow-lab/floor.png",
+    "name": "floor.png",
+    "size": 141277,
+    "hash": "f91af9eb0d0ba22299d44f62188370be451ddf007271bd1b1899b846ef019734",
+    "shortHash": "f91af9eb",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/shadow-lab/door.png",
+    "name": "door.png",
+    "size": 115701,
+    "hash": "1ee57a77b85d76245c6d39e352580ef2734b8f29a7f0e12e6a63d48b3dcd2ec0",
+    "shortHash": "1ee57a77",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/waste-reclaimer/ceiling.png",
+    "name": "ceiling.png",
+    "size": 167363,
+    "hash": "843b365ea0824d8ddfb51ee151e0e5dae50fdc6651f0b7028da81ebad2780e12",
+    "shortHash": "843b365e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/waste-reclaimer/prop_2.png",
+    "name": "prop_2.png",
+    "size": 81543,
+    "hash": "fc0cd7e92e01bd500671a24a7c0fbca05c86833d952ae226c0385ea85fe9786f",
+    "shortHash": "fc0cd7e9",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/waste-reclaimer/service.png",
+    "name": "service.png",
+    "size": 160280,
+    "hash": "7870e48a9f5bae498e5e666d350cea3d32ebeecd05f1ae068187aad03b5a160b",
+    "shortHash": "7870e48a",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/waste-reclaimer/prop_3.png",
+    "name": "prop_3.png",
+    "size": 103088,
+    "hash": "3541f5cc3c78c113d55318468724c7b00ff7cc3a454b3321d772e249c7fafc31",
+    "shortHash": "3541f5cc",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/waste-reclaimer/prop_1.png",
+    "name": "prop_1.png",
+    "size": 107374,
+    "hash": "493c92ac894eedc2bce9b1bc96539e7ae13d265f4fa27578e253681b09fa1b1f",
+    "shortHash": "493c92ac",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/waste-reclaimer/wall.png",
+    "name": "wall.png",
+    "size": 164097,
+    "hash": "64104c0f7356ff171feb9037c63ad58d2905686708065485a4b5f37cd0f204b3",
+    "shortHash": "64104c0f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/waste-reclaimer/floor.png",
+    "name": "floor.png",
+    "size": 171699,
+    "hash": "3fb2faf45ae18baf5c882726319e764918742f95575854760ec0984eb03548d2",
+    "shortHash": "3fb2faf4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/waste-reclaimer/door.png",
+    "name": "door.png",
+    "size": 155984,
+    "hash": "0a1b61accea6983ce86f553ec3adfe817e780fad873ee8d691ddcc4f6e0510f4",
+    "shortHash": "0a1b61ac",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/magnetic-forge/ceiling.png",
+    "name": "ceiling.png",
+    "size": 121825,
+    "hash": "7f453767eddbefa010f54be49e81733fffb78b860f1e867c3f538e091d6ff71f",
+    "shortHash": "7f453767",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/magnetic-forge/prop_2.png",
+    "name": "prop_2.png",
+    "size": 100724,
+    "hash": "0e2e7b16152a2a052809161b43ca9d4d7f51cf251825468a0e38f7227356c0a4",
+    "shortHash": "0e2e7b16",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/magnetic-forge/service.png",
+    "name": "service.png",
+    "size": 132944,
+    "hash": "c24d230f369ebdb48ef4c890c5421ab11787714648e5fcdcb40c9cd642a2b2de",
+    "shortHash": "c24d230f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/magnetic-forge/prop_3.png",
+    "name": "prop_3.png",
+    "size": 103353,
+    "hash": "13a0a4ae0aed748da7be1662a47b3ce72a45be466e3f360c3552832d398e7faa",
+    "shortHash": "13a0a4ae",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/magnetic-forge/prop_1.png",
+    "name": "prop_1.png",
+    "size": 101754,
+    "hash": "6a4dd79b84d5127315be9ab9c97376a06fc848ab324edf923c5d3a720dc54233",
+    "shortHash": "6a4dd79b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/magnetic-forge/wall.png",
+    "name": "wall.png",
+    "size": 136502,
+    "hash": "3219d800f1c7fdc5c57d75c0561dc9b5533271b4217e016bd2b7ffb814c048f7",
+    "shortHash": "3219d800",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/magnetic-forge/floor.png",
+    "name": "floor.png",
+    "size": 143340,
+    "hash": "33b98eb6ebfa8c0c1ed28ca42dcf0a97e82fe18ef3a40bace311d8b8e618bbb9",
+    "shortHash": "33b98eb6",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/magnetic-forge/door.png",
+    "name": "door.png",
+    "size": 141256,
+    "hash": "39eb44015225de158d1664dbc8ba36a36e4abd68326147074d38093fce96ff45",
+    "shortHash": "39eb4401",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/reactor-sink/ceiling.png",
+    "name": "ceiling.png",
+    "size": 137144,
+    "hash": "fc51d931f7f230193e3b82aa13c79dedc5ffb0ba971ee32af3a0465baae85bee",
+    "shortHash": "fc51d931",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/reactor-sink/prop_2.png",
+    "name": "prop_2.png",
+    "size": 104440,
+    "hash": "c50748116521f279f47515fce0e16db9fc94433797fc4666403396533d26617b",
+    "shortHash": "c5074811",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/reactor-sink/service.png",
+    "name": "service.png",
+    "size": 142949,
+    "hash": "63434e8217192d1c94ffd6e4f15aa293ccc33d91ccc788604957ce1adf8d5d05",
+    "shortHash": "63434e82",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/reactor-sink/prop_3.png",
+    "name": "prop_3.png",
+    "size": 104047,
+    "hash": "3a35bf0884079297e328eac819bb26b77e29bc9a64918e93b1f88de30a15dc60",
+    "shortHash": "3a35bf08",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/reactor-sink/prop_1.png",
+    "name": "prop_1.png",
+    "size": 96632,
+    "hash": "08921540d545473f084765569addd187a3b6162139a1fa1bb72847c42dac5afd",
+    "shortHash": "08921540",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/reactor-sink/wall.png",
+    "name": "wall.png",
+    "size": 135662,
+    "hash": "64793c8edc4150b11d15d4ab0253a460f2c6aa303f7518656b215518f0581c06",
+    "shortHash": "64793c8e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/reactor-sink/floor.png",
+    "name": "floor.png",
+    "size": 142124,
+    "hash": "9de5e5b22ce9f82e617ba557f20ddcb77b4cf3ab0297b4857c12d56633aee672",
+    "shortHash": "9de5e5b2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/reactor-sink/door.png",
+    "name": "door.png",
+    "size": 139873,
+    "hash": "a4a4a977bba2d0c390f6b1bb1b5c93a05a29c1f720ee368d6593ff0c5dedd8ea",
+    "shortHash": "a4a4a977",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/flooded-silo/ceiling.png",
+    "name": "ceiling.png",
+    "size": 143935,
+    "hash": "f306438b144c853a5a42a8899ed8b9255e02fb92d110eb3d8645519af96a16e4",
+    "shortHash": "f306438b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/flooded-silo/prop_2.png",
+    "name": "prop_2.png",
+    "size": 75759,
+    "hash": "9164a597c2599186d28a640d938ba41aea3c9f0d84a7ce25bcd344543447d778",
+    "shortHash": "9164a597",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/flooded-silo/service.png",
+    "name": "service.png",
+    "size": 142210,
+    "hash": "af4df59fb4212f036c766f2e66bef32ecfa626b0fc16f3d7901d4529c73ec308",
+    "shortHash": "af4df59f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/flooded-silo/prop_3.png",
+    "name": "prop_3.png",
+    "size": 100733,
+    "hash": "9be92b25de8d4b357770e3f53f07fd0960188b72b25d20a31be826ed2415034c",
+    "shortHash": "9be92b25",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/flooded-silo/prop_1.png",
+    "name": "prop_1.png",
+    "size": 100015,
+    "hash": "ee3d85781eee63342bd809078a6045947dadd6c29ca05938af5ccb02cf05df99",
+    "shortHash": "ee3d8578",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/flooded-silo/wall.png",
+    "name": "wall.png",
+    "size": 133650,
+    "hash": "51c03b5cd49dfe1d3c70f91988e4bcc2997f7e07c76fb29575c3f0f1ea3674ea",
+    "shortHash": "51c03b5c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/flooded-silo/floor.png",
+    "name": "floor.png",
+    "size": 160264,
+    "hash": "0427ac07c454cc67ac90707a7ea5f75ff26b05c5af7229146775691bd4e8120b",
+    "shortHash": "0427ac07",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/flooded-silo/door.png",
+    "name": "door.png",
+    "size": 133978,
+    "hash": "29936dbdb1828e4c4f5f99bb8db1751a58d79f98176e39476eacc5c4030a7c0d",
+    "shortHash": "29936dbd",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/obsidian-vault/ceiling.png",
+    "name": "ceiling.png",
+    "size": 149777,
+    "hash": "d291be2cd174cdbd5d6d218116adf470c50ac23b04ef361d434034a1ee3f5134",
+    "shortHash": "d291be2c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/obsidian-vault/prop_2.png",
+    "name": "prop_2.png",
+    "size": 88925,
+    "hash": "29a467a3a94167c6659bcfd6e7a850dda5bb9e7a0f464525c75e202f42593e94",
+    "shortHash": "29a467a3",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/obsidian-vault/service.png",
+    "name": "service.png",
+    "size": 129310,
+    "hash": "5c80d020c5ff534e10597cf79d1455e9d12a9a18bef40d599ff33e8bca1b5f7b",
+    "shortHash": "5c80d020",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/obsidian-vault/prop_3.png",
+    "name": "prop_3.png",
+    "size": 66587,
+    "hash": "1a83df1520d7fecb5d265013c74517ece0380b4c136a6747a127894006499112",
+    "shortHash": "1a83df15",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/obsidian-vault/prop_1.png",
+    "name": "prop_1.png",
+    "size": 72515,
+    "hash": "57d07f9841337973c90bdde1d50d4fd3c501175cb8dfcf43c2f8dcc3e57f4f0e",
+    "shortHash": "57d07f98",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/obsidian-vault/wall.png",
+    "name": "wall.png",
+    "size": 120968,
+    "hash": "2453ce0efeba65a3d5c2020889c9ff75653dcc00172033459e9fa9b9374fb136",
+    "shortHash": "2453ce0e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/obsidian-vault/floor.png",
+    "name": "floor.png",
+    "size": 127652,
+    "hash": "8052e154971072ebbd6ba350576bbd8b1537ca9b2ab2a8fd8efdfa86e1448c5b",
+    "shortHash": "8052e154",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/obsidian-vault/door.png",
+    "name": "door.png",
+    "size": 122190,
+    "hash": "a07240bacf138141fc7833b33b6b67bf4ec5bf4eaef043279015063d906985a0",
+    "shortHash": "a07240ba",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/siege-yard/ceiling.png",
+    "name": "ceiling.png",
+    "size": 150037,
+    "hash": "e29e222fde095a002f2799b1440211bf4c3de4407a56c97a679888569905dd84",
+    "shortHash": "e29e222f",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/siege-yard/prop_2.png",
+    "name": "prop_2.png",
+    "size": 93243,
+    "hash": "39d0b877f9a488ee9a458510c1013b1331a597679a9ccb799d5061b9ef887a04",
+    "shortHash": "39d0b877",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/siege-yard/service.png",
+    "name": "service.png",
+    "size": 138741,
+    "hash": "c1922ab93cddda921504d9369082a6e1fcda48d9799e78bed0180525e8439da9",
+    "shortHash": "c1922ab9",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/siege-yard/prop_3.png",
+    "name": "prop_3.png",
+    "size": 98572,
+    "hash": "bdb28a63d6676392c37e1fbb4ff833ef684650c86c2fead6bc205746f32b3d24",
+    "shortHash": "bdb28a63",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/siege-yard/prop_1.png",
+    "name": "prop_1.png",
+    "size": 90892,
+    "hash": "bef9b3619db9f4699b070192c2fe6e77856a4d81d5fdb830dd6f6ad03b88183d",
+    "shortHash": "bef9b361",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/siege-yard/wall.png",
+    "name": "wall.png",
+    "size": 132610,
+    "hash": "a5b7a59729f2ea26fdf2d9342d0c44e6b589418fe9d6964c7ee71f54d6fb27c8",
+    "shortHash": "a5b7a597",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/siege-yard/floor.png",
+    "name": "floor.png",
+    "size": 144093,
+    "hash": "fe7094b0fd2f01bb657dc9b4460598924a20efc7721176a1e4fa0be20b396cc0",
+    "shortHash": "fe7094b0",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/siege-yard/door.png",
+    "name": "door.png",
+    "size": 136325,
+    "hash": "5e90930da277b3e55247622e369d2ff5562687180e9abc88d60125d50eb334f7",
+    "shortHash": "5e90930d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/black-ice-core/ceiling.png",
+    "name": "ceiling.png",
+    "size": 150944,
+    "hash": "bc9727bdc1b1792dff53bb5bc997a3940bb88ea8c59bb690d68bdc79290fccc3",
+    "shortHash": "bc9727bd",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/black-ice-core/prop_2.png",
+    "name": "prop_2.png",
+    "size": 109189,
+    "hash": "add0a9fd7c761a0d5510a5971979a0c28deed7b0403e36aaad1dc8fdcaa08310",
+    "shortHash": "add0a9fd",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/black-ice-core/service.png",
+    "name": "service.png",
+    "size": 155291,
+    "hash": "a9629010a57b3fcc840fddeb674171dbb599c82d2383b33fa1fa064deb8bcc4e",
+    "shortHash": "a9629010",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/black-ice-core/prop_3.png",
+    "name": "prop_3.png",
+    "size": 84791,
+    "hash": "fe9c38d21cf1f83e805db05364bcbc7bec2b3794753c43bfe235166da08ba266",
+    "shortHash": "fe9c38d2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/black-ice-core/prop_1.png",
+    "name": "prop_1.png",
+    "size": 96252,
+    "hash": "a58f0da208b20eb7288be2cce4aff6ff7b7433a00b8d7468c0d3af484b9ecde9",
+    "shortHash": "a58f0da2",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/black-ice-core/wall.png",
+    "name": "wall.png",
+    "size": 151705,
+    "hash": "fc2dd48e6c23ab3609c42d42caa3918fd4c29350abd547361a965571a6c6ebcd",
+    "shortHash": "fc2dd48e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/black-ice-core/floor.png",
+    "name": "floor.png",
+    "size": 167962,
+    "hash": "30b4a51e6dabba3026050a38d240dffa38f1de3755dba8f6b48bb6c49076d458",
+    "shortHash": "30b4a51e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/black-ice-core/door.png",
+    "name": "door.png",
+    "size": 145586,
+    "hash": "67d7b2335fa5e21aeb7737da949ecde1a3f657b70ad65cbf6f9a659e31fe5403",
+    "shortHash": "67d7b233",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/drone-hatchery/ceiling.png",
+    "name": "ceiling.png",
+    "size": 158710,
+    "hash": "2896395db5224b5056e7e3c0e82f81037354c74f7b5bd3b391d955fc9c1d5f2d",
+    "shortHash": "2896395d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/drone-hatchery/prop_2.png",
+    "name": "prop_2.png",
+    "size": 98377,
+    "hash": "43f1e114ae98ea58bd5cc7664d05e8a33a08e2f9493fd51e752a9f7f9fc0f7a4",
+    "shortHash": "43f1e114",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/drone-hatchery/service.png",
+    "name": "service.png",
+    "size": 143769,
+    "hash": "71fdf2bc61e0ce2d3b61bcddec6e8821561e8c699521615c2d1cc59d121fd932",
+    "shortHash": "71fdf2bc",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/drone-hatchery/prop_3.png",
+    "name": "prop_3.png",
+    "size": 91269,
+    "hash": "3bde5394411c65a2539994477c97755e2035206b614351250c66c94e459c370a",
+    "shortHash": "3bde5394",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/drone-hatchery/prop_1.png",
+    "name": "prop_1.png",
+    "size": 107624,
+    "hash": "c9cab5a98668f95effe9397958f7a2b33c97447de51103e0dad35f73855404d2",
+    "shortHash": "c9cab5a9",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/drone-hatchery/wall.png",
+    "name": "wall.png",
+    "size": 129380,
+    "hash": "bf450202a71329092259a6589d834ea4308ccb83cf6c85e1a9a8e3d9ce5dc6dc",
+    "shortHash": "bf450202",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/drone-hatchery/floor.png",
+    "name": "floor.png",
+    "size": 153565,
+    "hash": "7b1c0fb05f3e52e838baa9da400683703701822f8aab05f5abd04924bd6d3350",
+    "shortHash": "7b1c0fb0",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/drone-hatchery/door.png",
+    "name": "door.png",
+    "size": 123614,
+    "hash": "d7c32c169f3e79d40ed3dfd4904f49001ffb87bb7bdd83ca103d336340e21fc3",
+    "shortHash": "d7c32c16",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/cryo-reserve/ceiling.png",
+    "name": "ceiling.png",
+    "size": 161794,
+    "hash": "01903fbaf9ec0a785d16b486bd6b90ac03732823b7385220631f2cc396731e9b",
+    "shortHash": "01903fba",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/cryo-reserve/prop_2.png",
+    "name": "prop_2.png",
+    "size": 94874,
+    "hash": "05e65e8e6b5fecadcddd1dcede64bf9c6ac9bde040edf107bafa5bd5da8b1063",
+    "shortHash": "05e65e8e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/cryo-reserve/service.png",
+    "name": "service.png",
+    "size": 152577,
+    "hash": "490fd1bf4c8972da83e07bb0c721428219ef1a24b3ec932b15a1cc1bdadeab96",
+    "shortHash": "490fd1bf",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/cryo-reserve/prop_3.png",
+    "name": "prop_3.png",
+    "size": 103222,
+    "hash": "eaf8d997c9f13a0bd270cddabe3bbe1269f42ba5dba4b96410473743b22c0bc4",
+    "shortHash": "eaf8d997",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/cryo-reserve/prop_1.png",
+    "name": "prop_1.png",
+    "size": 81168,
+    "hash": "130a1b359a09ef8ae86ff16dc37f1f3aa4b4428055a85e2445eea15ca04e559b",
+    "shortHash": "130a1b35",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/cryo-reserve/wall.png",
+    "name": "wall.png",
+    "size": 157581,
+    "hash": "a330b8739939ec2478adce2a3d4708f8437e50dee8c6f4661d787d53421b1060",
+    "shortHash": "a330b873",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/cryo-reserve/floor.png",
+    "name": "floor.png",
+    "size": 171261,
+    "hash": "b544a43e86c586e2bd5e916e8086838e6ca3e6739540a612535617f33a3c84f9",
+    "shortHash": "b544a43e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/cryo-reserve/door.png",
+    "name": "door.png",
+    "size": 147661,
+    "hash": "4df31ef79ae1e7c880b2c440197c7737a328ef38d77ed0151db1495925fb966e",
+    "shortHash": "4df31ef7",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/sectors/cryogenic-foundry/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 223452,
+    "hash": "29efdfc86746e6a4dece21eb3a519a3e898d61ab00ad826934edf573b2f8f12c",
+    "shortHash": "29efdfc8",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/cryogenic-foundry/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 283040,
+    "hash": "0fe593ea6df2408af3bfcf907dafaf858bd195006c75e1ae5127f21abfacff7c",
+    "shortHash": "0fe593ea",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/cryogenic-foundry/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 243818,
+    "hash": "496685d504ab94f3369fe57dc0a2c805a7239e703f97580e5122ef14ba0953e9",
+    "shortHash": "496685d5",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/cryogenic-foundry/hd/door.webp",
+    "name": "door.webp",
+    "size": 190944,
+    "hash": "a32b271c59bb327c826985c6376b0904324aeb1ca49ac7883f6886137eca7cfa",
+    "shortHash": "a32b271c",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/cryogenic-foundry/hd/service.webp",
+    "name": "service.webp",
+    "size": 223476,
+    "hash": "55f4bc75c59b5d1f56b47b9b2137f1046aa9c02ad7246e68bb49cf8e4a42db3c",
+    "shortHash": "55f4bc75",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/command-bunker/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 161338,
+    "hash": "4ec7d03a63bb25d9ed77c84048b1dd3fbc8617115bd830d480a2adcb56fa3c21",
+    "shortHash": "4ec7d03a",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/command-bunker/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 212914,
+    "hash": "1c89977ab75ac0eae1b30a4891e48957c0fd00bc478c2d92acf12a0071a37dff",
+    "shortHash": "1c89977a",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/command-bunker/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 140312,
+    "hash": "7c383579ce3471ea569dbd68b841780fd2389308e29c07f563bfa9b60c9c731c",
+    "shortHash": "7c383579",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/command-bunker/hd/door.webp",
+    "name": "door.webp",
+    "size": 227602,
+    "hash": "26b84e5dc9f98b6949c53aed146fc096e6fac10eba61908c08c06dccf2d5892d",
+    "shortHash": "26b84e5d",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/command-bunker/hd/service.webp",
+    "name": "service.webp",
+    "size": 170204,
+    "hash": "2c34b9ba5203a2d04430877771e8cb674490c74f69bed8bd4f44e99357a7c891",
+    "shortHash": "2c34b9ba",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/bioforge-depths/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 178314,
+    "hash": "4192ae1c77c4b334f336c47a08c97c8ca6125430c636356cd7d0b1367335f1d2",
+    "shortHash": "4192ae1c",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/bioforge-depths/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 259100,
+    "hash": "dce4d6e49d2f0cd47141dbc3c7b397e3969a72c4092132f360a6681599da82bf",
+    "shortHash": "dce4d6e4",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/bioforge-depths/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 253932,
+    "hash": "3eee05bd50a29ec659c1d0f8ad8a7cdccf012251c612d7461fe0b3bfe9cf957c",
+    "shortHash": "3eee05bd",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/bioforge-depths/hd/door.webp",
+    "name": "door.webp",
+    "size": 203426,
+    "hash": "0dd5ce247950819a816a77acd1d32949e7eade79d2f83c4fc55af9bee92ff239",
+    "shortHash": "0dd5ce24",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/bioforge-depths/hd/service.webp",
+    "name": "service.webp",
+    "size": 185704,
+    "hash": "80a955978630fa9e0c990e0ac2e824e765c92deeea92eae5fa605419b29c3ebc",
+    "shortHash": "80a95597",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/data-spine/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 133020,
+    "hash": "f5ee699c027d12d615fbb8cfc1364e4b060b28acd50512be9142b154dba0ea84",
+    "shortHash": "f5ee699c",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/data-spine/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 203064,
+    "hash": "395e96f94c8701bc2b02aac88e2256265773baae53bffce318f1821cb66a7bb2",
+    "shortHash": "395e96f9",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/data-spine/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 189968,
+    "hash": "7323ae6708a0d63b887607fe38b7501ee39be2db7155ccc13a980291d1367310",
+    "shortHash": "7323ae67",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/data-spine/hd/door.webp",
+    "name": "door.webp",
+    "size": 138292,
+    "hash": "6171a5aaaa500081dac8ce8ed88ac175bf877476beb27b51cc055d1ebb615137",
+    "shortHash": "6171a5aa",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/data-spine/hd/service.webp",
+    "name": "service.webp",
+    "size": 156572,
+    "hash": "16da8252c9bd23beb0226ab75d444194686e23dacda0d23ab122c8991e1d0bcd",
+    "shortHash": "16da8252",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/ashen-transit/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 236290,
+    "hash": "5fe5c4a14dddbd2dc6c92e6357075bbb41b08e54ff447bc909abc66f176562ff",
+    "shortHash": "5fe5c4a1",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/ashen-transit/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 293722,
+    "hash": "619a43c6d42dc5ae5a62b133cdeee4293587d162253f95b57865d3186c557228",
+    "shortHash": "619a43c6",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/ashen-transit/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 255832,
+    "hash": "870bea4337cfd64134f31cf524cbb3fdd1923b00a8f8cf9596186c0ac92435fa",
+    "shortHash": "870bea43",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/ashen-transit/hd/door.webp",
+    "name": "door.webp",
+    "size": 241470,
+    "hash": "6f8ed05fe241986f0c6e3d67143a061a9f9619deaf498b8f418154d3dfdacdf2",
+    "shortHash": "6f8ed05f",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/ashen-transit/hd/service.webp",
+    "name": "service.webp",
+    "size": 243518,
+    "hash": "80f97a1091f17363192a875c2b6b6f887b8baa5e69372edb6eabd49f6771df5b",
+    "shortHash": "80f97a10",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/chrono-archive/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 205652,
+    "hash": "c72630ac2c125732ec532c4e3d17e12e102dbeb1f9bde00917fbb5519c31b081",
+    "shortHash": "c72630ac",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/chrono-archive/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 258388,
+    "hash": "0324802168cf19932dcc0cf1f59d1e58b98f39397ba990f4c01305fd4526f906",
+    "shortHash": "03248021",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/chrono-archive/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 207960,
+    "hash": "d492b70f0dc55df8002b9e43dd8820edf8bb0715f45944eb9b3137de2f836d9c",
+    "shortHash": "d492b70f",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/chrono-archive/hd/door.webp",
+    "name": "door.webp",
+    "size": 220624,
+    "hash": "d0029e1b3eac8488d75039f90f5063e516472e0a09a73521d39dd88667b70409",
+    "shortHash": "d0029e1b",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/chrono-archive/hd/service.webp",
+    "name": "service.webp",
+    "size": 207530,
+    "hash": "3decdd9ca2f700928b29081a9744a804587bf891eace56008cc246b6b58e5dee",
+    "shortHash": "3decdd9c",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/fusion-chamber/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 130006,
+    "hash": "8eb1c50653e4ba7caaeeb4fca2a96752f004c4456e40771ff8f08229bae7eba1",
+    "shortHash": "8eb1c506",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/fusion-chamber/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 207164,
+    "hash": "40f329bf682da3f0409fc7b1883838ce357e0aa250579764995f2433fbce11d4",
+    "shortHash": "40f329bf",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/fusion-chamber/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 220148,
+    "hash": "c75ce9551a69949b5d01c6b2dc40e27cca34600e9751f661998bd5244cebc7a3",
+    "shortHash": "c75ce955",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/fusion-chamber/hd/door.webp",
+    "name": "door.webp",
+    "size": 158534,
+    "hash": "7e52e372cae31b4acc45fd5b4046ffb60732daf1e49f7d25ff39a3225e45a039",
+    "shortHash": "7e52e372",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/fusion-chamber/hd/service.webp",
+    "name": "service.webp",
+    "size": 191800,
+    "hash": "8936a90323507b0e0044c05c758f640c25bf3c58ddb9c27848c79cab146693da",
+    "shortHash": "8936a903",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/upper-works/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 246312,
+    "hash": "4febbaaacf85ff22d333989927159cd14a9f813d7071fb19b54925100765a4ec",
+    "shortHash": "4febbaaa",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/upper-works/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 257934,
+    "hash": "5bc28bce97f6270c846ba99e7cc71196d7e281afc65f341487a063c3f6da8602",
+    "shortHash": "5bc28bce",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/upper-works/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 227964,
+    "hash": "eb80c886728ae6ba8fe117d8b4210f177ac200dba14629960cd829d8f0386dcf",
+    "shortHash": "eb80c886",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/upper-works/hd/door.webp",
+    "name": "door.webp",
+    "size": 196362,
+    "hash": "a88c8e412485035c42ab9c6abce536de1b74ab8a2907488eaac36f061935c10e",
+    "shortHash": "a88c8e41",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/upper-works/hd/service.webp",
+    "name": "service.webp",
+    "size": 221666,
+    "hash": "a515b8e7cc1eb0104f2a3029964aeb69fce4f721ab327838299ea01192fa094f",
+    "shortHash": "a515b8e7",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/fungal-research/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 238784,
+    "hash": "02604f3d93ae224d79f22f2ae2ba0b71c6d531b9e3e61ef4124c1443f730f017",
+    "shortHash": "02604f3d",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/fungal-research/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 260770,
+    "hash": "be318d8da2061137b12d61428b3948097eb9bf35e47d0fa82b972cd497b06806",
+    "shortHash": "be318d8d",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/fungal-research/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 208958,
+    "hash": "0c84182b5e3fac646153a6356095fa8fa2e3b4ede3c3455e7109e2737692c2ee",
+    "shortHash": "0c84182b",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/fungal-research/hd/door.webp",
+    "name": "door.webp",
+    "size": 220772,
+    "hash": "78e53bcc4e02ab8227e49796a30234824e43427a83d26a9b019b146314b19876",
+    "shortHash": "78e53bcc",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/fungal-research/hd/service.webp",
+    "name": "service.webp",
+    "size": 214518,
+    "hash": "29bfa241d174f73d67282ee716bc4069e2e4dda16b56b33aaf2a6ecb4c2d0514",
+    "shortHash": "29bfa241",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/tidal-pumpstation/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 233502,
+    "hash": "3756d7b3e2d3914eac876ddb404cb78beb7b764251bcac0570a4c1ac3be8d3a3",
+    "shortHash": "3756d7b3",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/tidal-pumpstation/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 272428,
+    "hash": "5c850750eb19c3865b0054d143001a8cdb4b3b83aea9d83769531f438ef14a0e",
+    "shortHash": "5c850750",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/tidal-pumpstation/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 194002,
+    "hash": "d2a1ea0b8c8ed20b5260e7a3fd0d832f9374871cbfed4538bf4730140bc2aaf0",
+    "shortHash": "d2a1ea0b",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/tidal-pumpstation/hd/door.webp",
+    "name": "door.webp",
+    "size": 234106,
+    "hash": "2b02525be1008d13278cf92c50499e5b0bd86cc8b83dca7b7389308304779d36",
+    "shortHash": "2b02525b",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/tidal-pumpstation/hd/service.webp",
+    "name": "service.webp",
+    "size": 241384,
+    "hash": "c2aac1a81bf83d11b257bfef5d4ca821b8d9b5c65c11bd622d4a8aafaeeb57b8",
+    "shortHash": "c2aac1a8",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/null-archive/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 161876,
+    "hash": "c25e9589507464b8a895a123a819e2279febdda5026b0c5f5e06efe0fd67c454",
+    "shortHash": "c25e9589",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/null-archive/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 232468,
+    "hash": "eb59db40afc331db5127e1320b3901ec46724404b30f07ad566acb0c19951fe2",
+    "shortHash": "eb59db40",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/null-archive/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 1922,
+    "hash": "109472af22aa4092a2db0fba3c11e6d66a0dc3ad90df4a02445434fecb88fc91",
+    "shortHash": "109472af",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/null-archive/hd/door.webp",
+    "name": "door.webp",
+    "size": 251590,
+    "hash": "f63d361e7f6c3022c69f381e21ea32e0479db36bb02af2ae33475171402fa5b0",
+    "shortHash": "f63d361e",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/null-archive/hd/service.webp",
+    "name": "service.webp",
+    "size": 206126,
+    "hash": "827d79eec95ae303fa3e947a9d09b164ee275bbb411bb152018c5a166fdd8afc",
+    "shortHash": "827d79ee",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/orbital-uplink/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 181410,
+    "hash": "e85b16805f474b2e431e2ba4572dfc17585afabace5717e50769151b64598694",
+    "shortHash": "e85b1680",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/orbital-uplink/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 198154,
+    "hash": "ea2ed8fedee28102e201d0c81d172d39badfa4fdaf4d6bc1f669c4ed81b95d4b",
+    "shortHash": "ea2ed8fe",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/orbital-uplink/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 253384,
+    "hash": "335ad5ce9b2a32f284686e2963a8a23aa636ecea176dfc560fcdfd56685a036c",
+    "shortHash": "335ad5ce",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/orbital-uplink/hd/door.webp",
+    "name": "door.webp",
+    "size": 163416,
+    "hash": "c99ef9fd3fcd18174e8f4e63057a666d25308f35f92d029632883de34a79cd5c",
+    "shortHash": "c99ef9fd",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/orbital-uplink/hd/service.webp",
+    "name": "service.webp",
+    "size": 183310,
+    "hash": "d092251e103c1a327daad543b59a439ed3312f709e9897ad1eec59e4430af881",
+    "shortHash": "d092251e",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/apex-control/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 173096,
+    "hash": "1615e80d88c7c3017db734d99d2358e0d85e154cdd73e6240be6842245b3a359",
+    "shortHash": "1615e80d",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/apex-control/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 208980,
+    "hash": "1f8f656507ade364c1b066c36eae91d10f06266bf01888694677f465fdebadeb",
+    "shortHash": "1f8f6565",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/apex-control/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 195600,
+    "hash": "4e88038705abfa9b8eb77af9ad098e2240de29f871b66612de790e9d93a0cd03",
+    "shortHash": "4e880387",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/apex-control/hd/door.webp",
+    "name": "door.webp",
+    "size": 208064,
+    "hash": "356d4592905f1d19d98aea233a7bd159b3f23e097c00ceb28ffda59c654529f2",
+    "shortHash": "356d4592",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/apex-control/hd/service.webp",
+    "name": "service.webp",
+    "size": 175114,
+    "hash": "8ec78ab37cd81ac0c7ec27993d95f90a2d335b26e275b0aea726c1e6e0e4891d",
+    "shortHash": "8ec78ab3",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/optics-array/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 142284,
+    "hash": "ea913b97d84e1a93bb697e338f2c8dc5fd61969d9d880a4a1592bfdecb8628c0",
+    "shortHash": "ea913b97",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/optics-array/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 217578,
+    "hash": "dc3e98b940049ca9a96ad4c2e101acb87cb53a2055cd5b1cef2e19438b2ef35e",
+    "shortHash": "dc3e98b9",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/optics-array/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 175498,
+    "hash": "10887a69dc906228506ac4e3aeabd4561c90484da56af40105108ae18394a882",
+    "shortHash": "10887a69",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/optics-array/hd/door.webp",
+    "name": "door.webp",
+    "size": 220150,
+    "hash": "7130cb2267d6bd6c9c2bfe9e1c876c086eeb48f24dbd03035abfdd3593069eee",
+    "shortHash": "7130cb22",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/optics-array/hd/service.webp",
+    "name": "service.webp",
+    "size": 179444,
+    "hash": "b6cc9bd3624da818fd5b4c2fb06d03a73687178325a85a2dd91b6b75f00ad020",
+    "shortHash": "b6cc9bd3",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/signal-crypt/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 166104,
+    "hash": "843c1a56969aba0fc4346cae70ac82229fb302140b5f694bab14b33092f0f7aa",
+    "shortHash": "843c1a56",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/signal-crypt/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 221008,
+    "hash": "25c615224fe1904f6a4168731e87900f460f311eedb3379b9be8d689e83de1da",
+    "shortHash": "25c61522",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/signal-crypt/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 195266,
+    "hash": "5ad7f189d1b9b5c5839b44656a082fc1c63ea8457b988476562c504032205477",
+    "shortHash": "5ad7f189",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/signal-crypt/hd/door.webp",
+    "name": "door.webp",
+    "size": 153500,
+    "hash": "3b05f1265fe2228ed1e9dcd998a3ca21518a3d9fe3f90f39165c57f0cf700bcc",
+    "shortHash": "3b05f126",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/signal-crypt/hd/service.webp",
+    "name": "service.webp",
+    "size": 177698,
+    "hash": "3992d6990d403f50b8dd46edf7e4b7297cdcd44bec0b4bcf46604473ce2cc916",
+    "shortHash": "3992d699",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/shadow-lab/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 172058,
+    "hash": "3373614380ec331c1ee6c7786e0d0baad01be860b2c69eb260aba6f34bd1e316",
+    "shortHash": "33736143",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/shadow-lab/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 213930,
+    "hash": "03600bc6c1ab2dfde7d0ea284ff69a9bb4a642c2f665b4e1d2579c3e5b775e76",
+    "shortHash": "03600bc6",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/shadow-lab/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 153048,
+    "hash": "4da5bd92ec4daf7a86131f16ad9800ce26e7e4ed726b9bb7184a383c69e0b44f",
+    "shortHash": "4da5bd92",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/shadow-lab/hd/door.webp",
+    "name": "door.webp",
+    "size": 167178,
+    "hash": "2d633ac5f3589af2a2e09dbda185bcef6a44e2422490c191ec24a02f604489ac",
+    "shortHash": "2d633ac5",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/shadow-lab/hd/service.webp",
+    "name": "service.webp",
+    "size": 172856,
+    "hash": "095c7b56fc98d5781d7052d1aba2eb315e91f13116a135ef879ab04ebddf0a2f",
+    "shortHash": "095c7b56",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/waste-reclaimer/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 283558,
+    "hash": "6c5c942d3ca5a401c2242fb8ae0049c394d17b3f0b7fd6612dd76d3e5468ec5d",
+    "shortHash": "6c5c942d",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/waste-reclaimer/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 326544,
+    "hash": "d1df87a62456955bd4b1ebf13bb11fa1bee2b410fd6241020547d12b4c9d90da",
+    "shortHash": "d1df87a6",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/waste-reclaimer/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 309178,
+    "hash": "74b0a143632f241162ae5b7b00aadb9a5a45989affc0d0c4380c08fee1acbb61",
+    "shortHash": "74b0a143",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/waste-reclaimer/hd/door.webp",
+    "name": "door.webp",
+    "size": 272244,
+    "hash": "1124cf389d36a5958fe0290ed387a4bfddf4d2c6c65b58a78b6b4cf656975ad4",
+    "shortHash": "1124cf38",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/waste-reclaimer/hd/service.webp",
+    "name": "service.webp",
+    "size": 269460,
+    "hash": "8f15f1c9158fa831c1150b036fb366367c0336706a893e709eec20a6ca86f5d9",
+    "shortHash": "8f15f1c9",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/magnetic-forge/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 223838,
+    "hash": "f236612391a0625f7ca6dcc80e9926ca4e3865a69b53e64ee5242a2821d8e8aa",
+    "shortHash": "f2366123",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/magnetic-forge/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 236088,
+    "hash": "c575635e19087dc5068057ecedd9c01d5cb14a7bd33b36b086e2605889ece38f",
+    "shortHash": "c575635e",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/magnetic-forge/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 218248,
+    "hash": "ce34316213d45d2b7508ec81d77bb5025f0a5a85a18a463ae43957ac99cea475",
+    "shortHash": "ce343162",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/magnetic-forge/hd/door.webp",
+    "name": "door.webp",
+    "size": 232608,
+    "hash": "6d54569d47ac52a153a28c75f4ea1957f090209a656ff56fae007803c874fa11",
+    "shortHash": "6d54569d",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/magnetic-forge/hd/service.webp",
+    "name": "service.webp",
+    "size": 201388,
+    "hash": "fe28aba0126a51007322e986675225e7e0c2468e21a980afb747e7c066a898cd",
+    "shortHash": "fe28aba0",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/reactor-sink/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 210102,
+    "hash": "afe0835cdd08878ff4290ebec710b4175e96bd2a3b056ea999b5a7c5a7b1a5e0",
+    "shortHash": "afe0835c",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/reactor-sink/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 242384,
+    "hash": "7b2fcf50f18e5733c3d9756a7eecd77e70b83b54a8d8607a631370b45128de53",
+    "shortHash": "7b2fcf50",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/reactor-sink/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 194572,
+    "hash": "1923745fd9671d9a8248169ac2fdb25790b5fbdc5913966d0d91945f33626bdb",
+    "shortHash": "1923745f",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/reactor-sink/hd/door.webp",
+    "name": "door.webp",
+    "size": 215558,
+    "hash": "93b212c8d272ae5672f7298e5874d3caf24dc10bf8c07bfbbbc8070290418c0b",
+    "shortHash": "93b212c8",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/reactor-sink/hd/service.webp",
+    "name": "service.webp",
+    "size": 218798,
+    "hash": "a95251034f0bb13545303b5d790a8f1f04055618f81d8bf329294ba0a93a6bbf",
+    "shortHash": "a9525103",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/flooded-silo/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 203866,
+    "hash": "f9cb88dc0da4d384240a06357da8cf9069e882b9d2a4e29b0e2d33b2f1782e5b",
+    "shortHash": "f9cb88dc",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/flooded-silo/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 271624,
+    "hash": "c69294a1c98d9ad1b5e56269f4ee66fc44b419326087f5fc5f13e829fbbb4151",
+    "shortHash": "c69294a1",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/flooded-silo/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 209140,
+    "hash": "ab83c187c91e04eb015e5e005b2c402fee244dbe76bf06f249e0ad99b8d0dbdc",
+    "shortHash": "ab83c187",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/flooded-silo/hd/door.webp",
+    "name": "door.webp",
+    "size": 193964,
+    "hash": "bbbcb6f29f067fbc2a42da284dee0903104c36ae7e8ffada0206420c4ee105ae",
+    "shortHash": "bbbcb6f2",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/flooded-silo/hd/service.webp",
+    "name": "service.webp",
+    "size": 208352,
+    "hash": "d6380cb80022ded1fea42f820e691068be8492d6ee3ab567158204a92c9c9343",
+    "shortHash": "d6380cb8",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/obsidian-vault/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 152244,
+    "hash": "a7e6584627ece16514d093a5a55dec4c468d4ae0dfcdf248dbb68ee5eba5b30b",
+    "shortHash": "a7e65846",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/obsidian-vault/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 190198,
+    "hash": "c1c44b9437cc8c4e3d61b4ba4489ebb815a5e06c4d7e0a8eede4405a4e327856",
+    "shortHash": "c1c44b94",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/obsidian-vault/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 218684,
+    "hash": "7d8c2f225ab6145dd9a58251b464908637a47f3a4d229376b288af340af6afdb",
+    "shortHash": "7d8c2f22",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/obsidian-vault/hd/door.webp",
+    "name": "door.webp",
+    "size": 156350,
+    "hash": "014e152b9a41248aae8533b5e2f8a59cef246e66d78b22ff3f3f03f9d3b25c94",
+    "shortHash": "014e152b",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/obsidian-vault/hd/service.webp",
+    "name": "service.webp",
+    "size": 164700,
+    "hash": "5f4b986c33490be59909d2c61c941b69db53827f8336cbbf4b4ca831763a6497",
+    "shortHash": "5f4b986c",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/siege-yard/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 189322,
+    "hash": "32b4675c327af01a94398e45fae4dee29452470f0b0f02570d200ca7f7e450ba",
+    "shortHash": "32b4675c",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/siege-yard/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 236994,
+    "hash": "ac6bf5a5047928d98d8495735cea7c8ab6b868b1214d0b2b6478c148cef76df5",
+    "shortHash": "ac6bf5a5",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/siege-yard/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 225996,
+    "hash": "4c9ad0a06afeec4a712d4f7cf288106b99e67a5bb11532a70b6f00f2f189b6ae",
+    "shortHash": "4c9ad0a0",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/siege-yard/hd/door.webp",
+    "name": "door.webp",
+    "size": 201504,
+    "hash": "9aad56ecb6b15f0e63df6813b36026683714930b259b19d6436cc45a45ee7764",
+    "shortHash": "9aad56ec",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/siege-yard/hd/service.webp",
+    "name": "service.webp",
+    "size": 208618,
+    "hash": "6f3fefda2e888d382a75ea501ca34f7786d5abc661071c916919ebd068e7d12f",
+    "shortHash": "6f3fefda",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/black-ice-core/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 218678,
+    "hash": "64cdc39f636fa1590e3dab9a65963e692448406fd17107b05d306317e6487e13",
+    "shortHash": "64cdc39f",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/black-ice-core/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 287154,
+    "hash": "05fa32693bfd09d9751190df1e28b831fe49709ec036276529f6f2daf1177cd6",
+    "shortHash": "05fa3269",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/black-ice-core/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 238962,
+    "hash": "5d63bd0e0295d22e36de8e34d63b46ad8bd2380ed8d4bf339beac7d878c1bc27",
+    "shortHash": "5d63bd0e",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/black-ice-core/hd/door.webp",
+    "name": "door.webp",
+    "size": 205444,
+    "hash": "ff342be2e3f7d96d250f3577b4c21eb919d29b999edc645fd476b22b5512dc28",
+    "shortHash": "ff342be2",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/black-ice-core/hd/service.webp",
+    "name": "service.webp",
+    "size": 231496,
+    "hash": "ab281ad26265ad55a4dae499159ffb0ffb23ea8b04af34970189798426b924e7",
+    "shortHash": "ab281ad2",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/drone-hatchery/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 184452,
+    "hash": "348b406eeb252887d85e9922ab4b6573ab339b822c2819ef9106f1bc42b18dd7",
+    "shortHash": "348b406e",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/drone-hatchery/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 242128,
+    "hash": "bae5583af046a88e38a50487a0a8103d1487ed2a957660d293cfce684d4dec9c",
+    "shortHash": "bae5583a",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/drone-hatchery/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 225200,
+    "hash": "f0adcbe53af5489b0ace880033ab62de8a332d7cc48bb0e0f43d0942f369d619",
+    "shortHash": "f0adcbe5",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/drone-hatchery/hd/door.webp",
+    "name": "door.webp",
+    "size": 158736,
+    "hash": "6d51b28331f7415ea35b975645d6d6e28ba247c04a73586c16672b4d9c35294b",
+    "shortHash": "6d51b283",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/drone-hatchery/hd/service.webp",
+    "name": "service.webp",
+    "size": 211904,
+    "hash": "8df29cb7c82efbbd1fbd02546b74d55b40af8c08c0c2f3e57ab461a2133b05d3",
+    "shortHash": "8df29cb7",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/cryo-reserve/hd/wall.webp",
+    "name": "wall.webp",
+    "size": 258552,
+    "hash": "5c6651be017356385284f34832a686a18dd053a6e7bcbf2e18d3fd7d35ade78b",
+    "shortHash": "5c6651be",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/cryo-reserve/hd/floor.webp",
+    "name": "floor.webp",
+    "size": 312290,
+    "hash": "1c3a961a25228ca9afaa040c2b2954cc4af30ebca94c2ddefbd00d4e9449dd92",
+    "shortHash": "1c3a961a",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/cryo-reserve/hd/ceiling.webp",
+    "name": "ceiling.webp",
+    "size": 248548,
+    "hash": "b1f72804a3b2a4cbeafcfed7c50f31b60d3bb6e29b201bce27db509ceb455bfb",
+    "shortHash": "b1f72804",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/cryo-reserve/hd/door.webp",
+    "name": "door.webp",
+    "size": 234772,
+    "hash": "d5b1e120434ab97ff6539594fa6e590a9135a9b9b70a73d2977c5b2466ca1cc4",
+    "shortHash": "d5b1e120",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/sectors/cryo-reserve/hd/service.webp",
+    "name": "service.webp",
+    "size": 240834,
+    "hash": "b425ea7b26705e61aa8684e12f5437ca954e9107916406ce4a72f91c0469f1f6",
+    "shortHash": "b425ea7b",
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "file": "/game/projectiles/enemy_kest.png",
+    "name": "enemy_kest.png",
+    "size": 64604,
+    "hash": "935e676826af4671d2bb1c1216c83bc816130b3cf5c07aeb3d7c781f3e705a26",
+    "shortHash": "935e6768",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_hornet.png",
+    "name": "enemy_hornet.png",
+    "size": 80484,
+    "hash": "4cda40912d0a0c94be3cbb0f1c307b82d7ad2628ce2d46264e3957637dcb9d71",
+    "shortHash": "4cda4091",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_gunner.png",
+    "name": "enemy_gunner.png",
+    "size": 51716,
+    "hash": "02f314fd32a6aa2b7102d6b2c4b27279edc58dd9f209393e53db7015a4d541a8",
+    "shortHash": "02f314fd",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_hazmat.png",
+    "name": "enemy_hazmat.png",
+    "size": 77298,
+    "hash": "bf4baf2773cdb49e0b0d9dc6326bbe8eb284b711031ba7b80d2a231e22019f9e",
+    "shortHash": "bf4baf27",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_boreas.png",
+    "name": "enemy_boreas.png",
+    "size": 97942,
+    "hash": "0ddcf3b0243504d714d5c898fbe7ad809ad7f11e7c2281ff5b89e36c804a7eac",
+    "shortHash": "0ddcf3b0",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/missile_tactical_incoming.png",
+    "name": "missile_tactical_incoming.png",
+    "size": 68184,
+    "hash": "6edc8f03a0fe0e8421fb3f0e84bf8ddc7e5d4ec0a9897db9a815781f1afc88e1",
+    "shortHash": "6edc8f03",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_hound.png",
+    "name": "enemy_hound.png",
+    "size": 60918,
+    "hash": "74d544df64cfd4ce2f5ca3a342dc28d3c2c2e5f04d952ecabf7186233ce0c9f0",
+    "shortHash": "74d544df",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_halcyon.png",
+    "name": "enemy_halcyon.png",
+    "size": 75847,
+    "hash": "7694238bf8fc0c21a1d8bf486504fbef5272f91bf2def3df3211ceca4f3728b9",
+    "shortHash": "7694238b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/missile_siege_incoming.png",
+    "name": "missile_siege_incoming.png",
+    "size": 73350,
+    "hash": "cd3ebfea22d4832dc77df3f1f2095558bccbf89eb36fc9ec72d0c5f4baae5746",
+    "shortHash": "cd3ebfea",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_subject.png",
+    "name": "enemy_subject.png",
+    "size": 66206,
+    "hash": "bec2e04e8d932be5033fd9b3df676f9bfa7d439a731d36e62491e76610a571f6",
+    "shortHash": "bec2e04e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_chimera.png",
+    "name": "enemy_chimera.png",
+    "size": 78575,
+    "hash": "a1286bb415637b2449f6f8f5cc3fd8a090b2d80d740c8f6fc8aef51c6bba4742",
+    "shortHash": "a1286bb4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/missile_siege_outgoing.png",
+    "name": "missile_siege_outgoing.png",
+    "size": 47103,
+    "hash": "e2c36134bf9c9d361d856ff3b7330c8774a1e512f04440f41febcf8430590e60",
+    "shortHash": "e2c36134",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_chronos.png",
+    "name": "enemy_chronos.png",
+    "size": 105459,
+    "hash": "780aad8e59a68764b0938b78fd82f2e224ecccabe1ddf4acf8103e37bebe0a8b",
+    "shortHash": "780aad8e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_broodmother.png",
+    "name": "enemy_broodmother.png",
+    "size": 64645,
+    "hash": "5cd4d507735340d618e9fce05b6ca030ed087eb6c5db658c6572b08e5be90bc9",
+    "shortHash": "5cd4d507",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_archivist.png",
+    "name": "enemy_archivist.png",
+    "size": 66229,
+    "hash": "39cae008f9399014abe2189c5e5e59e7b2e8ee54653448f07615466a08222df6",
+    "shortHash": "39cae008",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/missile_tactical_outgoing.png",
+    "name": "missile_tactical_outgoing.png",
+    "size": 36899,
+    "hash": "5a3cab7658d1254bf87e1642cab71d1221017cd5624dba045658b6476c4162f9",
+    "shortHash": "5a3cab76",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_spitter.png",
+    "name": "enemy_spitter.png",
+    "size": 58238,
+    "hash": "2941bb65905fd2e040c647e74797a3b7cecdebedf4f64948894f8f5b069858ec",
+    "shortHash": "2941bb65",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_mycelium.png",
+    "name": "enemy_mycelium.png",
+    "size": 75277,
+    "hash": "764c2276cc1ad88117ee723705af1fff2c168d3a433ca497a0e6fcbe33c0f024",
+    "shortHash": "764c2276",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/missile_naval_incoming.png",
+    "name": "missile_naval_incoming.png",
+    "size": 67439,
+    "hash": "8c1331e4f9fd1af8128c272bef9c44b4f4f9a1a501e41ea614035c7189eda127",
+    "shortHash": "8c1331e4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_vulcan.png",
+    "name": "enemy_vulcan.png",
+    "size": 77455,
+    "hash": "3a4a14260fece1ee899adf1dbd8e73b6373394f1388080187436fb93ac09ddc2",
+    "shortHash": "3a4a1426",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_sovereign.png",
+    "name": "enemy_sovereign.png",
+    "size": 70771,
+    "hash": "2f8f38b0a62146ba1e44921b2b6585e9ab8d8968df113d9119193420a904d7a8",
+    "shortHash": "2f8f38b0",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_sol.png",
+    "name": "enemy_sol.png",
+    "size": 105310,
+    "hash": "eba66ede04e54b0b44c594518fa11620aac9aa2442a10fcad7767105e97a3257",
+    "shortHash": "eba66ede",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_martyr.png",
+    "name": "enemy_martyr.png",
+    "size": 69546,
+    "hash": "cf07ee1874a1cc44c89a5b6ab4b257392904a95ae2eb3c14ada1f9e27de6a00f",
+    "shortHash": "cf07ee18",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_titan.png",
+    "name": "enemy_titan.png",
+    "size": 73350,
+    "hash": "cd3ebfea22d4832dc77df3f1f2095558bccbf89eb36fc9ec72d0c5f4baae5746",
+    "shortHash": "cd3ebfea",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_mnemosyne.png",
+    "name": "enemy_mnemosyne.png",
+    "size": 100875,
+    "hash": "29f872a4893a613efd277369364073c9e067b42ce0c5f00b12edd514d296b574",
+    "shortHash": "29f872a4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_oracle.png",
+    "name": "enemy_oracle.png",
+    "size": 77003,
+    "hash": "b4ffd110cc0fbe65d1d77bb42f714f313be08e807793cbd1f410bc8f78509ad7",
+    "shortHash": "b4ffd110",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_loader.png",
+    "name": "enemy_loader.png",
+    "size": 76865,
+    "hash": "36fbd6ce83118b0599d92960067b7876fad916d1b44571f5d98596d362958f94",
+    "shortHash": "36fbd6ce",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_veyran.png",
+    "name": "enemy_veyran.png",
+    "size": 58181,
+    "hash": "fb6f890983e435512d7169dde7b7cdcf0e7a31e971e6ef1ee0f0b7d9ec3eb225",
+    "shortHash": "fb6f8909",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_hecate.png",
+    "name": "enemy_hecate.png",
+    "size": 83103,
+    "hash": "2f8910be06877c3bb7266ff117e30fde4314fa66a43326e2b923a79ccc13bdd2",
+    "shortHash": "2f8910be",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_rifleman.png",
+    "name": "enemy_rifleman.png",
+    "size": 53891,
+    "hash": "c3a3f92b857c61a7c14eb89831b5819965cb57450982b1fe43850455d5cf39fd",
+    "shortHash": "c3a3f92b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_leviathan.png",
+    "name": "enemy_leviathan.png",
+    "size": 68662,
+    "hash": "8479c5169fa517fa1c37960a402dea9c45279f1d69d5d2cc83072f52ee92a30c",
+    "shortHash": "8479c516",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_prism.png",
+    "name": "enemy_prism.png",
+    "size": 58562,
+    "hash": "a9c68f1b4c3e08c5ecd5228d28a476ad83fc2092396338d5fc12e35805202faa",
+    "shortHash": "a9c68f1b",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_relay.png",
+    "name": "enemy_relay.png",
+    "size": 58077,
+    "hash": "276a1b6d4137d4579102247a45f4523bf105cd66af5419842c9676c7c8a6e641",
+    "shortHash": "276a1b6d",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_umbra.png",
+    "name": "enemy_umbra.png",
+    "size": 83859,
+    "hash": "54ebd02c5b77f5c2337252988e67aff1c225facd23d24cad02f10979e6b3418a",
+    "shortHash": "54ebd02c",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_gravemind.png",
+    "name": "enemy_gravemind.png",
+    "size": 97065,
+    "hash": "a36e9c2ebb10a446bd71e1b7f4a9d1cd5fa5f52acabdaf5b50a2ca93fba6276d",
+    "shortHash": "a36e9c2e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_magnus.png",
+    "name": "enemy_magnus.png",
+    "size": 80106,
+    "hash": "eee6a11e4b0bd1dee58c59bf3c4e61f043dc80f321de2b8e20070151adcf864f",
+    "shortHash": "eee6a11e",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_astra.png",
+    "name": "enemy_astra.png",
+    "size": 68184,
+    "hash": "6edc8f03a0fe0e8421fb3f0e84bf8ddc7e5d4ec0a9897db9a815781f1afc88e1",
+    "shortHash": "6edc8f03",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_breacher.png",
+    "name": "enemy_breacher.png",
+    "size": 67192,
+    "hash": "f7bac5242e61b77134c990bf56d484e927cb0cbfc905c9e72b8641e0b0c6223d",
+    "shortHash": "f7bac524",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_scrapper.png",
+    "name": "enemy_scrapper.png",
+    "size": 66465,
+    "hash": "71be2fb4bef61a2f3c0e2d6141e8782ce4d613cf3e81e68844c83064da391283",
+    "shortHash": "71be2fb4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_vatbrute.png",
+    "name": "enemy_vatbrute.png",
+    "size": 67233,
+    "hash": "8452ea16dc85d99c2f6d0ae00aaf77d33d842892cdeeeb5ad21aa77099ebcc20",
+    "shortHash": "8452ea16",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_nautilus.png",
+    "name": "enemy_nautilus.png",
+    "size": 67439,
+    "hash": "8c1331e4f9fd1af8128c272bef9c44b4f4f9a1a501e41ea614035c7189eda127",
+    "shortHash": "8c1331e4",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/missile_naval_outgoing.png",
+    "name": "missile_naval_outgoing.png",
+    "size": 38025,
+    "hash": "f66415693b0c3c224e185d16163e0061d064f6270de3e2e9d9dd746b883f3a1e",
+    "shortHash": "f6641569",
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "/game/projectiles/enemy_marksman.png",
+    "name": "enemy_marksman.png",
+    "size": 42232,
+    "hash": "3954de1bc86aaad445f40eca5ee475ecb7ad98ddb0b0de308d9ba1d6e823e86a",
+    "shortHash": "3954de1b",
     "width": 256,
     "height": 256
   }

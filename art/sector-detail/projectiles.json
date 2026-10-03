@@ -1,0 +1,335 @@
+[
+  {
+    "skin": 0,
+    "slug": "rifleman",
+    "board": "enemy-projectiles-1",
+    "cell": 0,
+    "cols": 4,
+    "rows": 3,
+    "design": "small pointed copper bullet tip facing camera with short white tracer behind"
+  },
+  {
+    "skin": 1,
+    "slug": "breacher",
+    "board": "enemy-projectiles-1",
+    "cell": 1,
+    "cols": 4,
+    "rows": 3,
+    "design": "three tiny steel shotgun pellets in a compact triangular cluster"
+  },
+  {
+    "skin": 2,
+    "slug": "subject",
+    "board": "enemy-projectiles-1",
+    "cell": 2,
+    "cols": 4,
+    "rows": 3,
+    "design": "pale organic bone splinter"
+  },
+  {
+    "skin": 3,
+    "slug": "hazmat",
+    "board": "enemy-projectiles-1",
+    "cell": 3,
+    "cols": 4,
+    "rows": 3,
+    "design": "yellow industrial chemical aerosol capsule with droplets"
+  },
+  {
+    "skin": 4,
+    "slug": "gunner",
+    "board": "enemy-projectiles-1",
+    "cell": 4,
+    "cols": 4,
+    "rows": 3,
+    "design": "red-tipped heavy steel bullet with short crimson tracer"
+  },
+  {
+    "skin": 5,
+    "slug": "loader",
+    "board": "enemy-projectiles-1",
+    "cell": 5,
+    "cols": 4,
+    "rows": 3,
+    "design": "heavy yellow hydraulic rivet"
+  },
+  {
+    "skin": 6,
+    "slug": "vatbrute",
+    "board": "enemy-projectiles-1",
+    "cell": 6,
+    "cols": 4,
+    "rows": 3,
+    "design": "purple protein crystal spike"
+  },
+  {
+    "skin": 7,
+    "slug": "marksman",
+    "board": "enemy-projectiles-1",
+    "cell": 7,
+    "cols": 4,
+    "rows": 3,
+    "design": "slender silver armor piercing dart with sharp white tracer"
+  },
+  {
+    "skin": 8,
+    "slug": "hornet",
+    "board": "enemy-projectiles-1",
+    "cell": 8,
+    "cols": 4,
+    "rows": 3,
+    "design": "cyan electric stinger with four swept finlets"
+  },
+  {
+    "skin": 9,
+    "slug": "hound",
+    "board": "enemy-projectiles-1",
+    "cell": 9,
+    "cols": 4,
+    "rows": 3,
+    "design": "dark crimson curved tooth splinter"
+  },
+  {
+    "skin": 10,
+    "slug": "spitter",
+    "board": "enemy-projectiles-1",
+    "cell": 10,
+    "cols": 4,
+    "rows": 3,
+    "design": "viscous green acid droplet with trailing smaller droplets"
+  },
+  {
+    "skin": 11,
+    "slug": "martyr",
+    "board": "enemy-projectiles-1",
+    "cell": 11,
+    "cols": 4,
+    "rows": 3,
+    "design": "small amber drone motor spark"
+  },
+  {
+    "skin": 12,
+    "slug": "veyran",
+    "board": "enemy-projectiles-2",
+    "cell": 0,
+    "cols": 4,
+    "rows": 3,
+    "design": "orange tungsten rail spike with two narrow amber wakes"
+  },
+  {
+    "skin": 13,
+    "slug": "hecate",
+    "board": "enemy-projectiles-2",
+    "cell": 1,
+    "cols": 4,
+    "rows": 3,
+    "design": "cyan crescent-shaped cutter pulse with sharp white core"
+  },
+  {
+    "skin": 14,
+    "slug": "chimera",
+    "board": "enemy-projectiles-2",
+    "cell": 2,
+    "cols": 4,
+    "rows": 3,
+    "design": "green pressurized toxic capsule surrounded by acid mist"
+  },
+  {
+    "skin": 15,
+    "slug": "oracle",
+    "board": "enemy-projectiles-2",
+    "cell": 3,
+    "cols": 4,
+    "rows": 3,
+    "design": "white-cyan three-pronged prediction prism"
+  },
+  {
+    "skin": 16,
+    "slug": "gravemind",
+    "board": "enemy-projectiles-2",
+    "cell": 4,
+    "cols": 4,
+    "rows": 3,
+    "design": "dense copper fragmentation cluster"
+  },
+  {
+    "skin": 17,
+    "slug": "archivist",
+    "board": "enemy-projectiles-2",
+    "cell": 5,
+    "cols": 4,
+    "rows": 3,
+    "design": "bronze rectangular archive pulse with amber etched core"
+  },
+  {
+    "skin": 18,
+    "slug": "halcyon",
+    "board": "enemy-projectiles-2",
+    "cell": 6,
+    "cols": 4,
+    "rows": 3,
+    "design": "ice-blue solid crystalline coolant shard"
+  },
+  {
+    "skin": 19,
+    "slug": "relay",
+    "board": "enemy-projectiles-2",
+    "cell": 7,
+    "cols": 4,
+    "rows": 3,
+    "design": "crimson narrow signal pulse with white central needle"
+  },
+  {
+    "skin": 20,
+    "slug": "titan",
+    "board": "enemy-projectiles-2",
+    "cell": 8,
+    "cols": 4,
+    "rows": 3,
+    "design": "HEAD ON brass armored siege missile: nose at center facing viewer, four radial fins behind, tail exhaust behind upper shoulders"
+  },
+  {
+    "skin": 21,
+    "slug": "kest",
+    "board": "enemy-projectiles-2",
+    "cell": 9,
+    "cols": 4,
+    "rows": 3,
+    "design": "compact olive-steel tactical burst bullet with bright gold tracer"
+  },
+  {
+    "skin": 22,
+    "slug": "mnemosyne",
+    "board": "enemy-projectiles-2",
+    "cell": 10,
+    "cols": 4,
+    "rows": 3,
+    "design": "violet faceted memory shard with concentric narrow violet rings"
+  },
+  {
+    "skin": 23,
+    "slug": "vulcan",
+    "board": "enemy-projectiles-2",
+    "cell": 11,
+    "cols": 4,
+    "rows": 3,
+    "design": "incandescent orange ceramic ember slug with dark metallic body"
+  },
+  {
+    "skin": 24,
+    "slug": "leviathan",
+    "board": "enemy-projectiles-3",
+    "cell": 0,
+    "cols": 4,
+    "rows": 3,
+    "design": "brass sharp pressure harpoon tip with small blue droplets"
+  },
+  {
+    "skin": 25,
+    "slug": "prism",
+    "board": "enemy-projectiles-3",
+    "cell": 1,
+    "cols": 4,
+    "rows": 3,
+    "design": "cyan transparent optical prism shard refracting into three rays"
+  },
+  {
+    "skin": 26,
+    "slug": "magnus",
+    "board": "enemy-projectiles-3",
+    "cell": 2,
+    "cols": 4,
+    "rows": 3,
+    "design": "red copper magnetic coil puck with concentric thin red energy arcs"
+  },
+  {
+    "skin": 27,
+    "slug": "broodmother",
+    "board": "enemy-projectiles-3",
+    "cell": 3,
+    "cols": 4,
+    "rows": 3,
+    "design": "amber miniature six-fin microdrone with solid black mechanical body"
+  },
+  {
+    "skin": 28,
+    "slug": "mycelium",
+    "board": "enemy-projectiles-3",
+    "cell": 4,
+    "cols": 4,
+    "rows": 3,
+    "design": "pale green fungal spore pod with visible ribs and seed droplets"
+  },
+  {
+    "skin": 29,
+    "slug": "astra",
+    "board": "enemy-projectiles-3",
+    "cell": 5,
+    "cols": 4,
+    "rows": 3,
+    "design": "HEAD ON dark violet guided missile: sharp nose facing viewer centrally, four finlets behind, exhaust behind top shoulders"
+  },
+  {
+    "skin": 30,
+    "slug": "scrapper",
+    "board": "enemy-projectiles-3",
+    "cell": 6,
+    "cols": 4,
+    "rows": 3,
+    "design": "rusted copper flechette cluster with seven sharp tips"
+  },
+  {
+    "skin": 31,
+    "slug": "umbra",
+    "board": "enemy-projectiles-3",
+    "cell": 7,
+    "cols": 4,
+    "rows": 3,
+    "design": "obsidian purple phase shard with subtle violet contour distortion"
+  },
+  {
+    "skin": 32,
+    "slug": "sol",
+    "board": "enemy-projectiles-3",
+    "cell": 8,
+    "cols": 4,
+    "rows": 3,
+    "design": "gold and white solar plasma slug with bright compact central core"
+  },
+  {
+    "skin": 33,
+    "slug": "nautilus",
+    "board": "enemy-projectiles-3",
+    "cell": 9,
+    "cols": 4,
+    "rows": 3,
+    "design": "HEAD ON teal naval torpedo: rounded pointed nose facing viewer centrally, four radial fins behind, tail exhaust behind top shoulders"
+  },
+  {
+    "skin": 34,
+    "slug": "chronos",
+    "board": "enemy-projectiles-3",
+    "cell": 10,
+    "cols": 4,
+    "rows": 3,
+    "design": "bronze gyroscope needle with three offset amber echo wakes"
+  },
+  {
+    "skin": 35,
+    "slug": "boreas",
+    "board": "enemy-projectiles-3",
+    "cell": 11,
+    "cols": 4,
+    "rows": 3,
+    "design": "black and ice-blue jagged cryogenic lance with frozen vapor"
+  },
+  {
+    "skin": 36,
+    "slug": "sovereign",
+    "board": "enemy-projectile-sovereign",
+    "cell": 0,
+    "cols": 1,
+    "rows": 1,
+    "design": "black and gold diamond-shaped command plasma core with gold plated fins"
+  }
+]

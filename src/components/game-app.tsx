@@ -153,7 +153,9 @@ export function GameApp() {
           if (frameContext) {
             frameContext.clearRect(0, 0, 512, 384);
             if (sheet) {
-              frameContext.drawImage(sheet, (fr % 5) * 512, Math.floor(fr / 5) * 384, 512, 384, 0, 0, 512, 384);
+              frameContext.imageSmoothingEnabled = false;
+              // Isolate source-cell edges so adjacent poses cannot leak during scaling.
+              frameContext.drawImage(sheet, (fr % 5) * 512 + 1, Math.floor(fr / 5) * 384 + 1, 510, 382, 1, 1, 510, 382);
             }
           }
         }

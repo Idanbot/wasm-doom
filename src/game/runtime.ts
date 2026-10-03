@@ -1,3 +1,4 @@
+import { SECTOR_SLUGS, SECTOR_SURFACES } from "./sector-assets";
 import { CAMPAIGN_EXPANSION } from "./campaign25";
 import { asset } from "@/lib/asset";
 import { createAudio, type GameAudio } from "./audio";
@@ -27,6 +28,10 @@ import {
   T_EXPANSION_CASE,
   T_PROJECTILE_NEW,
   T_IMPACT_NEW,
+  T_ENEMY_PROJECTILE,
+  T_PLAYER_MISSILE,
+  T_SECTOR_SURFACE,
+  T_SECTOR_PROP,
   T_PROP_REACTOR,
   T_PROP_SERVER,
   T_PROP_AC,
@@ -267,6 +272,10 @@ const TEX_FILES: { id: number; src: string }[] = [
   ...CAMPAIGN_EXPANSION.map((boss, i) => ({ id: T_EXPANSION_CASE + i, src: `/game/spr_gun_${boss.weapon}.png` })),
   ...["rocket-forward", "ion-bolt", "cryo-shard", "spore-cluster", "phase-orb"].map((name, i) => ({ id: T_PROJECTILE_NEW + i, src: `/game/fx25/${name}.png` })),
   ...["ember-impact", "pressure-impact", "magnetic-impact", "solar-impact"].map((name, i) => ({ id: T_IMPACT_NEW + i, src: `/game/fx25/${name}.png` })),
+  ...ENEMY_SKINS.map((skin, i) => ({ id: T_ENEMY_PROJECTILE + i, src: `/game/projectiles/enemy_${skin}.png` })),
+  ...["tactical", "siege", "naval"].map((model, i) => ({ id: T_PLAYER_MISSILE + i, src: `/game/projectiles/missile_${model}_outgoing.png` })),
+  ...SECTOR_SLUGS.flatMap((sector, i) => SECTOR_SURFACES.map((name, j) => ({ id: T_SECTOR_SURFACE + i * 5 + j, src: `/game/sectors/${sector}/${name}.png` }))),
+  ...SECTOR_SLUGS.flatMap((sector, i) => [1, 2, 3].map((prop, j) => ({ id: T_SECTOR_PROP + i * 3 + j, src: `/game/sectors/${sector}/prop_${prop}.png` }))),
   ...ENEMY_SKINS.flatMap((skin, skinIndex) =>
     ENEMY_ANIMATIONS.map((animation, animationIndex) => ({
       id: ENEMY_TEX_BASE + skinIndex * ENEMY_ANIM_COUNT + animationIndex,
@@ -849,7 +858,7 @@ export class HellscanRuntime {
           id === 27 ||
           (id >= 8 && id <= 14) ||
           (id >= 20 && id <= 25) ||
-          id >= ENEMY_TEX_BASE;
+          (id >= ENEMY_TEX_BASE && id < T_SECTOR_SURFACE) || id >= T_SECTOR_PROP;
         if (sprite) {
           // Generated VFX use intentional dark cores and smoke; preserve
           // those pixels instead of applying the legacy black-key cleanup.
