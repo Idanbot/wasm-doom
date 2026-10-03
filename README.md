@@ -84,6 +84,8 @@ The standard arsenal is MK23-S, BR-12 Breaker, KX-9 Vector, MR-4 Longbow, VLK-6 
 | `public/game/theme/` | Wall and door texture variants |
 | `public/game/voices/` | Runtime MP3 voices and subtitle manifest |
 | `public/game/music/` | Runtime MP3 music |
+| `public/game/sfx/v2/` | 103 CC0 recorded/mixed effects with MP3 fallbacks |
+| `art/audio/` | Selected original recordings, licenses, creator credits, hashes and rebuild recipes |
 | `public/game/fx25/` | Campaign projectile and four-frame impact atlases |
 | `public/game/projectiles/` | Isolated enemy projectiles and outgoing/incoming missiles |
 | `public/game/sectors/<sector>/` | Five exclusive materials and three destructible prop sprites per sector |
@@ -93,7 +95,7 @@ The standard arsenal is MK23-S, BR-12 Breaker, KX-9 Vector, MR-4 Longbow, VLK-6 
 | `art/bosses/` | Boss source poses |
 | `art/source_hd/` | Source art and voice generation records |
 
-The [25-sector expansion guide](docs/CAMPAIGN_25.md) lists new bosses, mechanics, asset paths and endless scaling. Combat and interface background are documented in [combat notes](docs/blacksite-ifrit/COMBAT.md) and [voice/interface notes](docs/blacksite-ifrit/VOICES_AND_UI.md). Missing or replacement sound effects are tracked in [issue #1](https://github.com/Idanbot/wasm-doom/issues/1).
+The [25-sector expansion guide](docs/CAMPAIGN_25.md) lists new bosses, mechanics, asset paths and endless scaling. Combat and interface background are documented in [combat notes](docs/blacksite-ifrit/COMBAT.md) and [voice/interface notes](docs/blacksite-ifrit/VOICES_AND_UI.md). [Sound effect credits and integration](art/audio/README.md) document the CC0 replacement set for [issue #1](https://github.com/Idanbot/wasm-doom/issues/1): distinct firing sounds for all 33 guns, frame-synced magazine/cell reloads, incremental BR-12 shell inserts, spatial enemy/world effects, moving projectile loops, material impacts, distinct pickups and UI cues. All 103 effects decode during loading; MP3 fallbacks support compatibility. Recorded injury vocals share the dialogue gate, and mute/volume controls apply through the existing mixer.
 
 ## Architecture
 
@@ -107,6 +109,7 @@ engine/src/                 Rust simulation → public/hellscan.wasm
   enemies.rs                  enemy and pickup definitions
   hud.rs                      HUD wire format and compile-time assertions
   voices.rs                   enemy presentation snapshots
+  sound.rs                    bounded positional world sound events
   lib.rs                      simulation, raycaster, lighting and FFI
 src/game/
   runtime.ts                  WASM loader, fixed-60Hz loop, input and preload

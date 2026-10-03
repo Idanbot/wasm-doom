@@ -73,6 +73,10 @@ type WasmExports = {
   hs_hud_ptr: () => number;
   hs_hud_size: () => number;
   hs_events: () => number;
+  hs_sound_count: () => number;
+  hs_prepare_sound_loops: () => number;
+  hs_sound_loops: () => number;
+  hs_sound_cues: () => number;
   hs_ev_weapon: () => number;
   hs_tex_ptr: (id: number) => number;
   hs_tex_size: () => number;
@@ -209,7 +213,8 @@ const ENEMY_SKINS = [
   "relay",
   "titan",
   "kest",
-  "mnemosyne", ...CAMPAIGN_EXPANSION.map(boss => boss.slug),
+  "mnemosyne",
+  ...CAMPAIGN_EXPANSION.map((boss) => boss.slug),
 ] as const;
 const ENEMY_ANIMATIONS = ["idle", "move", "pain", "fire", "reload", "dead", "special"] as const;
 
@@ -269,13 +274,38 @@ const TEX_FILES: { id: number; src: string }[] = [
   { id: T_PROP_WLIGHT_C, src: "/game/spr_prop_worklight_cyan.png" },
   { id: T_PROP_WLIGHT_W, src: "/game/spr_prop_worklight_white.png" },
   { id: T_PROP_BEACON, src: "/game/spr_prop_beacon.png" },
-  ...CAMPAIGN_EXPANSION.map((boss, i) => ({ id: T_EXPANSION_CASE + i, src: `/game/spr_gun_${boss.weapon}.png` })),
-  ...["rocket-forward", "ion-bolt", "cryo-shard", "spore-cluster", "phase-orb"].map((name, i) => ({ id: T_PROJECTILE_NEW + i, src: `/game/fx25/${name}.png` })),
-  ...["ember-impact", "pressure-impact", "magnetic-impact", "solar-impact"].map((name, i) => ({ id: T_IMPACT_NEW + i, src: `/game/fx25/${name}.png` })),
-  ...ENEMY_SKINS.map((skin, i) => ({ id: T_ENEMY_PROJECTILE + i, src: `/game/projectiles/enemy_${skin}.png` })),
-  ...["tactical", "siege", "naval"].map((model, i) => ({ id: T_PLAYER_MISSILE + i, src: `/game/projectiles/missile_${model}_outgoing.png` })),
-  ...SECTOR_SLUGS.flatMap((sector, i) => SECTOR_SURFACES.map((name, j) => ({ id: T_SECTOR_SURFACE + i * 5 + j, src: `/game/sectors/${sector}/${name}.png` }))),
-  ...SECTOR_SLUGS.flatMap((sector, i) => [1, 2, 3].map((prop, j) => ({ id: T_SECTOR_PROP + i * 3 + j, src: `/game/sectors/${sector}/prop_${prop}.png` }))),
+  ...CAMPAIGN_EXPANSION.map((boss, i) => ({
+    id: T_EXPANSION_CASE + i,
+    src: `/game/spr_gun_${boss.weapon}.png`,
+  })),
+  ...["rocket-forward", "ion-bolt", "cryo-shard", "spore-cluster", "phase-orb"].map((name, i) => ({
+    id: T_PROJECTILE_NEW + i,
+    src: `/game/fx25/${name}.png`,
+  })),
+  ...["ember-impact", "pressure-impact", "magnetic-impact", "solar-impact"].map((name, i) => ({
+    id: T_IMPACT_NEW + i,
+    src: `/game/fx25/${name}.png`,
+  })),
+  ...ENEMY_SKINS.map((skin, i) => ({
+    id: T_ENEMY_PROJECTILE + i,
+    src: `/game/projectiles/enemy_${skin}.png`,
+  })),
+  ...["tactical", "siege", "naval"].map((model, i) => ({
+    id: T_PLAYER_MISSILE + i,
+    src: `/game/projectiles/missile_${model}_outgoing.png`,
+  })),
+  ...SECTOR_SLUGS.flatMap((sector, i) =>
+    SECTOR_SURFACES.map((name, j) => ({
+      id: T_SECTOR_SURFACE + i * 5 + j,
+      src: `/game/sectors/${sector}/${name}.png`,
+    })),
+  ),
+  ...SECTOR_SLUGS.flatMap((sector, i) =>
+    [1, 2, 3].map((prop, j) => ({
+      id: T_SECTOR_PROP + i * 3 + j,
+      src: `/game/sectors/${sector}/prop_${prop}.png`,
+    })),
+  ),
   ...ENEMY_SKINS.flatMap((skin, skinIndex) =>
     ENEMY_ANIMATIONS.map((animation, animationIndex) => ({
       id: ENEMY_TEX_BASE + skinIndex * ENEMY_ANIM_COUNT + animationIndex,
@@ -343,10 +373,13 @@ function decodeImage(src: string, timeoutMs = 30000): Promise<HTMLImageElement |
     };
     const timer = window.setTimeout(() => finish(null), timeoutMs);
     img.onload = () => {
-      img.decode().then(() => {
-        if (weaponSheetPaths.has(src)) weaponSheetCache.set(src, img);
-        finish(img);
-      }, () => finish(null));
+      img.decode().then(
+        () => {
+          if (weaponSheetPaths.has(src)) weaponSheetCache.set(src, img);
+          finish(img);
+        },
+        () => finish(null),
+      );
     };
     img.onerror = () => finish(null);
     img.src = asset(src);
@@ -477,7 +510,13 @@ export class HellscanRuntime {
     this.loop(this.last);
     const slices = { tex: 0, ui: 0, voice: 0, media: 0 };
     const paint = (label: string) => {
-      report(Math.min(0.99, 0.12 + 0.4 * slices.tex + 0.25 * slices.ui + 0.15 * slices.voice + 0.08 * slices.media), label);
+      report(
+        Math.min(
+          0.99,
+          0.12 + 0.4 * slices.tex + 0.25 * slices.ui + 0.15 * slices.voice + 0.08 * slices.media,
+        ),
+        label,
+      );
     };
     await Promise.all([
       this.uploadTextures((done, total) => {
@@ -485,10 +524,15 @@ export class HellscanRuntime {
         paint("World textures");
       }),
       // Deployment waits for every viewmodel, wheel thumbnail and HUD image.
-      preloadImages(UI_CRITICAL, 2, (done, total) => {
-        slices.ui = total ? done / total : 1;
-        paint("Arsenal & interface");
-      }, 30000).then((imgs) => {
+      preloadImages(
+        UI_CRITICAL,
+        2,
+        (done, total) => {
+          slices.ui = total ? done / total : 1;
+          paint("Arsenal & interface");
+        },
+        30000,
+      ).then((imgs) => {
         const failed = UI_CRITICAL.filter((_, i) => !imgs[i]);
         if (failed.length) {
           this.hooks.onAssetError?.(failed);
@@ -532,6 +576,7 @@ export class HellscanRuntime {
   }
 
   setPlaying(v: boolean) {
+    const changed = this.playing !== v;
     this.playing = v;
     this.clearInput();
     this.accumulator = 0;
@@ -548,6 +593,7 @@ export class HellscanRuntime {
       this.audio.clearEnemies();
       this.hooks.onSubtitles?.([]);
     }
+    if (changed) this.audio.ui("transition");
   }
 
   setSens(v: number) {
@@ -798,7 +844,11 @@ export class HellscanRuntime {
   readMap(): Uint8Array | null {
     const wasm = this.wasm;
     if (!wasm) return null;
-    return new Uint8Array(wasm.memory.buffer, wasm.hs_map_ptr(), wasm.hs_map_w() * wasm.hs_map_h()).slice();
+    return new Uint8Array(
+      wasm.memory.buffer,
+      wasm.hs_map_ptr(),
+      wasm.hs_map_w() * wasm.hs_map_h(),
+    ).slice();
   }
 
   getEnemies(): EnemyCue[] {
@@ -858,7 +908,8 @@ export class HellscanRuntime {
           id === 27 ||
           (id >= 8 && id <= 14) ||
           (id >= 20 && id <= 25) ||
-          (id >= ENEMY_TEX_BASE && id < T_SECTOR_SURFACE) || id >= T_SECTOR_PROP;
+          (id >= ENEMY_TEX_BASE && id < T_SECTOR_SURFACE) ||
+          id >= T_SECTOR_PROP;
         if (sprite) {
           // Generated VFX use intentional dark cores and smoke; preserve
           // those pixels instead of applying the legacy black-key cleanup.
@@ -933,7 +984,25 @@ export class HellscanRuntime {
     this.lastThemeWave = wave;
   }
 
+  uiSound(kind: "click" | "confirm" | "back" | "error" | "transition" = "click") {
+    this.audio.ui(kind);
+  }
+
+  private onUiClick = (event: MouseEvent) => {
+    const button =
+      event.target instanceof Element ? event.target.closest("button, [role=button]") : null;
+    if (!button || button.hasAttribute("disabled") || button.closest(".touch-layer")) return;
+    const text = button.textContent?.toLowerCase() ?? "";
+    this.audio.ui(
+      /deploy|enter |retry|resume/.test(text)
+        ? "confirm"
+        : /back|close|abort/.test(text)
+          ? "back"
+          : "click",
+    );
+  };
   private bind() {
+    document.addEventListener("click", this.onUiClick);
     window.addEventListener("keydown", this.onKeyDown);
     window.addEventListener("keyup", this.onKeyUp);
     window.addEventListener("blur", this.onBlur);
@@ -945,6 +1014,7 @@ export class HellscanRuntime {
   }
 
   private unbind() {
+    document.removeEventListener("click", this.onUiClick);
     window.removeEventListener("keydown", this.onKeyDown);
     window.removeEventListener("keyup", this.onKeyUp);
     window.removeEventListener("blur", this.onBlur);
@@ -1166,9 +1236,28 @@ export class HellscanRuntime {
       );
       this.lookX = this.lookY = this.touchLookX = this.touchLookY = 0;
       wasm.hs_tick(step);
-      // Lightweight event drain per substep: avoids decoding the full HUD
-      // struct N times per frame. Full HUD is decoded once below.
+      // Drain world cues and the compact weapon state on every fixed step.
+      // The complete HUD is decoded once below.
       this.sfxFromEvents(wasm.hs_events(), wasm.hs_ev_weapon());
+      const soundCount = wasm.hs_sound_count();
+      const soundData = new Float32Array(wasm.memory.buffer, wasm.hs_sound_cues(), soundCount * 4);
+      for (let n = 0; n < soundCount; n++)
+        this.audio.world(
+          soundData[n * 4]!,
+          soundData[n * 4 + 1]!,
+          soundData[n * 4 + 2]!,
+          soundData[n * 4 + 3]!,
+        );
+      const soundHud = new DataView(wasm.memory.buffer, wasm.hs_hud_ptr(), HUD_SIZE);
+      this.audio.updateWeapon({
+        ammo: soundHud.getInt32(8, true),
+        weapon: soundHud.getInt32(12, true),
+        state: soundHud.getInt32(24, true),
+        reloading: soundHud.getFloat32(92, true),
+        weapFrame: soundHud.getInt32(96, true),
+        wave: soundHud.getInt32(116, true),
+        bossPhase: soundHud.getInt32(128, true),
+      });
       this.accumulator -= step;
     }
     const hud = this.readHud();
@@ -1217,7 +1306,7 @@ export class HellscanRuntime {
     if (hud.radioSeq !== this.prevRadioSeq) {
       this.prevRadioSeq = hud.radioSeq;
       if (hud.radioSeq !== 0) {
-        if (hud.radioLine !== 8) this.audio.radio();
+        if (hud.radioLine !== 8) this.audio.radio(hud.radioLine);
       }
     }
     this.hud = hud;
@@ -1229,6 +1318,15 @@ export class HellscanRuntime {
     const barCount = wasm.hs_prepare_bars();
     this.lastBars = readBars(wasm.memory.buffer, wasm.hs_bars(), barCount);
     const subtitles = this.audio.updateEnemies(enemies, hud);
+    const loopCount = wasm.hs_prepare_sound_loops();
+    const loopData = new Float32Array(wasm.memory.buffer, wasm.hs_sound_loops(), loopCount * 4);
+    const loops = Array.from({ length: loopCount }, (_, n) => ({
+      kind: loopData[n * 4]!,
+      id: loopData[n * 4 + 1]!,
+      x: loopData[n * 4 + 2]!,
+      y: loopData[n * 4 + 3]!,
+    }));
+    this.audio.updateLoops(loops);
     this.hooks.onSubtitles?.(subtitles);
     this.hooks.onHud(hud, this.fps, `${w} × ${h}`);
     if (hud.state !== this.prevHud.state) this.hooks.onState(hud.state);
@@ -1254,20 +1352,14 @@ export class HellscanRuntime {
       if (!ev) return;
       if (ev & 1) this.audio.fire(evWeapon);
       if (ev & 2) this.audio.empty(evWeapon);
-      if (ev & 4) this.audio.reload();
-      if (ev & 8) this.audio.hit();
-      if (ev & 16) this.audio.hurt();
-      if (ev & 32) this.audio.pickup(false);
-      if (ev & 64) this.audio.pickup(true);
+      if (ev & 16 && !(ev & 128)) this.audio.hurt();
       if (ev & 128) this.audio.die();
-      if (ev & 256) this.audio.explode();
       if (ev & 512) this.audio.foot();
-      if (ev & 1024) this.audio.door();
       if (ev & 2048) this.audio.setBoss(true);
-      if (ev & 4096) this.audio.kill();
       if (ev & 8192) this.audio.hushBoss();
       if (ev & 16384) this.audio.dropBoss();
-      if (ev & 65536) this.audio.bossKill((this.hud.wave - 1) % 25, bossDeathVariantForWave(this.hud.wave));
+      if (ev & 65536)
+        this.audio.bossKill((this.hud.wave - 1) % 25, bossDeathVariantForWave(this.hud.wave));
     } catch {
       /* keep the sim running if a sound fails */
     }
@@ -1285,6 +1377,7 @@ export class HellscanRuntime {
     };
     window.__controlsTest = {
       getEnemyAudio: () => this.audio.enemyDiagnostics(),
+      getSfxAudio: () => this.audio.sfxDiagnostics(),
       getEnemies: () => this.lastEnemies.map((e) => ({ ...e })),
       getYaw: () => this.wasm?.hs_yaw() ?? 0,
       getSpeed: () => this.wasm?.hs_speed() ?? 0,
@@ -1359,6 +1452,7 @@ declare global {
   interface Window {
     __controlsTest?: {
       getEnemyAudio: () => ReturnType<GameAudio["enemyDiagnostics"]>;
+      getSfxAudio: () => ReturnType<GameAudio["sfxDiagnostics"]>;
       getEnemies?: () => EnemyCue[];
       getYaw: () => number;
       getSpeed: () => number;

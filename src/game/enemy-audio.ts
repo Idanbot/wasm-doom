@@ -77,7 +77,6 @@ export class EnemyAudio {
   private buffers = new Map<string, AudioBuffer>();
   private active: SpatialSound[] = [];
   private director = new VoiceDirector();
-  private previous = new Map<number, { anim: number; hp: number; next: number }>();
   private loaded: Promise<void> | null = null;
   private closed = false;
   private subtitles: EnemySubtitle[] = [];
@@ -188,7 +187,6 @@ export class EnemyAudio {
     this.subtitles = [];
     if (reset) {
       this.director.reset();
-      this.previous.clear();
     }
   }
   advanceSector() {
@@ -198,12 +196,13 @@ export class EnemyAudio {
         sound.id = -999;
         continue;
       }
-      try { sound.source.stop(); } catch {}
+      try {
+        sound.source.stop();
+      } catch {}
       this.dispose(sound);
     }
     this.subtitles = [];
     this.director.reset();
-    this.previous.clear();
   }
   close() {
     this.closed = true;
@@ -292,28 +291,6 @@ export class EnemyAudio {
       this.connect(source, enemy, buffer.duration / rate, line, profile, done);
     });
   }
-  private enemySound(enemy: EnemyCue, pain: boolean) {
-    if (this.active.filter((s) => !s.line).length >= 6 || enemy.distance > 16) return;
-    const oscillator = this.ctx.createOscillator();
-    const biological = [2, 6, 10, 11].includes(enemy.skin);
-    oscillator.type = biological ? "sawtooth" : enemy.skin === 9 ? "square" : "triangle";
-    const base =
-      enemy.skin === 6
-        ? 55
-        : enemy.skin === 10
-          ? 420
-          : enemy.skin === 9
-            ? 140
-            : biological
-              ? 95
-              : 190;
-    const duration = biological ? 0.5 : 0.18;
-    oscillator.frequency.setValueAtTime(base * (pain ? 1.6 : 1), this.ctx.currentTime);
-    oscillator.frequency.exponentialRampToValueAtTime(base * 0.45, this.ctx.currentTime + duration);
-    const sound = this.connect(oscillator, enemy, duration);
-    sound.gain.gain.setTargetAtTime(0.001, this.ctx.currentTime + duration * 0.4, duration * 0.18);
-    oscillator.stop(this.ctx.currentTime + duration);
-  }
   update(enemies: EnemyCue[], player: { x: number; y: number; yaw: number }) {
     const t = this.ctx.currentTime;
     this.pose = { x: player.x, y: player.y, fx: Math.cos(player.yaw), fy: Math.sin(player.yaw) };
@@ -322,7 +299,10 @@ export class EnemyAudio {
     this.subtitles = [];
     for (const sound of [...this.active]) {
       const enemy = byId.get(sound.id);
-      if (t >= sound.end || (!sound.line && (!enemy || enemy.hp <= 0 || enemy.skin !== sound.skin))) {
+      if (
+        t >= sound.end ||
+        (!sound.line && (!enemy || enemy.hp <= 0 || enemy.skin !== sound.skin))
+      ) {
         try {
           sound.source.stop();
         } catch {}
@@ -340,28 +320,5 @@ export class EnemyAudio {
       const chosen = this.director.choose(enemies, this.profiles, t);
       if (chosen) this.speak(chosen.enemy, chosen.profile, chosen.line);
     }
-    for (const enemy of enemies) {
-      if (enemy.hp <= 0) {
-        this.previous.delete(enemy.id);
-        continue;
-      }
-      const previous = this.previous.get(enemy.id);
-      const nonverbal = [2, 6, 9, 10, 11].includes(enemy.skin);
-      if (
-        previous &&
-        ((enemy.anim === 3 && previous.anim !== 3) ||
-          enemy.hp < previous.hp ||
-          (nonverbal && enemy.sight && t > previous.next))
-      ) {
-        this.enemySound(enemy, enemy.hp < previous.hp);
-        previous.next = t + 4 + (enemy.id % 4);
-      }
-      this.previous.set(enemy.id, {
-        hp: enemy.hp,
-        anim: enemy.anim,
-        next: previous?.next ?? t + 1.5 + (enemy.id % 4),
-      });
-    }
-    for (const id of this.previous.keys()) if (!byId.has(id)) this.previous.delete(id);
   }
 }

@@ -1,0 +1,623 @@
+{
+  "version": 2,
+  "clips": [
+    {
+      "id": "fire0",
+      "url": "/game/sfx/v2/fire0.ogg",
+      "fallback": "/game/sfx/v2/fire0.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire1",
+      "url": "/game/sfx/v2/fire1.ogg",
+      "fallback": "/game/sfx/v2/fire1.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire2",
+      "url": "/game/sfx/v2/fire2.ogg",
+      "fallback": "/game/sfx/v2/fire2.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire3",
+      "url": "/game/sfx/v2/fire3.ogg",
+      "fallback": "/game/sfx/v2/fire3.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire4",
+      "url": "/game/sfx/v2/fire4.ogg",
+      "fallback": "/game/sfx/v2/fire4.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire5",
+      "url": "/game/sfx/v2/fire5.ogg",
+      "fallback": "/game/sfx/v2/fire5.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire6",
+      "url": "/game/sfx/v2/fire6.ogg",
+      "fallback": "/game/sfx/v2/fire6.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire7",
+      "url": "/game/sfx/v2/fire7.ogg",
+      "fallback": "/game/sfx/v2/fire7.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire8",
+      "url": "/game/sfx/v2/fire8.ogg",
+      "fallback": "/game/sfx/v2/fire8.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire9",
+      "url": "/game/sfx/v2/fire9.ogg",
+      "fallback": "/game/sfx/v2/fire9.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire10",
+      "url": "/game/sfx/v2/fire10.ogg",
+      "fallback": "/game/sfx/v2/fire10.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire11",
+      "url": "/game/sfx/v2/fire11.ogg",
+      "fallback": "/game/sfx/v2/fire11.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire12",
+      "url": "/game/sfx/v2/fire12.ogg",
+      "fallback": "/game/sfx/v2/fire12.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire13",
+      "url": "/game/sfx/v2/fire13.ogg",
+      "fallback": "/game/sfx/v2/fire13.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire14",
+      "url": "/game/sfx/v2/fire14.ogg",
+      "fallback": "/game/sfx/v2/fire14.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire15",
+      "url": "/game/sfx/v2/fire15.ogg",
+      "fallback": "/game/sfx/v2/fire15.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire16",
+      "url": "/game/sfx/v2/fire16.ogg",
+      "fallback": "/game/sfx/v2/fire16.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire17",
+      "url": "/game/sfx/v2/fire17.ogg",
+      "fallback": "/game/sfx/v2/fire17.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire18",
+      "url": "/game/sfx/v2/fire18.ogg",
+      "fallback": "/game/sfx/v2/fire18.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire19",
+      "url": "/game/sfx/v2/fire19.ogg",
+      "fallback": "/game/sfx/v2/fire19.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire20",
+      "url": "/game/sfx/v2/fire20.ogg",
+      "fallback": "/game/sfx/v2/fire20.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire21",
+      "url": "/game/sfx/v2/fire21.ogg",
+      "fallback": "/game/sfx/v2/fire21.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire22",
+      "url": "/game/sfx/v2/fire22.ogg",
+      "fallback": "/game/sfx/v2/fire22.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire23",
+      "url": "/game/sfx/v2/fire23.ogg",
+      "fallback": "/game/sfx/v2/fire23.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire24",
+      "url": "/game/sfx/v2/fire24.ogg",
+      "fallback": "/game/sfx/v2/fire24.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire25",
+      "url": "/game/sfx/v2/fire25.ogg",
+      "fallback": "/game/sfx/v2/fire25.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire26",
+      "url": "/game/sfx/v2/fire26.ogg",
+      "fallback": "/game/sfx/v2/fire26.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire27",
+      "url": "/game/sfx/v2/fire27.ogg",
+      "fallback": "/game/sfx/v2/fire27.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire28",
+      "url": "/game/sfx/v2/fire28.ogg",
+      "fallback": "/game/sfx/v2/fire28.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire29",
+      "url": "/game/sfx/v2/fire29.ogg",
+      "fallback": "/game/sfx/v2/fire29.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire30",
+      "url": "/game/sfx/v2/fire30.ogg",
+      "fallback": "/game/sfx/v2/fire30.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire31",
+      "url": "/game/sfx/v2/fire31.ogg",
+      "fallback": "/game/sfx/v2/fire31.mp3",
+      "vocal": false
+    },
+    {
+      "id": "fire32",
+      "url": "/game/sfx/v2/fire32.ogg",
+      "fallback": "/game/sfx/v2/fire32.mp3",
+      "vocal": false
+    },
+    {
+      "id": "mag-out",
+      "url": "/game/sfx/v2/mag-out.ogg",
+      "fallback": "/game/sfx/v2/mag-out.mp3",
+      "vocal": false
+    },
+    {
+      "id": "mag-in",
+      "url": "/game/sfx/v2/mag-in.ogg",
+      "fallback": "/game/sfx/v2/mag-in.mp3",
+      "vocal": false
+    },
+    {
+      "id": "chamber",
+      "url": "/game/sfx/v2/chamber.ogg",
+      "fallback": "/game/sfx/v2/chamber.mp3",
+      "vocal": false
+    },
+    {
+      "id": "shell",
+      "url": "/game/sfx/v2/shell.ogg",
+      "fallback": "/game/sfx/v2/shell.mp3",
+      "vocal": false
+    },
+    {
+      "id": "pump",
+      "url": "/game/sfx/v2/pump.ogg",
+      "fallback": "/game/sfx/v2/pump.mp3",
+      "vocal": false
+    },
+    {
+      "id": "empty",
+      "url": "/game/sfx/v2/empty.ogg",
+      "fallback": "/game/sfx/v2/empty.mp3",
+      "vocal": false
+    },
+    {
+      "id": "cell-out",
+      "url": "/game/sfx/v2/cell-out.ogg",
+      "fallback": "/game/sfx/v2/cell-out.mp3",
+      "vocal": false
+    },
+    {
+      "id": "cell-in",
+      "url": "/game/sfx/v2/cell-in.ogg",
+      "fallback": "/game/sfx/v2/cell-in.mp3",
+      "vocal": false
+    },
+    {
+      "id": "charge",
+      "url": "/game/sfx/v2/charge.ogg",
+      "fallback": "/game/sfx/v2/charge.mp3",
+      "vocal": false
+    },
+    {
+      "id": "equip",
+      "url": "/game/sfx/v2/equip.ogg",
+      "fallback": "/game/sfx/v2/equip.mp3",
+      "vocal": false
+    },
+    {
+      "id": "ui-click",
+      "url": "/game/sfx/v2/ui-click.ogg",
+      "fallback": "/game/sfx/v2/ui-click.mp3",
+      "vocal": false
+    },
+    {
+      "id": "ui-confirm",
+      "url": "/game/sfx/v2/ui-confirm.ogg",
+      "fallback": "/game/sfx/v2/ui-confirm.mp3",
+      "vocal": false
+    },
+    {
+      "id": "ui-back",
+      "url": "/game/sfx/v2/ui-back.ogg",
+      "fallback": "/game/sfx/v2/ui-back.mp3",
+      "vocal": false
+    },
+    {
+      "id": "ui-error",
+      "url": "/game/sfx/v2/ui-error.ogg",
+      "fallback": "/game/sfx/v2/ui-error.mp3",
+      "vocal": false
+    },
+    {
+      "id": "ui-transition",
+      "url": "/game/sfx/v2/ui-transition.ogg",
+      "fallback": "/game/sfx/v2/ui-transition.mp3",
+      "vocal": false
+    },
+    {
+      "id": "pickup-health",
+      "url": "/game/sfx/v2/pickup-health.ogg",
+      "fallback": "/game/sfx/v2/pickup-health.mp3",
+      "vocal": false
+    },
+    {
+      "id": "pickup-armor",
+      "url": "/game/sfx/v2/pickup-armor.ogg",
+      "fallback": "/game/sfx/v2/pickup-armor.mp3",
+      "vocal": false
+    },
+    {
+      "id": "pickup-ammo",
+      "url": "/game/sfx/v2/pickup-ammo.ogg",
+      "fallback": "/game/sfx/v2/pickup-ammo.mp3",
+      "vocal": false
+    },
+    {
+      "id": "pickup-weapon",
+      "url": "/game/sfx/v2/pickup-weapon.ogg",
+      "fallback": "/game/sfx/v2/pickup-weapon.mp3",
+      "vocal": false
+    },
+    {
+      "id": "terminal0",
+      "url": "/game/sfx/v2/terminal0.ogg",
+      "fallback": "/game/sfx/v2/terminal0.mp3",
+      "vocal": false
+    },
+    {
+      "id": "terminal1",
+      "url": "/game/sfx/v2/terminal1.ogg",
+      "fallback": "/game/sfx/v2/terminal1.mp3",
+      "vocal": false
+    },
+    {
+      "id": "terminal2",
+      "url": "/game/sfx/v2/terminal2.ogg",
+      "fallback": "/game/sfx/v2/terminal2.mp3",
+      "vocal": false
+    },
+    {
+      "id": "door",
+      "url": "/game/sfx/v2/door.ogg",
+      "fallback": "/game/sfx/v2/door.mp3",
+      "vocal": false
+    },
+    {
+      "id": "explosion",
+      "url": "/game/sfx/v2/explosion.ogg",
+      "fallback": "/game/sfx/v2/explosion.mp3",
+      "vocal": false
+    },
+    {
+      "id": "hit-metal",
+      "url": "/game/sfx/v2/hit-metal.ogg",
+      "fallback": "/game/sfx/v2/hit-metal.mp3",
+      "vocal": false
+    },
+    {
+      "id": "hit-flesh",
+      "url": "/game/sfx/v2/hit-flesh.ogg",
+      "fallback": "/game/sfx/v2/hit-flesh.mp3",
+      "vocal": false
+    },
+    {
+      "id": "hit-stone",
+      "url": "/game/sfx/v2/hit-stone.ogg",
+      "fallback": "/game/sfx/v2/hit-stone.mp3",
+      "vocal": false
+    },
+    {
+      "id": "break-metal",
+      "url": "/game/sfx/v2/break-metal.ogg",
+      "fallback": "/game/sfx/v2/break-metal.mp3",
+      "vocal": false
+    },
+    {
+      "id": "break-glass",
+      "url": "/game/sfx/v2/break-glass.ogg",
+      "fallback": "/game/sfx/v2/break-glass.mp3",
+      "vocal": false
+    },
+    {
+      "id": "break-wood",
+      "url": "/game/sfx/v2/break-wood.ogg",
+      "fallback": "/game/sfx/v2/break-wood.mp3",
+      "vocal": false
+    },
+    {
+      "id": "body-thud",
+      "url": "/game/sfx/v2/body-thud.ogg",
+      "fallback": "/game/sfx/v2/body-thud.mp3",
+      "vocal": false
+    },
+    {
+      "id": "pain-human0",
+      "url": "/game/sfx/v2/pain-human0.ogg",
+      "fallback": "/game/sfx/v2/pain-human0.mp3",
+      "vocal": true
+    },
+    {
+      "id": "death-human0",
+      "url": "/game/sfx/v2/death-human0.ogg",
+      "fallback": "/game/sfx/v2/death-human0.mp3",
+      "vocal": true
+    },
+    {
+      "id": "pain-creature0",
+      "url": "/game/sfx/v2/pain-creature0.ogg",
+      "fallback": "/game/sfx/v2/pain-creature0.mp3",
+      "vocal": true
+    },
+    {
+      "id": "death-creature0",
+      "url": "/game/sfx/v2/death-creature0.ogg",
+      "fallback": "/game/sfx/v2/death-creature0.mp3",
+      "vocal": true
+    },
+    {
+      "id": "pain-robot0",
+      "url": "/game/sfx/v2/pain-robot0.ogg",
+      "fallback": "/game/sfx/v2/pain-robot0.mp3",
+      "vocal": false
+    },
+    {
+      "id": "death-robot0",
+      "url": "/game/sfx/v2/death-robot0.ogg",
+      "fallback": "/game/sfx/v2/death-robot0.mp3",
+      "vocal": false
+    },
+    {
+      "id": "foot-concrete0",
+      "url": "/game/sfx/v2/foot-concrete0.ogg",
+      "fallback": "/game/sfx/v2/foot-concrete0.mp3",
+      "vocal": false
+    },
+    {
+      "id": "foot-metal0",
+      "url": "/game/sfx/v2/foot-metal0.ogg",
+      "fallback": "/game/sfx/v2/foot-metal0.mp3",
+      "vocal": false
+    },
+    {
+      "id": "foot-soft0",
+      "url": "/game/sfx/v2/foot-soft0.ogg",
+      "fallback": "/game/sfx/v2/foot-soft0.mp3",
+      "vocal": false
+    },
+    {
+      "id": "pain-human1",
+      "url": "/game/sfx/v2/pain-human1.ogg",
+      "fallback": "/game/sfx/v2/pain-human1.mp3",
+      "vocal": true
+    },
+    {
+      "id": "death-human1",
+      "url": "/game/sfx/v2/death-human1.ogg",
+      "fallback": "/game/sfx/v2/death-human1.mp3",
+      "vocal": true
+    },
+    {
+      "id": "pain-creature1",
+      "url": "/game/sfx/v2/pain-creature1.ogg",
+      "fallback": "/game/sfx/v2/pain-creature1.mp3",
+      "vocal": true
+    },
+    {
+      "id": "death-creature1",
+      "url": "/game/sfx/v2/death-creature1.ogg",
+      "fallback": "/game/sfx/v2/death-creature1.mp3",
+      "vocal": true
+    },
+    {
+      "id": "pain-robot1",
+      "url": "/game/sfx/v2/pain-robot1.ogg",
+      "fallback": "/game/sfx/v2/pain-robot1.mp3",
+      "vocal": false
+    },
+    {
+      "id": "death-robot1",
+      "url": "/game/sfx/v2/death-robot1.ogg",
+      "fallback": "/game/sfx/v2/death-robot1.mp3",
+      "vocal": false
+    },
+    {
+      "id": "foot-concrete1",
+      "url": "/game/sfx/v2/foot-concrete1.ogg",
+      "fallback": "/game/sfx/v2/foot-concrete1.mp3",
+      "vocal": false
+    },
+    {
+      "id": "foot-metal1",
+      "url": "/game/sfx/v2/foot-metal1.ogg",
+      "fallback": "/game/sfx/v2/foot-metal1.mp3",
+      "vocal": false
+    },
+    {
+      "id": "foot-soft1",
+      "url": "/game/sfx/v2/foot-soft1.ogg",
+      "fallback": "/game/sfx/v2/foot-soft1.mp3",
+      "vocal": false
+    },
+    {
+      "id": "pain-human2",
+      "url": "/game/sfx/v2/pain-human2.ogg",
+      "fallback": "/game/sfx/v2/pain-human2.mp3",
+      "vocal": true
+    },
+    {
+      "id": "death-human2",
+      "url": "/game/sfx/v2/death-human2.ogg",
+      "fallback": "/game/sfx/v2/death-human2.mp3",
+      "vocal": true
+    },
+    {
+      "id": "pain-creature2",
+      "url": "/game/sfx/v2/pain-creature2.ogg",
+      "fallback": "/game/sfx/v2/pain-creature2.mp3",
+      "vocal": true
+    },
+    {
+      "id": "death-creature2",
+      "url": "/game/sfx/v2/death-creature2.ogg",
+      "fallback": "/game/sfx/v2/death-creature2.mp3",
+      "vocal": true
+    },
+    {
+      "id": "pain-robot2",
+      "url": "/game/sfx/v2/pain-robot2.ogg",
+      "fallback": "/game/sfx/v2/pain-robot2.mp3",
+      "vocal": false
+    },
+    {
+      "id": "death-robot2",
+      "url": "/game/sfx/v2/death-robot2.ogg",
+      "fallback": "/game/sfx/v2/death-robot2.mp3",
+      "vocal": false
+    },
+    {
+      "id": "foot-concrete2",
+      "url": "/game/sfx/v2/foot-concrete2.ogg",
+      "fallback": "/game/sfx/v2/foot-concrete2.mp3",
+      "vocal": false
+    },
+    {
+      "id": "foot-metal2",
+      "url": "/game/sfx/v2/foot-metal2.ogg",
+      "fallback": "/game/sfx/v2/foot-metal2.mp3",
+      "vocal": false
+    },
+    {
+      "id": "foot-soft2",
+      "url": "/game/sfx/v2/foot-soft2.ogg",
+      "fallback": "/game/sfx/v2/foot-soft2.mp3",
+      "vocal": false
+    },
+    {
+      "id": "hazard-electric",
+      "url": "/game/sfx/v2/hazard-electric.ogg",
+      "fallback": "/game/sfx/v2/hazard-electric.mp3",
+      "vocal": false
+    },
+    {
+      "id": "hazard-pressure",
+      "url": "/game/sfx/v2/hazard-pressure.ogg",
+      "fallback": "/game/sfx/v2/hazard-pressure.mp3",
+      "vocal": false
+    },
+    {
+      "id": "hazard-acid",
+      "url": "/game/sfx/v2/hazard-acid.ogg",
+      "fallback": "/game/sfx/v2/hazard-acid.mp3",
+      "vocal": false
+    },
+    {
+      "id": "hazard-cryo",
+      "url": "/game/sfx/v2/hazard-cryo.ogg",
+      "fallback": "/game/sfx/v2/hazard-cryo.mp3",
+      "vocal": false
+    },
+    {
+      "id": "hazard-ember",
+      "url": "/game/sfx/v2/hazard-ember.ogg",
+      "fallback": "/game/sfx/v2/hazard-ember.mp3",
+      "vocal": false
+    },
+    {
+      "id": "hazard-phase",
+      "url": "/game/sfx/v2/hazard-phase.ogg",
+      "fallback": "/game/sfx/v2/hazard-phase.mp3",
+      "vocal": false
+    },
+    {
+      "id": "hazard-magnetic",
+      "url": "/game/sfx/v2/hazard-magnetic.ogg",
+      "fallback": "/game/sfx/v2/hazard-magnetic.mp3",
+      "vocal": false
+    },
+    {
+      "id": "hazard-biological",
+      "url": "/game/sfx/v2/hazard-biological.ogg",
+      "fallback": "/game/sfx/v2/hazard-biological.mp3",
+      "vocal": false
+    },
+    {
+      "id": "travel-rocket",
+      "url": "/game/sfx/v2/travel-rocket.ogg",
+      "fallback": "/game/sfx/v2/travel-rocket.mp3",
+      "vocal": false
+    },
+    {
+      "id": "travel-energy",
+      "url": "/game/sfx/v2/travel-energy.ogg",
+      "fallback": "/game/sfx/v2/travel-energy.mp3",
+      "vocal": false
+    },
+    {
+      "id": "travel-acid",
+      "url": "/game/sfx/v2/travel-acid.ogg",
+      "fallback": "/game/sfx/v2/travel-acid.mp3",
+      "vocal": false
+    },
+    {
+      "id": "travel-flame",
+      "url": "/game/sfx/v2/travel-flame.ogg",
+      "fallback": "/game/sfx/v2/travel-flame.mp3",
+      "vocal": false
+    }
+  ]
+}

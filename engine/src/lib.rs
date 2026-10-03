@@ -2,6 +2,7 @@ mod combat;
 mod campaign;
 mod field;
 mod voices;
+mod sound;
 mod consts;
 mod enemies;
 mod events;
@@ -104,6 +105,8 @@ struct Engine {
     use_latched: bool,
     reload_latched: bool,
     wpn_latched: u32,
+    sound_cues: Vec<sound::SoundCue>,
+    sound_loops: Vec<sound::SoundCue>,
     events: u32,
     ev_weapon: i32,
     foot_acc: f32,
@@ -545,6 +548,8 @@ impl Engine {
             use_latched: false,
             reload_latched: false,
             wpn_latched: 0,
+            sound_cues: Vec::with_capacity(sound::CAP),
+            sound_loops: Vec::with_capacity(sound::CAP),
             events: 0,
             ev_weapon: 0,
             foot_acc: 0.0,
@@ -774,7 +779,7 @@ impl Engine {
                 }
             }
         }
-        if stage == 1 { self.events |= EV_BOSS_HUSH; } else { self.events |= EV_DOOR; }
+        if stage == 1 { self.events |= EV_BOSS_HUSH; } else { self.events |= EV_DOOR; self.sound(1, 0, x, y); }
     }
 
     fn room(&mut self, x: i32, y: i32, w: i32, h: i32, wall: u8, fl: u8) {
@@ -1317,6 +1322,7 @@ impl Engine {
             self.ents[i].flash = 0.15;
             self.light_dirty = true;
             self.events |= EV_HIT;
+            self.sound(3, 0, self.ents[i].x, self.ents[i].y);
             return;
         }
         if let Some(i) = self.facing_prop(EK_CRATE, 1.8) {
@@ -1358,6 +1364,7 @@ impl Engine {
             }
             let idx = y as usize * MAP_W + x as usize;
             if idx < self.door.len() {
+                if self.door[idx] > 0.05 {self.sound(1, 1, x as f32 + 0.5, y as f32 + 0.5);}
                 self.door[idx] = 0.0;
             }
         }
@@ -1424,6 +1431,7 @@ impl Engine {
     }
 
     fn campaign_impact(&mut self, x: f32, y: f32, variant: usize) {
+        self.sound(13, (variant % 4) as u8, x, y);
         if let Some(i) = self.spawn(EK_IMPACT, x, y) {
             self.ents[i].skin = 200 + (variant % 4) as u8;
             self.ents[i].timer = 0.34;
@@ -1564,6 +1572,7 @@ impl Engine {
         self.weapon = slot as i32;
         self.reload_t = 0.0;
         self.events |= EV_PICK_GOLD;
+        self.sound(11, 0, self.px, self.py);
     }
 
     /// QA-only full heal so long single-page smokes don't die mid-run.
@@ -1682,7 +1691,14 @@ impl Engine {
         self.fx_n = 0;
     }
 
+    fn sound(&mut self, kind: u8, variant: u8, x: f32, y: f32) {
+        if self.sound_cues.len() < sound::CAP {
+            self.sound_cues.push(sound::SoundCue {kind: kind as f32, variant: variant as f32, x, y});
+        }
+    }
+
     fn effect(&mut self, kind: u8, variant: u8, x: f32, y: f32, life: f32, zoff: f32) {
+        if kind == EK_IMPACT && variant != 2 { self.sound(13, variant, x, y); }
         let slot = self.fx_n;
         self.spawn_timed(kind, x, y, life, zoff);
         if self.fx_n > slot { self.fx_q[slot].variant = variant; }
@@ -1962,6 +1978,7 @@ impl Engine {
             }
             if let Some(i) = self.spawn_with_skin(EK_BOSS, map::boss_skin(self.wave), x, y) {
                 self.ents[i].hp = hp;
+                self.sound(2, 0, x, y);
                 if matches!(map::level_index(self.wave), 5 | 6) {
                     // The Archivist opens behind a breakable directional
                     // memory shield; flanking or sustained fire strips it.
@@ -2366,6 +2383,7 @@ impl Engine {
             return false;
         }
         self.door[idx] = 0.06;
+        self.sound(1, 0, cx as f32 + 0.5, cy as f32 + 0.5);
         self.events |= EV_DOOR;
         if c == 9 {
             self.secrets += 1;
@@ -2446,6 +2464,7 @@ impl Engine {
     }
 
     fn explode(&mut self, x: f32, y: f32, radius: f32, dmg: f32) {
+        self.sound(2, 0, x, y);
         self.effect(EK_IMPACT, 2, x, y, 0.38, 10.0);
         self.spawn_smoke_cloud(x, y);
         self.shake = (self.shake + 0.8).min(1.0);
@@ -2484,6 +2503,10 @@ impl Engine {
         if self.ents[i].kind == 0 || self.ents[i].hp <= 0 {
             return;
         }
+        let target = self.ents[i];
+        let metal = target.armor_hp > 0 || target.shield_hp > 0 ||
+            !is_hostile_kind(target.kind) || matches!(target.skin, 5 | 8 | 11 | 13 | 15..=20 | 22..=27 | 29..=36);
+        self.sound(if metal {3} else {4}, 0, target.x, target.y);
         // A shot or a USE shuts the lamp. It stays in the world, dark.
         if self.ents[i].kind == EK_LAMP {
             self.ents[i].timer = -1.0;
@@ -2579,6 +2602,9 @@ impl Engine {
         } else if kind == EK_MARTYR {
             self.light_dirty = true;
             self.explode(x, y, 2.6, 55.0);
+        }
+        if !is_hostile_kind(kind) && kind != EK_BARREL {
+            self.sound(if kind == EK_CRATE && !(150..=224).contains(&skin) {7} else if kind == EK_LAMP || kind == EK_PROP_SERVER {5} else {6}, 0, x, y);
         }
         if kind == EK_CRATE {
             if (150..=224).contains(&skin) {
@@ -2774,6 +2800,7 @@ impl Engine {
             self.reload_t = 0.0;
         }
         if self.mag[w] <= 0 {
+            self.sound(21, w as u8, self.px, self.py);
             self.cooldown = 0.22;
             return;
         }
@@ -3054,6 +3081,7 @@ impl Engine {
     }
 
     fn chimera_burst(&mut self, x: f32, y: f32) {
+        self.sound(2, 3, x, y);
         // Allied blast: enemies only. The pool is the same.
         self.effect(EK_IMPACT, 3, x, y, 0.38, 10.0);
         self.spawn_smoke_cloud(x, y);
@@ -3091,6 +3119,7 @@ impl Engine {
 
     /// Damage the player and hostiles standing in a live flame.
     fn burn_at(&mut self, x: f32, y: f32, dmg: i32, hurt_player: bool) {
+        if (self.px-x).powi(2) + (self.py-y).powi(2) < 64.0 { self.sound(12, 0, x, y); }
         let pd = (self.px - x).powi(2) + (self.py - y).powi(2);
         if hurt_player && pd < 0.9 * 0.9 && self.los(x, y, self.px, self.py) {
             self.damage_player(dmg);
@@ -3155,6 +3184,7 @@ impl Engine {
     }
 
     fn pickup(&mut self, kind: u8) {
+        self.sound(match kind { EK_MED => 8, EK_ARMOR => 9, EK_AMMO => 10, _ => 11 }, 0, self.px, self.py);
         if kind == EK_AMMO {
             for slot in 19..WEP_N {
                 if self.owns_slot(slot) { self.ammo[slot] = (self.ammo[slot] + MAG_SZ[slot] * 2).min(MAG_SZ[slot] * 6); }
@@ -3324,6 +3354,7 @@ impl Engine {
             }
         }
         self.events = 0;
+        self.sound_cues.clear();
         self.ev_weapon = 0;
         if self.state == 0 {
             self.elapsed += dt;
@@ -5166,6 +5197,34 @@ fn gpu_scratch() -> &'static mut GpuScratch {
         G.as_mut().unwrap_unchecked()
     }
 }
+
+#[no_mangle]
+pub extern "C" fn hs_sound_count() -> i32 { eng().sound_cues.len() as i32 }
+#[no_mangle]
+pub extern "C" fn hs_sound_cues() -> *const sound::SoundCue { eng().sound_cues.as_ptr() }
+
+/// Read-only spatial loop snapshot; disappearing entities stop their own sound.
+#[no_mangle]
+pub extern "C" fn hs_prepare_sound_loops() -> i32 {
+    let e = eng(); e.sound_loops.clear();
+    for (id, ent) in e.ents.iter().enumerate() {
+        if (ent.x-e.px).powi(2) + (ent.y-e.py).powi(2) > 100.0 { continue; }
+        let kind = match ent.kind {
+            EK_BOLT => 14,
+            EK_PROJ if matches!(ent.skin, 120 | 129 | 208 | 216 | 225 | 229) => 14,
+            EK_PROJ if ent.effect_tick == 3.0 || matches!(ent.skin, 110 | 114 | 128 | 233) => 16,
+            EK_PROJ => 15,
+            EK_FIREPATCH if ent.timer > 0.0 => 17,
+            _ => continue,
+        };
+        if e.sound_loops.len() < sound::CAP {
+            e.sound_loops.push(sound::SoundCue {kind: kind as f32, variant:id as f32, x:ent.x, y:ent.y});
+        }
+    }
+    e.sound_loops.len() as i32
+}
+#[no_mangle]
+pub extern "C" fn hs_sound_loops() -> *const sound::SoundCue { eng().sound_loops.as_ptr() }
 
 #[no_mangle]
 pub extern "C" fn hs_prepare_enemies() -> i32 {
@@ -7250,5 +7309,46 @@ mod tests {
         for _ in 0..40 { e.tick(1.0 / 60.0); }
         assert_eq!(e.health, 100, "the specimen fan must not kill its owner");
         assert!(e.ents[target].hp < 80, "the fan still damages the target");
+    }
+}
+
+#[cfg(test)]
+mod sound_tests {
+    use super::*;
+    fn arena() -> Engine {
+        let mut e = Engine::new(160, 100); e.map.fill(0);
+        for ent in &mut e.ents {ent.kind = EK_NONE;}
+        e.px = 4.5; e.py = 4.5; e.sound_cues.clear(); e
+    }
+    #[test]
+    fn sound_abi_and_queue_are_bounded() {
+        assert_eq!(std::mem::size_of::<sound::SoundCue>(),16);
+        let mut e = arena();
+        for n in 0..100 {e.sound(3,0,n as f32,4.0);}
+        assert_eq!(e.sound_cues.len(),sound::CAP);
+        assert_eq!(e.sound_cues[0].x,0.0);
+        assert_eq!(e.sound_cues[sound::CAP-1].x,63.0);
+        e.tick(1.0/60.0); assert!(e.sound_cues.is_empty());
+    }
+    #[test]
+    fn world_events_preserve_material_position_and_pickup_type() {
+        let mut e=arena(); e.map[4*MAP_W+6]=8;
+        assert!(e.open_door_at(6,4,false));
+        assert_eq!(e.sound_cues[0].kind,1.0); assert_eq!(e.sound_cues[0].x,6.5);
+        assert!(!e.open_door_at(6,4,false));assert_eq!(e.sound_cues.len(),1);
+        for (kind,sound) in [(EK_MED,8.0),(EK_ARMOR,9.0),(EK_AMMO,10.0)] {
+            e.pickup(kind);assert_eq!(e.sound_cues.last().unwrap().kind,sound);
+        }
+        let i=e.spawn_with_skin(EK_HUSK,SKIN_RIFLEMAN,8.5,4.5).unwrap();
+        e.hurt_ent(i,1,4.5,4.5); assert!(e.sound_cues.iter().any(|s|s.kind==4.0&&s.x==8.5));
+        let i=e.spawn_with_skin(EK_BRUTE,SKIN_LOADER,9.5,4.5).unwrap();
+        e.hurt_ent(i,1,4.5,4.5);assert!(e.sound_cues.iter().any(|s|s.kind==3.0&&s.x==9.5));
+        e.explode(7.0,5.0,1.0,1.0);assert!(e.sound_cues.iter().any(|s|s.kind==2.0&&s.x==7.0&&s.y==5.0));
+    }
+    #[test]
+    fn scenery_destruction_is_not_an_enemy_death_voice() {
+        let mut e=arena();let i=e.spawn(EK_CRATE,8.5,4.5).unwrap();
+        e.hurt_ent(i,10000,4.5,4.5);
+        assert!(e.sound_cues.iter().any(|s|s.kind==7.0&&s.x==8.5));
     }
 }

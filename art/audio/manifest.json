@@ -1,0 +1,2963 @@
+{
+  "version": 2,
+  "license": "CC0-1.0",
+  "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "packs": {
+    "firearms": {
+      "url": "https://opengameart.org/content/the-free-firearm-sound-library",
+      "creator": "Ben Jaszczak, Brian Nelson, Kevin Heras, Matthew Nanney",
+      "license": "CC0-1.0"
+    },
+    "handling": {
+      "url": "https://opengameart.org/content/gun-reload-sounds",
+      "creator": "SpringySpringo",
+      "license": "CC0-1.0"
+    },
+    "interface": {
+      "url": "https://kenney.nl/assets/interface-sounds",
+      "creator": "Kenney",
+      "license": "CC0-1.0"
+    },
+    "impacts": {
+      "url": "https://kenney.nl/assets/impact-sounds",
+      "creator": "Kenney",
+      "license": "CC0-1.0"
+    },
+    "footsteps": {
+      "url": "https://kenney.nl/assets/rpg-audio",
+      "creator": "Kenney",
+      "license": "CC0-1.0"
+    },
+    "mechanical-fx": {
+      "url": "https://kenney.nl/assets/sci-fi-sounds",
+      "creator": "Kenney",
+      "license": "CC0-1.0"
+    },
+    "human": {
+      "url": "https://opengameart.org/content/15-vocal-male-strainhurtpainjump-sounds",
+      "creator": "qubodup",
+      "license": "CC0-1.0"
+    },
+    "creature": {
+      "url": "https://opengameart.org/content/80-cc0-creature-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0"
+    },
+    "terminals": {
+      "url": "https://opengameart.org/content/50-cc0-sci-fi-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0"
+    }
+  },
+  "sources": {
+    "firearms/R_35P.wav": {
+      "pack": "firearms",
+      "originalPath": "extracted/Prepared SFX Library/Ruger Mark III/R_35P.wav",
+      "sha256": "9ae9b13cb414bbfa2d12ee9321fc79c508a9cf25bde6e916c153e86965a600d5"
+    },
+    "handling/gunreload1.wav": {
+      "pack": "handling",
+      "originalPath": "gunreload1.wav",
+      "sha256": "685cac6a184e3cc3ec09a25b6ddb1d6feffd86d469778f339aa423d384035c50"
+    },
+    "firearms/N_30P.wav": {
+      "pack": "firearms",
+      "originalPath": "extracted/Prepared SFX Library/Mossberg/N_30P.wav",
+      "sha256": "b5a28243e16f8cb10adfc5225d96e90f108d24393fcfffcaa6dcf203af03634a"
+    },
+    "handling/shotguncock_0.wav": {
+      "pack": "handling",
+      "originalPath": "shotguncock_0.wav",
+      "sha256": "33e007321ba83301c861aef573f2c40b70bc62f8f24c0164877e6dd123e24371"
+    },
+    "firearms/G_31P.wav": {
+      "pack": "firearms",
+      "originalPath": "extracted/Prepared SFX Library/Carl Gustav M45/G_31P.wav",
+      "sha256": "5982c6c2fa44545b750ba6217ed57797a6a15c02f5c9943ac0e99e5f3ab2b158"
+    },
+    "firearms/T_27P.wav": {
+      "pack": "firearms",
+      "originalPath": "extracted/Prepared SFX Library/Savage 10 .300 Blackout/T_27P.wav",
+      "sha256": "92296c320f7854da29ff28d1687da21a110cb1242bb03e5e1e62f6a4e7f79f3b"
+    },
+    "mechanical-fx/laserSmall_002.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/laserSmall_002.ogg",
+      "sha256": "e70139466c3e801358c9041ee17db7ff82c0e9a9cdf44647ad0ea6b9f8458f63"
+    },
+    "impacts/impactPlate_heavy_000.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactPlate_heavy_000.ogg",
+      "sha256": "112d4f93ddcc370b410630f971c0f5d991856102da9c76bc5c5540d388e75aaa"
+    },
+    "terminals/rocket_01.ogg": {
+      "pack": "terminals",
+      "originalPath": "extracted/rocket_01.ogg",
+      "sha256": "9b1935d00fdbb7b1797b1d10347d26830d5707fef705c84d9cf919628e06f5a9"
+    },
+    "mechanical-fx/laserLarge_001.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/laserLarge_001.ogg",
+      "sha256": "e678aca631495b7dfef4ac625f0349875ccac81a60f538d530e072241af3e4bd"
+    },
+    "terminals/shoot_02.ogg": {
+      "pack": "terminals",
+      "originalPath": "extracted/shoot_02.ogg",
+      "sha256": "8062c456a8319620918847c16703d8ddd882f688a646ff1a35db48bd172c847e"
+    },
+    "firearms/C_28P.wav": {
+      "pack": "firearms",
+      "originalPath": "extracted/Prepared SFX Library/AK-47/C_28P.wav",
+      "sha256": "e0934c1d79192d2216db62fdf6ab57bf9d5d585267af367a1cfb21f0972a537d"
+    },
+    "impacts/impactMetal_medium_000.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactMetal_medium_000.ogg",
+      "sha256": "a96f879fec0864a8938e0c745b6996a6c5679c16a234ce31a01cc995e8401003"
+    },
+    "mechanical-fx/thrusterFire_000.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/thrusterFire_000.ogg",
+      "sha256": "0fdc474d93f209debf1fc4ea77765a669dcb7676db31b4d8a0a509685bccf374"
+    },
+    "mechanical-fx/spaceEngineLow_000.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/spaceEngineLow_000.ogg",
+      "sha256": "d7deee8d7217ce63aab802ad7365a59cacfd243392dc1bd03b0a9d454aa494df"
+    },
+    "mechanical-fx/laserLarge_000.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/laserLarge_000.ogg",
+      "sha256": "a56d95794cd732d6c2d66ce488c14cf557fe526c282897c9a77675c2bd9b77e6"
+    },
+    "firearms/W_29P.wav": {
+      "pack": "firearms",
+      "originalPath": "extracted/Prepared SFX Library/Tikka/W_29P.wav",
+      "sha256": "b1ffe3c104391bf8ceb8337aa4d5a2ca47938fb88ccbd051cdd2b2e205d9e72b"
+    },
+    "mechanical-fx/laserLarge_002.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/laserLarge_002.ogg",
+      "sha256": "e5e0b6ccc4d5720c8174a3e5b7cc6f9be3057352a89cbb2e99a00efc6fe5cc11"
+    },
+    "impacts/impactMining_002.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactMining_002.ogg",
+      "sha256": "059558ec751115ca6b1441e00f0adc837c1a3eeb0a066b109e0fd879fc5d0b0c"
+    },
+    "creature/spit_01.ogg": {
+      "pack": "creature",
+      "originalPath": "extracted/spit_01.ogg",
+      "sha256": "11185484afda924711008f5e565d0baa5ebb271457c028b7e19b9ed487f8c6bd"
+    },
+    "mechanical-fx/slime_000.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/slime_000.ogg",
+      "sha256": "480ee82b690136ea9db6966a3c3033356b8274752795c4e37afd6b6defcfacff"
+    },
+    "mechanical-fx/laserSmall_004.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/laserSmall_004.ogg",
+      "sha256": "a464e34436f3c2a09f0e3a03dc0658a9036148062bbf293722007df4cfd8ff08"
+    },
+    "impacts/impactTin_medium_000.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactTin_medium_000.ogg",
+      "sha256": "f4bbee66ca191ec744b84fc07ac9ed2a6fda955d51cfed8360f12b62815d3cbd"
+    },
+    "mechanical-fx/laserSmall_001.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/laserSmall_001.ogg",
+      "sha256": "ab87913aba9790a0c5fa173d086267ba521ad522fcad2252271db49988313cf5"
+    },
+    "mechanical-fx/laserSmall_003.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/laserSmall_003.ogg",
+      "sha256": "cfa4391ca280933f567ce81c646b16f7cb2a090866eae674159a20f07641833c"
+    },
+    "mechanical-fx/explosionCrunch_001.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/explosionCrunch_001.ogg",
+      "sha256": "fdd04d6f0032d4d57c134ad37f3587d2d00e58c9572715275bd8cf4f43593576"
+    },
+    "impacts/impactPlate_heavy_002.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactPlate_heavy_002.ogg",
+      "sha256": "b0cab75d1befa32b4cf215d8ee7e1c400a39182e8b105963b8e310f825b198a1"
+    },
+    "mechanical-fx/laserSmall_000.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/laserSmall_000.ogg",
+      "sha256": "72b589eadd41781257ac859e4f4d030222e623390e4a1a83f6d05329a6e026f1"
+    },
+    "impacts/impactGlass_light_000.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactGlass_light_000.ogg",
+      "sha256": "d750cf88097d0c3e69920e6e14496e1444e1a9da01aa4cca8f5ec8cb44c57b4f"
+    },
+    "firearms/D_24P.wav": {
+      "pack": "firearms",
+      "originalPath": "extracted/Prepared SFX Library/AR-15/D_24P.wav",
+      "sha256": "4c6a54ca0583150bbb32b7f658bc64da9ad9ba42fd3aca769c6120b44af8d3f0"
+    },
+    "terminals/terminal_02.ogg": {
+      "pack": "terminals",
+      "originalPath": "extracted/terminal_02.ogg",
+      "sha256": "a670c982772dc3bbd8b0c3c1a876713fb488e412b556e571852c3f741e37bc92"
+    },
+    "mechanical-fx/explosionCrunch_000.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/explosionCrunch_000.ogg",
+      "sha256": "4b597d658d0ae101f0a030fbeea5fc3a4292ab85f017470a8254a8e7959cbd69"
+    },
+    "impacts/impactMetal_heavy_000.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactMetal_heavy_000.ogg",
+      "sha256": "e07045693e4a2b3d165c424e3dab4c781d9ff8880a386880ac89a51315d7f831"
+    },
+    "firearms/D_32P.wav": {
+      "pack": "firearms",
+      "originalPath": "extracted/Prepared SFX Library/AR-15/D_32P.wav",
+      "sha256": "acee9d2106b68fe5956225a19d7aedf943d97793817f9bda9d486a2b74b0a812"
+    },
+    "firearms/U_19P.wav": {
+      "pack": "firearms",
+      "originalPath": "extracted/Prepared SFX Library/SKS/U_19P.wav",
+      "sha256": "90078733c0821922073717a0a656919227ba381e794f70a43a35df9cb4f3a445"
+    },
+    "firearms/C_27P.wav": {
+      "pack": "firearms",
+      "originalPath": "extracted/Prepared SFX Library/AK-47/C_27P.wav",
+      "sha256": "c61948fe17d7c0e4f4146dff52a70943686fe901da58d14bfe2f097e3a12d70f"
+    },
+    "mechanical-fx/laserLarge_003.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/laserLarge_003.ogg",
+      "sha256": "3c7b3c9d856ee31fa1b92d29322f6ee472446627381595baeaba2af35c07135f"
+    },
+    "terminals/teleport_01.ogg": {
+      "pack": "terminals",
+      "originalPath": "extracted/teleport_01.ogg",
+      "sha256": "88d1d00c7d9180c6afd273cf19ee047ad072c112a5e4df17e2b55c0e5c767706"
+    },
+    "mechanical-fx/thrusterFire_002.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/thrusterFire_002.ogg",
+      "sha256": "5f7731c30196d73777d62eec7cb36a28bf63852e70244057b7625b888e71a3a8"
+    },
+    "impacts/impactPlate_medium_000.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactPlate_medium_000.ogg",
+      "sha256": "b670d30452983369771081319c268475edaaafe782bf4e8d70bd7eef09d8823c"
+    },
+    "impacts/impactPlate_heavy_004.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactPlate_heavy_004.ogg",
+      "sha256": "e31bfec90630155bcc6af541d1d14ae8202c435c52b42e6b6183fdb6ffb248b0"
+    },
+    "mechanical-fx/spaceEngineSmall_000.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/spaceEngineSmall_000.ogg",
+      "sha256": "2bec8ff75d81f0c37a6b78bd63beea6c70375e49ee30b0bbe7f38d654d576831"
+    },
+    "terminals/shoot_01.ogg": {
+      "pack": "terminals",
+      "originalPath": "extracted/shoot_01.ogg",
+      "sha256": "f876dbfad8eabafd913e4cd9c174a2deff342f383a772ee34140b9a1994d26f4"
+    },
+    "mechanical-fx/forceField_000.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/forceField_000.ogg",
+      "sha256": "c2916f2a062c8ddd1aca2826d134fe90847037db31342726ffb0f9097afe339c"
+    },
+    "impacts/impactMetal_heavy_002.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactMetal_heavy_002.ogg",
+      "sha256": "b914c8f1eb7c0f34bb165d7c77f4be0351f6be0660c13c53e65424e262e2c093"
+    },
+    "creature/bug_02.ogg": {
+      "pack": "creature",
+      "originalPath": "extracted/bug_02.ogg",
+      "sha256": "7993707dcb082c4f9f297bec44f8aa276988d848f4cf10ea6046c1c45daee518"
+    },
+    "mechanical-fx/spaceEngineSmall_001.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/spaceEngineSmall_001.ogg",
+      "sha256": "a87d5d8b2233f7bd803df78927b52c27be251e8d1354c6cc9ea00ce26215e3da"
+    },
+    "creature/spit_03.ogg": {
+      "pack": "creature",
+      "originalPath": "extracted/spit_03.ogg",
+      "sha256": "dcc68b992278e58fc51776b23b4cf04a28f7d660c58fd5514b35cb3f0936277c"
+    },
+    "creature/burble_01.ogg": {
+      "pack": "creature",
+      "originalPath": "extracted/burble_01.ogg",
+      "sha256": "f4c27a1839ef9e82d29e1bb175c0ebf73c65b6839b2914108d0c219fc1f42445"
+    },
+    "impacts/impactMetal_heavy_004.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactMetal_heavy_004.ogg",
+      "sha256": "6d65b463c0555dd5be16b8db6d2cbe23a94e07a4637779b8ad17d0db3e500a87"
+    },
+    "mechanical-fx/thrusterFire_001.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/thrusterFire_001.ogg",
+      "sha256": "924636edc923fe4aab5829b69dc5dc1c5d659dec5739865434dabee752a3bb79"
+    },
+    "firearms/P_18P.wav": {
+      "pack": "firearms",
+      "originalPath": "extracted/Prepared SFX Library/PPSh/P_18P.wav",
+      "sha256": "e8649d28dfc629354af1eb25dc8765d460d8d15f8cd968c316f41ca6e876f4de"
+    },
+    "impacts/impactTin_medium_002.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactTin_medium_002.ogg",
+      "sha256": "c1d2c4f9910d4529581ae56a9a9a01454c4619fbb7d6da7616221d8ec58cc0c4"
+    },
+    "terminals/teleport_02.ogg": {
+      "pack": "terminals",
+      "originalPath": "extracted/teleport_02.ogg",
+      "sha256": "1776e7df75bad4b5eacae95b9f7075a0a789fbd08f1954e7651c90ac17203e4b"
+    },
+    "mechanical-fx/laserLarge_004.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/laserLarge_004.ogg",
+      "sha256": "86c749483b40e1bba9bfea6a04e884d479e5481e52efb6f113341141de516b3b"
+    },
+    "impacts/impactBell_heavy_000.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactBell_heavy_000.ogg",
+      "sha256": "94b8bb5f2d43ab65e4bcc32b28562416e9bc2c51d9fd4be1e333660ee52f977f"
+    },
+    "mechanical-fx/spaceEngineLow_002.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/spaceEngineLow_002.ogg",
+      "sha256": "3b1adf8645a40c35fcad25eee224c82c9836dc443102a9af5586eb22cbedabcc"
+    },
+    "impacts/impactGlass_medium_000.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactGlass_medium_000.ogg",
+      "sha256": "9252d50bfb85edb17d6073c4a7806e10cdb9de56d3dbfc93a4b9727146d2df6d"
+    },
+    "firearms/E_18P.wav": {
+      "pack": "firearms",
+      "originalPath": "extracted/Prepared SFX Library/Arisaka/E_18P.wav",
+      "sha256": "ce83ec421593cf55e6b2598b31cdb414ab5003de4287110de7d3bbc629bc6ea1"
+    },
+    "mechanical-fx/explosionCrunch_004.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/explosionCrunch_004.ogg",
+      "sha256": "9c3a1c73cadf0de5d5a578b31a264f20b1ac7cb6ec9bbd34a203f58402ea5390"
+    },
+    "impacts/impactMetal_heavy_003.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactMetal_heavy_003.ogg",
+      "sha256": "b0f2ba4dabde9a87eb9c188a19d31e0c2300fd321adeba08d3b9b8aa011d7037"
+    },
+    "handling/assaultriflereload1_0.wav": {
+      "pack": "handling",
+      "originalPath": "assaultriflereload1_0.wav",
+      "sha256": "efb2d724d634eabe6ba8d3065686abca848bb7497d4d43a5e4aed5e5ea23016f"
+    },
+    "mechanical-fx/doorClose_000.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/doorClose_000.ogg",
+      "sha256": "c9134651ebbd7c016f90393aee495ff8120bd343bb7569b689a7506987ebd6c2"
+    },
+    "impacts/impactMetal_light_000.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactMetal_light_000.ogg",
+      "sha256": "33b5e6e37c6e9d54e07bf5a89b12c76e879f40c1ea83cdd82714df1d6f9fec6d"
+    },
+    "mechanical-fx/forceField_001.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/forceField_001.ogg",
+      "sha256": "5574e69dd04e5f59322c5ddffde5978f077b09170ae5e29cec0bd9901828cd90"
+    },
+    "footsteps/clothBelt.ogg": {
+      "pack": "footsteps",
+      "originalPath": "extracted/Audio/clothBelt.ogg",
+      "sha256": "f29560a2aea95bbfeb643e1e8f56ec2b6f7e32f32ce4e140645a36db81de3253"
+    },
+    "interface/click_001.ogg": {
+      "pack": "interface",
+      "originalPath": "extracted/Audio/click_001.ogg",
+      "sha256": "ccfb7fa0cccdd9faec0eb16033c732b1e308d139d80f799161495d58f7adcdb9"
+    },
+    "interface/confirmation_001.ogg": {
+      "pack": "interface",
+      "originalPath": "extracted/Audio/confirmation_001.ogg",
+      "sha256": "063564703b6094d70718a3e787a55cc9141611e4ecd6b6637f8828f79b4a8c3a"
+    },
+    "interface/back_001.ogg": {
+      "pack": "interface",
+      "originalPath": "extracted/Audio/back_001.ogg",
+      "sha256": "07db973f79f6ae0f2edc34561e7592e24d0577455919fb602cb8ecc0da991dcf"
+    },
+    "interface/error_001.ogg": {
+      "pack": "interface",
+      "originalPath": "extracted/Audio/error_001.ogg",
+      "sha256": "46e67425d16339772e8d328fb36a49426c9467418686e11beeb71ff84b0f6433"
+    },
+    "interface/open_001.ogg": {
+      "pack": "interface",
+      "originalPath": "extracted/Audio/open_001.ogg",
+      "sha256": "a27c6bb0df7da1e6af5dd5937593c98bc58b6e513f42fe6a3254cd6a6949c648"
+    },
+    "interface/confirmation_002.ogg": {
+      "pack": "interface",
+      "originalPath": "extracted/Audio/confirmation_002.ogg",
+      "sha256": "33b17a9a9a2397c62b285c52c33a907fdffb476909c99e42dde603f6a7a8b12c"
+    },
+    "interface/switch_001.ogg": {
+      "pack": "interface",
+      "originalPath": "extracted/Audio/switch_001.ogg",
+      "sha256": "3b74efad87f1e69dbd1d05c5ad952ab90859b5a3d11da6ec5bd79b4f03b42afa"
+    },
+    "interface/drop_001.ogg": {
+      "pack": "interface",
+      "originalPath": "extracted/Audio/drop_001.ogg",
+      "sha256": "692ee3a6f1821402ca649ff735bee9591dc4846c8098fc7d6a90fd15fa57c1af"
+    },
+    "footsteps/metalLatch.ogg": {
+      "pack": "footsteps",
+      "originalPath": "extracted/Audio/metalLatch.ogg",
+      "sha256": "ba9ba60b172b3ebc131a940f25793cd2e207aca7af73dc80d637277f060f1708"
+    },
+    "terminals/terminal_01.ogg": {
+      "pack": "terminals",
+      "originalPath": "extracted/terminal_01.ogg",
+      "sha256": "cde6464d6dc78ea0a96cd06e2d2777e98f202b30a82c3f5295dfee11a284446e"
+    },
+    "terminals/terminal_03.ogg": {
+      "pack": "terminals",
+      "originalPath": "extracted/terminal_03.ogg",
+      "sha256": "1cea881d608ba4068ec85bd492be54bab1d181070449a75f21a58b43eb01fb38"
+    },
+    "mechanical-fx/doorOpen_000.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/doorOpen_000.ogg",
+      "sha256": "5b7e07eccd4413ad9ef3720c2d14f9cc699f4c50111e9b2f48bd60e6f1a164c3"
+    },
+    "mechanical-fx/explosionCrunch_002.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/explosionCrunch_002.ogg",
+      "sha256": "be2b8ddc62e4a24c91e2e77793de98549ce216faf2f323a917e7d6f34321ff97"
+    },
+    "terminals/explosion_01.ogg": {
+      "pack": "terminals",
+      "originalPath": "extracted/explosion_01.ogg",
+      "sha256": "2ba5012301d0086d61aed17b6e71debea075fd79040b93947e37e3a93689a093"
+    },
+    "impacts/impactMetal_medium_002.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactMetal_medium_002.ogg",
+      "sha256": "7e89ce2ca0dbda95ea2b78d4b50791cab35c10d20e9f5ccd45dd0b00e99ff548"
+    },
+    "impacts/impactPunch_medium_000.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactPunch_medium_000.ogg",
+      "sha256": "486988aa2d6440ffc4c62a0e8ccf3c23673ba84424bd4723378d451b7255eb5c"
+    },
+    "impacts/impactMining_000.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactMining_000.ogg",
+      "sha256": "36b4ea107222d073c67ca64dde26944975609202d5090b2f2021213c1a7e35cd"
+    },
+    "impacts/impactGlass_heavy_000.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactGlass_heavy_000.ogg",
+      "sha256": "b44b39a940e8948e74b9bd3776bff980df43cf220abdaf0d467dc4c43c0244a5"
+    },
+    "impacts/impactWood_heavy_000.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactWood_heavy_000.ogg",
+      "sha256": "15ff82332f342c30e469215539e1cc57e11b221aa2cf7e11e811d313a9927f3d"
+    },
+    "impacts/impactSoft_heavy_000.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactSoft_heavy_000.ogg",
+      "sha256": "49e7ca88743fca974bb8676ea138b751cfd8f9033b5e7af8736c2a215d6edbc1"
+    },
+    "human/slightscream-01.flac": {
+      "pack": "human",
+      "originalPath": "extracted/slightscream-01.flac",
+      "sha256": "f7ed88189eb9861384fbcf984733be9702f0ed8b0d0724fba34928b13289d91a"
+    },
+    "human/slightscream-08.flac": {
+      "pack": "human",
+      "originalPath": "extracted/slightscream-08.flac",
+      "sha256": "4fea98031db3d9e8b882c7a85d9477f5e874838c4be48c21320b9c594129238f"
+    },
+    "creature/hurt_01.ogg": {
+      "pack": "creature",
+      "originalPath": "extracted/hurt_01.ogg",
+      "sha256": "619f9f2b4bc6cb013b4a62d0ef515a11e4be3a73c9d78c7c12ec5669b166d2cd"
+    },
+    "creature/monster_01.ogg": {
+      "pack": "creature",
+      "originalPath": "extracted/monster_01.ogg",
+      "sha256": "e8bb5c9d3d25172666c60ed302d354144b67e66170bdf039ec88f4b6b0cd879f"
+    },
+    "mechanical-fx/computerNoise_000.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/computerNoise_000.ogg",
+      "sha256": "1527944e16eb14b48ee03fe3e7ce6aae94262833a4e1f83928d451a7414fe4e1"
+    },
+    "impacts/footstep_concrete_000.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/footstep_concrete_000.ogg",
+      "sha256": "d7267e183067757c92c169de2a379abea592cfca6b39bb2e8feea15221ad79fe"
+    },
+    "footsteps/footstep00.ogg": {
+      "pack": "footsteps",
+      "originalPath": "extracted/Audio/footstep00.ogg",
+      "sha256": "6fe61ef1fc3bcf0e253bf2eb64759db6cb69e2fe452f4d88cc597ecf78a3d601"
+    },
+    "impacts/impactPlate_light_000.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactPlate_light_000.ogg",
+      "sha256": "6e797cf8a5bfc52d7ed5eb47c227974c1cf2a674954fec5b539cea7d62c7282c"
+    },
+    "impacts/footstep_carpet_000.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/footstep_carpet_000.ogg",
+      "sha256": "b9524658b52a99a20590f8feefc103088637fd13ea8ec35811aee785e1f2f330"
+    },
+    "human/slightscream-03.flac": {
+      "pack": "human",
+      "originalPath": "extracted/slightscream-03.flac",
+      "sha256": "4d150f341ac621a7d8b6d0891d946c6c934964b0b5ef06a00ffe24ddacfea235"
+    },
+    "human/slightscream-11.flac": {
+      "pack": "human",
+      "originalPath": "extracted/slightscream-11.flac",
+      "sha256": "4d58e441ddf1aa372ceac29943446d3628c5432d00a10d4a190140f277e98f38"
+    },
+    "creature/hurt_02.ogg": {
+      "pack": "creature",
+      "originalPath": "extracted/hurt_02.ogg",
+      "sha256": "b90ca3a0f5f48e1141ec6326f08ebf9f597efb6b2ca4ceeccc285b203c1ccbe1"
+    },
+    "creature/monster_02.ogg": {
+      "pack": "creature",
+      "originalPath": "extracted/monster_02.ogg",
+      "sha256": "2f590aec7086b2327a141ec71d5e8b8e83524a30e6b9baf3be2784f4adb153b3"
+    },
+    "impacts/impactMetal_light_001.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactMetal_light_001.ogg",
+      "sha256": "fba69c467ddd85da7b1d82e259f936b876d9ba6a3d6f1b24bdd10468e46bfe08"
+    },
+    "mechanical-fx/computerNoise_001.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/computerNoise_001.ogg",
+      "sha256": "29b4842f6d8c0ba2b0cb00bfaff3b852b492bb43197a82e697917aacbe106757"
+    },
+    "impacts/impactMetal_heavy_001.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactMetal_heavy_001.ogg",
+      "sha256": "83554049f81f4db9209379e103c30bfa63f65c42189a03f300b045c2c82e23ae"
+    },
+    "mechanical-fx/spaceEngineLow_001.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/spaceEngineLow_001.ogg",
+      "sha256": "307dfd8fbfe7e6f2d59dec4de445cf02bd4fff86005803096b8c95e333836a70"
+    },
+    "impacts/footstep_concrete_001.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/footstep_concrete_001.ogg",
+      "sha256": "507a75eb19b897087855a3be3cf11a12d7fa37d143ad535eeebe0b8031c7325d"
+    },
+    "footsteps/footstep01.ogg": {
+      "pack": "footsteps",
+      "originalPath": "extracted/Audio/footstep01.ogg",
+      "sha256": "313472dba31fd0c855376069fa368bb5a198c27251cc8398ef464578b7047a4c"
+    },
+    "impacts/impactPlate_light_001.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactPlate_light_001.ogg",
+      "sha256": "947915c2eb6ac57ee08fd3a48b297fd108d69abc72076e79882c21cad0eef56e"
+    },
+    "impacts/footstep_carpet_001.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/footstep_carpet_001.ogg",
+      "sha256": "9af3c3f76705107339e72036e4053bdca3eaa50ad31c8c929f42ce8d40e5d781"
+    },
+    "human/slightscream-05.flac": {
+      "pack": "human",
+      "originalPath": "extracted/slightscream-05.flac",
+      "sha256": "0659fb515b329319cf4f76055a752aeb0e88fb91872814455155492f18808a99"
+    },
+    "human/slightscream-14.flac": {
+      "pack": "human",
+      "originalPath": "extracted/slightscream-14.flac",
+      "sha256": "fbbc63c46c922689b3b55c62d910f3dff060327d416fc44feeffb27ced126eaa"
+    },
+    "creature/hurt_03.ogg": {
+      "pack": "creature",
+      "originalPath": "extracted/hurt_03.ogg",
+      "sha256": "53e0ff510ef43f583befea63af23af1d82ddb993b981f7c3c0e7eb5f0f9d21ab"
+    },
+    "creature/monster_03.ogg": {
+      "pack": "creature",
+      "originalPath": "extracted/monster_03.ogg",
+      "sha256": "1208729886f3f66e7d8018e8880dff073275fd37b30e1016dd5b164161482df1"
+    },
+    "impacts/impactMetal_light_002.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactMetal_light_002.ogg",
+      "sha256": "25a96f90a9a1f88a531e824e126f0519504625e5635e65a72e4f31611428db29"
+    },
+    "mechanical-fx/computerNoise_002.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/computerNoise_002.ogg",
+      "sha256": "6ae9bb261c6536d1699972da0cdbf6e0762cf7e9b925adb64a06ff375255cb71"
+    },
+    "impacts/footstep_concrete_002.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/footstep_concrete_002.ogg",
+      "sha256": "b21fa546d74941196b25da8a20b7010abd8c05c4fcf93545d1f344e66a664e13"
+    },
+    "footsteps/footstep02.ogg": {
+      "pack": "footsteps",
+      "originalPath": "extracted/Audio/footstep02.ogg",
+      "sha256": "2d9575b7dead6e1217ca113991fc5229e9b6d998ea0726ebbb277e7398ab888f"
+    },
+    "impacts/impactPlate_light_002.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactPlate_light_002.ogg",
+      "sha256": "8ac5869ea434cf0d364872774efe70b2d666a4f02ba35ddfc1e051d336721be8"
+    },
+    "impacts/footstep_carpet_002.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/footstep_carpet_002.ogg",
+      "sha256": "9af3c3f76705107339e72036e4053bdca3eaa50ad31c8c929f42ce8d40e5d781"
+    },
+    "mechanical-fx/slime_001.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/slime_001.ogg",
+      "sha256": "822ca475d71e18ef6bba707dbe6bff2bd493d3457b2552f7473d23022c1257ca"
+    },
+    "creature/spit_02.ogg": {
+      "pack": "creature",
+      "originalPath": "extracted/spit_02.ogg",
+      "sha256": "aa65f01311e914d2861f1992a4e59f431c03edcf020e09961e422728562a2657"
+    },
+    "impacts/impactGlass_light_001.ogg": {
+      "pack": "impacts",
+      "originalPath": "extracted/Audio/impactGlass_light_001.ogg",
+      "sha256": "05e513fbd42829060eb37855f8c3866722ec5c39a8937c9bfde518cc609effa2"
+    },
+    "mechanical-fx/forceField_002.ogg": {
+      "pack": "mechanical-fx",
+      "originalPath": "extracted/Audio/forceField_002.ogg",
+      "sha256": "051b0eafc479695af4ca3607d41fd4be41bae7c21f4f9508d004722b09f1bd63"
+    },
+    "creature/bug_01.ogg": {
+      "pack": "creature",
+      "originalPath": "extracted/bug_01.ogg",
+      "sha256": "a7afae8bd3b448184e92bbb6162702e86322e5df58045715176c450ba4bbea3a"
+    },
+    "creature/burble_02.ogg": {
+      "pack": "creature",
+      "originalPath": "extracted/burble_02.ogg",
+      "sha256": "7cc51b6cf28a5d0ac13f34e54cb18ebb8d2b66aa144281d321d0af826f56a85b"
+    }
+  },
+  "clips": [
+    {
+      "id": "fire0",
+      "layers": [
+        {
+          "source": "firearms/R_35P.wav",
+          "duration": 0.4,
+          "lowpass": 4500
+        },
+        {
+          "source": "handling/gunreload1.wav",
+          "start": 0.13,
+          "duration": 0.1,
+          "gain": 0.08
+        }
+      ],
+      "duration": 0.48,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.4,
+        "pcmPeakDb": -6,
+        "rmsDb": -24.83,
+        "files": {
+          "ogg": "ff9369c9ee47bb05350253813305e248f7107f871bd3df2edce693114a5d962b",
+          "mp3": "410da0e54049fd4ea57aa61388f10fc669ee06d12c0a8cbc4bce243f62c024f9"
+        }
+      }
+    },
+    {
+      "id": "fire1",
+      "layers": [
+        {
+          "source": "firearms/N_30P.wav",
+          "duration": 0.85
+        },
+        {
+          "source": "handling/shotguncock_0.wav",
+          "delay": 0.26,
+          "gain": 0.13
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.85,
+        "pcmPeakDb": -6,
+        "rmsDb": -27.25,
+        "files": {
+          "ogg": "340931dd2569b4fe1ee838f13dcac776bf78ddda3ea7f858e1d6bccca3429e00",
+          "mp3": "5319cc6d5356479cb14a691d3b43a7c00a0aa88a073d6d55cadceee1c0c73abf"
+        }
+      }
+    },
+    {
+      "id": "fire2",
+      "layers": [
+        {
+          "source": "firearms/G_31P.wav",
+          "duration": 0.35
+        }
+      ],
+      "duration": 0.48,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.35,
+        "pcmPeakDb": -6,
+        "rmsDb": -25.8,
+        "files": {
+          "ogg": "95be4017bdfbe6574ba0beb3d4a05d544e731157f149377f49a6d29dbf0b2539",
+          "mp3": "d51e6394c9b343eabc29aa3b26ec8e537c22ee315427993463ab41b80f59e89e"
+        }
+      }
+    },
+    {
+      "id": "fire3",
+      "layers": [
+        {
+          "source": "firearms/T_27P.wav",
+          "duration": 0.6
+        },
+        {
+          "source": "mechanical-fx/laserSmall_002.ogg",
+          "delay": 0.035,
+          "gain": 0.18
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.6,
+        "pcmPeakDb": -6,
+        "rmsDb": -27.15,
+        "files": {
+          "ogg": "394911576b8814709bdcff9b15fd648f2675c141481941e9ddb793831e379029",
+          "mp3": "66da3461503e0c4b3690ce1ca9d18825129c8909c51d36aaa7511dad1896b7ec"
+        }
+      }
+    },
+    {
+      "id": "fire4",
+      "layers": [
+        {
+          "source": "impacts/impactPlate_heavy_000.ogg"
+        },
+        {
+          "source": "terminals/rocket_01.ogg",
+          "duration": 0.5,
+          "gain": 0.5
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.5,
+        "pcmPeakDb": -6,
+        "rmsDb": -28.38,
+        "files": {
+          "ogg": "abfe2d1938eaca0c79b31fe926a62cc6b49ac40c1241685b0272b72cdc6219a8",
+          "mp3": "f0153375ee27780cdce4e4696012cca0d3a650a621299e5cf008d7828a294ef9"
+        }
+      }
+    },
+    {
+      "id": "fire5",
+      "layers": [
+        {
+          "source": "mechanical-fx/laserLarge_001.ogg"
+        },
+        {
+          "source": "terminals/shoot_02.ogg",
+          "gain": 0.24
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.721,
+        "pcmPeakDb": -6,
+        "rmsDb": -21.09,
+        "files": {
+          "ogg": "2cada0f818207c2ab08e1ee36bfb104f6d1e201fa9e1d98d4a20fd0357a903d5",
+          "mp3": "32cc63fa673d497a355ab7b9657fb99f8ae37b6cd8ffee46582d1b38c867e5ee"
+        }
+      }
+    },
+    {
+      "id": "fire6",
+      "layers": [
+        {
+          "source": "firearms/C_28P.wav",
+          "duration": 0.26
+        },
+        {
+          "source": "impacts/impactMetal_medium_000.ogg",
+          "gain": 0.15
+        }
+      ],
+      "duration": 0.48,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.2689,
+        "pcmPeakDb": -6,
+        "rmsDb": -23.55,
+        "files": {
+          "ogg": "77b1ebd0fc3277b42a02e2fb76ddbd0c03da62d6fb952a0ef56a543e49469ab7",
+          "mp3": "c959efa86375b7f6be653a703f7af05ab262e8581a65191e743a9d811c144977"
+        }
+      }
+    },
+    {
+      "id": "fire7",
+      "layers": [
+        {
+          "source": "mechanical-fx/thrusterFire_000.ogg",
+          "duration": 0.45
+        },
+        {
+          "source": "mechanical-fx/spaceEngineLow_000.ogg",
+          "duration": 0.45,
+          "gain": 0.35
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.45,
+        "pcmPeakDb": -6,
+        "rmsDb": -16.32,
+        "files": {
+          "ogg": "a0172b34a4013225a6ea429d7b09febb22a7c48f1062237d098865adbec4a62f",
+          "mp3": "f1de25c54c402136aeffd88ba5eb0854bcadbbdb2c434e20387ed6613d239481"
+        }
+      }
+    },
+    {
+      "id": "fire8",
+      "layers": [
+        {
+          "source": "mechanical-fx/laserLarge_000.ogg"
+        },
+        {
+          "source": "firearms/W_29P.wav",
+          "duration": 0.35,
+          "gain": 0.4
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.6766,
+        "pcmPeakDb": -6,
+        "rmsDb": -21.48,
+        "files": {
+          "ogg": "8a619e778b5c617fee10c7f0328f8790ca9b6308ca145f0022b81b9f37555333",
+          "mp3": "f76a209441c325b622639243b59c986a1b2b99fed4a0a9417a3cabc2c8307585"
+        }
+      }
+    },
+    {
+      "id": "fire9",
+      "layers": [
+        {
+          "source": "mechanical-fx/laserLarge_002.ogg",
+          "duration": 0.4
+        },
+        {
+          "source": "impacts/impactMining_002.ogg",
+          "gain": 0.3
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.8047,
+        "pcmPeakDb": -6,
+        "rmsDb": -21.85,
+        "files": {
+          "ogg": "26779c5f490cb3adf3c4f4e9fb79b0d2785d0c4ddc53b16e9c66644ec6d91189",
+          "mp3": "cb0948dfbfeae0676ed8f33b59afecac4e81029e119519cb7981593cabee26f0"
+        }
+      }
+    },
+    {
+      "id": "fire10",
+      "layers": [
+        {
+          "source": "creature/spit_01.ogg"
+        },
+        {
+          "source": "mechanical-fx/slime_000.ogg",
+          "gain": 0.45
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.4974,
+        "pcmPeakDb": -6,
+        "rmsDb": -31.02,
+        "files": {
+          "ogg": "fdf89e7ae53f8f46967fb337703823c4ffb43ae477a1cc71d7fd6221f9cd4b88",
+          "mp3": "e6a00dca579361d66e2e08965b598506b79c4aadd3fd3949a5fb8335cc6f344d"
+        }
+      }
+    },
+    {
+      "id": "fire11",
+      "layers": [
+        {
+          "source": "mechanical-fx/laserSmall_004.ogg"
+        },
+        {
+          "source": "impacts/impactTin_medium_000.ogg",
+          "gain": 0.25
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.4114,
+        "pcmPeakDb": -6,
+        "rmsDb": -22.66,
+        "files": {
+          "ogg": "b1075c6f2f7c9ff276404ae4de69004a7c64e0e3cdea30a95ad766fc21a6c367",
+          "mp3": "e70ef5f5e755181921f138863e8dafc4e84c2b07939828cbcb9b0abbb13c069b"
+        }
+      }
+    },
+    {
+      "id": "fire12",
+      "layers": [
+        {
+          "source": "mechanical-fx/laserSmall_001.ogg",
+          "duration": 0.22
+        },
+        {
+          "source": "mechanical-fx/laserSmall_003.ogg",
+          "delay": 0.085,
+          "gain": 0.7
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.3824,
+        "pcmPeakDb": -6,
+        "rmsDb": -25.68,
+        "files": {
+          "ogg": "573ac230d3f5a290fc32e835adce2ac43b1b466424a859c06ec418e7b2213b5f",
+          "mp3": "6192e757c5702f3c95e3b0dd11e5e12b01571de3b7825acb6b60133a92212196"
+        }
+      }
+    },
+    {
+      "id": "fire13",
+      "layers": [
+        {
+          "source": "mechanical-fx/explosionCrunch_001.ogg",
+          "duration": 0.65
+        },
+        {
+          "source": "impacts/impactPlate_heavy_002.ogg",
+          "gain": 0.45
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.65,
+        "pcmPeakDb": -6,
+        "rmsDb": -19.2,
+        "files": {
+          "ogg": "694b52267bee1e9a9a8683d6770c97c0b1f9d2be7aa97c3bb9638c79de527569",
+          "mp3": "5c57627a544adf3461d0973a7e676fe3252c98c3c96e2b26c6a705abc60a0a4d"
+        }
+      }
+    },
+    {
+      "id": "fire14",
+      "layers": [
+        {
+          "source": "mechanical-fx/laserSmall_000.ogg"
+        },
+        {
+          "source": "impacts/impactGlass_light_000.ogg",
+          "gain": 0.25
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.2363,
+        "pcmPeakDb": -6,
+        "rmsDb": -22.33,
+        "files": {
+          "ogg": "f8669987b7827f3fa6dff17ba06875637612148e18acd43a0c243975dac050a3",
+          "mp3": "77b19887c22c7b50d8f8c90380d3f31a29b47099e9c454afb38294a8ffafe6de"
+        }
+      }
+    },
+    {
+      "id": "fire15",
+      "layers": [
+        {
+          "source": "firearms/D_24P.wav",
+          "duration": 0.4
+        },
+        {
+          "source": "terminals/terminal_02.ogg",
+          "duration": 0.25,
+          "gain": 0.22
+        }
+      ],
+      "duration": 0.48,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.4,
+        "pcmPeakDb": -6,
+        "rmsDb": -25.82,
+        "files": {
+          "ogg": "5420c96cf0516ce5c70c7459114d095802d32ffd377259141dd2402c90c39835",
+          "mp3": "44f0d025f79e4cb7ec958418c4dc3a15bec96cbb718e53045790b279ce2e4eaa"
+        }
+      }
+    },
+    {
+      "id": "fire16",
+      "layers": [
+        {
+          "source": "mechanical-fx/explosionCrunch_000.ogg",
+          "duration": 0.8
+        },
+        {
+          "source": "impacts/impactMetal_heavy_000.ogg",
+          "gain": 0.3
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.7775,
+        "pcmPeakDb": -6,
+        "rmsDb": -19.92,
+        "files": {
+          "ogg": "ef14a6545caace9f8385e23c760abcfd8dbbb7b60b57cb5a010972628cb443a2",
+          "mp3": "193e7c606c27e6df0fc5d0557944c31226786d16b52be47af9a7a6997b62c4fe"
+        }
+      }
+    },
+    {
+      "id": "fire17",
+      "layers": [
+        {
+          "source": "firearms/D_32P.wav",
+          "duration": 0.2
+        },
+        {
+          "source": "firearms/U_19P.wav",
+          "duration": 0.18,
+          "delay": 0.055,
+          "gain": 0.6
+        },
+        {
+          "source": "firearms/C_27P.wav",
+          "duration": 0.16,
+          "delay": 0.11,
+          "gain": 0.4
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.27,
+        "pcmPeakDb": -6,
+        "rmsDb": -23.67,
+        "files": {
+          "ogg": "c457b08916983e1790b7083caa22d809300ea305b4d36a2034968b57cb4cb26c",
+          "mp3": "3c9ea2498c447134151c85d14439fad4b9b806f6c93a0d03f93ea016c8cefc38"
+        }
+      }
+    },
+    {
+      "id": "fire18",
+      "layers": [
+        {
+          "source": "mechanical-fx/laserLarge_003.ogg"
+        },
+        {
+          "source": "terminals/teleport_01.ogg",
+          "duration": 0.5,
+          "delay": 0.12,
+          "gain": 0.15
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.7158,
+        "pcmPeakDb": -6,
+        "rmsDb": -22.95,
+        "files": {
+          "ogg": "5ff2511bedc9a9732d4c8d1b2c1adf293d6e2b7e90704b7bb47534cbb37a21a9",
+          "mp3": "3252369904501f316cb9ca9d875b05084aa21c33eb889ed18e44a5c7331a6ef0"
+        }
+      }
+    },
+    {
+      "id": "fire19",
+      "layers": [
+        {
+          "source": "mechanical-fx/thrusterFire_002.ogg",
+          "duration": 0.6
+        },
+        {
+          "source": "impacts/impactPlate_medium_000.ogg",
+          "gain": 0.3
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.6093,
+        "pcmPeakDb": -6,
+        "rmsDb": -20.25,
+        "files": {
+          "ogg": "0a140db9a7126815ff1f9936efd5654090816132096c51085731a6ce93db6b35",
+          "mp3": "4635f76342e290e4bed12dba569f727490dea96e70ac48867a8ffb1cdb125b07"
+        }
+      }
+    },
+    {
+      "id": "fire20",
+      "layers": [
+        {
+          "source": "impacts/impactPlate_heavy_004.ogg"
+        },
+        {
+          "source": "handling/shotguncock_0.wav",
+          "gain": 0.35
+        },
+        {
+          "source": "mechanical-fx/spaceEngineSmall_000.ogg",
+          "duration": 0.3,
+          "gain": 0.2
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.5591,
+        "pcmPeakDb": -6,
+        "rmsDb": -24.73,
+        "files": {
+          "ogg": "ec7376e1e2e62fa90510fab5c1319ad8d03f35f2ea32c3da75ca56786154fb6c",
+          "mp3": "ce6a2e7bd9f42f7f1a156e34f05a48f4cb07efd6b7b4f9b3745c14b4ac8d192d"
+        }
+      }
+    },
+    {
+      "id": "fire21",
+      "layers": [
+        {
+          "source": "mechanical-fx/laserSmall_003.ogg"
+        },
+        {
+          "source": "terminals/shoot_01.ogg",
+          "gain": 0.38
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.2975,
+        "pcmPeakDb": -6,
+        "rmsDb": -21.76,
+        "files": {
+          "ogg": "ed360249602fc222548d1fb70a710913b683855261e1225ae15df2450825f639",
+          "mp3": "89c4b468a47c9f0e297a6995a3230933ca39cda29c3d4a93beb2b78a0ae5d022"
+        }
+      }
+    },
+    {
+      "id": "fire22",
+      "layers": [
+        {
+          "source": "mechanical-fx/forceField_000.ogg",
+          "duration": 0.45
+        },
+        {
+          "source": "impacts/impactMetal_heavy_002.ogg",
+          "gain": 0.35
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.45,
+        "pcmPeakDb": -6,
+        "rmsDb": -15.08,
+        "files": {
+          "ogg": "8d02818a083aa7b1ea52ed2a84b7158fe186360db1bbc12cba8d763b8d361b40",
+          "mp3": "a1287647c32bd4cee93e5d2d7a953bff7f26358fe21155ad9e10bd702cfcda5d"
+        }
+      }
+    },
+    {
+      "id": "fire23",
+      "layers": [
+        {
+          "source": "creature/bug_02.ogg"
+        },
+        {
+          "source": "mechanical-fx/spaceEngineSmall_001.ogg",
+          "duration": 0.25,
+          "gain": 0.3
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.5949,
+        "pcmPeakDb": -6,
+        "rmsDb": -32.18,
+        "files": {
+          "ogg": "db484920308bab29b467cd6b50afb4119648913bcd141535fc242490b93d2e69",
+          "mp3": "9c14ab267fb5aa7575db17d29d674e2bc89aa41f51c52758b745b28451c09eaf"
+        }
+      }
+    },
+    {
+      "id": "fire24",
+      "layers": [
+        {
+          "source": "creature/spit_03.ogg"
+        },
+        {
+          "source": "creature/burble_01.ogg",
+          "gain": 0.35
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 1.0,
+        "pcmPeakDb": -6,
+        "rmsDb": -29.58,
+        "files": {
+          "ogg": "9a177dc411597c92c94e169ba2b522d92d2686ce43cd17b5fb67a3ef4550880c",
+          "mp3": "a9b97cbba03ebe2179cefbef4fa382c34ebba17bb81974840517c0695fd5ea6f"
+        }
+      }
+    },
+    {
+      "id": "fire25",
+      "layers": [
+        {
+          "source": "terminals/rocket_01.ogg",
+          "duration": 0.65
+        },
+        {
+          "source": "impacts/impactMetal_heavy_004.ogg",
+          "gain": 0.28
+        },
+        {
+          "source": "mechanical-fx/thrusterFire_001.ogg",
+          "duration": 0.35,
+          "gain": 0.2
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.65,
+        "pcmPeakDb": -6,
+        "rmsDb": -21.69,
+        "files": {
+          "ogg": "c969162bc1085978db298d774690c14511d6776664cf16d5028cc18a307855f5",
+          "mp3": "d739ca2360cee1259eeeb0c3b7835da50f980d221681e829bfe241ad6adcc0b7"
+        }
+      }
+    },
+    {
+      "id": "fire26",
+      "layers": [
+        {
+          "source": "firearms/P_18P.wav",
+          "duration": 0.18
+        },
+        {
+          "source": "impacts/impactTin_medium_002.ogg",
+          "gain": 0.35
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.18,
+        "pcmPeakDb": -6,
+        "rmsDb": -24.07,
+        "files": {
+          "ogg": "9265aa539668065c714aa9b23f999c47cf2a452224712ae1f546aa7834026acb",
+          "mp3": "97dae529c9755dc4356871fa9d1e36086d5d5b3c42414c04fd0f16b8b7cf7078"
+        }
+      }
+    },
+    {
+      "id": "fire27",
+      "layers": [
+        {
+          "source": "terminals/teleport_02.ogg",
+          "duration": 0.45
+        },
+        {
+          "source": "mechanical-fx/laserSmall_002.ogg",
+          "gain": 0.25
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.45,
+        "pcmPeakDb": -6,
+        "rmsDb": -22.56,
+        "files": {
+          "ogg": "5a0041be6c99308fdf44ef19c57209387b48b92129a42a4e10de87abf2291521",
+          "mp3": "bc89c81d10e85f328e06576406db267752268f89691fe5392f122531c9086245"
+        }
+      }
+    },
+    {
+      "id": "fire28",
+      "layers": [
+        {
+          "source": "mechanical-fx/laserLarge_004.ogg"
+        },
+        {
+          "source": "impacts/impactBell_heavy_000.ogg",
+          "duration": 0.45,
+          "gain": 0.18
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.6932,
+        "pcmPeakDb": -6,
+        "rmsDb": -22.21,
+        "files": {
+          "ogg": "6e4145930041c29dba9ab81af3789d2a40c8096a1ce555e4da563231593d3a0c",
+          "mp3": "a42084896b229659c268a6817002a33986f51fe0825d496f93674aaa68d8e178"
+        }
+      }
+    },
+    {
+      "id": "fire29",
+      "layers": [
+        {
+          "source": "mechanical-fx/spaceEngineLow_002.ogg",
+          "duration": 0.55
+        },
+        {
+          "source": "terminals/rocket_01.ogg",
+          "duration": 0.5,
+          "gain": 0.35
+        },
+        {
+          "source": "impacts/impactPlate_heavy_000.ogg",
+          "gain": 0.4
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.55,
+        "pcmPeakDb": -6,
+        "rmsDb": -18.64,
+        "files": {
+          "ogg": "043b094999b3ab95357a599cfabd2700e851ecd20c6ec1070a7fd72d7dd87ab1",
+          "mp3": "fb5375ccd3636b28c370d3d668d3aeb450af680254929b5bfc01edc7f9d2ac92"
+        }
+      }
+    },
+    {
+      "id": "fire30",
+      "layers": [
+        {
+          "source": "terminals/shoot_02.ogg",
+          "duration": 0.24
+        },
+        {
+          "source": "mechanical-fx/laserSmall_004.ogg",
+          "delay": 0.11,
+          "gain": 0.6
+        },
+        {
+          "source": "terminals/shoot_01.ogg",
+          "duration": 0.2,
+          "delay": 0.22,
+          "gain": 0.35
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.5214,
+        "pcmPeakDb": -6,
+        "rmsDb": -22.55,
+        "files": {
+          "ogg": "fcf8d1d8a968730bb29a1e60ff1bad8dbd8b34a10f1818d0a62ad491a54c1b79",
+          "mp3": "0cafb6d49d5c025f63005c2e275181bea679924e59721cfa6b40ce3a9caf7d14"
+        }
+      }
+    },
+    {
+      "id": "fire31",
+      "layers": [
+        {
+          "source": "impacts/impactGlass_medium_000.ogg"
+        },
+        {
+          "source": "mechanical-fx/laserLarge_003.ogg",
+          "gain": 0.5
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.7158,
+        "pcmPeakDb": -6,
+        "rmsDb": -27.7,
+        "files": {
+          "ogg": "389c1e2cd8a5ae51f4f78867254b4ef0cf6544a816aad79bd26dc417959440f6",
+          "mp3": "d5afba2677060acaabd30bccc65cf54f95a40fef48108f9a9bc68a6a46aeefa6"
+        }
+      }
+    },
+    {
+      "id": "fire32",
+      "layers": [
+        {
+          "source": "firearms/E_18P.wav",
+          "duration": 0.45
+        },
+        {
+          "source": "mechanical-fx/explosionCrunch_004.ogg",
+          "duration": 0.65,
+          "gain": 0.55
+        },
+        {
+          "source": "impacts/impactMetal_heavy_003.ogg",
+          "gain": 0.2
+        }
+      ],
+      "duration": 1.0,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 0.65,
+        "pcmPeakDb": -6,
+        "rmsDb": -26.48,
+        "files": {
+          "ogg": "dbb3772da5321200e2c1b9bcd52401316baa9390f65e8df6504659af9c32e251",
+          "mp3": "2d99b1af657a3e3a126246e63201b690bb8fe8ef87da99cdf2b5737c74c375d9"
+        }
+      }
+    },
+    {
+      "id": "mag-out",
+      "layers": [
+        {
+          "source": "handling/assaultriflereload1_0.wav",
+          "start": 0.15,
+          "duration": 0.27
+        }
+      ],
+      "duration": 0.6,
+      "peakDb": -9,
+      "measurements": {
+        "duration": 0.27,
+        "pcmPeakDb": -9,
+        "rmsDb": -30.71,
+        "files": {
+          "ogg": "b1f363099898414df2f09addfce6cf61e32c269f50b5c300b5493df0c13e137d",
+          "mp3": "3c5efe9b9adcd601914aecec3f74edd60c250438c5eb8b6549c4ff349ad486d2"
+        }
+      }
+    },
+    {
+      "id": "mag-in",
+      "layers": [
+        {
+          "source": "handling/assaultriflereload1_0.wav",
+          "start": 0.7,
+          "duration": 0.3
+        }
+      ],
+      "duration": 0.6,
+      "peakDb": -9,
+      "measurements": {
+        "duration": 0.3,
+        "pcmPeakDb": -9,
+        "rmsDb": -26.46,
+        "files": {
+          "ogg": "3070e7ed5f5d0944c77856c52b71c8d54a8184d929d5bb14af23810ffb13eba8",
+          "mp3": "e211fcbe266582ed628046903a69e9f49ea4dbd0b8a95f4ae8a984b52f8193e6"
+        }
+      }
+    },
+    {
+      "id": "chamber",
+      "layers": [
+        {
+          "source": "handling/assaultriflereload1_0.wav",
+          "start": 1.25,
+          "duration": 0.38
+        }
+      ],
+      "duration": 0.6,
+      "peakDb": -9,
+      "measurements": {
+        "duration": 0.3057,
+        "pcmPeakDb": -9,
+        "rmsDb": -27.98,
+        "files": {
+          "ogg": "f943fc747c0fc54bf579e7708a4cea80e7848fe7fd43cac516599608f1eefabf",
+          "mp3": "dd854d7ca8bd910fc934b2615fb3cb0b9e5266c0f9b0466eec798913e2aa2973"
+        }
+      }
+    },
+    {
+      "id": "shell",
+      "layers": [
+        {
+          "source": "handling/gunreload1.wav",
+          "start": 0.65,
+          "duration": 0.22
+        }
+      ],
+      "duration": 0.6,
+      "peakDb": -9,
+      "measurements": {
+        "duration": 0.22,
+        "pcmPeakDb": -9,
+        "rmsDb": -32.12,
+        "files": {
+          "ogg": "9054f35260f28de9f3a541a20ab588cac811ff37da244ebf7b4aa208f5835bd4",
+          "mp3": "fa42e7abc0ba8ab02554054febe0f1ef189815bfdfdcb1e3ac010071b91c4093"
+        }
+      }
+    },
+    {
+      "id": "pump",
+      "layers": [
+        {
+          "source": "handling/shotguncock_0.wav",
+          "duration": 0.5
+        }
+      ],
+      "duration": 0.6,
+      "peakDb": -9,
+      "measurements": {
+        "duration": 0.4305,
+        "pcmPeakDb": -9,
+        "rmsDb": -20.76,
+        "files": {
+          "ogg": "41f456b7a8f7243a8ea7c642040e8b1d2a26c53d109fa5a708e8ac381cdc633d",
+          "mp3": "1fee54849c9c9deb4ac4bc20d5d400936fad1224e1b328d19f816edff118e06d"
+        }
+      }
+    },
+    {
+      "id": "empty",
+      "layers": [
+        {
+          "source": "handling/gunreload1.wav",
+          "start": 0.08,
+          "duration": 0.1
+        }
+      ],
+      "duration": 0.6,
+      "peakDb": -9,
+      "measurements": {
+        "duration": 0.1,
+        "pcmPeakDb": -9,
+        "rmsDb": -27.57,
+        "files": {
+          "ogg": "174677ace5ea601d98fb738c7c9f838ff4a7a4c347d53afddd26ea6d3ac3bbc7",
+          "mp3": "5f77f1bccb6ae4640db8e1277606ae3d0aa4ab737148ec5d5573efdc39567934"
+        }
+      }
+    },
+    {
+      "id": "cell-out",
+      "layers": [
+        {
+          "source": "mechanical-fx/doorClose_000.ogg",
+          "duration": 0.25
+        }
+      ],
+      "duration": 0.6,
+      "peakDb": -9,
+      "measurements": {
+        "duration": 0.25,
+        "pcmPeakDb": -9,
+        "rmsDb": -30.54,
+        "files": {
+          "ogg": "8ae965b1240482ffcc9a17ec1d6cbdb65aaf91d385ba347fd707226452d08abf",
+          "mp3": "4df621c9febb20f9890a2bd1d4ff6b4e08ef017a3d949a0ba35672abd6df4f35"
+        }
+      }
+    },
+    {
+      "id": "cell-in",
+      "layers": [
+        {
+          "source": "impacts/impactMetal_light_000.ogg"
+        }
+      ],
+      "duration": 0.6,
+      "peakDb": -9,
+      "measurements": {
+        "duration": 0.373,
+        "pcmPeakDb": -9,
+        "rmsDb": -28.98,
+        "files": {
+          "ogg": "abc502cd2f5660cfe8a7fbca046247b434165bec3192857968fdb35e5e42daef",
+          "mp3": "1bb7a45893d4083b63fb40c200e52daf930c10f361898bff9fa905623f64a38f"
+        }
+      }
+    },
+    {
+      "id": "charge",
+      "layers": [
+        {
+          "source": "mechanical-fx/forceField_001.ogg",
+          "duration": 0.35
+        }
+      ],
+      "duration": 0.6,
+      "peakDb": -9,
+      "measurements": {
+        "duration": 0.35,
+        "pcmPeakDb": -9,
+        "rmsDb": -16.93,
+        "files": {
+          "ogg": "0fd3f3c8aabe50e3948c515de6a8165ae4be0e1d1b179dfff08cc765e322c61f",
+          "mp3": "3655ee8f431d4800a6196f5c6573f6a4b9593e84cfef01c3a26a32416d94baa8"
+        }
+      }
+    },
+    {
+      "id": "equip",
+      "layers": [
+        {
+          "source": "footsteps/clothBelt.ogg",
+          "duration": 0.25
+        }
+      ],
+      "duration": 0.6,
+      "peakDb": -9,
+      "measurements": {
+        "duration": 0.25,
+        "pcmPeakDb": -9,
+        "rmsDb": -31.16,
+        "files": {
+          "ogg": "a948dcd7f848b9170774f552f07158e2acace14a018b978573ef717b24dbc07f",
+          "mp3": "030db55b7a1c7610a624308fcbb57049a65b708e01d65c3e94449ecc3504109f"
+        }
+      }
+    },
+    {
+      "id": "ui-click",
+      "layers": [
+        {
+          "source": "interface/click_001.ogg"
+        }
+      ],
+      "duration": 0.6,
+      "peakDb": -10,
+      "measurements": {
+        "duration": 0.0971,
+        "pcmPeakDb": -10,
+        "rmsDb": -35.14,
+        "files": {
+          "ogg": "9c85ff725fae57bf24ca16d0972848cfec5b258b33374ee5997b5b266ad3dfed",
+          "mp3": "d66ef09ed0637f3c9d9bcbb9d8905dd8a19faf382dbdaf0bcbe15273054b8a16"
+        }
+      }
+    },
+    {
+      "id": "ui-confirm",
+      "layers": [
+        {
+          "source": "interface/confirmation_001.ogg"
+        }
+      ],
+      "duration": 0.6,
+      "peakDb": -10,
+      "measurements": {
+        "duration": 0.2898,
+        "pcmPeakDb": -10,
+        "rmsDb": -21.23,
+        "files": {
+          "ogg": "099e5c3eefed9d517420170a251235eb086a4f7a0b6be7dfd9200e36ac8a46c1",
+          "mp3": "8eefa2052d8bce5ac344fbb56cc56378ef6ca705e97b44aede8f0dc9736dd1ea"
+        }
+      }
+    },
+    {
+      "id": "ui-back",
+      "layers": [
+        {
+          "source": "interface/back_001.ogg"
+        }
+      ],
+      "duration": 0.6,
+      "peakDb": -10,
+      "measurements": {
+        "duration": 0.061,
+        "pcmPeakDb": -10,
+        "rmsDb": -32.25,
+        "files": {
+          "ogg": "1aa03956772c247b6fc7cdb6aa1adec3f3000806721112fa4a526e93d9572c8b",
+          "mp3": "da9ced93d7b986ecda5ace87cf7d90c6e7e79c4f03c7ef1b389b839a4b0880b8"
+        }
+      }
+    },
+    {
+      "id": "ui-error",
+      "layers": [
+        {
+          "source": "interface/error_001.ogg"
+        }
+      ],
+      "duration": 0.6,
+      "peakDb": -10,
+      "measurements": {
+        "duration": 0.1617,
+        "pcmPeakDb": -10,
+        "rmsDb": -28.03,
+        "files": {
+          "ogg": "33eeedf5e1a8d757df492e5c4052ccf07122ee4ff19d0fb920b6b3c658b6c0ba",
+          "mp3": "a935dc7482177625e20826e734ea11a72b40d8b5528a1cf24ebe3387ce898c7a"
+        }
+      }
+    },
+    {
+      "id": "ui-transition",
+      "layers": [
+        {
+          "source": "interface/open_001.ogg"
+        }
+      ],
+      "duration": 0.6,
+      "peakDb": -10,
+      "measurements": {
+        "duration": 0.1468,
+        "pcmPeakDb": -10,
+        "rmsDb": -25.83,
+        "files": {
+          "ogg": "ed53823a3ab0f9cc156510a80396c72c0b68b3a160a4e324fea288f4017b8e4f",
+          "mp3": "dd7b4a06b2e4de67ee32deb05e0d7156717ed021a4ef78c37c7c892f5420bba1"
+        }
+      }
+    },
+    {
+      "id": "pickup-health",
+      "layers": [
+        {
+          "source": "interface/confirmation_002.ogg"
+        }
+      ],
+      "duration": 0.6,
+      "peakDb": -10,
+      "measurements": {
+        "duration": 0.539,
+        "pcmPeakDb": -10,
+        "rmsDb": -24.37,
+        "files": {
+          "ogg": "00f015d02ddcae916f67b67e1a59621add56992a860c83b27d803aeecd6b0736",
+          "mp3": "be6c2ebaf1b23a43cff60c83d7bc64d5ca84e9dd9c92851b302de0022c75f336"
+        }
+      }
+    },
+    {
+      "id": "pickup-armor",
+      "layers": [
+        {
+          "source": "interface/switch_001.ogg"
+        }
+      ],
+      "duration": 0.6,
+      "peakDb": -10,
+      "measurements": {
+        "duration": 0.6,
+        "pcmPeakDb": -10,
+        "rmsDb": -36.53,
+        "files": {
+          "ogg": "c1a7ae8f1f573cb12f95a038e01a47f046e3e07fb3ab202e35fbb3b69bfab026",
+          "mp3": "3dbc7f999a96c53675e1d1d888d0a519ad277c070a4588a5bbd6a674c77eb219"
+        }
+      }
+    },
+    {
+      "id": "pickup-ammo",
+      "layers": [
+        {
+          "source": "interface/drop_001.ogg"
+        }
+      ],
+      "duration": 0.6,
+      "peakDb": -10,
+      "measurements": {
+        "duration": 0.1321,
+        "pcmPeakDb": -10,
+        "rmsDb": -30.78,
+        "files": {
+          "ogg": "bf0484ce8f24543bc95d43d186fb5943a35c1360f5704555693237b4aa69b8e8",
+          "mp3": "ca63b3cd08cefea8a82927cb547ff9dffe53e4054f320a92521709a4d4b00ef7"
+        }
+      }
+    },
+    {
+      "id": "pickup-weapon",
+      "layers": [
+        {
+          "source": "footsteps/metalLatch.ogg"
+        },
+        {
+          "source": "interface/confirmation_001.ogg",
+          "delay": 0.09,
+          "gain": 0.35
+        }
+      ],
+      "duration": 0.75,
+      "peakDb": -9,
+      "measurements": {
+        "duration": 0.3798,
+        "pcmPeakDb": -9,
+        "rmsDb": -30.12,
+        "files": {
+          "ogg": "0f0b720bfdbf09e687fca1e59a3e274f0164699500e780b8ff71c634a333319c",
+          "mp3": "3e9d25d3f8217fa505a4150d90d2e42bd3e2eba8734ec03ec85832c132b08a8c"
+        }
+      }
+    },
+    {
+      "id": "terminal0",
+      "layers": [
+        {
+          "source": "terminals/terminal_01.ogg",
+          "duration": 0.55
+        }
+      ],
+      "duration": 0.55,
+      "peakDb": -12,
+      "measurements": {
+        "duration": 0.4247,
+        "pcmPeakDb": -12,
+        "rmsDb": -30.66,
+        "files": {
+          "ogg": "9fdd8e04994aaaf163ef4e55984db24d88005434b5eec3a2ded8a7e181505fc0",
+          "mp3": "a75fa9c63c2f1bd4362ade1ba5cd273df24a69a3e6cbbcbc5826a9036ad6e976"
+        }
+      }
+    },
+    {
+      "id": "terminal1",
+      "layers": [
+        {
+          "source": "terminals/terminal_02.ogg",
+          "duration": 0.55
+        }
+      ],
+      "duration": 0.55,
+      "peakDb": -12,
+      "measurements": {
+        "duration": 0.3605,
+        "pcmPeakDb": -12,
+        "rmsDb": -31.42,
+        "files": {
+          "ogg": "ff8cf4eff8ad29ce4aa68ab483bb8902d3218a4b118c4c64056c220f2ad81798",
+          "mp3": "e2896bef612cfefc0865377603f3afd66af00c64076bd4c446bebc36d44dc138"
+        }
+      }
+    },
+    {
+      "id": "terminal2",
+      "layers": [
+        {
+          "source": "terminals/terminal_03.ogg",
+          "duration": 0.55
+        }
+      ],
+      "duration": 0.55,
+      "peakDb": -12,
+      "measurements": {
+        "duration": 0.3577,
+        "pcmPeakDb": -12,
+        "rmsDb": -26.87,
+        "files": {
+          "ogg": "db817b4bf60d485be7449ba37b4732d00c4f6409ee6a76e8cc7c31c945d1586f",
+          "mp3": "0d2cae3e94d58b8901f1dcceb91d1a6b28fb1f80665f381a4ada9d2616388fdf"
+        }
+      }
+    },
+    {
+      "id": "door",
+      "layers": [
+        {
+          "source": "mechanical-fx/doorOpen_000.ogg"
+        },
+        {
+          "source": "footsteps/metalLatch.ogg",
+          "delay": 0.35,
+          "gain": 0.25
+        }
+      ],
+      "duration": 1.4,
+      "peakDb": -8,
+      "measurements": {
+        "duration": 0.6218,
+        "pcmPeakDb": -8,
+        "rmsDb": -25.26,
+        "files": {
+          "ogg": "6605523807187bef15b16d5c2f8b5494ff76a1a38ce4e45152347f47889e6412",
+          "mp3": "5cd9c1c3be81747c1e4cf6d94d34336f59bd0bcd7c160e84a697b379b93b4b75"
+        }
+      }
+    },
+    {
+      "id": "explosion",
+      "layers": [
+        {
+          "source": "mechanical-fx/explosionCrunch_002.ogg"
+        },
+        {
+          "source": "terminals/explosion_01.ogg",
+          "gain": 0.2
+        }
+      ],
+      "duration": 1.5,
+      "peakDb": -6,
+      "measurements": {
+        "duration": 1.5,
+        "pcmPeakDb": -6,
+        "rmsDb": -21.77,
+        "files": {
+          "ogg": "074ea61bfe985bb154966859601a595dde21c6811648bb2a652d1a8eed13b435",
+          "mp3": "ddf72e9c3562f4c9e39ce3513894bf08928260ca52a9a768e8b475c751bdb602"
+        }
+      }
+    },
+    {
+      "id": "hit-metal",
+      "layers": [
+        {
+          "source": "impacts/impactMetal_medium_002.ogg"
+        }
+      ],
+      "duration": 0.9,
+      "peakDb": -10,
+      "measurements": {
+        "duration": 0.1162,
+        "pcmPeakDb": -10,
+        "rmsDb": -29.99,
+        "files": {
+          "ogg": "b72fd260bcde4e85a6aa843f0d7c088b6e802b2193f9ef4b4edd893d7682875e",
+          "mp3": "c7fe9f7550ffc5480435c6c0b364fc34959a3e18e13c7b05c270e9066ce66435"
+        }
+      }
+    },
+    {
+      "id": "hit-flesh",
+      "layers": [
+        {
+          "source": "impacts/impactPunch_medium_000.ogg"
+        }
+      ],
+      "duration": 0.9,
+      "peakDb": -10,
+      "measurements": {
+        "duration": 0.4305,
+        "pcmPeakDb": -10,
+        "rmsDb": -27.02,
+        "files": {
+          "ogg": "768a954ac3629647735409d9dac2005e0907d762a3459f4bee0691dbdf7a58e6",
+          "mp3": "ee9188718f748e69d1fb3e85ce3e03804b05bccfcb1fa1cae6e91c55d53ef840"
+        }
+      }
+    },
+    {
+      "id": "hit-stone",
+      "layers": [
+        {
+          "source": "impacts/impactMining_000.ogg"
+        }
+      ],
+      "duration": 0.9,
+      "peakDb": -10,
+      "measurements": {
+        "duration": 0.9,
+        "pcmPeakDb": -10,
+        "rmsDb": -29.41,
+        "files": {
+          "ogg": "64c12d93f0b7e6afcf17fb0dfc0e739b16323930c31fbc75f6da97c5e783dc12",
+          "mp3": "587c2e038a1bb726750e39bfdf31260922adb2da0b2ac36156fcc44c47e6fb8d"
+        }
+      }
+    },
+    {
+      "id": "break-metal",
+      "layers": [
+        {
+          "source": "impacts/impactPlate_heavy_002.ogg"
+        }
+      ],
+      "duration": 0.9,
+      "peakDb": -10,
+      "measurements": {
+        "duration": 0.4942,
+        "pcmPeakDb": -10,
+        "rmsDb": -29.14,
+        "files": {
+          "ogg": "4b9f3d4ad01d006e04a9a6eac880302738b9c205348b094ef5e00fedc5cb3630",
+          "mp3": "2fb9701991be939cf0272448d748c626ef8c61516d8824630e7b487aa14b85e2"
+        }
+      }
+    },
+    {
+      "id": "break-glass",
+      "layers": [
+        {
+          "source": "impacts/impactGlass_heavy_000.ogg"
+        }
+      ],
+      "duration": 0.9,
+      "peakDb": -10,
+      "measurements": {
+        "duration": 0.2383,
+        "pcmPeakDb": -10,
+        "rmsDb": -28.78,
+        "files": {
+          "ogg": "d4e264d299b91bad7619f721c045ccb54d36eaee7ccc4ac8d878aed4e6710909",
+          "mp3": "73d7665466d221b707b4e308bef0c77ec8a77d6f3b1a5dbc602862206cfb16c2"
+        }
+      }
+    },
+    {
+      "id": "break-wood",
+      "layers": [
+        {
+          "source": "impacts/impactWood_heavy_000.ogg"
+        }
+      ],
+      "duration": 0.9,
+      "peakDb": -10,
+      "measurements": {
+        "duration": 0.3101,
+        "pcmPeakDb": -10,
+        "rmsDb": -29.02,
+        "files": {
+          "ogg": "b759dbed7204161d20ccbb2fc5296f627179085f0b20ec3c5a2902270658321b",
+          "mp3": "ae4583a204c6cecf0fe16d68afaa843eb0b275e72cc5465f3203e74bea9e3246"
+        }
+      }
+    },
+    {
+      "id": "body-thud",
+      "layers": [
+        {
+          "source": "impacts/impactSoft_heavy_000.ogg"
+        }
+      ],
+      "duration": 0.9,
+      "peakDb": -10,
+      "measurements": {
+        "duration": 0.5268,
+        "pcmPeakDb": -10,
+        "rmsDb": -27.02,
+        "files": {
+          "ogg": "95ae6bd7860a217bfcefe1793a11138531e3d77677fce8970caa3b607c87e82d",
+          "mp3": "2f63f4010c06ec5c53da3b419e27c792c2ae6c3d811b3104c5666d48c18ac3e0"
+        }
+      }
+    },
+    {
+      "id": "pain-human0",
+      "layers": [
+        {
+          "source": "human/slightscream-01.flac"
+        }
+      ],
+      "duration": 0.55,
+      "peakDb": -10,
+      "vocal": true,
+      "measurements": {
+        "duration": 0.4296,
+        "pcmPeakDb": -10,
+        "rmsDb": -24.25,
+        "files": {
+          "ogg": "b52235868fd9f553b0f698c547c3e43d6564c4724a86638954fb1c77dbb34a09",
+          "mp3": "24a557fbf47894cc134e20dd296f003742813124c0af751a6668f554e357500b"
+        }
+      }
+    },
+    {
+      "id": "death-human0",
+      "layers": [
+        {
+          "source": "human/slightscream-08.flac"
+        },
+        {
+          "source": "impacts/impactSoft_heavy_000.ogg",
+          "gain": 0.2,
+          "delay": 0.18
+        }
+      ],
+      "duration": 1,
+      "peakDb": -9,
+      "vocal": true,
+      "measurements": {
+        "duration": 0.7068,
+        "pcmPeakDb": -9,
+        "rmsDb": -24.32,
+        "files": {
+          "ogg": "b7daa268f54903a2a5997ad36319e1464b2ce5dc71b99eb1db6a43e3c318b01b",
+          "mp3": "d58647df3466ce75e9bb58a9c0aeffc82fca3029a1f86ca276272ef76b263d0e"
+        }
+      }
+    },
+    {
+      "id": "pain-creature0",
+      "layers": [
+        {
+          "source": "creature/hurt_01.ogg"
+        }
+      ],
+      "duration": 0.6,
+      "peakDb": -10,
+      "vocal": true,
+      "measurements": {
+        "duration": 0.5229,
+        "pcmPeakDb": -10,
+        "rmsDb": -29.38,
+        "files": {
+          "ogg": "58629c2a52d8d84861216c97871bca1795ab54c216ce5e0a5eb1a3e393e2fb67",
+          "mp3": "d12cd1284427ed2d2e3413b8bc2032a6a6148bb6fff12586c49c3d6c40fe0536"
+        }
+      }
+    },
+    {
+      "id": "death-creature0",
+      "layers": [
+        {
+          "source": "creature/monster_01.ogg"
+        }
+      ],
+      "duration": 1,
+      "peakDb": -9,
+      "vocal": true,
+      "measurements": {
+        "duration": 1.0,
+        "pcmPeakDb": -9,
+        "rmsDb": -31.3,
+        "files": {
+          "ogg": "ce5472f469073b155c17561b0f276a3c9ce1720a3a66f7af2fa8fc152b0dbe0d",
+          "mp3": "c9d5aa7cfd3079d303afc2c16bf54e6022bffd1a0f4c357a273e7e26228e5c3b"
+        }
+      }
+    },
+    {
+      "id": "pain-robot0",
+      "layers": [
+        {
+          "source": "impacts/impactMetal_light_000.ogg"
+        },
+        {
+          "source": "mechanical-fx/computerNoise_000.ogg",
+          "duration": 0.2,
+          "gain": 0.2
+        }
+      ],
+      "duration": 0.4,
+      "peakDb": -10,
+      "measurements": {
+        "duration": 0.373,
+        "pcmPeakDb": -10,
+        "rmsDb": -29.81,
+        "files": {
+          "ogg": "482f4cd7108830a5693d59c106fc18db55e371de6b2e6de4dc0e24cdc17331a3",
+          "mp3": "63b32c8d7cd17dc329de6297253b99ab6c062cd1262792c097d479aa774ff0fb"
+        }
+      }
+    },
+    {
+      "id": "death-robot0",
+      "layers": [
+        {
+          "source": "impacts/impactMetal_heavy_000.ogg"
+        },
+        {
+          "source": "mechanical-fx/spaceEngineLow_000.ogg",
+          "duration": 0.55,
+          "gain": 0.4
+        }
+      ],
+      "duration": 0.9,
+      "peakDb": -9,
+      "measurements": {
+        "duration": 0.55,
+        "pcmPeakDb": -9,
+        "rmsDb": -24.74,
+        "files": {
+          "ogg": "2d9f95f24ee2ca2e4e52304855bb67ba0e509680908d6f31448b3db8ba3fea7d",
+          "mp3": "b758b013c67e6d1c447464eda8fa34e9a41400fc3ab7aaf179d9712b2b4cf753"
+        }
+      }
+    },
+    {
+      "id": "foot-concrete0",
+      "layers": [
+        {
+          "source": "impacts/footstep_concrete_000.ogg"
+        }
+      ],
+      "duration": 0.4,
+      "peakDb": -14,
+      "measurements": {
+        "duration": 0.103,
+        "pcmPeakDb": -14,
+        "rmsDb": -33.05,
+        "files": {
+          "ogg": "90f58de368e266adbce776ffbeed72128fe438354d8a3959ff1af7431619238c",
+          "mp3": "25dd7c4891e6d059fafe4562ae465e040cbebbc20ac8394c82266d024d83ba72"
+        }
+      }
+    },
+    {
+      "id": "foot-metal0",
+      "layers": [
+        {
+          "source": "footsteps/footstep00.ogg"
+        },
+        {
+          "source": "impacts/impactPlate_light_000.ogg",
+          "gain": 0.1
+        }
+      ],
+      "duration": 0.4,
+      "peakDb": -14,
+      "measurements": {
+        "duration": 0.4,
+        "pcmPeakDb": -14,
+        "rmsDb": -36.35,
+        "files": {
+          "ogg": "f1686382a23a059ac440762dcc45b044a929ccfed1bf404ada23bf2212baaf6b",
+          "mp3": "17974f4776d21367993fd7739c7422c47321f9806b026d1cd46cd4dc43e370bc"
+        }
+      }
+    },
+    {
+      "id": "foot-soft0",
+      "layers": [
+        {
+          "source": "impacts/footstep_carpet_000.ogg"
+        }
+      ],
+      "duration": 0.4,
+      "peakDb": -14,
+      "measurements": {
+        "duration": 0.1669,
+        "pcmPeakDb": -14,
+        "rmsDb": -34.48,
+        "files": {
+          "ogg": "a202acdabc7240dff3632d869d82da6cafee0c29d782f614f623b75f85c54d8f",
+          "mp3": "e633bc8deb82b4fc27b9e1fd8d6afad7ed895ef1b95d1b351efbb10ffe605b16"
+        }
+      }
+    },
+    {
+      "id": "pain-human1",
+      "layers": [
+        {
+          "source": "human/slightscream-03.flac"
+        }
+      ],
+      "duration": 0.55,
+      "peakDb": -10,
+      "vocal": true,
+      "measurements": {
+        "duration": 0.55,
+        "pcmPeakDb": -10,
+        "rmsDb": -24.42,
+        "files": {
+          "ogg": "fefcfb1787b09e2c87fba2bedee1f4a4e835bc4422bb353598bd3267c3d615e8",
+          "mp3": "76a9e4535b6cd81850fc0e60252d93bc1917901ac6d83e8b49a35095238ed594"
+        }
+      }
+    },
+    {
+      "id": "death-human1",
+      "layers": [
+        {
+          "source": "human/slightscream-11.flac"
+        },
+        {
+          "source": "impacts/impactSoft_heavy_000.ogg",
+          "gain": 0.2,
+          "delay": 0.18
+        }
+      ],
+      "duration": 1,
+      "peakDb": -9,
+      "vocal": true,
+      "measurements": {
+        "duration": 0.7068,
+        "pcmPeakDb": -9,
+        "rmsDb": -26.59,
+        "files": {
+          "ogg": "6e48b8bf4a38590326259fa4bb0e9ab32fd77020b83cf4fb4b8b77638183412c",
+          "mp3": "ea6730a7ee1897ef9a95dd443afed57e3886ba947fcc54fa40cce227d679b64d"
+        }
+      }
+    },
+    {
+      "id": "pain-creature1",
+      "layers": [
+        {
+          "source": "creature/hurt_02.ogg"
+        }
+      ],
+      "duration": 0.6,
+      "peakDb": -10,
+      "vocal": true,
+      "measurements": {
+        "duration": 0.4994,
+        "pcmPeakDb": -10,
+        "rmsDb": -24.46,
+        "files": {
+          "ogg": "c7816ae4b4a7073511e7ec9c7ee3e9e069b03fab3fb083042b4efec1d1eb623a",
+          "mp3": "cfaa23b825dfe19639a75b7df333d632a1feba31e6574e4664086f4120fe0d02"
+        }
+      }
+    },
+    {
+      "id": "death-creature1",
+      "layers": [
+        {
+          "source": "creature/monster_02.ogg"
+        }
+      ],
+      "duration": 1,
+      "peakDb": -9,
+      "vocal": true,
+      "measurements": {
+        "duration": 0.5657,
+        "pcmPeakDb": -9,
+        "rmsDb": -29.44,
+        "files": {
+          "ogg": "0bcb4d753f07710659131a5999225c1ab7b879436baaa3e0bf00fc7f53af7a27",
+          "mp3": "810b8ff4b50013bb9879604f6c3b137284e22d67e4bb21ac2b2f4e056ea71616"
+        }
+      }
+    },
+    {
+      "id": "pain-robot1",
+      "layers": [
+        {
+          "source": "impacts/impactMetal_light_001.ogg"
+        },
+        {
+          "source": "mechanical-fx/computerNoise_001.ogg",
+          "duration": 0.2,
+          "gain": 0.2
+        }
+      ],
+      "duration": 0.4,
+      "peakDb": -10,
+      "measurements": {
+        "duration": 0.2489,
+        "pcmPeakDb": -10,
+        "rmsDb": -28.48,
+        "files": {
+          "ogg": "8eb93f954382efd223ff7c256b8ad97c1f93fde8ef3c18f7a880a0128b837a8b",
+          "mp3": "274c002a2cad721a9541344862694cc3ae67fcf6059d8f5739153ba7924b888c"
+        }
+      }
+    },
+    {
+      "id": "death-robot1",
+      "layers": [
+        {
+          "source": "impacts/impactMetal_heavy_001.ogg"
+        },
+        {
+          "source": "mechanical-fx/spaceEngineLow_001.ogg",
+          "duration": 0.55,
+          "gain": 0.4
+        }
+      ],
+      "duration": 0.9,
+      "peakDb": -9,
+      "measurements": {
+        "duration": 0.55,
+        "pcmPeakDb": -9,
+        "rmsDb": -22.94,
+        "files": {
+          "ogg": "89ab9d7ed2eba2f18b09ab5c5faa6c08800881a8c0b0602131c3ab5ae58c8863",
+          "mp3": "b3b7b59d99c4604a680fe8683f1b93d69ad86c7e3edcab822f9ebf6ecd06022f"
+        }
+      }
+    },
+    {
+      "id": "foot-concrete1",
+      "layers": [
+        {
+          "source": "impacts/footstep_concrete_001.ogg"
+        }
+      ],
+      "duration": 0.4,
+      "peakDb": -14,
+      "measurements": {
+        "duration": 0.1047,
+        "pcmPeakDb": -14,
+        "rmsDb": -35.27,
+        "files": {
+          "ogg": "5eb310f88e3a4a0b04ba7b234c54bf7b72816a93127ccbd17f5060ba0ea3bb9d",
+          "mp3": "803cdc3103b20e30fb85832971f24b871fa79716b5a5f206e393e46ca31f4d90"
+        }
+      }
+    },
+    {
+      "id": "foot-metal1",
+      "layers": [
+        {
+          "source": "footsteps/footstep01.ogg"
+        },
+        {
+          "source": "impacts/impactPlate_light_001.ogg",
+          "gain": 0.1
+        }
+      ],
+      "duration": 0.4,
+      "peakDb": -14,
+      "measurements": {
+        "duration": 0.4,
+        "pcmPeakDb": -14,
+        "rmsDb": -35.44,
+        "files": {
+          "ogg": "7072da89828cbca69d9783af298fdc6bf5bea7f294e35eb5edf5d419453ac3be",
+          "mp3": "ef72a4ccabedb5e1dee9d5e075b5b48e804335d8037cbff534e86b7b208eef03"
+        }
+      }
+    },
+    {
+      "id": "foot-soft1",
+      "layers": [
+        {
+          "source": "impacts/footstep_carpet_001.ogg"
+        }
+      ],
+      "duration": 0.4,
+      "peakDb": -14,
+      "measurements": {
+        "duration": 0.1419,
+        "pcmPeakDb": -14,
+        "rmsDb": -31.35,
+        "files": {
+          "ogg": "e40f7c069bee01a88c6ca2481fb38fdd327ac21d93f2f3388999f27b224a8e7a",
+          "mp3": "daa2dfc3c6a50b9bbfe208a0abaf40052ac69512afdd2726abf4c56d5cc00992"
+        }
+      }
+    },
+    {
+      "id": "pain-human2",
+      "layers": [
+        {
+          "source": "human/slightscream-05.flac"
+        }
+      ],
+      "duration": 0.55,
+      "peakDb": -10,
+      "vocal": true,
+      "measurements": {
+        "duration": 0.55,
+        "pcmPeakDb": -10,
+        "rmsDb": -25.42,
+        "files": {
+          "ogg": "f0a841f0327b47a453cb693f633048d826bb66b03e764aa5fa1e4668e647ad55",
+          "mp3": "d5e56238f1f9231d886c9219cdcb1d67d7e48f98466bf6e4619ab2d925b18d75"
+        }
+      }
+    },
+    {
+      "id": "death-human2",
+      "layers": [
+        {
+          "source": "human/slightscream-14.flac"
+        },
+        {
+          "source": "impacts/impactSoft_heavy_000.ogg",
+          "gain": 0.2,
+          "delay": 0.18
+        }
+      ],
+      "duration": 1,
+      "peakDb": -9,
+      "vocal": true,
+      "measurements": {
+        "duration": 0.7068,
+        "pcmPeakDb": -9,
+        "rmsDb": -24.89,
+        "files": {
+          "ogg": "f820d20fa2f4fa498f8c4313020042eaaae70db047ae1c26a349746c57e17664",
+          "mp3": "c2643d69fbd7f837c77c91f0e275eca10a29ee281d5cc926b3c8cfa875c3aad3"
+        }
+      }
+    },
+    {
+      "id": "pain-creature2",
+      "layers": [
+        {
+          "source": "creature/hurt_03.ogg"
+        }
+      ],
+      "duration": 0.6,
+      "peakDb": -10,
+      "vocal": true,
+      "measurements": {
+        "duration": 0.4936,
+        "pcmPeakDb": -10,
+        "rmsDb": -25.76,
+        "files": {
+          "ogg": "099cf20339ff12e257622e157cfbe512017d3bd2326d6b3870fa172843961ce4",
+          "mp3": "b48a4e4de8f57235f121cc850e53d22d9294ba09b216e5a570a3d8a3535cb222"
+        }
+      }
+    },
+    {
+      "id": "death-creature2",
+      "layers": [
+        {
+          "source": "creature/monster_03.ogg"
+        }
+      ],
+      "duration": 1,
+      "peakDb": -9,
+      "vocal": true,
+      "measurements": {
+        "duration": 0.7892,
+        "pcmPeakDb": -9,
+        "rmsDb": -26.7,
+        "files": {
+          "ogg": "201cea03ee33e995b50ae880836c4984165642531473076dd54f6fec7dab767d",
+          "mp3": "6b018be988e6ff6e6e7011cda41560503a57916509f48cfb07bd9ed350960e1b"
+        }
+      }
+    },
+    {
+      "id": "pain-robot2",
+      "layers": [
+        {
+          "source": "impacts/impactMetal_light_002.ogg"
+        },
+        {
+          "source": "mechanical-fx/computerNoise_002.ogg",
+          "duration": 0.2,
+          "gain": 0.2
+        }
+      ],
+      "duration": 0.4,
+      "peakDb": -10,
+      "measurements": {
+        "duration": 0.2329,
+        "pcmPeakDb": -10,
+        "rmsDb": -28.89,
+        "files": {
+          "ogg": "a188e9bd3144b8343e3ce578d8946cc69a39f6f82f20d3cb20188dd14e1499b0",
+          "mp3": "0b60b0e68d8a37805c5754d43f92cf925ab176a18581e32a6d52d5c3789ff28b"
+        }
+      }
+    },
+    {
+      "id": "death-robot2",
+      "layers": [
+        {
+          "source": "impacts/impactMetal_heavy_002.ogg"
+        },
+        {
+          "source": "mechanical-fx/spaceEngineLow_002.ogg",
+          "duration": 0.55,
+          "gain": 0.4
+        }
+      ],
+      "duration": 0.9,
+      "peakDb": -9,
+      "measurements": {
+        "duration": 0.55,
+        "pcmPeakDb": -9,
+        "rmsDb": -27.06,
+        "files": {
+          "ogg": "a374cf4d1e3bab53fd929916a19410c8aae3518643934285e6cbd5dcdc5f13c1",
+          "mp3": "7f2150cabcf890210582d14c380ecdca3fb3eda34a1575c79ceb890d4a501fc9"
+        }
+      }
+    },
+    {
+      "id": "foot-concrete2",
+      "layers": [
+        {
+          "source": "impacts/footstep_concrete_002.ogg"
+        }
+      ],
+      "duration": 0.4,
+      "peakDb": -14,
+      "measurements": {
+        "duration": 0.1099,
+        "pcmPeakDb": -14,
+        "rmsDb": -35.33,
+        "files": {
+          "ogg": "e219d92aa54354eee2c38423d3fe7b3fabc67a1bcfcc0eea3bb6cc2052c57676",
+          "mp3": "c32835b35d7e03c6bb22d4b80e5ba3235d5a4b8d9bb67ddac0c5ad850dd28954"
+        }
+      }
+    },
+    {
+      "id": "foot-metal2",
+      "layers": [
+        {
+          "source": "footsteps/footstep02.ogg"
+        },
+        {
+          "source": "impacts/impactPlate_light_002.ogg",
+          "gain": 0.1
+        }
+      ],
+      "duration": 0.4,
+      "peakDb": -14,
+      "measurements": {
+        "duration": 0.4,
+        "pcmPeakDb": -14,
+        "rmsDb": -36.69,
+        "files": {
+          "ogg": "5c1f53a295b7dc532bbdd054d273b189062f1021722e9c7e117fab04e8c326cb",
+          "mp3": "32eecea7b403c50b8759f23c158b5840e02846dfafdb438e489a4ef15d4692e6"
+        }
+      }
+    },
+    {
+      "id": "foot-soft2",
+      "layers": [
+        {
+          "source": "impacts/footstep_carpet_002.ogg"
+        }
+      ],
+      "duration": 0.4,
+      "peakDb": -14,
+      "measurements": {
+        "duration": 0.1419,
+        "pcmPeakDb": -14,
+        "rmsDb": -31.35,
+        "files": {
+          "ogg": "12cb78b2fa7e8761e4ddbf14e1e62135b315c0a0164cc14b5b364bda8fe44701",
+          "mp3": "daa2dfc3c6a50b9bbfe208a0abaf40052ac69512afdd2726abf4c56d5cc00992"
+        }
+      }
+    },
+    {
+      "id": "hazard-electric",
+      "layers": [
+        {
+          "source": "mechanical-fx/computerNoise_001.ogg",
+          "duration": 0.45
+        },
+        {
+          "source": "mechanical-fx/forceField_000.ogg",
+          "duration": 0.35,
+          "gain": 0.3
+        }
+      ],
+      "duration": 0.8,
+      "peakDb": -12,
+      "measurements": {
+        "duration": 0.45,
+        "pcmPeakDb": -12,
+        "rmsDb": -20.0,
+        "files": {
+          "ogg": "dd843bc02a3cc17bd6f91104568c9d3a944f39238d3c6ffe7d6d593747d97105",
+          "mp3": "0898ff324502ce1a9e3ceb25dd4e9a46e9b3bbae5acbc780789af03a812fdbbc"
+        }
+      }
+    },
+    {
+      "id": "hazard-pressure",
+      "layers": [
+        {
+          "source": "mechanical-fx/spaceEngineLow_001.ogg",
+          "duration": 0.45
+        },
+        {
+          "source": "impacts/impactPlate_medium_000.ogg",
+          "gain": 0.3
+        }
+      ],
+      "duration": 0.8,
+      "peakDb": -12,
+      "measurements": {
+        "duration": 0.6093,
+        "pcmPeakDb": -12,
+        "rmsDb": -20.3,
+        "files": {
+          "ogg": "dd8fa1ae9dd06094a6d093f5cbf8fd68e8e6587dc74968293d1f13c389d97e27",
+          "mp3": "6df2414a10fbfed6e9f57fe66735b6bf667c7560cbfd86644457a0bd362127ad"
+        }
+      }
+    },
+    {
+      "id": "hazard-acid",
+      "layers": [
+        {
+          "source": "mechanical-fx/slime_001.ogg"
+        },
+        {
+          "source": "creature/spit_02.ogg",
+          "gain": 0.3
+        }
+      ],
+      "duration": 0.8,
+      "peakDb": -12,
+      "measurements": {
+        "duration": 0.8,
+        "pcmPeakDb": -12,
+        "rmsDb": -33.32,
+        "files": {
+          "ogg": "b3e3a69f958f9fef38071df406aba3c9fa6daa21df4fd923b1270f1c6d1f5745",
+          "mp3": "362c2bb189fbe4c83c617899ba3e2ab36841207cdda2166e88784956e1db6bf5"
+        }
+      }
+    },
+    {
+      "id": "hazard-cryo",
+      "layers": [
+        {
+          "source": "impacts/impactGlass_light_001.ogg"
+        },
+        {
+          "source": "mechanical-fx/laserSmall_000.ogg",
+          "gain": 0.3
+        }
+      ],
+      "duration": 0.8,
+      "peakDb": -12,
+      "measurements": {
+        "duration": 0.2363,
+        "pcmPeakDb": -12,
+        "rmsDb": -33.42,
+        "files": {
+          "ogg": "0ce7476cff603022346dde899232ff1cae93cd3a8de6c6e18ca29630240590bc",
+          "mp3": "f0ea8af4eddb2002d4e201ddf8cad11484464c0681cac5e1e8748082c2cb3580"
+        }
+      }
+    },
+    {
+      "id": "hazard-ember",
+      "layers": [
+        {
+          "source": "mechanical-fx/thrusterFire_001.ogg",
+          "duration": 0.6
+        }
+      ],
+      "duration": 0.8,
+      "peakDb": -12,
+      "measurements": {
+        "duration": 0.6,
+        "pcmPeakDb": -12,
+        "rmsDb": -25.29,
+        "files": {
+          "ogg": "117568d4b5c6e3f94138ed137622f38930c3f67ea7c9abe93579cef3f03364b6",
+          "mp3": "3da9c04248042a660a2088ecc5b791acf15d0dc0a2e5c3be1b3f2e98a81c2579"
+        }
+      }
+    },
+    {
+      "id": "hazard-phase",
+      "layers": [
+        {
+          "source": "terminals/teleport_01.ogg",
+          "duration": 0.55
+        }
+      ],
+      "duration": 0.8,
+      "peakDb": -12,
+      "measurements": {
+        "duration": 0.4535,
+        "pcmPeakDb": -12,
+        "rmsDb": -29.08,
+        "files": {
+          "ogg": "5c16d9d718ac6b9a47f22d7b62719dafe406da275ecfc837413fc6de3c5df825",
+          "mp3": "fa0534750c8b9d6fc4b3cdb2bdc48e56f15ed4aa5e7372710dea88dee83b7de0"
+        }
+      }
+    },
+    {
+      "id": "hazard-magnetic",
+      "layers": [
+        {
+          "source": "mechanical-fx/forceField_002.ogg",
+          "duration": 0.5
+        },
+        {
+          "source": "impacts/impactMetal_medium_000.ogg",
+          "gain": 0.2
+        }
+      ],
+      "duration": 0.8,
+      "peakDb": -12,
+      "measurements": {
+        "duration": 0.5,
+        "pcmPeakDb": -12,
+        "rmsDb": -21.33,
+        "files": {
+          "ogg": "c7dd57b8c0ca12bc3313eb226ead78341879759bf2525c3732428f512ed7ce2f",
+          "mp3": "8e08f563c30d8940633c62b24946344eb79bac39487e8b5e09bb9f89abbdc1a2"
+        }
+      }
+    },
+    {
+      "id": "hazard-biological",
+      "layers": [
+        {
+          "source": "creature/bug_01.ogg"
+        },
+        {
+          "source": "creature/burble_02.ogg",
+          "gain": 0.3
+        }
+      ],
+      "duration": 0.8,
+      "peakDb": -12,
+      "measurements": {
+        "duration": 0.8,
+        "pcmPeakDb": -12,
+        "rmsDb": -37.61,
+        "files": {
+          "ogg": "b68c9ce1a31154ba83d071ae7bcb0ae7d6a2d60f20d87c8b9a63bc6ef3aee270",
+          "mp3": "07f9ae28deba4c0b9b9596cbb9a16bf408595fff4423577b585a81e680729a9d"
+        }
+      }
+    },
+    {
+      "id": "travel-rocket",
+      "layers": [
+        {
+          "source": "terminals/rocket_01.ogg",
+          "duration": 0.7,
+          "lowpass": 4000
+        }
+      ],
+      "duration": 0.7,
+      "peakDb": -18,
+      "measurements": {
+        "duration": 0.7,
+        "pcmPeakDb": -18,
+        "rmsDb": -33.1,
+        "files": {
+          "ogg": "ca8311d6c418c78fec5356d4589fdeab513554e71ae643b0608fa37e6b72a1b4",
+          "mp3": "a9ae6875f53de79d6e2a30eda5e15da6d145bd15f51ab64bfdcc40e76938bac7"
+        }
+      }
+    },
+    {
+      "id": "travel-energy",
+      "layers": [
+        {
+          "source": "mechanical-fx/spaceEngineSmall_000.ogg",
+          "duration": 0.7,
+          "lowpass": 4000
+        }
+      ],
+      "duration": 0.7,
+      "peakDb": -18,
+      "measurements": {
+        "duration": 0.7,
+        "pcmPeakDb": -18,
+        "rmsDb": -27.86,
+        "files": {
+          "ogg": "a5b8e02b39c0108647429f9b4e1f8acf3756eea4c9555048ac1da4902318468a",
+          "mp3": "50d6bf287c0eaae52630d917d85d668f632d6d93e508c62d17d8a08a2feeec96"
+        }
+      }
+    },
+    {
+      "id": "travel-acid",
+      "layers": [
+        {
+          "source": "mechanical-fx/slime_001.ogg",
+          "duration": 0.7,
+          "lowpass": 4000
+        }
+      ],
+      "duration": 0.7,
+      "peakDb": -18,
+      "measurements": {
+        "duration": 0.7,
+        "pcmPeakDb": -18,
+        "rmsDb": -39.99,
+        "files": {
+          "ogg": "1c80fbbc770b7fe656a97cf2c7b1136a2f9545bdbb9e13b913a9750d2499cd55",
+          "mp3": "e07b51128051335bdff09d8e9e9b7f171b1ddba7d0c1f842892c784f6aee92e1"
+        }
+      }
+    },
+    {
+      "id": "travel-flame",
+      "layers": [
+        {
+          "source": "mechanical-fx/thrusterFire_001.ogg",
+          "duration": 0.7,
+          "lowpass": 4000
+        }
+      ],
+      "duration": 0.7,
+      "peakDb": -18,
+      "measurements": {
+        "duration": 0.7,
+        "pcmPeakDb": -18,
+        "rmsDb": -29.3,
+        "files": {
+          "ogg": "f11b40636bad8a3e7443d3581b435152d1dbd0c776dcf5df5720cfff418e0514",
+          "mp3": "a574728a6e0de6fd5e7bfe124531bd4613b84024e976474d0d898bac22868690"
+        }
+      }
+    }
+  ]
+}

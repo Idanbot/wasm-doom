@@ -31,9 +31,11 @@
     "test:voices": "node --experimental-strip-types --test src/game/enemy-presentation.test.ts",
     "test:browser": "node --test scripts/arsenal.browser.mjs scripts/reward-pause.browser.mjs scripts/qa-run.browser.mjs scripts/campaign25.browser.mjs",
     "test:pages": "node --test scripts/pages-arsenal.browser.mjs",
-    "test": "node --test 'scripts/**/*.test.mjs' && node --experimental-strip-types --test src/lib/app-data/app-data.test.ts src/lib/app-data/readiness-schedule.test.ts src/lib/auth/gate-identity.test.ts src/lib/auth/sign-in-gate.test.ts src/components/game/data.test.ts src/game/hud-abi.test.ts src/game/save-abi.test.ts src/game/runtime.test.ts src/game/dev-run.test.ts src/game/voice-gate.test.ts",
+    "test": "node --test 'scripts/**/*.test.mjs' && node --experimental-strip-types --test src/lib/app-data/app-data.test.ts src/lib/app-data/readiness-schedule.test.ts src/lib/auth/gate-identity.test.ts src/lib/auth/sign-in-gate.test.ts src/components/game/data.test.ts src/game/hud-abi.test.ts src/game/save-abi.test.ts src/game/runtime.test.ts src/game/dev-run.test.ts src/game/voice-gate.test.ts src/game/sfx-director.test.ts",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "assets:sfx": "python3 scripts/process-blacksite-sfx.py",
+    "check:sfx": "node --test scripts/sfx-assets.test.mjs"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.5.4",

@@ -11,4 +11,4 @@ if [ ! -f "$WASM" ] || [ -f "$SRC" -a "$SRC" -nt "$WASM" ]; then
   (cd engine && cargo build --target wasm32-unknown-unknown --release)
   cp engine/target/wasm32-unknown-unknown/release/hellscan.wasm "$WASM"
 fi
-nohup npm run dev >>.grok/dev.log 2>&1 </dev/null &
+nohup setsid npm run dev >>.grok/dev.log 2>&1 </dev/null &

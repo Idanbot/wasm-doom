@@ -1,0 +1,414 @@
+{
+  "fire0": {
+    "truePeakDb": -5.9,
+    "sha256": "ff9369c9ee47bb05350253813305e248f7107f871bd3df2edce693114a5d962b"
+  },
+  "fire1": {
+    "truePeakDb": -5.4,
+    "sha256": "340931dd2569b4fe1ee838f13dcac776bf78ddda3ea7f858e1d6bccca3429e00"
+  },
+  "fire2": {
+    "truePeakDb": -5.6,
+    "sha256": "95be4017bdfbe6574ba0beb3d4a05d544e731157f149377f49a6d29dbf0b2539"
+  },
+  "fire3": {
+    "truePeakDb": -6.2,
+    "sha256": "394911576b8814709bdcff9b15fd648f2675c141481941e9ddb793831e379029"
+  },
+  "fire4": {
+    "truePeakDb": -5.9,
+    "sha256": "abfe2d1938eaca0c79b31fe926a62cc6b49ac40c1241685b0272b72cdc6219a8"
+  },
+  "fire5": {
+    "truePeakDb": -5.7,
+    "sha256": "2cada0f818207c2ab08e1ee36bfb104f6d1e201fa9e1d98d4a20fd0357a903d5"
+  },
+  "fire6": {
+    "truePeakDb": -5.6,
+    "sha256": "77b1ebd0fc3277b42a02e2fb76ddbd0c03da62d6fb952a0ef56a543e49469ab7"
+  },
+  "fire7": {
+    "truePeakDb": -5.8,
+    "sha256": "a0172b34a4013225a6ea429d7b09febb22a7c48f1062237d098865adbec4a62f"
+  },
+  "fire8": {
+    "truePeakDb": -5.8,
+    "sha256": "8a619e778b5c617fee10c7f0328f8790ca9b6308ca145f0022b81b9f37555333"
+  },
+  "fire9": {
+    "truePeakDb": -5.2,
+    "sha256": "26779c5f490cb3adf3c4f4e9fb79b0d2785d0c4ddc53b16e9c66644ec6d91189"
+  },
+  "fire10": {
+    "truePeakDb": -7.4,
+    "sha256": "fdf89e7ae53f8f46967fb337703823c4ffb43ae477a1cc71d7fd6221f9cd4b88"
+  },
+  "fire11": {
+    "truePeakDb": -6.1,
+    "sha256": "b1075c6f2f7c9ff276404ae4de69004a7c64e0e3cdea30a95ad766fc21a6c367"
+  },
+  "fire12": {
+    "truePeakDb": -6.9,
+    "sha256": "573ac230d3f5a290fc32e835adce2ac43b1b466424a859c06ec418e7b2213b5f"
+  },
+  "fire13": {
+    "truePeakDb": -6.3,
+    "sha256": "694b52267bee1e9a9a8683d6770c97c0b1f9d2be7aa97c3bb9638c79de527569"
+  },
+  "fire14": {
+    "truePeakDb": -7.3,
+    "sha256": "f8669987b7827f3fa6dff17ba06875637612148e18acd43a0c243975dac050a3"
+  },
+  "fire15": {
+    "truePeakDb": -6.0,
+    "sha256": "5420c96cf0516ce5c70c7459114d095802d32ffd377259141dd2402c90c39835"
+  },
+  "fire16": {
+    "truePeakDb": -5.8,
+    "sha256": "ef14a6545caace9f8385e23c760abcfd8dbbb7b60b57cb5a010972628cb443a2"
+  },
+  "fire17": {
+    "truePeakDb": -6.1,
+    "sha256": "c457b08916983e1790b7083caa22d809300ea305b4d36a2034968b57cb4cb26c"
+  },
+  "fire18": {
+    "truePeakDb": -5.7,
+    "sha256": "5ff2511bedc9a9732d4c8d1b2c1adf293d6e2b7e90704b7bb47534cbb37a21a9"
+  },
+  "fire19": {
+    "truePeakDb": -6.3,
+    "sha256": "0a140db9a7126815ff1f9936efd5654090816132096c51085731a6ce93db6b35"
+  },
+  "fire20": {
+    "truePeakDb": -6.3,
+    "sha256": "ec7376e1e2e62fa90510fab5c1319ad8d03f35f2ea32c3da75ca56786154fb6c"
+  },
+  "fire21": {
+    "truePeakDb": -6.3,
+    "sha256": "ed360249602fc222548d1fb70a710913b683855261e1225ae15df2450825f639"
+  },
+  "fire22": {
+    "truePeakDb": -5.9,
+    "sha256": "8d02818a083aa7b1ea52ed2a84b7158fe186360db1bbc12cba8d763b8d361b40"
+  },
+  "fire23": {
+    "truePeakDb": -6.2,
+    "sha256": "db484920308bab29b467cd6b50afb4119648913bcd141535fc242490b93d2e69"
+  },
+  "fire24": {
+    "truePeakDb": -6.5,
+    "sha256": "9a177dc411597c92c94e169ba2b522d92d2686ce43cd17b5fb67a3ef4550880c"
+  },
+  "fire25": {
+    "truePeakDb": -6.0,
+    "sha256": "c969162bc1085978db298d774690c14511d6776664cf16d5028cc18a307855f5"
+  },
+  "fire26": {
+    "truePeakDb": -5.7,
+    "sha256": "9265aa539668065c714aa9b23f999c47cf2a452224712ae1f546aa7834026acb"
+  },
+  "fire27": {
+    "truePeakDb": -5.7,
+    "sha256": "5a0041be6c99308fdf44ef19c57209387b48b92129a42a4e10de87abf2291521"
+  },
+  "fire28": {
+    "truePeakDb": -5.0,
+    "sha256": "6e4145930041c29dba9ab81af3789d2a40c8096a1ce555e4da563231593d3a0c"
+  },
+  "fire29": {
+    "truePeakDb": -5.9,
+    "sha256": "043b094999b3ab95357a599cfabd2700e851ecd20c6ec1070a7fd72d7dd87ab1"
+  },
+  "fire30": {
+    "truePeakDb": -5.5,
+    "sha256": "fcf8d1d8a968730bb29a1e60ff1bad8dbd8b34a10f1818d0a62ad491a54c1b79"
+  },
+  "fire31": {
+    "truePeakDb": -5.8,
+    "sha256": "389c1e2cd8a5ae51f4f78867254b4ef0cf6544a816aad79bd26dc417959440f6"
+  },
+  "fire32": {
+    "truePeakDb": -6.0,
+    "sha256": "dbb3772da5321200e2c1b9bcd52401316baa9390f65e8df6504659af9c32e251"
+  },
+  "mag-out": {
+    "truePeakDb": -9.0,
+    "sha256": "b1f363099898414df2f09addfce6cf61e32c269f50b5c300b5493df0c13e137d"
+  },
+  "mag-in": {
+    "truePeakDb": -7.3,
+    "sha256": "3070e7ed5f5d0944c77856c52b71c8d54a8184d929d5bb14af23810ffb13eba8"
+  },
+  "chamber": {
+    "truePeakDb": -7.2,
+    "sha256": "f943fc747c0fc54bf579e7708a4cea80e7848fe7fd43cac516599608f1eefabf"
+  },
+  "shell": {
+    "truePeakDb": -8.8,
+    "sha256": "9054f35260f28de9f3a541a20ab588cac811ff37da244ebf7b4aa208f5835bd4"
+  },
+  "pump": {
+    "truePeakDb": -5.1,
+    "sha256": "41f456b7a8f7243a8ea7c642040e8b1d2a26c53d109fa5a708e8ac381cdc633d"
+  },
+  "empty": {
+    "truePeakDb": -10.1,
+    "sha256": "174677ace5ea601d98fb738c7c9f838ff4a7a4c347d53afddd26ea6d3ac3bbc7"
+  },
+  "cell-out": {
+    "truePeakDb": -17.6,
+    "sha256": "8ae965b1240482ffcc9a17ec1d6cbdb65aaf91d385ba347fd707226452d08abf"
+  },
+  "cell-in": {
+    "truePeakDb": -9.8,
+    "sha256": "abc502cd2f5660cfe8a7fbca046247b434165bec3192857968fdb35e5e42daef"
+  },
+  "charge": {
+    "truePeakDb": -9.0,
+    "sha256": "0fd3f3c8aabe50e3948c515de6a8165ae4be0e1d1b179dfff08cc765e322c61f"
+  },
+  "equip": {
+    "truePeakDb": -9.7,
+    "sha256": "a948dcd7f848b9170774f552f07158e2acace14a018b978573ef717b24dbc07f"
+  },
+  "ui-click": {
+    "truePeakDb": -10.9,
+    "sha256": "9c85ff725fae57bf24ca16d0972848cfec5b258b33374ee5997b5b266ad3dfed"
+  },
+  "ui-confirm": {
+    "truePeakDb": -9.9,
+    "sha256": "099e5c3eefed9d517420170a251235eb086a4f7a0b6be7dfd9200e36ac8a46c1"
+  },
+  "ui-back": {
+    "truePeakDb": -9.6,
+    "sha256": "1aa03956772c247b6fc7cdb6aa1adec3f3000806721112fa4a526e93d9572c8b"
+  },
+  "ui-error": {
+    "truePeakDb": -8.0,
+    "sha256": "33eeedf5e1a8d757df492e5c4052ccf07122ee4ff19d0fb920b6b3c658b6c0ba"
+  },
+  "ui-transition": {
+    "truePeakDb": -13.5,
+    "sha256": "ed53823a3ab0f9cc156510a80396c72c0b68b3a160a4e324fea288f4017b8e4f"
+  },
+  "pickup-health": {
+    "truePeakDb": -10.3,
+    "sha256": "00f015d02ddcae916f67b67e1a59621add56992a860c83b27d803aeecd6b0736"
+  },
+  "pickup-armor": {
+    "truePeakDb": -10.2,
+    "sha256": "c1a7ae8f1f573cb12f95a038e01a47f046e3e07fb3ab202e35fbb3b69bfab026"
+  },
+  "pickup-ammo": {
+    "truePeakDb": -13.4,
+    "sha256": "bf0484ce8f24543bc95d43d186fb5943a35c1360f5704555693237b4aa69b8e8"
+  },
+  "pickup-weapon": {
+    "truePeakDb": -8.6,
+    "sha256": "0f0b720bfdbf09e687fca1e59a3e274f0164699500e780b8ff71c634a333319c"
+  },
+  "terminal0": {
+    "truePeakDb": -11.6,
+    "sha256": "9fdd8e04994aaaf163ef4e55984db24d88005434b5eec3a2ded8a7e181505fc0"
+  },
+  "terminal1": {
+    "truePeakDb": -11.9,
+    "sha256": "ff8cf4eff8ad29ce4aa68ab483bb8902d3218a4b118c4c64056c220f2ad81798"
+  },
+  "terminal2": {
+    "truePeakDb": -11.5,
+    "sha256": "db817b4bf60d485be7449ba37b4732d00c4f6409ee6a76e8cc7c31c945d1586f"
+  },
+  "door": {
+    "truePeakDb": -7.4,
+    "sha256": "6605523807187bef15b16d5c2f8b5494ff76a1a38ce4e45152347f47889e6412"
+  },
+  "explosion": {
+    "truePeakDb": -6.1,
+    "sha256": "074ea61bfe985bb154966859601a595dde21c6811648bb2a652d1a8eed13b435"
+  },
+  "hit-metal": {
+    "truePeakDb": -13.1,
+    "sha256": "b72fd260bcde4e85a6aa843f0d7c088b6e802b2193f9ef4b4edd893d7682875e"
+  },
+  "hit-flesh": {
+    "truePeakDb": -10.0,
+    "sha256": "768a954ac3629647735409d9dac2005e0907d762a3459f4bee0691dbdf7a58e6"
+  },
+  "hit-stone": {
+    "truePeakDb": -9.9,
+    "sha256": "64c12d93f0b7e6afcf17fb0dfc0e739b16323930c31fbc75f6da97c5e783dc12"
+  },
+  "break-metal": {
+    "truePeakDb": -9.9,
+    "sha256": "4b9f3d4ad01d006e04a9a6eac880302738b9c205348b094ef5e00fedc5cb3630"
+  },
+  "break-glass": {
+    "truePeakDb": -10.0,
+    "sha256": "d4e264d299b91bad7619f721c045ccb54d36eaee7ccc4ac8d878aed4e6710909"
+  },
+  "break-wood": {
+    "truePeakDb": -9.9,
+    "sha256": "b759dbed7204161d20ccbb2fc5296f627179085f0b20ec3c5a2902270658321b"
+  },
+  "body-thud": {
+    "truePeakDb": -10.0,
+    "sha256": "95ae6bd7860a217bfcefe1793a11138531e3d77677fce8970caa3b607c87e82d"
+  },
+  "pain-human0": {
+    "truePeakDb": -10.1,
+    "sha256": "b52235868fd9f553b0f698c547c3e43d6564c4724a86638954fb1c77dbb34a09"
+  },
+  "death-human0": {
+    "truePeakDb": -9.0,
+    "sha256": "b7daa268f54903a2a5997ad36319e1464b2ce5dc71b99eb1db6a43e3c318b01b"
+  },
+  "pain-creature0": {
+    "truePeakDb": -10.3,
+    "sha256": "58629c2a52d8d84861216c97871bca1795ab54c216ce5e0a5eb1a3e393e2fb67"
+  },
+  "death-creature0": {
+    "truePeakDb": -10.1,
+    "sha256": "ce5472f469073b155c17561b0f276a3c9ce1720a3a66f7af2fa8fc152b0dbe0d"
+  },
+  "pain-robot0": {
+    "truePeakDb": -11.1,
+    "sha256": "482f4cd7108830a5693d59c106fc18db55e371de6b2e6de4dc0e24cdc17331a3"
+  },
+  "death-robot0": {
+    "truePeakDb": -9.0,
+    "sha256": "2d9f95f24ee2ca2e4e52304855bb67ba0e509680908d6f31448b3db8ba3fea7d"
+  },
+  "foot-concrete0": {
+    "truePeakDb": -14.0,
+    "sha256": "90f58de368e266adbce776ffbeed72128fe438354d8a3959ff1af7431619238c"
+  },
+  "foot-metal0": {
+    "truePeakDb": -14.4,
+    "sha256": "f1686382a23a059ac440762dcc45b044a929ccfed1bf404ada23bf2212baaf6b"
+  },
+  "foot-soft0": {
+    "truePeakDb": -14.2,
+    "sha256": "a202acdabc7240dff3632d869d82da6cafee0c29d782f614f623b75f85c54d8f"
+  },
+  "pain-human1": {
+    "truePeakDb": -9.8,
+    "sha256": "fefcfb1787b09e2c87fba2bedee1f4a4e835bc4422bb353598bd3267c3d615e8"
+  },
+  "death-human1": {
+    "truePeakDb": -8.8,
+    "sha256": "6e48b8bf4a38590326259fa4bb0e9ab32fd77020b83cf4fb4b8b77638183412c"
+  },
+  "pain-creature1": {
+    "truePeakDb": -9.6,
+    "sha256": "c7816ae4b4a7073511e7ec9c7ee3e9e069b03fab3fb083042b4efec1d1eb623a"
+  },
+  "death-creature1": {
+    "truePeakDb": -9.3,
+    "sha256": "0bcb4d753f07710659131a5999225c1ab7b879436baaa3e0bf00fc7f53af7a27"
+  },
+  "pain-robot1": {
+    "truePeakDb": -10.9,
+    "sha256": "8eb93f954382efd223ff7c256b8ad97c1f93fde8ef3c18f7a880a0128b837a8b"
+  },
+  "death-robot1": {
+    "truePeakDb": -9.1,
+    "sha256": "89ab9d7ed2eba2f18b09ab5c5faa6c08800881a8c0b0602131c3ab5ae58c8863"
+  },
+  "foot-concrete1": {
+    "truePeakDb": -14.6,
+    "sha256": "5eb310f88e3a4a0b04ba7b234c54bf7b72816a93127ccbd17f5060ba0ea3bb9d"
+  },
+  "foot-metal1": {
+    "truePeakDb": -14.0,
+    "sha256": "7072da89828cbca69d9783af298fdc6bf5bea7f294e35eb5edf5d419453ac3be"
+  },
+  "foot-soft1": {
+    "truePeakDb": -14.2,
+    "sha256": "e40f7c069bee01a88c6ca2481fb38fdd327ac21d93f2f3388999f27b224a8e7a"
+  },
+  "pain-human2": {
+    "truePeakDb": -10.0,
+    "sha256": "f0a841f0327b47a453cb693f633048d826bb66b03e764aa5fa1e4668e647ad55"
+  },
+  "death-human2": {
+    "truePeakDb": -8.9,
+    "sha256": "f820d20fa2f4fa498f8c4313020042eaaae70db047ae1c26a349746c57e17664"
+  },
+  "pain-creature2": {
+    "truePeakDb": -9.9,
+    "sha256": "099cf20339ff12e257622e157cfbe512017d3bd2326d6b3870fa172843961ce4"
+  },
+  "death-creature2": {
+    "truePeakDb": -8.9,
+    "sha256": "201cea03ee33e995b50ae880836c4984165642531473076dd54f6fec7dab767d"
+  },
+  "pain-robot2": {
+    "truePeakDb": -10.3,
+    "sha256": "a188e9bd3144b8343e3ce578d8946cc69a39f6f82f20d3cb20188dd14e1499b0"
+  },
+  "death-robot2": {
+    "truePeakDb": -8.9,
+    "sha256": "a374cf4d1e3bab53fd929916a19410c8aae3518643934285e6cbd5dcdc5f13c1"
+  },
+  "foot-concrete2": {
+    "truePeakDb": -14.5,
+    "sha256": "e219d92aa54354eee2c38423d3fe7b3fabc67a1bcfcc0eea3bb6cc2052c57676"
+  },
+  "foot-metal2": {
+    "truePeakDb": -14.4,
+    "sha256": "5c1f53a295b7dc532bbdd054d273b189062f1021722e9c7e117fab04e8c326cb"
+  },
+  "foot-soft2": {
+    "truePeakDb": -14.2,
+    "sha256": "12cb78b2fa7e8761e4ddbf14e1e62135b315c0a0164cc14b5b364bda8fe44701"
+  },
+  "hazard-electric": {
+    "truePeakDb": -12.0,
+    "sha256": "dd843bc02a3cc17bd6f91104568c9d3a944f39238d3c6ffe7d6d593747d97105"
+  },
+  "hazard-pressure": {
+    "truePeakDb": -11.9,
+    "sha256": "dd8fa1ae9dd06094a6d093f5cbf8fd68e8e6587dc74968293d1f13c389d97e27"
+  },
+  "hazard-acid": {
+    "truePeakDb": -12.7,
+    "sha256": "b3e3a69f958f9fef38071df406aba3c9fa6daa21df4fd923b1270f1c6d1f5745"
+  },
+  "hazard-cryo": {
+    "truePeakDb": -15.8,
+    "sha256": "0ce7476cff603022346dde899232ff1cae93cd3a8de6c6e18ca29630240590bc"
+  },
+  "hazard-ember": {
+    "truePeakDb": -12.2,
+    "sha256": "117568d4b5c6e3f94138ed137622f38930c3f67ea7c9abe93579cef3f03364b6"
+  },
+  "hazard-phase": {
+    "truePeakDb": -11.6,
+    "sha256": "5c16d9d718ac6b9a47f22d7b62719dafe406da275ecfc837413fc6de3c5df825"
+  },
+  "hazard-magnetic": {
+    "truePeakDb": -12.0,
+    "sha256": "c7dd57b8c0ca12bc3313eb226ead78341879759bf2525c3732428f512ed7ce2f"
+  },
+  "hazard-biological": {
+    "truePeakDb": -12.6,
+    "sha256": "b68c9ce1a31154ba83d071ae7bcb0ae7d6a2d60f20d87c8b9a63bc6ef3aee270"
+  },
+  "travel-rocket": {
+    "truePeakDb": -18.1,
+    "sha256": "ca8311d6c418c78fec5356d4589fdeab513554e71ae643b0608fa37e6b72a1b4"
+  },
+  "travel-energy": {
+    "truePeakDb": -19.1,
+    "sha256": "a5b8e02b39c0108647429f9b4e1f8acf3756eea4c9555048ac1da4902318468a"
+  },
+  "travel-acid": {
+    "truePeakDb": -18.3,
+    "sha256": "1c80fbbc770b7fe656a97cf2c7b1136a2f9545bdbb9e13b913a9750d2499cd55"
+  },
+  "travel-flame": {
+    "truePeakDb": -18.1,
+    "sha256": "f11b40636bad8a3e7443d3581b435152d1dbd0c776dcf5df5720cfff418e0514"
+  }
+}

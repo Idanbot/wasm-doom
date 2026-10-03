@@ -57,7 +57,7 @@ test("loading screen fetches and decodes every weapon sheet and thumbnail before
       "/game/music/menu.mp3",
       "/game/music/bgm-remix.mp3",
       "/game/music/boss.mp3",
-      "/game/sfx/fire0.ogg",
+      "/game/sfx/v2/fire0.ogg",
     ]) assert.ok(requested.has(path), `${path} was not loaded before deployment`);
   } finally { releaseThumbnail(); await page.close(); }
 });

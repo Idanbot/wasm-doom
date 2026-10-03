@@ -32,3 +32,6 @@ __pycache__/
 art/music-candidates/
 
 art/sector-detail/.generation.lock
+
+# Local production test staging
+.grok/qa-pages-root/

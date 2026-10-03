@@ -2,6 +2,8 @@ import { CAMPAIGN_EXPANSION } from "./campaign25";
 import { asset } from "@/lib/asset";
 import { EnemyAudio } from "./enemy-audio";
 import { VoiceGate } from "./voice-gate";
+import { SfxPlayer } from "./sfx-player";
+import { SfxDirector, worldIntent, type WeaponSoundState } from "./sfx-director";
 import {
   DEFAULT_ENEMY_OPTIONS,
   type EnemyCue,
@@ -31,16 +33,16 @@ export type GameAudio = {
   setBoss: (on: boolean) => void;
   hushBoss: () => void;
   dropBoss: () => void;
-  radio: () => void;
+  radio: (line?: number) => void;
+  ui: (kind?: "click" | "confirm" | "back" | "error" | "transition") => void;
+  updateWeapon: (hud: WeaponSoundState & { bossPhase: number }) => void;
+  world: (kind: number, variant: number, x: number, y: number) => void;
+  updateLoops: (cues: { id: number; kind: number; x: number; y: number }[]) => void;
+  sfxDiagnostics: () =>
+    (ReturnType<SfxPlayer["diagnostics"]> & { levels: { master: number; sfx: number } }) | null;
   fire: (weapon: number) => void;
-  hit: () => void;
-  kill: () => void;
   hurt: () => void;
-  pickup: (gold?: boolean) => void;
-  door: () => void;
   die: () => void;
-  explode: () => void;
-  reload: () => void;
   empty: (weapon?: number) => void;
   foot: () => void;
 };
@@ -51,6 +53,12 @@ const BEAT = 60 / BPM;
 export function createAudio(): GameAudio {
   let ctx: AudioContext | null = null;
   let enemies: EnemyAudio | null = null;
+  let effects: SfxPlayer | null = null;
+  const director = new SfxDirector();
+  let sector = 1;
+  let lastPlayer = { x: 0, y: 0 };
+  let lastWeapon = -1;
+  let bossPosition: { x: number; y: number } | undefined;
   const voiceGate = new VoiceGate();
   let enemyOptions = { ...DEFAULT_ENEMY_OPTIONS };
   let master: GainNode | null = null;
@@ -64,7 +72,6 @@ export function createAudio(): GameAudio {
   let noise: AudioBuffer | null = null;
   let musicOn = false;
   let musicTimer: number | null = null;
-  let nextHitAt = 0;
   let musicNext = 0;
   let musicBar = 0;
   let musicGen = 0;
@@ -87,30 +94,26 @@ export function createAudio(): GameAudio {
     asset("/game/music/boss.mp3"),
   ];
   const SFX_URLS: Record<string, string> = {
-    fire0: asset("/game/sfx/fire0.ogg"),
-    fire1: asset("/game/sfx/fire1.ogg"),
-    fire2: asset("/game/sfx/fire2.ogg"),
-    fire3: asset("/game/sfx/fire3.ogg"),
-    fire4: asset("/game/sfx/fire4.ogg"),
-    reload: asset("/game/sfx/reload.ogg"),
-    empty: asset("/game/sfx/empty.ogg"),
-    empty1: asset("/game/sfx/empty1.ogg"),
-    empty2: asset("/game/sfx/empty2.ogg"),
-    hit: asset("/game/sfx/hit.ogg"),
-    hitFlesh: asset("/game/sfx/hit_flesh.ogg"),
-    death: asset("/game/sfx/death.ogg"),
-    deathThud: asset("/game/sfx/death_thud.ogg"),
-    pickup: asset("/game/sfx/pickup.ogg"),
-    pickupGold: asset("/game/sfx/pickup_gold.ogg"),
-    boom: asset("/game/sfx/boom.ogg"),
-    door: asset("/game/sfx/door.ogg?v=2"),
-    hurt: asset("/game/sfx/hurt.ogg"),
     ...Object.fromEntries(
-      ["veyran", "hecate", "chimera", "oracle", "gravemind", "archivist", "halcyon", "relay", "titan", "kest", "mnemosyne", ...CAMPAIGN_EXPANSION.map(b => b.slug)]
-        .flatMap((id, sector) => [0, 1].map((variant) => [
+      [
+        "veyran",
+        "hecate",
+        "chimera",
+        "oracle",
+        "gravemind",
+        "archivist",
+        "halcyon",
+        "relay",
+        "titan",
+        "kest",
+        "mnemosyne",
+        ...CAMPAIGN_EXPANSION.map((b) => b.slug),
+      ].flatMap((id, sector) =>
+        [0, 1].map((variant) => [
           `bossKill${sector}_${variant}`,
           asset(`/game/voices/boss-${id}${variant ? "-v2" : ""}.mp3`),
-        ])),
+        ]),
+      ),
     ),
   };
 
@@ -126,7 +129,16 @@ export function createAudio(): GameAudio {
     music = ctx.createGain();
     sfx.connect(master);
     music.connect(master);
-    master.connect(ctx.destination);
+    const limiter = ctx.createDynamicsCompressor();
+    limiter.threshold.value = -8;
+    limiter.knee.value = 12;
+    limiter.ratio.value = 4;
+    limiter.attack.value = 0.005;
+    limiter.release.value = 0.15;
+    master.connect(limiter);
+    limiter.connect(ctx.destination);
+    effects = new SfxPlayer(ctx, sfx, voiceGate);
+    effects.spatial = enemyOptions.spatial;
     enemies = new EnemyAudio(ctx, master, sfx, voiceGate);
     enemies.configure(enemyOptions);
     applyGains();
@@ -149,7 +161,7 @@ export function createAudio(): GameAudio {
     if (!ctx || !master || !sfx || !music) return;
     const t = ctx.currentTime;
     master.gain.setTargetAtTime(muted ? 0 : masterV, t, 0.04);
-    sfx.gain.setTargetAtTime(muted ? 0 : sfxV * 1.25, t, 0.04);
+    sfx.gain.setTargetAtTime(muted ? 0 : sfxV, t, 0.04);
     const mv = muted || !musicOn ? 0 : musicV * 0.55;
     music.gain.setTargetAtTime(mv, t, 0.08);
     if (bed) bed.volume = muted || !musicOn ? 0 : 0.85;
@@ -158,91 +170,31 @@ export function createAudio(): GameAudio {
   }
   function loadSfx(): Promise<void> {
     if (!ctx) return Promise.resolve();
-    sfxLoadPromise ??= Promise.all(Object.entries(SFX_URLS).map(([key, url]) =>
-      fetch(url)
-        .then((r) => (r.ok ? r.arrayBuffer() : Promise.reject(new Error(url))))
-        .then((buf) => ctx!.decodeAudioData(buf.slice(0)))
-        .then((audio) => {
-          buffers[key] = audio;
-        })
-        .catch(() => {
-          /* synth fallback */
-        }),
-    )).then(() => undefined);
+    sfxLoadPromise ??= Promise.all(
+      Object.entries(SFX_URLS).map(([key, url]) =>
+        fetch(url)
+          .then((r) => (r.ok ? r.arrayBuffer() : Promise.reject(new Error(url))))
+          .then((buf) => ctx!.decodeAudioData(buf.slice(0)))
+          .then((audio) => {
+            buffers[key] = audio;
+          })
+          .catch(() => {
+            /* synth fallback */
+          }),
+      ),
+    ).then(() => undefined);
     return sfxLoadPromise;
   }
 
   function preloadMusic(): Promise<void> {
-    musicLoadPromise ??= Promise.all(MUSIC_URLS.map(async (url) => {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error(`Music could not load: ${url}`);
-      await response.arrayBuffer();
-    })).then(() => undefined);
+    musicLoadPromise ??= Promise.all(
+      MUSIC_URLS.map(async (url) => {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Music could not load: ${url}`);
+        await response.arrayBuffer();
+      }),
+    ).then(() => undefined);
     return musicLoadPromise;
-  }
-
-  const pool: Record<string, HTMLAudioElement[]> = {};
-
-  function playBuffer(name: string, vol = 1, rate = 1) {
-    const buf = buffers[name];
-    if (!buf || !ctx || !sfx || muted) return false;
-    try {
-      const src = ctx.createBufferSource();
-      src.buffer = buf;
-      src.playbackRate.value = Math.max(0.5, Math.min(2, rate));
-      const g = ctx.createGain();
-      g.gain.value = Math.min(1, Math.max(0, vol));
-      src.connect(g);
-      g.connect(sfx);
-      src.start();
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
-  function playFile(name: string, vol = 1, rate = 1) {
-    const url = SFX_URLS[name];
-    if (!url || muted) return false;
-    // Prefer decoded WebAudio buffers: no element churn, sample-accurate.
-    if (playBuffer(name, Math.min(1, vol * sfxV), rate)) return true;
-    try {
-      const idle = pool[name] ?? (pool[name] = []);
-      let el = idle.pop();
-      if (!el) {
-        el = new Audio(url);
-        el.preload = "auto";
-      } else {
-        el.src = url;
-      }
-      el.volume = Math.min(1, Math.max(0, vol * sfxV * masterV));
-      el.playbackRate = rate !== 1 ? Math.max(0.5, Math.min(2, rate)) : 1;
-      const release = () => {
-        try {
-          el!.pause();
-        } catch {
-          /* ignore */
-        }
-        const list = pool[name] ?? (pool[name] = []);
-        if (list.length < 4) list.push(el!);
-      };
-      el.onended = release;
-      const p = el.play();
-      if (p && typeof p.catch === "function") {
-        void p.catch(() => {
-          release();
-        });
-        return true;
-      }
-      release();
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
-  function sample(name: string, vol = 1, rate = 1) {
-    return playFile(name, vol, rate);
   }
 
   function playVoiceClip(name: string, done: () => void) {
@@ -254,74 +206,23 @@ export function createAudio(): GameAudio {
       gain.gain.value = 1;
       source.connect(gain);
       gain.connect(sfx);
-      source.onended = () => { source.disconnect(); gain.disconnect(); done(); };
+      source.onended = () => {
+        source.disconnect();
+        gain.disconnect();
+        done();
+      };
       source.start();
       return;
     }
     const url = SFX_URLS[name];
-    if (!url || muted) { done(); return; }
+    if (!url || muted) {
+      done();
+      return;
+    }
     const element = new Audio(url);
     element.volume = Math.min(1, 1.35 * sfxV * masterV);
     element.onended = done;
     void element.play().catch(done);
-  }
-
-  function beep(
-    freq: number,
-    dur: number,
-    type: OscillatorType,
-    vol: number,
-    slide = 0,
-    dest?: GainNode,
-  ) {
-    if (!ctx || muted) return;
-    const bus = dest ?? sfx;
-    if (!bus) return;
-    const t = ctx.currentTime;
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
-    o.type = type;
-    o.frequency.setValueAtTime(freq, t);
-    if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(30, freq + slide), t + dur);
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(vol, t + 0.008);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    o.connect(g);
-    g.connect(bus);
-    o.start(t);
-    o.stop(t + dur + 0.03);
-  }
-
-  function burst(
-    dur: number,
-    vol: number,
-    rate = 1,
-    freq = 900,
-    type: BiquadFilterType = "bandpass",
-  ) {
-    if (!ctx || !sfx || !noise || muted) return;
-    const t = ctx.currentTime;
-    const src = ctx.createBufferSource();
-    src.buffer = noise;
-    src.playbackRate.value = rate * (0.92 + Math.random() * 0.16);
-    const g = ctx.createGain();
-    const f = ctx.createBiquadFilter();
-    f.type = type;
-    f.frequency.value = freq;
-    f.Q.value = 0.7;
-    g.gain.setValueAtTime(vol, t);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    src.connect(f);
-    f.connect(g);
-    g.connect(sfx);
-    src.start(t);
-    src.stop(t + dur);
-  }
-
-  function metallic(freq: number, dur: number, vol: number) {
-    beep(freq, dur, "square", vol * 0.45, -freq * 0.4);
-    beep(freq * 1.53, dur * 0.7, "triangle", vol * 0.25, -freq * 0.2);
-    burst(dur * 0.5, vol * 0.35, 1.4, freq * 2, "highpass");
   }
 
   function toneAt(
@@ -552,11 +453,10 @@ export function createAudio(): GameAudio {
         });
       }
     };
-    if (el.readyState >= 2) start();
-    else {
-      el.addEventListener("canplay", start, { once: true });
-      try { el.load(); } catch { /* already loading */ }
-    }
+    // Calling play directly preserves the gesture's autoplay permission.
+    // Loading an unplayed media element first can hold its range request open
+    // and block the full-file preload of the same music URL in Chromium.
+    start();
   }
 
   function setBossElVol(v: number) {
@@ -685,27 +585,44 @@ export function createAudio(): GameAudio {
     },
     async prepareMedia() {
       ensure();
-      await Promise.all([loadSfx(), preloadMusic()]);
+      await Promise.all([loadSfx(), effects?.load(), preloadMusic()]);
     },
     setEnemyOptions(options) {
       enemyOptions = { ...options };
       enemies?.configure(options);
+      if (effects && effects.spatial !== options.spatial) {
+        effects.spatial = options.spatial;
+        effects.stop("travel");
+      }
     },
     updateEnemies(cues, player) {
+      lastPlayer = { x: player.x, y: player.y };
+      const boss = cues.find((c) => c.skin >= 12 && c.hp > 0);
+      bossPosition = boss ? { x: boss.x, y: boss.y } : undefined;
+      if (effects) effects.listenerPosition = lastPlayer;
       enemies?.update(cues, player);
+      for (const intent of director.enemyFrame(cues, ctx?.currentTime ?? 0)) effects?.play(intent);
       return enemies?.captions() ?? [];
     },
     clearEnemies(reset = false) {
       enemies?.silence(reset);
+      effects?.stop();
+      if (reset) {
+        director.reset();
+        bossPosition = undefined;
+      } else director.pause();
     },
     advanceSectorVoices() {
       enemies?.advanceSector();
+      effects?.stop();
+      director.reset();
     },
     dispose() {
       musicOn = false;
       voiceGate.clearPending();
       stopGate();
       enemies?.close();
+      effects?.close();
       if (ctx) void ctx.close();
     },
     unlock() {
@@ -716,6 +633,7 @@ export function createAudio(): GameAudio {
     },
     setMuted(m) {
       muted = m;
+      effects?.setMuted(m);
       applyGains();
     },
     setVolumes(masterVol, musicVol, sfxVol, menuVol) {
@@ -789,10 +707,37 @@ export function createAudio(): GameAudio {
       setBossElVol(1);
       playEl(bossBed, false);
     },
-    radio() {
+    sfxDiagnostics: () =>
+      effects
+        ? {
+            ...effects.diagnostics(),
+            levels: { master: muted ? 0 : masterV, sfx: muted ? 0 : sfxV },
+          }
+        : null,
+    ui(kind = "click") {
       resume();
-      beep(740, 0.05, "square", 0.04, -80);
-      beep(980, 0.07, "sine", 0.035, 40);
+      effects?.play({ id: `ui-${kind}`, gain: 0.6, group: "ui" });
+    },
+    updateWeapon(hud) {
+      sector = hud.wave;
+      if (hud.weapon !== lastWeapon) effects?.stop("reload");
+      lastWeapon = hud.weapon;
+      for (const intent of director.weaponFrame(hud)) effects?.play(intent);
+      for (const intent of director.bossPhase(
+        hud.bossPhase,
+        12 + ((hud.wave - 1) % 25),
+        bossPosition ?? lastPlayer,
+      ))
+        effects?.play(intent);
+    },
+    updateLoops: (cues) => effects?.updateLoops(cues),
+    world(kind, variant, x, y) {
+      const intent = worldIntent(kind, variant);
+      if (intent) effects?.play(kind >= 21 ? intent : { ...intent, x, y });
+    },
+    radio(line = 0) {
+      resume();
+      effects?.play({ id: `terminal${Math.abs(line) % 3}`, gain: 0.55, group: "world" });
     },
     bossKill(sector, variant) {
       resume();
@@ -801,142 +746,58 @@ export function createAudio(): GameAudio {
     },
     fire(weapon) {
       resume();
-      const jitter = 0.94 + Math.random() * 0.12;
-      if (weapon === 4) {
-        // The launcher needs a short mechanical thump, not the old looping
-        // flamethrower sample. Detonation has its own spatially later event.
-        beep(90, 0.16, "sine", 0.22, -55);
-        burst(0.11, 0.34 * jitter, 0.7, 550, "lowpass");
-        metallic(650, 0.055, 0.08);
-        return;
-      }
-      if (weapon === 5) {
-        beep(920, 0.2, "sawtooth", 0.11, -520);
-        beep(180, 0.16, "sine", 0.09, 120);
-        burst(0.09, 0.2, 2.2, 2800, "bandpass");
-        return;
-      }
-      if (weapon === 6) {
-        burst(0.055, 0.34 * jitter, 1.5, 900, "bandpass");
-        beep(105, 0.06, "square", 0.08, -35);
-        return;
-      }
-      if (weapon === 7) {
-        burst(0.16, 0.32 * jitter, 0.55, 220, "lowpass");
-        beep(70, 0.18, "sawtooth", 0.1, -30);
-        burst(0.08, 0.12, 2.4, 2400, "highpass");
-        return;
-      }
-      if (sample(`fire${weapon}`, weapon === 1 ? 1.35 : 1.2, jitter)) return;
-      if (weapon === 1) {
-        burst(0.22, 0.55 * jitter, 0.55, 160, "lowpass");
-        burst(0.08, 0.28, 1.8, 1800, "highpass");
-        beep(70, 0.14, "sawtooth", 0.16, -40);
-      } else if (weapon === 2) {
-        burst(0.05, 0.28 * jitter, 1.8, 1400, "bandpass");
-        beep(240, 0.04, "square", 0.06, -90);
-      } else if (weapon === 3) {
-        beep(620, 0.22, "sawtooth", 0.07, -280);
-        burst(0.18, 0.2, 1.1, 2200, "bandpass");
-      } else {
-        burst(0.07, 0.24 * jitter, 2.1, 1100, "bandpass");
-        beep(380, 0.05, "square", 0.07, -160);
-      }
+      effects?.stop("reload");
+      effects?.play({ id: `fire${weapon}`, gain: 0.8, rate: 0.98 + Math.random() * 0.04 });
     },
-    hit() {
-      resume();
-      const now = ctx?.currentTime ?? 0;
-      if (now < nextHitAt) return;
-      nextHitAt = now + 0.04;
-      if (sample("hit", 0.85, 0.94 + Math.random() * 0.12)) {
-        sample("hitFlesh", 0.55, 0.9 + Math.random() * 0.2);
-        return;
-      }
-      beep(980, 0.035, "square", 0.06, 220);
-      metallic(420, 0.06, 0.05);
-    },
-    kill() {
-      resume();
-      if (sample("death", 0.9, 0.92 + Math.random() * 0.16)) {
-        sample("deathThud", 0.8, 0.88 + Math.random() * 0.2);
-        return;
-      }
-      beep(90, 0.35, "sawtooth", 0.2, -50);
-      burst(0.32, 0.28, 0.45, 110, "lowpass");
-    },
+    // Spatial impacts, deaths, doors and pickups are driven by entity/world events.
     hurt() {
       resume();
-      if (sample("hurt", 1.35, 0.92 + Math.random() * 0.1)) return;
-      burst(0.22, 0.35, 0.45, 140, "lowpass");
-      beep(110, 0.2, "sawtooth", 0.16, -50);
-    },
-    pickup(gold = false) {
-      resume();
-      if (gold) {
-        if (sample("pickupGold", 1.35, 0.96 + Math.random() * 0.08)) return;
-        beep(523, 0.1, "triangle", 0.09, 80);
-        beep(784, 0.14, "square", 0.07, 60);
-      } else {
-        if (sample("pickup", 1.3, 0.96 + Math.random() * 0.08)) return;
-        beep(660, 0.07, "square", 0.08, 120);
-        beep(880, 0.09, "triangle", 0.06, 90);
-      }
-    },
-    door() {
-      resume();
-      if (sample("door", 1.2, 0.94 + Math.random() * 0.08)) return;
-      burst(0.28, 0.2, 0.35, 140, "lowpass");
-      metallic(180, 0.22, 0.08);
+      effects?.play({ id: `pain-human${Math.floor(Math.random() * 3)}`, gain: 0.6 });
     },
     die() {
       resume();
-      beep(70, 0.55, "sawtooth", 0.24, -40);
-      burst(0.5, 0.3, 0.3, 90, "lowpass");
-    },
-    explode() {
-      resume();
-      if (sample("boom", 1.4, 0.92 + Math.random() * 0.1)) return;
-      burst(0.45, 0.7, 0.35, 70, "lowpass");
-      beep(48, 0.42, "sine", 0.28, -18);
-      beep(72, 0.28, "sawtooth", 0.16, -30);
-    },
-    reload() {
-      resume();
-      if (sample("reload", 0.95, 0.96 + Math.random() * 0.08)) return;
-      metallic(240, 0.08, 0.08);
-      window.setTimeout(() => metallic(180, 0.1, 0.07), 90);
-      window.setTimeout(() => burst(0.06, 0.12, 1.1, 700, "bandpass"), 180);
+      effects?.play({ id: "body-thud", gain: 0.6 });
+      effects?.play({ id: "death-human2", gain: 0.65 });
     },
     empty(weapon = 0) {
       resume();
-      const click = weapon === 1 ? "empty1" : weapon === 2 || weapon === 4 ? "empty2" : "empty";
-      if (sample(click, 0.9, 0.97 + Math.random() * 0.06)) return;
-      if (weapon === 1) {
-        burst(0.07, 0.16, 0.7, 320, "bandpass");
-        beep(70, 0.08, "square", 0.08, -12);
-        metallic(150, 0.09, 0.1);
-      } else if (weapon === 2) {
-        beep(260, 0.028, "square", 0.07, -50);
-        burst(0.028, 0.11, 3.4, 3200, "highpass");
-        metallic(420, 0.04, 0.05);
-      } else if (weapon === 3) {
-        beep(980, 0.04, "square", 0.06, -520);
-        beep(140, 0.07, "sawtooth", 0.05, -40);
-        burst(0.05, 0.09, 1.5, 1700, "bandpass");
-      } else if (weapon === 4) {
-        burst(0.09, 0.13, 1.7, 850, "highpass");
-        beep(64, 0.07, "triangle", 0.06, -8);
-        metallic(190, 0.06, 0.07);
-      } else {
-        beep(190, 0.032, "square", 0.08, -28);
-        burst(0.03, 0.11, 2.9, 2500, "highpass");
-        metallic(340, 0.045, 0.07);
-      }
+      effects?.play({ id: "empty", gain: 0.65, rate: 1 - (weapon % 3) * 0.04 });
     },
     foot() {
       resume();
-      burst(0.07, 0.12, 0.55 + Math.random() * 0.2, 180, "lowpass");
-      beep(70 + Math.random() * 20, 0.05, "triangle", 0.03, -10);
+      const surfaces = [
+        "concrete",
+        "metal",
+        "concrete",
+        "soft",
+        "metal",
+        "soft",
+        "metal",
+        "metal",
+        "concrete",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "concrete",
+        "metal",
+        "metal",
+        "soft",
+        "metal",
+        "concrete",
+        "soft",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+        "metal",
+      ];
+      const surface = surfaces[(sector - 1) % 25] ?? "metal";
+      effects?.play({
+        id: `foot-${surface}${Math.floor(Math.random() * 3)}`,
+        gain: 0.5,
+        rate: 0.96 + Math.random() * 0.08,
+      });
     },
   };
 }

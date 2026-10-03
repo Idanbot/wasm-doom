@@ -3589,188 +3589,6 @@
     "height": 256
   },
   {
-    "file": "/game/sfx/boom.ogg",
-    "name": "boom.ogg",
-    "size": 7766,
-    "hash": "c650370a9f702b68b2bc9510900bad101c90bd59fa3f7d610a1aa378966eed8f",
-    "shortHash": "c650370a"
-  },
-  {
-    "file": "/game/sfx/boom.wav",
-    "name": "boom.wav",
-    "size": 61782,
-    "hash": "1e356a0ff1e73279dbd4a028a05a292ebbe119dbc702649b0edb965c620ccc55",
-    "shortHash": "1e356a0f"
-  },
-  {
-    "file": "/game/sfx/death.ogg",
-    "name": "death.ogg",
-    "size": 20870,
-    "hash": "480ee82b690136ea9db6966a3c3033356b8274752795c4e37afd6b6defcfacff",
-    "shortHash": "480ee82b"
-  },
-  {
-    "file": "/game/sfx/death_thud.ogg",
-    "name": "death_thud.ogg",
-    "size": 11617,
-    "hash": "b33a8f14068aec24ec69ba85e5e87fdc41228975f6a1a3e44a6e7d6fc3d9f8d8",
-    "shortHash": "b33a8f14"
-  },
-  {
-    "file": "/game/sfx/door.ogg",
-    "name": "door.ogg",
-    "size": 13615,
-    "hash": "9851a69d0c613e13bceef08060ecc4148f098ef487927cbebe270d642398a3b3",
-    "shortHash": "9851a69d"
-  },
-  {
-    "file": "/game/sfx/empty.ogg",
-    "name": "empty.ogg",
-    "size": 13615,
-    "hash": "9851a69d0c613e13bceef08060ecc4148f098ef487927cbebe270d642398a3b3",
-    "shortHash": "9851a69d"
-  },
-  {
-    "file": "/game/sfx/empty0.ogg",
-    "name": "empty0.ogg",
-    "size": 7286,
-    "hash": "72b589eadd41781257ac859e4f4d030222e623390e4a1a83f6d05329a6e026f1",
-    "shortHash": "72b589ea"
-  },
-  {
-    "file": "/game/sfx/empty1.ogg",
-    "name": "empty1.ogg",
-    "size": 6509,
-    "hash": "f4bbee66ca191ec744b84fc07ac9ed2a6fda955d51cfed8360f12b62815d3cbd",
-    "shortHash": "f4bbee66"
-  },
-  {
-    "file": "/game/sfx/empty2.ogg",
-    "name": "empty2.ogg",
-    "size": 7651,
-    "hash": "33b5e6e37c6e9d54e07bf5a89b12c76e879f40c1ea83cdd82714df1d6f9fec6d",
-    "shortHash": "33b5e6e3"
-  },
-  {
-    "file": "/game/sfx/fire0.ogg",
-    "name": "fire0.ogg",
-    "size": 3083,
-    "hash": "87b40dacd2b61322158a1401852a823ce8a61514cb60be836c3ea63e9fb86d61",
-    "shortHash": "87b40dac"
-  },
-  {
-    "file": "/game/sfx/fire0.wav",
-    "name": "fire0.wav",
-    "size": 19448,
-    "hash": "8fbad4c0038e2aecdcc2e779789fa48c0bdb1a6c214bd2d3546451bbbec2c160",
-    "shortHash": "8fbad4c0"
-  },
-  {
-    "file": "/game/sfx/fire1.ogg",
-    "name": "fire1.ogg",
-    "size": 5520,
-    "hash": "d981c135f5e79fbd8d9807f2f576c370ee40fcb6a4496731c347aab297b57ef7",
-    "shortHash": "d981c135"
-  },
-  {
-    "file": "/game/sfx/fire1.wav",
-    "name": "fire1.wav",
-    "size": 42380,
-    "hash": "15603b8af805484ad2b99441ac40d1ef035ada053b6c45f04764ccf82bf933a5",
-    "shortHash": "15603b8a"
-  },
-  {
-    "file": "/game/sfx/fire2.ogg",
-    "name": "fire2.ogg",
-    "size": 1870,
-    "hash": "cd5c45add33e11f6febd715274833c3cbbf802be424ffa18824e730e68388354",
-    "shortHash": "cd5c45ad"
-  },
-  {
-    "file": "/game/sfx/fire2.wav",
-    "name": "fire2.wav",
-    "size": 8864,
-    "hash": "2ae2211bfc2a85f02d8abd344c469dc4fe9149d46b6ef907f7877f053538709a",
-    "shortHash": "2ae2211b"
-  },
-  {
-    "file": "/game/sfx/fire3.ogg",
-    "name": "fire3.ogg",
-    "size": 6004,
-    "hash": "ad3010a947eb466b60234d42d16587771266b1f05755d09e4885bfb9a015079e",
-    "shortHash": "ad3010a9"
-  },
-  {
-    "file": "/game/sfx/fire3.wav",
-    "name": "fire3.wav",
-    "size": 48554,
-    "hash": "75f4399d56daa38298108a975a22473f5f8474b57c3b9075f7309ef1005c9e79",
-    "shortHash": "75f4399d"
-  },
-  {
-    "file": "/game/sfx/fire4.ogg",
-    "name": "fire4.ogg",
-    "size": 3994,
-    "hash": "8335d8b81736f514558cf942cc3c6c80fa61db0ab8596578eaa7e48fbb431b60",
-    "shortHash": "8335d8b8"
-  },
-  {
-    "file": "/game/sfx/fire4.wav",
-    "name": "fire4.wav",
-    "size": 28268,
-    "hash": "b022942de8077c2d8e58e213d6b4e09f88705ea5ea9d6ebd4496a7b0ef4f6f09",
-    "shortHash": "b022942d"
-  },
-  {
-    "file": "/game/sfx/hit.ogg",
-    "name": "hit.ogg",
-    "size": 8800,
-    "hash": "486988aa2d6440ffc4c62a0e8ccf3c23673ba84424bd4723378d451b7255eb5c",
-    "shortHash": "486988aa"
-  },
-  {
-    "file": "/game/sfx/hit_flesh.ogg",
-    "name": "hit_flesh.ogg",
-    "size": 6689,
-    "hash": "4d0096364ba9e46119d2ff6df493fdc101bd2e1efae061da5e5f77a53b3fdcb6",
-    "shortHash": "4d009636"
-  },
-  {
-    "file": "/game/sfx/hit_slice.ogg",
-    "name": "hit_slice.ogg",
-    "size": 15532,
-    "hash": "4cd96dc630bed9840c15f1dd2306da2cc56a4da26a5d3f1a03c5a7265ac5e54f",
-    "shortHash": "4cd96dc6"
-  },
-  {
-    "file": "/game/sfx/hurt.ogg",
-    "name": "hurt.ogg",
-    "size": 4812,
-    "hash": "1dd3ac68a32be1d140cd98647dfa9ece7d930e3772a513d839701d3cfb55ab4b",
-    "shortHash": "1dd3ac68"
-  },
-  {
-    "file": "/game/sfx/pickup.ogg",
-    "name": "pickup.ogg",
-    "size": 14001,
-    "hash": "d823857d82ead3d157a553baf76a2e5f64e7cc7de3e951d1f478ed34457323e4",
-    "shortHash": "d823857d"
-  },
-  {
-    "file": "/game/sfx/pickup_gold.ogg",
-    "name": "pickup_gold.ogg",
-    "size": 6146,
-    "hash": "2050202f72f11a574519c028d5324545d3a8854ccd30a89204144a68616ec27c",
-    "shortHash": "2050202f"
-  },
-  {
-    "file": "/game/sfx/reload.ogg",
-    "name": "reload.ogg",
-    "size": 10208,
-    "hash": "ba9ba60b172b3ebc131a940f25793cd2e207aca7af73dc80d637277f060f1708",
-    "shortHash": "ba9ba60b"
-  },
-  {
     "file": "/game/voices/boss-chimera.mp3",
     "name": "boss-chimera.mp3",
     "size": 60525,
@@ -10345,5 +10163,726 @@
     "shortHash": "3954de1b",
     "width": 256,
     "height": 256
+  },
+  {
+    "file": "/game/sfx/v2/fire0.ogg",
+    "name": "MK23-S \u2014 fire0.ogg",
+    "size": 7024,
+    "hash": "ff9369c9ee47bb05350253813305e248f7107f871bd3df2edce693114a5d962b",
+    "shortHash": "ff9369c9"
+  },
+  {
+    "file": "/game/sfx/v2/fire1.ogg",
+    "name": "BR-12 BREAKER \u2014 fire1.ogg",
+    "size": 11519,
+    "hash": "340931dd2569b4fe1ee838f13dcac776bf78ddda3ea7f858e1d6bccca3429e00",
+    "shortHash": "340931dd"
+  },
+  {
+    "file": "/game/sfx/v2/fire2.ogg",
+    "name": "KX-9 VECTOR \u2014 fire2.ogg",
+    "size": 6775,
+    "hash": "95be4017bdfbe6574ba0beb3d4a05d544e731157f149377f49a6d29dbf0b2539",
+    "shortHash": "95be4017"
+  },
+  {
+    "file": "/game/sfx/v2/fire3.ogg",
+    "name": "MR-4 LONGBOW \u2014 fire3.ogg",
+    "size": 8915,
+    "hash": "394911576b8814709bdcff9b15fd648f2675c141481941e9ddb793831e379029",
+    "shortHash": "39491157"
+  },
+  {
+    "file": "/game/sfx/v2/fire4.ogg",
+    "name": "VLK-6 WARDEN \u2014 fire4.ogg",
+    "size": 7291,
+    "hash": "abfe2d1938eaca0c79b31fe926a62cc6b49ac40c1241685b0272b72cdc6219a8",
+    "shortHash": "abfe2d19"
+  },
+  {
+    "file": "/game/sfx/v2/fire5.ogg",
+    "name": "AX-12 VOLT \u2014 fire5.ogg",
+    "size": 9921,
+    "hash": "2cada0f818207c2ab08e1ee36bfb104f6d1e201fa9e1d98d4a20fd0357a903d5",
+    "shortHash": "2cada0f8"
+  },
+  {
+    "file": "/game/sfx/v2/fire6.ogg",
+    "name": "M91 CYCLONE \u2014 fire6.ogg",
+    "size": 6251,
+    "hash": "77b1ebd0fc3277b42a02e2fb76ddbd0c03da62d6fb952a0ef56a543e49469ab7",
+    "shortHash": "77b1ebd0"
+  },
+  {
+    "file": "/game/sfx/v2/fire7.ogg",
+    "name": "HX-8 PYRE \u2014 fire7.ogg",
+    "size": 8327,
+    "hash": "a0172b34a4013225a6ea429d7b09febb22a7c48f1062237d098865adbec4a62f",
+    "shortHash": "a0172b34"
+  },
+  {
+    "file": "/game/sfx/v2/fire8.ogg",
+    "name": "VR-9 OVERRIDE \u2014 fire8.ogg",
+    "size": 9899,
+    "hash": "8a619e778b5c617fee10c7f0328f8790ca9b6308ca145f0022b81b9f37555333",
+    "shortHash": "8a619e77"
+  },
+  {
+    "file": "/game/sfx/v2/fire9.ogg",
+    "name": "HC-9 FORGE \u2014 fire9.ogg",
+    "size": 8884,
+    "hash": "26779c5f490cb3adf3c4f4e9fb79b0d2785d0c4ddc53b16e9c66644ec6d91189",
+    "shortHash": "26779c5f"
+  },
+  {
+    "file": "/game/sfx/v2/fire10.ogg",
+    "name": "CM-9 CHIMERA \u2014 fire10.ogg",
+    "size": 9855,
+    "hash": "fdf89e7ae53f8f46967fb337703823c4ffb43ae477a1cc71d7fd6221f9cd4b88",
+    "shortHash": "fdf89e7a"
+  },
+  {
+    "file": "/game/sfx/v2/fire11.ogg",
+    "name": "AR-6 ARCHIVE \u2014 fire11.ogg",
+    "size": 6405,
+    "hash": "b1075c6f2f7c9ff276404ae4de69004a7c64e0e3cdea30a95ad766fc21a6c367",
+    "shortHash": "b1075c6f"
+  },
+  {
+    "file": "/game/sfx/v2/fire12.ogg",
+    "name": "OR-7 PREDICTOR \u2014 fire12.ogg",
+    "size": 6985,
+    "hash": "573ac230d3f5a290fc32e835adce2ac43b1b466424a859c06ec418e7b2213b5f",
+    "shortHash": "573ac230"
+  },
+  {
+    "file": "/game/sfx/v2/fire13.ogg",
+    "name": "GS-4 SINK \u2014 fire13.ogg",
+    "size": 9753,
+    "hash": "694b52267bee1e9a9a8683d6770c97c0b1f9d2be7aa97c3bb9638c79de527569",
+    "shortHash": "694b5226"
+  },
+  {
+    "file": "/game/sfx/v2/fire14.ogg",
+    "name": "CR-3 RIME \u2014 fire14.ogg",
+    "size": 5295,
+    "hash": "f8669987b7827f3fa6dff17ba06875637612148e18acd43a0c243975dac050a3",
+    "shortHash": "f8669987"
+  },
+  {
+    "file": "/game/sfx/v2/fire15.ogg",
+    "name": "SR-0 RELAY \u2014 fire15.ogg",
+    "size": 7607,
+    "hash": "5420c96cf0516ce5c70c7459114d095802d32ffd377259141dd2402c90c39835",
+    "shortHash": "5420c96c"
+  },
+  {
+    "file": "/game/sfx/v2/fire16.ogg",
+    "name": "TS-12 TITAN \u2014 fire16.ogg",
+    "size": 10551,
+    "hash": "ef14a6545caace9f8385e23c760abcfd8dbbb7b60b57cb5a010972628cb443a2",
+    "shortHash": "ef14a654"
+  },
+  {
+    "file": "/game/sfx/v2/fire17.ogg",
+    "name": "KS-8 KEST \u2014 fire17.ogg",
+    "size": 6431,
+    "hash": "c457b08916983e1790b7083caa22d809300ea305b4d36a2034968b57cb4cb26c",
+    "shortHash": "c457b089"
+  },
+  {
+    "file": "/game/sfx/v2/fire18.ogg",
+    "name": "MN-6 ECHO \u2014 fire18.ogg",
+    "size": 10024,
+    "hash": "5ff2511bedc9a9732d4c8d1b2c1adf293d6e2b7e90704b7bb47534cbb37a21a9",
+    "shortHash": "5ff2511b"
+  },
+  {
+    "file": "/game/sfx/v2/fire19.ogg",
+    "name": "VX-2 CINDER \u2014 fire19.ogg",
+    "size": 9693,
+    "hash": "0a140db9a7126815ff1f9936efd5654090816132096c51085731a6ce93db6b35",
+    "shortHash": "0a140db9"
+  },
+  {
+    "file": "/game/sfx/v2/fire20.ogg",
+    "name": "LV-8 UNDERTOW \u2014 fire20.ogg",
+    "size": 8973,
+    "hash": "ec7376e1e2e62fa90510fab5c1319ad8d03f35f2ea32c3da75ca56786154fb6c",
+    "shortHash": "ec7376e1"
+  },
+  {
+    "file": "/game/sfx/v2/fire21.ogg",
+    "name": "PR-5 SPECTRUM \u2014 fire21.ogg",
+    "size": 6086,
+    "hash": "ed360249602fc222548d1fb70a710913b683855261e1225ae15df2450825f639",
+    "shortHash": "ed360249"
+  },
+  {
+    "file": "/game/sfx/v2/fire22.ogg",
+    "name": "MG-4 POLARITY \u2014 fire22.ogg",
+    "size": 7990,
+    "hash": "8d02818a083aa7b1ea52ed2a84b7158fe186360db1bbc12cba8d763b8d361b40",
+    "shortHash": "8d02818a"
+  },
+  {
+    "file": "/game/sfx/v2/fire23.ogg",
+    "name": "BM-3 SWARM \u2014 fire23.ogg",
+    "size": 9315,
+    "hash": "db484920308bab29b467cd6b50afb4119648913bcd141535fc242490b93d2e69",
+    "shortHash": "db484920"
+  },
+  {
+    "file": "/game/sfx/v2/fire24.ogg",
+    "name": "MY-9 SPORE \u2014 fire24.ogg",
+    "size": 12132,
+    "hash": "9a177dc411597c92c94e169ba2b522d92d2686ce43cd17b5fb67a3ef4550880c",
+    "shortHash": "9a177dc4"
+  },
+  {
+    "file": "/game/sfx/v2/fire25.ogg",
+    "name": "AS-7 STARFALL \u2014 fire25.ogg",
+    "size": 8749,
+    "hash": "c969162bc1085978db298d774690c14511d6776664cf16d5028cc18a307855f5",
+    "shortHash": "c969162b"
+  },
+  {
+    "file": "/game/sfx/v2/fire26.ogg",
+    "name": "SC-6 SHREDDER \u2014 fire26.ogg",
+    "size": 5651,
+    "hash": "9265aa539668065c714aa9b23f999c47cf2a452224712ae1f546aa7834026acb",
+    "shortHash": "9265aa53"
+  },
+  {
+    "file": "/game/sfx/v2/fire27.ogg",
+    "name": "UB-1 VEIL \u2014 fire27.ogg",
+    "size": 7963,
+    "hash": "5a0041be6c99308fdf44ef19c57209387b48b92129a42a4e10de87abf2291521",
+    "shortHash": "5a0041be"
+  },
+  {
+    "file": "/game/sfx/v2/fire28.ogg",
+    "name": "SL-12 HELIOS \u2014 fire28.ogg",
+    "size": 9981,
+    "hash": "6e4145930041c29dba9ab81af3789d2a40c8096a1ce555e4da563231593d3a0c",
+    "shortHash": "6e414593"
+  },
+  {
+    "file": "/game/sfx/v2/fire29.ogg",
+    "name": "NT-4 TORPEDO \u2014 fire29.ogg",
+    "size": 6972,
+    "hash": "043b094999b3ab95357a599cfabd2700e851ecd20c6ec1070a7fd72d7dd87ab1",
+    "shortHash": "043b0949"
+  },
+  {
+    "file": "/game/sfx/v2/fire30.ogg",
+    "name": "CH-8 EPOCH \u2014 fire30.ogg",
+    "size": 8305,
+    "hash": "fcf8d1d8a968730bb29a1e60ff1bad8dbd8b34a10f1818d0a62ad491a54c1b79",
+    "shortHash": "fcf8d1d8"
+  },
+  {
+    "file": "/game/sfx/v2/fire31.ogg",
+    "name": "BO-11 GLACIER \u2014 fire31.ogg",
+    "size": 9946,
+    "hash": "389c1e2cd8a5ae51f4f78867254b4ef0cf6544a816aad79bd26dc417959440f6",
+    "shortHash": "389c1e2c"
+  },
+  {
+    "file": "/game/sfx/v2/fire32.ogg",
+    "name": "SV-25 DOMINION \u2014 fire32.ogg",
+    "size": 10632,
+    "hash": "dbb3772da5321200e2c1b9bcd52401316baa9390f65e8df6504659af9c32e251",
+    "shortHash": "dbb3772d"
+  },
+  {
+    "file": "/game/sfx/v2/mag-out.ogg",
+    "name": "mag-out.ogg",
+    "size": 6070,
+    "hash": "b1f363099898414df2f09addfce6cf61e32c269f50b5c300b5493df0c13e137d",
+    "shortHash": "b1f36309"
+  },
+  {
+    "file": "/game/sfx/v2/mag-in.ogg",
+    "name": "mag-in.ogg",
+    "size": 6953,
+    "hash": "3070e7ed5f5d0944c77856c52b71c8d54a8184d929d5bb14af23810ffb13eba8",
+    "shortHash": "3070e7ed"
+  },
+  {
+    "file": "/game/sfx/v2/chamber.ogg",
+    "name": "chamber.ogg",
+    "size": 6510,
+    "hash": "f943fc747c0fc54bf579e7708a4cea80e7848fe7fd43cac516599608f1eefabf",
+    "shortHash": "f943fc74"
+  },
+  {
+    "file": "/game/sfx/v2/shell.ogg",
+    "name": "shell.ogg",
+    "size": 6013,
+    "hash": "9054f35260f28de9f3a541a20ab588cac811ff37da244ebf7b4aa208f5835bd4",
+    "shortHash": "9054f352"
+  },
+  {
+    "file": "/game/sfx/v2/pump.ogg",
+    "name": "pump.ogg",
+    "size": 8117,
+    "hash": "41f456b7a8f7243a8ea7c642040e8b1d2a26c53d109fa5a708e8ac381cdc633d",
+    "shortHash": "41f456b7"
+  },
+  {
+    "file": "/game/sfx/v2/empty.ogg",
+    "name": "empty.ogg",
+    "size": 5041,
+    "hash": "174677ace5ea601d98fb738c7c9f838ff4a7a4c347d53afddd26ea6d3ac3bbc7",
+    "shortHash": "174677ac"
+  },
+  {
+    "file": "/game/sfx/v2/cell-out.ogg",
+    "name": "cell-out.ogg",
+    "size": 6538,
+    "hash": "8ae965b1240482ffcc9a17ec1d6cbdb65aaf91d385ba347fd707226452d08abf",
+    "shortHash": "8ae965b1"
+  },
+  {
+    "file": "/game/sfx/v2/cell-in.ogg",
+    "name": "cell-in.ogg",
+    "size": 5244,
+    "hash": "abc502cd2f5660cfe8a7fbca046247b434165bec3192857968fdb35e5e42daef",
+    "shortHash": "abc502cd"
+  },
+  {
+    "file": "/game/sfx/v2/charge.ogg",
+    "name": "charge.ogg",
+    "size": 6812,
+    "hash": "0fd3f3c8aabe50e3948c515de6a8165ae4be0e1d1b179dfff08cc765e322c61f",
+    "shortHash": "0fd3f3c8"
+  },
+  {
+    "file": "/game/sfx/v2/equip.ogg",
+    "name": "equip.ogg",
+    "size": 6763,
+    "hash": "a948dcd7f848b9170774f552f07158e2acace14a018b978573ef717b24dbc07f",
+    "shortHash": "a948dcd7"
+  },
+  {
+    "file": "/game/sfx/v2/ui-click.ogg",
+    "name": "ui-click.ogg",
+    "size": 4197,
+    "hash": "9c85ff725fae57bf24ca16d0972848cfec5b258b33374ee5997b5b266ad3dfed",
+    "shortHash": "9c85ff72"
+  },
+  {
+    "file": "/game/sfx/v2/ui-confirm.ogg",
+    "name": "ui-confirm.ogg",
+    "size": 4651,
+    "hash": "099e5c3eefed9d517420170a251235eb086a4f7a0b6be7dfd9200e36ac8a46c1",
+    "shortHash": "099e5c3e"
+  },
+  {
+    "file": "/game/sfx/v2/ui-back.ogg",
+    "name": "ui-back.ogg",
+    "size": 4572,
+    "hash": "1aa03956772c247b6fc7cdb6aa1adec3f3000806721112fa4a526e93d9572c8b",
+    "shortHash": "1aa03956"
+  },
+  {
+    "file": "/game/sfx/v2/ui-error.ogg",
+    "name": "ui-error.ogg",
+    "size": 5265,
+    "hash": "33eeedf5e1a8d757df492e5c4052ccf07122ee4ff19d0fb920b6b3c658b6c0ba",
+    "shortHash": "33eeedf5"
+  },
+  {
+    "file": "/game/sfx/v2/ui-transition.ogg",
+    "name": "ui-transition.ogg",
+    "size": 5320,
+    "hash": "ed53823a3ab0f9cc156510a80396c72c0b68b3a160a4e324fea288f4017b8e4f",
+    "shortHash": "ed53823a"
+  },
+  {
+    "file": "/game/sfx/v2/pickup-health.ogg",
+    "name": "pickup-health.ogg",
+    "size": 6758,
+    "hash": "00f015d02ddcae916f67b67e1a59621add56992a860c83b27d803aeecd6b0736",
+    "shortHash": "00f015d0"
+  },
+  {
+    "file": "/game/sfx/v2/pickup-armor.ogg",
+    "name": "pickup-armor.ogg",
+    "size": 4542,
+    "hash": "c1a7ae8f1f573cb12f95a038e01a47f046e3e07fb3ab202e35fbb3b69bfab026",
+    "shortHash": "c1a7ae8f"
+  },
+  {
+    "file": "/game/sfx/v2/pickup-ammo.ogg",
+    "name": "pickup-ammo.ogg",
+    "size": 4427,
+    "hash": "bf0484ce8f24543bc95d43d186fb5943a35c1360f5704555693237b4aa69b8e8",
+    "shortHash": "bf0484ce"
+  },
+  {
+    "file": "/game/sfx/v2/pickup-weapon.ogg",
+    "name": "pickup-weapon.ogg",
+    "size": 6493,
+    "hash": "0f0b720bfdbf09e687fca1e59a3e274f0164699500e780b8ff71c634a333319c",
+    "shortHash": "0f0b720b"
+  },
+  {
+    "file": "/game/sfx/v2/terminal0.ogg",
+    "name": "terminal0.ogg",
+    "size": 5428,
+    "hash": "9fdd8e04994aaaf163ef4e55984db24d88005434b5eec3a2ded8a7e181505fc0",
+    "shortHash": "9fdd8e04"
+  },
+  {
+    "file": "/game/sfx/v2/terminal1.ogg",
+    "name": "terminal1.ogg",
+    "size": 7067,
+    "hash": "ff8cf4eff8ad29ce4aa68ab483bb8902d3218a4b118c4c64056c220f2ad81798",
+    "shortHash": "ff8cf4ef"
+  },
+  {
+    "file": "/game/sfx/v2/terminal2.ogg",
+    "name": "terminal2.ogg",
+    "size": 7077,
+    "hash": "db817b4bf60d485be7449ba37b4732d00c4f6409ee6a76e8cc7c31c945d1586f",
+    "shortHash": "db817b4b"
+  },
+  {
+    "file": "/game/sfx/v2/door.ogg",
+    "name": "door.ogg",
+    "size": 9965,
+    "hash": "6605523807187bef15b16d5c2f8b5494ff76a1a38ce4e45152347f47889e6412",
+    "shortHash": "66055238"
+  },
+  {
+    "file": "/game/sfx/v2/explosion.ogg",
+    "name": "explosion.ogg",
+    "size": 15967,
+    "hash": "074ea61bfe985bb154966859601a595dde21c6811648bb2a652d1a8eed13b435",
+    "shortHash": "074ea61b"
+  },
+  {
+    "file": "/game/sfx/v2/hit-metal.ogg",
+    "name": "hit-metal.ogg",
+    "size": 4194,
+    "hash": "b72fd260bcde4e85a6aa843f0d7c088b6e802b2193f9ef4b4edd893d7682875e",
+    "shortHash": "b72fd260"
+  },
+  {
+    "file": "/game/sfx/v2/hit-flesh.ogg",
+    "name": "hit-flesh.ogg",
+    "size": 6304,
+    "hash": "768a954ac3629647735409d9dac2005e0907d762a3459f4bee0691dbdf7a58e6",
+    "shortHash": "768a954a"
+  },
+  {
+    "file": "/game/sfx/v2/hit-stone.ogg",
+    "name": "hit-stone.ogg",
+    "size": 7486,
+    "hash": "64c12d93f0b7e6afcf17fb0dfc0e739b16323930c31fbc75f6da97c5e783dc12",
+    "shortHash": "64c12d93"
+  },
+  {
+    "file": "/game/sfx/v2/break-metal.ogg",
+    "name": "break-metal.ogg",
+    "size": 7472,
+    "hash": "4b9f3d4ad01d006e04a9a6eac880302738b9c205348b094ef5e00fedc5cb3630",
+    "shortHash": "4b9f3d4a"
+  },
+  {
+    "file": "/game/sfx/v2/break-glass.ogg",
+    "name": "break-glass.ogg",
+    "size": 5175,
+    "hash": "d4e264d299b91bad7619f721c045ccb54d36eaee7ccc4ac8d878aed4e6710909",
+    "shortHash": "d4e264d2"
+  },
+  {
+    "file": "/game/sfx/v2/break-wood.ogg",
+    "name": "break-wood.ogg",
+    "size": 4272,
+    "hash": "b759dbed7204161d20ccbb2fc5296f627179085f0b20ec3c5a2902270658321b",
+    "shortHash": "b759dbed"
+  },
+  {
+    "file": "/game/sfx/v2/body-thud.ogg",
+    "name": "body-thud.ogg",
+    "size": 4558,
+    "hash": "95ae6bd7860a217bfcefe1793a11138531e3d77677fce8970caa3b607c87e82d",
+    "shortHash": "95ae6bd7"
+  },
+  {
+    "file": "/game/sfx/v2/pain-human0.ogg",
+    "name": "pain-human0.ogg",
+    "size": 7537,
+    "hash": "b52235868fd9f553b0f698c547c3e43d6564c4724a86638954fb1c77dbb34a09",
+    "shortHash": "b5223586"
+  },
+  {
+    "file": "/game/sfx/v2/death-human0.ogg",
+    "name": "death-human0.ogg",
+    "size": 7661,
+    "hash": "b7daa268f54903a2a5997ad36319e1464b2ce5dc71b99eb1db6a43e3c318b01b",
+    "shortHash": "b7daa268"
+  },
+  {
+    "file": "/game/sfx/v2/pain-creature0.ogg",
+    "name": "pain-creature0.ogg",
+    "size": 7454,
+    "hash": "58629c2a52d8d84861216c97871bca1795ab54c216ce5e0a5eb1a3e393e2fb67",
+    "shortHash": "58629c2a"
+  },
+  {
+    "file": "/game/sfx/v2/death-creature0.ogg",
+    "name": "death-creature0.ogg",
+    "size": 11113,
+    "hash": "ce5472f469073b155c17561b0f276a3c9ce1720a3a66f7af2fa8fc152b0dbe0d",
+    "shortHash": "ce5472f4"
+  },
+  {
+    "file": "/game/sfx/v2/pain-robot0.ogg",
+    "name": "pain-robot0.ogg",
+    "size": 6233,
+    "hash": "482f4cd7108830a5693d59c106fc18db55e371de6b2e6de4dc0e24cdc17331a3",
+    "shortHash": "482f4cd7"
+  },
+  {
+    "file": "/game/sfx/v2/death-robot0.ogg",
+    "name": "death-robot0.ogg",
+    "size": 6852,
+    "hash": "2d9f95f24ee2ca2e4e52304855bb67ba0e509680908d6f31448b3db8ba3fea7d",
+    "shortHash": "2d9f95f2"
+  },
+  {
+    "file": "/game/sfx/v2/foot-concrete0.ogg",
+    "name": "foot-concrete0.ogg",
+    "size": 4369,
+    "hash": "90f58de368e266adbce776ffbeed72128fe438354d8a3959ff1af7431619238c",
+    "shortHash": "90f58de3"
+  },
+  {
+    "file": "/game/sfx/v2/foot-metal0.ogg",
+    "name": "foot-metal0.ogg",
+    "size": 6329,
+    "hash": "f1686382a23a059ac440762dcc45b044a929ccfed1bf404ada23bf2212baaf6b",
+    "shortHash": "f1686382"
+  },
+  {
+    "file": "/game/sfx/v2/foot-soft0.ogg",
+    "name": "foot-soft0.ogg",
+    "size": 4634,
+    "hash": "a202acdabc7240dff3632d869d82da6cafee0c29d782f614f623b75f85c54d8f",
+    "shortHash": "a202acda"
+  },
+  {
+    "file": "/game/sfx/v2/pain-human1.ogg",
+    "name": "pain-human1.ogg",
+    "size": 8344,
+    "hash": "fefcfb1787b09e2c87fba2bedee1f4a4e835bc4422bb353598bd3267c3d615e8",
+    "shortHash": "fefcfb17"
+  },
+  {
+    "file": "/game/sfx/v2/death-human1.ogg",
+    "name": "death-human1.ogg",
+    "size": 6877,
+    "hash": "6e48b8bf4a38590326259fa4bb0e9ab32fd77020b83cf4fb4b8b77638183412c",
+    "shortHash": "6e48b8bf"
+  },
+  {
+    "file": "/game/sfx/v2/pain-creature1.ogg",
+    "name": "pain-creature1.ogg",
+    "size": 7815,
+    "hash": "c7816ae4b4a7073511e7ec9c7ee3e9e069b03fab3fb083042b4efec1d1eb623a",
+    "shortHash": "c7816ae4"
+  },
+  {
+    "file": "/game/sfx/v2/death-creature1.ogg",
+    "name": "death-creature1.ogg",
+    "size": 8745,
+    "hash": "0bcb4d753f07710659131a5999225c1ab7b879436baaa3e0bf00fc7f53af7a27",
+    "shortHash": "0bcb4d75"
+  },
+  {
+    "file": "/game/sfx/v2/pain-robot1.ogg",
+    "name": "pain-robot1.ogg",
+    "size": 5788,
+    "hash": "8eb93f954382efd223ff7c256b8ad97c1f93fde8ef3c18f7a880a0128b837a8b",
+    "shortHash": "8eb93f95"
+  },
+  {
+    "file": "/game/sfx/v2/death-robot1.ogg",
+    "name": "death-robot1.ogg",
+    "size": 6606,
+    "hash": "89ab9d7ed2eba2f18b09ab5c5faa6c08800881a8c0b0602131c3ab5ae58c8863",
+    "shortHash": "89ab9d7e"
+  },
+  {
+    "file": "/game/sfx/v2/foot-concrete1.ogg",
+    "name": "foot-concrete1.ogg",
+    "size": 4488,
+    "hash": "5eb310f88e3a4a0b04ba7b234c54bf7b72816a93127ccbd17f5060ba0ea3bb9d",
+    "shortHash": "5eb310f8"
+  },
+  {
+    "file": "/game/sfx/v2/foot-metal1.ogg",
+    "name": "foot-metal1.ogg",
+    "size": 6281,
+    "hash": "7072da89828cbca69d9783af298fdc6bf5bea7f294e35eb5edf5d419453ac3be",
+    "shortHash": "7072da89"
+  },
+  {
+    "file": "/game/sfx/v2/foot-soft1.ogg",
+    "name": "foot-soft1.ogg",
+    "size": 4761,
+    "hash": "e40f7c069bee01a88c6ca2481fb38fdd327ac21d93f2f3388999f27b224a8e7a",
+    "shortHash": "e40f7c06"
+  },
+  {
+    "file": "/game/sfx/v2/pain-human2.ogg",
+    "name": "pain-human2.ogg",
+    "size": 8760,
+    "hash": "f0a841f0327b47a453cb693f633048d826bb66b03e764aa5fa1e4668e647ad55",
+    "shortHash": "f0a841f0"
+  },
+  {
+    "file": "/game/sfx/v2/death-human2.ogg",
+    "name": "death-human2.ogg",
+    "size": 8526,
+    "hash": "f820d20fa2f4fa498f8c4313020042eaaae70db047ae1c26a349746c57e17664",
+    "shortHash": "f820d20f"
+  },
+  {
+    "file": "/game/sfx/v2/pain-creature2.ogg",
+    "name": "pain-creature2.ogg",
+    "size": 7363,
+    "hash": "099cf20339ff12e257622e157cfbe512017d3bd2326d6b3870fa172843961ce4",
+    "shortHash": "099cf203"
+  },
+  {
+    "file": "/game/sfx/v2/death-creature2.ogg",
+    "name": "death-creature2.ogg",
+    "size": 6431,
+    "hash": "201cea03ee33e995b50ae880836c4984165642531473076dd54f6fec7dab767d",
+    "shortHash": "201cea03"
+  },
+  {
+    "file": "/game/sfx/v2/pain-robot2.ogg",
+    "name": "pain-robot2.ogg",
+    "size": 5952,
+    "hash": "a188e9bd3144b8343e3ce578d8946cc69a39f6f82f20d3cb20188dd14e1499b0",
+    "shortHash": "a188e9bd"
+  },
+  {
+    "file": "/game/sfx/v2/death-robot2.ogg",
+    "name": "death-robot2.ogg",
+    "size": 6119,
+    "hash": "a374cf4d1e3bab53fd929916a19410c8aae3518643934285e6cbd5dcdc5f13c1",
+    "shortHash": "a374cf4d"
+  },
+  {
+    "file": "/game/sfx/v2/foot-concrete2.ogg",
+    "name": "foot-concrete2.ogg",
+    "size": 4521,
+    "hash": "e219d92aa54354eee2c38423d3fe7b3fabc67a1bcfcc0eea3bb6cc2052c57676",
+    "shortHash": "e219d92a"
+  },
+  {
+    "file": "/game/sfx/v2/foot-metal2.ogg",
+    "name": "foot-metal2.ogg",
+    "size": 6292,
+    "hash": "5c1f53a295b7dc532bbdd054d273b189062f1021722e9c7e117fab04e8c326cb",
+    "shortHash": "5c1f53a2"
+  },
+  {
+    "file": "/game/sfx/v2/foot-soft2.ogg",
+    "name": "foot-soft2.ogg",
+    "size": 4761,
+    "hash": "12cb78b2fa7e8761e4ddbf14e1e62135b315c0a0164cc14b5b364bda8fe44701",
+    "shortHash": "12cb78b2"
+  },
+  {
+    "file": "/game/sfx/v2/hazard-electric.ogg",
+    "name": "hazard-electric.ogg",
+    "size": 7870,
+    "hash": "dd843bc02a3cc17bd6f91104568c9d3a944f39238d3c6ffe7d6d593747d97105",
+    "shortHash": "dd843bc0"
+  },
+  {
+    "file": "/game/sfx/v2/hazard-pressure.ogg",
+    "name": "hazard-pressure.ogg",
+    "size": 6854,
+    "hash": "dd8fa1ae9dd06094a6d093f5cbf8fd68e8e6587dc74968293d1f13c389d97e27",
+    "shortHash": "dd8fa1ae"
+  },
+  {
+    "file": "/game/sfx/v2/hazard-acid.ogg",
+    "name": "hazard-acid.ogg",
+    "size": 12262,
+    "hash": "b3e3a69f958f9fef38071df406aba3c9fa6daa21df4fd923b1270f1c6d1f5745",
+    "shortHash": "b3e3a69f"
+  },
+  {
+    "file": "/game/sfx/v2/hazard-cryo.ogg",
+    "name": "hazard-cryo.ogg",
+    "size": 4972,
+    "hash": "0ce7476cff603022346dde899232ff1cae93cd3a8de6c6e18ca29630240590bc",
+    "shortHash": "0ce7476c"
+  },
+  {
+    "file": "/game/sfx/v2/hazard-ember.ogg",
+    "name": "hazard-ember.ogg",
+    "size": 9812,
+    "hash": "117568d4b5c6e3f94138ed137622f38930c3f67ea7c9abe93579cef3f03364b6",
+    "shortHash": "117568d4"
+  },
+  {
+    "file": "/game/sfx/v2/hazard-phase.ogg",
+    "name": "hazard-phase.ogg",
+    "size": 5556,
+    "hash": "5c16d9d718ac6b9a47f22d7b62719dafe406da275ecfc837413fc6de3c5df825",
+    "shortHash": "5c16d9d7"
+  },
+  {
+    "file": "/game/sfx/v2/hazard-magnetic.ogg",
+    "name": "hazard-magnetic.ogg",
+    "size": 8508,
+    "hash": "c7dd57b8c0ca12bc3313eb226ead78341879759bf2525c3732428f512ed7ce2f",
+    "shortHash": "c7dd57b8"
+  },
+  {
+    "file": "/game/sfx/v2/hazard-biological.ogg",
+    "name": "hazard-biological.ogg",
+    "size": 10139,
+    "hash": "b68c9ce1a31154ba83d071ae7bcb0ae7d6a2d60f20d87c8b9a63bc6ef3aee270",
+    "shortHash": "b68c9ce1"
+  },
+  {
+    "file": "/game/sfx/v2/travel-rocket.ogg",
+    "name": "travel-rocket.ogg",
+    "size": 6294,
+    "hash": "ca8311d6c418c78fec5356d4589fdeab513554e71ae643b0608fa37e6b72a1b4",
+    "shortHash": "ca8311d6"
+  },
+  {
+    "file": "/game/sfx/v2/travel-energy.ogg",
+    "name": "travel-energy.ogg",
+    "size": 7182,
+    "hash": "a5b8e02b39c0108647429f9b4e1f8acf3756eea4c9555048ac1da4902318468a",
+    "shortHash": "a5b8e02b"
+  },
+  {
+    "file": "/game/sfx/v2/travel-acid.ogg",
+    "name": "travel-acid.ogg",
+    "size": 10057,
+    "hash": "1c80fbbc770b7fe656a97cf2c7b1136a2f9545bdbb9e13b913a9750d2499cd55",
+    "shortHash": "1c80fbbc"
+  },
+  {
+    "file": "/game/sfx/v2/travel-flame.ogg",
+    "name": "travel-flame.ogg",
+    "size": 9701,
+    "hash": "f11b40636bad8a3e7443d3581b435152d1dbd0c776dcf5df5720cfff418e0514",
+    "shortHash": "f11b4063"
   }
 ]
