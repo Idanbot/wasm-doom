@@ -131,6 +131,10 @@ try {
     () => !!window.__controlsTest && document.body.innerText.includes("HEALTH"),
     null, { timeout: 90000 },
   );
+  // HEALTH initially renders from DEFAULT_HUD; wait for the QA armory's
+  // reserve count to confirm the renderer has completed its first live frame.
+  await page.waitForFunction(() => window.__controlsTest.getReserve() === 72);
+  await page.evaluate(() => window.__controlsTest.heal());
   const controls = await page.evaluate(async () => {
     const t = window.__controlsTest;
     const move = async (key) => {
@@ -138,7 +142,17 @@ try {
         y = t.getY(),
         yaw = t.getYaw();
       t.setKeys([key]);
-      await new Promise((resolve) => setTimeout(resolve, 180));
+      // A freshly loaded software renderer may not tick within 180 ms.
+      // Observe displacement instead of assuming a particular frame rate.
+      await new Promise((resolve) => {
+        const started = performance.now();
+        const sample = () => {
+          const distance = (t.getX() - x) * -Math.sin(yaw) + (t.getY() - y) * Math.cos(yaw);
+          if (Math.abs(distance) >= 0.08 || performance.now() - started >= 2000) resolve();
+          else requestAnimationFrame(sample);
+        };
+        requestAnimationFrame(sample);
+      });
       t.setKeys([]);
       return (t.getX() - x) * -Math.sin(yaw) + (t.getY() - y) * Math.cos(yaw);
     };
