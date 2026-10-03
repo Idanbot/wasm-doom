@@ -8,6 +8,7 @@ mod enemies;
 mod events;
 mod hud;
 mod map;
+mod layouts;
 mod types;
 
 use consts::*;
@@ -301,6 +302,11 @@ fn sigil_rgba(level: usize, u: f32, v: f32) -> [u32; 4] {
 }
 
 fn sprite_style(e: &Ent) -> (usize, f32, bool, i32) {
+    if matches!(e.kind, EK_PROJ|EK_BOLT|EK_RAY|EK_FLAME) && (1..=25).contains(&e.projectile_visual) {
+        let index=(e.projectile_visual-1) as usize;
+        let scale=if index==15 {0.38+(e.frame*24.0).sin()*0.018} else if matches!(index,8|17|21) {0.40} else if e.kind==EK_RAY {0.10} else {0.25};
+        return (T_BOSS_PROJECTILE+index,scale,false,0);
+    }
     if e.kind == EK_CRATE && (150..=224).contains(&e.skin) {
         return (T_SECTOR_PROP + (e.skin - 150) as usize, 0.85, false, 0);
     }
@@ -417,6 +423,7 @@ impl Engine {
                 anim_time: 0.0,
                 anim_lock: 0.0,
                 skin: SKIN_NONE,
+                projectile_visual: 0,
                 radius: 0.25,
                 flash: 0.0,
                 stun: 0.0,
@@ -558,6 +565,7 @@ impl Engine {
             flow_q: vec![0; MAP_CELLS],
             flow_age: 1.0,
             fx_q: [FxCmd {
+                projectile_visual: 0,
                 variant: 0,
                 kind: 0,
                 x: 0.0,
@@ -1216,6 +1224,7 @@ impl Engine {
                     anim_time: 0.0,
                     anim_lock: 0.0,
                     skin,
+                    projectile_visual: 0,
                     radius,
                     flash: 0.0,
                     stun: 0.0,
@@ -1460,6 +1469,7 @@ impl Engine {
             e.face = weapon.mode as f32 + 1.0;
             e.zoff = 10.0;
             e.aim = if friendly && weapon.mode == 4 { 1.0 } else { 0.0 };
+            if e.aim == 1.0 { e.timer=4.0; e.radius=0.12; e.zoff=8.0; }
         }
     }
 
@@ -1470,7 +1480,7 @@ impl Engine {
         self.muzzle = 1.0;
         self.kick = if matches!(spec.mode, 6 | 10) { 1.5 } else { 0.85 };
         let visual = match spec.mode { 0 | 6 | 10 => 0, 1 | 12 => 2, 5 => 3, 8 | 13 => 4, _ => 1 };
-        let count = match spec.mode { 2 => 3, 4 => 3, 5 => 4, 7 => 5, 12 => 3, _ => 1 };
+        let count = match spec.mode { 2 => 3, 4 => 5, 5 => 4, 7 => 5, 12 => 3, _ => 1 };
         if matches!(spec.mode, 3 | 7 | 11) {
             for n in 0..count {
                 let a = self.pa + (n as f32 - (count - 1) as f32 * 0.5) * 0.035;
@@ -1484,8 +1494,10 @@ impl Engine {
             }
         } else {
             for n in 0..count {
-                let a = self.pa + (n as f32 - (count - 1) as f32 * 0.5) * 0.045;
-                self.campaign_projectile(self.px + a.cos() * 1.15, self.py + a.sin() * 1.15, a, spec, true, visual);
+                let a = self.pa + (n as f32 - (count - 1) as f32 * 0.5) * if spec.mode==4 {0.12} else {0.045};
+                let mut shot=spec;
+                if spec.mode==4 {shot.damage=(spec.damage*3+n)/count;}
+                self.campaign_projectile(self.px + a.cos() * 1.15, self.py + a.sin() * 1.15, a, shot, true, visual);
             }
         }
     }
@@ -1628,6 +1640,7 @@ impl Engine {
             return;
         }
         self.fx_q[self.fx_n] = FxCmd {
+            projectile_visual: 0,
             variant: if kind == EK_SPARK { 4 } else { 0 },
             kind,
             x,
@@ -1676,6 +1689,7 @@ impl Engine {
                 anim_time: 0.0,
                 anim_lock: 0.0,
                 skin: SKIN_NONE,
+                projectile_visual: f.projectile_visual,
                 radius,
                 flash: 0.0,
                 stun: 0.0,
@@ -2810,6 +2824,8 @@ impl Engine {
         }
         self.events |= EV_FIRE;
         self.ev_weapon = self.weapon;
+        let fx_start=self.fx_n;
+        let free_slots: [bool; ENT_N] = core::array::from_fn(|i| self.ents[i].kind == EK_NONE);
         match self.weapon {
             0 => {
                 self.cooldown = 0.26;
@@ -2989,6 +3005,16 @@ impl Engine {
                 }
             }
             _ => {}
+        }
+        if self.weapon >= 8 {
+            if !self.fx_q[fx_start..self.fx_n].iter().any(|fx|matches!(fx.kind,EK_RAY|EK_FLAME)) && !self.ents.iter().enumerate().any(|(i,en)| free_slots[i] && matches!(en.kind,EK_PROJ|EK_BOLT|EK_RAY|EK_FLAME)) {
+                let reach=self.wall_distance(self.px,self.py,self.pa.cos(),self.pa.sin(),20.0).min(12.0);
+                for n in 1..=8 { let d=reach*n as f32/9.0; self.spawn_timed(EK_RAY,self.px+self.pa.cos()*d,self.py+self.pa.sin()*d,0.10,12.0); }
+            }
+            for fx in &mut self.fx_q[fx_start..self.fx_n] {if matches!(fx.kind,EK_RAY|EK_FLAME) {fx.projectile_visual=1+(self.weapon-8) as u8;}}
+            for (i, ent) in self.ents.iter_mut().enumerate() {
+                if free_slots[i] && matches!(ent.kind,EK_PROJ|EK_BOLT|EK_RAY|EK_FLAME) { ent.projectile_visual=1+(self.weapon-8) as u8; }
+            }
         }
         if self.power == field::POWER_FEED {
             self.cooldown *= 0.45;
@@ -3581,6 +3607,7 @@ impl Engine {
                     let blend = (dt*3.5).min(1.0);
                     self.ents[i].vx += (a.cos()*speed-e.vx)*blend;
                     self.ents[i].vy += (a.sin()*speed-e.vy)*blend;
+                    self.ents[i].zoff = 8.0 + (e.frame*18.0+i as f32*1.7).sin()*2.2;
                 }
             }
             let e = &mut self.ents[i];
@@ -6062,6 +6089,35 @@ mod tests {
         }
         e.wave = 26;
         assert_eq!(e.wall_tex(1, 1, 1), T_SECTOR_SURFACE);
+    }
+
+    #[test]
+    fn all_boss_reward_guns_emit_unique_player_visuals_without_changing_element_semantics() {
+        let mut e=arena();
+        for slot in 8..WEP_N {
+            for en in &mut e.ents {en.kind=EK_NONE;}
+            e.weapon=slot as i32; e.mag[slot]=MAG_SZ[slot]; e.cooldown=0.0; e.reload_t=0.0;
+            e.fire(); e.flush_fx();
+            let travel: Vec<_>=e.ents.iter().filter(|en|matches!(en.kind,EK_RAY|EK_PROJ|EK_BOLT|EK_FLAME)).collect();
+            assert!(!travel.is_empty(),"slot {slot} needs its own travel presentation");
+            for en in travel {assert_eq!(sprite_style(en).0,T_BOSS_PROJECTILE+slot-8);}
+        }
+    }
+
+    #[test]
+    fn swarm_launches_five_visible_homing_drones_and_keeps_allied_collision() {
+        let mut e=arena();
+        let target=e.spawn_with_skin(EK_HUSK,SKIN_RIFLEMAN,12.5,6.5).unwrap();
+        e.ents[target].timer=10.0;
+        e.weapon=23; e.mag[23]=12; e.fire();
+        let drones:Vec<_>=e.ents.iter().enumerate().filter(|(_,en)|en.kind==EK_PROJ).map(|(i,_)|i).collect();
+        assert_eq!(drones.len(),5);
+        assert_eq!(drones.iter().map(|&i|e.ents[i].hp).sum::<i32>(),66,"more visible drones preserve volley damage");
+        let before=e.ents[drones[0]].vy; let hp=e.health;
+        for &i in &drones { assert_eq!(e.ents[i].effect_tick,6.0); assert_eq!(sprite_style(&e.ents[i]).0,T_BOSS_PROJECTILE+15); }
+        e.tick(0.05);
+        assert_ne!(e.ents[drones[0]].vy,before,"swarm must steer toward a hostile");
+        assert_eq!(e.health,hp,"allied swarm cannot damage its shooter");
     }
 
     #[test]

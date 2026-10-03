@@ -24,6 +24,7 @@
     "assets:environment": "python3 scripts/process-blacksite-environment-assets.py",
     "assets:weapons": "python3 scripts/process-blacksite-weapons.py",
     "assets:projectiles": "python3 scripts/process-blacksite-projectile-assets.py",
+    "check:maps": "python3 scripts/build-sector-layout-data.py --check",
     "check:projectiles": "node scripts/check-projectile-assets.mjs",
     "check:voices": "node scripts/check-voice-assets.mjs",
     "check:motion": "python3 scripts/check-blacksite-motion.py",

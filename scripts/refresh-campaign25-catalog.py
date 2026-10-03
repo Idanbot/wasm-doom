@@ -8,7 +8,11 @@ roster=json.loads((ROOT/'art/campaign25/specs.json').read_text())
 def info(file):
  p=ROOT/'public'/file.lstrip('/'); data=p.read_bytes(); h=hashlib.sha256(data).hexdigest()
  with Image.open(p) as im:w,height=im.size
- return dict(file=file,name=p.name,size=len(data),hash=h,shortHash=h[:8],width=w,height=height)
+ label=p.name
+ if '/projectiles/boss_weapon_' in file:
+  slot=int(p.stem.rsplit('_',1)[1]); weapons=json.loads((ROOT/'src/lib/draft-weapons-v2-data.json').read_text()); label=next(w['name'] for w in weapons if w['slot']==slot)+' · player projectile'
+ elif '/projectiles/enemy_' in file:label=p.stem[6:].replace('_',' ').title()+' · enemy projectile'
+ return dict(file=file,name=label,size=len(data),hash=h,shortHash=h[:8],width=w,height=height)
 for name in ['asset-catalog-data','draft-assets-v2-data']:
  p=ROOT/f'src/lib/{name}.json';rows=json.loads(p.read_text()); indexed={r['file']:r for r in rows}
  files=[]

@@ -22,6 +22,7 @@ jobs:
       - run: npm run check:wasm
       - run: npm run check:assets
       - run: npm run check:environment
+      - run: npm run check:maps
       - run: npm run check:projectiles
       - run: npm run check:sfx
       - run: npm run check:voices
@@ -69,7 +70,7 @@ jobs:
           curl -sf http://127.0.0.1:8080/ > /dev/null
       - run: node scripts/browser-smoke.mjs http://127.0.0.1:8080/ screenshots/ci-menu.png
       - run: node scripts/combat-smoke.mjs http://127.0.0.1:8080/
-      - run: node --test --test-concurrency=1 scripts/reward-pause.browser.mjs scripts/qa-run.browser.mjs scripts/campaign25.browser.mjs scripts/projectile-presentation.browser.mjs scripts/sfx.browser.mjs
+      - run: node --test --test-concurrency=1 scripts/reward-pause.browser.mjs scripts/qa-run.browser.mjs scripts/campaign25.browser.mjs scripts/projectile-presentation.browser.mjs scripts/layouts-10-25.browser.mjs scripts/sfx.browser.mjs
       - run: node scripts/end-screen-smoke.mjs http://127.0.0.1:8080/
       - run: npm run build:pages
       - run: |

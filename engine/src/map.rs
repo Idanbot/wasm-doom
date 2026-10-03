@@ -63,14 +63,17 @@ pub(crate) fn level_index(wave: i32) -> usize {
 }
 
 pub(crate) fn player_start(wave: i32) -> (f32, f32, f32) {
+    if let Some(s)=crate::layouts::layout(wave) {return s.start;}
     PLAYER_STARTS[level_index(wave)]
 }
 
 pub(crate) fn boss_spots(wave: i32) -> &'static [(f32, f32); 2] {
+    if let Some(s)=crate::layouts::layout(wave) {return &s.bosses;}
     &BOSS_SPOTS_BY_LEVEL[level_index(wave)]
 }
 
 pub(crate) fn override_point(wave: i32) -> (f32, f32) {
+    if let Some(s)=crate::layouts::layout(wave) {return s.objective;}
     OVERRIDES[level_index(wave)]
 }
 
@@ -180,16 +183,11 @@ const HOSTILES_SIEGE: &[HostileSpawn] = &[
     (EK_WRAITH, SKIN_HORNET, 24.5, 6.5), (EK_BRUTE, SKIN_GUNNER, 25.5, 25.5),
     (EK_HUSK, SKIN_HAZMAT, 35.5, 14.5), (EK_BRUTE, SKIN_LOADER, 43.5, 20.5),
 ];
-const HOSTILES_COMMAND: &[HostileSpawn] = &[
-    (EK_HUSK, SKIN_RIFLEMAN, 8.5, 5.5), (EK_WRAITH, SKIN_MARKSMAN, 20.5, 6.5),
-    (EK_HUSK, SKIN_GUNNER, 21.5, 15.5), (EK_BRUTE, SKIN_HAZMAT, 20.5, 25.5),
-    (EK_WRAITH, SKIN_HORNET, 35.5, 24.5), (EK_HUSK, SKIN_BREACHER, 43.5, 26.5),
-];
 
 pub(crate) fn hostiles(wave: i32) -> &'static [HostileSpawn] {
-    if level_index(wave) >= 11 { return HOSTILES_EXTENDED; }
+    if let Some(s)=crate::layouts::layout(wave) {return s.hostiles;}
     [HOSTILES_UPPER, HOSTILES_FOUNDRY, HOSTILES_BIOFORGE, HOSTILES_DATACENTER, HOSTILES_REACTOR, HOSTILES_ARCHIVE,
-     HOSTILES_CRYO, HOSTILES_SIGNAL, HOSTILES_SIEGE, HOSTILES_COMMAND, HOSTILES_VAULT][level_index(wave)]
+     HOSTILES_CRYO, HOSTILES_SIGNAL, HOSTILES_SIEGE][level_index(wave)]
 }
 
 /// One ambush: a player zone rect plus the group that spawns once.
@@ -257,23 +255,11 @@ const ARCHIVE_AMBUSHES: &[AmbushDef] = &[
 const CRYO_AMBUSHES: &[AmbushDef] = &[AmbushDef { zone: (14.0, 2.0, 29.0, 11.0), group: &[(EK_WRAITH, 20.5, 22.5), (EK_BRUTE, 25.5, 23.5)] }];
 const SIGNAL_AMBUSHES: &[AmbushDef] = &[AmbushDef { zone: (14.0, 20.0, 29.0, 29.0), group: &[(EK_MARTYR, 21.5, 7.5), (EK_WRAITH, 24.5, 8.5)] }];
 const SIEGE_AMBUSHES: &[AmbushDef] = &[AmbushDef { zone: (15.0, 12.0, 29.0, 21.0), group: &[(EK_BRUTE, 25.5, 6.5), (EK_MARTYR, 25.5, 25.5)] }];
-const COMMAND_AMBUSHES: &[AmbushDef] = &[AmbushDef { zone: (15.0, 2.0, 29.0, 11.0), group: &[(EK_WRAITH, 23.5, 25.5), (EK_HUSK, 20.5, 24.5)] }];
-
-const HOSTILES_VAULT: &[HostileSpawn] = &[
-    (EK_HUSK, SKIN_RIFLEMAN, 8.5, 15.5), (EK_WRAITH, SKIN_MARKSMAN, 17.5, 8.5),
-    (EK_HUSK, SKIN_GUNNER | field::SHIELD_BIT, 25.5, 7.5),
-    (EK_MARTYR, SKIN_MARTYR, 21.5, 25.5), (EK_BRUTE, SKIN_GUNNER, 35.5, 15.5),
-    (EK_WRAITH, SKIN_HORNET, 43.5, 20.5),
-];
-const VAULT_AMBUSHES: &[AmbushDef] = &[AmbushDef {
-    zone: (14.0, 4.0, 29.0, 12.0),
-    group: &[(EK_MARTYR, 23.5, 24.5), (EK_WRAITH, 26.5, 24.5)],
-}];
 
 fn ambush_defs(wave: i32) -> &'static [AmbushDef] {
-    if level_index(wave) >= 11 { return &[]; }
+    if level_index(wave) >= 9 { return &[]; }
     [AMBUSH_DEFS, FOUNDRY_AMBUSHES, BIOFORGE_AMBUSHES, DATACENTER_AMBUSHES, REACTOR_AMBUSHES, ARCHIVE_AMBUSHES,
-     CRYO_AMBUSHES, SIGNAL_AMBUSHES, SIEGE_AMBUSHES, COMMAND_AMBUSHES, VAULT_AMBUSHES][level_index(wave)]
+     CRYO_AMBUSHES, SIGNAL_AMBUSHES, SIEGE_AMBUSHES][level_index(wave)]
 }
 
 /// Carve the hub-and-spoke shell. Idempotent per fresh map fill.
@@ -569,43 +555,6 @@ fn build_siege(e: &mut Engine) {
     mark_override(e, OVERRIDES[8]);
 }
 
-fn build_command(e: &mut Engine) {
-    e.map.fill(1); e.floor.fill(0); e.decal.fill(0);
-    for &(x,y,w,h,t) in &[(1,2,11,9,4),(14,2,15,11,6),(14,18,15,12,4),(33,2,13,11,6),(33,18,13,12,4)] { e.room(x,y,w,h,t,1); }
-    e.hall_h(10,15,6,12); e.hall_v(21,11,19,14); e.hall_h(28,34,24,14);
-    e.hall_h(28,34,7,12); e.hall_v(39,11,19,14);
-    for (x,y) in [(17,4),(27,4),(17,26),(27,26),(35,5),(44,5),(35,26),(44,26)] { e.pillar(x,y,6); }
-    mark_override(e, OVERRIDES[9]);
-}
-
-/// Twin memory galleries reconnect at a wide vault; central walls force flanking.
-fn build_vault(e: &mut Engine) {
-    e.map.fill(1); e.floor.fill(0); e.decal.fill(0);
-    for &(x,y,w,h,t) in &[(1,11,11,10,4),(14,3,16,10,6),(14,20,16,10,6),(32,9,14,15,4)] {
-        e.room(x,y,w,h,t,1);
-    }
-    e.hall_h(10,20,15,12); e.hall_v(19,11,21,17);
-    e.hall_h(29,35,10,31); e.hall_h(29,35,23,31);
-    for (x,y) in [(17,5),(27,5),(17,27),(27,27),(35,11),(44,11),(35,21),(44,21),(40,17)] {
-        e.pillar(x,y,6);
-    }
-    mark_override(e, OVERRIDES[10]);
-}
-
-fn place_vault(e: &mut Engine) {
-    reset_level_entities(e);
-    for &(kind,x,y) in &[
-        (EK_PROP_SERVER,16.5,6.5),(EK_PROP_SERVER,28.5,6.5),
-        (EK_PROP_SERVER,16.5,25.5),(EK_PROP_SERVER,28.5,25.5),
-        (EK_PROP_SERVER,34.5,12.5),(EK_PROP_SERVER,44.5,12.5),
-        (EK_PROP_AC,22.5,4.5),(EK_PROP_AC,22.5,28.5),
-        (EK_PROP_WLIGHT_C,7.5,12.5),(EK_PROP_WLIGHT_C,7.5,19.5),
-        (EK_PROP_WLIGHT_C,38.5,10.5),(EK_PROP_WLIGHT_C,42.5,22.5),
-        (EK_CRATE,10.5,18.5),(EK_BARREL,24.5,24.5),
-        (EK_MED,41.5,20.5),(EK_AMMO,38.5,20.5),
-    ] { prop(e,kind,x,y); }
-}
-
 fn mark_override(e: &mut Engine, point: (f32, f32)) {
     let cx = point.0.floor() as i32;
     let cy = point.1.floor() as i32;
@@ -618,65 +567,8 @@ fn mark_override(e: &mut Engine, point: (f32, f32)) {
     }
 }
 
-const HOSTILES_EXTENDED: &[HostileSpawn] = &[
-    (EK_HUSK, SKIN_RIFLEMAN, 9.5, 15.5), (EK_HUSK, SKIN_BREACHER, 14.5, 16.5),
-    (EK_WRAITH, SKIN_MARKSMAN, 20.5, 5.5), (EK_BRUTE, SKIN_HAZMAT, 23.5, 8.5),
-    (EK_WRAITH, SKIN_HORNET, 27.5, 6.5), (EK_HUSK, SKIN_GUNNER, 20.5, 12.5),
-    (EK_HUSK, SKIN_HOUND, 24.5, 16.5), (EK_BRUTE, SKIN_LOADER, 28.5, 20.5),
-    (EK_HUSK, SKIN_RIFLEMAN, 32.5, 15.5), (EK_WRAITH, SKIN_SPITTER, 36.5, 12.5),
-    (EK_BRUTE, SKIN_GUNNER, 39.5, 23.5), (EK_HUSK, SKIN_BREACHER, 42.5, 12.5),
-    (EK_WRAITH, SKIN_HORNET, 43.5, 22.5), (EK_HUSK, SKIN_SUBJECT, 24.5, 25.5),
-    (EK_MARTYR, SKIN_MARTYR, 28.5, 27.5), (EK_BRUTE, SKIN_VATBRUTE, 40.5, 18.5),
-];
-
-/// Fourteen authored modular layouts. Rooms share required objective points,
-/// while branch widths, room depths, cover and side routes differ per sector.
-fn build_extended(e: &mut Engine) {
-    let variant = level_index(e.wave) - 11;
-    e.map.fill(1); e.floor.fill(0); e.decal.fill(0);
-    let wall = [1, 4, 7, 6, 4, 3, 7, 6, 4, 7, 4, 6, 7, 1][variant];
-    let floor = (variant % 2) as u8;
-    e.room(1, 10, 10, 12, wall, floor);
-    e.room(10, 13, 25, 6, wall, floor);
-    e.room(17, 3, 13, 20, wall, floor);
-    e.room(34, 8, 12, 21, wall, floor);
-    e.room(20, 22, 10, 8, wall, floor);
-    let north_width = 5 + (variant % 5) as i32;
-    let south_width = 5 + (variant % 4) as i32;
-    e.room(6, 2 + (variant % 3) as i32, north_width, 9, wall, floor);
-    e.room(10, 20, south_width, 10, wall, floor);
-    e.hall_v(9, 8, 14, -1);
-    e.hall_v(13, 17, 25, -1);
-    e.hall_h(27, 37, 6 + (variant % 2) as i32, -1);
-    e.hall_v(37, 6, 12, -1);
-    e.hall_h(27, 37, 25, -1);
-    for bit in 0..4 {
-        let x = 18 + bit * 3;
-        let y = if variant & (1 << bit) != 0 { 10 } else { 20 };
-        e.set_cell(x, y, wall);
-        e.set_cell(x, y + 1, wall);
-    }
-    for x in [35, 38, 42] { e.set_cell(x, 10 + (variant % 3) as i32, wall); }
-    e.hall_h(4, 44, 15, -1);
-    e.floor[15 * MAP_W + 36] = 2;
-    for &(_, _, x, y) in HOSTILES_EXTENDED { e.set_cell(x as i32, y as i32, 0); }
-    // Exact objective and boss coordinates remain walkable in every layout.
-    for (x,y) in [(4,15), (20,7), (36,15), (40,15), (43,19), (25,26)] { e.set_cell(x,y,0); }
-}
-
-fn place_extended(e: &mut Engine) {
-    e.ents.iter_mut().for_each(|ent| ent.kind = EK_NONE);
-    let variant = level_index(e.wave) - 11;
-    let machinery = match variant { 2 | 6 | 8 | 11 | 12 | 13 => EK_PROP_SERVER, 0 | 3 | 9 => EK_PROP_REACTOR, _ => EK_PROP_AC };
-    for (n, (x,y)) in [(3.5,11.5),(8.5,20.5),(18.5,4.5),(27.5,4.5),(18.5,21.5),(28.5,21.5),
-        (21.5,28.5),(28.5,28.5),(35.5,9.5),(44.5,9.5),(35.5,27.5),(44.5,27.5),
-        (11.5,14.5),(32.5,17.5),(37.5,20.5),(42.5,25.5)].iter().enumerate() {
-        let kind = match n % 5 { 0 => machinery, 1 => EK_PROP_VENT, 2 => EK_PROP_WLIGHT_C, 3 => EK_CRATE, _ => EK_BARREL };
-        if !e.blocked(*x as i32, *y as i32) { let _ = e.spawn(kind, *x, *y); }
-    }
-}
-
 pub(crate) fn build_level(e: &mut Engine) {
+    if crate::layouts::layout(e.wave).is_some() {crate::layouts::build(e);return;}
     match level_index(e.wave) {
         1 => build_foundry(e),
         2 => build_bioforge(e),
@@ -686,9 +578,6 @@ pub(crate) fn build_level(e: &mut Engine) {
         6 => build_cryo(e),
         7 => build_signal(e),
         8 => build_siege(e),
-        9 => build_command(e),
-        10 => build_vault(e),
-        11..=24 => build_extended(e),
         _ => build_hub_spoke(e),
     }
 }
@@ -778,6 +667,7 @@ fn reset_level_entities(e: &mut Engine) {
         anim_time: 0.0,
         anim_lock: 0.0,
         skin: SKIN_NONE,
+        projectile_visual: 0,
         radius: 0.25,
         flash: 0.0,
         stun: 0.0,
@@ -962,16 +852,16 @@ fn prop(e: &mut Engine, kind: u8, x: f32, y: f32) {
 }
 
 pub(crate) fn place_level(e: &mut Engine) {
+    if crate::layouts::layout(e.wave).is_some() {crate::layouts::place(e);} else {
     match level_index(e.wave) {
         1 => place_foundry(e),
         2 => place_bioforge(e),
         3 => place_datacenter(e),
         4 => place_reactor(e),
         5 => place_archive(e),
-        6..=9 => place_expansion(e, level_index(e.wave)),
-        10 => place_vault(e),
-        11..=24 => place_extended(e),
+        6..=8 => place_expansion(e, level_index(e.wave)),
         _ => place_hub_spoke(e),
+    }
     }
     let (x, y) = override_point(e.wave);
     let skin = [SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_BIOFORGE, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER,

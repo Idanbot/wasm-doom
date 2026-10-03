@@ -1,0 +1,1136 @@
+{
+  "generator": "built-in image_gen",
+  "alpha": "native transparency; no chroma key",
+  "sources": [
+    {
+      "path": "art/projectiles-v3/boss-weapons.png",
+      "sha256": "407006d6329f379d72e3d6784af6681f97e7c8cc5dbd04c45eb9aa47865dc507"
+    },
+    {
+      "path": "art/projectiles-v3/enemies-0-19.png",
+      "sha256": "f9b4b189d939f8eee5eca86cedece853fcdebc31b83e52485c0115982b517876"
+    },
+    {
+      "path": "art/projectiles-v3/enemies-20-36.png",
+      "sha256": "496f960db8426492ae408221fdb35114e50febc55d8db7da1bac3f6a0c9248ec"
+    }
+  ],
+  "assets": [
+    {
+      "file": "public/game/projectiles/boss_weapon_8.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 0,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "a9d57c084af57a0650a29670fca700153b3a7f692a08ae51ee7657a83fa41097",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_9.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 1,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "d358408eaba9f023b1ccda8bb42cd8f6f6a5104a66e7c5cc52925cc7d086e328",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_10.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 2,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "5096dd83f9650a1911336e4b52cefb51b10aa80160f79221ba8fbcc7c94cc6fc",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_11.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 3,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "0d94e41c0e16a8a98ae56e0cdbdb501fb398083e8cad5c07f4e8fcbcf83358c8",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_12.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 4,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "ae1cec27cb4728e8a9e93b8d9141566944e3f141791a0165a78348fee8a2c9d5",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_13.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 5,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "30095ffbf79d4dfc6bc4fa72d1d881fbfb8890f1c9a865b8b0b51b425e063726",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_14.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 6,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "7f678f62c1c78ed023a53ad4c5d78f9118837dc19aa03aefd6b994fca5469316",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_15.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 7,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "e5b719330d08142bac38f1b407131a038913ffdada42ee649df498fd401acc93",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_16.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 8,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "492549f652d274472466c54aeeab6ba0e4168e44b72a3733a6544bc51ff5f108",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_17.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 9,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "71996a1029f34862c3686a71803db268c8d54a08b758218d502055fffc2268e7",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_18.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 10,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "2bf7e9488ab1424ccc2d018c2476e36fc36b9f322b6e48e1369686f4580ccdec",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_19.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 11,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "7ad35902f600055a40e51ab8d6fa7e4a61e4f048dd1bcd46cf562355e6ec7b0e",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_20.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 12,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "9f82f35e2a62aa39d86122c919564e77e307c5af8dda31fdfaeab67dfa9ef00c",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_21.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 13,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "87ee4f3a7f30d2e57a776fe98fb83d649f4210329162dc42e0c1c2860727cdeb",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_22.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 14,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "5477460f7ec2d582b87d9de71f7f3166682d57933e4b98a32a6c23acfbd841fc",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_23.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 15,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "ad0a248af9f1e010f05f7fc1ae7eb5963ce10e48a4aa54700310c071fb0c3a75",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_24.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 16,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "f42e3c547f1f51adf7f7f3b140cddb9d0158e2084cb1f0e957a2f4e36fc31749",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_25.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 17,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "7f0c169ebb9d74e25accb72a194962b3dc73277caac14a7efc243ee7937bdd7e",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_26.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 18,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "8bf9a491c8338d046798d9847051cda27af638990ca7e1dc9bf17b0b3600cce4",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_27.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 19,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "a4cbe7dac029d77889ef7bf9468f6756c195ec8e1d773b64bed63865d6fea923",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_28.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 20,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "505f9a027932ac1417f642eee60148f3419355bef360ef1b43d8ba24f007633b",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_29.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 21,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "537633fb769732c04d54aef1907a44a149441d26c8409f3bbab453d8ceabbb3f",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_30.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 22,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "8943ea82f1bacff40586ab8098ed3a8f4593968076d0ba7a7bb727bd1cd7c21e",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_31.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 23,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "5c1f1ada95b28e169a45892092517cf1ed3d8922ad8542ac8e254767ba7fc7dd",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/boss_weapon_32.png",
+      "source": "art/projectiles-v3/boss-weapons.png",
+      "cell": 24,
+      "grid": [
+        5,
+        5
+      ],
+      "sha256": "b96c2b097d07ed4503e0319ce59ff50e1764e220719a11dcca104dc36f9b0659",
+      "native_size": [
+        1269,
+        1240
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_rifleman.png",
+      "source": "art/projectiles-v3/enemies-0-19.png",
+      "cell": 0,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "ce341d148787c26eb08a90604ae40490ccda656d22c87371077861628bc829a2",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_breacher.png",
+      "source": "art/projectiles-v3/enemies-0-19.png",
+      "cell": 1,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "c13d092e7f110dff4be7bf98bf0d0cbcba0a9819f16cc3917501bea576a3f5be",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_subject.png",
+      "source": "art/projectiles-v3/enemies-0-19.png",
+      "cell": 2,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "fe4afa168df7c57b863388d650af41cac2f141cf2855b6a48fb34f172fe41ec2",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_hazmat.png",
+      "source": "art/projectiles-v3/enemies-0-19.png",
+      "cell": 3,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "fd018f910b1536a5bd3eadf1a96fcc37045724f8304bcce7c8808382a86502a9",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_gunner.png",
+      "source": "art/projectiles-v3/enemies-0-19.png",
+      "cell": 4,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "d1e663d396a7904908a6be159a93dfa2e2585c8de89c4210dd0e3c1e01aaa636",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_loader.png",
+      "source": "art/projectiles-v3/enemies-0-19.png",
+      "cell": 5,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "66d383f96b417d9adb0fcfe00f00c96983ba146bc4d1433f3b72cbc33caefeca",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_vatbrute.png",
+      "source": "art/projectiles-v3/enemies-0-19.png",
+      "cell": 6,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "00e19f3ffa6fa6a4f91a684b45bc37a71021c37d45d3baba8806e8dfbaafd093",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_marksman.png",
+      "source": "art/projectiles-v3/enemies-0-19.png",
+      "cell": 7,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "184b0e214195adeed8121da97b0f957a5eb1ca7942409b83fc83c64cc4055448",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_hornet.png",
+      "source": "art/projectiles-v3/enemies-0-19.png",
+      "cell": 8,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "504bc87b875700a6c6351990758a6609767f7a0f595c86296a78074398d33259",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_hound.png",
+      "source": "art/projectiles-v3/enemies-0-19.png",
+      "cell": 9,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "2a0cfa3b064fdef3e26dc2fafa53a4634c010be32c1f3c0894ff0e11ec52d940",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_spitter.png",
+      "source": "art/projectiles-v3/enemies-0-19.png",
+      "cell": 10,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "a0a933f185c2622a5de0544119f56fe92de62b59767965871aec636422e4ba98",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_martyr.png",
+      "source": "art/projectiles-v3/enemies-0-19.png",
+      "cell": 11,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "0d3b5ff8ab841d390fed8296d2d1bf476551ecdaa7fc0b4b997a4eeb4e82c030",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_veyran.png",
+      "source": "art/projectiles-v3/enemies-0-19.png",
+      "cell": 12,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "cf60661828b1a859d7abc74c46c910b0b557a34a04989101e04090d17cf77510",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_hecate.png",
+      "source": "art/projectiles-v3/enemies-0-19.png",
+      "cell": 13,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "ee2384e15131ececbec6e3d8ac8d5601dd80adf770afa99186f9cfeb02d1cf9a",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_chimera.png",
+      "source": "art/projectiles-v3/enemies-0-19.png",
+      "cell": 14,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "892a8c466b1328d1dc8b3685010d2bf74472be337fe7a5e56360c66edf4f9c0d",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_oracle.png",
+      "source": "art/projectiles-v3/enemies-0-19.png",
+      "cell": 15,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "a4695f6dd6b66465874345e677720167dad9366eacc89b6785f9a84f6de5a544",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_gravemind.png",
+      "source": "art/projectiles-v3/enemies-0-19.png",
+      "cell": 16,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "de40d66926dcec9dbf70f25e4fdc711d927caf911a43e9f55eff025ef851dd3f",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_archivist.png",
+      "source": "art/projectiles-v3/enemies-0-19.png",
+      "cell": 17,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "6fd248c8d3be4b23718a09b294e2ea046bbe88d01509efa14ea846898ff0087a",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_halcyon.png",
+      "source": "art/projectiles-v3/enemies-0-19.png",
+      "cell": 18,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "c01189b930c53fabc7d27695e70d1a56dee99d72287637c56b5889643cf1b5fc",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_relay.png",
+      "source": "art/projectiles-v3/enemies-0-19.png",
+      "cell": 19,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "cbbbb6c8aefff8340ead7057bcfaec09271482c323286d5ad3da1c3a7dc4b59e",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_titan.png",
+      "source": "art/projectiles-v3/enemies-20-36.png",
+      "cell": 0,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "6cd9964a7d3374a9c290a47575a08d80230a3e62cb0577704c733af990ca8f0f",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_kest.png",
+      "source": "art/projectiles-v3/enemies-20-36.png",
+      "cell": 1,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "b73bc0301a775bd4cb55c65c21cd6de140db1d02537325196a0b4ef7579bd968",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_mnemosyne.png",
+      "source": "art/projectiles-v3/enemies-20-36.png",
+      "cell": 2,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "6e2ce3e4960b593260705328843f85a2c6ae050e85a15db636cf1d3ffb478348",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_vulcan.png",
+      "source": "art/projectiles-v3/enemies-20-36.png",
+      "cell": 3,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "bcce762206bca004bf112a73991ac2b0220bbf3afbbfbd6f8c5097064f3a51d4",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_leviathan.png",
+      "source": "art/projectiles-v3/enemies-20-36.png",
+      "cell": 4,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "d7bb630a2fdcb73e15a23dc1c2d261de287eac906178bbbde22e29731770de80",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_prism.png",
+      "source": "art/projectiles-v3/enemies-20-36.png",
+      "cell": 5,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "6fae6d84e84a6f53080f4805b999390a84d8922f3aaaf53476ea4fde814214b6",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_magnus.png",
+      "source": "art/projectiles-v3/enemies-20-36.png",
+      "cell": 6,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "b04de13b75f6edc4107288994b857e213c73038cc36c0178e713f128bdb03c98",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_broodmother.png",
+      "source": "art/projectiles-v3/enemies-20-36.png",
+      "cell": 7,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "edad0a108858119f103459c2ee481cfc36e549f3321a035644960d6dbc40a000",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_mycelium.png",
+      "source": "art/projectiles-v3/enemies-20-36.png",
+      "cell": 8,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "208ffddaad03e3369a0c5f3a904520e04f798f68815f82bcc8fbf46c167bcab4",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_astra.png",
+      "source": "art/projectiles-v3/enemies-20-36.png",
+      "cell": 9,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "b18883cda483e9b5fc399bbec0b28ccd32acb60163900c7ffd689f0b0e1d37cb",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_scrapper.png",
+      "source": "art/projectiles-v3/enemies-20-36.png",
+      "cell": 10,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "0e11436849880c107320bb9fed02e6dfd6210227f87297a1a0156eeca3b14a4e",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_umbra.png",
+      "source": "art/projectiles-v3/enemies-20-36.png",
+      "cell": 11,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "137c41781d9f73140539494653e09ab8370f8397dba3d9f4bea29f4243497058",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_sol.png",
+      "source": "art/projectiles-v3/enemies-20-36.png",
+      "cell": 12,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "fbbca971b0ba120e7fda3a6c3f1b51c9be37062e0d8706b615796dd926caa702",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_nautilus.png",
+      "source": "art/projectiles-v3/enemies-20-36.png",
+      "cell": 13,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "7b758751565ce412c6396bc9d930f428c353d6636745035e1503c75b943fe28e",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_chronos.png",
+      "source": "art/projectiles-v3/enemies-20-36.png",
+      "cell": 14,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "5a9612388500f8327d1b4ef8ec3e06983368c8042bd6473286b5dc4bffe25066",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_boreas.png",
+      "source": "art/projectiles-v3/enemies-20-36.png",
+      "cell": 15,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "765c9bec80dcec89a54aaa8049b48c16ef57b00ea451baceb3edad254a737297",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "public/game/projectiles/enemy_sovereign.png",
+      "source": "art/projectiles-v3/enemies-20-36.png",
+      "cell": 16,
+      "grid": [
+        5,
+        4
+      ],
+      "sha256": "abf30d1d4e505a0ce53deedfc25819fd739029813e886fbeb6b942beddff6885",
+      "native_size": [
+        1402,
+        1122
+      ],
+      "runtime_size": [
+        256,
+        256
+      ]
+    }
+  ]
+}

@@ -38,13 +38,17 @@ test('enemy and missile projectiles use complete isolated images and retained na
  assert.equal(projectiles.length,37);
  const records=JSON.parse(read('art/sector-detail/generation.json'));
  for(const record of records)assert.equal(hash(read(record.source)),record.sha256,record.id+' source hash');
- const files=projectiles.map(p=>'enemy_'+p.slug+'.png');files.push(...['tactical','siege','naval'].flatMap(m=>['outgoing','incoming'].map(d=>`missile_${m}_${d}.png`)));
+ const manifest=JSON.parse(read('art/projectiles-v3/manifest.json'));
+ assert.equal(manifest.assets.length,62);
+ for(const source of manifest.sources)assert.equal(hash(read(source.path)),source.sha256);
+ for(const entry of manifest.assets)assert.equal(hash(read(entry.file)),entry.sha256);
+ const files=projectiles.map(p=>'enemy_'+p.slug+'.png');files.push(...Array.from({length:25},(_,i)=>`boss_weapon_${i+8}.png`));files.push(...['tactical','siege','naval'].flatMap(m=>['outgoing','incoming'].map(d=>`missile_${m}_${d}.png`)));
  const browser=await chromium.launch({headless:true});
  try{
   const page=await browser.newPage();const unique=new Set();
   for(const name of files){
    const bytes=read('public/game/projectiles/'+name),info=readPngInfo(bytes);assert.deepEqual([info.width,info.height],[256,256]);
-   if(name.startsWith('enemy_')){assert.ok(!unique.has(hash(bytes)),name+' repeats another enemy projectile');unique.add(hash(bytes));}
+   if(name.startsWith('enemy_')||name.startsWith('boss_weapon_')){assert.ok(!unique.has(hash(bytes)),name+' repeats another enemy projectile');unique.add(hash(bytes));}
    const result=await page.evaluate(async(src)=>{const im=new Image();im.src=src;await im.decode();const c=document.createElement('canvas');c.width=c.height=256;const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(im,0,0);const a=ctx.getImageData(0,0,256,256).data;let visible=0,border=0;for(let y=0;y<256;y++)for(let x=0;x<256;x++){const alpha=a[(y*256+x)*4+3];if(alpha>128)visible++;if((x<8||x>247||y<8||y>247)&&alpha>10)border++;}return{visible,border};},`data:image/png;base64,${bytes.toString('base64')}`);
    assert.ok(result.visible>400,name+' blank');assert.equal(result.border,0,name+' crosses isolated frame boundary');
   }

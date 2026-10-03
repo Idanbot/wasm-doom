@@ -1,38 +1,21 @@
 # Map authoring guide
 
-BLACKSITE uses three code-built 48×32 sectors in `engine/src/map.rs`. Generic carvers (`room`, `hall_h`, `hall_v`, `pillar`, and `mix_edge`) live in `lib.rs`; sector geometry, props, ambushes, hostile casts, objectives, and boss spawn points live in the map module.
+BLACKSITE has 25 sectors on a 48×32 grid. Levels 1–9 use the authored carvers in `engine/src/map.rs`. Levels 10–25 use explicit room graphs in `art/maps/layouts-10-25.json` and the typed tables/runtime in `engine/src/layouts.rs`. Geometry does not cycle until the first 25 sectors have been played; sector 26 restarts Upper Works with gradual endless scaling.
 
-## Campaign sectors
+![Rebuilt maps 10–25](../art/maps/layouts-10-25.png)
 
-| Sector | Layout | Boss | Core ability |
-|---|---|---|---|
-| Nadir–7A: Upper Works | Hub and four spokes through hangar, lab, chapel, pit, and vault | Malik Veyran | Five-shot command fan and mixed tactical reinforcements |
-| Nadir–7B: Cryogenic Foundry | Long production lanes with north/south cross-connections | HECATE–9 | Sustained heavy bursts, eight-way electrical barrage, and drone support |
-| Nadir–7C: Bioforge Depths | Central containment loop with two specimen wings | CHIMERA–9 | Fast melee pursuit, corrosive nova, and hound/spitter support |
+Each rebuilt sector specifies six rooms, a connected graph with alternate routes, wall materials, start pose, sector node, override, two boss spawn positions, two terminals, resupply, a powerup, and a themed hostile cast. Two-cell corridors join room centers with an explicitly chosen bend direction. Arena entrance doors auto-open from outside and seal during the boss encounter. Offset machinery cover breaks room sightlines. Props use the sector's machinery family, and six breakable objects use its exclusive sector art. Apex Control has a larger command arena.
 
-`level_index(wave)` cycles these sectors. `next_wave()` rebuilds the map, doors, props, ambushes, and hostile roster while preserving acquired weapons. A sector repeats only after all three layouts have been played.
+| Levels | Traversal |
+|---|---|
+| 10–11 | Command wings and vault perimeter loops |
+| 12–15 | Parallel transit lanes, pump circuit, optical crossfire chambers, forge ring |
+| 16–19 | Hatchery branches, containment loop, uplink spokes, reclamation switchbacks |
+| 20–23 | Shadow bypasses, fusion wings, silo perimeter, archive cross-links |
+| 24–25 | Black Ice cooling circuit and Apex command wings leading to a large final arena |
 
-## Building blocks
+Edit the JSON, run `python3 scripts/render-sector-layouts.py` to refresh the diagram and arena doors, then run `python3 scripts/build-sector-layout-data.py` to regenerate the typed tables. This preserves the runtime implementation and tests below the table. Keep node, terminal, resupply, cover and hostile coordinates inside walkable room interiors. Coordinates are shared with `map` and `field` accessors, so geometry and gameplay objectives use one contract.
 
-```rust
-e.room(x, y, w, h, wall, floor);   // walled rectangle
-e.hall_h(x0, x1, y, door_x);       // two-cell horizontal hall + door pair
-e.hall_v(x, y0, y1, door_y);       // two-cell vertical hall + door pair
-e.pillar(x, y, kind);              // 2×2 cover block
-e.mix_edge(x, y, w, h, &[kinds]);  // themed wall cycle
-e.set_cell(x, y, value);            // 0 open, 1–7 wall, 8 door, 9 secret
-```
+Clearing ordinary hostiles and using the sector node arms the boss override. USE requires proximity and line of sight. The override launches the existing boss-specific sequence; the boss's reward and next-sector behavior are preserved.
 
-Doors (`8`) auto-open on approach. Secret doors (`9`) require USE and increment the secret count. `AmbushDef` entries spawn once when their rectangular trigger is crossed. Hostile casts are sector-specific `HostileSpawn` tables with explicit skins and positions.
-
-## Boss override
-
-Each sector ends at `override_point(wave)`, marked by floor style `2` and a visible sector-specific control console. Clearing ordinary hostiles is not enough: the player must also USE the sector node (`field::node_point`) with a clear path before the override will arm. Walking across the floor or using through a wall cannot start the encounter. Upper Works has a four-second command lockdown, Foundry has a 5.2-second power surge, and Bioforge has a 4.6-second containment breach. The seal slams those doors shut from the arena side. Approaching from outside still opens them, so a player who stepped out can walk back in.
-
-## Validation rules
-
-1. Every override and both boss spawn points must flood-fill from that sector's player start.
-2. Each hostile and prop coordinate must be on an open cell and outside door cells.
-3. Keep combat cover between long sightlines and supplies beside the hardest rooms.
-4. Preserve the three distinct traversal shapes when adding rooms.
-5. Run `cargo test`, `npm run build:wasm`, and `npm run check:wasm` after engine changes.
+Validation must cover all objectives and spawns, connected floors with a sealed outer boundary, alternate graph routes, room clearance and props outside walls. Run Rust tests, `npm run build:wasm`, `npm run check:wasm`, and the campaign browser checks after changes. Inspect the layout overview and in-game views; flood-fill alone does not establish combat quality.

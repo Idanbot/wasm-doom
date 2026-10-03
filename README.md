@@ -63,6 +63,8 @@ The standard arsenal is MK23-S, BR-12 Breaker, KX-9 Vector, MR-4 Longbow, VLK-6 
 - Weapon viewmodels use **5×5 sheets of 25 frames**, 2560×1920 overall, with 512×384 cells for ammunition states, pickup, reload, firing and spare special frames. Aim poses enter from the lower right toward the crosshair.
 - **37 enemy skins** each have seven animation states with four frames per state: idle, movement, pain, fire, reload/charge, death and special. Runtime sheets are 256×256 with four 128×128 cells.
 - Enemy ranged attacks use **37 isolated, type-specific projectile textures**, including distinct boss projectiles. This fixes the legacy atlas patch that mixed a quarter missile into an orange orb. Melee enemies still use melee attacks.
+- Maps **10–25** use rebuilt room graphs with alternate routes, relocated sector nodes, terminals, supplies and boss arenas. The authoring source is `art/maps/layouts-10-25.json`; [layout overview](art/maps/layouts-10-25.png) shows every route.
+- All **25 boss-reward weapons** have their own isolated projectile or hitscan travel artwork. **BM-3 SWARM** launches five visible mechanical microdrones with homing and rotor bob. The 37 enemy projectile images are a separate incoming set with head-on missile noses.
 - Player missiles show their body and nose pointing upward/forward toward the target; enemy missiles show their nose head-on toward the player. Tactical, siege and naval designs have separate outgoing/incoming art, with smoke trails lasting less than a second. Nine campaign FX assets also provide ion bolts, cryo shards, spores, phase shots and animated impacts.
 - Every sector has **five exclusive material textures and three exclusive destructible prop types**: 125 materials and 75 prop designs total. Runtime tiles are seamless 256×256 PNGs; 1024×1024 WebP copies are available for asset review. Breaking machinery produces sparks and supply drops without increasing enemy kills. See [sector art and projectile details](docs/SECTOR_DETAIL.md).
 - All weapon handling sheets have cleaned alpha edges. Pickup and reload frames retain substantial detached hands/magazines while discarding neighboring-panel fragments. Approved aim poses and return-to-aim frames are preserved.
@@ -103,6 +105,7 @@ The [25-sector expansion guide](docs/CAMPAIGN_25.md) lists new bosses, mechanics
 engine/src/                 Rust simulation → public/hellscan.wasm
   consts.rs                   map, atlas, entities, input and weapon constants
   map.rs                      sector layouts, spawns and objectives
+  layouts.rs                  authored room graphs and sector contracts for maps 10–25
   field.rs                    nodes, interaction IDs and boss rewards
   combat.rs                   enemy combat profiles
   campaign.rs                 uncapped progression and expansion weapon stats
@@ -122,7 +125,7 @@ src/components/game/        menus, HUD, arsenal, settings and touch controls
 src/components/catalog/     local-development asset review
 ```
 
-The HUD is a 228-byte Rust `#[repr(C)]` struct decoded with a DataView. Compile-time assertions, a boot-time `hs_hud_size` check and tests guard its layout. Saves cover 33 weapon slots in 300 bytes. Older supported checkpoints pad to the current slot count. The texture atlas has 579 layers.
+The HUD is a 228-byte Rust `#[repr(C)]` struct decoded with a DataView. Compile-time assertions, a boot-time `hs_hud_size` check and tests guard its layout. Saves cover 33 weapon slots in 300 bytes. Older supported checkpoints pad to the current slot count. The texture atlas has 604 layers.
 
 ## Develop
 

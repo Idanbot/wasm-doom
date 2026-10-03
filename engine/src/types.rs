@@ -16,6 +16,8 @@ pub(crate) struct Ent {
     pub(crate) anim_lock: f32,
     /// Presentation skin. `SKIN_NONE` keeps the legacy effect/prop texture.
     pub(crate) skin: u8,
+    /// Player weapon VFX layer, independent of collision/element skin. Zero = default.
+    pub(crate) projectile_visual: u8,
     pub(crate) radius: f32,
     pub(crate) flash: f32,
     pub(crate) stun: f32,
@@ -37,6 +39,7 @@ pub(crate) struct Ent {
 
 #[derive(Clone, Copy)]
 pub(crate) struct FxCmd {
+    pub(crate) projectile_visual: u8,
     pub(crate) variant: u8,
     pub(crate) kind: u8,
     pub(crate) x: f32,

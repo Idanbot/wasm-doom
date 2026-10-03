@@ -29,6 +29,7 @@ import {
   T_PROJECTILE_NEW,
   T_IMPACT_NEW,
   T_ENEMY_PROJECTILE,
+  T_BOSS_PROJECTILE,
   T_PLAYER_MISSILE,
   T_SECTOR_SURFACE,
   T_SECTOR_PROP,
@@ -285,6 +286,10 @@ const TEX_FILES: { id: number; src: string }[] = [
   ...["ember-impact", "pressure-impact", "magnetic-impact", "solar-impact"].map((name, i) => ({
     id: T_IMPACT_NEW + i,
     src: `/game/fx25/${name}.png`,
+  })),
+  ...Array.from({ length: 25 }, (_, i) => ({
+    id: T_BOSS_PROJECTILE + i,
+    src: `/game/projectiles/boss_weapon_${i + 8}.png`,
   })),
   ...ENEMY_SKINS.map((skin, i) => ({
     id: T_ENEMY_PROJECTILE + i,
