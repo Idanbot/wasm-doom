@@ -297,7 +297,7 @@
   },
   {
     "id": "vx2-reward",
-    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_vx2_aim.png",
+    "reference": "public/game/draft/v2/weap_vx2_aim.png",
     "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and orange lighting must match in both panels: industrial incendiary rail rifle, soot black steel, orange ceramic heat shields, removable rectangular power cell. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
     "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-3e042a5e-8363-4838-b1a3-5925d316c0d3.png",
     "source": "art/campaign25/vx2-reward.png",
@@ -306,7 +306,7 @@
   },
   {
     "id": "lv8-reward",
-    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_lv8_aim.png",
+    "reference": "public/game/draft/v2/weap_lv8_aim.png",
     "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and blue lighting must match in both panels: brass and blue hydraulic harpoon launcher with visible pressure cylinder and removable compressed gas magazine. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
     "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-c2206852-0a07-49c8-9995-0c24f6a964d4.png",
     "source": "art/campaign25/lv8-reward.png",
@@ -315,7 +315,7 @@
   },
   {
     "id": "pr5-reward",
-    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_pr5_aim.png",
+    "reference": "public/game/draft/v2/weap_pr5_aim.png",
     "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and cyan lighting must match in both panels: sleek chrome laser rifle with three cyan optical lenses, removable crystal battery and triangular receiver. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
     "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-763e0046-c4fc-4e53-b6be-14c4969d5bda.png",
     "source": "art/campaign25/pr5-reward.png",
@@ -324,7 +324,7 @@
   },
   {
     "id": "mg4-reward",
-    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_mg4_aim.png",
+    "reference": "public/game/draft/v2/weap_mg4_aim.png",
     "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and red lighting must match in both panels: copper coil accelerator rifle with two horseshoe barrel rails, red coil windings and removable energy block. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
     "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-64339ef6-5bb4-485d-a4ea-0a7611541ade.png",
     "source": "art/campaign25/mg4-reward.png",
@@ -333,7 +333,7 @@
   },
   {
     "id": "bm3-reward",
-    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_bm3_aim.png",
+    "reference": "public/game/draft/v2/weap_bm3_aim.png",
     "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and amber lighting must match in both panels: compact dark gunmetal microdrone launcher with six hexagonal launch tubes and removable amber cassette. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
     "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-1dbf64e6-540a-479e-a1eb-82cce9052869.png",
     "source": "art/campaign25/bm3-reward.png",
@@ -342,7 +342,7 @@
   },
   {
     "id": "my9-reward",
-    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_my9_aim.png",
+    "reference": "public/game/draft/v2/weap_my9_aim.png",
     "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and green lighting must match in both panels: sealed biohazard spore rifle with green fluid capsule, surgical steel receiver and detachable glass specimen feed. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
     "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-40744556-48cd-4248-8a61-09738ee09de4.png",
     "source": "art/campaign25/my9-reward.png",
@@ -351,7 +351,7 @@
   },
   {
     "id": "as7-reward",
-    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_as7_aim.png",
+    "reference": "public/game/draft/v2/weap_as7_aim.png",
     "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and violet lighting must match in both panels: black and violet smart missile launcher with compact shoulder receiver, detachable missile cassette and tactical targeting optic. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
     "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-ccffc4d2-3bad-4088-8ca9-2c081d8edcb8.png",
     "source": "art/campaign25/as7-reward.png",
@@ -360,7 +360,7 @@
   },
   {
     "id": "sc6-reward",
-    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_sc6_aim.png",
+    "reference": "public/game/draft/v2/weap_sc6_aim.png",
     "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and copper lighting must match in both panels: rugged copper and steel flechette cannon with perforated barrel shroud, detachable drum and industrial rivets. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
     "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-e415757d-b6f2-4e8c-bc47-1b936de4de7c.png",
     "source": "art/campaign25/sc6-reward.png",
@@ -369,7 +369,7 @@
   },
   {
     "id": "ub1-reward",
-    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_ub1_aim.png",
+    "reference": "public/game/draft/v2/weap_ub1_aim.png",
     "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and purple lighting must match in both panels: matte obsidian phase rifle with purple containment ring, removable dark energy cell and segmented slim barrel. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
     "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-e621a9dd-e22c-45a2-b7df-b42cdcf8d523.png",
     "source": "art/campaign25/ub1-reward.png",
@@ -378,7 +378,7 @@
   },
   {
     "id": "sl12-reward",
-    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_sl12_aim.png",
+    "reference": "public/game/draft/v2/weap_sl12_aim.png",
     "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and gold lighting must match in both panels: white ceramic solar plasma cannon with gold containment rails and removable hexagonal reactor cell. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
     "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-9c0d7336-a533-48f5-9905-6f34313d31e5.png",
     "source": "art/campaign25/sl12-reward.png",
@@ -387,7 +387,7 @@
   },
   {
     "id": "nt4-reward",
-    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_nt4_aim.png",
+    "reference": "public/game/draft/v2/weap_nt4_aim.png",
     "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and teal lighting must match in both panels: teal naval pressure missile launcher with round steel receiver, replaceable torpedo tube feed and orange safety latches. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
     "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-5091cf83-2cde-4b11-90a7-61a2c8eaa02b.png",
     "source": "art/campaign25/nt4-reward.png",
@@ -396,7 +396,7 @@
   },
   {
     "id": "ch8-reward",
-    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_ch8_aim.png",
+    "reference": "public/game/draft/v2/weap_ch8_aim.png",
     "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and amber lighting must match in both panels: bronze precision chronal rifle with amber gyroscope cell, long straight barrel and removable narrow magazine. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
     "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-608997c3-48c8-43a3-9e3f-6e853532b4b9.png",
     "source": "art/campaign25/ch8-reward.png",
@@ -405,7 +405,7 @@
   },
   {
     "id": "bo11-reward",
-    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_bo11_aim.png",
+    "reference": "public/game/draft/v2/weap_bo11_aim.png",
     "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and ice blue lighting must match in both panels: black cryogenic shard rifle with ice blue coolant chamber, angular insulated barrel and detachable coolant magazine. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
     "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-fefa3a6a-524e-40a3-9595-a0f0f55230c7.png",
     "source": "art/campaign25/bo11-reward.png",
@@ -414,7 +414,7 @@
   },
   {
     "id": "sv25-reward",
-    "reference": "/home/idan/Code/github/wasm-doom/public/game/draft/v2/weap_sv25_aim.png",
+    "reference": "public/game/draft/v2/weap_sv25_aim.png",
     "prompt": "Use case: product-mockup. BLACKSITE production reward art atlas with EXACT TWO equal columns ONE ROW, landscape2:1, transparent background, no divider lines, no text. REFERENCE gun's precise design, proportions, materials and gold lighting must match in both panels: black and gold apex command battle rifle with twin containment rails, detachable gold power cassette and heavy precision optic. LEFT PANEL: open premium GOLDEN military hard-shell case, gold metal rim, gold latches and gold shell, charcoal custom foam. Show the matching gun fully nested inside, without hands, top-down three-quarter view, all case corners in panel with margin. RIGHT PANEL: STRICT ORTHOGRAPHIC SIDE PROFILE of the SAME gun, entire gun, muzzle LEFT stock RIGHT, perfectly horizontal and no perspective angle. No hands, case or shadow in right panel. Detailed photorealistic tactical/scifi game product art, bright readable metal against transparent alpha, generous space between two independent subjects, no object crossing center boundary, NO FPS perspective in side panel. Native real transparency including barrel and stock gaps.",
     "path": "/home/idan/.codex/generated_images/01a0c595-5fc2-73c2-89ca-4fe2b05a194c/exec-a8c59fbb-5467-498a-b022-56c99b86c2d2.png",
     "source": "art/campaign25/sv25-reward.png",

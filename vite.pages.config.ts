@@ -2,8 +2,9 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
-/** Served at https://idanbot.me/wasm-doom/ via the user-site domain. */
-const base = process.env.PAGES_BASE || "/wasm-doom/";
+/** Explicit base wins; Pages workflows inherit their repository's project path. */
+const repository = process.env.GITHUB_REPOSITORY?.split("/").at(-1);
+const base = process.env.PAGES_BASE || (repository ? `/${repository}/` : "/blacksite/");
 
 export default defineConfig({
   base,

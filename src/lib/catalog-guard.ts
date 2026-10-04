@@ -1,6 +1,6 @@
 /**
  * Security guard for the Asset Catalog.
- * The catalog is strictly deactivated in production environments (such as idanbot.me/wasm-doom)
+ * The catalog is strictly deactivated in production environments
  * and is accessible only from the local Vite development server.
  */
 export function isCatalogEnabled(): boolean {

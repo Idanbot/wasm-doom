@@ -3,7 +3,7 @@ import { performance } from 'node:perf_hooks';
 
 // Measure only the Rust/WASM render call, excluding simulation, upload and presentation.
 // Deterministic procedural textures and stationary scenes make revisions comparable.
-const { instance } = await WebAssembly.instantiate(await readFile('public/hellscan.wasm'), {});
+const { instance } = await WebAssembly.instantiate(await readFile('public/blacksite.wasm'), {});
 const e = instance.exports;
 const results = [];
 for (const [w, h] of [[320, 200], [640, 400], [1280, 800]]) {

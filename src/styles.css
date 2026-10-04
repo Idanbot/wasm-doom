@@ -160,7 +160,7 @@
   }
 }
 
-.doom-panel {
+.blacksite-panel {
   background-color: var(--color-surface);
   background-image:
     linear-gradient(180deg, color-mix(in oklab, var(--color-fg) 8%, transparent), transparent 28%),

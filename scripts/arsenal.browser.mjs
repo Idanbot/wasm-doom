@@ -11,7 +11,7 @@ after(async () => { await browser?.close(); });
 
 async function checkpointPage() {
   const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
-  await page.addInitScript(() => localStorage.setItem("hellscan-checkpoint", JSON.stringify({
+  await page.addInitScript(() => localStorage.setItem("blacksite-checkpoint", JSON.stringify({
     wave: 2, health: 100, armor: 0, weapon: 0, flags: 1,
     ammo: Array(19).fill(12), mag: Array(19).fill(12),
   })));

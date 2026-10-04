@@ -7,8 +7,8 @@ dist/
 dist-pages/
 .engine/
 engine/target/
-.grok/dev.log
-.grok/og-pending
+.blacksite/dev.log
+.blacksite/og-pending
 screenshots/batch-*.png
 screenshots/arsenal-*.png
 screenshots/probe-*.png
@@ -28,12 +28,16 @@ public/game/draft/v2/masters/
 screenshots/*.png
 __pycache__/
 *.pyc
-.grok/*.pid
+.blacksite/*.pid
 art/music-candidates/
 
 art/sector-detail/.generation.lock
 
 # Local production test staging
-.grok/qa-pages-root/
+.blacksite/qa-pages-root/
 
 screenshots/*.jpg
+
+# Local BLACKSITE server and QA state
+.blacksite/
+.env.*

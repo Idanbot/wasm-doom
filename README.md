@@ -1,6 +1,6 @@
 # BLACKSITE
 
-A Doom-style first-person raycaster set in Site Nadir-7. The Rust simulation runs as **WebAssembly**, with **WebGPU**, WebGL2 and Canvas2D rendering. The campaign has **25 distinct sectors, 25 unique bosses, 62 enemy/boss appearances and 33 weapons**, including one exclusive weapon reward per boss.
+A standalone tactical first-person raycaster set in Site Nadir-7. The Rust simulation runs as **WebAssembly**, with **WebGPU**, WebGL2 and Canvas2D rendering. The campaign has **25 distinct sectors, 25 unique bosses, 62 enemy/boss appearances and 33 weapons**, including one exclusive weapon reward per boss.
 
 [Play BLACKSITE](https://idanbot.me/wasm-doom/)
 
@@ -70,7 +70,7 @@ The standard arsenal is MK23-S, BR-12 Breaker, KX-9 Vector, MR-4 Longbow, VLK-6 
 ## Art, audio and interface
 
 - Weapon viewmodels use **5×5 sheets of 25 frames**, 2560×1920 overall, with 512×384 cells for ammunition states, pickup, reload, firing and spare special frames. Aim poses enter from the lower right toward the crosshair.
-- **37 enemy skins** each have seven animation states with four frames per state: idle, movement, pain, fire, reload/charge, death and special. Runtime sheets are 256×256 with four 128×128 cells.
+- **62 enemy/boss appearances** each have seven animation states with four frames per state: idle, movement, pain, fire, reload/charge, death and special. Runtime sheets are 256×256 with four 128×128 cells.
 - Enemy ranged attacks use **37 isolated, type-specific projectile textures**, including distinct boss projectiles. This fixes the legacy atlas patch that mixed a quarter missile into an orange orb. Melee enemies still use melee attacks.
 - Maps **10–25** use rebuilt room graphs with alternate routes, relocated sector nodes, terminals, supplies and boss arenas. The authoring source is `art/maps/layouts-10-25.json`; [layout overview](art/maps/layouts-10-25.png) shows every route.
 - All **25 boss-reward weapons** have their own isolated projectile or hitscan travel artwork. **BM-3 SWARM** launches five visible mechanical microdrones with homing and rotor bob. The 37 enemy projectile images are a separate incoming set with head-on missile noses.
@@ -78,7 +78,7 @@ The standard arsenal is MK23-S, BR-12 Breaker, KX-9 Vector, MR-4 Longbow, VLK-6 
 - Every sector has **five exclusive material textures and three exclusive destructible prop types**: 125 materials and 75 prop designs total. Runtime tiles are seamless 256×256 PNGs; 1024×1024 WebP copies are available for asset review. Breaking machinery produces sparks and supply drops without increasing enemy kills. See [sector art and projectile details](docs/SECTOR_DETAIL.md).
 - All weapon handling sheets have cleaned alpha edges. Pickup and reload frames retain substantial detached hands/magazines while discarding neighboring-panel fragments. Approved aim poses and return-to-aim frames are preserved.
 - The loading screen fetches and decodes weapon sheets, thumbnails and game assets before deployment. The wheel uses transparent gun thumbnails; its selected weapon is larger and fully opaque, while other weapons are dimmed and desaturated.
-- **116 Cloudflare Aura-2 combat voice clips** cover 19 speaking profiles; four profiles are nonverbal. Bosses also have **50 death clips**, two per boss. Positional audio and enemy subtitles share the voice manifest. A shared voice gate prevents overlapping dialogue; interaction announcements and boss death events play once. Doors do not trigger dialogue.
+- **116 Cloudflare Aura-2 combat voice clips** cover 19 source voice profiles, reused by themed sector enemies; four profiles are nonverbal. Bosses also have **50 death clips**, two per boss. Positional audio and enemy subtitles share the voice manifest. A shared voice gate prevents overlapping dialogue; interaction announcements and boss death events play once. Doors do not trigger dialogue.
 - `public/game/music/menu.mp3` covers menus, pause, settings and other non-game screens. `bgm-remix.mp3` and `boss.mp3` provide gameplay music.
 - The minimap sits below the handler panel; health and ammunition cards share a compact lower-left layout. Settings persist locally and include an enemy-subtitles toggle. The main menu has no resume-sector option.
 - The asset catalog is available from the start menu only in local development. It shows the current weapon set and animation frames and is excluded from the production build.
@@ -111,7 +111,7 @@ The [25-sector expansion guide](docs/CAMPAIGN_25.md) lists new bosses, mechanics
 ## Architecture
 
 ```text
-engine/src/                 Rust simulation → public/hellscan.wasm
+engine/src/                 Rust simulation → public/blacksite.wasm
   consts.rs                   map, atlas, entities, input and weapon constants
   map.rs                      sector layouts, spawns and objectives
   layouts.rs                  authored room graphs and sector contracts for maps 10–25
@@ -134,9 +134,14 @@ src/components/game/        menus, HUD, arsenal, settings and touch controls
 src/components/catalog/     local-development asset review
 ```
 
-The HUD is a 228-byte Rust `#[repr(C)]` struct decoded with a DataView. Compile-time assertions, a boot-time `hs_hud_size` check and tests guard its layout. Saves cover 33 weapon slots in 300 bytes. Older supported checkpoints pad to the current slot count. The texture atlas has 604 layers.
+The HUD is a 228-byte Rust `#[repr(C)]` struct decoded with a DataView. Compile-time assertions, a boot-time `hs_hud_size` check and tests guard its layout. Saves cover 33 weapon slots in 300 bytes. Older supported checkpoints pad to the current slot count. The texture atlas has 779 layers.
 
 ## Develop
+
+BLACKSITE has no builder SDK, injected branding, preview bridge, account broker,
+connector gateway or runtime database. Its menus, manifest and social metadata
+are owned by the game. Browser storage uses `blacksite-*` keys; existing player
+settings, scores and checkpoints migrate automatically without overwriting new data.
 
 Prerequisites: **Node 24** and **Rust stable** with the `wasm32-unknown-unknown` target.
 
@@ -148,7 +153,7 @@ npm run dev         # development server on port 8080
 
 `startup.sh` starts development through `npm run dev` and rebuilds WASM when needed. After changing engine sources, run `npm run build:wasm` so the committed binary and source hash stay synchronized. On the local development server, `?qa=1` starts a fresh run with all 33 weapons unlocked. Add `&lvl=x` to start at sector **1–25**, for example `http://localhost:8080/?qa=1&lvl=11` opens Obsidian Vault. Missing or invalid levels start at sector 1. Use `&lvl=25` to test the Sovereign fight. These shortcuts are ignored in production and on non-local hosts. Expanded rewards beyond the first eleven use the mouse wheel.
 
-Asset-generation scripts use Python/Pillow and ffmpeg where applicable. Cloudflare voice generation requires a server-side `CF_API_KEY` and `CF_ACCOUNT_ID`; credentials stay in the ignored `.env` or process environment and never ship in browser assets. Existing voice files are cached to avoid repeat generation.
+Install `python3 -m pip install -r art/enemies-v4/requirements.txt` for the enemy-art pipeline. Asset-generation scripts use Python/Pillow and ffmpeg where applicable. Cloudflare voice generation requires a server-side `CF_API_KEY` and `CF_ACCOUNT_ID`; credentials stay in the ignored `.env` or process environment and never ship in browser assets. Existing voice files are cached to avoid repeat generation.
 
 ## Verify
 
@@ -176,7 +181,7 @@ node scripts/combat-smoke.mjs
 node scripts/end-screen-smoke.mjs
 ```
 
-The engine has **110 Rust tests**. Coverage includes sector reachability, all boss entries and phases, distinct reward drops, Echo firing and save roundtrips, manual reload behavior, projectiles and movement direction. Browser checks cover asset preload and failure handling, arsenal thumbnails, firing/reload frames, HUD containment, bosses, desktop/mobile rendering and end screens.
+The engine has **119 Rust tests**. Coverage includes sector reachability, all boss entries and phases, distinct reward drops, Echo firing and save roundtrips, manual reload behavior, projectiles and movement direction. Browser checks cover asset preload and failure handling, arsenal thumbnails, firing/reload frames, HUD containment, bosses, desktop/mobile rendering and end screens.
 
 [CI](.github/workflows/ci.yml) runs typechecking, WASM synchronization, asset validation, production build, renderer performance checks, TypeScript/Rust tests and browser smoke checks on pushes and pull requests.
 
@@ -185,7 +190,8 @@ The engine has **110 Rust tests**. Coverage includes sector reachability, all bo
 The game runs entirely in the browser and needs no runtime database or application server. Settings and the leaderboard use local storage.
 
 ```sh
-npm run build:pages  # static output in dist-pages/, base /wasm-doom/
+npm run build:pages  # static output in dist-pages/, local base /blacksite/
+PAGES_BASE=/custom-path/ npm run build:pages  # optional hosting path
 ```
 
-The [Pages workflow](.github/workflows/pages.yml) builds and publishes on pushes to `main`. The existing user site owns `idanbot.me`; this repository serves [idanbot.me/wasm-doom/](https://idanbot.me/wasm-doom/) and should not have a separate custom domain.
+The [Pages workflow](.github/workflows/pages.yml) builds and publishes on pushes to `main`, deriving its base path from `GITHUB_REPOSITORY`. The local default is `/blacksite/`; `PAGES_BASE` overrides either value. The existing user site owns `idanbot.me`; this repository serves [idanbot.me/wasm-doom/](https://idanbot.me/wasm-doom/) and should not have a separate custom domain.

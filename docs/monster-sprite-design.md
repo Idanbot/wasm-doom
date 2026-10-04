@@ -47,7 +47,7 @@ Failures to fix: noisy palettes, mushy mid-tones, no shared outline, Wraith vert
 
 ## 2. Shared art direction
 
-Professional indie pixel art in the **Doom (1993) billboard language**, not a Doom asset clone.
+Professional indie pixel art in the **classic shooter (1993) billboard language**, not a classic shooter asset clone.
 
 - Front or 3/4-front. No 8-way camera set.
 - Silhouette first. Gameplay role readable at ~32–48 on-screen pixels tall.

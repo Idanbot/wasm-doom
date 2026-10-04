@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { chromium } from "playwright";
 
-const baseUrl = process.env.BLACKSITE_PAGES_URL ?? "http://127.0.0.1:8082/wasm-doom/";
+const baseUrl = process.env.BLACKSITE_PAGES_URL ?? "http://127.0.0.1:8082/blacksite/";
 
 test("project-path deployment loads its arsenal thumbnails", async () => {
   const browser = await chromium.launch({ headless: true });
@@ -21,7 +21,7 @@ test("project-path deployment loads its arsenal thumbnails", async () => {
       path: new URL(img.src).pathname,
       loaded: img.complete && img.naturalWidth > 0,
     }));
-    assert.ok(thumbnail.path.startsWith("/wasm-doom/game/ui/weapon-thumbs/"), thumbnail.path);
+    assert.ok(thumbnail.path.startsWith(new URL("game/ui/weapon-thumbs/", baseUrl).pathname), thumbnail.path);
     assert.ok(thumbnail.loaded, "arsenal thumbnail was blank");
     assert.deepEqual(failed.filter((url) => url.includes("weapon-thumbs")), []);
   } finally {

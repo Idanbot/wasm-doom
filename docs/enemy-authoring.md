@@ -14,7 +14,7 @@ touching engine systems. The roster is data: one row per kind in
 | Map size | **48 × 32 cells** (`MAP_W` × `MAP_H`) |
 | Cell size | **1 world unit**; positions are `f32` unit coords |
 | Cell codes | `0` open · `1–7` walls · `8` door · `9` secret door · `10` walkable trigger/gate |
-| Player radius | **0.22** (`pr`); walk ≈ 3.4 u/s, enemies 1.7–2.7 u/s — you outrun everything, Doom-style |
+| Player radius | **0.22** (`pr`); walk ≈ 3.4 u/s, enemies 1.7–2.7 u/s — you outrun everything, retro tactical |
 | Entity cap | **192** live ents (`ENT_N`); `spawn()` returns `None` when full |
 
 Wall kinds map to atlas slots in `wall_tex`: `1→METAL, 2→BRICK,

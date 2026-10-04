@@ -2,7 +2,7 @@
 
 ## 1. High Concept
 
-**BLACKSITE IFRIT** is a fast, aggressive Doom-like FPS set inside a vast underground special-weapons complex beneath a fictional Middle-Eastern desert republic.
+**BLACKSITE IFRIT** is a fast, aggressive retro tactical FPS set inside a vast underground special-weapons complex beneath a fictional Middle-Eastern desert republic.
 
 The player is **Elias Ward**, a CIA Special Activities Center operative sent into **Blacksite Ifrit**, a hardened military research complex operated by the authoritarian **Kharif Republic**. The original mission is narrow: infiltrate the site, recover evidence of an illegal autonomous-weapons program, and exfiltrate before the facility knows he was there.
 
@@ -1105,7 +1105,7 @@ The game should NOT look like:
 - glossy mobile-game sci-fi
 - anime
 - clean Star Trek-style futurism
-- direct Doom imitation
+- direct classic shooter imitation
 
 ---
 

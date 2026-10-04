@@ -137,12 +137,12 @@ describe("loadVol", () => {
   });
 
   it("merges stored values over defaults", () => {
-    installMemoryStorage({ "hellscan-vol": JSON.stringify({ master: 0.5 }) });
+    installMemoryStorage({ "blacksite-vol": JSON.stringify({ master: 0.5 }) });
     assert.deepEqual(loadVol(), { master: 0.5, music: 0.42, sfx: 0.75, menu: 0.7 });
   });
 
   it("falls back to defaults on corrupt JSON", () => {
-    installMemoryStorage({ "hellscan-vol": "{" });
+    installMemoryStorage({ "blacksite-vol": "{" });
     assert.deepEqual(loadVol(), { master: 0.85, music: 0.42, sfx: 0.75, menu: 0.7 });
   });
 });
@@ -168,7 +168,7 @@ describe("leaderboard", () => {
   });
 
   it("ignores corrupt storage", () => {
-    installMemoryStorage({ "hellscan-board": "not json" });
+    installMemoryStorage({ "blacksite-board": "not json" });
     assert.deepEqual(loadBoard(), []);
   });
 });
@@ -176,7 +176,7 @@ describe("leaderboard", () => {
 describe("gpuEnabled", () => {
   it("is opt-in (defaults to false)", () => {
     assert.equal(gpuEnabled(), false);
-    installMemoryStorage({ "hellscan-gpu": "1" });
+    installMemoryStorage({ "blacksite-gpu": "1" });
     assert.equal(gpuEnabled(), true);
   });
 });
@@ -206,7 +206,7 @@ describe("loadGfx", () => {
   });
 
   it("merges stored toggles over defaults", () => {
-    installMemoryStorage({ "hellscan-gfx": JSON.stringify({ bloom: false }) });
+    installMemoryStorage({ "blacksite-gfx": JSON.stringify({ bloom: false }) });
     assert.deepEqual(loadGfx(), { ...DEFAULT_GFX, bloom: false });
   });
 });

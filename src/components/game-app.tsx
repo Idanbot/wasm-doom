@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { asset } from "@/lib/asset";
 import { localQaRun } from "@/game/dev-run";
-import { HellscanRuntime, weaponSheetImage } from "@/game/runtime";
+import { BlacksiteRuntime, weaponSheetImage } from "@/game/runtime";
 import { DEFAULT_HUD, type GfxOpts, type HudState, type ResMode } from "@/game/types";
 import { Crosshair } from "./game/Crosshair";
 import {
@@ -39,7 +39,7 @@ import { isCatalogEnabled } from "@/lib/catalog-guard";
 
 export function GameApp() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const rtRef = useRef<HellscanRuntime | null>(null);
+  const rtRef = useRef<BlacksiteRuntime | null>(null);
   const lookPtr = useRef<number | null>(null);
   const movePtr = useRef<number | null>(null);
   const weaponRef = useRef<HTMLDivElement>(null);
@@ -113,7 +113,7 @@ export function GameApp() {
     if (!canvas) return;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    const rt = new HellscanRuntime(canvas, {
+    const rt = new BlacksiteRuntime(canvas, {
       onLoad: (progress) => setLoad(progress),
       onSubtitles: (lines) => {
         const now = performance.now();
@@ -286,7 +286,7 @@ export function GameApp() {
   const handleRequireGpu = useCallback(async (on: boolean) => {
     setRequireGpu(on);
     try {
-      localStorage.setItem("hellscan-gpu", on ? "1" : "0");
+      localStorage.setItem("blacksite-gpu", on ? "1" : "0");
     } catch {
       /* ignore */
     }
@@ -303,7 +303,7 @@ export function GameApp() {
         const kind = await rt.switchRenderer(false);
         setRenderer(kind);
         setRequireGpu(false);
-        localStorage.setItem("hellscan-gpu", "0");
+        localStorage.setItem("blacksite-gpu", "0");
       } catch {
         /* keep last working renderer */
       }
@@ -468,7 +468,7 @@ export function GameApp() {
   useEffect(() => {
     rtRef.current?.setGfx(gfx);
     try {
-      localStorage.setItem("hellscan-gfx", JSON.stringify(gfx));
+      localStorage.setItem("blacksite-gfx", JSON.stringify(gfx));
     } catch {
       /* ignore */
     }
@@ -499,7 +499,7 @@ export function GameApp() {
   useEffect(() => {
     rtRef.current?.setVolumes(vol.master, vol.music, vol.sfx, vol.menu);
     try {
-      localStorage.setItem("hellscan-vol", JSON.stringify(vol));
+      localStorage.setItem("blacksite-vol", JSON.stringify(vol));
     } catch {
       /* ignore */
     }

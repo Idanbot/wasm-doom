@@ -21,8 +21,8 @@ function makeTree({ withWasm = true, withHash = true, drifted = false } = {}) {
   const srcDir = join(root, "engine", "src");
   mkdirSync(srcDir, { recursive: true });
   writeFileSync(join(srcDir, "lib.rs"), "fn main() {}\n");
-  const wasmPath = join(root, "public", "hellscan.wasm");
-  const hashPath = join(root, "public", "hellscan.sha256");
+  const wasmPath = join(root, "public", "blacksite.wasm");
+  const hashPath = join(root, "public", "blacksite.sha256");
   if (withWasm || withHash) mkdirSync(join(root, "public"), { recursive: true });
   if (withWasm) writeFileSync(wasmPath, "wasm");
   if (withHash) updateWasmHash(hashPath, srcDir);

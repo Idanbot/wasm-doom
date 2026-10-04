@@ -1,3 +1,4 @@
+import { migrateGameStorage, readGameStorage } from "../../lib/storage-migration.ts";
 import { DEFAULT_GFX, DEFAULT_RES, RES_MODES, type GfxOpts, type ResMode } from "../../game/types.ts";
 import { WEAPON_SHEETS } from "../../game/weapon-assets.ts";
 
@@ -247,7 +248,7 @@ export function gridPos(cell: number, columns: number, rows: number) {
 
 export function loadVol(): Vol {
   try {
-    const raw = localStorage.getItem("hellscan-vol");
+    const raw = readGameStorage("blacksite-vol");
     if (!raw) return { ...DEFAULT_VOL };
     const v = JSON.parse(raw) as Partial<Vol>;
     return {
@@ -270,7 +271,7 @@ export function fmtTime(ms: number) {
 
 export function loadBoard(): Score[] {
   try {
-    const raw = localStorage.getItem("hellscan-board");
+    const raw = readGameStorage("blacksite-board");
     if (raw) {
       const v = JSON.parse(raw) as Score[];
       if (Array.isArray(v)) {
@@ -295,7 +296,7 @@ export function saveBoard(entry: Score): Score[] {
     .sort((a, b) => b.wave - a.wave || b.kills - a.kills || a.time - b.time)
     .slice(0, 10);
   try {
-    localStorage.setItem("hellscan-board", JSON.stringify(next));
+    localStorage.setItem("blacksite-board", JSON.stringify(next));
   } catch {
     /* ignore */
   }
@@ -304,7 +305,7 @@ export function saveBoard(entry: Score): Score[] {
 
 export function gpuEnabled() {
   try {
-    return localStorage.getItem("hellscan-gpu") === "1";
+    return readGameStorage("blacksite-gpu") === "1";
   } catch {
     return false;
   }
@@ -312,7 +313,7 @@ export function gpuEnabled() {
 
 export function loadRes(): ResMode {
   try {
-    const id = localStorage.getItem("blacksite-res");
+    const id = readGameStorage("blacksite-res");
     const hit = RES_MODES.find((r) => r.id === id);
     if (hit) return hit;
   } catch {
@@ -323,7 +324,7 @@ export function loadRes(): ResMode {
 
 export function loadGfx(): GfxOpts {
   try {
-    const raw = localStorage.getItem("hellscan-gfx");
+    const raw = readGameStorage("blacksite-gfx");
     if (raw) {
       const v = JSON.parse(raw) as Partial<GfxOpts>;
       return {
@@ -352,11 +353,11 @@ export type RunSave = {
   mag: number[];
 };
 
-const CHECK_KEY = "hellscan-checkpoint";
+const CHECK_KEY = "blacksite-checkpoint";
 
 export function loadCheckpoint(): RunSave | null {
   try {
-    const raw = localStorage.getItem(CHECK_KEY);
+    const raw = readGameStorage(CHECK_KEY);
     if (!raw) return null;
     const v = JSON.parse(raw) as Partial<RunSave>;
     if (!v || !Array.isArray(v.ammo) || !Array.isArray(v.mag)) {
@@ -394,6 +395,7 @@ export function saveCheckpoint(save: RunSave) {
 
 export function clearCheckpoint() {
   try {
+    migrateGameStorage(localStorage);
     localStorage.removeItem(CHECK_KEY);
   } catch {
     /* ignore */

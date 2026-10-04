@@ -430,7 +430,7 @@ export type RuntimeHooks = {
   onLoad?: (progress: { ratio: number; label: string }) => void;
 };
 
-export class HellscanRuntime {
+export class BlacksiteRuntime {
   private canvas: HTMLCanvasElement;
   private hooks: RuntimeHooks;
   private wasm: WasmExports | null = null;
@@ -1444,7 +1444,7 @@ async function loadWasm(): Promise<WasmExports> {
   // Share compiled code, never mutable memory between runtime mounts.
   if (!wasmModule) {
     wasmModule = (async () => {
-      const res = await fetch(asset("/hellscan.wasm"), { cache: "no-cache" });
+      const res = await fetch(asset("/blacksite.wasm"), { cache: "no-cache" });
       if (!res.ok) throw new Error(`Unable to load engine (${res.status})`);
       return WebAssembly.compile(await res.arrayBuffer());
     })().catch((error) => {

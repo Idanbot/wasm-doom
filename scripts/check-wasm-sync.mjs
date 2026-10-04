@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
- * WASM sync check — ensures public/hellscan.wasm matches engine/src.
+ * WASM sync check — ensures public/blacksite.wasm matches engine/src.
  *
  * Content-based (not mtimes, which are unreliable after a fresh git
  * checkout): `npm run build:wasm` records a SHA-256 over every
- * engine/src Rust file into public/hellscan.sha256. This script recomputes
+ * engine/src Rust file into public/blacksite.sha256. This script recomputes
  * the hash and exits 1 with a rebuild hint when the wasm/hash is missing
  * or the sources drifted.
  *
@@ -68,8 +68,8 @@ export function updateWasmHash(hashPath, srcDir) {
 const isMain = process.argv[1] === fileURLToPath(import.meta.url);
 if (isMain) {
   const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-  const wasmPath = join(root, "public", "hellscan.wasm");
-  const hashPath = join(root, "public", "hellscan.sha256");
+  const wasmPath = join(root, "public", "blacksite.wasm");
+  const hashPath = join(root, "public", "blacksite.sha256");
   const srcDir = join(root, "engine", "src");
   if (process.argv.includes("--update")) {
     updateWasmHash(hashPath, srcDir);
@@ -78,13 +78,13 @@ if (isMain) {
     const result = checkWasmSync(wasmPath, hashPath, srcDir);
     if (!result.ok) {
       if (result.reason === "missing") {
-        console.error(`[check:wasm] public/hellscan.${result.detail === "wasm" ? "wasm" : "sha256"} is missing.`);
+        console.error(`[check:wasm] public/blacksite.${result.detail === "wasm" ? "wasm" : "sha256"} is missing.`);
       } else {
-        console.error("[check:wasm] engine/src drifted from public/hellscan.wasm.");
+        console.error("[check:wasm] engine/src drifted from public/blacksite.wasm.");
       }
       console.error("[check:wasm] Rebuild with: npm run build:wasm");
       process.exit(1);
     }
-    console.log("[check:wasm] public/hellscan.wasm is in sync with engine/src.");
+    console.log("[check:wasm] public/blacksite.wasm is in sync with engine/src.");
   }
 }

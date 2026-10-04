@@ -11,6 +11,11 @@ export const Route = createRootRoute({
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: APP_NAME },
       { name: "theme-color", content: "#080d11" },
+      { property: "og:title", content: APP_NAME },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: "/og.jpg" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "/x-banner.jpg" },
       {
         name: "description",
         content: "BLACKSITE: Project Ifrit. Enter Nadir-7. Break containment. Eliminate the signal.",
@@ -20,7 +25,7 @@ export const Route = createRootRoute({
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
       { rel: "stylesheet", href: appCss },
       { rel: "manifest", href: "/manifest.webmanifest" },
-      { rel: "preload", href: asset("/hellscan.wasm"), as: "fetch", type: "application/wasm", crossOrigin: "anonymous" },
+      { rel: "preload", href: asset("/blacksite.wasm"), as: "fetch", type: "application/wasm", crossOrigin: "anonymous" },
     ],
   }),
   component: () => (

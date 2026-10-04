@@ -62,7 +62,7 @@ try {
     blit.draw(cpu, 64, 64);
     const upload = sample();
     const { instance } = await WebAssembly.instantiate(
-      await (await fetch("/hellscan.wasm")).arrayBuffer(),
+      await (await fetch("/blacksite.wasm")).arrayBuffer(),
       {},
     );
     const e = instance.exports;

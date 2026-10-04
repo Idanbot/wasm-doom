@@ -2,6 +2,18 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
 
+async function assertStandalone(page, requests, base) {
+  assert.equal(await page.title(), 'BLACKSITE');
+  assert.ok(requests.has(new URL('blacksite.wasm', base).href), 'loads the renamed engine');
+  const scripts = await page.locator('script[src]').evaluateAll(nodes => nodes.map(n => n.src));
+  assert.ok(scripts.every(src => new URL(src).origin === new URL(base).origin), 'scripts belong to the standalone game');
+  const manifest = await page.evaluate(async () => {
+    const url = document.querySelector('link[rel="manifest"]').href;
+    return (await fetch(url)).json();
+  });
+  assert.equal(manifest.name, 'BLACKSITE');
+}
+
 const url = new URL(process.env.BLACKSITE_TEST_URL ?? 'http://127.0.0.1:8080/');
 url.searchParams.set('qa', '1');
 url.searchParams.set('lvl', '11');
@@ -10,10 +22,13 @@ test('local qa=1&lvl=11 starts Obsidian Vault with all thirty-three guns selecta
   const browser = await chromium.launch({ headless: true });
   try {
     const page = await browser.newPage();
+    const requests = new Set();
+    page.on('request', request => requests.add(request.url()));
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
     await page.goto(url.href, { waitUntil: 'domcontentloaded', timeout: 90000 });
     await page.waitForFunction(() => window.__controlsTest && document.body.innerText.includes('NADIR–7K') && document.body.innerText.includes('HEALTH'), null, { timeout: 180000 });
+    await assertStandalone(page, requests, url);
     await page.evaluate(() => window.__controlsTest.heal());
     assert.equal(await page.evaluate(() => window.__controlsTest.getWeapon()), 0);
     for (let slot = 1; slot <= 33; slot++) {
@@ -30,11 +45,14 @@ test('production ignores qa and lvl and starts with the normal first-sector arse
   const browser = await chromium.launch({ headless: true });
   try {
     const page = await browser.newPage();
+    const requests = new Set();
+    page.on('request', request => requests.add(request.url()));
     const url = new URL(productionUrl);
     url.searchParams.set('qa', '1');
     url.searchParams.set('lvl', '11');
     await page.goto(url.href, { waitUntil: 'domcontentloaded', timeout: 90000 });
     await page.waitForFunction(() => !document.querySelector('.deploy-button')?.hasAttribute('disabled'), null, { timeout: 180000 });
+    await assertStandalone(page, requests, productionUrl);
     assert.equal(await page.evaluate(() => typeof window.__controlsTest), 'undefined');
     assert.equal(await page.getByText('HEALTH', { exact: true }).count(), 0);
     await page.locator('.deploy-button').click();

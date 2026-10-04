@@ -76,7 +76,7 @@ Avoid:
 - excessive tiny detail
 - overly clean surfaces
 - fantasy magic unless explicitly biotech/AI related
-- obvious Doom enemy copying
+- obvious classic shooter enemy copying
 
 ---
 
@@ -312,7 +312,7 @@ Only pose changes.
 
 # 10. Rotational Enemy Sprites
 
-If classic Doom-style directional sprites are used:
+If classic retro tactical directional sprites are used:
 
 Preferred directions:
 
