@@ -1,0 +1,629 @@
+{
+  "generator": "built-in image_gen",
+  "enemies": [
+    {
+      "slug": "rifleman",
+      "id": 0,
+      "level": null,
+      "base": 0,
+      "source": "art/enemies-v4/rifleman-source.png",
+      "source_sha256": "ad8ce519ba3947b390bf8ac164c0667f0bedd751a0f330f7fccba355bd9b0ce8",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "breacher",
+      "id": 1,
+      "level": null,
+      "base": 1,
+      "source": "art/enemies-v4/breacher-source.png",
+      "source_sha256": "944a3011a77a98f8fcb4b4252ad51965faf4fd0092d475ce29622fafab8f8fbd",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "subject",
+      "id": 2,
+      "level": null,
+      "base": 2,
+      "source": "art/enemies-v4/subject-source.png",
+      "source_sha256": "b675bd8ede96f130cf49e10e2eedb0f8dd4bcd05cf108e2acc9d26da2ab8864e",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "hazmat",
+      "id": 3,
+      "level": null,
+      "base": 3,
+      "source": "art/enemies-v4/hazmat-source.png",
+      "source_sha256": "37a824eee397203453d9efd7720d8471d2a244d5a03fc756bf6c27d48e194d38",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "gunner",
+      "id": 4,
+      "level": null,
+      "base": 4,
+      "source": "art/enemies-v4/gunner-source.png",
+      "source_sha256": "7b5b6ab4726685dabb6fdcc983bee50f1ee27408cb2ddd9f0a62bb9c39434153",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "loader",
+      "id": 5,
+      "level": null,
+      "base": 5,
+      "source": "art/enemies-v4/loader-source.png",
+      "source_sha256": "d64e02bfa13a14b731727bc41cce07451a5ee02f103a39240e1eba6fa4a422c3",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "vatbrute",
+      "id": 6,
+      "level": null,
+      "base": 6,
+      "source": "art/enemies-v4/vatbrute-source.png",
+      "source_sha256": "62150dc219301b15ce4b52fa35645c8917062186d94efe2b1a51b9c7ad46e439",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "marksman",
+      "id": 7,
+      "level": null,
+      "base": 7,
+      "source": "art/enemies-v4/marksman-source.png",
+      "source_sha256": "38a170d9150b6dee56b094e664c4b57e621ce4bc694b732d6365f4a5137a7559",
+      "source_size": [
+        949,
+        1658
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "hornet",
+      "id": 8,
+      "level": null,
+      "base": 8,
+      "source": "art/enemies-v4/hornet-source.png",
+      "source_sha256": "6f979364b8179fd5401a5e021a401f83f447ee09fce54b310571d035f94abc41",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "hound",
+      "id": 9,
+      "level": null,
+      "base": 9,
+      "source": "art/enemies-v4/hound-source.png",
+      "source_sha256": "c046e976e722ffcbdf14dc92aea01d3a9fd64bc4bd39d01f1daecd70808d79ef",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "spitter",
+      "id": 10,
+      "level": null,
+      "base": 10,
+      "source": "art/enemies-v4/spitter-source.png",
+      "source_sha256": "8cea22fc0b6239a29757bd875c3bae75d98234b0def79a9005bcabce7bad9f7b",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "martyr",
+      "id": 11,
+      "level": null,
+      "base": 11,
+      "source": "art/enemies-v4/martyr-source.png",
+      "source_sha256": "0e242bb22dcfbd1e770d8c1acd4fdb7ac907d15631f7e752a0b0413282c66d8f",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "veyran",
+      "id": 12,
+      "level": null,
+      "base": 12,
+      "source": "art/enemies-v4/veyran-source.png",
+      "source_sha256": "4dc09de96b2721a2eb26fbd685148ce319b18f9d3cd7aab7a505eb3a0cf24076",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "hecate",
+      "id": 13,
+      "level": null,
+      "base": 13,
+      "source": "art/enemies-v4/hecate-source.png",
+      "source_sha256": "0a7bd8303e7ea9d3675161096f7b2725cd865def8086a68458f6920202a17309",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "chimera",
+      "id": 14,
+      "level": null,
+      "base": 14,
+      "source": "art/enemies-v4/chimera-source.png",
+      "source_sha256": "920068b2d1e77b7e06d907087538271b502509bd59d158e270d8ebe74e7c54d4",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "oracle",
+      "id": 15,
+      "level": null,
+      "base": 15,
+      "source": "art/enemies-v4/oracle-source.png",
+      "source_sha256": "ebcd413c8e012a2c67d9c22e7edc77dcf1ae20577f511f73a2da095362d46b5c",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "gravemind",
+      "id": 16,
+      "level": null,
+      "base": 16,
+      "source": "art/enemies-v4/gravemind-source.png",
+      "source_sha256": "e1b636f0f4e45ae0ef7cd826d2ba5149845fb4e54b7ad91baefe7e494721835a",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "archivist",
+      "id": 17,
+      "level": null,
+      "base": 17,
+      "source": "art/enemies-v4/archivist-source.png",
+      "source_sha256": "30a368dc3e6e0595f33854665b5f6d7fe6b2234f8ac6290b7db50155c1fa315d",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "halcyon",
+      "id": 18,
+      "level": null,
+      "base": 18,
+      "source": "art/enemies-v4/halcyon-source.png",
+      "source_sha256": "7ec1a9a142fcb869115b0f0122667c1d85e8ec160c030b6bd7fe82b5b73ece3e",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "relay",
+      "id": 19,
+      "level": null,
+      "base": 19,
+      "source": "art/enemies-v4/relay-source.png",
+      "source_sha256": "1a5e4db39d51c95531620b6b423679a8a7bfd469ef77e1c3c188ddd5c3f6fbc6",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "titan",
+      "id": 20,
+      "level": null,
+      "base": 20,
+      "source": "art/enemies-v4/titan-source.png",
+      "source_sha256": "7d0c35ec913e9a66eedef164badcb69bd8d92b6158c029edbfff07c8d5cd0442",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "kest",
+      "id": 21,
+      "level": null,
+      "base": 21,
+      "source": "art/enemies-v4/kest-source.png",
+      "source_sha256": "209ee60605b480cc6d06dd2b676fbc9053e093e42f205cf831969af2db271054",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "mnemosyne",
+      "id": 22,
+      "level": null,
+      "base": 22,
+      "source": "art/enemies-v4/mnemosyne-source.png",
+      "source_sha256": "e8804641808457ea2ac0254bdb6ab59daf93f601d30accae7bec4f2fd39c49df",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-upper-works",
+      "id": 37,
+      "level": 1,
+      "base": 0,
+      "source": "art/enemies-v4/sector-upper-works-source.png",
+      "source_sha256": "726a5dabd2160c2bb077dd60c3c0e9148943d91534a89a69de79dd203fbc7fda",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-cryogenic-foundry",
+      "id": 38,
+      "level": 2,
+      "base": 3,
+      "source": "art/enemies-v4/sector-cryogenic-foundry-source.png",
+      "source_sha256": "3f0fae394a6ac877eb5092a2ef7f11c244d3ecc88cdc05e0e59601eaa931b8ed",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-bioforge-depths",
+      "id": 39,
+      "level": 3,
+      "base": 10,
+      "source": "art/enemies-v4/sector-bioforge-depths-source.png",
+      "source_sha256": "83bb03ea9141d71115ac422e1158ead0c812cc801737dc7df029e7301e61a0bf",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-data-spine",
+      "id": 40,
+      "level": 4,
+      "base": 7,
+      "source": "art/enemies-v4/sector-data-spine-source.png",
+      "source_sha256": "16b559792bf31a405739fa84318954d51d658b7e03c7face45363f2f1a77fb48",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-reactor-sink",
+      "id": 41,
+      "level": 5,
+      "base": 3,
+      "source": "art/enemies-v4/sector-reactor-sink-source.png",
+      "source_sha256": "6a9662028db9b2f09c68cd88edd5643b7331ca50cbd751e081ac960db491b1a9",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-null-archive",
+      "id": 42,
+      "level": 6,
+      "base": 0,
+      "source": "art/enemies-v4/sector-null-archive-source.png",
+      "source_sha256": "b83033d7a4a3cdec9f27ea740838c8da3279f547e5cfbfda700c79cdf0984ccd",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-cryo-reserve",
+      "id": 43,
+      "level": 7,
+      "base": 3,
+      "source": "art/enemies-v4/sector-cryo-reserve-source.png",
+      "source_sha256": "3c8fdbba12a7c5d31fa2a1366867e4b33f4b397fda075fb2f0084eee4b02c0d1",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-signal-crypt",
+      "id": 44,
+      "level": 8,
+      "base": 7,
+      "source": "art/enemies-v4/sector-signal-crypt-source.png",
+      "source_sha256": "03974cf98ea84bbed85b48fb2552b1c831efaaabfa6caa1937ff1be444ea3ec1",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-siege-yard",
+      "id": 45,
+      "level": 9,
+      "base": 4,
+      "source": "art/enemies-v4/sector-siege-yard-source.png",
+      "source_sha256": "5cfcebea9698d5d597f8a9a9fbf4ee916e35b96893bcd207f9bc75e1cf74d862",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-command-bunker",
+      "id": 46,
+      "level": 10,
+      "base": 1,
+      "source": "art/enemies-v4/sector-command-bunker-source.png",
+      "source_sha256": "a591cf57e3c981286a26166b368d7752efc0125cf7fb8f178a71002b431c491e",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-obsidian-vault",
+      "id": 47,
+      "level": 11,
+      "base": 7,
+      "source": "art/enemies-v4/sector-obsidian-vault-source.png",
+      "source_sha256": "2ad9ad8dfe0b52383ceb82ab5ab3e1be95ee3fa54a5a4d5af4bbdfc87a9c8672",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-ashen-transit",
+      "id": 48,
+      "level": 12,
+      "base": 1,
+      "source": "art/enemies-v4/sector-ashen-transit-source.png",
+      "source_sha256": "ddbe2da2d13b1b4c85e4ac04e987f6d8b6ffa137482209a38269289954dc779f",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-tidal-pumpstation",
+      "id": 49,
+      "level": 13,
+      "base": 3,
+      "source": "art/enemies-v4/sector-tidal-pumpstation-source.png",
+      "source_sha256": "7f5bb545f55936569b9bab8b1411297f3c87821b718c25e003f1abd45ab809f6",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-optics-array",
+      "id": 50,
+      "level": 14,
+      "base": 7,
+      "source": "art/enemies-v4/sector-optics-array-source.png",
+      "source_sha256": "30fb16551aaab3c0c85a155c9e397283c77c2adcebcd4cf09a1942f752218a87",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-magnetic-forge",
+      "id": 51,
+      "level": 15,
+      "base": 4,
+      "source": "art/enemies-v4/sector-magnetic-forge-source.png",
+      "source_sha256": "e3890c9d299886424bdbcfb4590d0adb1256ba1f7e645f8a6860c84d82e08239",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-drone-hatchery",
+      "id": 52,
+      "level": 16,
+      "base": 8,
+      "source": "art/enemies-v4/sector-drone-hatchery-source.png",
+      "source_sha256": "3562da2ce57ba4c81598ae8ee6dd982c1284a202cf4c19ee5e9a35493e061840",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-fungal-research",
+      "id": 53,
+      "level": 17,
+      "base": 10,
+      "source": "art/enemies-v4/sector-fungal-research-source.png",
+      "source_sha256": "c37d34353ef9b7fea302c47471ea62ed83576c14832989210bda869d63123d1c",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-orbital-uplink",
+      "id": 54,
+      "level": 18,
+      "base": 7,
+      "source": "art/enemies-v4/sector-orbital-uplink-source.png",
+      "source_sha256": "5916884e97255a3b16cd1013889dfe7490bc1b05e01b6bd665f89c0a2b8f5ad2",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-waste-reclaimer",
+      "id": 55,
+      "level": 19,
+      "base": 5,
+      "source": "art/enemies-v4/sector-waste-reclaimer-source.png",
+      "source_sha256": "37d866056e4e81aa0c32b2e6dafb89d0d3a43887e8addf68786d7ff03f8a4664",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-shadow-lab",
+      "id": 56,
+      "level": 20,
+      "base": 2,
+      "source": "art/enemies-v4/sector-shadow-lab-source.png",
+      "source_sha256": "2869cc3ba29592dd26544dc1db6cb30330cefd085f7bc9b0a7bbbdc1f0684920",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-fusion-chamber",
+      "id": 57,
+      "level": 21,
+      "base": 3,
+      "source": "art/enemies-v4/sector-fusion-chamber-source.png",
+      "source_sha256": "7282a1c033dafd82ba4d423b2744a1bec4473de9db46c591b7cefd96b472c857",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-flooded-silo",
+      "id": 58,
+      "level": 22,
+      "base": 3,
+      "source": "art/enemies-v4/sector-flooded-silo-source.png",
+      "source_sha256": "5ed3c161e7a401a536fcfa3be253e5172eb7bb7d18fa22303918b3f62e685ab3",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-chrono-archive",
+      "id": 59,
+      "level": 23,
+      "base": 7,
+      "source": "art/enemies-v4/sector-chrono-archive-source.png",
+      "source_sha256": "e7a6dac342c948a537e0fb60dd1ab7abfcea9e1105a99f5f0653ac030dbd96ee",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-black-ice-core",
+      "id": 60,
+      "level": 24,
+      "base": 8,
+      "source": "art/enemies-v4/sector-black-ice-core-source.png",
+      "source_sha256": "57c1e7ab86a48bc08db2c708ecfb578d10ed5686bf7f9d89fe027d6fb1dfe4fa",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    },
+    {
+      "slug": "sector-apex-control",
+      "id": 61,
+      "level": 25,
+      "base": 4,
+      "source": "art/enemies-v4/sector-apex-control-source.png",
+      "source_sha256": "e1e9250be585a0b816da306d7b17873650dbaddca675d3c53e9a0eaa20962958",
+      "source_size": [
+        948,
+        1659
+      ],
+      "frames": 28
+    }
+  ]
+}

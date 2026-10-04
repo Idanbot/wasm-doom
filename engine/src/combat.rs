@@ -15,7 +15,7 @@ pub(crate) struct Combat {
 
 pub(crate) fn profile(skin: u8, kind: u8) -> Combat {
     let rifle = Combat { speed: 1.7, range: 5.0, windup: 0.45, cooldown: 1.2, damage: 9, pellets: 1, spread: 0.0, melee: false };
-    match skin {
+    match crate::enemies::combat_skin(skin) {
         SKIN_BREACHER => Combat { speed: 2.0, range: 2.8, windup: 0.55, cooldown: 1.6, damage: 7, pellets: 3, spread: 0.14, ..rifle },
         SKIN_SUBJECT => Combat { speed: 2.5, range: 1.0, windup: 0.42, cooldown: 0.9, damage: 12, melee: true, ..rifle },
         SKIN_HAZMAT => Combat { speed: 1.25, range: 4.5, windup: 0.65, cooldown: 1.7, damage: 12, ..rifle },

@@ -100,3 +100,17 @@ test("boss phase cues occur once; material and pickup mappings are distinct", ()
   assert.equal(worldIntent(13, 3)?.id, "hazard-acid");
   assert.equal(worldIntent(99), null);
 });
+
+test("all sector enemies inherit their intentional weapon and death family", () => {
+  const bases = [0, 3, 10, 7, 3, 0, 3, 7, 4, 1, 7, 1, 3, 7, 4, 8, 10, 7, 5, 2, 3, 3, 7, 8, 4];
+  for (const [sector, base] of bases.entries()) {
+    const skin = 37 + sector;
+    assert.equal(enemyFamily(skin), enemyFamily(base));
+    const director = new SfxDirector();
+    director.enemyFrame([{ ...enemy, skin }], 0);
+    assert.equal(
+      director.enemyFrame([{ ...enemy, skin, anim: 3 }], 1)[0]?.id,
+      `fire${ENEMY_WEAPONS[base]}`,
+    );
+  }
+});

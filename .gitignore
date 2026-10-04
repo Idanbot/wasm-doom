@@ -35,3 +35,5 @@ art/sector-detail/.generation.lock
 
 # Local production test staging
 .grok/qa-pages-root/
+
+screenshots/*.jpg

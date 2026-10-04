@@ -1,3 +1,4 @@
+import { SECTOR_ENEMIES } from "./sector-enemies";
 import { asset } from "@/lib/asset";
 import { VoiceGate } from "./voice-gate";
 import {
@@ -99,6 +100,16 @@ export class EnemyAudio {
       if (!response.ok) throw new Error("Enemy voice manifest could not load");
       const manifest = (await response.json()) as { enemies: VoiceProfile[] };
       for (const p of manifest.enemies) this.profiles.set(p.skin, p);
+      for (const enemy of SECTOR_ENEMIES) {
+        const base = this.profiles.get(enemy.base);
+        if (base)
+          this.profiles.set(enemy.skin, {
+            ...base,
+            skin: enemy.skin,
+            id: enemy.slug,
+            name: enemy.name,
+          });
+      }
       const lines = manifest.enemies.flatMap((p) => p.lines);
       let index = 0;
       let done = 0;

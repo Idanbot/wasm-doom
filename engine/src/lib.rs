@@ -222,12 +222,21 @@ fn segment_distance_sq(x: f32, y: f32, ax: f32, ay: f32, bx: f32, by: f32) -> f3
     (x - ax - dx * t).powi(2) + (y - ay - dy * t).powi(2)
 }
 
+fn animation_fps(state: u8) -> f32 {
+    match state { ANIM_IDLE => 2.2, ANIM_MOVE => 8.0, ANIM_PAIN => 7.0,
+        ANIM_FIRE => 9.0, ANIM_RELOAD => 5.5, ANIM_DEAD => 3.2,
+        ANIM_SPECIAL => 5.0, _ => 4.0 }
+}
+
 fn set_anim(e: &mut Ent, state: u8, lock: f32) {
     if e.anim != state {
         e.anim = state;
         e.anim_time = 0.0;
     }
-    e.anim_lock = e.anim_lock.max(lock);
+    // One-shot states must actually display all authored poses before expiry.
+    let duration = if !is_hostile_kind(e.kind) || matches!(state, ANIM_IDLE | ANIM_MOVE) { lock }
+        else { lock.max(4.0 / animation_fps(state)) };
+    e.anim_lock = e.anim_lock.max(duration);
 }
 
 fn advance_anim(e: &mut Ent, dt: f32) {
@@ -248,17 +257,9 @@ fn advance_anim(e: &mut Ent, dt: f32) {
 fn anim_frame(e: &Ent) -> i32 {
     let state = (e.anim as usize).min(ANIM_FRAME_COUNTS.len() - 1);
     let count = ANIM_FRAME_COUNTS[state].max(1) as i32;
-    let fps = match e.anim {
-        ANIM_IDLE => 2.2,
-        ANIM_MOVE => 8.0,
-        ANIM_PAIN => 7.0,
-        ANIM_FIRE => 9.0,
-        ANIM_RELOAD => 5.5,
-        ANIM_DEAD => 3.2,
-        ANIM_SPECIAL => 5.0,
-        _ => 4.0,
-    };
-    ((e.anim_time * fps) as i32).rem_euclid(count)
+    let frame = (e.anim_time * animation_fps(e.anim)) as i32;
+    if matches!(e.anim, ANIM_IDLE | ANIM_MOVE) { frame.rem_euclid(count) }
+    else { frame.min(count - 1) }
 }
 
 fn sigil_rgba(level: usize, u: f32, v: f32) -> [u32; 4] {
@@ -1858,7 +1859,10 @@ impl Engine {
             let Some(candidate) = safe else { return false; };
             point = candidate;
         }
-        let (kind, packed, x, y) = point;
+        let (mut kind, mut packed, x, y) = point;
+        if self.reinforcement_cursor % roster.len() == 0 {
+            (kind, packed) = enemies::sector_spawn(self.wave, packed);
+        }
         let copy = self.reinforcement_cursor / roster.len();
         let jx = if copy == 0 { 0.0 } else { (self.rnd() - 0.5) * 2.2 };
         let jy = if copy == 0 { 0.0 } else { (self.rnd() - 0.5) * 2.2 };
@@ -2519,7 +2523,7 @@ impl Engine {
         }
         let target = self.ents[i];
         let metal = target.armor_hp > 0 || target.shield_hp > 0 ||
-            !is_hostile_kind(target.kind) || matches!(target.skin, 5 | 8 | 11 | 13 | 15..=20 | 22..=27 | 29..=36);
+            !is_hostile_kind(target.kind) || matches!(enemies::combat_skin(target.skin), 5 | 8 | 11 | 13 | 15..=20 | 22..=27 | 29..=36);
         self.sound(if metal {3} else {4}, 0, target.x, target.y);
         // A shot or a USE shuts the lamp. It stays in the world, dark.
         if self.ents[i].kind == EK_LAMP {
@@ -3188,8 +3192,8 @@ impl Engine {
         let (x, y) = (shooter.x, shooter.y);
         let role = combat::profile(shooter.skin, shooter.kind);
         set_anim(&mut self.ents[i], ANIM_FIRE, 0.24);
-        let sp = if shooter.skin == SKIN_MARKSMAN { 8.0 } else { 5.4 };
-        let zoff = if shooter.skin == SKIN_HORNET { -35.0 } else { -8.0 };
+        let sp = if enemies::combat_skin(shooter.skin) == SKIN_MARKSMAN { 8.0 } else { 5.4 };
+        let zoff = if enemies::combat_skin(shooter.skin) == SKIN_HORNET { -35.0 } else { -8.0 };
         for n in 0..role.pellets {
             let a = shooter.aim + (n as f32 - (role.pellets - 1) as f32 * 0.5) * role.spread;
             if let Some(index) = self.spawn(EK_PROJ, x, y) {
@@ -3198,8 +3202,8 @@ impl Engine {
                 e.vy = a.sin() * sp;
                 e.timer = 2.8;
                 e.hp = role.damage;
-                e.effect_tick = if shooter.skin == SKIN_SPITTER { 3.0 } else { 0.0 };
-                e.skin = 100 + shooter.skin.min(36);
+                e.effect_tick = if enemies::combat_skin(shooter.skin) == SKIN_SPITTER { 3.0 } else { 0.0 };
+                e.skin = 100 + enemies::combat_skin(shooter.skin).min(ENEMY_PROJECTILE_COUNT as u8 - 1);
                 e.zoff = zoff;
             }
         }
@@ -3724,7 +3728,7 @@ impl Engine {
                     // floaters hover, ground units step. Assigned, never
                     // accumulated, from the skin's base height.
                     let base_z = skin_def(e.skin).map(|s| s.zoff).unwrap_or(0.0);
-                    if e.skin == SKIN_HORNET || e.kind == EK_MARTYR {
+                    if enemies::combat_skin(e.skin) == SKIN_HORNET || e.kind == EK_MARTYR {
                         e.zoff = base_z + (self.time * 5.0 + i as f32 * 1.7).sin() * 7.0;
                     } else if moved > 0.001 {
                         e.zoff = base_z + (e.frame * 9.0).sin() * 2.0;
@@ -5766,6 +5770,43 @@ mod tests {
     }
 
     #[test]
+    fn one_shot_enemy_states_reach_all_four_frames_without_looping() {
+        let mut e = Engine::new(320, 200);
+        let i = e.spawn_with_skin(EK_HUSK, SKIN_RIFLEMAN, 8.5, 4.5).unwrap();
+        for state in [ANIM_PAIN, ANIM_FIRE, ANIM_RELOAD, ANIM_DEAD, ANIM_SPECIAL] {
+            e.ents[i].anim = ANIM_IDLE;
+            e.ents[i].anim_lock = 0.0;
+            set_anim(&mut e.ents[i], state, 0.24);
+            let duration = e.ents[i].anim_lock;
+            for frame in 0..4 {
+                e.ents[i].anim_time = (frame as f32 + 0.1) / animation_fps(state);
+                assert_eq!(anim_frame(&e.ents[i]), frame);
+                assert!(e.ents[i].anim_time < duration);
+            }
+            e.ents[i].anim_time = duration + 0.5;
+            assert_eq!(anim_frame(&e.ents[i]), 3);
+        }
+    }
+
+    #[test]
+    fn each_sector_spawns_its_exclusive_enemy_with_the_correct_role() {
+        let mut e = Engine::new(320, 200);
+        for wave in 1..=50 {
+            e.wave = wave;
+            map::build_level(&mut e);
+            for ent in &mut e.ents { ent.kind = EK_NONE; ent.hp = 0; }
+            e.spawn_hostiles(1);
+            let skin = 37 + map::level_index(wave) as u8;
+            assert!(e.ents.iter().any(|ent| ent.skin == skin && ent.hp > 0));
+            assert!(e.ents.iter().filter(|ent| ent.hp > 0 && (37..62).contains(&ent.skin)).all(|ent| ent.skin == skin));
+            let base = enemies::combat_skin(skin);
+            let ent = e.ents.iter().find(|ent| ent.skin == skin).unwrap();
+            assert_eq!(combat::profile(skin, ent.kind).damage, combat::profile(base, ent.kind).damage);
+            assert_eq!(enemies::armor_cap(ent.kind, skin), enemies::armor_cap(ent.kind, base));
+        }
+    }
+
+    #[test]
     fn enemy_cues_project_above_sprites_and_respect_cover() {
         let mut e = arena();
         e.pa = 0.0;
@@ -6765,7 +6806,7 @@ mod tests {
         assert_eq!(e.kills, 1);
         e.tick(1.0 / 60.0);
         assert_eq!(e.events & EV_BOSS_VOICE, 0, "voice event clears on the next tick");
-        for _ in 1..45 { e.tick(1.0 / 60.0); }
+        for _ in 1..90 { e.tick(1.0 / 60.0); }
         assert_eq!(e.ents[boss].kind, EK_NONE);
 
         let mut e = arena();

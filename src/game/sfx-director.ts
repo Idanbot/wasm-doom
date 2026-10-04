@@ -1,3 +1,4 @@
+import { enemyCombatSkin } from "./sector-enemies.ts";
 /** Pure event decisions, independent of Web Audio and the rendering frame rate. */
 export type WeaponSoundState = {
   weapon: number;
@@ -58,6 +59,7 @@ export const WEAPON_HAZARDS = [
   "electric",
 ] as const;
 export function enemyFamily(skin: number): "human" | "creature" | "robot" {
+  skin = enemyCombatSkin(skin);
   if ([2, 6, 9, 10, 14, 24, 28].includes(skin)) return "creature";
   if (
     [
@@ -146,6 +148,7 @@ export class SfxDirector {
     const result: SoundIntent[] = [],
       present = new Set<number>();
     for (const e of cues) {
+      const skin = enemyCombatSkin(e.skin);
       present.add(e.id);
       const old = this.enemies.get(e.id),
         p = old?.skin === e.skin ? old : undefined;
@@ -170,21 +173,21 @@ export class SfxDirector {
         }
         if (e.anim === 3 && (!p || p.anim !== 3))
           result.push({
-            id: `fire${ENEMY_WEAPONS[e.skin] ?? 2}`,
+            id: `fire${ENEMY_WEAPONS[enemyCombatSkin(e.skin)] ?? 2}`,
             gain: 0.45,
             ...place,
             group: "enemy",
           });
         if (e.anim === 6 && (!p || p.anim !== 6))
           result.push({
-            id: `hazard-${e.skin >= 12 ? (WEAPON_HAZARDS[e.skin - 12] ?? "electric") : e.skin === 11 ? "ember" : "biological"}`,
+            id: `hazard-${skin >= 12 ? (WEAPON_HAZARDS[skin - 12] ?? "electric") : skin === 11 ? "ember" : "biological"}`,
             gain: 0.5,
             ...place,
             group: "hazard",
           });
         if (e.anim === 4 && p && p.anim !== 4)
           result.push({
-            id: weaponMechanism(ENEMY_WEAPONS[e.skin] ?? 2)[1],
+            id: weaponMechanism(ENEMY_WEAPONS[enemyCombatSkin(e.skin)] ?? 2)[1],
             gain: 0.3,
             ...place,
             group: "enemy",

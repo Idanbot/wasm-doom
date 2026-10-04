@@ -7,9 +7,11 @@ pub(crate) const MAX_H: usize = 2160;
 pub(crate) const TEX: usize = 256;
 pub(crate) const TEXM: i32 = (TEX as i32) - 1;
 /// Atlas layers: the original 29 world layers plus seven animation sheets
-/// for each of the twenty-three BLACKSITE enemy skins.
+/// for each of the sixty-two BLACKSITE enemy/boss skins.
 pub(crate) const ENEMY_ANIM_COUNT: usize = 7;
-pub(crate) const ENEMY_SKIN_COUNT: usize = 37;
+pub(crate) const ENEMY_SKIN_COUNT: usize = 62;
+// Sector silhouettes reuse their combat role's incoming projectile.
+pub(crate) const ENEMY_PROJECTILE_COUNT: usize = 37;
 pub(crate) const ENEMY_TEX_BASE: usize = 29;
 pub(crate) const T_ORDNANCE: usize = ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT;
 pub(crate) const T_GUN3: usize = T_ORDNANCE + 1;
@@ -43,7 +45,7 @@ pub(crate) const T_EXPANSION_CASE: usize = T_PROP_BEACON + 1;
 pub(crate) const T_PROJECTILE_NEW: usize = T_EXPANSION_CASE + 14;
 pub(crate) const T_IMPACT_NEW: usize = T_PROJECTILE_NEW + 5;
 pub(crate) const T_ENEMY_PROJECTILE: usize = T_IMPACT_NEW + 4;
-pub(crate) const T_PLAYER_MISSILE: usize = T_ENEMY_PROJECTILE + ENEMY_SKIN_COUNT;
+pub(crate) const T_PLAYER_MISSILE: usize = T_ENEMY_PROJECTILE + ENEMY_PROJECTILE_COUNT;
 pub(crate) const T_SECTOR_SURFACE: usize = T_PLAYER_MISSILE + 3;
 pub(crate) const T_SECTOR_PROP: usize = T_SECTOR_SURFACE + 25 * 5;
 pub(crate) const T_BOSS_PROJECTILE: usize = T_SECTOR_PROP + 25 * 3;
@@ -254,7 +256,7 @@ mod tests {
     fn texture_slots_cover_the_known_atlas() {
         assert_eq!(
             TEX_N,
-            ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT + 316
+            ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT + 279 + ENEMY_PROJECTILE_COUNT
         );
         assert_eq!(TEX, 256);
         assert_eq!(TEXM, 255);

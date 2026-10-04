@@ -68,9 +68,8 @@ pub(crate) struct EnemySkin {
 }
 
 pub(crate) const ENEMY_SKINS: &[EnemySkin] = &[
-    // The source renders are normalized to a 216px subject height before
-    // packing. These scales keep the old world-space silhouette sizes while
-    // leaving enough depth for the new high-resolution silhouettes.
+    // Authored poses share one scale and a consistent cell baseline.
+    // World scales remain independent of image resolution.
     EnemySkin { id: SKIN_RIFLEMAN, name: "Directorate Rifleman", texture: ENEMY_TEX_BASE, scale: 0.90, zoff: 0.0, special: "tactical brace" },
     EnemySkin { id: SKIN_BREACHER, name: "Breacher", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT, scale: 0.95, zoff: 0.0, special: "breach rush" },
     EnemySkin { id: SKIN_SUBJECT, name: "Failed Augment Subject", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 2, scale: 0.90, zoff: 0.0, special: "augment surge" },
@@ -108,7 +107,44 @@ pub(crate) const ENEMY_SKINS: &[EnemySkin] = &[
     EnemySkin { id: 34, name: "CHRONOS–8", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 34, scale: 2.3, zoff: 8.0, special: "staggered echo shots" },
     EnemySkin { id: 35, name: "BOREAS–11", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 35, scale: 2.0, zoff: 8.0, special: "cryo shard fan and shielding" },
     EnemySkin { id: 36, name: "THE SOVEREIGN", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 36, scale: 2.1, zoff: 8.0, special: "command escorts and converging salvos" },
+    EnemySkin { id: 37, name: "Tunnel Warden", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 37, scale: 0.9, zoff: 0.0, special: "sector equipment" },
+    EnemySkin { id: 38, name: "Frost Welder", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 38, scale: 1.12, zoff: 0.0, special: "sector equipment" },
+    EnemySkin { id: 39, name: "Culture Keeper", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 39, scale: 0.76, zoff: -8.0, special: "sector equipment" },
+    EnemySkin { id: 40, name: "Network Sentinel", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 40, scale: 0.78, zoff: -18.0, special: "sector equipment" },
+    EnemySkin { id: 41, name: "Containment Trooper", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 41, scale: 1.12, zoff: 0.0, special: "sector equipment" },
+    EnemySkin { id: 42, name: "Tape Custodian", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 42, scale: 0.9, zoff: 0.0, special: "sector equipment" },
+    EnemySkin { id: 43, name: "Cryo Handler", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 43, scale: 1.12, zoff: 0.0, special: "sector equipment" },
+    EnemySkin { id: 44, name: "Signal Interceptor", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 44, scale: 0.78, zoff: -18.0, special: "sector equipment" },
+    EnemySkin { id: 45, name: "Siege Rigger", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 45, scale: 1.14, zoff: 0.0, special: "sector equipment" },
+    EnemySkin { id: 46, name: "Command Enforcer", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 46, scale: 0.95, zoff: 0.0, special: "sector equipment" },
+    EnemySkin { id: 47, name: "Vault Watcher", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 47, scale: 0.78, zoff: -18.0, special: "sector equipment" },
+    EnemySkin { id: 48, name: "Railbreaker", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 48, scale: 0.95, zoff: 0.0, special: "sector equipment" },
+    EnemySkin { id: 49, name: "Pressure Diver", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 49, scale: 1.12, zoff: 0.0, special: "sector equipment" },
+    EnemySkin { id: 50, name: "Lens Defender", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 50, scale: 0.78, zoff: -18.0, special: "sector equipment" },
+    EnemySkin { id: 51, name: "Coil Technician", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 51, scale: 1.14, zoff: 0.0, special: "sector equipment" },
+    EnemySkin { id: 52, name: "Hive Tender", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 52, scale: 0.72, zoff: -70.0, special: "sector equipment" },
+    EnemySkin { id: 53, name: "Spore Host", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 53, scale: 0.76, zoff: -8.0, special: "sector equipment" },
+    EnemySkin { id: 54, name: "Uplink Ranger", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 54, scale: 0.78, zoff: -18.0, special: "sector equipment" },
+    EnemySkin { id: 55, name: "Scrap Mauler", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 55, scale: 1.18, zoff: 0.0, special: "sector equipment" },
+    EnemySkin { id: 56, name: "Phase Stalker", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 56, scale: 0.9, zoff: 0.0, special: "sector equipment" },
+    EnemySkin { id: 57, name: "Fusion Keeper", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 57, scale: 1.12, zoff: 0.0, special: "sector equipment" },
+    EnemySkin { id: 58, name: "Silo Diver", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 58, scale: 1.12, zoff: 0.0, special: "sector equipment" },
+    EnemySkin { id: 59, name: "Chrono Curator", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 59, scale: 0.78, zoff: -18.0, special: "sector equipment" },
+    EnemySkin { id: 60, name: "Icecore Sentinel", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 60, scale: 0.72, zoff: -70.0, special: "sector equipment" },
+    EnemySkin { id: 61, name: "Apex Praetorian", texture: ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * 61, scale: 1.14, zoff: 0.0, special: "sector equipment" },
 ];
+
+/// One exclusive silhouette for each sector, reusing a proven combat role.
+pub(crate) const SECTOR_BASE_SKINS: [u8; 25] = [0, 3, 10, 7, 3, 0, 3, 7, 4, 1, 7, 1, 3, 7, 4, 8, 10, 7, 5, 2, 3, 3, 7, 8, 4];
+pub(crate) fn combat_skin(skin: u8) -> u8 {
+    SECTOR_BASE_SKINS.get(skin.wrapping_sub(37) as usize).copied().unwrap_or(skin)
+}
+pub(crate) fn sector_spawn(wave: i32, packed: u8) -> (u8, u8) {
+    let level = crate::map::level_index(wave);
+    let base = SECTOR_BASE_SKINS[level];
+    let kind = match base { 3..=6 => EK_BRUTE, 7..=10 => EK_WRAITH, 11 => EK_MARTYR, _ => EK_HUSK };
+    (kind, (37 + level as u8) | (packed & crate::field::SHIELD_BIT))
+}
 
 pub(crate) fn skin_def(id: u8) -> Option<&'static EnemySkin> {
     ENEMY_SKINS.iter().find(|skin| skin.id == id)
@@ -213,8 +249,10 @@ pub(crate) const SHIELD_CAP: i32 = 22;
 /// Outer plate on tanks. Based on the roster HP so the bar fraction stays stable
 /// after damage and after the shield's HP bump.
 pub(crate) fn armor_cap(kind: u8, skin: u8) -> i32 {
+    // Prop IDs occupy a separate namespace and must never alias sector guards.
+    if !is_hostile_kind(kind) { return 0; }
     let base = enemy_def(kind).map(|d| d.hp).unwrap_or(1);
-    let visual = crate::field::visual_skin(skin);
+    let visual = combat_skin(crate::field::visual_skin(skin));
     match visual {
         SKIN_GUNNER => (base / 2).max(12),
         _ => 0,
@@ -230,6 +268,15 @@ pub(crate) fn health_cap(kind: u8, shielded: bool) -> i32 {
 mod tests {
     use super::*;
     use std::collections::HashSet;
+
+    #[test]
+    fn scenery_ids_cannot_inherit_sector_enemy_armor() {
+        for skin in 150..=224 {
+            assert_eq!(armor_cap(EK_CRATE, skin), 0);
+        }
+        assert_eq!(armor_cap(EK_BRUTE, 45), armor_cap(EK_BRUTE, SKIN_GUNNER));
+        assert!(armor_cap(EK_BRUTE, 45) > 0);
+    }
 
     #[test]
     fn roster_has_unique_kinds_and_names() {

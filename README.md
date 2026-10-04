@@ -1,6 +1,6 @@
 # BLACKSITE
 
-A Doom-style first-person raycaster set in Site Nadir-7. The Rust simulation runs as **WebAssembly**, with **WebGPU**, WebGL2 and Canvas2D rendering. The campaign has **25 distinct sectors, 25 unique bosses and 33 weapons**, including one exclusive weapon reward per boss.
+A Doom-style first-person raycaster set in Site Nadir-7. The Rust simulation runs as **WebAssembly**, with **WebGPU**, WebGL2 and Canvas2D rendering. The campaign has **25 distinct sectors, 25 unique bosses, 62 enemy/boss appearances and 33 weapons**, including one exclusive weapon reward per boss.
 
 [Play BLACKSITE](https://idanbot.me/wasm-doom/)
 
@@ -23,6 +23,15 @@ A Doom-style first-person raycaster set in Site Nadir-7. The Rust simulation run
 Touch controls appear on coarse-pointer devices. Weapons stay locked until collected. The BR-12 loads one shell at a time; firing with a loaded shell interrupts its reload. Other guns use magazine or charge-cell reloads. Empty weapons wait for a manual reload and do not animate dry fire.
 
 Each sector has its own layout, enemy cast and themed machinery. Complete its node objective, activate the override station, defeat the boss and collect the reward case to unlock the next sector. After sector 25, the campaign repeats its layouts in endless mode with gradually increasing enemy totals and health. Found weapons carry forward.
+
+Each sector now includes an exclusive enemy silhouette designed for its machinery,
+materials and colors. Twelve regular enemies and bosses in sectors 1–11 have
+fresh 28-pose animation boards: four frames each for idle, movement, pain,
+firing, reload/charge, death and special. One-shot states show every pose and
+hold their last frame; movement and breathing loop. Native transparency avoids
+chroma-key holes in armor. [Enemy art sources and packing](art/enemies-v4/README.md)
+include prompts, hashes and a roster preview. Runtime sheets are 256×256,
+with four 128×128 cells; all 779 world atlas layers preload before play.
 
 ## Sectors and boss rewards
 

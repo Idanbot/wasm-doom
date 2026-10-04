@@ -17,6 +17,7 @@ jobs:
           # npm 11 (Node 24). npm 10 rejects this lockfile.
           node-version: 24
           cache: npm
+      - run: python3 -m pip install --disable-pip-version-check --break-system-packages -r art/enemies-v4/requirements.txt
       - run: npm ci
       - run: npm run typecheck
       - run: npm run check:wasm
@@ -47,13 +48,14 @@ jobs:
         with:
           node-version: 24
           cache: npm
+      - run: python3 -m pip install --disable-pip-version-check --break-system-packages -r art/enemies-v4/requirements.txt
       - run: npm ci
       - uses: actions/cache@v5.0.0
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
       - run: npx playwright install chromium --with-deps
-      - run: node --test scripts/boss-animation-assets.test.mjs scripts/boss-reward-art.test.mjs scripts/campaign25-assets.test.mjs scripts/sector-detail-assets.test.mjs scripts/weapon-frame-edges.test.mjs
+      - run: node --test scripts/enemy-art-v4.test.mjs scripts/boss-animation-assets.test.mjs scripts/boss-reward-art.test.mjs scripts/campaign25-assets.test.mjs scripts/sector-detail-assets.test.mjs scripts/weapon-frame-edges.test.mjs
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: stable
@@ -70,7 +72,7 @@ jobs:
           curl -sf http://127.0.0.1:8080/ > /dev/null
       - run: node scripts/browser-smoke.mjs http://127.0.0.1:8080/ screenshots/ci-menu.png
       - run: node scripts/combat-smoke.mjs http://127.0.0.1:8080/
-      - run: node --test --test-concurrency=1 scripts/reward-pause.browser.mjs scripts/qa-run.browser.mjs scripts/campaign25.browser.mjs scripts/projectile-presentation.browser.mjs scripts/layouts-10-25.browser.mjs scripts/sfx.browser.mjs
+      - run: node --test --test-concurrency=1 scripts/reward-pause.browser.mjs scripts/qa-run.browser.mjs scripts/campaign25.browser.mjs scripts/projectile-presentation.browser.mjs scripts/layouts-10-25.browser.mjs scripts/enemy-sector.browser.mjs scripts/sfx.browser.mjs
       - run: node scripts/end-screen-smoke.mjs http://127.0.0.1:8080/
       - run: npm run build:pages
       - run: |

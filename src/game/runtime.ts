@@ -1,3 +1,4 @@
+import { SECTOR_ENEMIES } from "./sector-enemies";
 import { SECTOR_SLUGS, SECTOR_SURFACES } from "./sector-assets";
 import { CAMPAIGN_EXPANSION } from "./campaign25";
 import { asset } from "@/lib/asset";
@@ -5,6 +6,7 @@ import { createAudio, type GameAudio } from "./audio";
 import { createBlitter, type BlitKind, type Blitter } from "./blit";
 import {
   ENEMY_ANIM_COUNT,
+  ENEMY_PROJECTILE_COUNT,
   ENEMY_TEX_BASE,
   readWorldFrame,
   TEX_N,
@@ -216,6 +218,7 @@ const ENEMY_SKINS = [
   "kest",
   "mnemosyne",
   ...CAMPAIGN_EXPANSION.map((boss) => boss.slug),
+  ...SECTOR_ENEMIES.map((enemy) => enemy.slug),
 ] as const;
 const ENEMY_ANIMATIONS = ["idle", "move", "pain", "fire", "reload", "dead", "special"] as const;
 
@@ -291,7 +294,7 @@ const TEX_FILES: { id: number; src: string }[] = [
     id: T_BOSS_PROJECTILE + i,
     src: `/game/projectiles/boss_weapon_${i + 8}.png`,
   })),
-  ...ENEMY_SKINS.map((skin, i) => ({
+  ...ENEMY_SKINS.slice(0, ENEMY_PROJECTILE_COUNT).map((skin, i) => ({
     id: T_ENEMY_PROJECTILE + i,
     src: `/game/projectiles/enemy_${skin}.png`,
   })),

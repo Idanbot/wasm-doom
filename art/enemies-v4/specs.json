@@ -1,0 +1,391 @@
+{
+  "version": 4,
+  "source_grid": [
+    4,
+    7
+  ],
+  "runtime_grid": [
+    2,
+    2
+  ],
+  "runtime_cell": [
+    128,
+    128
+  ],
+  "animations": [
+    "idle",
+    "move",
+    "pain",
+    "fire",
+    "reload",
+    "dead",
+    "special"
+  ],
+  "generator": "built-in image_gen",
+  "enemies": [
+    {
+      "id": 0,
+      "slug": "rifleman",
+      "name": "Rifleman",
+      "description": "charcoal armored Directorate rifleman with olive load-bearing vest, tan uniform panels, enclosed helmet and amber visor, compact service rifle",
+      "base": 0
+    },
+    {
+      "id": 1,
+      "slug": "breacher",
+      "name": "Breacher",
+      "description": "heavy Directorate breacher in dark composite armor, reinforced shoulder plates, breaching shotgun and bright hazard tape accents",
+      "base": 1
+    },
+    {
+      "id": 2,
+      "slug": "subject",
+      "name": "Subject",
+      "description": "failed augment subject in torn black containment harness, asymmetrical biotech braces, pale ceramic mask and restrained red warning lights",
+      "base": 2
+    },
+    {
+      "id": 3,
+      "slug": "hazmat",
+      "name": "Hazmat",
+      "description": "bulky armored facility guard in an olive sealed suit, charcoal helmet, amber canisters and a compact firearm",
+      "base": 3
+    },
+    {
+      "id": 4,
+      "slug": "gunner",
+      "name": "Gunner",
+      "description": "large armored soldier with broad gunmetal shoulder plates, heavy utility pack, reinforced knees and a narrow amber visor",
+      "base": 4
+    },
+    {
+      "id": 5,
+      "slug": "loader",
+      "name": "Loader",
+      "description": "industrial walking machine with hydraulic forearms, compact tracked feet, yellow-black safety markings and a recessed sensor head",
+      "base": 5
+    },
+    {
+      "id": 6,
+      "slug": "vatbrute",
+      "name": "Vatbrute",
+      "description": "large armored laboratory test subject with broad bio-armor plates, ceramic collar and dim amber implants",
+      "base": 6
+    },
+    {
+      "id": 7,
+      "slug": "marksman",
+      "name": "Marksman",
+      "description": "lean armored scout with a long optical sensor, hooded composite helmet, slate plates and a small amber scope glow",
+      "base": 7
+    },
+    {
+      "id": 8,
+      "slug": "hornet",
+      "name": "Hornet",
+      "description": "compact hovering quad rotor machine with four guarded rotors, charcoal shell and amber sensor eye",
+      "base": 8
+    },
+    {
+      "id": 9,
+      "slug": "hound",
+      "name": "Hound",
+      "description": "low four-legged security machine with an armored body, articulated legs, amber optical strip and exposed hydraulic joints",
+      "base": 9
+    },
+    {
+      "id": 10,
+      "slug": "spitter",
+      "name": "Spitter",
+      "description": "bio-industrial containment creature with hunched armored torso, sealed respirator, translucent reservoir and dark restraints",
+      "base": 10,
+      "source_row_seams": [
+        1377
+      ]
+    },
+    {
+      "id": 11,
+      "slug": "martyr",
+      "name": "Martyr",
+      "description": "small one-way drone with compact armored chassis, central red reactor core, four stabilizer fins and amber status lights",
+      "base": 11
+    },
+    {
+      "id": 12,
+      "slug": "veyran",
+      "name": "Veyran",
+      "description": "tall armored commander in ceremonial gunmetal plates, segmented cloak panels, sealed crown-like helmet and controlled amber reactor glow",
+      "base": 12
+    },
+    {
+      "id": 13,
+      "slug": "hecate",
+      "name": "Hecate",
+      "description": "heavy industrial cold steel quadrupedal humanoid robot, broad insulated armor, cyan arc coils and hydraulic arms",
+      "base": 13
+    },
+    {
+      "id": 14,
+      "slug": "chimera",
+      "name": "Chimera",
+      "description": "towering biological laboratory hybrid, dark surgical harness, green acid reservoirs, muscular asymmetric armored limbs",
+      "base": 14
+    },
+    {
+      "id": 15,
+      "slug": "oracle",
+      "name": "Oracle",
+      "description": "lean black datacenter tactical robot with cyan optical targeting array and precision rifle",
+      "base": 15
+    },
+    {
+      "id": 16,
+      "slug": "gravemind",
+      "name": "Gravemind",
+      "description": "massive copper reactor guardian robot, amber containment core, scorched armored shoulders and heavy pulse cannon",
+      "base": 16
+    },
+    {
+      "id": 17,
+      "slug": "archivist",
+      "name": "Null Archivist",
+      "description": "bronze armored archive robot with magnetic tape cartridges, amber memory lenses and folded metallic cloak",
+      "base": 17
+    },
+    {
+      "id": 18,
+      "slug": "halcyon",
+      "name": "Halcyon",
+      "description": "bulky deep blue cryogenic robot with white insulated armor, icy coolant tanks and freeze cannon",
+      "base": 18
+    },
+    {
+      "id": 19,
+      "slug": "relay",
+      "name": "Relay",
+      "description": "slate communications security robot with red antenna lights, signal dishes and compact pulse rifle",
+      "base": 19
+    },
+    {
+      "id": 20,
+      "slug": "titan",
+      "name": "Titan",
+      "description": "huge sand-colored military siege robot with thick composite armor, missile shoulders and hydraulic legs",
+      "base": 20
+    },
+    {
+      "id": 21,
+      "slug": "kest",
+      "name": "Director Kest",
+      "description": "human elite commander in olive ballistic command armor, weathered face, tactical helmet and modern assault rifle",
+      "base": 21
+    },
+    {
+      "id": 22,
+      "slug": "mnemosyne",
+      "name": "Mnemosyne",
+      "description": "black polished memory-vault robot, violet circuitry and segmented ceremonial armor with echo projector",
+      "base": 22
+    },
+    {
+      "id": 37,
+      "slug": "sector-upper-works",
+      "name": "Tunnel Warden",
+      "level": 1,
+      "base": 0,
+      "description": "Tunnel Warden, armored human rifle guard with service rifle, specially designed for weathered concrete service tunnels, olive military steel, warm utility lighting. Equipment matches the sector: olive spare-ammunition locker. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 38,
+      "slug": "sector-cryogenic-foundry",
+      "name": "Frost Welder",
+      "level": 2,
+      "base": 3,
+      "description": "Frost Welder, human sealed-suit rifle guard, specially designed for cold grey steel foundry, blue frost, insulated copper conduits. Equipment matches the sector: frosted coolant reservoir. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 39,
+      "slug": "sector-bioforge-depths",
+      "name": "Culture Keeper",
+      "level": 3,
+      "base": 10,
+      "description": "Culture Keeper, hunched biological acid-spitting containment creature, specially designed for sealed surgical white and dark green biotechnology lab, stained ceramic, contamination. Equipment matches the sector: green specimen containment tank. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 40,
+      "slug": "sector-data-spine",
+      "name": "Network Sentinel",
+      "level": 4,
+      "base": 7,
+      "description": "Network Sentinel, lean human precision rifle scout, specially designed for black steel datacenter, cyan cable trays, perforated server rack panels. Equipment matches the sector: cyan data-server tower. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 41,
+      "slug": "sector-reactor-sink",
+      "name": "Containment Trooper",
+      "level": 5,
+      "base": 3,
+      "description": "Containment Trooper, human sealed-suit rifle guard, specially designed for industrial copper nuclear plant, amber hazard bands, scorched reactor shielding. Equipment matches the sector: copper reactor coolant pump. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 42,
+      "slug": "sector-null-archive",
+      "name": "Tape Custodian",
+      "level": 6,
+      "base": 0,
+      "description": "Tape Custodian, armored human rifle guard with service rifle, specially designed for quiet dark archival bunker, warm amber storage panels, bronze signal pathways. Equipment matches the sector: magnetic tape archive cabinet. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 43,
+      "slug": "sector-cryo-reserve",
+      "name": "Cryo Handler",
+      "level": 7,
+      "base": 3,
+      "description": "Cryo Handler, human sealed-suit rifle guard, specially designed for deep blue cryogenic storage, ice-coated steel bulkheads, white insulation. Equipment matches the sector: liquid nitrogen dewar. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 44,
+      "slug": "sector-signal-crypt",
+      "name": "Signal Interceptor",
+      "level": 8,
+      "base": 7,
+      "description": "Signal Interceptor, lean human precision rifle scout, specially designed for buried communications vault, dark slate antenna panels, red signal lights. Equipment matches the sector: red signal amplifier cabinet. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 45,
+      "slug": "sector-siege-yard",
+      "name": "Siege Rigger",
+      "level": 9,
+      "base": 4,
+      "description": "Siege Rigger, heavy armored human machine gunner, specially designed for military siege staging hangar, sand-coloured armor plate, red warning chevrons. Equipment matches the sector: armored missile reload pallet. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 46,
+      "slug": "sector-command-bunker",
+      "name": "Command Enforcer",
+      "level": 10,
+      "base": 1,
+      "description": "Command Enforcer, armored human shotgun breacher, specially designed for tactical command bunker, olive ballistic panels, warm map table lighting. Equipment matches the sector: tactical radio command cabinet. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 47,
+      "slug": "sector-obsidian-vault",
+      "name": "Vault Watcher",
+      "level": 11,
+      "base": 7,
+      "description": "Vault Watcher, lean human precision rifle scout, specially designed for obsidian memory vault, violet circuitry in black polished armor panels. Equipment matches the sector: violet memory-core reliquary. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 48,
+      "slug": "sector-ashen-transit",
+      "name": "Railbreaker",
+      "level": 12,
+      "base": 1,
+      "description": "Railbreaker, armored human shotgun breacher, specially designed for charred rail depot, soot-black riveted steel, orange ceramic heat shields. Equipment matches the sector: orange railway power inverter. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 49,
+      "slug": "sector-tidal-pumpstation",
+      "name": "Pressure Diver",
+      "level": 13,
+      "base": 3,
+      "description": "Pressure Diver, human sealed-suit rifle guard, specially designed for wet pressure pumping facility, blue enamel metal, brass pipes, algae-stained tiles. Equipment matches the sector: blue pressure pump motor. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 50,
+      "slug": "sector-optics-array",
+      "name": "Lens Defender",
+      "level": 14,
+      "base": 7,
+      "description": "Lens Defender, lean human precision rifle scout, specially designed for white chrome laser calibration lab, cyan optical panels, precisely machined tiles. Equipment matches the sector: cyan laser calibration emitter. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 51,
+      "slug": "sector-magnetic-forge",
+      "name": "Coil Technician",
+      "level": 15,
+      "base": 4,
+      "description": "Coil Technician, heavy armored human machine gunner, specially designed for copper electromagnetic induction forge, red coil windings, dark laminated steel. Equipment matches the sector: red induction coil transformer. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 52,
+      "slug": "sector-drone-hatchery",
+      "name": "Hive Tender",
+      "level": 16,
+      "base": 8,
+      "description": "Hive Tender, compact four-rotor armed hovering drone, specially designed for robotic assembly hive, black hexagonal panels, amber service conduits. Equipment matches the sector: amber drone charging cradle. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 53,
+      "slug": "sector-fungal-research",
+      "name": "Spore Host",
+      "level": 17,
+      "base": 10,
+      "description": "Spore Host, hunched biological acid-spitting containment creature, specially designed for contaminated fungal lab, pale stained ceramic, green mycelium-coated steel. Equipment matches the sector: sealed green fungal incubation tank. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 54,
+      "slug": "sector-orbital-uplink",
+      "name": "Uplink Ranger",
+      "level": 18,
+      "base": 7,
+      "description": "Uplink Ranger, lean human precision rifle scout, specially designed for orbital targeting communications station, black alloy, violet waveguide panels. Equipment matches the sector: violet satellite targeting power rack. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 55,
+      "slug": "sector-waste-reclaimer",
+      "name": "Scrap Mauler",
+      "level": 19,
+      "base": 5,
+      "description": "Scrap Mauler, hydraulic bipedal melee industrial robot, specially designed for rusted recycling complex, copper hydraulics, stained steel checker plate. Equipment matches the sector: rusted scrap sorting hopper. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 56,
+      "slug": "sector-shadow-lab",
+      "name": "Phase Stalker",
+      "level": 20,
+      "base": 2,
+      "description": "Phase Stalker, agile augmented human melee stalker, specially designed for cloaking technology lab, matte black metamaterial, subtle purple sensor traces. Equipment matches the sector: purple cloak-field generator. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 57,
+      "slug": "sector-fusion-chamber",
+      "name": "Fusion Keeper",
+      "level": 21,
+      "base": 3,
+      "description": "Fusion Keeper, human sealed-suit rifle guard, specially designed for white ceramic fusion chamber, gold containment rails, heat-scarred shielding. Equipment matches the sector: gold fusion containment capacitor. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 58,
+      "slug": "sector-flooded-silo",
+      "name": "Silo Diver",
+      "level": 22,
+      "base": 3,
+      "description": "Silo Diver, human sealed-suit rifle guard, specially designed for naval torpedo silo, teal naval steel, brass pressure seals, damp worn deck plating. Equipment matches the sector: teal torpedo guidance locker. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 59,
+      "slug": "sector-chrono-archive",
+      "name": "Chrono Curator",
+      "level": 23,
+      "base": 7,
+      "description": "Chrono Curator, lean human precision rifle scout, specially designed for temporal research archive, bronze machinery, amber gyroscope pathways. Equipment matches the sector: bronze gyroscope timing core. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 60,
+      "slug": "sector-black-ice-core",
+      "name": "Icecore Sentinel",
+      "level": 24,
+      "base": 8,
+      "description": "Icecore Sentinel, compact four-rotor armed hovering drone, specially designed for frozen black supercomputer core, ice-blue coolant rails, frost-patterned black steel. Equipment matches the sector: ice-blue supercomputer coolant rack. Strong distinctive silhouette, no scenery."
+    },
+    {
+      "id": 61,
+      "slug": "sector-apex-control",
+      "name": "Apex Praetorian",
+      "level": 25,
+      "base": 4,
+      "description": "Apex Praetorian, heavy armored human machine gunner, specially designed for executive command citadel, black and gold heavy armor, precise gold conduit inlays. Equipment matches the sector: gold command encryption terminal rack. Strong distinctive silhouette, no scenery."
+    }
+  ]
+}
