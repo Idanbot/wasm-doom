@@ -48,6 +48,7 @@ try {
     () => !!window.__controlsTest && document.body.innerText.includes("HEALTH"),
     null, { timeout: 90000 },
   );
+  await page.waitForFunction(() => window.__controlsTest.getReserve() === 72);
   // Slots 7-10 use Digit8/Digit9/Digit0/Minus (there is no Digit10).
   const slots = [
     [0, "MK23-S", 12, "Digit1"],
@@ -218,6 +219,7 @@ try {
     () => !!window.__controlsTest && document.body.innerText.includes("HEALTH"),
     null, { timeout: 90000 },
   );
+  await page.waitForFunction(() => window.__controlsTest.getReserve() === 72);
   await page.evaluate(() => {
     const t = window.__controlsTest;
     t.grantWeapons();
@@ -245,6 +247,9 @@ try {
     () => !!window.__controlsTest && document.body.innerText.includes("HEALTH"),
     null, { timeout: 90000 },
   );
+  // HEALTH is rendered from DEFAULT_HUD before the QA run begins.
+  // Wait for a live engine frame before issuing the boss command.
+  await mobile.waitForFunction(() => window.__controlsTest.getReserve() === 72);
   await mobile.evaluate(() => {
     const t = window.__controlsTest;
     t.setKeys(["KeyW"]);
@@ -266,6 +271,7 @@ try {
     () => !!window.__controlsTest && document.body.innerText.includes("HEALTH"),
     null, { timeout: 90000 },
   );
+  await narrow.waitForFunction(() => window.__controlsTest.getReserve() === 72);
   assert.ok(await narrow.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
   await assertHudTextContained(narrow, "320px");
   if (process.env.BLACKSITE_CAPTURE_COMBAT === "1") await narrow.screenshot({ path: "screenshots/combat-hud-320.png" });

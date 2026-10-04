@@ -9,6 +9,7 @@ test('actual secret USE and machinery gunfire produce clues, rewards and tactica
   const url=new URL(process.env.BLACKSITE_TEST_URL??'http://127.0.0.1:8080/');url.searchParams.set('qa','1');url.searchParams.set('lvl','4');
   await page.goto(url.href,{waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>window.__controlsTest&&document.body.innerText.includes('HEALTH'),null,{timeout:120000});
+  await page.waitForFunction(()=>window.__controlsTest.getReserve()===72);
   await page.evaluate(()=>window.__controlsTest.visitSecret());
   await page.getByText('SCUFFED SERVICE PANEL — USE E').waitFor();
   await page.screenshot({path:'screenshots/tactical-secret-clue.png'});
