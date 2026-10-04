@@ -1,0 +1,12 @@
+{
+  "signature": "f9a40821199a3ff46e33c81faf9978e24e0d40eec8c22d80c3ffcdbd7c8f879c",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The fractures are spreading.",
+    "speaker": "helena",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:59:05.438Z"
+}

@@ -1,0 +1,12 @@
+{
+  "signature": "8bc65af3b70cc9b4a80cc1bb7511f05792fe70ba539a5d9987ba1979b83879c9",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The tide is falling. Take the weapon and climb.",
+    "speaker": "odysseus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:21.631Z"
+}

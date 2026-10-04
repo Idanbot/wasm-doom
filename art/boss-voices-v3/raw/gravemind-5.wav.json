@@ -1,0 +1,12 @@
+{
+  "signature": "2ca4775d2bc395e22936657b9607579832451fd1dc5b6e7a00f28d247b7f5cb1",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The shielding is cracking.",
+    "speaker": "atlas",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:57.321Z"
+}

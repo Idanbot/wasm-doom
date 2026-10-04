@@ -1,0 +1,12 @@
+{
+  "signature": "4f4d7d0f8b61bf4a7d3fb8e07e55d89fa32175b3172038e744f97d85b60bc6b8",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Hold still. Let it spread.",
+    "speaker": "hyperion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:34.347Z"
+}

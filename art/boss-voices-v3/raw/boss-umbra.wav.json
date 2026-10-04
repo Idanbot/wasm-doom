@@ -1,0 +1,12 @@
+{
+  "signature": "a53b5f3c8a6122caf5b0de509bd051ddc7f78a312471b1966386a691f4a572c4",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The shadows are still. Take the weapon.",
+    "speaker": "theia",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:33.304Z"
+}

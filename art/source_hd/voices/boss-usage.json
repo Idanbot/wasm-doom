@@ -2,253 +2,353 @@
   "report": [
     {
       "id": "boss-veyran",
+      "cue": "death",
+      "text": "The signal is quiet. You earned the rifle.",
       "url": "/game/voices/boss-veyran.mp3",
-      "duration": 6.288
-    },
-    {
-      "id": "boss-hecate",
-      "url": "/game/voices/boss-hecate.mp3",
-      "duration": 6.816
-    },
-    {
-      "id": "boss-chimera",
-      "url": "/game/voices/boss-chimera.mp3",
-      "duration": 5.016
-    },
-    {
-      "id": "boss-oracle",
-      "url": "/game/voices/boss-oracle.mp3",
-      "duration": 3.576
-    },
-    {
-      "id": "boss-gravemind",
-      "url": "/game/voices/boss-gravemind.mp3",
-      "duration": 4.872
-    },
-    {
-      "id": "boss-archivist",
-      "url": "/game/voices/boss-archivist.mp3",
-      "duration": 4.536
+      "duration": 2.616
     },
     {
       "id": "boss-veyran-v2",
+      "cue": "death",
+      "text": "Nadir is yours now. Make it mean something.",
       "url": "/game/voices/boss-veyran-v2.mp3",
-      "duration": 6.408
+      "duration": 3.216
+    },
+    {
+      "id": "boss-hecate",
+      "cue": "death",
+      "text": "The forge is cooling. Take the cutter.",
+      "url": "/game/voices/boss-hecate.mp3",
+      "duration": 2.136
     },
     {
       "id": "boss-hecate-v2",
+      "cue": "death",
+      "text": "No more orders. No more heat. You can go.",
       "url": "/game/voices/boss-hecate-v2.mp3",
-      "duration": 5.376
+      "duration": 2.904
+    },
+    {
+      "id": "boss-chimera",
+      "cue": "death",
+      "text": "I can finally breathe. Take the weapon.",
+      "url": "/game/voices/boss-chimera.mp3",
+      "duration": 2.808
     },
     {
       "id": "boss-chimera-v2",
+      "cue": "death",
+      "text": "The chamber is open. Let the others out.",
       "url": "/game/voices/boss-chimera-v2.mp3",
-      "duration": 5.4
+      "duration": 2.784
+    },
+    {
+      "id": "boss-oracle",
+      "cue": "death",
+      "text": "I did not see this ending. The rifle is yours.",
+      "url": "/game/voices/boss-oracle.mp3",
+      "duration": 3.384
     },
     {
       "id": "boss-oracle-v2",
+      "cue": "death",
+      "text": "One choice was still yours to make.",
       "url": "/game/voices/boss-oracle-v2.mp3",
-      "duration": 4.656
+      "duration": 2.328
+    },
+    {
+      "id": "boss-gravemind",
+      "cue": "death",
+      "text": "The pressure is gone. Keep the core stable.",
+      "url": "/game/voices/boss-gravemind.mp3",
+      "duration": 3.144
     },
     {
       "id": "boss-gravemind-v2",
+      "cue": "death",
+      "text": "That is enough. Let the chamber rest.",
       "url": "/game/voices/boss-gravemind-v2.mp3",
-      "duration": 4.872
+      "duration": 2.496
+    },
+    {
+      "id": "boss-archivist",
+      "cue": "death",
+      "text": "Keep the last record. The rail is yours.",
+      "url": "/game/voices/boss-archivist.mp3",
+      "duration": 2.904
     },
     {
       "id": "boss-archivist-v2",
+      "cue": "death",
+      "text": "Remember that someone was here.",
       "url": "/game/voices/boss-archivist-v2.mp3",
-      "duration": 4.896
+      "duration": 1.944
     },
     {
       "id": "boss-halcyon",
+      "cue": "death",
+      "text": "The ice is breaking. Take the weapon.",
       "url": "/game/voices/boss-halcyon.mp3",
-      "duration": 5.448
+      "duration": 2.544
     },
     {
       "id": "boss-halcyon-v2",
+      "cue": "death",
+      "text": "Keep moving. The cold will not wait.",
       "url": "/game/voices/boss-halcyon-v2.mp3",
-      "duration": 4.272
+      "duration": 2.784
     },
     {
       "id": "boss-relay",
+      "cue": "death",
+      "text": "The noise is gone. Choose your own route.",
       "url": "/game/voices/boss-relay.mp3",
-      "duration": 3.768
+      "duration": 2.616
     },
     {
       "id": "boss-relay-v2",
+      "cue": "death",
+      "text": "At last, a clear channel. You can leave.",
       "url": "/game/voices/boss-relay-v2.mp3",
-      "duration": 5.208
+      "duration": 2.808
     },
     {
       "id": "boss-titan",
+      "cue": "death",
+      "text": "The supports are failing. Take the cannon and run.",
       "url": "/game/voices/boss-titan.mp3",
-      "duration": 5.664
+      "duration": 3.168
     },
     {
       "id": "boss-titan-v2",
+      "cue": "death",
+      "text": "That was the last load I could carry.",
       "url": "/game/voices/boss-titan-v2.mp3",
-      "duration": 5.592
+      "duration": 2.016
     },
     {
       "id": "boss-kest",
+      "cue": "death",
+      "text": "I thought this place would outlast us. I was wrong.",
       "url": "/game/voices/boss-kest.mp3",
-      "duration": 3.648
+      "duration": 3.936
     },
     {
       "id": "boss-kest-v2",
+      "cue": "death",
+      "text": "Take the rifle. Finish what I could not.",
       "url": "/game/voices/boss-kest-v2.mp3",
-      "duration": 4.608
+      "duration": 2.736
     },
     {
       "id": "boss-mnemosyne",
+      "cue": "death",
+      "text": "Keep this memory. The Echo lance is yours.",
       "url": "/game/voices/boss-mnemosyne.mp3",
-      "duration": 4.464
+      "duration": 2.856
     },
     {
       "id": "boss-mnemosyne-v2",
+      "cue": "death",
+      "text": "The vault is open. Do not leave them forgotten.",
       "url": "/game/voices/boss-mnemosyne-v2.mp3",
-      "duration": 5.304
+      "duration": 3.336
     },
     {
       "id": "boss-vulcan",
+      "cue": "death",
+      "text": "The line is clear. Take the cannon.",
       "url": "/game/voices/boss-vulcan.mp3",
-      "duration": 4.68
+      "duration": 2.088
     },
     {
       "id": "boss-vulcan-v2",
+      "cue": "death",
+      "text": "For once, there is no next train.",
       "url": "/game/voices/boss-vulcan-v2.mp3",
-      "duration": 5.544
+      "duration": 2.424
     },
     {
       "id": "boss-leviathan",
+      "cue": "death",
+      "text": "The tide is falling. Take the weapon and climb.",
       "url": "/game/voices/boss-leviathan.mp3",
-      "duration": 4.872
+      "duration": 2.904
     },
     {
       "id": "boss-leviathan-v2",
+      "cue": "death",
+      "text": "The hull is quiet. Get above the water.",
       "url": "/game/voices/boss-leviathan-v2.mp3",
-      "duration": 5.496
+      "duration": 2.928
     },
     {
       "id": "boss-prism",
+      "cue": "death",
+      "text": "The light is fading. The rifle is yours.",
       "url": "/game/voices/boss-prism.mp3",
-      "duration": 5.736
+      "duration": 3.264
     },
     {
       "id": "boss-prism-v2",
+      "cue": "death",
+      "text": "You found the one angle I could not hold.",
       "url": "/game/voices/boss-prism-v2.mp3",
-      "duration": 5.928
+      "duration": 2.256
     },
     {
       "id": "boss-magnus",
+      "cue": "death",
+      "text": "The field is down. Take the cannon.",
       "url": "/game/voices/boss-magnus.mp3",
-      "duration": 6.528
+      "duration": 2.184
     },
     {
       "id": "boss-magnus-v2",
+      "cue": "death",
+      "text": "Everything is still. I had forgotten that sound.",
       "url": "/game/voices/boss-magnus-v2.mp3",
-      "duration": 6.36
+      "duration": 2.904
     },
     {
       "id": "boss-broodmother",
+      "cue": "death",
+      "text": "The last brood is yours to command.",
       "url": "/game/voices/boss-broodmother.mp3",
-      "duration": 5.16
+      "duration": 2.688
     },
     {
       "id": "boss-broodmother-v2",
+      "cue": "death",
+      "text": "The bays are empty. Let the small ones go.",
       "url": "/game/voices/boss-broodmother-v2.mp3",
-      "duration": 5.448
+      "duration": 3.696
     },
     {
       "id": "boss-mycelium",
+      "cue": "death",
+      "text": "The roots are still here. Take what you need.",
       "url": "/game/voices/boss-mycelium.mp3",
-      "duration": 4.296
+      "duration": 3.168
     },
     {
       "id": "boss-mycelium-v2",
+      "cue": "death",
+      "text": "You cut the voice. The growth will sleep.",
       "url": "/game/voices/boss-mycelium-v2.mp3",
-      "duration": 5.88
+      "duration": 2.976
     },
     {
       "id": "boss-astra",
+      "cue": "death",
+      "text": "The uplink is quiet. The sky is yours.",
       "url": "/game/voices/boss-astra.mp3",
-      "duration": 5.256
+      "duration": 3.216
     },
     {
       "id": "boss-astra-v2",
+      "cue": "death",
+      "text": "Take the launcher. Choose where it points.",
       "url": "/game/voices/boss-astra-v2.mp3",
-      "duration": 6.024
+      "duration": 2.928
     },
     {
       "id": "boss-scrapper",
+      "cue": "death",
+      "text": "You win. Take the good parts.",
       "url": "/game/voices/boss-scrapper.mp3",
-      "duration": 6.096
+      "duration": 2.184
     },
     {
       "id": "boss-scrapper-v2",
+      "cue": "death",
+      "text": "Leave the rest. It was all scrap anyway.",
       "url": "/game/voices/boss-scrapper-v2.mp3",
-      "duration": 5.616
+      "duration": 2.904
     },
     {
       "id": "boss-umbra",
+      "cue": "death",
+      "text": "The shadows are still. Take the weapon.",
       "url": "/game/voices/boss-umbra.mp3",
-      "duration": 4.968
+      "duration": 2.736
     },
     {
       "id": "boss-umbra-v2",
+      "cue": "death",
+      "text": "You found me. There is nothing left to hide.",
       "url": "/game/voices/boss-umbra-v2.mp3",
-      "duration": 5.376
+      "duration": 3.144
     },
     {
       "id": "boss-sol",
+      "cue": "death",
+      "text": "Containment is holding. Take the cannon.",
       "url": "/game/voices/boss-sol.mp3",
-      "duration": 5.208
+      "duration": 2.448
     },
     {
       "id": "boss-sol-v2",
+      "cue": "death",
+      "text": "The light is dimming. Keep the core alive.",
       "url": "/game/voices/boss-sol-v2.mp3",
-      "duration": 5.544
+      "duration": 2.736
     },
     {
       "id": "boss-nautilus",
+      "cue": "death",
+      "text": "Pressure released. Take the launcher and go.",
       "url": "/game/voices/boss-nautilus.mp3",
-      "duration": 5.544
+      "duration": 3.096
     },
     {
       "id": "boss-nautilus-v2",
+      "cue": "death",
+      "text": "The water is settling. Get to the surface.",
       "url": "/game/voices/boss-nautilus-v2.mp3",
-      "duration": 5.496
+      "duration": 2.736
     },
     {
       "id": "boss-chronos",
+      "cue": "death",
+      "text": "This second belongs to you. Take the weapon.",
       "url": "/game/voices/boss-chronos.mp3",
-      "duration": 5.616
+      "duration": 3.216
     },
     {
       "id": "boss-chronos-v2",
+      "cue": "death",
+      "text": "No more repeats. Make the next moment count.",
       "url": "/game/voices/boss-chronos-v2.mp3",
-      "duration": 5.688
+      "duration": 3.384
     },
     {
       "id": "boss-boreas",
+      "cue": "death",
+      "text": "The shell is broken. Take the cannon.",
       "url": "/game/voices/boss-boreas.mp3",
-      "duration": 5.688
+      "duration": 2.568
     },
     {
       "id": "boss-boreas-v2",
+      "cue": "death",
+      "text": "The frost is lifting. Do not look back.",
       "url": "/game/voices/boss-boreas-v2.mp3",
-      "duration": 5.808
+      "duration": 3.024
     },
     {
       "id": "boss-sovereign",
+      "cue": "death",
+      "text": "You earned the last weapon. Carry it out.",
       "url": "/game/voices/boss-sovereign.mp3",
-      "duration": 5.736
+      "duration": 2.784
     },
     {
       "id": "boss-sovereign-v2",
+      "cue": "death",
+      "text": "The command is yours. End this place.",
       "url": "/game/voices/boss-sovereign-v2.mp3",
-      "duration": 6.096
+      "duration": 2.856
     }
   ]
 }

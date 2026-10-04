@@ -1,0 +1,12 @@
+{
+  "signature": "93872fe87c9ce05c1ee2079c0e9aa04b4cc6175feabb9d337cfdaaa3f0dc9c9a",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The pressure is rising. Stay out of the channels.",
+    "speaker": "odysseus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:14.421Z"
+}

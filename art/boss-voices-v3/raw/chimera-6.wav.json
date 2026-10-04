@@ -1,0 +1,12 @@
+{
+  "signature": "be646a6e5fb59bfd4fcc69794b7885946c54077ed4ebe8e94523242cf4584518",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Come closer. I can hear your blood.",
+    "speaker": "hyperion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:37.896Z"
+}

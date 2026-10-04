@@ -1,0 +1,12 @@
+{
+  "signature": "0f41f7e90211783f6707a0fb14b1f730bd8b8ce7d981cc574e220c4e34bdfc6c",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "That hit broke the outer shell.",
+    "speaker": "helena",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:59:09.796Z"
+}

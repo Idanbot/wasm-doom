@@ -1,0 +1,12 @@
+{
+  "signature": "ad42d8dd45d998a4149367207571229a38b672340d0209c6ccb1e2d516b39859",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The bays are empty. Let the small ones go.",
+    "speaker": "vesta",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:53.565Z"
+}

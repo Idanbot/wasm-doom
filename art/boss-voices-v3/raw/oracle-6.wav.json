@@ -1,0 +1,12 @@
+{
+  "signature": "7097a1a68a3ed6bab6a97c68efe273eecf7a7b3b57fbe42b98410fcb21b9b5c4",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "I have already seen your next move.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:48.915Z"
+}

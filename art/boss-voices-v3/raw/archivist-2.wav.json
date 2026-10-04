@@ -1,0 +1,12 @@
+{
+  "signature": "b148b61c566139c1d93794e287dba3a8a5412b4fdbd22004da1fe772ef3a9ca0",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Your identity is not in the archive.",
+    "speaker": "orion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:04.817Z"
+}

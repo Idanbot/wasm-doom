@@ -1,0 +1,12 @@
+{
+  "signature": "fb1a046fd6d5c231ba3fe58b5b8a2d44b41628621b464a7bd436dda610146e02",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Everything down here gets broken down.",
+    "speaker": "pluto",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:16.552Z"
+}

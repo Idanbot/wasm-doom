@@ -1,0 +1,12 @@
+{
+  "signature": "64fa3f511c8c75e86443641442e3e298eacfc79982a496f9f15a880ed21fc624",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "There is still room to prove yourself.",
+    "speaker": "hyperion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:59:20.793Z"
+}

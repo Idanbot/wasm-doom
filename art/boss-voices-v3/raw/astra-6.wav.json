@@ -1,0 +1,12 @@
+{
+  "signature": "73e440e5920119f2dfd6e88ede5833f5a963041a06d928d1a69ed6fcdbeec1fa",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The sky is much closer than you think.",
+    "speaker": "apollo",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:12.056Z"
+}

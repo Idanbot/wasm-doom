@@ -1,0 +1,12 @@
+{
+  "signature": "0a93cbebf8e0ca5b2eacf573aa35190809c21954cdfecba8e33edda6b1802f51",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You found the anchor.",
+    "speaker": "theia",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:30.623Z"
+}

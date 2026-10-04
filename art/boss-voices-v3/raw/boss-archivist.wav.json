@@ -1,0 +1,12 @@
+{
+  "signature": "6c82cb08ae28f45e64d9bbdfb8be35925014437a78898d7380348c67aa8cb668",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Keep the last record. The rail is yours.",
+    "speaker": "orion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:10.956Z"
+}

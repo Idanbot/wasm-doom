@@ -1,0 +1,12 @@
+{
+  "signature": "4c8580c3cfc25f61961c23d74d34aaf9ee9d5c559093346096e2883163e109b7",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "There is nowhere here without a reflection.",
+    "speaker": "athena",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:29.229Z"
+}

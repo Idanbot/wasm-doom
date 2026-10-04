@@ -1,0 +1,12 @@
+{
+  "signature": "3f3acc4a241b11bdc2d89c16b5739c369b724f440bc1603a82730e9e4a0263f2",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "I kept the names they tried to erase.",
+    "speaker": "orion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:09.397Z"
+}

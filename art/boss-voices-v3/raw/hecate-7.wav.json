@@ -1,0 +1,12 @@
+{
+  "signature": "6957fe6a9f6b604b052e132e3d72524e5911998370ee06a2a4aa60e8631d040c",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You are an inefficient input.",
+    "speaker": "neptune",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:28.209Z"
+}

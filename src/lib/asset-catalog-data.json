@@ -3591,23 +3591,23 @@
   {
     "file": "/game/voices/boss-chimera.mp3",
     "name": "boss-chimera.mp3",
-    "size": 60525,
-    "hash": "698a3f9d2e732b49b4b88e179d588e7e9c04aa103025c9a4d29a88f26c7d5b40",
-    "shortHash": "698a3f9d"
+    "size": 56685,
+    "hash": "0b215fe05c71f26be874d9eba6afe2aa18602fe0e0cf8b2c8ac2960f1b3c8ab3",
+    "shortHash": "0b215fe0"
   },
   {
     "file": "/game/voices/boss-hecate.mp3",
     "name": "boss-hecate.mp3",
-    "size": 82125,
-    "hash": "93ff98ce2d4136f99b025191723abd0f846e9c49df36801eeec5b7a21c3e5ff8",
-    "shortHash": "93ff98ce"
+    "size": 43245,
+    "hash": "8b5adf5792058da3d203b27813cacc479384b58c9cdddcb0199518dd557ec4db",
+    "shortHash": "8b5adf57"
   },
   {
     "file": "/game/voices/boss-veyran.mp3",
     "name": "boss-veyran.mp3",
-    "size": 75789,
-    "hash": "69fb2d35a477b2c925f10fc08f5ee1c027e8de0e5ceeb2928fbe1a189d3434a4",
-    "shortHash": "69fb2d35"
+    "size": 52845,
+    "hash": "03912b98310b1f75faf4795c3785641ab52ff1200ef8d0c393fd9c91acb1231e",
+    "shortHash": "03912b98"
   },
   {
     "file": "/game/voices/breacher-1.mp3",
@@ -3654,51 +3654,51 @@
   {
     "file": "/game/voices/chimera-1.mp3",
     "name": "chimera-1.mp3",
-    "size": 12717,
-    "hash": "5a2526e7534468a5d36c5270c8cb330361bec56a8f55c2db4954f9d715400faf",
-    "shortHash": "5a2526e7"
+    "size": 31245,
+    "hash": "da811194e0e59d977aa5d5a73aa84259954aa50e3c92c4ae44c902d99ce9f9db",
+    "shortHash": "da811194"
   },
   {
     "file": "/game/voices/chimera-2.mp3",
     "name": "chimera-2.mp3",
-    "size": 14637,
-    "hash": "43b88ddee4df8936cf6717c19aef38b85a2f1c0117fbf2513d35c97c6c9fc075",
-    "shortHash": "43b88dde"
+    "size": 37485,
+    "hash": "30c10ca826ec7b945b3c9d78b2642d422d13b1bc3d76f1584c428354f9fd42df",
+    "shortHash": "30c10ca8"
   },
   {
     "file": "/game/voices/chimera-3.mp3",
     "name": "chimera-3.mp3",
-    "size": 18861,
-    "hash": "4505ba15975e425179c50ba5e6716bec0209bfe779a6e5f0b72cd5a523530829",
-    "shortHash": "4505ba15"
+    "size": 49005,
+    "hash": "23180efea5f1a519177c19eeb310dfb3b4b31dde72c0cd6cf1dbcd7316508b7c",
+    "shortHash": "23180efe"
   },
   {
     "file": "/game/voices/chimera-4.mp3",
     "name": "chimera-4.mp3",
-    "size": 15021,
-    "hash": "c2fe513bb2c3dc25f7c937ebf68ce953f54b0e12d7000416cf9a106631962e1d",
-    "shortHash": "c2fe513b"
+    "size": 39405,
+    "hash": "4a895450e5d320236416fe3185651bd33cbb2a355fef45f7b4df366e1742f350",
+    "shortHash": "4a895450"
   },
   {
     "file": "/game/voices/chimera-5.mp3",
     "name": "chimera-5.mp3",
-    "size": 12141,
-    "hash": "42d3b7d371e9c7092334c21b7e8b3d4034e93a6aa785e0102b53113243ab5172",
-    "shortHash": "42d3b7d3"
+    "size": 30285,
+    "hash": "4ec973ccf41a049bdec5243d01c914bcb12a38345ea5b1a5f625266380cfb5fc",
+    "shortHash": "4ec973cc"
   },
   {
     "file": "/game/voices/chimera-6.mp3",
     "name": "chimera-6.mp3",
-    "size": 20781,
-    "hash": "159e347992d41c2f16be4fe40d60f663f42ff82edc0149046ac02a71cdf35e31",
-    "shortHash": "159e3479"
+    "size": 51405,
+    "hash": "fee4bfc2554c737ec0acd336779f54d3af13564b93772376b0a7c858d46be17c",
+    "shortHash": "fee4bfc2"
   },
   {
     "file": "/game/voices/chimera-7.mp3",
     "name": "chimera-7.mp3",
-    "size": 14637,
-    "hash": "3dbb82c4ae7b80cebc39c022efc2b02621f76903bc2d292f89811d245fbe0534",
-    "shortHash": "3dbb82c4"
+    "size": 37005,
+    "hash": "42386251483e0c858525a130c616cff0a9fdec34f3a95fc2c86bd6b057a413d2",
+    "shortHash": "42386251"
   },
   {
     "file": "/game/voices/gunner-1.mp3",
@@ -3787,51 +3787,51 @@
   {
     "file": "/game/voices/hecate-1.mp3",
     "name": "hecate-1.mp3",
-    "size": 20205,
-    "hash": "2d17b729d659a420693d2a3d9c0fb8964047d5ba1c8ba5e8ff280e70339add77",
-    "shortHash": "2d17b729"
+    "size": 44205,
+    "hash": "e7d484f1d789d39f9eb993273aab239c68c4cf94c3b2ed943f956f552ec0f5a4",
+    "shortHash": "e7d484f1"
   },
   {
     "file": "/game/voices/hecate-2.mp3",
     "name": "hecate-2.mp3",
-    "size": 25005,
-    "hash": "f6e3e6c944726274c79eef1e3a25bc38e3a1b06ae29821d8722c8bb48afd518c",
-    "shortHash": "f6e3e6c9"
+    "size": 56205,
+    "hash": "c7cc94f9cc1a591bd4fd82beda660c1cf52455685259c09096139f3a8acaea28",
+    "shortHash": "c7cc94f9"
   },
   {
     "file": "/game/voices/hecate-3.mp3",
     "name": "hecate-3.mp3",
-    "size": 14637,
-    "hash": "d5774869149cc038ba3b985026d4a50468038fee82cd3cb2cfa60a01fd34b6f6",
-    "shortHash": "d5774869"
+    "size": 25005,
+    "hash": "cc2148d0de4c01dd91f7e86b1a543f64c1159f9784685ea3c1a347814b2fca3f",
+    "shortHash": "cc2148d0"
   },
   {
     "file": "/game/voices/hecate-4.mp3",
     "name": "hecate-4.mp3",
-    "size": 13869,
-    "hash": "ecf1c04dfe322447be1a244ea5ba54dff103875c9404d3adc33e9b3789613862",
-    "shortHash": "ecf1c04d"
+    "size": 35085,
+    "hash": "1eeafb6020d93deb8dcd7bd6f14e2834dd2003c1db0b391fafd47a09c1f9cc62",
+    "shortHash": "1eeafb60"
   },
   {
     "file": "/game/voices/hecate-5.mp3",
     "name": "hecate-5.mp3",
-    "size": 13869,
-    "hash": "645d5bb37b7bc89866bcca1bcdb4628527bc14d6d0c08345f8cd284b766ec111",
-    "shortHash": "645d5bb3"
+    "size": 32685,
+    "hash": "d85f146ec4321d6bcc59da093f3fde6c08b14ce725c32db873423a60ff1da9d6",
+    "shortHash": "d85f146e"
   },
   {
     "file": "/game/voices/hecate-6.mp3",
     "name": "hecate-6.mp3",
-    "size": 18861,
-    "hash": "c4e059a5b880e91a61c805ade75e46de6e8a8d91907afd7aaa7586355d18b86f",
-    "shortHash": "c4e059a5"
+    "size": 48045,
+    "hash": "127a285d35d0fbe9b0d8b08a5d78677a0338ea54e7184653b5cc7e91e6fdc6ee",
+    "shortHash": "127a285d"
   },
   {
     "file": "/game/voices/hecate-7.mp3",
     "name": "hecate-7.mp3",
-    "size": 16173,
-    "hash": "ce418810eaa67e68f3446c5eb752ed8c3a44d70d9993ab88c1bb9ad1a1fde594",
-    "shortHash": "ce418810"
+    "size": 32685,
+    "hash": "20cc16f2a211d266117c4af0b3e191158278bce6caf416f6c2715c7d8b5d09db",
+    "shortHash": "20cc16f2"
   },
   {
     "file": "/game/voices/hornet-1.mp3",
@@ -4046,44 +4046,44 @@
   {
     "file": "/game/voices/veyran-1.mp3",
     "name": "veyran-1.mp3",
-    "size": 18285,
-    "hash": "22ca4f5234de7fea754378194975677476bec14a208a54662b5d9e23f53ead0c",
-    "shortHash": "22ca4f52"
+    "size": 39405,
+    "hash": "3d738bd5d5ef67e702c223b06a948bb325979194dca93f7e93bf43739beae33c",
+    "shortHash": "3d738bd5"
   },
   {
     "file": "/game/voices/veyran-2.mp3",
     "name": "veyran-2.mp3",
-    "size": 15021,
-    "hash": "ec89e621fadec1b916207bf4b48f4bf66c5e86b0a5c63e3bf5435e70d56b9377",
-    "shortHash": "ec89e621"
+    "size": 32685,
+    "hash": "606750dab65a5e5be5ede1c23b5365727a8b447eb4b0178348a26ad2b3f804cb",
+    "shortHash": "606750da"
   },
   {
     "file": "/game/voices/veyran-3.mp3",
     "name": "veyran-3.mp3",
-    "size": 13293,
-    "hash": "e350df6e001c9b609a200b64404f8442015cd54fc47b20009b9ce11556e9451f",
-    "shortHash": "e350df6e"
+    "size": 28845,
+    "hash": "0d433a60107acdb8831093207513cc2403eee34c7cdf8eace20717d1ed5cbaf0",
+    "shortHash": "0d433a60"
   },
   {
     "file": "/game/voices/veyran-4.mp3",
     "name": "veyran-4.mp3",
-    "size": 17133,
-    "hash": "0855b0b87e2ef6d7125590a5309941f4c2d0197a0745e4df3b41492013b59d0e",
-    "shortHash": "0855b0b8"
+    "size": 34605,
+    "hash": "c81ea3f80847671bc6a178038173ce3248bf9b54c6547b2e0b2c53c76284fb88",
+    "shortHash": "c81ea3f8"
   },
   {
     "file": "/game/voices/veyran-5.mp3",
     "name": "veyran-5.mp3",
-    "size": 13293,
-    "hash": "664926b6ee1a35c485058bc45915b8d28cbfb9ae059ef5113f5f7d8c04949a64",
-    "shortHash": "664926b6"
+    "size": 28845,
+    "hash": "53635e23ab0f6d335f9b542b142ce7a88466a29a405be524fcb38ffcbee5bb28",
+    "shortHash": "53635e23"
   },
   {
     "file": "/game/voices/veyran-6.mp3",
     "name": "veyran-6.mp3",
-    "size": 22893,
-    "hash": "1bab191886a1e810ab801b5280249d37858173107c50220ca3585e3d1d5d4195",
-    "shortHash": "1bab1918"
+    "size": 50445,
+    "hash": "fb374f7eb17b8b63ddf21a92d16dea0415938c11865d2692a79d7259bf2d3a98",
+    "shortHash": "fb374f7e"
   },
   {
     "file": "/game/enemy_gravemind_dead.png",
@@ -4214,100 +4214,100 @@
   {
     "file": "/game/voices/boss-gravemind.mp3",
     "name": "boss-gravemind.mp3",
-    "size": 58797,
-    "hash": "88241f726c27772b40aecfcdae973b96629c50b110b17aaea56619f1fe1fe0a6",
-    "shortHash": "88241f72"
+    "size": 63405,
+    "hash": "4b5d2367ff8a2dde098584b822a6d163d42b4d81fe7140fc0e614eb61c6c7f94",
+    "shortHash": "4b5d2367"
   },
   {
     "file": "/game/voices/boss-oracle.mp3",
     "name": "boss-oracle.mp3",
-    "size": 43245,
-    "hash": "5f8e7987b48d1f11cc6a4b9ca9f0c263e1008e51f9e6a5358ab8fa716394bfd1",
-    "shortHash": "5f8e7987"
+    "size": 68205,
+    "hash": "9708c568d628197294095944ba8edecd0d84831dbfa72f93e09fe0f334b05417",
+    "shortHash": "9708c568"
   },
   {
     "file": "/game/voices/gravemind-1.mp3",
     "name": "gravemind-1.mp3",
-    "size": 15981,
-    "hash": "21af9e5ecd35d3b847b6225fa4a1a9d29cb487abef9b8fd9b75307564ad354bb",
-    "shortHash": "21af9e5e"
+    "size": 37005,
+    "hash": "f0d7f840bb26532301647449c96b28e4fbc34d9af420683f63e125bf331cbbe1",
+    "shortHash": "f0d7f840"
   },
   {
     "file": "/game/voices/gravemind-2.mp3",
     "name": "gravemind-2.mp3",
-    "size": 15597,
-    "hash": "9db8b999cc1bf2b66641236f272af9eda4d87f5731b1067473281d78b71888e3",
-    "shortHash": "9db8b999"
+    "size": 32205,
+    "hash": "bc4e59c160183a5b4157e515b173e63628d2e28640c7372575dd33446e9b41a7",
+    "shortHash": "bc4e59c1"
   },
   {
     "file": "/game/voices/gravemind-3.mp3",
     "name": "gravemind-3.mp3",
-    "size": 13101,
-    "hash": "38f935548237da00fc069155153c36dc7f9203df1f5f58e4e1b53f7af23d5909",
-    "shortHash": "38f93554"
+    "size": 31245,
+    "hash": "614024413b45af205e22ca01b2e843713fa2267926a4e38422393cda2a934408",
+    "shortHash": "61402441"
   },
   {
     "file": "/game/voices/gravemind-4.mp3",
     "name": "gravemind-4.mp3",
-    "size": 15021,
-    "hash": "71891072d7b65eda7073b22ed236efd6efc17c9914abc1f9a0a2e8d5e65ee6a9",
-    "shortHash": "71891072"
+    "size": 42285,
+    "hash": "bf9ebd5870251cda2199469bf440861ceb0eeae692a03eb0d09070cf50fe5948",
+    "shortHash": "bf9ebd58"
   },
   {
     "file": "/game/voices/gravemind-5.mp3",
     "name": "gravemind-5.mp3",
-    "size": 14253,
-    "hash": "fc583155d916a8818f3af09659cc518a34db5e618125f04428bc6f38bcb17a8b",
-    "shortHash": "fc583155"
+    "size": 27885,
+    "hash": "4c0e4b8eb03265006820310570696f39f0f8b880ad3d8c7de863274794b97f88",
+    "shortHash": "4c0e4b8e"
   },
   {
     "file": "/game/voices/gravemind-6.mp3",
     "name": "gravemind-6.mp3",
-    "size": 20973,
-    "hash": "5d58b365093b0a6a2d102abffa211c9c3d936bbe6246dcd940300aa72fc119c4",
-    "shortHash": "5d58b365"
+    "size": 56685,
+    "hash": "c472f2a533321fcc323baedd0417cc5932abd9a32ede1e22c4f2beb91b8c2d60",
+    "shortHash": "c472f2a5"
   },
   {
     "file": "/game/voices/oracle-1.mp3",
     "name": "oracle-1.mp3",
-    "size": 15021,
-    "hash": "9dd3da432f139c449a4e685e88930448949c0884cb3d856d3b3a64b4fe2a6569",
-    "shortHash": "9dd3da43"
+    "size": 34605,
+    "hash": "a6b04797eba13780d513658266233171e50cde51c97e6d829334194fac632001",
+    "shortHash": "a6b04797"
   },
   {
     "file": "/game/voices/oracle-2.mp3",
     "name": "oracle-2.mp3",
-    "size": 20781,
-    "hash": "0c557b51ed60c8e1c12f2f7dba5d7611d98cc0a438a141a77e5620dbb2cf740e",
-    "shortHash": "0c557b51"
+    "size": 44205,
+    "hash": "0bd5317c9a21f633612f86ddf31ff5f6666ce65437e4b53518503b2c3c9243bd",
+    "shortHash": "0bd5317c"
   },
   {
     "file": "/game/voices/oracle-3.mp3",
     "name": "oracle-3.mp3",
-    "size": 14829,
-    "hash": "02c60c3b770fea00c4464be873b342a34b2563054405428038674a8cffae513f",
-    "shortHash": "02c60c3b"
+    "size": 35085,
+    "hash": "d1f49d272b1f174551f5d1a5cffddaddd94f5f47b08266be9f8df493eecefa05",
+    "shortHash": "d1f49d27"
   },
   {
     "file": "/game/voices/oracle-4.mp3",
     "name": "oracle-4.mp3",
-    "size": 10989,
-    "hash": "13f495a8010050345953694ebb4932c8255a6a0264a070ccead9ed30a5ddf04b",
-    "shortHash": "13f495a8"
+    "size": 27405,
+    "hash": "9ad67de4db8636e544a99faa0692c931619d0c8a6f5cddbdab49af2eedfa1925",
+    "shortHash": "9ad67de4"
   },
   {
     "file": "/game/voices/oracle-5.mp3",
     "name": "oracle-5.mp3",
-    "size": 17709,
-    "hash": "b706351eb6f52f34757e1d2c7d28d25ed7454dc1a2776436d7720b51652e494f",
-    "shortHash": "b706351e"
+    "size": 44205,
+    "hash": "4afa67ac4dd0f17f98f85f20896742f88645873f84f42a6249371b3a32a3cf05",
+    "shortHash": "4afa67ac"
   },
   {
     "file": "/game/voices/oracle-6.mp3",
     "name": "oracle-6.mp3",
-    "size": 20205,
-    "hash": "619ca8ce0fc1458b59eec20aa6ffdb9dbd9539ea2b4933a36edd320c78b3d176",
-    "shortHash": "619ca8ce"
+    "size": 44685,
+    "hash": "94d50814a810718ee4a1434a2f931e9fb77d635f27555d78c8ef980c173bca46",
+    "shortHash": "94d50814"
   },
   {
     "file": "/game/draft/v2/weap_ar6_5x5.png",
@@ -4366,9 +4366,9 @@
   {
     "file": "/game/voices/boss-archivist.mp3",
     "name": "boss-archivist.mp3",
-    "size": 54765,
-    "hash": "8a6c63389c0c01af589534fd3c1a90bef575f7d5e3128641855cd43f60c1a3fb",
-    "shortHash": "8a6c6338"
+    "size": 58605,
+    "hash": "596c1a65d0654e261d49bb9c2b150cbd3fb73a41fb97bb4f1754d78f90f67685",
+    "shortHash": "596c1a65"
   },
   {
     "file": "/game/enemy_archivist_idle.png",
@@ -4436,44 +4436,44 @@
   {
     "file": "/game/voices/archivist-1.mp3",
     "name": "archivist-1.mp3",
-    "size": 15981,
-    "hash": "e52c28d57f1064e1c03b13e9c3889c3e62605bf379fc45f53b1f28f10601c56e",
-    "shortHash": "e52c28d5"
+    "size": 43245,
+    "hash": "29312752a468ca6b3f3747946fa449401c2d23921cb3c2fc8bd35a62dc14fbe5",
+    "shortHash": "29312752"
   },
   {
     "file": "/game/voices/archivist-2.mp3",
     "name": "archivist-2.mp3",
-    "size": 17517,
-    "hash": "18ee006503e0a6cc21fe6550197b10ddd21110d513354ff63e38783caa7016a6",
-    "shortHash": "18ee0065"
+    "size": 55245,
+    "hash": "97c8311f7f8d3f018ccef24cef3886cbd9d94e4b65946daf6503724efbf5d80a",
+    "shortHash": "97c8311f"
   },
   {
     "file": "/game/voices/archivist-3.mp3",
     "name": "archivist-3.mp3",
-    "size": 11181,
-    "hash": "2e5e417dbc440d914d7494a60082dcb68b87b8c7ba67de82e8f2d8f7f2277d5f",
-    "shortHash": "2e5e417d"
+    "size": 32685,
+    "hash": "b49627a4c790a1a563137a688423bd439684aa1810900efcb4478e656f336c02",
+    "shortHash": "b49627a4"
   },
   {
     "file": "/game/voices/archivist-4.mp3",
     "name": "archivist-4.mp3",
-    "size": 14829,
-    "hash": "5a8380903a341b0115ba6045d064ba2cda877fa5a4764d2784050f7e1a35144e",
-    "shortHash": "5a838090"
+    "size": 37485,
+    "hash": "1e56bc07597201c1206468bff2e91315e76703734b5a1bc879679a4493e468e3",
+    "shortHash": "1e56bc07"
   },
   {
     "file": "/game/voices/archivist-5.mp3",
     "name": "archivist-5.mp3",
-    "size": 12525,
-    "hash": "a10444d7caa665cf2cb554648bc95536ff3450b1137702a991458476ee74e2c0",
-    "shortHash": "a10444d7"
+    "size": 35085,
+    "hash": "19a7be77ccd66236c858a58fd6f75afb1438ac9ec49cdbbc1d209d61300e7653",
+    "shortHash": "19a7be77"
   },
   {
     "file": "/game/voices/archivist-6.mp3",
     "name": "archivist-6.mp3",
-    "size": 17901,
-    "hash": "a8ce19f7795a03898d1f29768f11a12c6f60c8329f6907b371ff097b84c62c97",
-    "shortHash": "a8ce19f7"
+    "size": 49005,
+    "hash": "345c754ef1fb13bd43e379e02df6518c6449e68bc619b6bb1056eb8859c07c58",
+    "shortHash": "345c754e"
   },
   {
     "file": "/game/draft/v2/weap_or7_5x5.png",
@@ -4865,44 +4865,44 @@
   {
     "file": "/game/voices/halcyon-1.mp3",
     "name": "halcyon-1.mp3",
-    "size": 12525,
-    "hash": "b40f808ea6bd69999d349e24b690cc5f4c149487b7a1df6e56c95f8d7f8d8ee7",
-    "shortHash": "b40f808e"
+    "size": 32685,
+    "hash": "242ffbf332f803e84c566013b7dd9fb19daa672d91b661e5ccc64d30365e7fab",
+    "shortHash": "242ffbf3"
   },
   {
     "file": "/game/voices/halcyon-2.mp3",
     "name": "halcyon-2.mp3",
-    "size": 18285,
-    "hash": "175293467a60e54d7c50acc0dad573e7097ac333c27e91db43c8c36059084bbc",
-    "shortHash": "17529346"
+    "size": 49005,
+    "hash": "b5c977583946259419b14d9e17dbfbe68f97f3fb8b0bfcd256cc7a4cab2c54b5",
+    "shortHash": "b5c97758"
   },
   {
     "file": "/game/voices/halcyon-3.mp3",
     "name": "halcyon-3.mp3",
-    "size": 12909,
-    "hash": "755e79ff17d1359cfe230c9845a35d2732079e976ae55e7044db1a9e86fe553c",
-    "shortHash": "755e79ff"
+    "size": 33645,
+    "hash": "36d4e010a5a4dd2ff2a6816c697eb84b15fa252c3f4e355aa794d14045e52889",
+    "shortHash": "36d4e010"
   },
   {
     "file": "/game/voices/halcyon-4.mp3",
     "name": "halcyon-4.mp3",
-    "size": 12141,
-    "hash": "a474be36b7268c954c14919393bd678c6e39fb0ded4dccb9bf516c5846f64793",
-    "shortHash": "a474be36"
+    "size": 35085,
+    "hash": "32f34980f59e2dc2055855bd04c917caae8053ae6f539204df552289f6de7289",
+    "shortHash": "32f34980"
   },
   {
     "file": "/game/voices/halcyon-5.mp3",
     "name": "halcyon-5.mp3",
-    "size": 14637,
-    "hash": "7e5f54b64b2c9efee3c23d48297e10c93b05ec40a4d3b34b10d700a26dc00ad4",
-    "shortHash": "7e5f54b6"
+    "size": 42285,
+    "hash": "37c60c7dd7e9e7c2d1e97f0081771186e4cd144b8efa61253f503fd7e7eb432e",
+    "shortHash": "37c60c7d"
   },
   {
     "file": "/game/voices/halcyon-6.mp3",
     "name": "halcyon-6.mp3",
-    "size": 11949,
-    "hash": "92058ff3dfb6b4e317d593533a901db7765d48b2bdb3c18b260b20b9b9411a2e",
-    "shortHash": "92058ff3"
+    "size": 37005,
+    "hash": "1f697cd881df3cd3b3035369008ae37332d946c6af542aa75bd087e516749f76",
+    "shortHash": "1f697cd8"
   },
   {
     "file": "/game/enemy_relay_idle.png",
@@ -4970,44 +4970,44 @@
   {
     "file": "/game/voices/relay-1.mp3",
     "name": "relay-1.mp3",
-    "size": 20205,
-    "hash": "ba002ca4cd45eccc29db675e08efb20079043a6a654a64b4e386e240a8775cb7",
-    "shortHash": "ba002ca4"
+    "size": 43245,
+    "hash": "fc35bda0643d0d5049167d7c6b803851b64b08e6f2f61e068991a1a2bd24f0b2",
+    "shortHash": "fc35bda0"
   },
   {
     "file": "/game/voices/relay-2.mp3",
     "name": "relay-2.mp3",
-    "size": 13485,
-    "hash": "8fff0d7e17ffb85b0b755fc4b68ede5faf74ce741c80d4a7746e2ee52795c72e",
-    "shortHash": "8fff0d7e"
+    "size": 32685,
+    "hash": "51b5a1ed52a4919153f482d8438a2c2237aa89b32fdca503815715984ca02acd",
+    "shortHash": "51b5a1ed"
   },
   {
     "file": "/game/voices/relay-3.mp3",
     "name": "relay-3.mp3",
-    "size": 18669,
-    "hash": "7c3fd526233c455c5200b5d93427b6db973fe5d20ee4936c2ac12f1b2445c720",
-    "shortHash": "7c3fd526"
+    "size": 42285,
+    "hash": "8f6c604e3b7503dfe5327b78d7d84fee63a37fb4492a392cd7255cd833ef2fe2",
+    "shortHash": "8f6c604e"
   },
   {
     "file": "/game/voices/relay-4.mp3",
     "name": "relay-4.mp3",
-    "size": 12909,
-    "hash": "20fc295a9b56df9950b995eba592a8a4c24f660dd624f8adb77dfec3ec3fd295",
-    "shortHash": "20fc295a"
+    "size": 31245,
+    "hash": "0dbde357c150a553ded77a52ab9b24067a7b4610d01cc7dda95a7e3781672ffc",
+    "shortHash": "0dbde357"
   },
   {
     "file": "/game/voices/relay-5.mp3",
     "name": "relay-5.mp3",
-    "size": 18861,
-    "hash": "45c710b3588c8c36a075f7bc8bce98296348a01acc815238effe5c985385ce84",
-    "shortHash": "45c710b3"
+    "size": 42285,
+    "hash": "72f93935b304dd9afd44e88a099d299bc7bdd10cab691ec758329000575ed363",
+    "shortHash": "72f93935"
   },
   {
     "file": "/game/voices/relay-6.mp3",
     "name": "relay-6.mp3",
-    "size": 19629,
-    "hash": "54ab48b166c7e3b2a528dd94640a09a8a87cd7e8de6ad1b3d13603ce32451b98",
-    "shortHash": "54ab48b1"
+    "size": 38445,
+    "hash": "1cb509ecdbf497bcda1e1a2adca004ae51654ae88ba6544399a1664a727b02b7",
+    "shortHash": "1cb509ec"
   },
   {
     "file": "/game/enemy_titan_idle.png",
@@ -5075,44 +5075,44 @@
   {
     "file": "/game/voices/titan-1.mp3",
     "name": "titan-1.mp3",
-    "size": 17517,
-    "hash": "7478d386fccc55c0e1357fc53409eac450521a9e4e5cbc7262821815d5997cd2",
-    "shortHash": "7478d386"
+    "size": 39885,
+    "hash": "6d4eeea1ca2d3079a34661c0e6b8aef8794f7e638438ac58d6c3c93bc0d202cd",
+    "shortHash": "6d4eeea1"
   },
   {
     "file": "/game/voices/titan-2.mp3",
     "name": "titan-2.mp3",
-    "size": 18477,
-    "hash": "d69e1d2015ff165b62e5547dcde351b5419d79d7864c961e1742eade115f585e",
-    "shortHash": "d69e1d20"
+    "size": 38445,
+    "hash": "29366cc61814b063cc4dc82655c55fd64b51d1987174c4ce095acc6df491a958",
+    "shortHash": "29366cc6"
   },
   {
     "file": "/game/voices/titan-3.mp3",
     "name": "titan-3.mp3",
-    "size": 10029,
-    "hash": "58e89eb28eb84e56cae4d6f1662c6d661f42252185c380b5e4bc3e83ef884258",
-    "shortHash": "58e89eb2"
+    "size": 31245,
+    "hash": "cc1c858182583e126b770b0123ed6a3eabc850adc78cae9cc3356116cfc52b48",
+    "shortHash": "cc1c8581"
   },
   {
     "file": "/game/voices/titan-4.mp3",
     "name": "titan-4.mp3",
-    "size": 12525,
-    "hash": "6955d4b2d2e65328d4de2a1586f0ff017a66ea449ab48bbbabdd818cdd172ea4",
-    "shortHash": "6955d4b2"
+    "size": 27405,
+    "hash": "b389ea67c99694bed3a7e77df2c8a47fd07f3db6a33cc71b36f9919c17124bdc",
+    "shortHash": "b389ea67"
   },
   {
     "file": "/game/voices/titan-5.mp3",
     "name": "titan-5.mp3",
-    "size": 15597,
-    "hash": "e4f4957dcea5c7d6d3a4054047ff56243d38ed0ec4b91a4c7b720ffae33fcad0",
-    "shortHash": "e4f4957d"
+    "size": 37485,
+    "hash": "8834ec35593ae4d3a7547c7b7ee01cce1ab0821f8eb3d331a8d9291ea98783e1",
+    "shortHash": "8834ec35"
   },
   {
     "file": "/game/voices/titan-6.mp3",
     "name": "titan-6.mp3",
-    "size": 20781,
-    "hash": "477ddb8dd4f983ebc20b5f5d7d223d0f62dfdf2c4aefd8b2bdd02dd2f3f1a027",
-    "shortHash": "477ddb8d"
+    "size": 42285,
+    "hash": "e38796832b58aee1d83e18146ad7cfeb777681e0cecf8e05b712ecab3b0df7ae",
+    "shortHash": "e3879683"
   },
   {
     "file": "/game/enemy_kest_idle.png",
@@ -5180,142 +5180,142 @@
   {
     "file": "/game/voices/kest-1.mp3",
     "name": "kest-1.mp3",
-    "size": 25581,
-    "hash": "c3c8b2e8715d3d61500d1bd5cf6d30bae97f0f8d0c5a65ab9c70caa21a3cd498",
-    "shortHash": "c3c8b2e8"
+    "size": 77805,
+    "hash": "8a5b6353a4ada3d895a40563032f091b5a1afa99e2a72cede41b7248e93f904b",
+    "shortHash": "8a5b6353"
   },
   {
     "file": "/game/voices/kest-2.mp3",
     "name": "kest-2.mp3",
-    "size": 20781,
-    "hash": "2f0c85716e5ea00ecbd6aeca0cdd92b5ee29fec5da4f66a68010c8a4750d5377",
-    "shortHash": "2f0c8571"
+    "size": 54285,
+    "hash": "1121e93c328d109628523a092bf9f240b3769d86ef6b2056958ff2750748df93",
+    "shortHash": "1121e93c"
   },
   {
     "file": "/game/voices/kest-3.mp3",
     "name": "kest-3.mp3",
-    "size": 17901,
-    "hash": "9499e56377cd15c281a8cc59020414a242d49c7e6df0b02f90da6d77da7807d6",
-    "shortHash": "9499e563"
+    "size": 46605,
+    "hash": "616adcafdfd6e7c88b548bd371e83b89550eb1d80ac1a0e62b84bc89d6d698c0",
+    "shortHash": "616adcaf"
   },
   {
     "file": "/game/voices/kest-4.mp3",
     "name": "kest-4.mp3",
-    "size": 13869,
-    "hash": "96d657607165503c7267b8dc3e8a880078938f7a89eefb504ba105ae09ef541a",
-    "shortHash": "96d65760"
+    "size": 39405,
+    "hash": "fae1e72a8775eaf8cd85c544ac3ba68083d23191d8b2888cb298451821e9eab0",
+    "shortHash": "fae1e72a"
   },
   {
     "file": "/game/voices/kest-5.mp3",
     "name": "kest-5.mp3",
-    "size": 19245,
-    "hash": "2884e51568a966e8d75fe7b48c9b4ceda20dc92d1440947de3a0d6a501521a32",
-    "shortHash": "2884e515"
+    "size": 54285,
+    "hash": "c316475a3bedb9a9b4a634023f8e9192b6a84a71b0f0816b31ff2d32061c5f38",
+    "shortHash": "c316475a"
   },
   {
     "file": "/game/voices/kest-6.mp3",
     "name": "kest-6.mp3",
-    "size": 16365,
-    "hash": "9af2e883375a4e9272891fe9c38cb34f212ed2b34964baeb04026253b10b70b2",
-    "shortHash": "9af2e883"
+    "size": 51405,
+    "hash": "530367528e70b76b46411b764f2dd02c3c35029d37c0d6f3bbfed6941cdc43b0",
+    "shortHash": "53036752"
   },
   {
     "file": "/game/voices/boss-veyran-v2.mp3",
     "name": "boss-veyran-v2.mp3",
-    "size": 77229,
-    "hash": "339d75958529748fa7ed456a30d3833386d7afe6d27288c649261887552ca55e",
-    "shortHash": "339d7595"
+    "size": 64845,
+    "hash": "7444f321f60d99f8e4310c9651ce42f49e976736647da02775ddd3077d9a0c11",
+    "shortHash": "7444f321"
   },
   {
     "file": "/game/voices/boss-hecate-v2.mp3",
     "name": "boss-hecate-v2.mp3",
-    "size": 64845,
-    "hash": "97c840fe4b36cd440eb1a5a7975de070d0aa26b2f50b344381d0847d9e398132",
-    "shortHash": "97c840fe"
+    "size": 58605,
+    "hash": "dc7840f5a1961128ae0b9191cdd91b363141d7b4c33416f4b41be8c08f9a81ea",
+    "shortHash": "dc7840f5"
   },
   {
     "file": "/game/voices/boss-chimera-v2.mp3",
     "name": "boss-chimera-v2.mp3",
-    "size": 65133,
-    "hash": "50ac5737b76d46bb0d6cca35a6da463f5dfe0d9481383c2892527d2a79b03a1c",
-    "shortHash": "50ac5737"
+    "size": 56205,
+    "hash": "68114d8f2b21800611d359afb10ced892175b944de1d705a6f5e680ad41ed334",
+    "shortHash": "68114d8f"
   },
   {
     "file": "/game/voices/boss-oracle-v2.mp3",
     "name": "boss-oracle-v2.mp3",
-    "size": 56205,
-    "hash": "13e8c17fa88aadca85a9e10365e961d82c26e28af018aa929850f051c37219ea",
-    "shortHash": "13e8c17f"
+    "size": 47085,
+    "hash": "53f31620aca9b6f818eb5f653587caa75596bee5387ee00123b7917441c22f3b",
+    "shortHash": "53f31620"
   },
   {
     "file": "/game/voices/boss-gravemind-v2.mp3",
     "name": "boss-gravemind-v2.mp3",
-    "size": 58797,
-    "hash": "ba6903be9ae56087d3f827fb053de892a71f98a74225cfe004bc14ed1731ad39",
-    "shortHash": "ba6903be"
+    "size": 50445,
+    "hash": "aa7ac03390ef6d554803de8e81c6b19a5165d0c4ad5b38d2b12efff87c038199",
+    "shortHash": "aa7ac033"
   },
   {
     "file": "/game/voices/boss-archivist-v2.mp3",
     "name": "boss-archivist-v2.mp3",
-    "size": 59085,
-    "hash": "c505718182393c8254fb21fb2bdf1dce3fdd0ca40fc8f2445753ed8cb72a25ab",
-    "shortHash": "c5057181"
+    "size": 39405,
+    "hash": "646b88e1c126a6c0527d99fc9b4ddbc8cbfc782ee7ca48484c6a666471ab7787",
+    "shortHash": "646b88e1"
   },
   {
     "file": "/game/voices/boss-halcyon-v2.mp3",
     "name": "boss-halcyon-v2.mp3",
-    "size": 51597,
-    "hash": "24b117a575a5f8c3fa4014d8da1e36b2bfb2c76bcaf7ad54e81fe12dd5428e5b",
-    "shortHash": "24b117a5"
+    "size": 56205,
+    "hash": "0c0cde89b3c2cb770c7014314861bd67417c3b8c47b08bfdd19bb9dc98d9ce00",
+    "shortHash": "0c0cde89"
   },
   {
     "file": "/game/voices/boss-relay-v2.mp3",
     "name": "boss-relay-v2.mp3",
-    "size": 62829,
-    "hash": "7a73715c4013011860c9ea346eec76200cb322114143720333c5e09a2c5788b5",
-    "shortHash": "7a73715c"
+    "size": 56685,
+    "hash": "b3c9a1331536e143219d3996fb6c2b3aa04742a66a8eb8df1873d6d1f10b73c7",
+    "shortHash": "b3c9a133"
   },
   {
     "file": "/game/voices/boss-titan-v2.mp3",
     "name": "boss-titan-v2.mp3",
-    "size": 67437,
-    "hash": "03c989ee039ff6b97cda3ea9bf2f81b0271cadff047ea00a20ee0660b179129a",
-    "shortHash": "03c989ee"
+    "size": 40845,
+    "hash": "668f546f25517eef2c752db74ae47b8c7d428c9edca51ac9bf24ce17e86185ae",
+    "shortHash": "668f546f"
   },
   {
     "file": "/game/voices/boss-kest-v2.mp3",
     "name": "boss-kest-v2.mp3",
-    "size": 55629,
-    "hash": "39161801c02e24b46d38969fdcc378f7dcdb67cf09ba7235fab5a3f1e1b67395",
-    "shortHash": "39161801"
+    "size": 55245,
+    "hash": "fbff874d6098bebf9199a042cbd7b5370d4bfd35c34ba1ca5cb7458cd6e011e9",
+    "shortHash": "fbff874d"
   },
   {
     "file": "/game/voices/boss-halcyon.mp3",
     "name": "boss-halcyon.mp3",
-    "size": 65709,
-    "hash": "6f1b843d7595dca06090207161e52e4453a832e41ac2c0d585bbc75d4b67a501",
-    "shortHash": "6f1b843d"
+    "size": 51405,
+    "hash": "5ec203d99782ccd823e821823edf8199026e836c16f0e611764ecf8fc29de38a",
+    "shortHash": "5ec203d9"
   },
   {
     "file": "/game/voices/boss-relay.mp3",
     "name": "boss-relay.mp3",
-    "size": 45549,
-    "hash": "412145b4215a7170a1b528845e62ab53bc123f037996b49aab8df7d2da7fa541",
-    "shortHash": "412145b4"
+    "size": 52845,
+    "hash": "48a63c6ad66a4670a135374694c9fda2b3c348ae1a2b9a6f97c87ea06c9d5b43",
+    "shortHash": "48a63c6a"
   },
   {
     "file": "/game/voices/boss-titan.mp3",
     "name": "boss-titan.mp3",
-    "size": 68301,
-    "hash": "b3f93a8506c1799f537bee2403a2f20f9b8ac7b4490985ba740b05bf7f6b7def",
-    "shortHash": "b3f93a85"
+    "size": 63885,
+    "hash": "7a4f980597571b2fc4fe0c6f07778df433cd45d5f19d8a19e5ffd0483331dd2d",
+    "shortHash": "7a4f9805"
   },
   {
     "file": "/game/voices/boss-kest.mp3",
     "name": "boss-kest.mp3",
-    "size": 44109,
-    "hash": "6a0df9c06da0ba98e54bc86d8b7ee54d5774f7754537200cacc785e9863fd841",
-    "shortHash": "6a0df9c0"
+    "size": 79245,
+    "hash": "26562e8c327f02f8cd33ebe30d86f6a7898e4a0c5649ad6c819e5d158bec7e99",
+    "shortHash": "26562e8c"
   },
   {
     "file": "/game/music/menu.mp3",
@@ -5458,58 +5458,58 @@
   {
     "file": "/game/voices/mnemosyne-1.mp3",
     "name": "mnemosyne-1.mp3",
-    "size": 25965,
-    "hash": "6c76d401a4cd3e663a6a70117277a8beb90041d0ab6dc78486e0193288fab072",
-    "shortHash": "6c76d401"
+    "size": 58605,
+    "hash": "678a5a78669d64f419527939d08b17cf1e0606aa7b1dea2a442802336b4886fd",
+    "shortHash": "678a5a78"
   },
   {
     "file": "/game/voices/mnemosyne-2.mp3",
     "name": "mnemosyne-2.mp3",
-    "size": 25005,
-    "hash": "c82a8d28be7862c7cad1574a75e9952aaed1dfad1c538d5f914f65d3aa5be9ee",
-    "shortHash": "c82a8d28"
+    "size": 61485,
+    "hash": "6e7350d503ac9551df34b57a02c3f5cf47b255fdaa85c5fd0b1a50efb540eeeb",
+    "shortHash": "6e7350d5"
   },
   {
     "file": "/game/voices/mnemosyne-3.mp3",
     "name": "mnemosyne-3.mp3",
-    "size": 14061,
-    "hash": "3171cea24dda2c61a05a308ee762f54f7c9677500ba4438ac1af77a9ce858aca",
-    "shortHash": "3171cea2"
+    "size": 34605,
+    "hash": "565d977d3d2296c8c59753fbd78fffae798f80de286bf3b158990cf382217ce3",
+    "shortHash": "565d977d"
   },
   {
     "file": "/game/voices/mnemosyne-4.mp3",
     "name": "mnemosyne-4.mp3",
-    "size": 16749,
-    "hash": "25731266c4eeba2ee1c62cb7411e34e49dce9d4e365f59bc61022beac07b5786",
-    "shortHash": "25731266"
+    "size": 40845,
+    "hash": "91cc19f45b21541cc00bcc63f29acb65e48cbddb480fdbdcb2bf41ee43027f1d",
+    "shortHash": "91cc19f4"
   },
   {
     "file": "/game/voices/mnemosyne-5.mp3",
     "name": "mnemosyne-5.mp3",
-    "size": 19629,
-    "hash": "82a987ad2c34da2b0cbe4b4d784b81dfba4066533a99461fadd1fc89c9aaf5e5",
-    "shortHash": "82a987ad"
+    "size": 50445,
+    "hash": "d5a230b6031366f550b12f17699d20ceef1371ad3aedc87f4f292cd5f017436a",
+    "shortHash": "d5a230b6"
   },
   {
     "file": "/game/voices/mnemosyne-6.mp3",
     "name": "mnemosyne-6.mp3",
-    "size": 16365,
-    "hash": "5d73dbacb022a7a5892b0530160b25bd4abcf3fa599fe5291a439ae1924ddf29",
-    "shortHash": "5d73dbac"
+    "size": 45645,
+    "hash": "64a62809957b642fb5c2610a70df45181120563de400e0e50c5c9c891d07f483",
+    "shortHash": "64a62809"
   },
   {
     "file": "/game/voices/boss-mnemosyne-v2.mp3",
     "name": "boss-mnemosyne-v2.mp3",
-    "size": 63981,
-    "hash": "49abac83301aebfdc1c41cf685e7748bef2ec696af45073a867083c9f70e721f",
-    "shortHash": "49abac83"
+    "size": 67245,
+    "hash": "b098a2165a2dc6b196901b654d2be3d2d433ca668ddc15a0626bf3aee829c6df",
+    "shortHash": "b098a216"
   },
   {
     "file": "/game/voices/boss-mnemosyne.mp3",
     "name": "boss-mnemosyne.mp3",
-    "size": 53901,
-    "hash": "9034c87d4e01fd6bf2a8d3d660aaae9dce913337c85f595496763d443d871115",
-    "shortHash": "9034c87d"
+    "size": 57645,
+    "hash": "e811fdf96edb6b8b2cb2e85afdd28f7f9544d0bbe25e718d2f9b370cd22f1d4e",
+    "shortHash": "e811fdf9"
   },
   {
     "file": "/game/draft/v2/cases/case_vx2.png",
@@ -12684,5 +12684,1663 @@
     "shortHash": "d39437dc",
     "width": 256,
     "height": 256
+  },
+  {
+    "file": "/game/voices/vulcan-1.mp3",
+    "name": "vulcan-1.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 53805,
+    "hash": "cfd017661317e8b473c09cb7197bbbf558d55105218f1cc9c9a5224b6dcff568",
+    "shortHash": "cfd01766"
+  },
+  {
+    "file": "/game/voices/vulcan-2.mp3",
+    "name": "vulcan-2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 50445,
+    "hash": "763c1c7674a9a656ff51f2742a5454ca3215749fb058173efe4bd96ef15c42d7",
+    "shortHash": "763c1c76"
+  },
+  {
+    "file": "/game/voices/vulcan-3.mp3",
+    "name": "vulcan-3.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 20205,
+    "hash": "d1fe7039073bedf2c5dca9d40b8feb4292d9b48fdb42db3192e62d4808586646",
+    "shortHash": "d1fe7039"
+  },
+  {
+    "file": "/game/voices/vulcan-4.mp3",
+    "name": "vulcan-4.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 24045,
+    "hash": "93effd31fc794481366ca36ed761e70a3b37817a65679ff3ae3b626ab63df490",
+    "shortHash": "93effd31"
+  },
+  {
+    "file": "/game/voices/vulcan-5.mp3",
+    "name": "vulcan-5.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 23085,
+    "hash": "17f4b71b52afa126b74853ddaca187e52114064ac45570da1e62b2671e38df91",
+    "shortHash": "17f4b71b"
+  },
+  {
+    "file": "/game/voices/vulcan-6.mp3",
+    "name": "vulcan-6.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 32685,
+    "hash": "dbce9b8877c989a3837665b1120c8d492fca6f6681cf7e9996b313efa895472d",
+    "shortHash": "dbce9b88"
+  },
+  {
+    "file": "/game/voices/boss-vulcan.mp3",
+    "name": "boss-vulcan.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 42285,
+    "hash": "405530e9f4695aa6ac3599229a56b94bee5d9513fde3a64a8f51d5948cd610af",
+    "shortHash": "405530e9"
+  },
+  {
+    "file": "/game/voices/boss-vulcan-v2.mp3",
+    "name": "boss-vulcan-v2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 49005,
+    "hash": "ecf72153e4450633d09a620ec08c821b660d1a23ce41fc0b4cac9cb0383880ad",
+    "shortHash": "ecf72153"
+  },
+  {
+    "file": "/game/voices/leviathan-1.mp3",
+    "name": "leviathan-1.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 62445,
+    "hash": "7e5d6e90e001fe16677a971a139307e01e1330efeab03722f3293dda24da29f6",
+    "shortHash": "7e5d6e90"
+  },
+  {
+    "file": "/game/voices/leviathan-2.mp3",
+    "name": "leviathan-2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 54285,
+    "hash": "1a65adafe39d1dba81d7cb067e941edfca6dea9766bfe6b339edd7ef6b3e4892",
+    "shortHash": "1a65adaf"
+  },
+  {
+    "file": "/game/voices/leviathan-3.mp3",
+    "name": "leviathan-3.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 29805,
+    "hash": "7eb20329ce3b0c1dd6775244a472ab63152a07c74059e7658e47a019ac6224be",
+    "shortHash": "7eb20329"
+  },
+  {
+    "file": "/game/voices/leviathan-4.mp3",
+    "name": "leviathan-4.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 34605,
+    "hash": "8d1d9d1af09023fe01aa77910a64a769c02f8a17d81835b59d7d5334702f0408",
+    "shortHash": "8d1d9d1a"
+  },
+  {
+    "file": "/game/voices/leviathan-5.mp3",
+    "name": "leviathan-5.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 31245,
+    "hash": "942e80e23572a8987323b9c28856105fb2866e148371074309ddb5070e6d70fe",
+    "shortHash": "942e80e2"
+  },
+  {
+    "file": "/game/voices/leviathan-6.mp3",
+    "name": "leviathan-6.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 39405,
+    "hash": "d9627b09399b5eb7b09bfb9efb6d8a10ecb0e429d5af0e81788385e47e351cb7",
+    "shortHash": "d9627b09"
+  },
+  {
+    "file": "/game/voices/boss-leviathan.mp3",
+    "name": "boss-leviathan.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 58605,
+    "hash": "7ea7516c7989556669bccc93fa1de977378cb582ac5b129a00ec54b372ebca74",
+    "shortHash": "7ea7516c"
+  },
+  {
+    "file": "/game/voices/boss-leviathan-v2.mp3",
+    "name": "boss-leviathan-v2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 59085,
+    "hash": "949cd52fd029dd8d3f49d94dba7cc2af3c7db5c3e9d993e045857c6f0df78267",
+    "shortHash": "949cd52f"
+  },
+  {
+    "file": "/game/voices/prism-1.mp3",
+    "name": "prism-1.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 31245,
+    "hash": "6c3ff827085282359d3665805ec6632cbb7f4fab1fc47658dbbce068a4935665",
+    "shortHash": "6c3ff827"
+  },
+  {
+    "file": "/game/voices/prism-2.mp3",
+    "name": "prism-2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 45645,
+    "hash": "db06380bcfc0eea6e15eb8fe951938462e707caab328bebc2b63de9a72c610d9",
+    "shortHash": "db06380b"
+  },
+  {
+    "file": "/game/voices/prism-3.mp3",
+    "name": "prism-3.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 19245,
+    "hash": "71ebe6f7803d9df19c50bcbdd01ec8b4ef2b5a50c9e964ec53997268778c5d8e",
+    "shortHash": "71ebe6f7"
+  },
+  {
+    "file": "/game/voices/prism-4.mp3",
+    "name": "prism-4.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 30285,
+    "hash": "c8b83e1c45a65480c68363034cd46a00950e31723b8c2c926402e4464ea28022",
+    "shortHash": "c8b83e1c"
+  },
+  {
+    "file": "/game/voices/prism-5.mp3",
+    "name": "prism-5.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 28845,
+    "hash": "ead59eb109d2d682c10c01c6ae6fc8fa5a5ff601cc962a9f470361809d5a9b4e",
+    "shortHash": "ead59eb1"
+  },
+  {
+    "file": "/game/voices/prism-6.mp3",
+    "name": "prism-6.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 42285,
+    "hash": "3d722787631cb8525d0e6dfbfc67c4424cdf3257da3eb1721c993e2bcef3b68a",
+    "shortHash": "3d722787"
+  },
+  {
+    "file": "/game/voices/boss-prism.mp3",
+    "name": "boss-prism.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 65805,
+    "hash": "6266bf31f4376fd1b4f5af3edfea5aa04a93a3f53b63a2e29e6ad1d7d3109dd9",
+    "shortHash": "6266bf31"
+  },
+  {
+    "file": "/game/voices/boss-prism-v2.mp3",
+    "name": "boss-prism-v2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 45645,
+    "hash": "ff39e8716d0045e9c78a620f653e371753ad1c8d88f2d85e9ba921f5dbb478e3",
+    "shortHash": "ff39e871"
+  },
+  {
+    "file": "/game/voices/magnus-1.mp3",
+    "name": "magnus-1.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 26445,
+    "hash": "2f4e39527a473a770d8968570ec19fa75d2feb248b16d21f2e6903fa20938db8",
+    "shortHash": "2f4e3952"
+  },
+  {
+    "file": "/game/voices/magnus-2.mp3",
+    "name": "magnus-2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 56205,
+    "hash": "bc5515eba36642f2bfdc7211b17a80fc84f13995887e44da2bfa08ab0ff2249a",
+    "shortHash": "bc5515eb"
+  },
+  {
+    "file": "/game/voices/magnus-3.mp3",
+    "name": "magnus-3.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 33645,
+    "hash": "4564eaddd1f727878837341329b59dac3d84f3943510fb92851dd135fb303eb1",
+    "shortHash": "4564eadd"
+  },
+  {
+    "file": "/game/voices/magnus-4.mp3",
+    "name": "magnus-4.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 30285,
+    "hash": "ab82ad32f6b89fa7b64179610ee43b6174b8e4339dc283c8985cc1baab45a8b0",
+    "shortHash": "ab82ad32"
+  },
+  {
+    "file": "/game/voices/magnus-5.mp3",
+    "name": "magnus-5.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 27885,
+    "hash": "e30514ea735c96bda19c6b8aa93933f1542fa93cc261456fb4ef35b04a52bba1",
+    "shortHash": "e30514ea"
+  },
+  {
+    "file": "/game/voices/magnus-6.mp3",
+    "name": "magnus-6.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 48045,
+    "hash": "517234307b16bb52961d6c22d650cbb3ba3a216fca4329ed525ef070b538337b",
+    "shortHash": "51723430"
+  },
+  {
+    "file": "/game/voices/boss-magnus.mp3",
+    "name": "boss-magnus.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 44205,
+    "hash": "d378413bd645a47d9ae82fa870394409189b0fb694123373c990cd4d6c0abc54",
+    "shortHash": "d378413b"
+  },
+  {
+    "file": "/game/voices/boss-magnus-v2.mp3",
+    "name": "boss-magnus-v2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 58605,
+    "hash": "c6b9693a8a823ff6541b4d5c84788ac3d4ca69a72f56c7b12d058e6406b727e0",
+    "shortHash": "c6b9693a"
+  },
+  {
+    "file": "/game/voices/broodmother-1.mp3",
+    "name": "broodmother-1.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 30285,
+    "hash": "48f3b51b9c3b5772b672151ac69a5ef39b543b905d12643b5dfccbe1ebd069b6",
+    "shortHash": "48f3b51b"
+  },
+  {
+    "file": "/game/voices/broodmother-2.mp3",
+    "name": "broodmother-2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 75885,
+    "hash": "8f42b1e952620146dc4f433411a78a0b3e631c08b56fd5d0b6a056336e61ef93",
+    "shortHash": "8f42b1e9"
+  },
+  {
+    "file": "/game/voices/broodmother-3.mp3",
+    "name": "broodmother-3.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 32685,
+    "hash": "3f219c2c25f61bceb03e784b4ce062fa303a60b0de89f67fda1c6cde0425c405",
+    "shortHash": "3f219c2c"
+  },
+  {
+    "file": "/game/voices/broodmother-4.mp3",
+    "name": "broodmother-4.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 39405,
+    "hash": "cce5f0360b8f098c59468bff4c6922f872d59d13d3701386db55cb0ce42a15fb",
+    "shortHash": "cce5f036"
+  },
+  {
+    "file": "/game/voices/broodmother-5.mp3",
+    "name": "broodmother-5.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 39405,
+    "hash": "5a0230dda216dafa9e27960288044b56846fc3b1b981cfe6bc4833253138d9dc",
+    "shortHash": "5a0230dd"
+  },
+  {
+    "file": "/game/voices/broodmother-6.mp3",
+    "name": "broodmother-6.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 92685,
+    "hash": "7ddb0cb260c5828a65cd5eeacb5ffa8a9162d18730623a145b8fefc978979c7f",
+    "shortHash": "7ddb0cb2"
+  },
+  {
+    "file": "/game/voices/boss-broodmother.mp3",
+    "name": "boss-broodmother.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 54285,
+    "hash": "370a1be46881b4530acddfc81c66c82ec5deec5770d4a439fd7946f92b97a01a",
+    "shortHash": "370a1be4"
+  },
+  {
+    "file": "/game/voices/boss-broodmother-v2.mp3",
+    "name": "boss-broodmother-v2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 74445,
+    "hash": "8ef43912a5c87fcb9c16bd80ef33dfff6f024c8c3892aa2a4a83cedf2dd619e7",
+    "shortHash": "8ef43912"
+  },
+  {
+    "file": "/game/voices/mycelium-1.mp3",
+    "name": "mycelium-1.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 49005,
+    "hash": "d9a3763c7fd8bce841432e266b53d19b097ea5b4fe3bb969dc111b60b5f45c9e",
+    "shortHash": "d9a3763c"
+  },
+  {
+    "file": "/game/voices/mycelium-2.mp3",
+    "name": "mycelium-2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 87885,
+    "hash": "1a08bfd55c45a245277d8fd4bedae59ec7cf3fed049979003a756d13199464c6",
+    "shortHash": "1a08bfd5"
+  },
+  {
+    "file": "/game/voices/mycelium-3.mp3",
+    "name": "mycelium-3.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 33645,
+    "hash": "4cf651a9e22e15674df5b237cc236d145ed19f5444ad9805572d6ca7d3aab7c7",
+    "shortHash": "4cf651a9"
+  },
+  {
+    "file": "/game/voices/mycelium-4.mp3",
+    "name": "mycelium-4.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 32685,
+    "hash": "f2a3eedf728be11c660d67de65af500416cef54501ce2df866dabab41d826830",
+    "shortHash": "f2a3eedf"
+  },
+  {
+    "file": "/game/voices/mycelium-5.mp3",
+    "name": "mycelium-5.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 28845,
+    "hash": "e17fd9749014f577f504b5ccd48a655b1b89ad6e977394c61e42255dff02db3d",
+    "shortHash": "e17fd974"
+  },
+  {
+    "file": "/game/voices/mycelium-6.mp3",
+    "name": "mycelium-6.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 44685,
+    "hash": "1547a6c2b47dae0f21bfcdcf2fcb8a7003a60299ca2ff2408529e0d2bdaab44f",
+    "shortHash": "1547a6c2"
+  },
+  {
+    "file": "/game/voices/boss-mycelium.mp3",
+    "name": "boss-mycelium.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 63885,
+    "hash": "6903aac1cdcd8336478138e7b759e124429d57e1905d6d3ba8a0a83c6e2599eb",
+    "shortHash": "6903aac1"
+  },
+  {
+    "file": "/game/voices/boss-mycelium-v2.mp3",
+    "name": "boss-mycelium-v2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 60045,
+    "hash": "dfe7dd383168737ff833d9856a7b92cc5c91447bfaf87c344deab1353d3a089c",
+    "shortHash": "dfe7dd38"
+  },
+  {
+    "file": "/game/voices/astra-1.mp3",
+    "name": "astra-1.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 39885,
+    "hash": "f9b73e1706f78ce2482ee3500553f51aa8e08bc49c3ee2d59d5a4513e84669ac",
+    "shortHash": "f9b73e17"
+  },
+  {
+    "file": "/game/voices/astra-2.mp3",
+    "name": "astra-2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 45645,
+    "hash": "4b7c36a1d0c5a9bbf89ad367fe53d5d2fb5cc61c36014c6a33dcb00f6ae56f3e",
+    "shortHash": "4b7c36a1"
+  },
+  {
+    "file": "/game/voices/astra-3.mp3",
+    "name": "astra-3.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 37485,
+    "hash": "a107448b43fec2f2d77786462074b26fa7a753d4de1a6b68f56670a0857e87a2",
+    "shortHash": "a107448b"
+  },
+  {
+    "file": "/game/voices/astra-4.mp3",
+    "name": "astra-4.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 40845,
+    "hash": "9c0a4729b61d05f15d209d4097ccc47c9ba9cb59649a1c82c77cc54556210f46",
+    "shortHash": "9c0a4729"
+  },
+  {
+    "file": "/game/voices/astra-5.mp3",
+    "name": "astra-5.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 39885,
+    "hash": "dfb000137d76654586d9e14ce0184c22fc10b043ff8f4611d661bd5815df0280",
+    "shortHash": "dfb00013"
+  },
+  {
+    "file": "/game/voices/astra-6.mp3",
+    "name": "astra-6.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 51885,
+    "hash": "15111d21475289d67d3227c3c5bac0d49c3fe8cb5f84bd811e69d31cb1f290d8",
+    "shortHash": "15111d21"
+  },
+  {
+    "file": "/game/voices/boss-astra.mp3",
+    "name": "boss-astra.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 64845,
+    "hash": "18214c5f1fc5c312a84974709461733ccfb37dd3be6b8c8d89dc4bea7a422b9c",
+    "shortHash": "18214c5f"
+  },
+  {
+    "file": "/game/voices/boss-astra-v2.mp3",
+    "name": "boss-astra-v2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 59085,
+    "hash": "592d62b9efd1d7ccfda400bf75d2626a271668da42804c84bebcee8d851cd70e",
+    "shortHash": "592d62b9"
+  },
+  {
+    "file": "/game/voices/scrapper-1.mp3",
+    "name": "scrapper-1.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 48045,
+    "hash": "86241a99cd46523c773532dcc9237406e8d4b0bbc837d35a61b53509952dd27b",
+    "shortHash": "86241a99"
+  },
+  {
+    "file": "/game/voices/scrapper-2.mp3",
+    "name": "scrapper-2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 44205,
+    "hash": "1c0286f27b7d3c8b7d27d6f4e15523359e655e42299488be3ea51db355b8163e",
+    "shortHash": "1c0286f2"
+  },
+  {
+    "file": "/game/voices/scrapper-3.mp3",
+    "name": "scrapper-3.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 20685,
+    "hash": "e7d93970b9c436287c9cd719f2478c1aec556aec96a45e290c93aa8cbef34ad9",
+    "shortHash": "e7d93970"
+  },
+  {
+    "file": "/game/voices/scrapper-4.mp3",
+    "name": "scrapper-4.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 30285,
+    "hash": "8ef0e2e91a483b83b33adeeb8818ac6ab1869798ee5473c824586b80230eefe7",
+    "shortHash": "8ef0e2e9"
+  },
+  {
+    "file": "/game/voices/scrapper-5.mp3",
+    "name": "scrapper-5.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 34605,
+    "hash": "5671c4f5965db0fd9f5279a4479b1a4545c56e04ed013740a26682cc41835b61",
+    "shortHash": "5671c4f5"
+  },
+  {
+    "file": "/game/voices/scrapper-6.mp3",
+    "name": "scrapper-6.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 39405,
+    "hash": "36c9a2acb5bd82c7abd6ab14c2183178ea510cc78ec63a720ee18e4cc7f06ec2",
+    "shortHash": "36c9a2ac"
+  },
+  {
+    "file": "/game/voices/boss-scrapper.mp3",
+    "name": "boss-scrapper.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 44205,
+    "hash": "b69e2bec64604b144e570db1b0f5c9a2174bdc8e7f0e0e4821f692e5101571da",
+    "shortHash": "b69e2bec"
+  },
+  {
+    "file": "/game/voices/boss-scrapper-v2.mp3",
+    "name": "boss-scrapper-v2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 58605,
+    "hash": "8a28e2acb1fb1ef3d8c257e989e587c2213fa7e3a8864e32455b4f3c5cce0c68",
+    "shortHash": "8a28e2ac"
+  },
+  {
+    "file": "/game/voices/umbra-1.mp3",
+    "name": "umbra-1.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 38445,
+    "hash": "79093b4948e613fd15215bf4db51e8044e72a4b27a114c4a771d8a697468c2bf",
+    "shortHash": "79093b49"
+  },
+  {
+    "file": "/game/voices/umbra-2.mp3",
+    "name": "umbra-2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 67245,
+    "hash": "837d7eb6a51fae11b69b1bce06347fd9c35995da3b994a626f36ce8ceec4a2f2",
+    "shortHash": "837d7eb6"
+  },
+  {
+    "file": "/game/voices/umbra-3.mp3",
+    "name": "umbra-3.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 30285,
+    "hash": "87c24b6ae52213335b3ebc4cad0cb6a3d3cfb0ede88797dfe2f911d91b9ec60d",
+    "shortHash": "87c24b6a"
+  },
+  {
+    "file": "/game/voices/umbra-4.mp3",
+    "name": "umbra-4.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 39405,
+    "hash": "0ff395fba61a71b1277dfefe922b63110fb32122a788479f52b2210a24b87323",
+    "shortHash": "0ff395fb"
+  },
+  {
+    "file": "/game/voices/umbra-5.mp3",
+    "name": "umbra-5.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 27885,
+    "hash": "c85afb1d63bdd1045d0541b3826c0f6c5bc720b78bb8463dc7ae21e59722321e",
+    "shortHash": "c85afb1d"
+  },
+  {
+    "file": "/game/voices/umbra-6.mp3",
+    "name": "umbra-6.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 41805,
+    "hash": "06a0622c32c5b4f19b5b5171fea886d3f9e8b4a11a764224306af6c332a00215",
+    "shortHash": "06a0622c"
+  },
+  {
+    "file": "/game/voices/boss-umbra.mp3",
+    "name": "boss-umbra.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 55245,
+    "hash": "8b80152a336c222b95b0fe2db701a36ef6b9e091ffa45d662a45b7133d555221",
+    "shortHash": "8b80152a"
+  },
+  {
+    "file": "/game/voices/boss-umbra-v2.mp3",
+    "name": "boss-umbra-v2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 63405,
+    "hash": "cb0bac742fc2a23b6ac2380acf9fbcbd1272dd8875aa96d1e721639dba6409f3",
+    "shortHash": "cb0bac74"
+  },
+  {
+    "file": "/game/voices/sol-1.mp3",
+    "name": "sol-1.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 43245,
+    "hash": "d327fa4be565d8e36cae04f9cd9fc771ae9a0c62f7f4a0240fb3c6b45b87ab27",
+    "shortHash": "d327fa4b"
+  },
+  {
+    "file": "/game/voices/sol-2.mp3",
+    "name": "sol-2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 41805,
+    "hash": "564a53711ac8aeeb0b02606a7b8898eb49c21ba7f50137d214daff3ce289f5de",
+    "shortHash": "564a5371"
+  },
+  {
+    "file": "/game/voices/sol-3.mp3",
+    "name": "sol-3.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 27405,
+    "hash": "aa3b54a697d66e3f0656fb0c6fa97a3a2dedc1f76b7dd4fb27c1cd13e51ad0e9",
+    "shortHash": "aa3b54a6"
+  },
+  {
+    "file": "/game/voices/sol-4.mp3",
+    "name": "sol-4.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 30285,
+    "hash": "cd836ddd22513092ccbdf367667b614f0855e08bf705745854d8829ab029e5d7",
+    "shortHash": "cd836ddd"
+  },
+  {
+    "file": "/game/voices/sol-5.mp3",
+    "name": "sol-5.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 32685,
+    "hash": "c954655f179e8135103ae6cde4e678d9d7ca5a497b2cef5d9201b8343911c89f",
+    "shortHash": "c954655f"
+  },
+  {
+    "file": "/game/voices/sol-6.mp3",
+    "name": "sol-6.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 39885,
+    "hash": "1dcbc54535d0e92cb0b433f2ec23c21fdeb16a97ec95120e14ad2305e418ad55",
+    "shortHash": "1dcbc545"
+  },
+  {
+    "file": "/game/voices/boss-sol.mp3",
+    "name": "boss-sol.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 49485,
+    "hash": "60a42eeb01e63c45f787f3c57dfc161f4596bbb0847d525633bbe2dd2434bd87",
+    "shortHash": "60a42eeb"
+  },
+  {
+    "file": "/game/voices/boss-sol-v2.mp3",
+    "name": "boss-sol-v2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 55245,
+    "hash": "d56db24aab4917b23c8fade6974b727d42d6dc6bc8fa026dd2283754f7d96e4a",
+    "shortHash": "d56db24a"
+  },
+  {
+    "file": "/game/voices/nautilus-1.mp3",
+    "name": "nautilus-1.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 45645,
+    "hash": "a0d921d570ea04b5c48624cb1b0c8a6c5fcac269d9e5ee112c2f3afc308da4c9",
+    "shortHash": "a0d921d5"
+  },
+  {
+    "file": "/game/voices/nautilus-2.mp3",
+    "name": "nautilus-2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 39405,
+    "hash": "9ea33eaaa4f9e3cb11c1e31491f93f43764ca7467e8b5812c31e9f0b5a33c715",
+    "shortHash": "9ea33eaa"
+  },
+  {
+    "file": "/game/voices/nautilus-3.mp3",
+    "name": "nautilus-3.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 30285,
+    "hash": "1a51bdcda53cc2bbfb2c076c9388893c4c85ffc42907f64396eb145e4183e8f2",
+    "shortHash": "1a51bdcd"
+  },
+  {
+    "file": "/game/voices/nautilus-4.mp3",
+    "name": "nautilus-4.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 32685,
+    "hash": "ae1ed605c8b5f91ba3ab56b7f176f0931b3fa441ddc64a625f0e83249c50d3eb",
+    "shortHash": "ae1ed605"
+  },
+  {
+    "file": "/game/voices/nautilus-5.mp3",
+    "name": "nautilus-5.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 38445,
+    "hash": "e89fe70323cefc8afd809b5c9b5c71856296036bd4f8a55e781e41c907333f3e",
+    "shortHash": "e89fe703"
+  },
+  {
+    "file": "/game/voices/nautilus-6.mp3",
+    "name": "nautilus-6.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 47085,
+    "hash": "326f1eb54f5d3b14aac3106a2460c917921ea3e9e39b2ee1dcea857a10fb9342",
+    "shortHash": "326f1eb5"
+  },
+  {
+    "file": "/game/voices/boss-nautilus.mp3",
+    "name": "boss-nautilus.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 62445,
+    "hash": "a3a9765af3554cd48b07102807127132089834f5f4f1c4d1e86a72df95f693a0",
+    "shortHash": "a3a9765a"
+  },
+  {
+    "file": "/game/voices/boss-nautilus-v2.mp3",
+    "name": "boss-nautilus-v2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 55245,
+    "hash": "3d2bc64ac9112e691ecef2b32accd5425de1faffba9de953e71f5e6b4e73ff16",
+    "shortHash": "3d2bc64a"
+  },
+  {
+    "file": "/game/voices/chronos-1.mp3",
+    "name": "chronos-1.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 41805,
+    "hash": "b13c9959bbc2c001a98fd133cb4a2d500c018b3148c19cda55e97379a5a36462",
+    "shortHash": "b13c9959"
+  },
+  {
+    "file": "/game/voices/chronos-2.mp3",
+    "name": "chronos-2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 48045,
+    "hash": "5f8094639f282ade30c9c3368df9a55fe1412786f9fe710b8ed116dbbdced2b4",
+    "shortHash": "5f809463"
+  },
+  {
+    "file": "/game/voices/chronos-3.mp3",
+    "name": "chronos-3.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 36045,
+    "hash": "88ae43348e7c82a19b220e21b393151c2299b9c64311b2acbc401f25716c80ae",
+    "shortHash": "88ae4334"
+  },
+  {
+    "file": "/game/voices/chronos-4.mp3",
+    "name": "chronos-4.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 27885,
+    "hash": "bd3f07dd5156401a4e6a298aead1642aaa186178775be605bf13181e05a0b68e",
+    "shortHash": "bd3f07dd"
+  },
+  {
+    "file": "/game/voices/chronos-5.mp3",
+    "name": "chronos-5.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 31245,
+    "hash": "3d78a455db1206877511ad0072d72288a6204da8e10deaff58265c87f68b15bd",
+    "shortHash": "3d78a455"
+  },
+  {
+    "file": "/game/voices/chronos-6.mp3",
+    "name": "chronos-6.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 44685,
+    "hash": "6fed129b23faf75dec52e23df58b975505aff8f2d9a863948b09329cd54981e0",
+    "shortHash": "6fed129b"
+  },
+  {
+    "file": "/game/voices/boss-chronos.mp3",
+    "name": "boss-chronos.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 64845,
+    "hash": "1770798ae57e73bc856d097235efed9e9666e5f1687f6b8dae9d7cbdcf99aa1d",
+    "shortHash": "1770798a"
+  },
+  {
+    "file": "/game/voices/boss-chronos-v2.mp3",
+    "name": "boss-chronos-v2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 68205,
+    "hash": "b4618289b60756a300d8b712f5b2e7fd06ccdab0b3b2435b3e6472ff1076f3b3",
+    "shortHash": "b4618289"
+  },
+  {
+    "file": "/game/voices/boreas-1.mp3",
+    "name": "boreas-1.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 32205,
+    "hash": "0d6a4c23d0e35c0d9c220bc2bb817b3d8c642698c05b4680fad834d336f14ca2",
+    "shortHash": "0d6a4c23"
+  },
+  {
+    "file": "/game/voices/boreas-2.mp3",
+    "name": "boreas-2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 55245,
+    "hash": "834a580076e983731ef6f7e87a9bd11b3e164e3053bee43527e48a9a1e4c8b57",
+    "shortHash": "834a5800"
+  },
+  {
+    "file": "/game/voices/boreas-3.mp3",
+    "name": "boreas-3.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 26445,
+    "hash": "5568d9c88858a0d873b2fc15157a96755e5a7b9a58f8c0561f27b34937211f49",
+    "shortHash": "5568d9c8"
+  },
+  {
+    "file": "/game/voices/boreas-4.mp3",
+    "name": "boreas-4.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 25485,
+    "hash": "2472603455f64115b7123634fe5d01b0d033a549d8fbe63a52e6e6b23d9c83e3",
+    "shortHash": "24726034"
+  },
+  {
+    "file": "/game/voices/boreas-5.mp3",
+    "name": "boreas-5.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 38445,
+    "hash": "7e4f5a6c7d43a2571a3555abd89b8f7c310b61d9475fd124b322598f145583b9",
+    "shortHash": "7e4f5a6c"
+  },
+  {
+    "file": "/game/voices/boreas-6.mp3",
+    "name": "boreas-6.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 55245,
+    "hash": "bd10e5519f4fc9b36682f538ba28571cce2c264aabb86adcba5f567c7f7b7034",
+    "shortHash": "bd10e551"
+  },
+  {
+    "file": "/game/voices/boss-boreas.mp3",
+    "name": "boss-boreas.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 51885,
+    "hash": "acd2b6a722cb364d3b9571d33c778661282841f50942fab7a8cef2a14c834d79",
+    "shortHash": "acd2b6a7"
+  },
+  {
+    "file": "/game/voices/boss-boreas-v2.mp3",
+    "name": "boss-boreas-v2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 61005,
+    "hash": "d127293639a352772272f7d73610e1b8b5c0e49986b8839d5e93b6902b470fc4",
+    "shortHash": "d1272936"
+  },
+  {
+    "file": "/game/voices/sovereign-1.mp3",
+    "name": "sovereign-1.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 59085,
+    "hash": "d9bbf9ef84789d94145e29eef93cdf8ca87233237a48e429b5fd8afd59868a42",
+    "shortHash": "d9bbf9ef"
+  },
+  {
+    "file": "/game/voices/sovereign-2.mp3",
+    "name": "sovereign-2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 36045,
+    "hash": "4055ac9291cd74082f94df04d4b235ff959ea517c74dcd8efb49f90b207fd653",
+    "shortHash": "4055ac92"
+  },
+  {
+    "file": "/game/voices/sovereign-3.mp3",
+    "name": "sovereign-3.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 29805,
+    "hash": "81a39afa4454583777a549dcdb92a6f36d5101528a5ffac401cd51eef7c50e0f",
+    "shortHash": "81a39afa"
+  },
+  {
+    "file": "/game/voices/sovereign-4.mp3",
+    "name": "sovereign-4.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 32685,
+    "hash": "14007480875fe5a6c820b87aac6476e4814a688603277423018a40ebda878abc",
+    "shortHash": "14007480"
+  },
+  {
+    "file": "/game/voices/sovereign-5.mp3",
+    "name": "sovereign-5.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 27885,
+    "hash": "96386f4ed2205cafda344dc9aea1d5c10dc537204abfcade9c9ae7d4a46b27dc",
+    "shortHash": "96386f4e"
+  },
+  {
+    "file": "/game/voices/sovereign-6.mp3",
+    "name": "sovereign-6.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 44205,
+    "hash": "09c33cd80cb1812fd245a96922ec7de4b22754759ef7a4a282386f1a5e63266f",
+    "shortHash": "09c33cd8"
+  },
+  {
+    "file": "/game/voices/boss-sovereign.mp3",
+    "name": "boss-sovereign.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 56205,
+    "hash": "cb42cf36a376421a284f3d200ce9d3b9a4f46362463da2b1613d2a54751052e0",
+    "shortHash": "cb42cf36"
+  },
+  {
+    "file": "/game/voices/boss-sovereign-v2.mp3",
+    "name": "boss-sovereign-v2.mp3",
+    "group": "voices",
+    "category": "voice",
+    "size": 57645,
+    "hash": "b6a541294fa7b2e6e55a3468b80b290a853cb5ddef54f3c9c73a8ebd4428899f",
+    "shortHash": "b6a54129"
+  },
+  {
+    "file": "/game/boss-arenas/veyran.png",
+    "name": "veyran.png",
+    "size": 141769,
+    "hash": "4d2c558e75493e6bcf8e6c77404851294a23133920c004c53948d3743be3023b",
+    "shortHash": "4d2c558e",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 1,
+    "boss": "Malik Veyran"
+  },
+  {
+    "file": "/game/boss-arenas/hd/veyran.webp",
+    "name": "veyran.webp",
+    "size": 1466212,
+    "hash": "f401ba7118978b7acab86c82b5bd0566ac0a9ce2332744f74500e3facd22fa6a",
+    "shortHash": "f401ba71",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 1,
+    "boss": "Malik Veyran"
+  },
+  {
+    "file": "/game/boss-arenas/hecate.png",
+    "name": "hecate.png",
+    "size": 150836,
+    "hash": "a99d9b5afde9aee07a8d4c4f6752b0e3e73cb3b46d0d01bc66a3e8683210c3da",
+    "shortHash": "a99d9b5a",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 2,
+    "boss": "HECATE\u20139"
+  },
+  {
+    "file": "/game/boss-arenas/hd/hecate.webp",
+    "name": "hecate.webp",
+    "size": 1617958,
+    "hash": "8a4549b6eef7381093a27ece7134b24460786ecf0f24dec4990f23310f5b33d6",
+    "shortHash": "8a4549b6",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 2,
+    "boss": "HECATE\u20139"
+  },
+  {
+    "file": "/game/boss-arenas/chimera.png",
+    "name": "chimera.png",
+    "size": 157390,
+    "hash": "f3efb56cca56dd3dc0614b0761f52cefdae429d1bdfcd0fbdfab5e34c660b983",
+    "shortHash": "f3efb56c",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 3,
+    "boss": "CHIMERA\u20139"
+  },
+  {
+    "file": "/game/boss-arenas/hd/chimera.webp",
+    "name": "chimera.webp",
+    "size": 1523490,
+    "hash": "283b28e7770c9490998ec4c512aa53ab5e440399b6d4d0869634ad28645f4b50",
+    "shortHash": "283b28e7",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 3,
+    "boss": "CHIMERA\u20139"
+  },
+  {
+    "file": "/game/boss-arenas/oracle.png",
+    "name": "oracle.png",
+    "size": 133646,
+    "hash": "c96089b07b8867970119a19264bd96b265910ba62a25cdcf931e238f0a5eab41",
+    "shortHash": "c96089b0",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 4,
+    "boss": "ORACLE\u20137"
+  },
+  {
+    "file": "/game/boss-arenas/hd/oracle.webp",
+    "name": "oracle.webp",
+    "size": 1347954,
+    "hash": "92f47f52494f1911ce0757a2531aaebedf02281cccc2f4d28c4a6f93c3943784",
+    "shortHash": "92f47f52",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 4,
+    "boss": "ORACLE\u20137"
+  },
+  {
+    "file": "/game/boss-arenas/gravemind.png",
+    "name": "gravemind.png",
+    "size": 149866,
+    "hash": "cfa12923f4aa2fd41be01968b4eea04f981f6562863a58d2b2ae7d6d5c0067b1",
+    "shortHash": "cfa12923",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 5,
+    "boss": "GRAVEMIND\u20134"
+  },
+  {
+    "file": "/game/boss-arenas/hd/gravemind.webp",
+    "name": "gravemind.webp",
+    "size": 1515174,
+    "hash": "59010105af4d53f7b617a4b3ffa8e385117adabb6996e270875f05153be2cf2e",
+    "shortHash": "59010105",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 5,
+    "boss": "GRAVEMIND\u20134"
+  },
+  {
+    "file": "/game/boss-arenas/archivist.png",
+    "name": "archivist.png",
+    "size": 140210,
+    "hash": "718ee7f2521c809b8a58a4eaa92f41149b402cfb99e2935bad6f53682562fb9c",
+    "shortHash": "718ee7f2",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 6,
+    "boss": "Null Archivist"
+  },
+  {
+    "file": "/game/boss-arenas/hd/archivist.webp",
+    "name": "archivist.webp",
+    "size": 1400162,
+    "hash": "9c4823a584eb8f14fb516fa708b91d6704fb0a41dad15bb69c69b7992d9c5fca",
+    "shortHash": "9c4823a5",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 6,
+    "boss": "Null Archivist"
+  },
+  {
+    "file": "/game/boss-arenas/halcyon.png",
+    "name": "halcyon.png",
+    "size": 174154,
+    "hash": "dd0d7b8844c7082e5b630293930e96f072134a68cdc5c201c4b028b42c893667",
+    "shortHash": "dd0d7b88",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 7,
+    "boss": "HALCYON\u20133"
+  },
+  {
+    "file": "/game/boss-arenas/hd/halcyon.webp",
+    "name": "halcyon.webp",
+    "size": 1788370,
+    "hash": "9817773f5eedd3a0f4bc2bfbb11a54f7c0aef7a5eca10a75f1e0ba553a04c6ab",
+    "shortHash": "9817773f",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 7,
+    "boss": "HALCYON\u20133"
+  },
+  {
+    "file": "/game/boss-arenas/relay.png",
+    "name": "relay.png",
+    "size": 159753,
+    "hash": "912b3ebf6c06997ba5fac5f2b903561064168bcb3608caddc772a6ca092f9a0c",
+    "shortHash": "912b3ebf",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 8,
+    "boss": "RELAY\u20130"
+  },
+  {
+    "file": "/game/boss-arenas/hd/relay.webp",
+    "name": "relay.webp",
+    "size": 1567298,
+    "hash": "a4728c9e9c484ad59ac6285574b5eeead2352c415e12a932dd65e319d270b655",
+    "shortHash": "a4728c9e",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 8,
+    "boss": "RELAY\u20130"
+  },
+  {
+    "file": "/game/boss-arenas/titan.png",
+    "name": "titan.png",
+    "size": 151275,
+    "hash": "24955da721fbfc10d0852def9b12742a46eb7032d4cf754d3650a285418046ae",
+    "shortHash": "24955da7",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 9,
+    "boss": "TITAN\u201312"
+  },
+  {
+    "file": "/game/boss-arenas/hd/titan.webp",
+    "name": "titan.webp",
+    "size": 1625086,
+    "hash": "424c4723e43cc80fb0bcd4b1977f03c0e5900c8f3ab36924eb6020ab1dfb8a8d",
+    "shortHash": "424c4723",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 9,
+    "boss": "TITAN\u201312"
+  },
+  {
+    "file": "/game/boss-arenas/kest.png",
+    "name": "kest.png",
+    "size": 134376,
+    "hash": "09f48afb4933df5585b03bd460870dbc1e52067aec2a83c01053575c93b9c727",
+    "shortHash": "09f48afb",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 10,
+    "boss": "Director Kest"
+  },
+  {
+    "file": "/game/boss-arenas/hd/kest.webp",
+    "name": "kest.webp",
+    "size": 1441032,
+    "hash": "7b91a041acce58f8c61bfcd8a4cd9dcf8fab81f7297d774802cbdf3a1ccaf77b",
+    "shortHash": "7b91a041",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 10,
+    "boss": "Director Kest"
+  },
+  {
+    "file": "/game/boss-arenas/mnemosyne.png",
+    "name": "mnemosyne.png",
+    "size": 137961,
+    "hash": "6e23fcd3c1bb25aafcf3483d44761501ffe8783505523a9e24cc6a8fc8c0bed8",
+    "shortHash": "6e23fcd3",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 11,
+    "boss": "MNEMOSYNE\u20136"
+  },
+  {
+    "file": "/game/boss-arenas/hd/mnemosyne.webp",
+    "name": "mnemosyne.webp",
+    "size": 1413670,
+    "hash": "3ee17c1c52e942ea44edb8add67e11b9116c2bb6c7235047aaaa0f68b135b4ef",
+    "shortHash": "3ee17c1c",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 11,
+    "boss": "MNEMOSYNE\u20136"
+  },
+  {
+    "file": "/game/boss-arenas/vulcan.png",
+    "name": "vulcan.png",
+    "size": 157210,
+    "hash": "eddfb671db00adcaef6190ef66b79504091b577e843ce2829f3720cd5a768037",
+    "shortHash": "eddfb671",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 12,
+    "boss": "VULCAN\u20132"
+  },
+  {
+    "file": "/game/boss-arenas/hd/vulcan.webp",
+    "name": "vulcan.webp",
+    "size": 1787460,
+    "hash": "f22ed3d917011ed1b6d35778cbcbef2ed2145ec99b2e423530c65d330da98075",
+    "shortHash": "f22ed3d9",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 12,
+    "boss": "VULCAN\u20132"
+  },
+  {
+    "file": "/game/boss-arenas/leviathan.png",
+    "name": "leviathan.png",
+    "size": 160924,
+    "hash": "2f0710e7334f8a77edbe6a2eff43b4921f661e6ff7bff71d20ca7dd01f54896f",
+    "shortHash": "2f0710e7",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 13,
+    "boss": "LEVIATHAN\u20138"
+  },
+  {
+    "file": "/game/boss-arenas/hd/leviathan.webp",
+    "name": "leviathan.webp",
+    "size": 1709392,
+    "hash": "fdbdebe179eca18fc01b1785ce93d6b71d0ecc1dbce08d9ad3e3f0e27e0dbd05",
+    "shortHash": "fdbdebe1",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 13,
+    "boss": "LEVIATHAN\u20138"
+  },
+  {
+    "file": "/game/boss-arenas/prism.png",
+    "name": "prism.png",
+    "size": 135806,
+    "hash": "da276f0a7ecdbe09e09a394367dad69815cb7745e1bb377b27dd83cde33f7939",
+    "shortHash": "da276f0a",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 14,
+    "boss": "PRISM\u20135"
+  },
+  {
+    "file": "/game/boss-arenas/hd/prism.webp",
+    "name": "prism.webp",
+    "size": 1260368,
+    "hash": "f746897f961f669135257ce6e194e8fa746a0957118050796f4626e81b5192ab",
+    "shortHash": "f746897f",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 14,
+    "boss": "PRISM\u20135"
+  },
+  {
+    "file": "/game/boss-arenas/magnus.png",
+    "name": "magnus.png",
+    "size": 137048,
+    "hash": "e12b2e1d255bcc06b7e77b8379c8d67cb49ea5faca7003a3a38a9409125808dd",
+    "shortHash": "e12b2e1d",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 15,
+    "boss": "MAGNUS\u20134"
+  },
+  {
+    "file": "/game/boss-arenas/hd/magnus.webp",
+    "name": "magnus.webp",
+    "size": 1420866,
+    "hash": "230c731eea901ff4b1679fe2e3319be37a647ab7af8e637888aa67c2778788a2",
+    "shortHash": "230c731e",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 15,
+    "boss": "MAGNUS\u20134"
+  },
+  {
+    "file": "/game/boss-arenas/broodmother.png",
+    "name": "broodmother.png",
+    "size": 159561,
+    "hash": "5a1f159ff84a751e657468b71fa4aa9e60940ce8c52236ee728ee8efa3900eb0",
+    "shortHash": "5a1f159f",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 16,
+    "boss": "BROODMOTHER\u20133"
+  },
+  {
+    "file": "/game/boss-arenas/hd/broodmother.webp",
+    "name": "broodmother.webp",
+    "size": 1494454,
+    "hash": "1576ca8c371e4d240c184deb897d2b4ef2cb738847cc66fc37a8300c051d2ec2",
+    "shortHash": "1576ca8c",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 16,
+    "boss": "BROODMOTHER\u20133"
+  },
+  {
+    "file": "/game/boss-arenas/mycelium.png",
+    "name": "mycelium.png",
+    "size": 161291,
+    "hash": "5cc62a6acb016a32861b518c95aaf62b56b0f4a68609553ca906116467e04c17",
+    "shortHash": "5cc62a6a",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 17,
+    "boss": "MYCELIUM\u20139"
+  },
+  {
+    "file": "/game/boss-arenas/hd/mycelium.webp",
+    "name": "mycelium.webp",
+    "size": 1601112,
+    "hash": "51d8bc9ace236985f690d11bc4253ec735bd97bd4b5a7794c848f291e8dbd9bb",
+    "shortHash": "51d8bc9a",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 17,
+    "boss": "MYCELIUM\u20139"
+  },
+  {
+    "file": "/game/boss-arenas/astra.png",
+    "name": "astra.png",
+    "size": 142430,
+    "hash": "a247171e3e26df690ab1fab68c6264fcb6dd3aa36468b1ddd216e92798da2c1b",
+    "shortHash": "a247171e",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 18,
+    "boss": "ASTRA\u20137"
+  },
+  {
+    "file": "/game/boss-arenas/hd/astra.webp",
+    "name": "astra.webp",
+    "size": 1385382,
+    "hash": "21dccf7122a6a46e51c46ee877906bda08f5bb62f7c66e757e0677c5aac23b61",
+    "shortHash": "21dccf71",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 18,
+    "boss": "ASTRA\u20137"
+  },
+  {
+    "file": "/game/boss-arenas/scrapper.png",
+    "name": "scrapper.png",
+    "size": 165091,
+    "hash": "cad89ac9eef93c8880774c3228bea4be1909c439068e41cd0faa82953cb05292",
+    "shortHash": "cad89ac9",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 19,
+    "boss": "SCRAPPER\u20136"
+  },
+  {
+    "file": "/game/boss-arenas/hd/scrapper.webp",
+    "name": "scrapper.webp",
+    "size": 1790612,
+    "hash": "ab40d2ec23de356b9ad418d074f0ff4b5b32cd34b7df605b4bb6a3a916d40bc0",
+    "shortHash": "ab40d2ec",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 19,
+    "boss": "SCRAPPER\u20136"
+  },
+  {
+    "file": "/game/boss-arenas/umbra.png",
+    "name": "umbra.png",
+    "size": 121977,
+    "hash": "eed661897d7ee6fdb7c64e87d0c653d74c21189993292d2520267508a81480ba",
+    "shortHash": "eed66189",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 20,
+    "boss": "UMBRA\u20131"
+  },
+  {
+    "file": "/game/boss-arenas/hd/umbra.webp",
+    "name": "umbra.webp",
+    "size": 1300596,
+    "hash": "482e2ee7e6c609225987edab534ab71fd748be302085c42fd143832042445f61",
+    "shortHash": "482e2ee7",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 20,
+    "boss": "UMBRA\u20131"
+  },
+  {
+    "file": "/game/boss-arenas/sol.png",
+    "name": "sol.png",
+    "size": 143279,
+    "hash": "9534722b280d45621e14d28bc2867d0101cd730922c15a7aae2e895b78d2eb90",
+    "shortHash": "9534722b",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 21,
+    "boss": "SOL\u201312"
+  },
+  {
+    "file": "/game/boss-arenas/hd/sol.webp",
+    "name": "sol.webp",
+    "size": 1471480,
+    "hash": "ca3152edb64242b90bd4fb0982c8957c7be78fcdd78383754da70245c7ae389e",
+    "shortHash": "ca3152ed",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 21,
+    "boss": "SOL\u201312"
+  },
+  {
+    "file": "/game/boss-arenas/nautilus.png",
+    "name": "nautilus.png",
+    "size": 152407,
+    "hash": "5b99a4fc8b260802e44625b595fc1fb42c1ffce92474d3177ba9da00ec71e5f3",
+    "shortHash": "5b99a4fc",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 22,
+    "boss": "NAUTILUS\u20134"
+  },
+  {
+    "file": "/game/boss-arenas/hd/nautilus.webp",
+    "name": "nautilus.webp",
+    "size": 1695802,
+    "hash": "2bbd1b31d43d8b6366dfc4aa54fdac5721370e5e92cc339d48228d3eda0c016f",
+    "shortHash": "2bbd1b31",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 22,
+    "boss": "NAUTILUS\u20134"
+  },
+  {
+    "file": "/game/boss-arenas/chronos.png",
+    "name": "chronos.png",
+    "size": 149917,
+    "hash": "8be26365d90f7111638d74173f4b2041aefa562aedd74727c8949468b8c9689d",
+    "shortHash": "8be26365",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 23,
+    "boss": "CHRONOS\u20138"
+  },
+  {
+    "file": "/game/boss-arenas/hd/chronos.webp",
+    "name": "chronos.webp",
+    "size": 1476366,
+    "hash": "2761d0ce79930c425db8972b80a94b79255e1becc2457f7e2ca9f53c90b2d2e4",
+    "shortHash": "2761d0ce",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 23,
+    "boss": "CHRONOS\u20138"
+  },
+  {
+    "file": "/game/boss-arenas/boreas.png",
+    "name": "boreas.png",
+    "size": 156837,
+    "hash": "f4919361f895da6e7cb911050c471569e802c5a19560f61786115c69b8c4b2ef",
+    "shortHash": "f4919361",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 24,
+    "boss": "BOREAS\u201311"
+  },
+  {
+    "file": "/game/boss-arenas/hd/boreas.webp",
+    "name": "boreas.webp",
+    "size": 1596798,
+    "hash": "f9ff44c123dc24e24dfff3900d8e902459209c5492406d95d3ea8186bd5b1760",
+    "shortHash": "f9ff44c1",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 24,
+    "boss": "BOREAS\u201311"
+  },
+  {
+    "file": "/game/boss-arenas/sovereign.png",
+    "name": "sovereign.png",
+    "size": 136087,
+    "hash": "18db95ea9d8641c0a5e073fabd3c8154bf3b310dbcf29285076b51734d399ee3",
+    "shortHash": "18db95ea",
+    "width": 256,
+    "height": 256,
+    "group": "textures",
+    "seamless": true,
+    "level": 25,
+    "boss": "THE SOVEREIGN"
+  },
+  {
+    "file": "/game/boss-arenas/hd/sovereign.webp",
+    "name": "sovereign.webp",
+    "size": 1339920,
+    "hash": "e95af28f8a1aa2e8ce902d57ab46383d62dc8b88004b4833b18d71fb6fc83ead",
+    "shortHash": "e95af28f",
+    "width": 1024,
+    "height": 1024,
+    "group": "textures",
+    "seamless": true,
+    "level": 25,
+    "boss": "THE SOVEREIGN"
   }
 ]

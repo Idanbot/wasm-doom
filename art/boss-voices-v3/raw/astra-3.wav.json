@@ -1,0 +1,12 @@
+{
+  "signature": "4fe7b03001285f92d8a937d79ea5749a3d065d6907ab217883dd8255359eb50d",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Bring the strike down.",
+    "speaker": "apollo",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:08.319Z"
+}

@@ -1,0 +1,12 @@
+{
+  "signature": "5cd057c7c51077d97d409450f5b3bf525d0d5b3a9ac44a0fccbaaece8c10fe82",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Unauthorized lifeform in the forge.",
+    "speaker": "neptune",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:21.323Z"
+}

@@ -1,0 +1,12 @@
+{
+  "signature": "041ff21f98243e32cef01da41d736933ccd2ef8862cf20ed6edfdab0f7f8c441",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Pain is obsolete.",
+    "speaker": "saturn",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:15.488Z"
+}

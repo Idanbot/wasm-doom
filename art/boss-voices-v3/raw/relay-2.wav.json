@@ -1,0 +1,12 @@
+{
+  "signature": "0083ba1585ee8256cbd7f62ec8b5cbf0433316064f76a491ba80986a1292fa9f",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "I have your frequency.",
+    "speaker": "hermes",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:24.297Z"
+}

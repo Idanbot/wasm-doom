@@ -1,356 +1,356 @@
 {
   "model": "@cf/deepgram/aura-2-en",
-  "source": "src/components/game/data.ts radioCopy line 8",
+  "source": "Clean Aura-2 v3 boss performances",
   "bosses": [
     {
       "id": "boss-veyran",
       "speaker": "saturn",
-      "style": "Wounded human commander; intimate, bitter and still proud",
-      "effect": "overlord",
-      "text": "My vault... my blood. Take the rail, intruder. Let it remember who built this place."
-    },
-    {
-      "id": "boss-hecate",
-      "speaker": "neptune",
-      "style": "Damaged machine warden; measured shutdown with power failing",
-      "effect": "robot-low",
-      "text": "Core failure. Warden protocol terminated. Forge cutter released. Do not let it cool."
-    },
-    {
-      "id": "boss-chimera",
-      "speaker": "draco",
-      "style": "Infected specimen; breathless, predatory, almost human",
-      "effect": "bio",
-      "text": "You broke the cage. The toxin is yours now. Breathe carefully."
-    },
-    {
-      "id": "boss-oracle",
-      "speaker": "electra",
-      "style": "Predictive machine core collapsing into static",
-      "effect": "robot-high",
-      "text": "Prediction failed. The Predictor rail is yours."
-    },
-    {
-      "id": "boss-gravemind",
-      "speaker": "saturn",
-      "style": "Dying reactor engineer, exhausted human rasp",
-      "effect": "respirator",
-      "text": "Containment... lost. Take the Sink cannon. Seal the reactor."
-    },
-    {
-      "id": "boss-archivist",
-      "speaker": "neptune",
-      "style": "Ancient memory custodian, calm synthetic voice breaking into human regret",
-      "effect": "robot-low",
-      "text": "Archive integrity lost. The rail is yours. Do not write me back."
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The signal is quiet. You earned the rifle."
     },
     {
       "id": "boss-veyran-v2",
       "speaker": "saturn",
-      "style": "Wounded human commander",
-      "effect": "overlord",
-      "text": "My vault is yours. I buried the truth beneath that rail. Do not let them seal it again."
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "Nadir is yours now. Make it mean something."
+    },
+    {
+      "id": "boss-hecate",
+      "speaker": "neptune",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The forge is cooling. Take the cutter."
     },
     {
       "id": "boss-hecate-v2",
       "speaker": "neptune",
-      "style": "Damaged machine warden",
-      "effect": "robot-low",
-      "text": "Safety locks have failed. My forge cutter is yours. Keep clear of the discharge."
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "No more orders. No more heat. You can go."
+    },
+    {
+      "id": "boss-chimera",
+      "speaker": "hyperion",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "I can finally breathe. Take the weapon."
     },
     {
       "id": "boss-chimera-v2",
-      "speaker": "draco",
-      "style": "Infected specimen",
-      "effect": "bio",
-      "text": "Containment was never meant to save you. The compound still lives in the sprayer."
+      "speaker": "hyperion",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The chamber is open. Let the others out."
+    },
+    {
+      "id": "boss-oracle",
+      "speaker": "electra",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "I did not see this ending. The rifle is yours."
     },
     {
       "id": "boss-oracle-v2",
       "speaker": "electra",
-      "style": "Predictive core",
-      "effect": "robot-high",
-      "text": "I saw every outcome except this one. The Predictor rifle is yours."
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "One choice was still yours to make."
+    },
+    {
+      "id": "boss-gravemind",
+      "speaker": "atlas",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The pressure is gone. Keep the core stable."
     },
     {
       "id": "boss-gravemind-v2",
-      "speaker": "saturn",
-      "style": "Dying reactor engineer",
-      "effect": "respirator",
-      "text": "Pressure gone. Take the Sink cannon. Keep the core from swallowing you."
+      "speaker": "atlas",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "That is enough. Let the chamber rest."
+    },
+    {
+      "id": "boss-archivist",
+      "speaker": "orion",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "Keep the last record. The rail is yours."
     },
     {
       "id": "boss-archivist-v2",
-      "speaker": "neptune",
-      "style": "Ancient memory custodian",
-      "effect": "robot-low",
-      "text": "Last record: I was here. Take the Archive rail and carry it out."
+      "speaker": "orion",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "Remember that someone was here."
     },
     {
       "id": "boss-halcyon",
-      "speaker": "neptune",
-      "style": "Cryogenic sentry",
-      "effect": "robot-low",
-      "text": "Coolant pressure collapsing. The Rime launcher is yours. Do not let it thaw."
+      "speaker": "pandora",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The ice is breaking. Take the weapon."
     },
     {
       "id": "boss-halcyon-v2",
-      "speaker": "neptune",
-      "style": "Cryogenic sentry",
-      "effect": "robot-low",
-      "text": "Containment ice gone. Keep the cold between you and the next chamber."
+      "speaker": "pandora",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "Keep moving. The cold will not wait."
     },
     {
       "id": "boss-relay",
-      "speaker": "electra",
-      "style": "Interference robot",
-      "effect": "robot-high",
-      "text": "Signal lost. The Relay carbine is unbound."
+      "speaker": "hermes",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The noise is gone. Choose your own route."
     },
     {
       "id": "boss-relay-v2",
-      "speaker": "electra",
-      "style": "Interference robot",
-      "effect": "robot-high",
-      "text": "No carrier. No command. Take my transmitter and make your own route."
+      "speaker": "hermes",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "At last, a clear channel. You can leave."
     },
     {
       "id": "boss-titan",
-      "speaker": "draco",
-      "style": "Hydraulic siege walker",
-      "effect": "heavy",
-      "text": "Hydraulics failed. Siege cannon released. The gate is yours."
+      "speaker": "zeus",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The supports are failing. Take the cannon and run."
     },
     {
       "id": "boss-titan-v2",
-      "speaker": "draco",
-      "style": "Hydraulic siege walker",
-      "effect": "heavy",
-      "text": "Load-bearing systems gone. Take the Titan cannon before the ceiling follows."
+      "speaker": "zeus",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "That was the last load I could carry."
     },
     {
       "id": "boss-kest",
-      "speaker": "saturn",
-      "style": "Wounded site director",
-      "effect": "comms",
-      "text": "You have cut the chain of command. The Kest rifle is yours."
+      "speaker": "draco",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "I thought this place would outlast us. I was wrong."
     },
     {
       "id": "boss-kest-v2",
-      "speaker": "saturn",
-      "style": "Wounded site director",
-      "effect": "comms",
-      "text": "I built this place to outlast us. Take the rifle. Prove me wrong."
+      "speaker": "draco",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "Take the rifle. Finish what I could not."
     },
     {
       "id": "boss-mnemosyne",
       "speaker": "luna",
-      "style": "Synthetic archivist shutting down with calm regret",
-      "effect": "robot-high",
-      "text": "Memory core erased. Take the Echo lance. Let the vault forget."
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "Keep this memory. The Echo lance is yours."
     },
     {
       "id": "boss-mnemosyne-v2",
       "speaker": "luna",
-      "style": "Synthetic archivist shutting down with calm regret",
-      "effect": "robot-high",
-      "text": "This is my final memory. The Echo lance is yours. Carry it beyond these walls."
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The vault is open. Do not leave them forgotten."
     },
     {
       "id": "boss-vulcan",
-      "speaker": "neptune",
-      "style": "armored railway demolition robot with twin steel chimneys, tracked feet and glowing ember furnace chest; damaged, measured final shutdown",
-      "effect": "robot-low",
-      "text": "Core failure. VX-2 CINDER released. The sector is yours."
+      "speaker": "mars",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The line is clear. Take the cannon."
     },
     {
       "id": "boss-vulcan-v2",
-      "speaker": "neptune",
-      "style": "armored railway demolition robot with twin steel chimneys, tracked feet and glowing ember furnace chest; damaged, measured final shutdown",
-      "effect": "robot-low",
-      "text": "My systems are gone. Take VX-2 CINDER. Carry it beyond this sector."
+      "speaker": "mars",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "For once, there is no next train."
     },
     {
       "id": "boss-leviathan",
-      "speaker": "saturn",
-      "style": "massive armored deep-sea pressure diver with brass porthole helmet, blue hydraulic hoses and harpoon arm; damaged, measured final shutdown",
-      "effect": "heavy",
-      "text": "Core failure. LV-8 UNDERTOW released. The sector is yours."
+      "speaker": "odysseus",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The tide is falling. Take the weapon and climb."
     },
     {
       "id": "boss-leviathan-v2",
-      "speaker": "saturn",
-      "style": "massive armored deep-sea pressure diver with brass porthole helmet, blue hydraulic hoses and harpoon arm; damaged, measured final shutdown",
-      "effect": "heavy",
-      "text": "My systems are gone. Take LV-8 UNDERTOW. Carry it beyond this sector."
+      "speaker": "odysseus",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The hull is quiet. Get above the water."
     },
     {
       "id": "boss-prism",
-      "speaker": "electra",
-      "style": "angular chrome optical combat android with three faceted cyan lens eyes, prism shoulder armor and laser emitter arms; damaged, measured final shutdown",
-      "effect": "robot-high",
-      "text": "Core failure. PR-5 SPECTRUM released. The sector is yours."
+      "speaker": "athena",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The light is fading. The rifle is yours."
     },
     {
       "id": "boss-prism-v2",
-      "speaker": "electra",
-      "style": "angular chrome optical combat android with three faceted cyan lens eyes, prism shoulder armor and laser emitter arms; damaged, measured final shutdown",
-      "effect": "robot-high",
-      "text": "My systems are gone. Take PR-5 SPECTRUM. Carry it beyond this sector."
+      "speaker": "athena",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "You found the one angle I could not hold."
     },
     {
       "id": "boss-magnus",
-      "speaker": "draco",
-      "style": "hulking copper electromagnetic exoskeleton with horseshoe magnet forearms and red induction coils; damaged, measured final shutdown",
-      "effect": "bio",
-      "text": "Core failure. MG-4 POLARITY released. The sector is yours."
+      "speaker": "jupiter",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The field is down. Take the cannon."
     },
     {
       "id": "boss-magnus-v2",
-      "speaker": "draco",
-      "style": "hulking copper electromagnetic exoskeleton with horseshoe magnet forearms and red induction coils; damaged, measured final shutdown",
-      "effect": "bio",
-      "text": "My systems are gone. Take MG-4 POLARITY. Carry it beyond this sector."
+      "speaker": "jupiter",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "Everything is still. I had forgotten that sound."
     },
     {
       "id": "boss-broodmother",
-      "speaker": "neptune",
-      "style": "six-legged armored robot drone queen with amber sensor cluster and segmented drone launch bays on its back; damaged, measured final shutdown",
-      "effect": "robot-low",
-      "text": "Core failure. BM-3 SWARM released. The sector is yours."
+      "speaker": "vesta",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The last brood is yours to command."
     },
     {
       "id": "boss-broodmother-v2",
-      "speaker": "neptune",
-      "style": "six-legged armored robot drone queen with amber sensor cluster and segmented drone launch bays on its back; damaged, measured final shutdown",
-      "effect": "robot-low",
-      "text": "My systems are gone. Take BM-3 SWARM. Carry it beyond this sector."
+      "speaker": "vesta",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The bays are empty. Let the small ones go."
     },
     {
       "id": "boss-mycelium",
-      "speaker": "saturn",
-      "style": "mutated fungal research hazmat giant with pale mushrooms breaking through sealed armor and green bioluminescent sacs; damaged, measured final shutdown",
-      "effect": "heavy",
-      "text": "Core failure. MY-9 SPORE released. The sector is yours."
+      "speaker": "cora",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The roots are still here. Take what you need."
     },
     {
       "id": "boss-mycelium-v2",
-      "speaker": "saturn",
-      "style": "mutated fungal research hazmat giant with pale mushrooms breaking through sealed armor and green bioluminescent sacs; damaged, measured final shutdown",
-      "effect": "heavy",
-      "text": "My systems are gone. Take MY-9 SPORE. Carry it beyond this sector."
+      "speaker": "cora",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "You cut the voice. The growth will sleep."
     },
     {
       "id": "boss-astra",
-      "speaker": "electra",
-      "style": "military orbital targeting android with violet dish antenna helmet and compact shoulder missile pods; damaged, measured final shutdown",
-      "effect": "robot-high",
-      "text": "Core failure. AS-7 STARFALL released. The sector is yours."
+      "speaker": "apollo",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The uplink is quiet. The sky is yours."
     },
     {
       "id": "boss-astra-v2",
-      "speaker": "electra",
-      "style": "military orbital targeting android with violet dish antenna helmet and compact shoulder missile pods; damaged, measured final shutdown",
-      "effect": "robot-high",
-      "text": "My systems are gone. Take AS-7 STARFALL. Carry it beyond this sector."
+      "speaker": "apollo",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "Take the launcher. Choose where it points."
     },
     {
       "id": "boss-scrapper",
-      "speaker": "draco",
-      "style": "massive rusted scrap recycler robot with sawblade shoulders, steel claws and copper hydraulic pistons; damaged, measured final shutdown",
-      "effect": "bio",
-      "text": "Core failure. SC-6 SHREDDER released. The sector is yours."
+      "speaker": "pluto",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "You win. Take the good parts."
     },
     {
       "id": "boss-scrapper-v2",
-      "speaker": "draco",
-      "style": "massive rusted scrap recycler robot with sawblade shoulders, steel claws and copper hydraulic pistons; damaged, measured final shutdown",
-      "effect": "bio",
-      "text": "My systems are gone. Take SC-6 SHREDDER. Carry it beyond this sector."
+      "speaker": "pluto",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "Leave the rest. It was all scrap anyway."
     },
     {
       "id": "boss-umbra",
-      "speaker": "neptune",
-      "style": "slender obsidian stealth android with purple illuminated slit visor, angular cloak panels and phase emitter hands; damaged, measured final shutdown",
-      "effect": "robot-low",
-      "text": "Core failure. UB-1 VEIL released. The sector is yours."
+      "speaker": "theia",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The shadows are still. Take the weapon."
     },
     {
       "id": "boss-umbra-v2",
-      "speaker": "neptune",
-      "style": "slender obsidian stealth android with purple illuminated slit visor, angular cloak panels and phase emitter hands; damaged, measured final shutdown",
-      "effect": "robot-low",
-      "text": "My systems are gone. Take UB-1 VEIL. Carry it beyond this sector."
+      "speaker": "theia",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "You found me. There is nothing left to hide."
     },
     {
       "id": "boss-sol",
-      "speaker": "saturn",
-      "style": "towering white ceramic fusion guardian with golden plasma chest core, heat radiator wings and heavy articulated feet; damaged, measured final shutdown",
-      "effect": "heavy",
-      "text": "Core failure. SL-12 HELIOS released. The sector is yours."
+      "speaker": "arcas",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "Containment is holding. Take the cannon."
     },
     {
       "id": "boss-sol-v2",
-      "speaker": "saturn",
-      "style": "towering white ceramic fusion guardian with golden plasma chest core, heat radiator wings and heavy articulated feet; damaged, measured final shutdown",
-      "effect": "heavy",
-      "text": "My systems are gone. Take SL-12 HELIOS. Carry it beyond this sector."
+      "speaker": "arcas",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The light is dimming. Keep the core alive."
     },
     {
       "id": "boss-nautilus",
-      "speaker": "electra",
-      "style": "heavy teal naval combat robot with round pressure shell, armored mechanical legs and torpedo tube arms; damaged, measured final shutdown",
-      "effect": "robot-high",
-      "text": "Core failure. NT-4 TORPEDO released. The sector is yours."
+      "speaker": "janus",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "Pressure released. Take the launcher and go."
     },
     {
       "id": "boss-nautilus-v2",
-      "speaker": "electra",
-      "style": "heavy teal naval combat robot with round pressure shell, armored mechanical legs and torpedo tube arms; damaged, measured final shutdown",
-      "effect": "robot-high",
-      "text": "My systems are gone. Take NT-4 TORPEDO. Carry it beyond this sector."
+      "speaker": "janus",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The water is settling. Get to the surface."
     },
     {
       "id": "boss-chronos",
-      "speaker": "draco",
-      "style": "precise bronze temporal guardian android with amber clockwork gyroscope chest and articulated precision rifle arm; damaged, measured final shutdown",
-      "effect": "bio",
-      "text": "Core failure. CH-8 EPOCH released. The sector is yours."
+      "speaker": "minerva",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "This second belongs to you. Take the weapon."
     },
     {
       "id": "boss-chronos-v2",
-      "speaker": "draco",
-      "style": "precise bronze temporal guardian android with amber clockwork gyroscope chest and articulated precision rifle arm; damaged, measured final shutdown",
-      "effect": "bio",
-      "text": "My systems are gone. Take CH-8 EPOCH. Carry it beyond this sector."
+      "speaker": "minerva",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "No more repeats. Make the next moment count."
     },
     {
       "id": "boss-boreas",
-      "speaker": "neptune",
-      "style": "huge black armored cryogenic sentinel with ice blue coolant tubing, frost-plated shoulders and crystalline gauntlets; damaged, measured final shutdown",
-      "effect": "robot-low",
-      "text": "Core failure. BO-11 GLACIER released. The sector is yours."
+      "speaker": "helena",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The shell is broken. Take the cannon."
     },
     {
       "id": "boss-boreas-v2",
-      "speaker": "neptune",
-      "style": "huge black armored cryogenic sentinel with ice blue coolant tubing, frost-plated shoulders and crystalline gauntlets; damaged, measured final shutdown",
-      "effect": "robot-low",
-      "text": "My systems are gone. Take BO-11 GLACIER. Carry it beyond this sector."
+      "speaker": "helena",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The frost is lifting. Do not look back."
     },
     {
       "id": "boss-sovereign",
-      "speaker": "saturn",
-      "style": "regal black and gold armored command war machine with crown-like sensor array, layered heavy pauldrons and twin energy cannons; damaged, measured final shutdown",
-      "effect": "heavy",
-      "text": "Core failure. SV-25 DOMINION released. The sector is yours."
+      "speaker": "hyperion",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "You earned the last weapon. Carry it out."
     },
     {
       "id": "boss-sovereign-v2",
-      "speaker": "saturn",
-      "style": "regal black and gold armored command war machine with crown-like sensor array, layered heavy pauldrons and twin energy cannons; damaged, measured final shutdown",
-      "effect": "heavy",
-      "text": "My systems are gone. Take SV-25 DOMINION. Carry it beyond this sector."
+      "speaker": "hyperion",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "text": "The command is yours. End this place."
     }
   ]
 }

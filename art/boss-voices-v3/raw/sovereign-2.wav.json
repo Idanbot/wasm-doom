@@ -1,0 +1,12 @@
+{
+  "signature": "9175a9cad73c0c0a2f9ccd9e470cb4fb5bd82c04365149673b13b9034fee8d11",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Every command ends here.",
+    "speaker": "hyperion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:59:16.793Z"
+}

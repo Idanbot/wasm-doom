@@ -36,6 +36,7 @@ if (!key || !account || !/^[a-f0-9]{32}$/i.test(account))
 const limit = Number(values.limit);
 if (!Number.isInteger(limit) || limit < 1 || limit > 54) throw new Error("limit must be 1–54");
 const effects = {
+  clean: "highpass=f=65",
   radio: "highpass=f=240,lowpass=f=4400",
   respirator: "highpass=f=380,lowpass=f=2600,aecho=0.8:0.6:18:0.16",
   heavy: "asetrate=22080,aresample=24000,atempo=1.04,highpass=f=110,lowpass=f=5200",
@@ -104,7 +105,7 @@ for (const enemy of plan.enemies) {
       generated++;
     }
     await access(raw);
-    const filter = `${effects[enemy.effect]},loudnorm=I=-18:TP=-2:LRA=7,afade=t=in:d=0.015`;
+    const filter = `${effects[enemy.effect]},loudnorm=I=${enemy.skin >= 12 ? -16 : -18}:TP=-1.5:LRA=9,afade=t=in:d=0.015`;
     const encode = spawnSync(
       "ffmpeg",
       [
@@ -123,7 +124,7 @@ for (const enemy of plan.enemies) {
         "-codec:a",
         "libmp3lame",
         "-b:a",
-        "64k",
+        enemy.skin >= 12 ? "192k" : "64k",
         path,
       ],
       { encoding: "utf8" },

@@ -1,0 +1,12 @@
+{
+  "signature": "c38fedd7d7036fc345fa7fc04429bf830b1bcaa7899fb7cbb927ecb00f4fdb2d",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You win. Take the good parts.",
+    "speaker": "pluto",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:22.972Z"
+}

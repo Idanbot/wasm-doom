@@ -444,8 +444,8 @@
     {
       "skin": 12,
       "id": "veyran",
-      "name": "VEYRAN // MALIK",
-      "style": "Augmented commander, dark layered baritone",
+      "name": "Malik Veyran",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
       "speaker": "saturn",
       "lines": [
         {
@@ -453,42 +453,42 @@
           "cue": "alert",
           "text": "You have entered my nervous system.",
           "url": "/game/voices/veyran-1.mp3",
-          "duration": 2.256
+          "duration": 1.944
         },
         {
           "id": "veyran-2",
           "cue": "alert",
           "text": "Nadir belongs to me.",
           "url": "/game/voices/veyran-2.mp3",
-          "duration": 1.848
+          "duration": 1.608
         },
         {
           "id": "veyran-3",
           "cue": "attack",
           "text": "Kneel before the signal.",
           "url": "/game/voices/veyran-3.mp3",
-          "duration": 1.632
+          "duration": 1.416
         },
         {
           "id": "veyran-4",
           "cue": "attack",
           "text": "I will rewrite your bones.",
           "url": "/game/voices/veyran-4.mp3",
-          "duration": 2.112
+          "duration": 1.704
         },
         {
           "id": "veyran-5",
           "cue": "pain",
           "text": "Pain is obsolete.",
           "url": "/game/voices/veyran-5.mp3",
-          "duration": 1.632
+          "duration": 1.416
         },
         {
           "id": "veyran-6",
           "cue": "taunt",
           "text": "There is no outside. Only me.",
           "url": "/game/voices/veyran-6.mp3",
-          "duration": 2.832
+          "duration": 2.496
         }
       ]
     },
@@ -496,7 +496,7 @@
       "skin": 13,
       "id": "hecate",
       "name": "HECATE–9",
-      "style": "Industrial machine warden, clipped low synthetic voice with electrical hum",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
       "speaker": "neptune",
       "lines": [
         {
@@ -504,49 +504,49 @@
           "cue": "alert",
           "text": "Unauthorized lifeform in the forge.",
           "url": "/game/voices/hecate-1.mp3",
-          "duration": 2.496
+          "duration": 2.184
         },
         {
           "id": "hecate-2",
           "cue": "alert",
           "text": "Production halt. Threat priority maximum.",
           "url": "/game/voices/hecate-2.mp3",
-          "duration": 3.096
+          "duration": 2.784
         },
         {
           "id": "hecate-3",
           "cue": "attack",
           "text": "Arc lattice armed.",
           "url": "/game/voices/hecate-3.mp3",
-          "duration": 1.8
+          "duration": 1.224
         },
         {
           "id": "hecate-4",
           "cue": "attack",
           "text": "Your movement has been solved.",
           "url": "/game/voices/hecate-4.mp3",
-          "duration": 1.704
+          "duration": 1.728
         },
         {
           "id": "hecate-5",
           "cue": "pain",
           "text": "Cooling loop compromised.",
           "url": "/game/voices/hecate-5.mp3",
-          "duration": 1.704
+          "duration": 1.608
         },
         {
           "id": "hecate-6",
           "cue": "taunt",
           "text": "Every corridor belongs to my factory.",
           "url": "/game/voices/hecate-6.mp3",
-          "duration": 2.328
+          "duration": 2.376
         },
         {
           "id": "hecate-7",
           "cue": "taunt",
           "text": "You are an inefficient input.",
           "url": "/game/voices/hecate-7.mp3",
-          "duration": 1.992
+          "duration": 1.608
         }
       ]
     },
@@ -554,7 +554,7 @@
       "skin": 14,
       "id": "chimera",
       "name": "CHIMERA–9",
-      "style": "Bioengineered containment giant, wet rasping voice through a damaged respirator",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
       "speaker": "hyperion",
       "lines": [
         {
@@ -562,28 +562,28 @@
           "cue": "alert",
           "text": "The lights hurt my eyes.",
           "url": "/game/voices/chimera-1.mp3",
-          "duration": 1.56
+          "duration": 1.536
         },
         {
           "id": "chimera-2",
           "cue": "alert",
           "text": "You smell like the outside.",
           "url": "/game/voices/chimera-2.mp3",
-          "duration": 1.8
+          "duration": 1.848
         },
         {
           "id": "chimera-3",
           "cue": "attack",
           "text": "Hold still. Let it spread.",
           "url": "/game/voices/chimera-3.mp3",
-          "duration": 2.328
+          "duration": 2.424
         },
         {
           "id": "chimera-4",
           "cue": "attack",
           "text": "The green remembers your shape.",
           "url": "/game/voices/chimera-4.mp3",
-          "duration": 1.848
+          "duration": 1.944
         },
         {
           "id": "chimera-5",
@@ -597,14 +597,14 @@
           "cue": "taunt",
           "text": "Come closer. I can hear your blood.",
           "url": "/game/voices/chimera-6.mp3",
-          "duration": 2.568
+          "duration": 2.544
         },
         {
           "id": "chimera-7",
           "cue": "taunt",
           "text": "Nothing grows here but me.",
           "url": "/game/voices/chimera-7.mp3",
-          "duration": 1.8
+          "duration": 1.824
         }
       ]
     },
@@ -612,7 +612,7 @@
       "skin": 15,
       "id": "oracle",
       "name": "ORACLE–7",
-      "style": "Cold predictive core, precise high synthetic voice",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
       "speaker": "electra",
       "lines": [
         {
@@ -620,21 +620,21 @@
           "cue": "alert",
           "text": "Your arrival was scheduled.",
           "url": "/game/voices/oracle-1.mp3",
-          "duration": 1.848
+          "duration": 1.704
         },
         {
           "id": "oracle-2",
           "cue": "alert",
           "text": "Every route ends at this core.",
           "url": "/game/voices/oracle-2.mp3",
-          "duration": 2.568
+          "duration": 2.184
         },
         {
           "id": "oracle-3",
           "cue": "attack",
           "text": "Trajectory confirmed.",
           "url": "/game/voices/oracle-3.mp3",
-          "duration": 1.824
+          "duration": 1.728
         },
         {
           "id": "oracle-4",
@@ -655,7 +655,7 @@
           "cue": "taunt",
           "text": "I have already seen your next move.",
           "url": "/game/voices/oracle-6.mp3",
-          "duration": 2.496
+          "duration": 2.208
         }
       ]
     },
@@ -663,101 +663,101 @@
       "skin": 16,
       "id": "gravemind",
       "name": "GRAVEMIND–4",
-      "style": "Dying reactor engineer inside a heavy respirator, slow human rasp",
-      "speaker": "saturn",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "speaker": "atlas",
       "lines": [
         {
           "id": "gravemind-1",
           "cue": "alert",
           "text": "You should have stayed above ground.",
           "url": "/game/voices/gravemind-1.mp3",
-          "duration": 1.968
+          "duration": 1.824
         },
         {
           "id": "gravemind-2",
           "cue": "alert",
           "text": "The core is mine to bury.",
           "url": "/game/voices/gravemind-2.mp3",
-          "duration": 1.92
+          "duration": 1.584
         },
         {
           "id": "gravemind-3",
           "cue": "attack",
           "text": "Feel the pressure rise.",
           "url": "/game/voices/gravemind-3.mp3",
-          "duration": 1.608
+          "duration": 1.536
         },
         {
           "id": "gravemind-4",
           "cue": "attack",
           "text": "Stay where the heat can find you.",
           "url": "/game/voices/gravemind-4.mp3",
-          "duration": 1.848
+          "duration": 2.088
         },
         {
           "id": "gravemind-5",
           "cue": "pain",
           "text": "The shielding is cracking.",
           "url": "/game/voices/gravemind-5.mp3",
-          "duration": 1.752
+          "duration": 1.368
         },
         {
           "id": "gravemind-6",
           "cue": "taunt",
           "text": "I can outlast the alarms. Can you?",
           "url": "/game/voices/gravemind-6.mp3",
-          "duration": 2.592
+          "duration": 2.808
         }
       ]
     },
     {
       "skin": 17,
       "id": "archivist",
-      "name": "NULL ARCHIVIST",
-      "style": "Ancient memory custodian, low synthetic voice with worn human cadence",
-      "speaker": "neptune",
+      "name": "Null Archivist",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "speaker": "orion",
       "lines": [
         {
           "id": "archivist-1",
           "cue": "alert",
           "text": "Unauthorized memory access.",
           "url": "/game/voices/archivist-1.mp3",
-          "duration": 1.968
+          "duration": 2.136
         },
         {
           "id": "archivist-2",
           "cue": "alert",
           "text": "Your identity is not in the archive.",
           "url": "/game/voices/archivist-2.mp3",
-          "duration": 2.16
+          "duration": 2.736
         },
         {
           "id": "archivist-3",
           "cue": "attack",
           "text": "Record this impact.",
           "url": "/game/voices/archivist-3.mp3",
-          "duration": 1.368
+          "duration": 1.608
         },
         {
           "id": "archivist-4",
           "cue": "attack",
           "text": "Shield index restored.",
           "url": "/game/voices/archivist-4.mp3",
-          "duration": 1.824
+          "duration": 1.848
         },
         {
           "id": "archivist-5",
           "cue": "pain",
           "text": "My memory is fragmenting.",
           "url": "/game/voices/archivist-5.mp3",
-          "duration": 1.536
+          "duration": 1.728
         },
         {
           "id": "archivist-6",
           "cue": "taunt",
           "text": "I kept the names they tried to erase.",
           "url": "/game/voices/archivist-6.mp3",
-          "duration": 2.208
+          "duration": 2.424
         }
       ]
     },
@@ -765,50 +765,50 @@
       "skin": 18,
       "id": "halcyon",
       "name": "HALCYON–3",
-      "style": "Cryogenic sentry with low synthetic voice",
-      "speaker": "neptune",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "speaker": "pandora",
       "lines": [
         {
           "id": "halcyon-1",
           "cue": "alert",
           "text": "Thermal breach detected.",
           "url": "/game/voices/halcyon-1.mp3",
-          "duration": 1.536
+          "duration": 1.608
         },
         {
           "id": "halcyon-2",
           "cue": "alert",
           "text": "Reserve pressure is under my control.",
           "url": "/game/voices/halcyon-2.mp3",
-          "duration": 2.256
+          "duration": 2.424
         },
         {
           "id": "halcyon-3",
           "cue": "attack",
           "text": "Coolant volley armed.",
           "url": "/game/voices/halcyon-3.mp3",
-          "duration": 1.584
+          "duration": 1.656
         },
         {
           "id": "halcyon-4",
           "cue": "attack",
           "text": "Hold still for the cold.",
           "url": "/game/voices/halcyon-4.mp3",
-          "duration": 1.488
+          "duration": 1.728
         },
         {
           "id": "halcyon-5",
           "cue": "pain",
           "text": "My shield is losing pressure.",
           "url": "/game/voices/halcyon-5.mp3",
-          "duration": 1.8
+          "duration": 2.088
         },
         {
           "id": "halcyon-6",
           "cue": "taunt",
           "text": "The ice will keep your name.",
           "url": "/game/voices/halcyon-6.mp3",
-          "duration": 1.464
+          "duration": 1.824
         }
       ]
     },
@@ -816,50 +816,50 @@
       "skin": 19,
       "id": "relay",
       "name": "RELAY–0",
-      "style": "Interference robot with sharp synthetic voice",
-      "speaker": "electra",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "speaker": "hermes",
       "lines": [
         {
           "id": "relay-1",
           "cue": "alert",
           "text": "Unknown signal entering the crypt.",
           "url": "/game/voices/relay-1.mp3",
-          "duration": 2.496
+          "duration": 2.136
         },
         {
           "id": "relay-2",
           "cue": "alert",
           "text": "I have your frequency.",
           "url": "/game/voices/relay-2.mp3",
-          "duration": 1.656
+          "duration": 1.608
         },
         {
           "id": "relay-3",
           "cue": "attack",
           "text": "Interference burst incoming.",
           "url": "/game/voices/relay-3.mp3",
-          "duration": 2.304
+          "duration": 2.088
         },
         {
           "id": "relay-4",
           "cue": "attack",
           "text": "Your position is public.",
           "url": "/game/voices/relay-4.mp3",
-          "duration": 1.584
+          "duration": 1.536
         },
         {
           "id": "relay-5",
           "cue": "pain",
           "text": "Carrier integrity compromised.",
           "url": "/game/voices/relay-5.mp3",
-          "duration": 2.328
+          "duration": 2.088
         },
         {
           "id": "relay-6",
           "cue": "taunt",
           "text": "You cannot hide from a transmission.",
           "url": "/game/voices/relay-6.mp3",
-          "duration": 2.424
+          "duration": 1.896
         }
       ]
     },
@@ -867,101 +867,101 @@
       "skin": 20,
       "id": "titan",
       "name": "TITAN–12",
-      "style": "Hydraulic siege walker with deep synthetic roar",
-      "speaker": "draco",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "speaker": "zeus",
       "lines": [
         {
           "id": "titan-1",
           "cue": "alert",
           "text": "Siege platform online.",
           "url": "/game/voices/titan-1.mp3",
-          "duration": 2.16
+          "duration": 1.968
         },
         {
           "id": "titan-2",
           "cue": "alert",
           "text": "Target locked beyond the gate.",
           "url": "/game/voices/titan-2.mp3",
-          "duration": 2.28
+          "duration": 1.896
         },
         {
           "id": "titan-3",
           "cue": "attack",
           "text": "Heavy shell loaded.",
           "url": "/game/voices/titan-3.mp3",
-          "duration": 1.224
+          "duration": 1.536
         },
         {
           "id": "titan-4",
           "cue": "attack",
           "text": "Brace for impact.",
           "url": "/game/voices/titan-4.mp3",
-          "duration": 1.536
+          "duration": 1.344
         },
         {
           "id": "titan-5",
           "cue": "pain",
           "text": "Hydraulic line severed.",
           "url": "/game/voices/titan-5.mp3",
-          "duration": 1.92
+          "duration": 1.848
         },
         {
           "id": "titan-6",
           "cue": "taunt",
           "text": "This yard was built to hold you.",
           "url": "/game/voices/titan-6.mp3",
-          "duration": 2.568
+          "duration": 2.088
         }
       ]
     },
     {
       "skin": 21,
       "id": "kest",
-      "name": "DIRECTOR KEST",
-      "style": "Human site director with calm tactical radio cadence",
-      "speaker": "saturn",
+      "name": "Director Kest",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "speaker": "draco",
       "lines": [
         {
           "id": "kest-1",
           "cue": "alert",
           "text": "You reached Command. That took longer than expected.",
           "url": "/game/voices/kest-1.mp3",
-          "duration": 3.168
+          "duration": 3.864
         },
         {
           "id": "kest-2",
           "cue": "alert",
           "text": "Security, I will handle this personally.",
           "url": "/game/voices/kest-2.mp3",
-          "duration": 2.568
+          "duration": 2.688
         },
         {
           "id": "kest-3",
           "cue": "attack",
           "text": "Move left. I know your pattern.",
           "url": "/game/voices/kest-3.mp3",
-          "duration": 2.208
+          "duration": 2.304
         },
         {
           "id": "kest-4",
           "cue": "attack",
           "text": "No more borrowed weapons.",
           "url": "/game/voices/kest-4.mp3",
-          "duration": 1.704
+          "duration": 1.944
         },
         {
           "id": "kest-5",
           "cue": "pain",
           "text": "Armor hit. Staying on task.",
           "url": "/game/voices/kest-5.mp3",
-          "duration": 2.376
+          "duration": 2.688
         },
         {
           "id": "kest-6",
           "cue": "taunt",
           "text": "Every door you opened was mine.",
           "url": "/game/voices/kest-6.mp3",
-          "duration": 2.016
+          "duration": 2.544
         }
       ]
     },
@@ -969,7 +969,7 @@
       "skin": 22,
       "id": "mnemosyne",
       "name": "MNEMOSYNE–6",
-      "style": "Calm synthetic archivist, deliberate and unsettling",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
       "speaker": "luna",
       "lines": [
         {
@@ -977,42 +977,756 @@
           "cue": "alert",
           "text": "Intrusion recorded. Your memory is mine.",
           "url": "/game/voices/mnemosyne-1.mp3",
-          "duration": 3.216
+          "duration": 2.904
         },
         {
           "id": "mnemosyne-2",
           "cue": "alert",
           "text": "Echo keeper online. The vault is sealed.",
           "url": "/game/voices/mnemosyne-2.mp3",
-          "duration": 3.096
+          "duration": 3.048
         },
         {
           "id": "mnemosyne-3",
           "cue": "attack",
           "text": "Pulse sequence armed.",
           "url": "/game/voices/mnemosyne-3.mp3",
-          "duration": 1.728
+          "duration": 1.704
         },
         {
           "id": "mnemosyne-4",
           "cue": "attack",
           "text": "Your previous mistakes return.",
           "url": "/game/voices/mnemosyne-4.mp3",
-          "duration": 2.064
+          "duration": 2.016
         },
         {
           "id": "mnemosyne-5",
           "cue": "pain",
           "text": "Memory fracture. Reconstructing.",
           "url": "/game/voices/mnemosyne-5.mp3",
-          "duration": 2.424
+          "duration": 2.496
         },
         {
           "id": "mnemosyne-6",
           "cue": "taunt",
           "text": "Every failure is preserved here.",
           "url": "/game/voices/mnemosyne-6.mp3",
+          "duration": 2.256
+        }
+      ]
+    },
+    {
+      "skin": 23,
+      "id": "vulcan",
+      "name": "VULCAN–2",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "speaker": "mars",
+      "lines": [
+        {
+          "id": "vulcan-1",
+          "cue": "alert",
+          "text": "The rails are live. Choose your footing.",
+          "url": "/game/voices/vulcan-1.mp3",
+          "duration": 2.664
+        },
+        {
+          "id": "vulcan-2",
+          "cue": "alert",
+          "text": "You came this far. Do not stop now.",
+          "url": "/game/voices/vulcan-2.mp3",
+          "duration": 2.496
+        },
+        {
+          "id": "vulcan-3",
+          "cue": "attack",
+          "text": "Watch the tracks.",
+          "url": "/game/voices/vulcan-3.mp3",
+          "duration": 0.984
+        },
+        {
+          "id": "vulcan-4",
+          "cue": "attack",
+          "text": "That lane is mine.",
+          "url": "/game/voices/vulcan-4.mp3",
+          "duration": 1.176
+        },
+        {
+          "id": "vulcan-5",
+          "cue": "pain",
+          "text": "You cracked the casing.",
+          "url": "/game/voices/vulcan-5.mp3",
+          "duration": 1.128
+        },
+        {
+          "id": "vulcan-6",
+          "cue": "taunt",
+          "text": "The whole tunnel will hear this.",
+          "url": "/game/voices/vulcan-6.mp3",
+          "duration": 1.608
+        }
+      ]
+    },
+    {
+      "skin": 24,
+      "id": "leviathan",
+      "name": "LEVIATHAN–8",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "speaker": "odysseus",
+      "lines": [
+        {
+          "id": "leviathan-1",
+          "cue": "alert",
+          "text": "The pressure is rising. Stay out of the channels.",
+          "url": "/game/voices/leviathan-1.mp3",
+          "duration": 3.096
+        },
+        {
+          "id": "leviathan-2",
+          "cue": "alert",
+          "text": "You hear that? The hull is giving way.",
+          "url": "/game/voices/leviathan-2.mp3",
+          "duration": 2.688
+        },
+        {
+          "id": "leviathan-3",
+          "cue": "attack",
+          "text": "Here comes the surge.",
+          "url": "/game/voices/leviathan-3.mp3",
+          "duration": 1.464
+        },
+        {
+          "id": "leviathan-4",
+          "cue": "attack",
+          "text": "You cannot outrun the tide.",
+          "url": "/game/voices/leviathan-4.mp3",
+          "duration": 1.704
+        },
+        {
+          "id": "leviathan-5",
+          "cue": "pain",
+          "text": "That hit reached the core.",
+          "url": "/game/voices/leviathan-5.mp3",
+          "duration": 1.536
+        },
+        {
+          "id": "leviathan-6",
+          "cue": "taunt",
+          "text": "Every bulkhead has a breaking point.",
+          "url": "/game/voices/leviathan-6.mp3",
+          "duration": 1.944
+        }
+      ]
+    },
+    {
+      "skin": 25,
+      "id": "prism",
+      "name": "PRISM–5",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "speaker": "athena",
+      "lines": [
+        {
+          "id": "prism-1",
+          "cue": "alert",
+          "text": "Light has more than one edge.",
+          "url": "/game/voices/prism-1.mp3",
+          "duration": 1.536
+        },
+        {
+          "id": "prism-2",
+          "cue": "alert",
+          "text": "Find the gap before the colors cross.",
+          "url": "/game/voices/prism-2.mp3",
+          "duration": 2.256
+        },
+        {
+          "id": "prism-3",
+          "cue": "attack",
+          "text": "Follow the beam.",
+          "url": "/game/voices/prism-3.mp3",
+          "duration": 0.936
+        },
+        {
+          "id": "prism-4",
+          "cue": "attack",
+          "text": "Now the angles change.",
+          "url": "/game/voices/prism-4.mp3",
+          "duration": 1.488
+        },
+        {
+          "id": "prism-5",
+          "cue": "pain",
+          "text": "You broke my focus.",
+          "url": "/game/voices/prism-5.mp3",
+          "duration": 1.416
+        },
+        {
+          "id": "prism-6",
+          "cue": "taunt",
+          "text": "There is nowhere here without a reflection.",
+          "url": "/game/voices/prism-6.mp3",
+          "duration": 2.088
+        }
+      ]
+    },
+    {
+      "skin": 26,
+      "id": "magnus",
+      "name": "MAGNUS–4",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "speaker": "jupiter",
+      "lines": [
+        {
+          "id": "magnus-1",
+          "cue": "alert",
+          "text": "The coils are charging.",
+          "url": "/game/voices/magnus-1.mp3",
+          "duration": 1.296
+        },
+        {
+          "id": "magnus-2",
+          "cue": "alert",
+          "text": "Keep moving. The floor is part of the weapon.",
+          "url": "/game/voices/magnus-2.mp3",
+          "duration": 2.784
+        },
+        {
+          "id": "magnus-3",
+          "cue": "attack",
+          "text": "Polarity reversed.",
+          "url": "/game/voices/magnus-3.mp3",
+          "duration": 1.656
+        },
+        {
+          "id": "magnus-4",
+          "cue": "attack",
+          "text": "Cross the field if you can.",
+          "url": "/game/voices/magnus-4.mp3",
+          "duration": 1.488
+        },
+        {
+          "id": "magnus-5",
+          "cue": "pain",
+          "text": "The winding is damaged.",
+          "url": "/game/voices/magnus-5.mp3",
+          "duration": 1.368
+        },
+        {
+          "id": "magnus-6",
+          "cue": "taunt",
+          "text": "Steel remembers where it belongs.",
+          "url": "/game/voices/magnus-6.mp3",
+          "duration": 2.376
+        }
+      ]
+    },
+    {
+      "skin": 27,
+      "id": "broodmother",
+      "name": "BROODMOTHER–3",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "speaker": "vesta",
+      "lines": [
+        {
+          "id": "broodmother-1",
+          "cue": "alert",
+          "text": "The hatchery is awake.",
+          "url": "/game/voices/broodmother-1.mp3",
+          "duration": 1.488
+        },
+        {
+          "id": "broodmother-2",
+          "cue": "alert",
+          "text": "Every open socket is another pair of eyes.",
+          "url": "/game/voices/broodmother-2.mp3",
+          "duration": 3.768
+        },
+        {
+          "id": "broodmother-3",
+          "cue": "attack",
+          "text": "Launch the next brood.",
+          "url": "/game/voices/broodmother-3.mp3",
+          "duration": 1.608
+        },
+        {
+          "id": "broodmother-4",
+          "cue": "attack",
+          "text": "Close the escape lanes.",
+          "url": "/game/voices/broodmother-4.mp3",
+          "duration": 1.944
+        },
+        {
+          "id": "broodmother-5",
+          "cue": "pain",
+          "text": "You damaged a launch bay.",
+          "url": "/game/voices/broodmother-5.mp3",
+          "duration": 1.944
+        },
+        {
+          "id": "broodmother-6",
+          "cue": "taunt",
+          "text": "One drone falls. Five more rise.",
+          "url": "/game/voices/broodmother-6.mp3",
+          "duration": 4.608
+        }
+      ]
+    },
+    {
+      "skin": 28,
+      "id": "mycelium",
+      "name": "MYCELIUM–9",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "speaker": "cora",
+      "lines": [
+        {
+          "id": "mycelium-1",
+          "cue": "alert",
+          "text": "You can hear us breathing under the tiles.",
+          "url": "/game/voices/mycelium-1.mp3",
+          "duration": 2.424
+        },
+        {
+          "id": "mycelium-2",
+          "cue": "alert",
+          "text": "Step carefully. The growth is listening.",
+          "url": "/game/voices/mycelium-2.mp3",
+          "duration": 4.368
+        },
+        {
+          "id": "mycelium-3",
+          "cue": "attack",
+          "text": "Open the spore pockets.",
+          "url": "/game/voices/mycelium-3.mp3",
+          "duration": 1.656
+        },
+        {
+          "id": "mycelium-4",
+          "cue": "attack",
+          "text": "Let the chamber breathe.",
+          "url": "/game/voices/mycelium-4.mp3",
+          "duration": 1.608
+        },
+        {
+          "id": "mycelium-5",
+          "cue": "pain",
+          "text": "You severed a root.",
+          "url": "/game/voices/mycelium-5.mp3",
+          "duration": 1.416
+        },
+        {
+          "id": "mycelium-6",
+          "cue": "taunt",
+          "text": "We were here before the walls.",
+          "url": "/game/voices/mycelium-6.mp3",
+          "duration": 2.208
+        }
+      ]
+    },
+    {
+      "skin": 29,
+      "id": "astra",
+      "name": "ASTRA–7",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "speaker": "apollo",
+      "lines": [
+        {
+          "id": "astra-1",
+          "cue": "alert",
+          "text": "The uplink has your position.",
+          "url": "/game/voices/astra-1.mp3",
+          "duration": 1.968
+        },
+        {
+          "id": "astra-2",
+          "cue": "alert",
+          "text": "That ceiling is no shelter.",
+          "url": "/game/voices/astra-2.mp3",
+          "duration": 2.256
+        },
+        {
+          "id": "astra-3",
+          "cue": "attack",
+          "text": "Bring the strike down.",
+          "url": "/game/voices/astra-3.mp3",
+          "duration": 1.848
+        },
+        {
+          "id": "astra-4",
+          "cue": "attack",
+          "text": "Mark the next corridor.",
+          "url": "/game/voices/astra-4.mp3",
           "duration": 2.016
+        },
+        {
+          "id": "astra-5",
+          "cue": "pain",
+          "text": "Antenna alignment lost.",
+          "url": "/game/voices/astra-5.mp3",
+          "duration": 1.968
+        },
+        {
+          "id": "astra-6",
+          "cue": "taunt",
+          "text": "The sky is much closer than you think.",
+          "url": "/game/voices/astra-6.mp3",
+          "duration": 2.568
+        }
+      ]
+    },
+    {
+      "skin": 30,
+      "id": "scrapper",
+      "name": "SCRAPPER–6",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "speaker": "pluto",
+      "lines": [
+        {
+          "id": "scrapper-1",
+          "cue": "alert",
+          "text": "Everything down here gets broken down.",
+          "url": "/game/voices/scrapper-1.mp3",
+          "duration": 2.376
+        },
+        {
+          "id": "scrapper-2",
+          "cue": "alert",
+          "text": "Listen for the jaws. They are opening.",
+          "url": "/game/voices/scrapper-2.mp3",
+          "duration": 2.184
+        },
+        {
+          "id": "scrapper-3",
+          "cue": "attack",
+          "text": "Close the crusher.",
+          "url": "/game/voices/scrapper-3.mp3",
+          "duration": 1.008
+        },
+        {
+          "id": "scrapper-4",
+          "cue": "attack",
+          "text": "Feed the next lane.",
+          "url": "/game/voices/scrapper-4.mp3",
+          "duration": 1.488
+        },
+        {
+          "id": "scrapper-5",
+          "cue": "pain",
+          "text": "You dented the good side.",
+          "url": "/game/voices/scrapper-5.mp3",
+          "duration": 1.704
+        },
+        {
+          "id": "scrapper-6",
+          "cue": "taunt",
+          "text": "Plenty of room in the scrap pile.",
+          "url": "/game/voices/scrapper-6.mp3",
+          "duration": 1.944
+        }
+      ]
+    },
+    {
+      "skin": 31,
+      "id": "umbra",
+      "name": "UMBRA–1",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "speaker": "theia",
+      "lines": [
+        {
+          "id": "umbra-1",
+          "cue": "alert",
+          "text": "You saw me a moment too late.",
+          "url": "/game/voices/umbra-1.mp3",
+          "duration": 1.896
+        },
+        {
+          "id": "umbra-2",
+          "cue": "alert",
+          "text": "Watch the dark seams. That is where I move.",
+          "url": "/game/voices/umbra-2.mp3",
+          "duration": 3.336
+        },
+        {
+          "id": "umbra-3",
+          "cue": "attack",
+          "text": "Cut across the shadow.",
+          "url": "/game/voices/umbra-3.mp3",
+          "duration": 1.488
+        },
+        {
+          "id": "umbra-4",
+          "cue": "attack",
+          "text": "The next floor is already gone.",
+          "url": "/game/voices/umbra-4.mp3",
+          "duration": 1.944
+        },
+        {
+          "id": "umbra-5",
+          "cue": "pain",
+          "text": "You found the anchor.",
+          "url": "/game/voices/umbra-5.mp3",
+          "duration": 1.368
+        },
+        {
+          "id": "umbra-6",
+          "cue": "taunt",
+          "text": "Light cannot hold this room together.",
+          "url": "/game/voices/umbra-6.mp3",
+          "duration": 2.064
+        }
+      ]
+    },
+    {
+      "skin": 32,
+      "id": "sol",
+      "name": "SOL–12",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "speaker": "arcas",
+      "lines": [
+        {
+          "id": "sol-1",
+          "cue": "alert",
+          "text": "The chamber is reaching critical heat.",
+          "url": "/game/voices/sol-1.mp3",
+          "duration": 2.136
+        },
+        {
+          "id": "sol-2",
+          "cue": "alert",
+          "text": "The bright bands are not decoration.",
+          "url": "/game/voices/sol-2.mp3",
+          "duration": 2.064
+        },
+        {
+          "id": "sol-3",
+          "cue": "attack",
+          "text": "Open the corona.",
+          "url": "/game/voices/sol-3.mp3",
+          "duration": 1.344
+        },
+        {
+          "id": "sol-4",
+          "cue": "attack",
+          "text": "Let the ring expand.",
+          "url": "/game/voices/sol-4.mp3",
+          "duration": 1.488
+        },
+        {
+          "id": "sol-5",
+          "cue": "pain",
+          "text": "Containment is failing.",
+          "url": "/game/voices/sol-5.mp3",
+          "duration": 1.608
+        },
+        {
+          "id": "sol-6",
+          "cue": "taunt",
+          "text": "Even armor has a melting point.",
+          "url": "/game/voices/sol-6.mp3",
+          "duration": 1.968
+        }
+      ]
+    },
+    {
+      "skin": 33,
+      "id": "nautilus",
+      "name": "NAUTILUS–4",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "speaker": "janus",
+      "lines": [
+        {
+          "id": "nautilus-1",
+          "cue": "alert",
+          "text": "This chamber was built to hold an ocean.",
+          "url": "/game/voices/nautilus-1.mp3",
+          "duration": 2.256
+        },
+        {
+          "id": "nautilus-2",
+          "cue": "alert",
+          "text": "The pressure wave is turning inward.",
+          "url": "/game/voices/nautilus-2.mp3",
+          "duration": 1.944
+        },
+        {
+          "id": "nautilus-3",
+          "cue": "attack",
+          "text": "Release the spiral.",
+          "url": "/game/voices/nautilus-3.mp3",
+          "duration": 1.488
+        },
+        {
+          "id": "nautilus-4",
+          "cue": "attack",
+          "text": "Seal the next hatch.",
+          "url": "/game/voices/nautilus-4.mp3",
+          "duration": 1.608
+        },
+        {
+          "id": "nautilus-5",
+          "cue": "pain",
+          "text": "You cracked the pressure vessel.",
+          "url": "/game/voices/nautilus-5.mp3",
+          "duration": 1.896
+        },
+        {
+          "id": "nautilus-6",
+          "cue": "taunt",
+          "text": "There is still water behind every wall.",
+          "url": "/game/voices/nautilus-6.mp3",
+          "duration": 2.328
+        }
+      ]
+    },
+    {
+      "skin": 34,
+      "id": "chronos",
+      "name": "CHRONOS–8",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "speaker": "minerva",
+      "lines": [
+        {
+          "id": "chronos-1",
+          "cue": "alert",
+          "text": "The next second is already moving.",
+          "url": "/game/voices/chronos-1.mp3",
+          "duration": 2.064
+        },
+        {
+          "id": "chronos-2",
+          "cue": "alert",
+          "text": "Do not stand where you stood before.",
+          "url": "/game/voices/chronos-2.mp3",
+          "duration": 2.376
+        },
+        {
+          "id": "chronos-3",
+          "cue": "attack",
+          "text": "Repeat the last impact.",
+          "url": "/game/voices/chronos-3.mp3",
+          "duration": 1.776
+        },
+        {
+          "id": "chronos-4",
+          "cue": "attack",
+          "text": "Advance the grid.",
+          "url": "/game/voices/chronos-4.mp3",
+          "duration": 1.368
+        },
+        {
+          "id": "chronos-5",
+          "cue": "pain",
+          "text": "You broke the sequence.",
+          "url": "/game/voices/chronos-5.mp3",
+          "duration": 1.536
+        },
+        {
+          "id": "chronos-6",
+          "cue": "taunt",
+          "text": "Even a mistake can happen twice.",
+          "url": "/game/voices/chronos-6.mp3",
+          "duration": 2.208
+        }
+      ]
+    },
+    {
+      "skin": 35,
+      "id": "boreas",
+      "name": "BOREAS–11",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "speaker": "helena",
+      "lines": [
+        {
+          "id": "boreas-1",
+          "cue": "alert",
+          "text": "The fractures are spreading.",
+          "url": "/game/voices/boreas-1.mp3",
+          "duration": 1.584
+        },
+        {
+          "id": "boreas-2",
+          "cue": "alert",
+          "text": "The cold has a direction. Watch it.",
+          "url": "/game/voices/boreas-2.mp3",
+          "duration": 2.736
+        },
+        {
+          "id": "boreas-3",
+          "cue": "attack",
+          "text": "Split the ice.",
+          "url": "/game/voices/boreas-3.mp3",
+          "duration": 1.296
+        },
+        {
+          "id": "boreas-4",
+          "cue": "attack",
+          "text": "Open the next seam.",
+          "url": "/game/voices/boreas-4.mp3",
+          "duration": 1.248
+        },
+        {
+          "id": "boreas-5",
+          "cue": "pain",
+          "text": "That hit broke the outer shell.",
+          "url": "/game/voices/boreas-5.mp3",
+          "duration": 1.896
+        },
+        {
+          "id": "boreas-6",
+          "cue": "taunt",
+          "text": "There is no safe place on a closing glacier.",
+          "url": "/game/voices/boreas-6.mp3",
+          "duration": 2.736
+        }
+      ]
+    },
+    {
+      "skin": 36,
+      "id": "sovereign",
+      "name": "THE SOVEREIGN",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "speaker": "hyperion",
+      "lines": [
+        {
+          "id": "sovereign-1",
+          "cue": "alert",
+          "text": "You reached the last chamber. Earn your way out.",
+          "url": "/game/voices/sovereign-1.mp3",
+          "duration": 2.928
+        },
+        {
+          "id": "sovereign-2",
+          "cue": "alert",
+          "text": "Every command ends here.",
+          "url": "/game/voices/sovereign-2.mp3",
+          "duration": 1.776
+        },
+        {
+          "id": "sovereign-3",
+          "cue": "attack",
+          "text": "Close the perimeter.",
+          "url": "/game/voices/sovereign-3.mp3",
+          "duration": 1.464
+        },
+        {
+          "id": "sovereign-4",
+          "cue": "attack",
+          "text": "Bring the floor inward.",
+          "url": "/game/voices/sovereign-4.mp3",
+          "duration": 1.608
+        },
+        {
+          "id": "sovereign-5",
+          "cue": "pain",
+          "text": "So you can hurt me.",
+          "url": "/game/voices/sovereign-5.mp3",
+          "duration": 1.368
+        },
+        {
+          "id": "sovereign-6",
+          "cue": "taunt",
+          "text": "There is still room to prove yourself.",
+          "url": "/game/voices/sovereign-6.mp3",
+          "duration": 2.184
         }
       ]
     }

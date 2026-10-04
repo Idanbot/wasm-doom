@@ -31,7 +31,7 @@ firing, reload/charge, death and special. One-shot states show every pose and
 hold their last frame; movement and breathing loop. Native transparency avoids
 chroma-key holes in armor. [Enemy art sources and packing](art/enemies-v4/README.md)
 include prompts, hashes and a roster preview. Runtime sheets are 256×256,
-with four 128×128 cells; all 779 world atlas layers preload before play.
+with four 128×128 cells; all 804 world atlas layers preload before play.
 
 ## Sectors and boss rewards
 
@@ -78,7 +78,7 @@ The standard arsenal is MK23-S, BR-12 Breaker, KX-9 Vector, MR-4 Longbow, VLK-6 
 - Every sector has **five exclusive material textures and three exclusive destructible prop types**: 125 materials and 75 prop designs total. Runtime tiles are seamless 256×256 PNGs; 1024×1024 WebP copies are available for asset review. Breaking machinery produces sparks and supply drops without increasing enemy kills. See [sector art and projectile details](docs/SECTOR_DETAIL.md).
 - All weapon handling sheets have cleaned alpha edges. Pickup and reload frames retain substantial detached hands/magazines while discarding neighboring-panel fragments. Approved aim poses and return-to-aim frames are preserved.
 - The loading screen fetches and decodes weapon sheets, thumbnails and game assets before deployment. The wheel uses transparent gun thumbnails; its selected weapon is larger and fully opaque, while other weapons are dimmed and desaturated.
-- **116 Cloudflare Aura-2 combat voice clips** cover 19 source voice profiles, reused by themed sector enemies; four profiles are nonverbal. Bosses also have **50 death clips**, two per boss. Positional audio and enemy subtitles share the voice manifest. A shared voice gate prevents overlapping dialogue; interaction announcements and boss death events play once. Doors do not trigger dialogue.
+- **200 Cloudflare Aura-2 combat voice clips** cover 33 speaking voice profiles, reused by themed sector enemies; four profiles are nonverbal. All 25 bosses use fresh clean Aura-2 performances at natural pitch and pace, plus **50 death clips**, two per boss. Positional audio and enemy subtitles share the voice manifest. A shared voice gate prevents overlapping dialogue; interaction announcements and boss death events play once. Doors do not trigger dialogue.
 - `public/game/music/menu.mp3` covers menus, pause, settings and other non-game screens. `bgm-remix.mp3` and `boss.mp3` provide gameplay music.
 - The minimap sits below the handler panel; health and ammunition cards share a compact lower-left layout. Settings persist locally and include an enemy-subtitles toggle. The main menu has no resume-sector option.
 - The asset catalog is available from the start menu only in local development. It shows the current weapon set and animation frames and is excluded from the production build.
@@ -134,7 +134,7 @@ src/components/game/        menus, HUD, arsenal, settings and touch controls
 src/components/catalog/     local-development asset review
 ```
 
-The HUD is a 228-byte Rust `#[repr(C)]` struct decoded with a DataView. Compile-time assertions, a boot-time `hs_hud_size` check and tests guard its layout. Saves cover 33 weapon slots in 300 bytes. Older supported checkpoints pad to the current slot count. The texture atlas has 779 layers.
+The HUD is a 228-byte Rust `#[repr(C)]` struct decoded with a DataView. Compile-time assertions, a boot-time `hs_hud_size` check and tests guard its layout. Saves cover 33 weapon slots in 300 bytes. Older supported checkpoints pad to the current slot count. The texture atlas has 804 layers.
 
 ## Develop
 
@@ -195,3 +195,11 @@ PAGES_BASE=/custom-path/ npm run build:pages  # optional hosting path
 ```
 
 The [Pages workflow](.github/workflows/pages.yml) builds and publishes on pushes to `main`, deriving its base path from `GITHUB_REPOSITORY`. The local default is `/blacksite/`; `PAGES_BASE` overrides either value. The existing user site owns `idanbot.me`; this repository serves [idanbot.me/wasm-doom/](https://idanbot.me/wasm-doom/) and should not have a separate custom domain.
+
+### Boss arenas and balance
+
+Every boss has a generated seamless arena material and a distinct floor hazard: induction spokes, acid rings, prediction grids, crushing lanes, pressure spirals and more. The spawn sequence stages sector-specific steam, sparks or impacts before the arena changes. Hazards warn for 1.6 seconds, strike for 1.2 seconds, then recover; the override console remains a refuge. Damage has a 0.6-second cooldown, and all hazard tiles restore when the boss dies or the sector changes.
+
+CM-9 direct, splash and acid-pool damage now use 67% of the previous damage (integer hits round; pool damage accumulates fractional remainder). Shift sprint is 10% faster: 4.422 world units/second, also the maximum speed with Overdrive.
+
+Arena masters and exact image-generation prompts: `art/boss-arenas-v1/`; runtime materials: `public/game/boss-arenas/`; 1024×1024 review copies: `public/game/boss-arenas/hd/`. Boss voice sources, prompts and estimated usage: `art/boss-voices-v3/`. Rebuild materials with `python3 scripts/pack-boss-arenas.py`; regenerate voices with `node scripts/generate-boss-voices-v3.mjs --account <account-id>` using ignored `CF_API_KEY`.

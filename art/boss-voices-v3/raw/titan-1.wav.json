@@ -1,0 +1,12 @@
+{
+  "signature": "6734e13c5e0f62a1c2a03a24d50506ebab58a433dd77d2c4950e2fa625fd4f5f",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Siege platform online.",
+    "speaker": "zeus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:32.901Z"
+}

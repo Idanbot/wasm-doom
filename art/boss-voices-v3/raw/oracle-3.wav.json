@@ -1,0 +1,12 @@
+{
+  "signature": "a3395c2a197a543794518129327cec85f9af671c8dcf762ccaaacb03370d1f79",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Trajectory confirmed.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:45.358Z"
+}

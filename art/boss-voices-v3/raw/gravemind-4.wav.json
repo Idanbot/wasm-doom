@@ -1,0 +1,12 @@
+{
+  "signature": "9101baa80ea41982204e7a6be40a7046c55c8748d4fa02ef35ba412d774f9cde",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Stay where the heat can find you.",
+    "speaker": "atlas",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:56.374Z"
+}

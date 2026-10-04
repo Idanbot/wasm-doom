@@ -1,0 +1,12 @@
+{
+  "signature": "28e244cb143fc705b9b3890fc92bdd56bf189278992bfcdf049ebe812c126b70",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Nothing grows here but me.",
+    "speaker": "hyperion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:38.928Z"
+}

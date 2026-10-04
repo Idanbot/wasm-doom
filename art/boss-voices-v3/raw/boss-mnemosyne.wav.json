@@ -1,0 +1,12 @@
+{
+  "signature": "0c3bd6bc77b1bc1e95bc47d854d12b1f03d8a1e291bd7036cfc2b1ed573019f6",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Keep this memory. The Echo lance is yours.",
+    "speaker": "luna",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:02.561Z"
+}

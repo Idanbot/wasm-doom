@@ -1,0 +1,12 @@
+{
+  "signature": "8d8acf928329a488f6b82c5bfe37eb264bc991417723ebaa605a035d14ef2747",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Target locked beyond the gate.",
+    "speaker": "zeus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:33.962Z"
+}

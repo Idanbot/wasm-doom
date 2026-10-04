@@ -1,0 +1,12 @@
+{
+  "signature": "3ba4d998334e9472adeb9ae5c7b009bad4acf4cf1ec7ced36517c88cdeccc816",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The coils are charging.",
+    "speaker": "jupiter",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:33.195Z"
+}

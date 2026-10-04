@@ -1,0 +1,12 @@
+{
+  "signature": "eac3e6324b98009db269f54a0703a3d5a8dc36970b7d5df411c68a8906993482",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Split the ice.",
+    "speaker": "helena",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:59:07.823Z"
+}

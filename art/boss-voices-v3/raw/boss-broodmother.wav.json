@@ -1,0 +1,12 @@
+{
+  "signature": "067bdfc3a3b983c4882c463c358b5e69f9614622f38536d5b20fb567378f7bf8",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The last brood is yours to command.",
+    "speaker": "vesta",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:51.703Z"
+}

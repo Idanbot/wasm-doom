@@ -1,0 +1,12 @@
+{
+  "signature": "1a5a3a0c5a87ae764e4e4446ef74f0c9f24d75000394519a8ba4b6fede930b16",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Brace for impact.",
+    "speaker": "zeus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:35.922Z"
+}

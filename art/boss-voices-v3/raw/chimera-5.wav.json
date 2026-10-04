@@ -1,0 +1,12 @@
+{
+  "signature": "947b9dc1d129c40cf3b8e249adc98666bbb97e8c76ba77a5ad959f1a1a071aa7",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The cage is breaking.",
+    "speaker": "hyperion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:36.563Z"
+}

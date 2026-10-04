@@ -1,0 +1,12 @@
+{
+  "signature": "b3fb623498d5a1d08e7a1d6338de3a86dc9968ef498acdf323fbb7c3b7a8c8da",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You smell like the outside.",
+    "speaker": "hyperion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:32.979Z"
+}

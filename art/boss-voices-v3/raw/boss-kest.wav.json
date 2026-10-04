@@ -1,0 +1,12 @@
+{
+  "signature": "8606883b619212ca870e1d4bebb5faa9ae4432b41d4cc8777cc0f6ef79dc2bb1",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "I thought this place would outlast us. I was wrong.",
+    "speaker": "draco",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:51.513Z"
+}

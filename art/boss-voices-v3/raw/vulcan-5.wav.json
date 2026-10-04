@@ -1,0 +1,12 @@
+{
+  "signature": "8cff9969ab46c56c8705f5db39c9828f487907e80ad1cf5be81bba5a3520d571",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You cracked the casing.",
+    "speaker": "mars",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:09.396Z"
+}

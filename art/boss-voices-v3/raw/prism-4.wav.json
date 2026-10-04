@@ -1,0 +1,12 @@
+{
+  "signature": "325364cb25188b16350b49c048b20691268b83ea0832d74c4e06e22343953e3f",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Now the angles change.",
+    "speaker": "athena",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:27.180Z"
+}

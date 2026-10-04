@@ -1,0 +1,12 @@
+{
+  "signature": "9e52bb9c23dceb6193213fd01a8dabae19eec4c14342c80290db80e3ecd5cada",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The line is clear. Take the cannon.",
+    "speaker": "mars",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:11.524Z"
+}

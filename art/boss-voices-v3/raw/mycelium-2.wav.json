@@ -1,0 +1,12 @@
+{
+  "signature": "470fdc4614f79aa7437a63e841b5fe3bc0c2b17dd42e4e41151e9c50a6ff45d5",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Step carefully. The growth is listening.",
+    "speaker": "cora",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:57.173Z"
+}

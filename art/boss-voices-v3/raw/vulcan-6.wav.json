@@ -1,0 +1,12 @@
+{
+  "signature": "c79ee03537fa4c252987961947a06a02279502223b97e19d785e6ac60e9a0e7c",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The whole tunnel will hear this.",
+    "speaker": "mars",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:10.338Z"
+}

@@ -1,0 +1,12 @@
+{
+  "signature": "e463278c5f7261f0fb14aabd5fbfe11ac752c9b73443da981305df4195391ca2",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You broke the sequence.",
+    "speaker": "minerva",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:59.842Z"
+}

@@ -1,0 +1,12 @@
+{
+  "signature": "4edff246f42c0038606f822fd0c26f85c9e08f0f15885b35b6d283edaed7ee3f",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Every door you opened was mine.",
+    "speaker": "draco",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:49.710Z"
+}

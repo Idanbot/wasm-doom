@@ -1,0 +1,12 @@
+{
+  "signature": "5c58d5c9ab7330c3d614c8eb0d7c1b4f80e0e171c4a4cb7e7c1eeac2236a6aaa",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The chamber is reaching critical heat.",
+    "speaker": "arcas",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:36.218Z"
+}

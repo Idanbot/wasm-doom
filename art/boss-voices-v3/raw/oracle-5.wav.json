@@ -1,0 +1,12 @@
+{
+  "signature": "92efaeff8d28f6ed8156523790ce54527c81d2886dc7d1396a45c268e9e184d4",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Prediction variance detected.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:47.610Z"
+}

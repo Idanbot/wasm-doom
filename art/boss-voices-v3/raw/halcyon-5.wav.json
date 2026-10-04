@@ -1,0 +1,12 @@
+{
+  "signature": "fa6786678382ff8834d5e8da7138fd4c1e2a7ebd2dfc02662fda79e9a54df623",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "My shield is losing pressure.",
+    "speaker": "pandora",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:18.076Z"
+}

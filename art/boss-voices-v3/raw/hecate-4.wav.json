@@ -1,0 +1,12 @@
+{
+  "signature": "9f33cf96d3a278aec3bd6b38e76abaf9eafadf1e338b3cba82426ccc1ece1a82",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Your movement has been solved.",
+    "speaker": "neptune",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:24.832Z"
+}

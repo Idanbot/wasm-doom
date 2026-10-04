@@ -1,0 +1,12 @@
+{
+  "signature": "348c6edb9d7082287298bd9ed2676e329ba7a2f39d704aba2356f0733ab3db5e",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Keep moving. The floor is part of the weapon.",
+    "speaker": "jupiter",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:34.573Z"
+}

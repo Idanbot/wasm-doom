@@ -1,0 +1,12 @@
+{
+  "signature": "87d55854ae66917a0247ed8cb5854066334ef8088084149a97a07c7bf0bbd196",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Interference burst incoming.",
+    "speaker": "hermes",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:25.483Z"
+}

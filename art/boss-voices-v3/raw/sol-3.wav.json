@@ -1,0 +1,12 @@
+{
+  "signature": "f7c7998d20fcfd265085b0fd7ff37126d9513a47ff5d1a9e90f4bc936f597b16",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Open the corona.",
+    "speaker": "arcas",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:38.230Z"
+}

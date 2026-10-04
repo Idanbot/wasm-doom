@@ -1,0 +1,12 @@
+{
+  "signature": "124c38210a226ed790887e590049ed05bb7d2abe33cf1aa9664df991edafd893",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The noise is gone. Choose your own route.",
+    "speaker": "hermes",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:30.257Z"
+}

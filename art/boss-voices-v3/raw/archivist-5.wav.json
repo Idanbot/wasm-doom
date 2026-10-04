@@ -1,0 +1,12 @@
+{
+  "signature": "700d37768444ea06001e12156644ead5b181e1893a99b59f11decd50d2b4d4de",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "My memory is fragmenting.",
+    "speaker": "orion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:08.151Z"
+}

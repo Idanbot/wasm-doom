@@ -1,0 +1,12 @@
+{
+  "signature": "ebc32f6510fe85a41389b5bfbf00f5e2ec1f54e1a0ca2f84862394553224ad0d",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Your position is public.",
+    "speaker": "hermes",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:26.467Z"
+}

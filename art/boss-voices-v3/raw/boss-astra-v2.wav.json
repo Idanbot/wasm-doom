@@ -1,0 +1,12 @@
+{
+  "signature": "7da11344eb2aed53458349807efb9ed365ce90e5bf3b59fa980fa8c5efd01e0c",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Take the launcher. Choose where it points.",
+    "speaker": "apollo",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:15.177Z"
+}

@@ -1,0 +1,12 @@
+{
+  "signature": "389e7e55c87d8404bf0dda1feeb9ab7ff1f7803bbe9ecacdd7c34044f46fba4a",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Let the ring expand.",
+    "speaker": "arcas",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:39.177Z"
+}

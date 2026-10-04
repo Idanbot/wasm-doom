@@ -1,0 +1,12 @@
+{
+  "signature": "6f585b61c87a93755a8d6a76f87499d00f542d4a73688ec1149536213cc0f089",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Even a mistake can happen twice.",
+    "speaker": "minerva",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:59:01.099Z"
+}

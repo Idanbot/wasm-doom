@@ -1,0 +1,12 @@
+{
+  "signature": "b219fd0aeca31d336a7656b91368fc6895db4b0691251ebb7f700a57b4c8eafd",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The vault is open. Do not leave them forgotten.",
+    "speaker": "luna",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:04.212Z"
+}

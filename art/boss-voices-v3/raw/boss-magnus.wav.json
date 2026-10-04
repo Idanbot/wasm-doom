@@ -1,0 +1,12 @@
+{
+  "signature": "b5fdc398092ac3853080e5ac54e24f63c1ef233ed56766bb6b1798424af51e2f",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The field is down. Take the cannon.",
+    "speaker": "jupiter",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:40.297Z"
+}

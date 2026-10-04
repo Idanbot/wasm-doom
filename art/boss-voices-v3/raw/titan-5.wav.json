@@ -1,0 +1,12 @@
+{
+  "signature": "ccec7b98c4baae71f6e708021e4b948f9f88a2daedc8a198bc566263c72cabec",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Hydraulic line severed.",
+    "speaker": "zeus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:37.113Z"
+}

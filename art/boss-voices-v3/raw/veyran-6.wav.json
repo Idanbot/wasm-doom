@@ -1,0 +1,12 @@
+{
+  "signature": "50b5357d53be8407b0def3d4edd23fab90f13ad86f33f741526b02cbb40ffa4a",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "There is no outside. Only me.",
+    "speaker": "saturn",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:16.845Z"
+}

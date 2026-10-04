@@ -1,0 +1,12 @@
+{
+  "signature": "efe7e0b8a06f7a82e8ad92e8b9972d16eae5152808c9b68197f9171ea0fc8ba7",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The pressure is gone. Keep the core stable.",
+    "speaker": "atlas",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:00.563Z"
+}

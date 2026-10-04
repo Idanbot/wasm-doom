@@ -1,0 +1,12 @@
+{
+  "signature": "a3b0c7998f1820214365a53c180a5b6837389ea99cc9ec449610d2c551b26dd1",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "No more borrowed weapons.",
+    "speaker": "draco",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:46.894Z"
+}

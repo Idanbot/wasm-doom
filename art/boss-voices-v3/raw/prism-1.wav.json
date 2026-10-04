@@ -1,0 +1,12 @@
+{
+  "signature": "95731144053a7c9b4843030a275e110a360d5f8dafe86cf580d33a9b7cd5657b",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Light has more than one edge.",
+    "speaker": "athena",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:24.254Z"
+}

@@ -1,0 +1,12 @@
+{
+  "signature": "500c0bca293eea5a189d9d2cd0ec7da340adcc8912e639e58de50cbdf2a019ec",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The uplink is quiet. The sky is yours.",
+    "speaker": "apollo",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:13.631Z"
+}

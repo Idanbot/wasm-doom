@@ -1,0 +1,12 @@
+{
+  "signature": "dce212b93f6d39b6f786599179fde7725dcb5cf0c840d3865375f85c8cede30a",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You reached the last chamber. Earn your way out.",
+    "speaker": "hyperion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:59:15.729Z"
+}

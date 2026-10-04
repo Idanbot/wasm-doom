@@ -1,0 +1,12 @@
+{
+  "signature": "4841674c67708983dc1d639bf1b7e97b3ab36177da610fcb10c135a6e0297723",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Mark the next corridor.",
+    "speaker": "apollo",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:09.487Z"
+}

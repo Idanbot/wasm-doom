@@ -1,3 +1,4 @@
+import BOSS_VOICE_LINES from "../../game/boss-voice-lines.json" with { type: "json" };
 import { migrateGameStorage, readGameStorage } from "../../lib/storage-migration.ts";
 import { DEFAULT_GFX, DEFAULT_RES, RES_MODES, type GfxOpts, type ResMode } from "../../game/types.ts";
 import { WEAPON_SHEETS } from "../../game/weapon-assets.ts";
@@ -83,19 +84,7 @@ const HANDLER = [
   "Cut the memory bus before MNEMOSYNE wakes. Dodge its echo mines and pulse rings.",
 ] as const;
 
-const LOCKDOWN = [
-  "MALIK: Vault doors sealed. You are the remaining variable.",
-  "MALIK: Forge circuit closed. The floor is now part of the weapon.",
-  "MALIK: Containment sealed. The specimen is authorized to finish this.",
-  "ORACLE–7: Your route has already been calculated. Core doors sealed.",
-  "GRAVEMIND–4: Reactor doors sealed. This place dies with me.",
-  "NULL ARCHIVIST: Memory vault closed. Your route has been erased.",
-  "HALCYON–3: Reserve sealed. Coolant pressure rising.",
-  "RELAY–0: Transmission contained. You have nowhere left to hide.",
-  "TITAN–12: Siege gate sealed. Structural load accepted.",
-  "DIRECTOR KEST: Command doors closed. No extraction for you.",
-  "MNEMOSYNE–6: Your memory belongs to the vault. Echo sequence armed.",
-] as const;
+
 
 const NODE_DONE = [
   "Power restored. The vault will take a USE now.",
@@ -138,18 +127,18 @@ const MEMOS: Record<number, string> = {
 
 export function radioCopy(line: number, wave: number) {
   const sector = (Math.max(1, wave) - 1) % SECTORS.length;
+  const voice = BOSS_VOICE_LINES[sector]!;
+  if (line === 2) return { speaker: voice.name, text: voice.intro };
+  if (line === 8) return { speaker: voice.name, text: voice.death[bossDeathVariantForWave(wave)]! };
   if (sector >= 11) {
     const boss = CAMPAIGN_EXPANSION[sector - 11]!;
     if (line === 1) return { speaker: "HANDLER", text: `${boss.sector}. ${boss.boss} controls this sector. Disable the node and initiate the override.` };
-    if (line === 2) return { speaker: boss.boss, text: `${boss.ability}. You have entered my sector.` };
     if (line === 3) return { speaker: boss.boss, text: "Armor circuit exposed. Recalibrating defenses." };
     if (line === 4) return { speaker: "HANDLER", text: "Node isolated. The override console is live." };
     if (line === 6) return { speaker: "HANDLER", text: `${boss.gun} is on the deck. Claim the golden case to leave.` };
-    if (line === 8) return { speaker: boss.boss, text: bossDeathVariantForWave(wave) ? `My systems are gone. Take ${boss.gun}. Carry it beyond this sector.` : `Core failure. ${boss.gun} released. The sector is yours.` };
     return line >= 10 ? { speaker: "ARCHIVE", text: `${boss.sector}: ${boss.ability}. Keep cover between you and the firing lanes.` } : null;
   }
   if (line === 1) return { speaker: "HANDLER", text: HANDLER[sector]! };
-  if (line === 2) return { speaker: "MALIK", text: LOCKDOWN[sector]! };
   if (line === 3) return {
     speaker: ["MALIK", "HECATE–9", "CHIMERA–9", "ORACLE–7", "GRAVEMIND–4", "NULL ARCHIVIST", "HALCYON–3", "RELAY–0", "TITAN–12", "DIRECTOR KEST", "MNEMOSYNE–6"][sector]!,
     text: [
@@ -184,36 +173,6 @@ export function radioCopy(line: number, wave: number) {
         "MNEMOSYNE dropped the Echo lance. Claim it and leave the vault.",
       ][sector]!,
     };
-  }
-  if (line === 8) {
-    // Speaker and copy mirror the two variants in art/boss-voices.json.
-    const first = [
-      { speaker: "MALIK", text: "My vault... my blood. Take the rail, intruder. Let it remember who built this place." },
-      { speaker: "HECATE–9", text: "Core failure. Warden protocol terminated. Forge cutter released. Do not let it cool." },
-      { speaker: "CHIMERA–9", text: "You broke the cage. The toxin is yours now. Breathe carefully." },
-      { speaker: "ORACLE–7", text: "Prediction failed. The Predictor rail is yours." },
-      { speaker: "GRAVEMIND–4", text: "Containment... lost. Take the Sink cannon. Seal the reactor." },
-      { speaker: "NULL ARCHIVIST", text: "Archive integrity lost. The rail is yours. Do not write me back." },
-      { speaker: "HALCYON–3", text: "Coolant pressure collapsing. The Rime launcher is yours. Do not let it thaw." },
-      { speaker: "RELAY–0", text: "Signal lost. The Relay carbine is unbound." },
-      { speaker: "TITAN–12", text: "Hydraulics failed. Siege cannon released. The gate is yours." },
-      { speaker: "DIRECTOR KEST", text: "You have cut the chain of command. The Kest rifle is yours." },
-      { speaker: "MNEMOSYNE–6", text: "Memory core erased. Take the Echo lance. Let the vault forget." },
-    ];
-    const second = [
-      { speaker: "MALIK", text: "My vault is yours. I buried the truth beneath that rail. Do not let them seal it again." },
-      { speaker: "HECATE–9", text: "Safety locks have failed. My forge cutter is yours. Keep clear of the discharge." },
-      { speaker: "CHIMERA–9", text: "Containment was never meant to save you. The compound still lives in the sprayer." },
-      { speaker: "ORACLE–7", text: "I saw every outcome except this one. The Predictor rifle is yours." },
-      { speaker: "GRAVEMIND–4", text: "Pressure gone. Take the Sink cannon. Keep the core from swallowing you." },
-      { speaker: "NULL ARCHIVIST", text: "Last record: I was here. Take the Archive rail and carry it out." },
-      { speaker: "HALCYON–3", text: "Containment ice gone. Keep the cold between you and the next chamber." },
-      { speaker: "RELAY–0", text: "No carrier. No command. Take my transmitter and make your own route." },
-      { speaker: "TITAN–12", text: "Load-bearing systems gone. Take the Titan cannon before the ceiling follows." },
-      { speaker: "DIRECTOR KEST", text: "I built this place to outlast us. Take the rifle. Prove me wrong." },
-      { speaker: "MNEMOSYNE–6", text: "This is my final memory. The Echo lance is yours. Carry it beyond these walls." },
-    ];
-    return (bossDeathVariantForWave(wave) === 0 ? first : second)[sector]!;
   }
   const memo = MEMOS[line];
   if (memo) return { speaker: line >= 18 ? "LAB" : line >= 14 ? "FORGE" : "ARCHIVE", text: memo };

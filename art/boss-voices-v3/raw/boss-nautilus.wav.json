@@ -1,0 +1,12 @@
+{
+  "signature": "6cfb8637b05ee0ae329822d34099a43f892a73778be0bc2aa1b7bdfbeb96fe96",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Pressure released. Take the launcher and go.",
+    "speaker": "janus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:52.671Z"
+}

@@ -1,0 +1,12 @@
+{
+  "signature": "ee84cf95ac875853615fdf6236a5ecb560ff822000c9c199ce445b954ea2f41a",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The signal is quiet. You earned the rifle.",
+    "speaker": "saturn",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:18.241Z"
+}

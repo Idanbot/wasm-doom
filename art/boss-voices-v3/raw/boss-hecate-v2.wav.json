@@ -1,0 +1,12 @@
+{
+  "signature": "516b5e0486df201e9d040324ef9e0ac58169dac52d97274bb29906814de89c4e",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "No more orders. No more heat. You can go.",
+    "speaker": "neptune",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:30.869Z"
+}

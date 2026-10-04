@@ -1,0 +1,12 @@
+{
+  "signature": "cb1bb1c5c53f62d073e3cdf12c8f6af1142e48db9bde73d47e9d61576ca16243",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You should have stayed above ground.",
+    "speaker": "atlas",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:53.219Z"
+}

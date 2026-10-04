@@ -1,0 +1,12 @@
+{
+  "signature": "e30653ea29feca43aba0640f51796c3bc013d53faa29a4d77c5fec447b2f1a1e",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You saw me a moment too late.",
+    "speaker": "theia",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:25.761Z"
+}

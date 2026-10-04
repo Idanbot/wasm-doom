@@ -1,0 +1,12 @@
+{
+  "signature": "3d88b57528b31475b9beca627de00f0a048c8afa390f3cd87f5e8460fbff6f43",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Every corridor belongs to my factory.",
+    "speaker": "neptune",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:27.143Z"
+}

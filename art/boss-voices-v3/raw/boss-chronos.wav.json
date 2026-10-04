@@ -1,0 +1,12 @@
+{
+  "signature": "ea1245ab41181ed09c7ec88bf102fb7779ecb9a056ebe2b1d5aab86021e64093",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "This second belongs to you. Take the weapon.",
+    "speaker": "minerva",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:59:02.660Z"
+}

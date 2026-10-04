@@ -1,0 +1,12 @@
+{
+  "signature": "beb387a44eceb37e57e11d34ee8b6f831bbd5f8efd00f36d14823d3860d68c75",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Reserve pressure is under my control.",
+    "speaker": "pandora",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:14.571Z"
+}

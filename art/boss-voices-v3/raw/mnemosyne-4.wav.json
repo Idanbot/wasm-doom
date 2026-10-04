@@ -1,0 +1,12 @@
+{
+  "signature": "bc7439c47d1b0420ecf23b5ec52ceddfc58e42b2fa3f87de0799f78564e22f76",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Your previous mistakes return.",
+    "speaker": "luna",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:58.481Z"
+}

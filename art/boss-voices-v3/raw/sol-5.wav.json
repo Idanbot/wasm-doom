@@ -1,0 +1,12 @@
+{
+  "signature": "7da38389ce1e90eedcad079d9deab4af041a3e938ebd7d8fc0014366b98df270",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Containment is failing.",
+    "speaker": "arcas",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:40.171Z"
+}

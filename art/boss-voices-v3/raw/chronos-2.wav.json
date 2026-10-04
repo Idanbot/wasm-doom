@@ -1,0 +1,12 @@
+{
+  "signature": "261062f7ee92a0677592e7e2bc30b852c543e939db6869656c03c268d48a894a",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Do not stand where you stood before.",
+    "speaker": "minerva",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:56.777Z"
+}

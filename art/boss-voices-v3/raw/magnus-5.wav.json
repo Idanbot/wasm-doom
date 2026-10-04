@@ -1,0 +1,12 @@
+{
+  "signature": "f341a742ceb2d5647143368e64b51cfd9bb7f137196c62c4b85aa5440bb897d4",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The winding is damaged.",
+    "speaker": "jupiter",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:37.632Z"
+}

@@ -1,0 +1,12 @@
+{
+  "signature": "ea49212a6eff9d9e112473ae4d60ca075c7a7648d4f64c73f1faa084b47f3221",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Every open socket is another pair of eyes.",
+    "speaker": "vesta",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:44.651Z"
+}

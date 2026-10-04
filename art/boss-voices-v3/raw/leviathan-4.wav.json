@@ -1,0 +1,12 @@
+{
+  "signature": "204e35666f7faca88f18c0a88a00b5209be91a8c67a6c3926b0192445ec7b8e5",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You cannot outrun the tide.",
+    "speaker": "odysseus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:17.951Z"
+}

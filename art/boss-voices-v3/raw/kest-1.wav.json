@@ -1,0 +1,12 @@
+{
+  "signature": "fbd5e19b18031e9dd907938e049596e997b4ce6c1f74d7fb37ecff0698d36573",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You reached Command. That took longer than expected.",
+    "speaker": "draco",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:43.071Z"
+}

@@ -1,0 +1,12 @@
+{
+  "signature": "2d6fb225d584d02b0afcb9f621f0441500f7c1ede804a852cf200613c7a0285f",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Shield index restored.",
+    "speaker": "orion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:07.020Z"
+}

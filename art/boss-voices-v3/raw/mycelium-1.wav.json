@@ -1,0 +1,12 @@
+{
+  "signature": "9a4fc2f78e46e8688d6a864598daf4730b366c3d03644fd693cb204ccf3bb024",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You can hear us breathing under the tiles.",
+    "speaker": "cora",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:54.957Z"
+}

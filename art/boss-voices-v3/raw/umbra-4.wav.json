@@ -1,0 +1,12 @@
+{
+  "signature": "2af1c416dcfd79d55dc3cdc619122c59e6ac756848674aedda30e7761f6a8e14",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The next floor is already gone.",
+    "speaker": "theia",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:29.682Z"
+}

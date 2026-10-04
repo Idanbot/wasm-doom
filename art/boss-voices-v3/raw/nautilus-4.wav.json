@@ -1,0 +1,12 @@
+{
+  "signature": "2a04f36492b443ac8620833e6cc957fe98273623d2122522595e750db6833212",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Seal the next hatch.",
+    "speaker": "janus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:48.515Z"
+}

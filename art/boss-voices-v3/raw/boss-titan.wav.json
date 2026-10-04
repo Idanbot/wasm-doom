@@ -1,0 +1,12 @@
+{
+  "signature": "123f10b13d35751dfa2e4c55a2b3f47a0e7950f7de5099725f3a236b84b330d9",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The supports are failing. Take the cannon and run.",
+    "speaker": "zeus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:40.063Z"
+}

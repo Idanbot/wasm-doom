@@ -1,0 +1,12 @@
+{
+  "signature": "e0888fecc702ae67f23f006a5d5777b0d4e6ae19212faa142d65d74795597980",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Every route ends at this core.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:44.337Z"
+}

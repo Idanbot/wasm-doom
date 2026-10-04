@@ -1,0 +1,12 @@
+{
+  "signature": "55f9175f0208366a1baf6561f90bf8110d31015efa627b340e268c5d3a5e48c3",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You cracked the pressure vessel.",
+    "speaker": "janus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:49.616Z"
+}

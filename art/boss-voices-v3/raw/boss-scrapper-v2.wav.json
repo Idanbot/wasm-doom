@@ -1,0 +1,12 @@
+{
+  "signature": "9141a224857fc431bc952b053dbbb735aa0a527be3ccc08eb37550f22a912a80",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Leave the rest. It was all scrap anyway.",
+    "speaker": "pluto",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:24.587Z"
+}

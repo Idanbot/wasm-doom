@@ -1,0 +1,12 @@
+{
+  "signature": "87d3e9788255d2bbbc2ad85060350201a3df4c66d1d7cf0eb49eff60b261e2aa",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "I can finally breathe. Take the weapon.",
+    "speaker": "hyperion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:40.360Z"
+}

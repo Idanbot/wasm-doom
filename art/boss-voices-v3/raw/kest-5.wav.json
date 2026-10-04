@@ -1,0 +1,12 @@
+{
+  "signature": "ce98ed90c088dddb09e3045b5ba541515b1f5362bdd4dffeb4ef19a851adac3b",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Armor hit. Staying on task.",
+    "speaker": "draco",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:48.393Z"
+}

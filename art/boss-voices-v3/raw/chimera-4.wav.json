@@ -1,0 +1,12 @@
+{
+  "signature": "e47cbd7f3dc4c452df1abd8094e1403d50a163711c54115de0a911f2bf71565f",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The green remembers your shape.",
+    "speaker": "hyperion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:35.564Z"
+}

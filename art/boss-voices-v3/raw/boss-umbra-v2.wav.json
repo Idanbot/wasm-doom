@@ -1,0 +1,12 @@
+{
+  "signature": "a3b4cdaf33da326b1244745eb5c648d03c2a53da52ff3845a4dc6e8e82496076",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You found me. There is nothing left to hide.",
+    "speaker": "theia",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:34.909Z"
+}

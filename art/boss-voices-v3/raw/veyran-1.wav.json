@@ -1,0 +1,12 @@
+{
+  "signature": "9aad88d2a026fd8676d6cc2add1477d2207c6f7c22b1300b65426b1c141769d1",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You have entered my nervous system.",
+    "speaker": "saturn",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:11.315Z"
+}

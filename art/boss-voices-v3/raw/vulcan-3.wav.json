@@ -1,0 +1,12 @@
+{
+  "signature": "a7d34e3be559406639e10e954cb121daa1d5d58488974eeb0ebd3153f86a15d5",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Watch the tracks.",
+    "speaker": "mars",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:07.756Z"
+}

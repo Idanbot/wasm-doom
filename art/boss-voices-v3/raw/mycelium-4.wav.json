@@ -1,0 +1,12 @@
+{
+  "signature": "4b1f178b62d6bc11e22ec5b2d0a176c96a519f93e8cb47a70e094219b27def9c",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Let the chamber breathe.",
+    "speaker": "cora",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:59.373Z"
+}

@@ -1,0 +1,12 @@
+{
+  "signature": "8436775dadb8e956d0dd2f84c44a6df1914d3c737b377905e16f42c2d79fe134",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Keep moving. The cold will not wait.",
+    "speaker": "pandora",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:22.047Z"
+}

@@ -1,0 +1,12 @@
+{
+  "signature": "1d69b80a0e425f103a564f8bb014be9d781634c7ed9b47ddf4b385b2c641c7e4",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Launch the next brood.",
+    "speaker": "vesta",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:45.829Z"
+}

@@ -1,0 +1,12 @@
+{
+  "signature": "cacd977808c5e9ed3bcac5d10e8bade5f8d3816cd1d69b305da1613e59024c8d",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Hold still for the cold.",
+    "speaker": "pandora",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:16.847Z"
+}

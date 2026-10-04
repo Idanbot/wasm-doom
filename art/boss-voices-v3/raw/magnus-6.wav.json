@@ -1,0 +1,12 @@
+{
+  "signature": "833c380e2570c3fd70671d2b4662125a0efa44b6bae87003d730e63555ac9e4e",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Steel remembers where it belongs.",
+    "speaker": "jupiter",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:38.941Z"
+}

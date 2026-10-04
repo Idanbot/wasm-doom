@@ -1,0 +1,12 @@
+{
+  "signature": "655093a0a1610f03f8ff3590c9205663a0e8562602ee2b3dc88ac141698f82d9",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Watch the dark seams. That is where I move.",
+    "speaker": "theia",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:27.485Z"
+}

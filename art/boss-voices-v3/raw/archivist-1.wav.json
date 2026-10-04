@@ -1,0 +1,12 @@
+{
+  "signature": "29b51fa56734a009fe26dcfc92c722a7ef7000c28cf5a4a147360d21de829aa6",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Unauthorized memory access.",
+    "speaker": "orion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:03.354Z"
+}

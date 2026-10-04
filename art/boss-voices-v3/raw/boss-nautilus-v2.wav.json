@@ -1,0 +1,12 @@
+{
+  "signature": "29641aaa32835578342783dc1abec7bd8ca228ab2aac2418c3ad96f12a044aa0",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The water is settling. Get to the surface.",
+    "speaker": "janus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:54.247Z"
+}

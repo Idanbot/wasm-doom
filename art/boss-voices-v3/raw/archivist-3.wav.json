@@ -1,0 +1,12 @@
+{
+  "signature": "71a0423fb4446a0e9abb826b7ed75da7fb1369c8b2f9e96a3d56bca36d9ccc51",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Record this impact.",
+    "speaker": "orion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:05.858Z"
+}

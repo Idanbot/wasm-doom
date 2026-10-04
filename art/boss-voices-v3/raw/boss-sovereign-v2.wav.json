@@ -1,0 +1,12 @@
+{
+  "signature": "f2b0e6984e1bec5f4078b32ca03a1c55c74178181e3d65116579668b60688445",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The command is yours. End this place.",
+    "speaker": "hyperion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:59:23.890Z"
+}

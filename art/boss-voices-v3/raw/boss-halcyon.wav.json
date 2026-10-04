@@ -1,0 +1,12 @@
+{
+  "signature": "ad10a5d50cb53859da8c180c0f90fbc4f35284416b6d524b31f8b30437c7cce5",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The ice is breaking. Take the weapon.",
+    "speaker": "pandora",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:20.545Z"
+}

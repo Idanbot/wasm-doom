@@ -1,0 +1,12 @@
+{
+  "signature": "b76bfb64f03e6e2e0dc968dd70ce992000de6e3d565f1a6d11ca8c39ede85f5c",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Listen for the jaws. They are opening.",
+    "speaker": "pluto",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:17.786Z"
+}

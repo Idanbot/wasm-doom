@@ -1,0 +1,12 @@
+{
+  "signature": "825b050c88649d0a330656fec4786c5704f3fbc69fb7221e1e7c00b41cd8cb21",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "That ceiling is no shelter.",
+    "speaker": "apollo",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:07.173Z"
+}

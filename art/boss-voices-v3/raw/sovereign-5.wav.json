@@ -1,0 +1,12 @@
+{
+  "signature": "ceb15ad9b019f00092cd837fd2fb9f70ba71edaff829279aa30648f321c07f44",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "So you can hurt me.",
+    "speaker": "hyperion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:59:19.673Z"
+}

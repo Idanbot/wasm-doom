@@ -1,0 +1,12 @@
+{
+  "signature": "62970ebd87995ebfc5f8a1a7c262cfab8ec2d5a38d696422b89d27ce50c94707",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Nadir belongs to me.",
+    "speaker": "saturn",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:12.357Z"
+}

@@ -1,0 +1,12 @@
+{
+  "signature": "c2644d20104c96ad5820af8b2b61b30f1cbcfe7607b17999d4803997ec9f5b70",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "I did not see this ending. The rifle is yours.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:50.677Z"
+}

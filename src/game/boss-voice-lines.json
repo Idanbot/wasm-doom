@@ -1,0 +1,202 @@
+[
+  {
+    "name": "Malik Veyran",
+    "intro": "You have entered my nervous system.",
+    "death": [
+      "The signal is quiet. You earned the rifle.",
+      "Nadir is yours now. Make it mean something."
+    ]
+  },
+  {
+    "name": "HECATE\u20139",
+    "intro": "Unauthorized lifeform in the forge.",
+    "death": [
+      "The forge is cooling. Take the cutter.",
+      "No more orders. No more heat. You can go."
+    ]
+  },
+  {
+    "name": "CHIMERA\u20139",
+    "intro": "The lights hurt my eyes.",
+    "death": [
+      "I can finally breathe. Take the weapon.",
+      "The chamber is open. Let the others out."
+    ]
+  },
+  {
+    "name": "ORACLE\u20137",
+    "intro": "Your arrival was scheduled.",
+    "death": [
+      "I did not see this ending. The rifle is yours.",
+      "One choice was still yours to make."
+    ]
+  },
+  {
+    "name": "GRAVEMIND\u20134",
+    "intro": "You should have stayed above ground.",
+    "death": [
+      "The pressure is gone. Keep the core stable.",
+      "That is enough. Let the chamber rest."
+    ]
+  },
+  {
+    "name": "Null Archivist",
+    "intro": "Unauthorized memory access.",
+    "death": [
+      "Keep the last record. The rail is yours.",
+      "Remember that someone was here."
+    ]
+  },
+  {
+    "name": "HALCYON\u20133",
+    "intro": "Thermal breach detected.",
+    "death": [
+      "The ice is breaking. Take the weapon.",
+      "Keep moving. The cold will not wait."
+    ]
+  },
+  {
+    "name": "RELAY\u20130",
+    "intro": "Unknown signal entering the crypt.",
+    "death": [
+      "The noise is gone. Choose your own route.",
+      "At last, a clear channel. You can leave."
+    ]
+  },
+  {
+    "name": "TITAN\u201312",
+    "intro": "Siege platform online.",
+    "death": [
+      "The supports are failing. Take the cannon and run.",
+      "That was the last load I could carry."
+    ]
+  },
+  {
+    "name": "Director Kest",
+    "intro": "You reached Command. That took longer than expected.",
+    "death": [
+      "I thought this place would outlast us. I was wrong.",
+      "Take the rifle. Finish what I could not."
+    ]
+  },
+  {
+    "name": "MNEMOSYNE\u20136",
+    "intro": "Intrusion recorded. Your memory is mine.",
+    "death": [
+      "Keep this memory. The Echo lance is yours.",
+      "The vault is open. Do not leave them forgotten."
+    ]
+  },
+  {
+    "name": "VULCAN\u20132",
+    "intro": "The rails are live. Choose your footing.",
+    "death": [
+      "The line is clear. Take the cannon.",
+      "For once, there is no next train."
+    ]
+  },
+  {
+    "name": "LEVIATHAN\u20138",
+    "intro": "The pressure is rising. Stay out of the channels.",
+    "death": [
+      "The tide is falling. Take the weapon and climb.",
+      "The hull is quiet. Get above the water."
+    ]
+  },
+  {
+    "name": "PRISM\u20135",
+    "intro": "Light has more than one edge.",
+    "death": [
+      "The light is fading. The rifle is yours.",
+      "You found the one angle I could not hold."
+    ]
+  },
+  {
+    "name": "MAGNUS\u20134",
+    "intro": "The coils are charging.",
+    "death": [
+      "The field is down. Take the cannon.",
+      "Everything is still. I had forgotten that sound."
+    ]
+  },
+  {
+    "name": "BROODMOTHER\u20133",
+    "intro": "The hatchery is awake.",
+    "death": [
+      "The last brood is yours to command.",
+      "The bays are empty. Let the small ones go."
+    ]
+  },
+  {
+    "name": "MYCELIUM\u20139",
+    "intro": "You can hear us breathing under the tiles.",
+    "death": [
+      "The roots are still here. Take what you need.",
+      "You cut the voice. The growth will sleep."
+    ]
+  },
+  {
+    "name": "ASTRA\u20137",
+    "intro": "The uplink has your position.",
+    "death": [
+      "The uplink is quiet. The sky is yours.",
+      "Take the launcher. Choose where it points."
+    ]
+  },
+  {
+    "name": "SCRAPPER\u20136",
+    "intro": "Everything down here gets broken down.",
+    "death": [
+      "You win. Take the good parts.",
+      "Leave the rest. It was all scrap anyway."
+    ]
+  },
+  {
+    "name": "UMBRA\u20131",
+    "intro": "You saw me a moment too late.",
+    "death": [
+      "The shadows are still. Take the weapon.",
+      "You found me. There is nothing left to hide."
+    ]
+  },
+  {
+    "name": "SOL\u201312",
+    "intro": "The chamber is reaching critical heat.",
+    "death": [
+      "Containment is holding. Take the cannon.",
+      "The light is dimming. Keep the core alive."
+    ]
+  },
+  {
+    "name": "NAUTILUS\u20134",
+    "intro": "This chamber was built to hold an ocean.",
+    "death": [
+      "Pressure released. Take the launcher and go.",
+      "The water is settling. Get to the surface."
+    ]
+  },
+  {
+    "name": "CHRONOS\u20138",
+    "intro": "The next second is already moving.",
+    "death": [
+      "This second belongs to you. Take the weapon.",
+      "No more repeats. Make the next moment count."
+    ]
+  },
+  {
+    "name": "BOREAS\u201311",
+    "intro": "The fractures are spreading.",
+    "death": [
+      "The shell is broken. Take the cannon.",
+      "The frost is lifting. Do not look back."
+    ]
+  },
+  {
+    "name": "THE SOVEREIGN",
+    "intro": "You reached the last chamber. Earn your way out.",
+    "death": [
+      "You earned the last weapon. Carry it out.",
+      "The command is yours. End this place."
+    ]
+  }
+]

@@ -1,0 +1,152 @@
+[
+  {
+    "level": 1,
+    "slug": "veyran",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena Malik Veyran. Material: amber armored command bunker panels, graphite ceramic riveted slabs, copper data conduits. This is an orthographic flat surface albedo tile, not a room, not a perspective photograph. Detailed realistic near-future tactical industrial construction, finely worn metal, crisp screws, physically coherent joints, surface microdetail. A restrained ffb347 accent on dark but readable graphite midtones. The repeating material may cover walls and floors. Edge-to-edge texture, repeat seamlessly horizontally and vertically: features exiting one edge must continue on the opposite edge, no border, no center medallion, no lettering or numbers, no skulls, no flames, no weapons, no people, no logo. Even diffuse lighting, no cast shadow, no vignette.",
+    "source": "art/boss-arenas-v1/veyran-source.png"
+  },
+  {
+    "level": 2,
+    "slug": "hecate",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena HECATE–9. Material: burnished iron induction forge tiles, orange heater channels, charred steel braces. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #ff813e accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/hecate-source.png"
+  },
+  {
+    "level": 3,
+    "slug": "chimera",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena CHIMERA–9. Material: laboratory composite plating, acid green culture veins, translucent resin capillaries. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #91da4d accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/chimera-source.png"
+  },
+  {
+    "level": 4,
+    "slug": "oracle",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena ORACLE–7. Material: blue black optical server panels, fine cyan routing traces, smoked glass fiber sockets. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #53dbfa accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/oracle-source.png"
+  },
+  {
+    "level": 5,
+    "slug": "gravemind",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena GRAVEMIND–4. Material: bruised violet reactor containment plates, tungsten pressure seams, battered brass bolts. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #ab7cff accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/gravemind-source.png"
+  },
+  {
+    "level": 6,
+    "slug": "archivist",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena Null Archivist. Material: antique black archival steel, ivory ceramic memory blocks, brass microgrooves. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #e9be83 accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/archivist-source.png"
+  },
+  {
+    "level": 7,
+    "slug": "halcyon",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena HALCYON–3. Material: frosted cobalt cryogenic heat exchanger panels, white ice fractures, sealed blue coolant seams. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #8ce7ff accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/halcyon-source.png"
+  },
+  {
+    "level": 8,
+    "slug": "relay",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena RELAY–0. Material: teal radio frequency shielding tiles, copper mesh insets, narrow silver antenna tracks. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #51f3ba accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/relay-source.png"
+  },
+  {
+    "level": 9,
+    "slug": "titan",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena TITAN–12. Material: heavy pitted siege armor plates, ochre hazard trim, hydraulic load bearing seams. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #ffba47 accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/titan-source.png"
+  },
+  {
+    "level": 10,
+    "slug": "kest",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena Director Kest. Material: olive tactical bunker steel, red security cable channels, reinforced concrete plates. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #ff6964 accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/kest-source.png"
+  },
+  {
+    "level": 11,
+    "slug": "mnemosyne",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena MNEMOSYNE–6. Material: obsidian reflective vault plates, violet etched memory lattices, pale silver bolts. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #cf91ff accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/mnemosyne-source.png"
+  },
+  {
+    "level": 12,
+    "slug": "vulcan",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena VULCAN–2. Material: scorched railway steel panels, ember colored thermal cracks, basalt grit. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #ff9257 accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/vulcan-source.png"
+  },
+  {
+    "level": 13,
+    "slug": "leviathan",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena LEVIATHAN–8. Material: naval titanium bulkhead tiles, turquoise wet condensation, bronze pressure ports. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #50cdd4 accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/leviathan-source.png"
+  },
+  {
+    "level": 14,
+    "slug": "prism",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena PRISM–5. Material: dark optical glass panels, subtle magenta spectral microchannels, polished titanium. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #ef91f5 accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/prism-source.png"
+  },
+  {
+    "level": 15,
+    "slug": "magnus",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena MAGNUS–4. Material: matte ferromagnetic steel slabs, cobalt coil insets, copper bus bars. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #6a9eff accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/magnus-source.png"
+  },
+  {
+    "level": 16,
+    "slug": "broodmother",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena BROODMOTHER–3. Material: gunmetal drone hatchery socket panels, lime diagnostic circuits, honeycomb reinforcement. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #b4d656 accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/broodmother-source.png"
+  },
+  {
+    "level": 17,
+    "slug": "mycelium",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena MYCELIUM–9. Material: sealed green bio ceramic tiles, ivory fungal threads inside resin, dark laboratory joints. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #b4e8a2 accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/mycelium-source.png"
+  },
+  {
+    "level": 18,
+    "slug": "astra",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena ASTRA–7. Material: white space grade ceramic and midnight metal, electric blue uplink traces, small titanium fasteners. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #81caff accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/astra-source.png"
+  },
+  {
+    "level": 19,
+    "slug": "scrapper",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena SCRAPPER–6. Material: layered rusty scrap crusher armor, scraped galvanized steel, oily hazard chevrons. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #e6a363 accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/scrapper-source.png"
+  },
+  {
+    "level": 20,
+    "slug": "umbra",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena UMBRA–1. Material: almost black carbon composite tiles, restrained violet phase interference lines, brushed titanium. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #a984ea accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/umbra-source.png"
+  },
+  {
+    "level": 21,
+    "slug": "sol",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena SOL–12. Material: fusion gold tungsten thermal tiles, ivory ceramic insulators, controlled amber reactor seams. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #ffcc62 accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/sol-source.png"
+  },
+  {
+    "level": 22,
+    "slug": "nautilus",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena NAUTILUS–4. Material: deep teal submarine bulkhead steel, pale green water streaks, brass sealed conduits. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #6cdab4 accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/nautilus-source.png"
+  },
+  {
+    "level": 23,
+    "slug": "chronos",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena CHRONOS–8. Material: precision brass chronometric circuit plates, graphite ceramic, subtle violet timing channels. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #aabbff accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/chronos-source.png"
+  },
+  {
+    "level": 24,
+    "slug": "boreas",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena BOREAS–11. Material: black frozen ceramic tiles, glacial turquoise cracks, ice rimed silver seams. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #b3f2ff accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/boreas-source.png"
+  },
+  {
+    "level": 25,
+    "slug": "sovereign",
+    "prompt": "Create one high quality seamless square 1024x1024 game material texture for BLACKSITE boss arena THE SOVEREIGN. Material: regal black ceramic command armor tiles, elegant gold circuitry, dense tungsten reinforcement. Orthographic flat surface albedo tile, not a room, not perspective. Detailed realistic near-future tactical industrial construction, worn metal or ceramic according to the material, crisp fasteners, coherent joints and surface microdetail. Restrained #ffd586 accent on readable graphite midtones. Repeating material suitable for walls and floors. Edge-to-edge texture repeating seamlessly horizontally and vertically: features crossing an edge continue at the opposite edge. No border, no centered medallion, no lettering or numbers, no skulls, no flames, no weapons or people, no logo. Even diffuse lighting, no cast shadows, no vignette.",
+    "source": "art/boss-arenas-v1/sovereign-source.png"
+  }
+]

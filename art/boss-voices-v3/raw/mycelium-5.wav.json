@@ -1,0 +1,12 @@
+{
+  "signature": "bbb1e79628feab2a44f7edcd0308d166434eb0bab15cb6c858a5e46021d1cd2a",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You severed a root.",
+    "speaker": "cora",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:00.301Z"
+}

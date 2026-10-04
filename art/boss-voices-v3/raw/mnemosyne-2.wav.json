@@ -1,0 +1,12 @@
+{
+  "signature": "c7e6be5a4afb17c5e9e9ef08740971c8affceb0087569d0f12686d2cf807b112",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Echo keeper online. The vault is sealed.",
+    "speaker": "luna",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:56.189Z"
+}

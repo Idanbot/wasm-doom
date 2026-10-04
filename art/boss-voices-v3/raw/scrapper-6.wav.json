@@ -1,0 +1,12 @@
+{
+  "signature": "1a2058cc3e9b1fe15e59f90aec8d2e35f8a87513cf8d4925daa8a6094d899281",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Plenty of room in the scrap pile.",
+    "speaker": "pluto",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:21.740Z"
+}

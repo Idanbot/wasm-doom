@@ -1,0 +1,12 @@
+{
+  "signature": "675306c37016b211e4813efc953e45f5f65439d2fbd6e2d7155135dbe1ced216",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Take the rifle. Finish what I could not.",
+    "speaker": "draco",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:53.075Z"
+}

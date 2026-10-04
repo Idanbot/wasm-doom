@@ -1,0 +1,12 @@
+{
+  "signature": "b1eb03c0309eae5034171c986305547954cfb02d468d121e1e4613817b697e3b",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Open the next seam.",
+    "speaker": "helena",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:59:08.691Z"
+}

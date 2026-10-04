@@ -1,0 +1,12 @@
+{
+  "signature": "d46fbf3245d8a23366ef4a0c57c5e501b44c4d1a5180414971b6d3c0d52863c1",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "This yard was built to hold you.",
+    "speaker": "zeus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:38.297Z"
+}

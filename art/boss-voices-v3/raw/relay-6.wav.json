@@ -1,0 +1,12 @@
+{
+  "signature": "3bebde450b6fa377d0cb82fac62702ad7baec64b3c436315d0c2932abe010da1",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You cannot hide from a transmission.",
+    "speaker": "hermes",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:28.840Z"
+}

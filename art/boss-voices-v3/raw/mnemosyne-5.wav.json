@@ -1,0 +1,12 @@
+{
+  "signature": "472a1f7aecca0d112a4182a488f444fc11554d782d92fa2875780efff61d62ad",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Memory fracture. Reconstructing.",
+    "speaker": "luna",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:59.741Z"
+}

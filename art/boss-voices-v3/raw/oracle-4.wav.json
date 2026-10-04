@@ -1,0 +1,12 @@
+{
+  "signature": "f45d5c8e7124162ba462152d39cd99311c5560da202038550b47ed6764a6a157",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Correction applied.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:46.326Z"
+}

@@ -1,0 +1,12 @@
+{
+  "signature": "e2545b7dfbdeb3da741764da896282160df2fc5bb42ee7ea3870070e5dea9adc",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "For once, there is no next train.",
+    "speaker": "mars",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:12.859Z"
+}

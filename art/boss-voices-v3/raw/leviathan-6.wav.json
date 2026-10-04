@@ -1,0 +1,12 @@
+{
+  "signature": "9e38bb27f92e7db289bb6c9259344a983ab226417a9b854bdd71b75c6667dbab",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Every bulkhead has a breaking point.",
+    "speaker": "odysseus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:20.189Z"
+}

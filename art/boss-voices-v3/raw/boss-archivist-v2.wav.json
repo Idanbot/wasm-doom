@@ -1,0 +1,12 @@
+{
+  "signature": "0b5b44ac83574f6713ee65932cfd6fe8bf7a22cfe8eaa57c34f4e850da3c6b55",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Remember that someone was here.",
+    "speaker": "orion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:12.232Z"
+}

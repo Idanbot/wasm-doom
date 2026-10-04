@@ -1,0 +1,12 @@
+{
+  "signature": "352868200128e081382b3f4dff908a9615660db646fbb28111ff35855d70c0c2",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Your arrival was scheduled.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:42.987Z"
+}

@@ -1,0 +1,12 @@
+{
+  "signature": "f5419455c0d564ffe5151d154d9aea8f986583cb2cf654bb6dc9948135553056",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The hatchery is awake.",
+    "speaker": "vesta",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:42.820Z"
+}

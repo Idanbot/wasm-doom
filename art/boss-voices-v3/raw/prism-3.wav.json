@@ -1,0 +1,12 @@
+{
+  "signature": "2ceb3ce1e3561d18ab7ba89cbf1a8a5b1e45c8bdaaba188875847ca74c2adc17",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Follow the beam.",
+    "speaker": "athena",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:26.241Z"
+}

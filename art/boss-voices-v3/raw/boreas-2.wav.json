@@ -1,0 +1,12 @@
+{
+  "signature": "e4119cfab947f1b17ea3af46b1cc6a0293eabb6895dce48ee74486cc6e11b47e",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The cold has a direction. Watch it.",
+    "speaker": "helena",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:59:06.900Z"
+}

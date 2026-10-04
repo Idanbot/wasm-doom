@@ -1,0 +1,12 @@
+{
+  "signature": "ab7e6164492bfa0c3190afef339c211ca02f515ca3737808a1f004e367bbf5a6",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The hull is quiet. Get above the water.",
+    "speaker": "odysseus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:23.180Z"
+}

@@ -1,0 +1,12 @@
+{
+  "signature": "9f59a5ac7d32db4099c1b2dea54ae13d88d0c94ddcf80f68c17ed0b0698701d4",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "One drone falls. Five more rise.",
+    "speaker": "vesta",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:50.179Z"
+}

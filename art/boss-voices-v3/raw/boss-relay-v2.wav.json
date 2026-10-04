@@ -1,0 +1,12 @@
+{
+  "signature": "58f7d8f1be3a84857a3816d8cc8d0012ee3475825c50597e0b0b01cdb3f87888",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "At last, a clear channel. You can leave.",
+    "speaker": "hermes",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:31.737Z"
+}

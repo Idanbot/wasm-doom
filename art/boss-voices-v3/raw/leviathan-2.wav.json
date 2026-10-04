@@ -1,0 +1,12 @@
+{
+  "signature": "44fb5fb7d1a9eda1a955f05556a7aec2e421753454932b5c5bd9de5a508af97f",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You hear that? The hull is giving way.",
+    "speaker": "odysseus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:15.971Z"
+}

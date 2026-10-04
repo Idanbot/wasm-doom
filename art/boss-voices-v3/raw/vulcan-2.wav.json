@@ -1,0 +1,12 @@
+{
+  "signature": "984fb094efddd12a5d1cc81dfa7c20be5b3ee837a6b3537b96814d1cc18ffeba",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You came this far. Do not stop now.",
+    "speaker": "mars",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:06.985Z"
+}

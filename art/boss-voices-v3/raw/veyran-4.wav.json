@@ -1,0 +1,12 @@
+{
+  "signature": "3f50fadcb663321a81de8252eb2b688246fce13091e0e47c6de19cbaf5a90b13",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "I will rewrite your bones.",
+    "speaker": "saturn",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:14.391Z"
+}

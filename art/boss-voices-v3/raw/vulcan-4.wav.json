@@ -1,0 +1,12 @@
+{
+  "signature": "aa801b0e5701bbb1fe64d26733289c56cffe3c13c25a0515e0a6a7eb020e03dc",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "That lane is mine.",
+    "speaker": "mars",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:08.593Z"
+}

@@ -1,0 +1,12 @@
+{
+  "signature": "234564b6ee4dbefe175d1e7f57661b4855725fa1bc5f253c3065e898ce2ecf29",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Everything is still. I had forgotten that sound.",
+    "speaker": "jupiter",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:41.812Z"
+}

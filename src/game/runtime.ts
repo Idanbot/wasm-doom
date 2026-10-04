@@ -1,3 +1,4 @@
+import BOSS_ARENAS from "./boss-arena-data.json";
 import { SECTOR_ENEMIES } from "./sector-enemies";
 import { SECTOR_SLUGS, SECTOR_SURFACES } from "./sector-assets";
 import { CAMPAIGN_EXPANSION } from "./campaign25";
@@ -32,6 +33,7 @@ import {
   T_IMPACT_NEW,
   T_ENEMY_PROJECTILE,
   T_BOSS_PROJECTILE,
+  T_BOSS_ARENA,
   T_PLAYER_MISSILE,
   T_SECTOR_SURFACE,
   T_SECTOR_PROP,
@@ -289,6 +291,10 @@ const TEX_FILES: { id: number; src: string }[] = [
   ...["ember-impact", "pressure-impact", "magnetic-impact", "solar-impact"].map((name, i) => ({
     id: T_IMPACT_NEW + i,
     src: `/game/fx25/${name}.png`,
+  })),
+  ...BOSS_ARENAS.map((boss,i) => ({
+    id: T_BOSS_ARENA + i,
+    src: `/game/boss-arenas/${boss.slug}.png`,
   })),
   ...Array.from({ length: 25 }, (_, i) => ({
     id: T_BOSS_PROJECTILE + i,
@@ -1427,6 +1433,12 @@ export class BlacksiteRuntime {
         this.wasm?.hs_qa(this.qaBits, 1);
         this.wasm?.hs_qa_heal();
       },
+      getArena: () => {
+        const w = this.wasm;
+        if (!w) return { warning: 0, active: 0 };
+        const floor = new Uint8Array(w.memory.buffer, w.hs_floor_ptr(), 48 * 32);
+        return { warning: floor.filter(v => v === 3).length, active: floor.filter(v => v === 4).length };
+      },
       triggerBoss: (phase = 0) => this.wasm?.hs_qa_boss(phase),
       dropBossReward: () => {
         this.wasm?.hs_qa(0, 1);
@@ -1480,6 +1492,7 @@ declare global {
       grantWeapons?: () => void;
       triggerEnd?: (state: 1 | 2) => void;
       heal?: () => void;
+      getArena?: () => { warning: number; active: number };
       triggerBoss?: (phase?: number) => void;
       dropBossReward?: () => void;
       visitObjective?: () => void;

@@ -1,0 +1,12 @@
+{
+  "signature": "0633828f35eba41c6f1b071f1a7cf4f9e4015c802ca1784d77ec6bc652399fd7",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The chamber is open. Let the others out.",
+    "speaker": "hyperion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:41.873Z"
+}

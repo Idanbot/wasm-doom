@@ -232,8 +232,8 @@ export class EnemyAudio {
   private place(sound: SpatialSound, enemy: EnemyCue) {
     const t = this.ctx.currentTime;
     writePannerPosition(sound.panner, enemy.x, 0, enemy.y);
-    sound.filter.frequency.setTargetAtTime(enemy.sight ? 11000 : 750, t, 0.04);
-    sound.gain.gain.setTargetAtTime((enemy.sight ? 1 : 0.18) * (sound.line ? 1.1 : 0.24), t, 0.04);
+    sound.filter.frequency.setTargetAtTime(enemy.sight ? 11000 : enemy.skin >= 12 && enemy.skin <= 36 ? 2500 : 750, t, 0.04);
+    sound.gain.gain.setTargetAtTime((enemy.sight ? 1 : enemy.skin >= 12 && enemy.skin <= 36 ? 0.45 : 0.18) * (sound.line ? 1.1 : 0.24), t, 0.04);
     sound.panner.panningModel = this.options.spatial ? "HRTF" : "equalpower";
     // Spatial off means centered sound; distance attenuation stays useful.
     if (!this.options.spatial) {
@@ -287,11 +287,10 @@ export class EnemyAudio {
   private speak(enemy: EnemyCue, profile: VoiceProfile, line: VoiceLine) {
     const buffer = this.buffers.get(line.id);
     if (!buffer) return;
-    // Slower machines and commander delivery improve intelligibility, while
-    // small human variation keeps the roster from sharing one cadence.
+    // Preserve the clean Aura-2 boss performance at its recorded pitch and pace.
     const rate =
-      enemy.skin >= 12 && enemy.skin <= 22
-        ? 0.88
+      enemy.skin >= 12 && enemy.skin <= 36
+        ? 1.0
         : [5, 8, 11].includes(enemy.skin)
           ? 0.93
           : 0.96 + (enemy.skin % 3) * 0.025;

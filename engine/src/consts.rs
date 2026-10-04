@@ -49,7 +49,8 @@ pub(crate) const T_PLAYER_MISSILE: usize = T_ENEMY_PROJECTILE + ENEMY_PROJECTILE
 pub(crate) const T_SECTOR_SURFACE: usize = T_PLAYER_MISSILE + 3;
 pub(crate) const T_SECTOR_PROP: usize = T_SECTOR_SURFACE + 25 * 5;
 pub(crate) const T_BOSS_PROJECTILE: usize = T_SECTOR_PROP + 25 * 3;
-pub(crate) const TEX_N: usize = T_BOSS_PROJECTILE + 25;
+pub(crate) const T_BOSS_ARENA: usize = T_BOSS_PROJECTILE + 25;
+pub(crate) const TEX_N: usize = T_BOSS_ARENA + 25;
 pub(crate) const ENT_N: usize = 192;
 pub(crate) const T_BRICK: usize = 0;
 pub(crate) const T_METAL: usize = 1;
@@ -68,7 +69,6 @@ pub(crate) const T_ARMOR: usize = 13;
 pub(crate) const T_BARREL: usize = 14;
 pub(crate) const T_BALL: usize = 15;
 pub(crate) const T_SPLAT: usize = 16;
-pub(crate) const T_SECRET: usize = 17;
 pub(crate) const T_TECH: usize = 18;
 pub(crate) const T_HAZARD: usize = 19;
 pub(crate) const T_LAMP: usize = 20;
@@ -81,7 +81,6 @@ pub(crate) const T_PIPES: usize = 26;
 pub(crate) const T_GUN2: usize = 27;
 /// Sector override floor beacon. This replaced the occult boss seal: the
 /// player now reaches a physical control station and deliberately uses it.
-pub(crate) const T_OVERRIDE: usize = 28;
 
 pub(crate) const EK_NONE: u8 = 0;
 pub(crate) const EK_HUSK: u8 = 1;
@@ -256,10 +255,10 @@ mod tests {
     fn texture_slots_cover_the_known_atlas() {
         assert_eq!(
             TEX_N,
-            ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT + 279 + ENEMY_PROJECTILE_COUNT
+            ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT + 304 + ENEMY_PROJECTILE_COUNT
         );
         assert_eq!(TEX, 256);
         assert_eq!(TEXM, 255);
-        assert_eq!(T_OVERRIDE, 28);
+        assert_eq!(T_BOSS_ARENA + 25, TEX_N);
     }
 }

@@ -1,0 +1,12 @@
+{
+  "signature": "491176f9e101524330c765858665d0ffc16360637aa3a030eb507f87e8d50342",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The lights hurt my eyes.",
+    "speaker": "hyperion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:31.925Z"
+}

@@ -1,0 +1,12 @@
+{
+  "signature": "4eae4fa06bb93520171a7b3b1abdbe602254ed27704e407ce5079484beac12c6",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Here comes the surge.",
+    "speaker": "odysseus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:16.915Z"
+}

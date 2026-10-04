@@ -1,0 +1,12 @@
+{
+  "signature": "652df8d626030425851b233b2de3399fe8afc77bca69300a3ecf44effb874e10",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "That is enough. Let the chamber rest.",
+    "speaker": "atlas",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:02.069Z"
+}

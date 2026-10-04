@@ -1,0 +1,12 @@
+{
+  "signature": "c3400188748b8d2c02c362861dd7e1dfa011cda856b7315944ae9e6336039482",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "No more repeats. Make the next moment count.",
+    "speaker": "minerva",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:59:04.388Z"
+}

@@ -1,0 +1,12 @@
+{
+  "signature": "9dc81a2c39a0f3b58338da66a78f78e7459d72dd711d840625af14c95f47a2f2",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "I can outlast the alarms. Can you?",
+    "speaker": "atlas",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:58.843Z"
+}

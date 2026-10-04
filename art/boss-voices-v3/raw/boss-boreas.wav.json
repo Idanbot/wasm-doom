@@ -1,0 +1,12 @@
+{
+  "signature": "b7eb8360d284cd091e097a357068bbdb0b7ccb350fb27d77ee6f17cff1459552",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The shell is broken. Take the cannon.",
+    "speaker": "helena",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:59:12.675Z"
+}

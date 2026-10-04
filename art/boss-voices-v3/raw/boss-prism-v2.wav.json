@@ -1,0 +1,12 @@
+{
+  "signature": "89178f06eed9129e12a4aed4b8a980f1e51841e1cc74aaaa1503277462751f25",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You found the one angle I could not hold.",
+    "speaker": "athena",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:32.171Z"
+}

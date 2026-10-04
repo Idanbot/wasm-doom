@@ -1,0 +1,12 @@
+{
+  "signature": "aea3c230470906e88025f74d6c2b3b1cedd93b517ae1cfe48979c02306eb4aa8",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Advance the grid.",
+    "speaker": "minerva",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:58.844Z"
+}

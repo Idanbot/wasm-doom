@@ -1,0 +1,12 @@
+{
+  "signature": "54716354b6a5c87d3b49b1dee9e69640d9b018b24790a9ffd22f11c5606843eb",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The light is dimming. Keep the core alive.",
+    "speaker": "arcas",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:44.118Z"
+}

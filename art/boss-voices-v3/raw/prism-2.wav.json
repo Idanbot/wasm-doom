@@ -1,0 +1,12 @@
+{
+  "signature": "416b4cdec117bd95081a0951295ebdea684cb3c9974a45de65960f788e18a8a3",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Find the gap before the colors cross.",
+    "speaker": "athena",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:25.497Z"
+}

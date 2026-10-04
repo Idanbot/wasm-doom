@@ -1,0 +1,12 @@
+{
+  "signature": "09582bb45d3d9cf521e927dd6a5e94d09958d76171101678eadc44c191e14703",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You broke my focus.",
+    "speaker": "athena",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:28.113Z"
+}

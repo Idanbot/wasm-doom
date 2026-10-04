@@ -1,0 +1,12 @@
+{
+  "signature": "3fc5744f186fecc7657a61fbb6b593f7d704212d67e43a1738c6d78afa24a158",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Every failure is preserved here.",
+    "speaker": "luna",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:01.017Z"
+}

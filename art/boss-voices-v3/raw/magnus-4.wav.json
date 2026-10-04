@@ -1,0 +1,12 @@
+{
+  "signature": "253e270ed25c1c92149d926e87de8d1c35e2792ca9a9de90b5135a539d121322",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Cross the field if you can.",
+    "speaker": "jupiter",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:36.717Z"
+}

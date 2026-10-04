@@ -1,0 +1,12 @@
+{
+  "signature": "5be4014f4201e26dea9a5105909878de9c1382a21ad3613da39f58f0741a70a2",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The roots are still here. Take what you need.",
+    "speaker": "cora",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:03.111Z"
+}

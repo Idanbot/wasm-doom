@@ -1,0 +1,12 @@
+{
+  "signature": "e21ac8bade5fa2422b2942c39beb0fad6e12d7216101a2c7cfe296ab69c64ed3",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Security, I will handle this personally.",
+    "speaker": "draco",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:44.601Z"
+}

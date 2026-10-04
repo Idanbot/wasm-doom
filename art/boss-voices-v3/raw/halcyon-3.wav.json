@@ -1,0 +1,12 @@
+{
+  "signature": "db3807dc6e000cfa3afb046f904c57d27d0bf9ae084cbfd9d8b1696c36d6c83f",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Coolant volley armed.",
+    "speaker": "pandora",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:15.703Z"
+}

@@ -1,0 +1,12 @@
+{
+  "signature": "1046990bc49c762cdd7ce02046c8b62587e9fd789fc02ef41492f23aa62da437",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You dented the good side.",
+    "speaker": "pluto",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:20.613Z"
+}

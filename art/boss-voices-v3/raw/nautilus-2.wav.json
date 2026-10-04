@@ -1,0 +1,12 @@
+{
+  "signature": "f02b02d546dee29f69995ea95a065bf852e7ed279b0578655c5a2257fdb32d9c",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The pressure wave is turning inward.",
+    "speaker": "janus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:46.501Z"
+}

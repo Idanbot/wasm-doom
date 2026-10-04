@@ -1,0 +1,12 @@
+{
+  "signature": "e5668819f5fa0549f635a4232526d5b842f20183d32eb08ffad7e5d5e40b85ea",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Feel the pressure rise.",
+    "speaker": "atlas",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:55.193Z"
+}

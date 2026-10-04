@@ -1,0 +1,12 @@
+{
+  "signature": "f5ce46c223e763513943cedf3c4427a750c935a2411c2b9dec3fa8ff96de547b",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Kneel before the signal.",
+    "speaker": "saturn",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:13.311Z"
+}

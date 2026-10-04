@@ -1,0 +1,12 @@
+{
+  "signature": "43ffae4156a542e7b648a5520b0d9964352cf21e970516c5a1c5cb3a9dfcd12b",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Cut across the shadow.",
+    "speaker": "theia",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:28.588Z"
+}

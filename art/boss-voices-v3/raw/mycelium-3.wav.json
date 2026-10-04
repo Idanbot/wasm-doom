@@ -1,0 +1,12 @@
+{
+  "signature": "7e2659942f777a20f4fb683f22db015febf267b12f1a14ae84e87af63fd00297",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Open the spore pockets.",
+    "speaker": "cora",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:58.314Z"
+}

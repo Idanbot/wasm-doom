@@ -1,0 +1,12 @@
+{
+  "signature": "92a034b39c93f81a0aeb75af6f19680af8dc16d371e31f0d1e46d8e558fa2719",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The core is mine to bury.",
+    "speaker": "atlas",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:54.233Z"
+}

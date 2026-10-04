@@ -1,0 +1,12 @@
+{
+  "signature": "96fc9c695e97e7eaa4888fde1f3f43930f2486eb6d7359b5f3f5587083be46c0",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Bring the floor inward.",
+    "speaker": "hyperion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:59:18.768Z"
+}

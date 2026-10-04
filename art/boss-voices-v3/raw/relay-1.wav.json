@@ -1,0 +1,12 @@
+{
+  "signature": "23b4022cc69620ada924e2f281253e532a0c3f7539345bb9e32cf1a3abccbfd3",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Unknown signal entering the crypt.",
+    "speaker": "hermes",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:23.300Z"
+}

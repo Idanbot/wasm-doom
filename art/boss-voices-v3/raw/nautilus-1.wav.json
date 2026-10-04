@@ -1,0 +1,12 @@
+{
+  "signature": "4956f105439f9d39a39ed72926630e7f86425d676731df41aa45820ee4a23495",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "This chamber was built to hold an ocean.",
+    "speaker": "janus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:45.346Z"
+}

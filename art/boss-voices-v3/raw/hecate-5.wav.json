@@ -1,0 +1,12 @@
+{
+  "signature": "f82f52df90ec2c3362762b4d80f61a1aece831c53d14a4f1f64893eab5df3abb",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Cooling loop compromised.",
+    "speaker": "neptune",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:25.855Z"
+}

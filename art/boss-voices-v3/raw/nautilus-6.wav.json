@@ -1,0 +1,12 @@
+{
+  "signature": "d95128097a82f92e854dda3c3e9648decfe7fda1e8775bb4ff3edf83be8e469f",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "There is still water behind every wall.",
+    "speaker": "janus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:50.959Z"
+}

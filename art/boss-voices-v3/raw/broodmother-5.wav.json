@@ -1,0 +1,12 @@
+{
+  "signature": "2b5a55418251cb90c086577ccfd4d1843aea7810d503b37a6546897577586e49",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You damaged a launch bay.",
+    "speaker": "vesta",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:48.117Z"
+}

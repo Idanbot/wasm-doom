@@ -1,0 +1,12 @@
+{
+  "signature": "4c697c1b2838c4b97480d50aa381b5439a8558c90ce95f6b186c487126ee7be6",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Heavy shell loaded.",
+    "speaker": "zeus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:34.961Z"
+}

@@ -1,3 +1,4 @@
+mod boss_arena;
 mod combat;
 mod campaign;
 mod field;
@@ -122,6 +123,7 @@ struct Engine {
     boss_spawned: bool,
     boss_intro: f32,
     boss_phase: u8,
+    boss_arena: boss_arena::ArenaState,
     node_done: bool,
     lockdown: bool,
     boss_vuln: f32,
@@ -582,6 +584,7 @@ impl Engine {
             boss_spawned: false,
             boss_intro: 0.0,
             boss_phase: 0,
+            boss_arena: boss_arena::ArenaState::new(),
             node_done: false,
             lockdown: false,
             boss_vuln: 0.0,
@@ -742,53 +745,26 @@ impl Engine {
     }
 
     fn boss_intro_duration(&self) -> f32 {
-        [4.0, 5.2, 4.6, 4.8, 5.0, 5.4, 5.6, 4.4, 6.0, 4.2, 5.8].get(map::level_index(self.wave)).copied().unwrap_or(4.8)
+        boss_arena::PROFILES[map::level_index(self.wave)].intro
     }
 
     fn boss_intro_effect(&mut self, stage: u8) {
-        let sector = map::level_index(self.wave);
-        let (x, y) = map::boss_spots(self.wave)[0];
-        match sector {
-            0 => {
-                self.shake = (self.shake + if stage == 1 { 0.32 } else { 0.17 }).min(1.0);
-                for n in 0..8 {
-                    let a = n as f32 * core::f32::consts::TAU / 8.0;
-                    self.spawn_timed(EK_SPARK, x + a.cos() * 1.2, y + a.sin() * 1.2, 0.55, -16.0);
-                }
-            }
-            1 => {
-                self.shake = (self.shake + 0.22).min(1.0);
-                for n in 0..12 {
-                    let a = n as f32 * core::f32::consts::TAU / 12.0;
-                    self.spawn_timed(EK_SPARK, x + a.cos() * 1.8, y + a.sin() * 1.8, 0.65, -30.0);
-                }
-            }
-            3 => {
-                self.shake = (self.shake + if stage == 1 { 0.2 } else { 0.08 }).min(1.0);
-                for n in 0..16 {
-                    let a = n as f32 * core::f32::consts::TAU / 16.0;
-                    let r = if stage == 1 { 1.9 } else { 0.9 };
-                    self.spawn_timed(EK_SPARK, x + a.cos() * r, y + a.sin() * r, 0.55, -24.0);
-                }
-            }
-            4 => {
-                self.shake = (self.shake + if stage == 1 { 0.46 } else { 0.25 }).min(1.0);
-                self.spawn_smoke_cloud(x - 1.3, y);
-                self.spawn_smoke_cloud(x + 1.3, y);
-                for n in 0..6 {
-                    let a = n as f32 * core::f32::consts::TAU / 6.0;
-                    self.spawn_timed(EK_SPARK, x + a.cos() * 1.3, y + a.sin() * 1.3, 0.75, -8.0);
-                }
-            }
-            _ => {
-                self.shake = (self.shake + 0.15).min(1.0);
-                for n in 0..9 {
-                    let a = n as f32 * core::f32::consts::TAU / 9.0;
-                    self.spawn_timed(EK_SPARK, x + a.cos() * 1.2, y + a.sin() * 1.2, 0.9, -5.0);
-                }
-            }
+        let sector=map::level_index(self.wave);
+        let (x,y)=map::boss_spots(self.wave)[0];
+        let radius=1.0+stage as f32*1.25;
+        let count=6+(sector%7)*2;
+        for n in 0..count {
+            let angle=n as f32*core::f32::consts::TAU/count as f32+sector as f32*0.21;
+            let spread=if matches!(sector,3|9|17) {if n%2==0 {0.7}else{2.2}} else {radius};
+            self.spawn_timed(EK_SPARK,x+angle.cos()*spread,y+angle.sin()*spread,0.55,-14.0);
         }
-        if stage == 1 { self.events |= EV_BOSS_HUSH; } else { self.events |= EV_DOOR; self.sound(1, 0, x, y); }
+        if matches!(sector,4|6|12|21|23) {
+            self.spawn_smoke_cloud(x-1.3,y);
+            self.spawn_smoke_cloud(x+1.3,y);
+        }
+        if matches!(sector,2|16) {self.effect(EK_IMPACT,3,x,y,0.6,4.0);}
+        self.shake=(self.shake+if matches!(sector,0|8|9|18|24) {0.25+stage as f32*0.15}else{0.10}).min(0.7);
+        if stage==0 {self.events|=EV_BOSS_HUSH;} else {self.events|=EV_DOOR;self.sound(1,0,x,y);}
     }
 
     fn room(&mut self, x: i32, y: i32, w: i32, h: i32, wall: u8, fl: u8) {
@@ -1959,6 +1935,7 @@ impl Engine {
         self.lockdown = false;
         self.boss_vuln = 0.0;
         self.apply_theme(self.wave);
+        self.clear_boss_arena();
         self.build_map();
         self.door.fill(0.0);
         self.hell = false;
@@ -2335,32 +2312,10 @@ impl Engine {
     }
 
     fn wall_tex(&self, c: u8, _x: i32, _y: i32) -> usize {
-        if !self.hell {
-            let base = T_SECTOR_SURFACE + map::level_index(self.wave) * 5;
-            return base + if matches!(c, 8 | 9) { 2 } else if matches!(c, 4 | 6) { 1 } else { 0 };
-        }
-        let id = match c {
-            1 => T_METAL,
-            2 => T_BRICK,
-            3 => T_FLESH,
-            4 => T_PIPES,
-            5 => T_SKULL,
-            6 => T_TECH,
-            7 => T_HAZARD,
-            8 => T_DOOR,
-            9 => T_SECRET,
-            _ => T_METAL,
-        };
-        if !self.hell {
-            return id;
-        }
-        match id {
-            T_OVERRIDE => T_OVERRIDE,
-            T_BRICK | T_METAL | T_TECH | T_PIPES | T_DOOR => T_FLESH,
-            T_GRATE | T_CONC | T_HAZARD => T_SKULL,
-            T_CEIL | T_SECRET => T_SKULL,
-            _ => T_FLESH,
-        }
+        let base = T_SECTOR_SURFACE + map::level_index(self.wave) * 5;
+        if matches!(c, 8 | 9) { return base + 2; }
+        if self.hell { return T_BOSS_ARENA + map::level_index(self.wave); }
+        base + if matches!(c, 4 | 6) { 1 } else { 0 }
     }
 
     /// True when this leaf is a sealed boss door and the player is on the
@@ -3102,7 +3057,7 @@ impl Engine {
                 e.vx = a.cos() * 9.5;
                 e.vy = a.sin() * 9.5;
                 e.timer = 0.7;
-                e.hp = 42;
+                e.hp = 28; // 42 × 0.67, rounded to integer damage.
                 e.effect_tick = 4.0;
                 e.skin = 233;
                 e.zoff = -6.0;
@@ -3122,7 +3077,7 @@ impl Engine {
             let d = ((e.x - x).powi(2) + (e.y - y).powi(2)).sqrt();
             if d < 2.6 && self.los(x, y, e.x, e.y) {
                 let fall = 1.0 - d / 2.6;
-                hits.push((i, (80.0 * fall) as i32));
+                hits.push((i, (80.0 * 0.67 * fall) as i32));
             }
         }
         for (i, dmg) in hits {
@@ -3144,6 +3099,7 @@ impl Engine {
             self.ents[i].timer = life;
             self.ents[i].radius = 0.7;
             self.ents[i].skin = 2;
+            self.ents[i].hp = 100;
         }
     }
 
@@ -3516,10 +3472,10 @@ impl Engine {
                 my -= right_y;
             }
             let mag = (mx * mx + my * my).sqrt();
-            let sprint = if bits & IN_SPRINT != 0 { 1.2 } else { 1.0 };
+            let sprint = if bits & IN_SPRINT != 0 { 1.32 } else { 1.0 };
             let boosted: f32 = 3.35 * sprint * if self.power == field::POWER_OVERDRIVE { 1.85 } else { 1.0 };
-            // Absolute cap: nothing moves faster than 1.2x walk speed.
-            let speed = boosted.min(3.35 * 1.2);
+            // Absolute cap: nothing moves faster than 1.32x walk speed.
+            let speed = boosted.min(3.35 * 1.32);
             if mag > 0.001 {
                 mx /= mag;
                 my /= mag;
@@ -3829,11 +3785,18 @@ impl Engine {
                     e.frame += dt * 3.0;
                     let (x, y, pulse, acid) = (e.x, e.y, e.effect_tick <= 0.0, e.skin == 2);
                     if e.timer <= 0.0 { e.kind = EK_NONE; continue; }
+                    let damage = if acid {
+                        // Fractional accumulator keeps pool damage at exactly 67% over time.
+                        if pulse { e.hp += 536; }
+                        let damage = (e.hp - 100) / 100;
+                        if pulse { e.hp = 100 + (e.hp - 100) % 100; }
+                        damage
+                    } else { 8 };
                     if pulse { e.effect_tick = 0.25; }
                     let _ = e;
                     if pulse && pstate == 0 {
                         let _ = e;
-                        self.burn_at(x, y, 8, !acid);
+                        self.burn_at(x, y, damage, !acid);
                     }
                 }
                 EK_GIB => {
@@ -4084,6 +4047,8 @@ impl Engine {
             }
         }
 
+
+        self.tick_boss_arena(dt);
 
         let mut prompt = 0;
         let fx = self.px + self.pa.cos();
@@ -4360,6 +4325,13 @@ impl Engine {
             let power = self.muzzle * if self.weapon == 0 { 0.28 } else { 0.72 };
             self.add_light(&mut grid, self.px, self.py, 5.2, [power, power * 0.55, power * 0.18]);
         }
+        if self.boss_arena.armed && self.boss_arena.stage != 0 {
+            let color=boss_arena::PROFILES[map::level_index(self.wave)].color;
+            let intensity=if self.boss_arena.stage==4 {0.44}else{0.10};
+            for (i,cell) in grid.iter_mut().enumerate() {
+                if self.boss_arena.mask[i]!=0 {for channel in 0..3 {cell[channel]+=color[channel]*intensity;}}
+            }
+        }
         self.light_grid = grid;
         self.bounce_light();
     }
@@ -4506,23 +4478,9 @@ impl Engine {
     fn plane_sample(&self, floor: bool, fx: f32, fy: f32, level: usize) -> (usize, i32, i32, usize) {
         let tx = (fx * TEX as f32).floor() as i32;
         let ty = (fy * TEX as f32).floor() as i32;
-        if !self.hell {
-            return (T_SECTOR_SURFACE + map::level_index(self.wave) * 5 + if floor { 3 } else { 4 }, tx, ty, level);
-        }
-        if !floor {
-            return (if self.hell { T_SKULL } else { T_CEIL }, tx, ty, level);
-        }
-        let mx = fx.floor() as i32;
-        let my = fy.floor() as i32;
-        let style = if mx >= 0 && my >= 0 && mx < MAP_W as i32 && my < MAP_H as i32 {
-            self.floor[my as usize * MAP_W + mx as usize]
-        } else {
-            0
-        };
-        if style == 2 {
-            return (T_CONC, tx, ty, level);
-        }
-        (if style == 1 { T_CONC } else { T_GRATE }, tx, ty, level)
+        let id=if self.hell { T_BOSS_ARENA + map::level_index(self.wave) }
+            else { T_SECTOR_SURFACE + map::level_index(self.wave) * 5 + if floor {3} else {4} };
+        (id,tx,ty,level)
     }
 
     fn sigil_uv(&self, fx: f32, fy: f32) -> Option<(f32, f32, usize)> {
@@ -4553,7 +4511,20 @@ impl Engine {
     fn plane_texel(&self, floor: bool, fx: f32, fy: f32, level: usize, mix: u32) -> u32 {
         let (id, u, v, lvl) = self.plane_sample(floor, fx, fy, level);
         let base = self.sample_mip(id, u, v, lvl, mix);
-        if floor { self.blend_sigil(base, fx, fy) } else { base }
+        if floor && self.boss_arena.armed {
+            let x=fx.floor() as i32; let y=fy.floor() as i32;
+            if x>=0 && y>=0 && x<MAP_W as i32 && y<MAP_H as i32 {
+                let style=self.floor[y as usize*MAP_W+x as usize];
+                if style==3 || style==4 {
+                    let p=boss_arena::PROFILES[map::level_index(self.wave)];
+                    let color=Self::pack((p.color[0]*255.0) as u32,(p.color[1]*255.0) as u32,(p.color[2]*255.0) as u32,255);
+                    let line=((fx.fract()-0.5).abs()>0.39 || (fy.fract()-0.5).abs()>0.39) as u8 as f32;
+                    let amount=if style==4 {0.32+line*0.38} else {line*0.5};
+                    return Self::blend(base,color,amount);
+                }
+            }
+            self.blend_sigil(base,fx,fy)
+        } else if floor { self.blend_sigil(base,fx,fy) } else {base}
     }
 
 
@@ -5911,6 +5882,28 @@ mod tests {
     }
 
     #[test]
+    fn chimera_direct_splash_and_pool_damage_are_reduced_by_a_third() {
+        let mut e=arena();
+        e.fire_chimera();
+        assert_eq!(e.ents.iter().filter(|v| v.kind==EK_PROJ).count(),5);
+        assert!(e.ents.iter().filter(|v| v.kind==EK_PROJ).all(|v| v.hp==28));
+        for ent in &mut e.ents {ent.kind=EK_NONE;}
+        let target=e.spawn(EK_HUSK,8.5,4.5).unwrap();
+        e.ents[target].hp=1000; e.ents[target].armor_hp=0;
+        e.chimera_burst(8.5,4.5);
+        assert_eq!(e.ents[target].hp,947);
+        let pool=e.ents.iter().position(|v| v.kind==EK_FIREPATCH).unwrap();
+        assert_eq!(e.ents[pool].hp,100);
+        e.ents[pool].timer=8.0;
+        for _ in 0..100 {
+            e.ents[target].x=8.5; e.ents[target].y=4.5;
+            e.ents[target].stun=100.0;
+            e.tick(0.0625);
+        }
+        assert_eq!(e.ents[target].hp,813, "25 pool pulses deal exactly 134 damage");
+    }
+
+    #[test]
     fn chimera_bolts_are_acid_and_pools_are_not_enemies() {
         let mut e = arena();
         let bolt = e.spawn(EK_PROJ, 4.0, 4.0).unwrap();
@@ -5926,14 +5919,14 @@ mod tests {
     }
 
     #[test]
-    fn sprint_cannot_exceed_twenty_percent_over_walk_speed() {
+    fn sprint_is_ten_percent_faster_and_caps_overdrive() {
         let mut e = arena();
         e.pa = 0.0;
         e.bits = IN_W | IN_SPRINT;
         e.power = field::POWER_OVERDRIVE;
         e.tick(0.08);
         let dist = ((e.px - 4.5).powi(2) + (e.py - 4.5).powi(2)).sqrt();
-        assert!((dist - 3.35 * 1.2 * 0.08).abs() < 0.001);
+        assert!((dist - 3.35 * 1.32 * 0.08).abs() < 0.001);
     }
 
     #[test]
@@ -7101,12 +7094,12 @@ mod tests {
         assert_eq!(e.wall_tex(2, 1, 1), T_SECTOR_SURFACE);
         assert_eq!(e.wall_tex(8, 36, 18), T_SECTOR_SURFACE + 2);
         e.hell = true;
-        assert_eq!(e.wall_tex(2, 1, 1), T_FLESH);
-        assert_eq!(e.wall_tex(6, 1, 1), T_FLESH, "tech becomes flesh, not skull");
-        assert_eq!(e.wall_tex(7, 1, 1), T_SKULL, "hazard striping becomes skull");
-        assert_eq!(e.wall_tex(9, 1, 1), T_SKULL);
-        assert_eq!(e.wall_tex(8, 36, 18), T_FLESH);
-        assert_eq!(e.wall_tex(9, 36, 19), T_SKULL);
+        assert_eq!(e.wall_tex(2, 1, 1), T_BOSS_ARENA);
+        assert_eq!(e.wall_tex(6, 1, 1), T_BOSS_ARENA);
+        assert_eq!(e.wall_tex(7, 1, 1), T_BOSS_ARENA);
+        assert_eq!(e.wall_tex(9, 1, 1), T_SECTOR_SURFACE + 2);
+        assert_eq!(e.wall_tex(8, 36, 18), T_SECTOR_SURFACE + 2);
+        assert_eq!(e.wall_tex(9, 36, 19), T_SECTOR_SURFACE + 2);
     }
 
     #[test]

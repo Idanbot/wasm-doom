@@ -1,0 +1,12 @@
+{
+  "signature": "0498ca3f917930def2754025e6b498aba56e1a4ca5a8b0f4916c028a64a24a89",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The bright bands are not decoration.",
+    "speaker": "arcas",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:37.334Z"
+}

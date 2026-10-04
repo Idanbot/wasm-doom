@@ -1,0 +1,12 @@
+{
+  "signature": "ceab5d59bc3253e521b05125f86a2c4347a1561e2c3539ec507ee698bd13c078",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The light is fading. The rifle is yours.",
+    "speaker": "athena",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:30.866Z"
+}

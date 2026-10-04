@@ -1,0 +1,12 @@
+{
+  "signature": "098402b1a4200f8e90ef2bd3aa511caa83c654042de132d187265b5451c2b5dd",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "We were here before the walls.",
+    "speaker": "cora",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:01.463Z"
+}

@@ -1,0 +1,302 @@
+[
+  {
+    "level": 1,
+    "slug": "veyran",
+    "source": "art/boss-arenas-v1/veyran-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "a9ddf93955282107c9a1f607b546987a49ae3ebe3f50ceabc181f1d06b3352f4",
+    "runtime": "public/game/boss-arenas/veyran.png",
+    "hd": "public/game/boss-arenas/hd/veyran.webp"
+  },
+  {
+    "level": 2,
+    "slug": "hecate",
+    "source": "art/boss-arenas-v1/hecate-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "3e6d6fb07f78e0c062ef1d051bc043770e2ee751e88d64b319897d9ab13be8f8",
+    "runtime": "public/game/boss-arenas/hecate.png",
+    "hd": "public/game/boss-arenas/hd/hecate.webp"
+  },
+  {
+    "level": 3,
+    "slug": "chimera",
+    "source": "art/boss-arenas-v1/chimera-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "ee69454c574d173baba9cf6225f1c54e7569bf45699a8c8443f3dfd2d1b1b675",
+    "runtime": "public/game/boss-arenas/chimera.png",
+    "hd": "public/game/boss-arenas/hd/chimera.webp"
+  },
+  {
+    "level": 4,
+    "slug": "oracle",
+    "source": "art/boss-arenas-v1/oracle-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "27891b107b1da9565b5a504052b865c33206cec82d0221c919f725744581d27b",
+    "runtime": "public/game/boss-arenas/oracle.png",
+    "hd": "public/game/boss-arenas/hd/oracle.webp"
+  },
+  {
+    "level": 5,
+    "slug": "gravemind",
+    "source": "art/boss-arenas-v1/gravemind-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "8b1d37211819b90806b3e59cdaa8506d21dcaff2f7721cfcef80c31725c15356",
+    "runtime": "public/game/boss-arenas/gravemind.png",
+    "hd": "public/game/boss-arenas/hd/gravemind.webp"
+  },
+  {
+    "level": 6,
+    "slug": "archivist",
+    "source": "art/boss-arenas-v1/archivist-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "96d9b8f8889759ea7179590a0212787d22b872b8f032c75bc2b22fb9cf6a35ca",
+    "runtime": "public/game/boss-arenas/archivist.png",
+    "hd": "public/game/boss-arenas/hd/archivist.webp"
+  },
+  {
+    "level": 7,
+    "slug": "halcyon",
+    "source": "art/boss-arenas-v1/halcyon-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "2fc3dc2b6642374f1c2f4a0a2054474d358e5a64ed48a41d6cb172e3b3070a6c",
+    "runtime": "public/game/boss-arenas/halcyon.png",
+    "hd": "public/game/boss-arenas/hd/halcyon.webp"
+  },
+  {
+    "level": 8,
+    "slug": "relay",
+    "source": "art/boss-arenas-v1/relay-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "7e466afd7907bb99d36f195ee674effaa1480e47ab18968cdd48663e082aa425",
+    "runtime": "public/game/boss-arenas/relay.png",
+    "hd": "public/game/boss-arenas/hd/relay.webp"
+  },
+  {
+    "level": 9,
+    "slug": "titan",
+    "source": "art/boss-arenas-v1/titan-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "c1172dc50da132b422982518c26b3ffda24a27cc73748017d8097d63a4c2a21a",
+    "runtime": "public/game/boss-arenas/titan.png",
+    "hd": "public/game/boss-arenas/hd/titan.webp"
+  },
+  {
+    "level": 10,
+    "slug": "kest",
+    "source": "art/boss-arenas-v1/kest-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "7c3dd151c4470bcbc1d515da1189e27b31aba67f2e598871dad358d770be24de",
+    "runtime": "public/game/boss-arenas/kest.png",
+    "hd": "public/game/boss-arenas/hd/kest.webp"
+  },
+  {
+    "level": 11,
+    "slug": "mnemosyne",
+    "source": "art/boss-arenas-v1/mnemosyne-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "07d0377f8e5c8557410c42fdacf4ed57b4a72656fc39d5d89f22f7cae8bf093e",
+    "runtime": "public/game/boss-arenas/mnemosyne.png",
+    "hd": "public/game/boss-arenas/hd/mnemosyne.webp"
+  },
+  {
+    "level": 12,
+    "slug": "vulcan",
+    "source": "art/boss-arenas-v1/vulcan-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "fdcfc13c5ea9142c36a42732901c6df632b242ef2e5f426f7db1ae7747f3402f",
+    "runtime": "public/game/boss-arenas/vulcan.png",
+    "hd": "public/game/boss-arenas/hd/vulcan.webp"
+  },
+  {
+    "level": 13,
+    "slug": "leviathan",
+    "source": "art/boss-arenas-v1/leviathan-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "6f9cbb225dcb85122639037a1ac4ba6b918bf436e53b838dc80d05d8838f9841",
+    "runtime": "public/game/boss-arenas/leviathan.png",
+    "hd": "public/game/boss-arenas/hd/leviathan.webp"
+  },
+  {
+    "level": 14,
+    "slug": "prism",
+    "source": "art/boss-arenas-v1/prism-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "70b52c5db2cf90ee5bc3e3ca82c2968acfd7770cee5f1f88e715e8cb9785233d",
+    "runtime": "public/game/boss-arenas/prism.png",
+    "hd": "public/game/boss-arenas/hd/prism.webp"
+  },
+  {
+    "level": 15,
+    "slug": "magnus",
+    "source": "art/boss-arenas-v1/magnus-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "45ff6c9dc399b3bb3fee3eeeb11397889ee8624819efc95a00450dc37691db9c",
+    "runtime": "public/game/boss-arenas/magnus.png",
+    "hd": "public/game/boss-arenas/hd/magnus.webp"
+  },
+  {
+    "level": 16,
+    "slug": "broodmother",
+    "source": "art/boss-arenas-v1/broodmother-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "36ff3f8e3fe69c9b70d4c76b7884e1da7356d2f3c326d5a17be2ae5860e0a412",
+    "runtime": "public/game/boss-arenas/broodmother.png",
+    "hd": "public/game/boss-arenas/hd/broodmother.webp"
+  },
+  {
+    "level": 17,
+    "slug": "mycelium",
+    "source": "art/boss-arenas-v1/mycelium-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "90590664ab2caa305843868d11c13a8150d0252344a02ab25446a30624e6193b",
+    "runtime": "public/game/boss-arenas/mycelium.png",
+    "hd": "public/game/boss-arenas/hd/mycelium.webp"
+  },
+  {
+    "level": 18,
+    "slug": "astra",
+    "source": "art/boss-arenas-v1/astra-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "45de85c41d23dae390512b5144a3175b3889f77b09d38269d1ebfe9b45d66cbf",
+    "runtime": "public/game/boss-arenas/astra.png",
+    "hd": "public/game/boss-arenas/hd/astra.webp"
+  },
+  {
+    "level": 19,
+    "slug": "scrapper",
+    "source": "art/boss-arenas-v1/scrapper-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "542e9316497a718d7d5c8ef0f68b5077f0c28cda5331178f64bc1e69123288c9",
+    "runtime": "public/game/boss-arenas/scrapper.png",
+    "hd": "public/game/boss-arenas/hd/scrapper.webp"
+  },
+  {
+    "level": 20,
+    "slug": "umbra",
+    "source": "art/boss-arenas-v1/umbra-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "c418f91b627f8f5a942e7446343bbfdb07ae0a59da8c97cba1b1b390cb55e59e",
+    "runtime": "public/game/boss-arenas/umbra.png",
+    "hd": "public/game/boss-arenas/hd/umbra.webp"
+  },
+  {
+    "level": 21,
+    "slug": "sol",
+    "source": "art/boss-arenas-v1/sol-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "5288e0f3440cf7cfd63091f783ac0288ff1cc46a6431cea15bffb1c371e7fc83",
+    "runtime": "public/game/boss-arenas/sol.png",
+    "hd": "public/game/boss-arenas/hd/sol.webp"
+  },
+  {
+    "level": 22,
+    "slug": "nautilus",
+    "source": "art/boss-arenas-v1/nautilus-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "9365b91a13b952199b7bd1db54b3b342dc2ba58814d1e20f41629daca23a2290",
+    "runtime": "public/game/boss-arenas/nautilus.png",
+    "hd": "public/game/boss-arenas/hd/nautilus.webp"
+  },
+  {
+    "level": 23,
+    "slug": "chronos",
+    "source": "art/boss-arenas-v1/chronos-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "51210b7af384136783277b77ffefbcbe40e98c646a4df695d50f1b3777ee94e9",
+    "runtime": "public/game/boss-arenas/chronos.png",
+    "hd": "public/game/boss-arenas/hd/chronos.webp"
+  },
+  {
+    "level": 24,
+    "slug": "boreas",
+    "source": "art/boss-arenas-v1/boreas-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "14d29872093c718ce7abab7cb6276c2fb0717f22564ee5dae7a2d6b4f8676bdd",
+    "runtime": "public/game/boss-arenas/boreas.png",
+    "hd": "public/game/boss-arenas/hd/boreas.webp"
+  },
+  {
+    "level": 25,
+    "slug": "sovereign",
+    "source": "art/boss-arenas-v1/sovereign-source.png",
+    "sourceDimensions": [
+      1254,
+      1254
+    ],
+    "sourceHash": "c6fadea1d6cd604511ed84a58972dde78760c93ca9148933f8b25c109dc7b4ce",
+    "runtime": "public/game/boss-arenas/sovereign.png",
+    "hd": "public/game/boss-arenas/hd/sovereign.webp"
+  }
+]

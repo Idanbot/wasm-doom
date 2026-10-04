@@ -1,0 +1,12 @@
+{
+  "signature": "275afaaad6ead2a6bcd2b5c29fd292617061f01a77be6c4363d91344d3da69ed",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The forge is cooling. Take the cutter.",
+    "speaker": "neptune",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:29.321Z"
+}

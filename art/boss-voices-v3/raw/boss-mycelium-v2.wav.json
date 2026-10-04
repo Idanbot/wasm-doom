@@ -1,0 +1,12 @@
+{
+  "signature": "fde8b482983a11ace4b1dbdd1725ce5169a92368c624057c09b35489b59b2f1f",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You cut the voice. The growth will sleep.",
+    "speaker": "cora",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:04.737Z"
+}

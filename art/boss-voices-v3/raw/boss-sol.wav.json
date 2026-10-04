@@ -1,0 +1,12 @@
+{
+  "signature": "793602cae864d86fdbce79a7bc010748cce93eefc3d1968dd67bfdc84afd4f56",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Containment is holding. Take the cannon.",
+    "speaker": "arcas",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:42.583Z"
+}

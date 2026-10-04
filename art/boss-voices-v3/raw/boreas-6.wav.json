@@ -1,0 +1,12 @@
+{
+  "signature": "76aee81faee7aa4f7799e22d395668b11302110c726e7a2e24bfc0e596a6fac7",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "There is no safe place on a closing glacier.",
+    "speaker": "helena",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:59:11.234Z"
+}

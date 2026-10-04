@@ -1,0 +1,12 @@
+{
+  "signature": "2b2280600a1a25e2fe44715dc7a0da099af5fb98e610e3065dfff4819773151a",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Production halt. Threat priority maximum.",
+    "speaker": "neptune",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:22.826Z"
+}

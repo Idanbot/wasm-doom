@@ -1,0 +1,12 @@
+{
+  "signature": "124dc14af1f555e8b7d672df60d71d318f1cd5d432a6990b1e10480d82926b16",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "One choice was still yours to make.",
+    "speaker": "electra",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:52.081Z"
+}

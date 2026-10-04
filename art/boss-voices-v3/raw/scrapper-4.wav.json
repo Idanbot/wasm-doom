@@ -1,0 +1,12 @@
+{
+  "signature": "bd6a2f2f469b9267af623df98df114f81910c069998c0f6c502b97de1a770c41",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Feed the next lane.",
+    "speaker": "pluto",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:58:19.562Z"
+}

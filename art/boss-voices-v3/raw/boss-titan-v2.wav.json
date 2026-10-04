@@ -1,0 +1,12 @@
+{
+  "signature": "c0736ec86930501d2e350620faff992f0ea69aff21adc62919520ee3069e78a6",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "That was the last load I could carry.",
+    "speaker": "zeus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:41.292Z"
+}

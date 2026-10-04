@@ -1,0 +1,12 @@
+{
+  "signature": "1168b271b11502b45952cfce52d1209a6ad0522305237b55d5fd2d289081f0fe",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Intrusion recorded. Your memory is mine.",
+    "speaker": "luna",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:54.584Z"
+}

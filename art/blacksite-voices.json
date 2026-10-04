@@ -305,10 +305,10 @@
     {
       "skin": 12,
       "id": "veyran",
-      "name": "VEYRAN // MALIK",
+      "name": "Malik Veyran",
       "speaker": "saturn",
-      "style": "Augmented commander, dark layered baritone",
-      "effect": "overlord",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
       "lines": [
         [
           "alert",
@@ -339,10 +339,10 @@
     {
       "skin": 13,
       "id": "hecate",
-      "name": "HECATE\u20139",
+      "name": "HECATE–9",
       "speaker": "neptune",
-      "style": "Industrial machine warden, clipped low synthetic voice with electrical hum",
-      "effect": "robot-low",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
       "lines": [
         [
           "alert",
@@ -377,10 +377,10 @@
     {
       "skin": 14,
       "id": "chimera",
-      "name": "CHIMERA\u20139",
+      "name": "CHIMERA–9",
       "speaker": "hyperion",
-      "style": "Bioengineered containment giant, wet rasping voice through a damaged respirator",
-      "effect": "respirator",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
       "lines": [
         [
           "alert",
@@ -415,10 +415,10 @@
     {
       "skin": 15,
       "id": "oracle",
-      "name": "ORACLE\u20137",
+      "name": "ORACLE–7",
       "speaker": "electra",
-      "style": "Cold predictive core, precise high synthetic voice",
-      "effect": "robot-high",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
       "lines": [
         [
           "alert",
@@ -449,10 +449,10 @@
     {
       "skin": 16,
       "id": "gravemind",
-      "name": "GRAVEMIND\u20134",
-      "speaker": "saturn",
-      "style": "Dying reactor engineer inside a heavy respirator, slow human rasp",
-      "effect": "respirator",
+      "name": "GRAVEMIND–4",
+      "speaker": "atlas",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
       "lines": [
         [
           "alert",
@@ -483,10 +483,10 @@
     {
       "skin": 17,
       "id": "archivist",
-      "name": "NULL ARCHIVIST",
-      "speaker": "neptune",
-      "style": "Ancient memory custodian, low synthetic voice with worn human cadence",
-      "effect": "robot-low",
+      "name": "Null Archivist",
+      "speaker": "orion",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
       "lines": [
         [
           "alert",
@@ -517,10 +517,10 @@
     {
       "skin": 18,
       "id": "halcyon",
-      "name": "HALCYON\u20133",
-      "speaker": "neptune",
-      "style": "Cryogenic sentry with low synthetic voice",
-      "effect": "robot-low",
+      "name": "HALCYON–3",
+      "speaker": "pandora",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
       "lines": [
         [
           "alert",
@@ -551,10 +551,10 @@
     {
       "skin": 19,
       "id": "relay",
-      "name": "RELAY\u20130",
-      "speaker": "electra",
-      "style": "Interference robot with sharp synthetic voice",
-      "effect": "robot-high",
+      "name": "RELAY–0",
+      "speaker": "hermes",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
       "lines": [
         [
           "alert",
@@ -585,10 +585,10 @@
     {
       "skin": 20,
       "id": "titan",
-      "name": "TITAN\u201312",
-      "speaker": "draco",
-      "style": "Hydraulic siege walker with deep synthetic roar",
-      "effect": "heavy",
+      "name": "TITAN–12",
+      "speaker": "zeus",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
       "lines": [
         [
           "alert",
@@ -619,10 +619,10 @@
     {
       "skin": 21,
       "id": "kest",
-      "name": "DIRECTOR KEST",
-      "speaker": "saturn",
-      "style": "Human site director with calm tactical radio cadence",
-      "effect": "comms",
+      "name": "Director Kest",
+      "speaker": "draco",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
       "lines": [
         [
           "alert",
@@ -653,10 +653,10 @@
     {
       "skin": 22,
       "id": "mnemosyne",
-      "name": "MNEMOSYNE\u20136",
+      "name": "MNEMOSYNE–6",
       "speaker": "luna",
-      "style": "Calm synthetic archivist, deliberate and unsettling",
-      "effect": "robot-high",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
       "lines": [
         [
           "alert",
@@ -681,6 +681,482 @@
         [
           "taunt",
           "Every failure is preserved here."
+        ]
+      ]
+    },
+    {
+      "skin": 23,
+      "id": "vulcan",
+      "name": "VULCAN–2",
+      "speaker": "mars",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "lines": [
+        [
+          "alert",
+          "The rails are live. Choose your footing."
+        ],
+        [
+          "alert",
+          "You came this far. Do not stop now."
+        ],
+        [
+          "attack",
+          "Watch the tracks."
+        ],
+        [
+          "attack",
+          "That lane is mine."
+        ],
+        [
+          "pain",
+          "You cracked the casing."
+        ],
+        [
+          "taunt",
+          "The whole tunnel will hear this."
+        ]
+      ]
+    },
+    {
+      "skin": 24,
+      "id": "leviathan",
+      "name": "LEVIATHAN–8",
+      "speaker": "odysseus",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "lines": [
+        [
+          "alert",
+          "The pressure is rising. Stay out of the channels."
+        ],
+        [
+          "alert",
+          "You hear that? The hull is giving way."
+        ],
+        [
+          "attack",
+          "Here comes the surge."
+        ],
+        [
+          "attack",
+          "You cannot outrun the tide."
+        ],
+        [
+          "pain",
+          "That hit reached the core."
+        ],
+        [
+          "taunt",
+          "Every bulkhead has a breaking point."
+        ]
+      ]
+    },
+    {
+      "skin": 25,
+      "id": "prism",
+      "name": "PRISM–5",
+      "speaker": "athena",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "lines": [
+        [
+          "alert",
+          "Light has more than one edge."
+        ],
+        [
+          "alert",
+          "Find the gap before the colors cross."
+        ],
+        [
+          "attack",
+          "Follow the beam."
+        ],
+        [
+          "attack",
+          "Now the angles change."
+        ],
+        [
+          "pain",
+          "You broke my focus."
+        ],
+        [
+          "taunt",
+          "There is nowhere here without a reflection."
+        ]
+      ]
+    },
+    {
+      "skin": 26,
+      "id": "magnus",
+      "name": "MAGNUS–4",
+      "speaker": "jupiter",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "lines": [
+        [
+          "alert",
+          "The coils are charging."
+        ],
+        [
+          "alert",
+          "Keep moving. The floor is part of the weapon."
+        ],
+        [
+          "attack",
+          "Polarity reversed."
+        ],
+        [
+          "attack",
+          "Cross the field if you can."
+        ],
+        [
+          "pain",
+          "The winding is damaged."
+        ],
+        [
+          "taunt",
+          "Steel remembers where it belongs."
+        ]
+      ]
+    },
+    {
+      "skin": 27,
+      "id": "broodmother",
+      "name": "BROODMOTHER–3",
+      "speaker": "vesta",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "lines": [
+        [
+          "alert",
+          "The hatchery is awake."
+        ],
+        [
+          "alert",
+          "Every open socket is another pair of eyes."
+        ],
+        [
+          "attack",
+          "Launch the next brood."
+        ],
+        [
+          "attack",
+          "Close the escape lanes."
+        ],
+        [
+          "pain",
+          "You damaged a launch bay."
+        ],
+        [
+          "taunt",
+          "One drone falls. Five more rise."
+        ]
+      ]
+    },
+    {
+      "skin": 28,
+      "id": "mycelium",
+      "name": "MYCELIUM–9",
+      "speaker": "cora",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "lines": [
+        [
+          "alert",
+          "You can hear us breathing under the tiles."
+        ],
+        [
+          "alert",
+          "Step carefully. The growth is listening."
+        ],
+        [
+          "attack",
+          "Open the spore pockets."
+        ],
+        [
+          "attack",
+          "Let the chamber breathe."
+        ],
+        [
+          "pain",
+          "You severed a root."
+        ],
+        [
+          "taunt",
+          "We were here before the walls."
+        ]
+      ]
+    },
+    {
+      "skin": 29,
+      "id": "astra",
+      "name": "ASTRA–7",
+      "speaker": "apollo",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "lines": [
+        [
+          "alert",
+          "The uplink has your position."
+        ],
+        [
+          "alert",
+          "That ceiling is no shelter."
+        ],
+        [
+          "attack",
+          "Bring the strike down."
+        ],
+        [
+          "attack",
+          "Mark the next corridor."
+        ],
+        [
+          "pain",
+          "Antenna alignment lost."
+        ],
+        [
+          "taunt",
+          "The sky is much closer than you think."
+        ]
+      ]
+    },
+    {
+      "skin": 30,
+      "id": "scrapper",
+      "name": "SCRAPPER–6",
+      "speaker": "pluto",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "lines": [
+        [
+          "alert",
+          "Everything down here gets broken down."
+        ],
+        [
+          "alert",
+          "Listen for the jaws. They are opening."
+        ],
+        [
+          "attack",
+          "Close the crusher."
+        ],
+        [
+          "attack",
+          "Feed the next lane."
+        ],
+        [
+          "pain",
+          "You dented the good side."
+        ],
+        [
+          "taunt",
+          "Plenty of room in the scrap pile."
+        ]
+      ]
+    },
+    {
+      "skin": 31,
+      "id": "umbra",
+      "name": "UMBRA–1",
+      "speaker": "theia",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "lines": [
+        [
+          "alert",
+          "You saw me a moment too late."
+        ],
+        [
+          "alert",
+          "Watch the dark seams. That is where I move."
+        ],
+        [
+          "attack",
+          "Cut across the shadow."
+        ],
+        [
+          "attack",
+          "The next floor is already gone."
+        ],
+        [
+          "pain",
+          "You found the anchor."
+        ],
+        [
+          "taunt",
+          "Light cannot hold this room together."
+        ]
+      ]
+    },
+    {
+      "skin": 32,
+      "id": "sol",
+      "name": "SOL–12",
+      "speaker": "arcas",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "lines": [
+        [
+          "alert",
+          "The chamber is reaching critical heat."
+        ],
+        [
+          "alert",
+          "The bright bands are not decoration."
+        ],
+        [
+          "attack",
+          "Open the corona."
+        ],
+        [
+          "attack",
+          "Let the ring expand."
+        ],
+        [
+          "pain",
+          "Containment is failing."
+        ],
+        [
+          "taunt",
+          "Even armor has a melting point."
+        ]
+      ]
+    },
+    {
+      "skin": 33,
+      "id": "nautilus",
+      "name": "NAUTILUS–4",
+      "speaker": "janus",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "lines": [
+        [
+          "alert",
+          "This chamber was built to hold an ocean."
+        ],
+        [
+          "alert",
+          "The pressure wave is turning inward."
+        ],
+        [
+          "attack",
+          "Release the spiral."
+        ],
+        [
+          "attack",
+          "Seal the next hatch."
+        ],
+        [
+          "pain",
+          "You cracked the pressure vessel."
+        ],
+        [
+          "taunt",
+          "There is still water behind every wall."
+        ]
+      ]
+    },
+    {
+      "skin": 34,
+      "id": "chronos",
+      "name": "CHRONOS–8",
+      "speaker": "minerva",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "lines": [
+        [
+          "alert",
+          "The next second is already moving."
+        ],
+        [
+          "alert",
+          "Do not stand where you stood before."
+        ],
+        [
+          "attack",
+          "Repeat the last impact."
+        ],
+        [
+          "attack",
+          "Advance the grid."
+        ],
+        [
+          "pain",
+          "You broke the sequence."
+        ],
+        [
+          "taunt",
+          "Even a mistake can happen twice."
+        ]
+      ]
+    },
+    {
+      "skin": 35,
+      "id": "boreas",
+      "name": "BOREAS–11",
+      "speaker": "helena",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "lines": [
+        [
+          "alert",
+          "The fractures are spreading."
+        ],
+        [
+          "alert",
+          "The cold has a direction. Watch it."
+        ],
+        [
+          "attack",
+          "Split the ice."
+        ],
+        [
+          "attack",
+          "Open the next seam."
+        ],
+        [
+          "pain",
+          "That hit broke the outer shell."
+        ],
+        [
+          "taunt",
+          "There is no safe place on a closing glacier."
+        ]
+      ]
+    },
+    {
+      "skin": 36,
+      "id": "sovereign",
+      "name": "THE SOVEREIGN",
+      "speaker": "hyperion",
+      "style": "Clean natural performance; deliberate phrasing, no artificial pitch or robotic modulation.",
+      "effect": "clean",
+      "lines": [
+        [
+          "alert",
+          "You reached the last chamber. Earn your way out."
+        ],
+        [
+          "alert",
+          "Every command ends here."
+        ],
+        [
+          "attack",
+          "Close the perimeter."
+        ],
+        [
+          "attack",
+          "Bring the floor inward."
+        ],
+        [
+          "pain",
+          "So you can hurt me."
+        ],
+        [
+          "taunt",
+          "There is still room to prove yourself."
         ]
       ]
     }

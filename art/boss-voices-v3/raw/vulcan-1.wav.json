@@ -1,0 +1,12 @@
+{
+  "signature": "6a8af281e9edcb7125f33fcc26388925e241934129b940ae9c02c64456a678f3",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The rails are live. Choose your footing.",
+    "speaker": "mars",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:05.685Z"
+}

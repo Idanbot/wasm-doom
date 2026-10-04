@@ -1,0 +1,12 @@
+{
+  "signature": "ee98ffff114b579fc82cbf9953a693970ddfea368d113da5500dd1860720669e",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Move left. I know your pattern.",
+    "speaker": "draco",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:45.814Z"
+}

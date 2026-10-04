@@ -1,0 +1,12 @@
+{
+  "signature": "848d97581da5b23c5ea81bb810996931f38baf4b4f091ff4b1ce8f1fba7fcf99",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "That hit reached the core.",
+    "speaker": "odysseus",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:18.939Z"
+}

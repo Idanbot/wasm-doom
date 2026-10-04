@@ -1,0 +1,12 @@
+{
+  "signature": "644b25cbfa1d1b7f5268c76613b5a9421b42d20d971e382f0f4eefe06f7c25e3",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Arc lattice armed.",
+    "speaker": "neptune",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:55:23.760Z"
+}

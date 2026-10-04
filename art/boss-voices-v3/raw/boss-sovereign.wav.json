@@ -1,0 +1,12 @@
+{
+  "signature": "ba98373ecc72abfa943bf64c0bd923b28ce851de8915ca12852c317afec21cf0",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "You earned the last weapon. Carry it out.",
+    "speaker": "hyperion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:59:22.267Z"
+}

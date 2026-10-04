@@ -1,0 +1,12 @@
+{
+  "signature": "2b229a7026542598c4f23a9575deaeabf7c9ed3fc292481c8ac21c64df4322fe",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Close the perimeter.",
+    "speaker": "hyperion",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:59:17.767Z"
+}

@@ -1,0 +1,12 @@
+{
+  "signature": "e729486d2dd09584374c3cf0501635c127999dd87c968df4a1be06fbb5622e26",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Close the escape lanes.",
+    "speaker": "vesta",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:57:46.947Z"
+}

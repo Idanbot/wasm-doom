@@ -1,0 +1,12 @@
+{
+  "signature": "9bfde4b2c381aea291cc8852baa8a70ae6b089831e5560af4cc68e3632c5fddb",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "The frost is lifting. Do not look back.",
+    "speaker": "helena",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:59:14.180Z"
+}

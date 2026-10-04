@@ -1,0 +1,12 @@
+{
+  "signature": "3e0bf34e512d7a8dc6e7596f0798a751f37d446743a82e780a6c7c2b009972f5",
+  "model": "@cf/deepgram/aura-2-en",
+  "request": {
+    "text": "Thermal breach detected.",
+    "speaker": "pandora",
+    "encoding": "linear16",
+    "container": "wav",
+    "sample_rate": 24000
+  },
+  "generatedAt": "2026-10-04T13:56:13.327Z"
+}

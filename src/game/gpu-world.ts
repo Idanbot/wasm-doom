@@ -1,3 +1,5 @@
+import BOSS_ARENAS from "./boss-arena-data.json";
+
 /** GPU wall/floor/sprite fill. The sim still casts columns; this only textures them. */
 
 export const VIEW_FLOATS = 16;
@@ -44,7 +46,12 @@ export const T_PLAYER_MISSILE = T_ENEMY_PROJECTILE + ENEMY_PROJECTILE_COUNT;
 export const T_SECTOR_SURFACE = T_PLAYER_MISSILE + 3;
 export const T_SECTOR_PROP = T_SECTOR_SURFACE + 25 * 5;
 export const T_BOSS_PROJECTILE = T_SECTOR_PROP + 25 * 3;
-export const TEX_N = T_BOSS_PROJECTILE + 25;
+export const T_BOSS_ARENA = T_BOSS_PROJECTILE + 25;
+export const TEX_N = T_BOSS_ARENA + 25;
+
+const arenaColors = BOSS_ARENAS.map(b => [0,2,4].map(i => (parseInt(b.color.slice(i,i+2),16)/255).toFixed(5)));
+const arenaColorsWgsl = arenaColors.map(c => `vec3<f32>(${c.join(",")})`).join(",");
+const arenaColorsGl = arenaColors.map(c => `vec3(${c.join(",")})`).join(",");
 export const MAX_COLS = 3840;
 export const TEX = 256;
 export type WorldFrame = {
@@ -133,6 +140,11 @@ fn through_smoke(rgb: vec3<f32>, ax: f32, ay: f32, bx: f32, by: f32) -> vec3<f32
   return mix(rgb, vec3<f32>(0.58, 0.60, 0.62), clamp(k, 0.0, 0.35));
 }
 
+fn arena_color(level: i32) -> vec3<f32> {
+  let colors = array<vec3<f32>, 25>(${arenaColorsWgsl});
+  return colors[clamp(level, 0, 24)];
+}
+
 fn sigil_center(level: i32) -> vec2<f32> {
   if (level == 1) { return vec2<f32>(43.5, 27.5); }
   if (level == 2) { return vec2<f32>(43.5, 15.5); }
@@ -208,18 +220,18 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
   var id = 5;
   var u = fx;
   var v = fy;
+  var style = 0.0;
   if (on_floor) {
     let mx = i32(floor(fx));
     let my = i32(floor(fy));
-    var style = 0.0;
     if (mx >= 0 && my >= 0 && mx < 48 && my < 32) {
       style = textureLoad(floor_tex, vec2<i32>(mx, my), 0).r * 255.0;
     }
-    if (style > 1.5) {
+    if (style > 1.5 && style < 2.5) {
       let level = i32(view.v[3].z);
       let c = sigil_center(level);
       let mark = sigil(level, (fx - c.x) / 1.55, (fy - c.y) / 1.55);
-      id = select(${T_SECTOR_SURFACE} + i32(view.v[3].z) * 5 + 3, 6, hell > 0.5);
+      id = select(${T_SECTOR_SURFACE} + i32(view.v[3].z) * 5 + 3, ${T_BOSS_ARENA} + i32(view.v[3].z), hell > 0.5);
       u = fx;
       v = fy;
       var rgb = sample_atlas(id, u, v).rgb;
@@ -235,10 +247,15 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
   } else {
     id = select(7, 3, hell > 0.5);
   }
-  if (hell < 0.5) { id = ${T_SECTOR_SURFACE} + i32(view.v[3].z) * 5 + select(4, 3, on_floor); }
+  if (hell < 0.5) { id = ${T_SECTOR_SURFACE} + i32(view.v[3].z) * 5 + select(4, 3, on_floor); } else { id = ${T_BOSS_ARENA} + i32(view.v[3].z); }
   var rgb = sample_atlas(id, u, v).rgb;
   let shade_k = select(0.78, 0.72 + 0.2 / (1.0 + dist * 0.2) + muzzle * 0.45 / (1.0 + dist * dist), on_floor);
   rgb = clamp(rgb * clamp(vec3<f32>(shade_k) + light_at(fx, fy), vec3<f32>(0.18), vec3<f32>(1.8)), vec3<f32>(0.0), vec3<f32>(1.0));
+  if (on_floor && style > 2.5) {
+    let border = select(0.0, 1.0, abs(fract(fx)-0.5)>0.39 || abs(fract(fy)-0.5)>0.39);
+    let amount = select(border*0.5, 0.32+border*0.38, style>3.5);
+    rgb = mix(rgb, arena_color(i32(view.v[3].z)), amount);
+  }
   rgb = through_smoke(rgb, view.v[0].x, view.v[0].y, fx, fy);
   return vec4<f32>(rgb, clamp(dist / 28.0, 0.0, 1.0));
 }
@@ -575,6 +592,10 @@ uniform sampler2D floorTex;
 uniform sampler2D lightTex;
 uniform sampler2D cols;
 uniform vec4 view0, view1, view2, view3;
+vec3 arenaColor(int level) {
+  const vec3 colors[25] = vec3[25](${arenaColorsGl});
+  return colors[clamp(level, 0, 24)];
+}
 vec4 sigilMark(int level, vec2 p) {
   float d = length(p);
   if (d > 1.02) return vec4(0.0);
@@ -642,16 +663,16 @@ void main() {
   float fy = view0.y + (dir.y - plane.y) * dist + stepv.y * (float(x) + 0.5);
   int id = 5;
   vec2 uv = vec2(fx, fy);
+  float style = 0.0;
   if (onFloor) {
     ivec2 m = ivec2(floor(fx), floor(fy));
-    float style = 0.0;
     if (m.x >= 0 && m.y >= 0 && m.x < 48 && m.y < 32) style = texelFetch(floorTex, m, 0).r * 255.0;
-    if (style > 1.5) {
+    if (style > 1.5 && style < 2.5) {
       int level = int(view3.z);
       vec2 c = level == 1 ? vec2(43.5, 27.5) : level == 2 ? vec2(43.5, 15.5) : vec2(40.5, 21.5);
       vec2 p = (vec2(fx, fy) - c) / 1.55;
       vec4 mark = sigilMark(level, p);
-      int floorId = view2.x > 0.5 ? 6 : ${T_SECTOR_SURFACE} + int(view3.z) * 5 + 3;
+      int floorId = view2.x > 0.5 ? ${T_BOSS_ARENA} + int(view3.z) : ${T_SECTOR_SURFACE} + int(view3.z) * 5 + 3;
       vec3 sealed = sampleAtlas(floorId, vec2(fx, fy)).rgb;
       sealed = mix(sealed, mark.rgb, mark.a * (1.0 - smoothstep(0.92, 1.02, length(p))));
       float shadeK = 0.72 + 0.2 / (1.0 + dist * 0.2) + view2.y * 0.45 / (1.0 + dist * dist);
@@ -662,10 +683,15 @@ void main() {
   } else {
     id = view2.x > 0.5 ? 3 : 7;
   }
-  if (view2.x < 0.5) id = ${T_SECTOR_SURFACE} + int(view3.z) * 5 + (onFloor ? 3 : 4);
+  if (view2.x < 0.5) id = ${T_SECTOR_SURFACE} + int(view3.z) * 5 + (onFloor ? 3 : 4); else id = ${T_BOSS_ARENA} + int(view3.z);
   vec3 rgb = sampleAtlas(id, uv).rgb;
   float shadeK = onFloor ? 0.72 + 0.2 / (1.0 + dist * 0.2) + view2.y * 0.45 / (1.0 + dist * dist) : 0.78;
   rgb = clamp(rgb * clamp(vec3(shadeK) + lightAt(vec2(fx, fy)), vec3(0.18), vec3(1.8)), vec3(0.0), vec3(1.0));
+  if (onFloor && style > 2.5) {
+    float border = abs(fract(fx)-0.5)>0.39 || abs(fract(fy)-0.5)>0.39 ? 1.0 : 0.0;
+    float amount = style>3.5 ? 0.32+border*0.38 : border*0.5;
+    rgb = mix(rgb, arenaColor(int(view3.z)), amount);
+  }
   outColor = vec4(rgb, clamp(dist / 28.0, 0.0, 1.0));
 }
 `;
