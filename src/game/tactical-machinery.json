@@ -1,0 +1,502 @@
+[
+  {
+    "level": 1,
+    "props": [
+      {
+        "name": "olive spare-ammunition locker",
+        "role": 6,
+        "effect": "Supply cache \u00b7 ammunition and armor"
+      },
+      {
+        "name": "compressed-air cylinder trolley",
+        "role": 6,
+        "effect": "Supply cache \u00b7 ammunition and armor"
+      },
+      {
+        "name": "worn electrical junction cabinet",
+        "role": 1,
+        "effect": "Power cut \u00b7 disables nearby shields"
+      }
+    ]
+  },
+  {
+    "level": 2,
+    "props": [
+      {
+        "name": "frosted coolant reservoir",
+        "role": 0,
+        "effect": "Coolant rupture \u00b7 slows nearby enemies"
+      },
+      {
+        "name": "cast-metal induction furnace capacitor",
+        "role": 1,
+        "effect": "Power cut \u00b7 disables nearby shields"
+      },
+      {
+        "name": "blue insulated pressure vessel",
+        "role": 0,
+        "effect": "Coolant rupture \u00b7 slows nearby enemies"
+      }
+    ]
+  },
+  {
+    "level": 3,
+    "props": [
+      {
+        "name": "green specimen containment tank",
+        "role": 4,
+        "effect": "Contamination \u00b7 primes nearby enemies"
+      },
+      {
+        "name": "sealed biohazard waste cart",
+        "role": 4,
+        "effect": "Contamination \u00b7 primes nearby enemies"
+      },
+      {
+        "name": "glass nutrient pump reservoir",
+        "role": 0,
+        "effect": "Coolant rupture \u00b7 slows nearby enemies"
+      }
+    ]
+  },
+  {
+    "level": 4,
+    "props": [
+      {
+        "name": "cyan data-server tower",
+        "role": 2,
+        "effect": "Network cut \u00b7 blocks nearby reinforcements"
+      },
+      {
+        "name": "fiber-optic patch cabinet",
+        "role": 2,
+        "effect": "Network cut \u00b7 blocks nearby reinforcements"
+      },
+      {
+        "name": "rack-mounted backup battery unit",
+        "role": 1,
+        "effect": "Power cut \u00b7 disables nearby shields"
+      }
+    ]
+  },
+  {
+    "level": 5,
+    "props": [
+      {
+        "name": "copper reactor coolant pump",
+        "role": 0,
+        "effect": "Coolant rupture \u00b7 slows nearby enemies"
+      },
+      {
+        "name": "yellow nuclear capacitor bank",
+        "role": 1,
+        "effect": "Power cut \u00b7 disables nearby shields"
+      },
+      {
+        "name": "armored turbine control cabinet",
+        "role": 2,
+        "effect": "Network cut \u00b7 blocks nearby reinforcements"
+      }
+    ]
+  },
+  {
+    "level": 6,
+    "props": [
+      {
+        "name": "magnetic tape archive cabinet",
+        "role": 6,
+        "effect": "Supply cache \u00b7 ammunition and armor"
+      },
+      {
+        "name": "amber memory cartridge trolley",
+        "role": 6,
+        "effect": "Supply cache \u00b7 ammunition and armor"
+      },
+      {
+        "name": "bronze archive cooling unit",
+        "role": 0,
+        "effect": "Coolant rupture \u00b7 slows nearby enemies"
+      }
+    ]
+  },
+  {
+    "level": 7,
+    "props": [
+      {
+        "name": "liquid nitrogen dewar",
+        "role": 0,
+        "effect": "Coolant rupture \u00b7 slows nearby enemies"
+      },
+      {
+        "name": "frozen specimen freezer cabinet",
+        "role": 0,
+        "effect": "Coolant rupture \u00b7 slows nearby enemies"
+      },
+      {
+        "name": "cryo-compressor skid",
+        "role": 0,
+        "effect": "Coolant rupture \u00b7 slows nearby enemies"
+      }
+    ]
+  },
+  {
+    "level": 8,
+    "props": [
+      {
+        "name": "red signal amplifier cabinet",
+        "role": 2,
+        "effect": "Network cut \u00b7 blocks nearby reinforcements"
+      },
+      {
+        "name": "satellite modem relay rack",
+        "role": 2,
+        "effect": "Network cut \u00b7 blocks nearby reinforcements"
+      },
+      {
+        "name": "sealed communications battery chest",
+        "role": 1,
+        "effect": "Power cut \u00b7 disables nearby shields"
+      }
+    ]
+  },
+  {
+    "level": 9,
+    "props": [
+      {
+        "name": "armored missile reload pallet",
+        "role": 5,
+        "effect": "Fuel detonation \u00b7 dangerous blast"
+      },
+      {
+        "name": "sand-colored hydraulic lift powerpack",
+        "role": 1,
+        "effect": "Power cut \u00b7 disables nearby shields"
+      },
+      {
+        "name": "heavy artillery battery cart",
+        "role": 1,
+        "effect": "Power cut \u00b7 disables nearby shields"
+      }
+    ]
+  },
+  {
+    "level": 10,
+    "props": [
+      {
+        "name": "tactical radio command cabinet",
+        "role": 2,
+        "effect": "Network cut \u00b7 blocks nearby reinforcements"
+      },
+      {
+        "name": "secure operations document case",
+        "role": 6,
+        "effect": "Supply cache \u00b7 ammunition and armor"
+      },
+      {
+        "name": "olive command UPS cabinet",
+        "role": 1,
+        "effect": "Power cut \u00b7 disables nearby shields"
+      }
+    ]
+  },
+  {
+    "level": 11,
+    "props": [
+      {
+        "name": "violet memory-core reliquary",
+        "role": 6,
+        "effect": "Supply cache \u00b7 ammunition and armor"
+      },
+      {
+        "name": "obsidian encryption server",
+        "role": 2,
+        "effect": "Network cut \u00b7 blocks nearby reinforcements"
+      },
+      {
+        "name": "sealed black memory cartridge case",
+        "role": 6,
+        "effect": "Supply cache \u00b7 ammunition and armor"
+      }
+    ]
+  },
+  {
+    "level": 12,
+    "props": [
+      {
+        "name": "orange railway power inverter",
+        "role": 1,
+        "effect": "Power cut \u00b7 disables nearby shields"
+      },
+      {
+        "name": "soot-covered pneumatic rail compressor",
+        "role": 3,
+        "effect": "Pressure release \u00b7 staggers nearby enemies"
+      },
+      {
+        "name": "steel transit fuel canister",
+        "role": 5,
+        "effect": "Fuel detonation \u00b7 dangerous blast"
+      }
+    ]
+  },
+  {
+    "level": 13,
+    "props": [
+      {
+        "name": "blue pressure pump motor",
+        "role": 0,
+        "effect": "Coolant rupture \u00b7 slows nearby enemies"
+      },
+      {
+        "name": "brass water filtration canister",
+        "role": 0,
+        "effect": "Coolant rupture \u00b7 slows nearby enemies"
+      },
+      {
+        "name": "naval hydraulic accumulator",
+        "role": 3,
+        "effect": "Pressure release \u00b7 staggers nearby enemies"
+      }
+    ]
+  },
+  {
+    "level": 14,
+    "props": [
+      {
+        "name": "cyan laser calibration emitter",
+        "role": 6,
+        "effect": "Supply cache \u00b7 ammunition and armor"
+      },
+      {
+        "name": "chrome lens storage cabinet",
+        "role": 6,
+        "effect": "Supply cache \u00b7 ammunition and armor"
+      },
+      {
+        "name": "optical bench power supply",
+        "role": 1,
+        "effect": "Power cut \u00b7 disables nearby shields"
+      }
+    ]
+  },
+  {
+    "level": 15,
+    "props": [
+      {
+        "name": "red induction coil transformer",
+        "role": 1,
+        "effect": "Power cut \u00b7 disables nearby shields"
+      },
+      {
+        "name": "copper magnet cooling pump",
+        "role": 0,
+        "effect": "Coolant rupture \u00b7 slows nearby enemies"
+      },
+      {
+        "name": "laminated steel flux capacitor bank",
+        "role": 1,
+        "effect": "Power cut \u00b7 disables nearby shields"
+      }
+    ]
+  },
+  {
+    "level": 16,
+    "props": [
+      {
+        "name": "amber drone charging cradle",
+        "role": 6,
+        "effect": "Supply cache \u00b7 ammunition and armor"
+      },
+      {
+        "name": "robotic assembly parts cassette",
+        "role": 6,
+        "effect": "Supply cache \u00b7 ammunition and armor"
+      },
+      {
+        "name": "hexagonal drone battery tower",
+        "role": 1,
+        "effect": "Power cut \u00b7 disables nearby shields"
+      }
+    ]
+  },
+  {
+    "level": 17,
+    "props": [
+      {
+        "name": "sealed green fungal incubation tank",
+        "role": 4,
+        "effect": "Contamination \u00b7 primes nearby enemies"
+      },
+      {
+        "name": "contaminated sample refrigeration cabinet",
+        "role": 6,
+        "effect": "Supply cache \u00b7 ammunition and armor"
+      },
+      {
+        "name": "spore filter pressure unit",
+        "role": 0,
+        "effect": "Coolant rupture \u00b7 slows nearby enemies"
+      }
+    ]
+  },
+  {
+    "level": 18,
+    "props": [
+      {
+        "name": "violet satellite targeting power rack",
+        "role": 1,
+        "effect": "Power cut \u00b7 disables nearby shields"
+      },
+      {
+        "name": "orbital telemetry storage cabinet",
+        "role": 6,
+        "effect": "Supply cache \u00b7 ammunition and armor"
+      },
+      {
+        "name": "compact antenna gimbal controller",
+        "role": 2,
+        "effect": "Network cut \u00b7 blocks nearby reinforcements"
+      }
+    ]
+  },
+  {
+    "level": 19,
+    "props": [
+      {
+        "name": "rusted scrap sorting hopper",
+        "role": 6,
+        "effect": "Supply cache \u00b7 ammunition and armor"
+      },
+      {
+        "name": "copper hydraulic fluid drum",
+        "role": 3,
+        "effect": "Pressure release \u00b7 staggers nearby enemies"
+      },
+      {
+        "name": "industrial shredder motor cabinet",
+        "role": 6,
+        "effect": "Supply cache \u00b7 ammunition and armor"
+      }
+    ]
+  },
+  {
+    "level": 20,
+    "props": [
+      {
+        "name": "purple cloak-field generator",
+        "role": 1,
+        "effect": "Power cut \u00b7 disables nearby shields"
+      },
+      {
+        "name": "matte black stealth calibration rack",
+        "role": 6,
+        "effect": "Supply cache \u00b7 ammunition and armor"
+      },
+      {
+        "name": "phase containment battery housing",
+        "role": 1,
+        "effect": "Power cut \u00b7 disables nearby shields"
+      }
+    ]
+  },
+  {
+    "level": 21,
+    "props": [
+      {
+        "name": "gold fusion containment capacitor",
+        "role": 1,
+        "effect": "Power cut \u00b7 disables nearby shields"
+      },
+      {
+        "name": "white ceramic coolant circulation pump",
+        "role": 0,
+        "effect": "Coolant rupture \u00b7 slows nearby enemies"
+      },
+      {
+        "name": "fusion fuel cartridge caddy",
+        "role": 5,
+        "effect": "Fuel detonation \u00b7 dangerous blast"
+      }
+    ]
+  },
+  {
+    "level": 22,
+    "props": [
+      {
+        "name": "teal torpedo guidance locker",
+        "role": 6,
+        "effect": "Supply cache \u00b7 ammunition and armor"
+      },
+      {
+        "name": "naval ballast pressure cylinder",
+        "role": 0,
+        "effect": "Coolant rupture \u00b7 slows nearby enemies"
+      },
+      {
+        "name": "brass silo hydraulic valve station",
+        "role": 3,
+        "effect": "Pressure release \u00b7 staggers nearby enemies"
+      }
+    ]
+  },
+  {
+    "level": 23,
+    "props": [
+      {
+        "name": "bronze gyroscope timing core",
+        "role": 2,
+        "effect": "Network cut \u00b7 blocks nearby reinforcements"
+      },
+      {
+        "name": "amber chronology tape cabinet",
+        "role": 6,
+        "effect": "Supply cache \u00b7 ammunition and armor"
+      },
+      {
+        "name": "temporal calibration capacitor",
+        "role": 1,
+        "effect": "Power cut \u00b7 disables nearby shields"
+      }
+    ]
+  },
+  {
+    "level": 24,
+    "props": [
+      {
+        "name": "ice-blue supercomputer coolant rack",
+        "role": 0,
+        "effect": "Coolant rupture \u00b7 slows nearby enemies"
+      },
+      {
+        "name": "black insulated refrigeration compressor",
+        "role": 3,
+        "effect": "Pressure release \u00b7 staggers nearby enemies"
+      },
+      {
+        "name": "frosted emergency power cell cabinet",
+        "role": 1,
+        "effect": "Power cut \u00b7 disables nearby shields"
+      }
+    ]
+  },
+  {
+    "level": 25,
+    "props": [
+      {
+        "name": "gold command encryption terminal rack",
+        "role": 2,
+        "effect": "Network cut \u00b7 blocks nearby reinforcements"
+      },
+      {
+        "name": "black apex security power cabinet",
+        "role": 1,
+        "effect": "Power cut \u00b7 disables nearby shields"
+      },
+      {
+        "name": "gold-plated tactical reserve cartridge chest",
+        "role": 6,
+        "effect": "Supply cache \u00b7 ammunition and armor"
+      }
+    ]
+  }
+]

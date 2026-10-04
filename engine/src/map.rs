@@ -878,6 +878,7 @@ pub(crate) fn place_level(e: &mut Engine) {
     let (px, py) = field::powerup_point(e.wave);
     e.spawn(EK_POWER, px, py);
     place_sector_destructibles(e);
+    e.place_secret_clues();
     e.announce_sector();
     split_barrels(e);
     e.replace_owned_weapon_drops();
@@ -897,6 +898,7 @@ fn place_sector_destructibles(e: &mut Engine) {
             if (px-start.0).powi(2)+(py-start.1).powi(2) < 16.0 || (px-objective.0).powi(2)+(py-objective.1).powi(2) < 9.0 { continue; }
             let adjacent_wall = [(1,0),(-1,0),(0,1),(0,-1)].iter().any(|&(dx,dy)| e.blocked(x as i32+dx,y as i32+dy));
             if !adjacent_wall || (x + y + sector) % 4 != 0 { continue; }
+            if e.tactical.secret_rooms.iter().any(|&(_,_,a,b)| (px-a).hypot(py-b)<2.5) {continue;}
             if e.ents.iter().any(|ent| ent.kind != EK_NONE && (ent.x-px).powi(2)+(ent.y-py).powi(2) < 2.25) { continue; }
             let skin = 150 + (sector * 3 + placed % 3) as u8;
             if let Some(i) = e.spawn_with_skin(EK_CRATE, skin, px, py) {
@@ -948,6 +950,7 @@ pub(crate) fn check_ambushes(e: &mut Engine) {
         }
         let mut spawned = false;
         for &(kind, x, y) in group {
+            if e.outage_at(x,y,2) {continue;}
             if e.spawn_clear(kind, x, y).is_some() {
                 spawned = true;
             }

@@ -203,7 +203,7 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
     rgb = clamp(rgb * clamp(vec3<f32>(dist) + light, vec3<f32>(0.18), vec3<f32>(1.8)), vec3<f32>(0.0), vec3<f32>(1.0));
     let cam = 2.0 * (f32(x) + 0.5) / w - 1.0;
     let ray = view.v[0].zw + view.v[1].xy * cam;
-    rgb = through_smoke(rgb, view.v[0].x, view.v[0].y, view.v[0].x + perp * ray.x, view.v[0].y + perp * ray.y);
+  rgb = through_smoke(rgb, view.v[0].x, view.v[0].y, view.v[0].x + perp * ray.x, view.v[0].y + perp * ray.y);
     return vec4<f32>(rgb, clamp(perp / 28.0, 0.0, 1.0));
   }
   let p = f32(py) - view.v[1].z;
@@ -251,10 +251,18 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
   var rgb = sample_atlas(id, u, v).rgb;
   let shade_k = select(0.78, 0.72 + 0.2 / (1.0 + dist * 0.2) + muzzle * 0.45 / (1.0 + dist * dist), on_floor);
   rgb = clamp(rgb * clamp(vec3<f32>(shade_k) + light_at(fx, fy), vec3<f32>(0.18), vec3<f32>(1.8)), vec3<f32>(0.0), vec3<f32>(1.0));
-  if (on_floor && style > 2.5) {
+  if (on_floor && style > 2.5 && style < 4.5) {
     let border = select(0.0, 1.0, abs(fract(fx)-0.5)>0.39 || abs(fract(fy)-0.5)>0.39);
     let amount = select(border*0.5, 0.32+border*0.38, style>3.5);
     rgb = mix(rgb, arena_color(i32(view.v[3].z)), amount);
+  }
+    if (on_floor && style > 4.5) {
+    let uv=fract(vec2<f32>(fx,fy));
+    var mark=false;
+    if (style<5.5) {mark=abs(uv.x-uv.y*0.25-0.25)<0.018 || abs(uv.x-uv.y*0.25-0.61)<0.018;}
+    else if (style<6.5) {mark=abs(uv.x-0.35)<0.025 || abs(uv.x-0.65)<0.025;}
+    else {mark=fract(uv.y*9.0)<0.14 && uv.x>0.2 && uv.x<0.8;}
+    if (mark) {rgb=mix(rgb,vec3<f32>(0.463,0.557,0.569),0.42);}
   }
   rgb = through_smoke(rgb, view.v[0].x, view.v[0].y, fx, fy);
   return vec4<f32>(rgb, clamp(dist / 28.0, 0.0, 1.0));
@@ -687,10 +695,15 @@ void main() {
   vec3 rgb = sampleAtlas(id, uv).rgb;
   float shadeK = onFloor ? 0.72 + 0.2 / (1.0 + dist * 0.2) + view2.y * 0.45 / (1.0 + dist * dist) : 0.78;
   rgb = clamp(rgb * clamp(vec3(shadeK) + lightAt(vec2(fx, fy)), vec3(0.18), vec3(1.8)), vec3(0.0), vec3(1.0));
-  if (onFloor && style > 2.5) {
+  if (onFloor && style > 2.5 && style < 4.5) {
     float border = abs(fract(fx)-0.5)>0.39 || abs(fract(fy)-0.5)>0.39 ? 1.0 : 0.0;
     float amount = style>3.5 ? 0.32+border*0.38 : border*0.5;
     rgb = mix(rgb, arenaColor(int(view3.z)), amount);
+  }
+  if (onFloor && style>4.5) {
+    vec2 uv=fract(vec2(fx,fy));
+    bool mark=style<5.5 ? abs(uv.x-uv.y*.25-.25)<.018 || abs(uv.x-uv.y*.25-.61)<.018 : style<6.5 ? abs(uv.x-.35)<.025 || abs(uv.x-.65)<.025 : fract(uv.y*9.0)<.14 && uv.x>.2 && uv.x<.8;
+    if(mark)rgb=mix(rgb,vec3(.463,.557,.569),.42);
   }
   outColor = vec4(rgb, clamp(dist / 28.0, 0.0, 1.0));
 }

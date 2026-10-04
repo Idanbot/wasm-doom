@@ -203,3 +203,13 @@ Every boss has a generated seamless arena material and a distinct floor hazard: 
 CM-9 direct, splash and acid-pool damage now use 67% of the previous damage (integer hits round; pool damage accumulates fractional remainder). Shift sprint is 10% faster: 4.422 world units/second, also the maximum speed with Overdrive.
 
 Arena masters and exact image-generation prompts: `art/boss-arenas-v1/`; runtime materials: `public/game/boss-arenas/`; 1024×1024 review copies: `public/game/boss-arenas/hd/`. Boss voice sources, prompts and estimated usage: `art/boss-voices-v3/`. Rebuild materials with `python3 scripts/pack-boss-arenas.py`; regenerate voices with `node scripts/generate-boss-voices-v3.mjs --account <account-id>` using ignored `CF_API_KEY`.
+
+### Tactical combat, secrets and machinery
+
+Weapon families now have complementary roles. Precision weapons bypass 40% of body armor absorption; frontal shields still stop them. Acid primes a target for three seconds: its next precision hit gains 25% damage and consumes the primer. Shock interrupts attacks and drains shields, with cooldowns that prevent boss stun locks. Rime slows movement; automatic suppression delays return fire; close-range shotgun hits stagger. Existing missile splash and Pyre pools supply blast and area denial. All 33 weapons retain their approved sprites and original firing patterns. Quick equip takes 0.28 seconds, while separate weapon cooldowns prevent switching from bypassing cadence.
+
+Every sector has a concealed service cache or its existing secret rooms. Scratches, interrupted cable tracks and ventilation marks lead toward scuffed service panels; face one and press **E**. New caches are carved into unused wall space without replacing objectives or routes. Supplies and a recovered log are awarded once per cache, including paired door leaves.
+
+Shoot machinery to use the room tactically. Aim at the sector-specific object to see its name and effect. Coolant slows nearby enemies for six seconds; power equipment disables local shield emitters; network equipment blocks queued arrivals and ambush reinforcements within its circuit. Pressure equipment staggers, biological containment primes targets, fuel explodes dangerously, and supply fixtures yield ammunition and armor. Cover blocks these effects; outages and status effects reset on sector changes.
+
+Prop identities and effects: `src/game/tactical-machinery.json` and `engine/src/tactical_roles.rs`. Systems and tests: `engine/src/tactical.rs`, `scripts/tactical.browser.mjs`, and `scripts/tactical-data.test.mjs`. The HUD/save ABI and 804-layer atlas remain unchanged.

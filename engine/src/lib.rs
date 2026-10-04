@@ -1,4 +1,6 @@
 mod boss_arena;
+mod tactical;
+mod tactical_roles;
 mod combat;
 mod campaign;
 mod field;
@@ -84,6 +86,7 @@ struct Engine {
     reload_t: f32,
     reload_dur: f32,
     pickup_t: f32,
+    pickup_dur: f32,
     iframes: f32,
     walk: f32,
     time: f32,
@@ -124,6 +127,7 @@ struct Engine {
     boss_intro: f32,
     boss_phase: u8,
     boss_arena: boss_arena::ArenaState,
+    tactical: tactical::Tactical,
     node_done: bool,
     lockdown: bool,
     boss_vuln: f32,
@@ -477,6 +481,7 @@ impl Engine {
             reload_t: 0.0,
             reload_dur: 1.0,
             pickup_t: 0.0,
+            pickup_dur: 0.6,
             iframes: 0.0,
             walk: 0.0,
             time: 0.0,
@@ -585,6 +590,7 @@ impl Engine {
             boss_intro: 0.0,
             boss_phase: 0,
             boss_arena: boss_arena::ArenaState::new(),
+            tactical: tactical::Tactical::new(),
             node_done: false,
             lockdown: false,
             boss_vuln: 0.0,
@@ -829,6 +835,7 @@ impl Engine {
 
     fn build_map(&mut self) {
         map::build_level(self);
+        self.install_secret_cache();
     }
 
     fn pack(r: u32, g: u32, b: u32, a: u32) -> u32 {
@@ -1213,6 +1220,7 @@ impl Engine {
                     armor_hp: enemies::armor_cap(kind, skin),
                     shield_hp: 0,
                 };
+                self.tactical.reset_entity(i);
                 return Some(i);
             }
         }
@@ -1220,6 +1228,7 @@ impl Engine {
     }
 
     fn arm_shield(&mut self, i: usize) {
+        if self.outage_at(self.ents[i].x,self.ents[i].y,1) {return;}
         let face = (self.py - self.ents[i].y).atan2(self.px - self.ents[i].x);
         let e = &mut self.ents[i];
         e.shield = 1;
@@ -1253,7 +1262,7 @@ impl Engine {
         let dy = self.pa.sin();
         let mut best: Option<(usize, f32)> = None;
         for (i, e) in self.ents.iter().enumerate() {
-            if e.kind != kind || e.hp <= 0 {
+            if e.kind != kind || e.hp <= 0 || !self.los(self.px,self.py,e.x,e.y) {
                 continue;
             }
             let ex = e.x - self.px;
@@ -1330,10 +1339,13 @@ impl Engine {
     }
 
     fn pay_secret(&mut self, cx: i32, cy: i32) {
-        let Some((x, y)) = field::secret_interior(cx, cy) else { return };
+        let Some((x, y)) = self.secret_room(cx, cy) else { return };
+        if self.tactical.secrets_paid.iter().any(|&(a,b)| (x-a).hypot(y-b)<1.5) {return;}
+        self.tactical.secrets_paid.push((x,y));
         self.ensure_drop(EK_MED, x, y);
-        self.ensure_drop(EK_ARMOR, x + 0.7, y);
-        self.ensure_drop(EK_AMMO, x, y + 0.7);
+        self.ensure_drop(EK_ARMOR, x + 0.35, y);
+        self.ensure_drop(EK_AMMO, x - 0.35, y);
+        self.say(210+(map::level_index(self.wave)%3) as i32);
     }
 
     fn boss_pos(&self) -> Option<(f32, f32)> {
@@ -1412,7 +1424,8 @@ impl Engine {
         if slot < WEP_N && self.owns_slot(slot) && slot != self.weapon as usize {
             self.weapon = slot as i32;
             self.reload_t = 0.0;
-            self.pickup_t = 0.45;
+            self.pickup_t = 0.28;self.pickup_dur=0.28;
+            self.cooldown=self.cooldown.min(0.12);
         }
     }
 
@@ -1836,6 +1849,9 @@ impl Engine {
             point = candidate;
         }
         let (mut kind, mut packed, x, y) = point;
+        if telegraph && self.outage_at(x,y,2) {
+            self.pending_hostiles-=1;self.reinforcement_cursor=self.reinforcement_cursor.saturating_add(1);return true;
+        }
         if self.reinforcement_cursor % roster.len() == 0 {
             (kind, packed) = enemies::sector_spawn(self.wave, packed);
         }
@@ -1936,6 +1952,7 @@ impl Engine {
         self.boss_vuln = 0.0;
         self.apply_theme(self.wave);
         self.clear_boss_arena();
+        self.tactical=tactical::Tactical::new();
         self.build_map();
         self.door.fill(0.0);
         self.hell = false;
@@ -2313,7 +2330,8 @@ impl Engine {
 
     fn wall_tex(&self, c: u8, _x: i32, _y: i32) -> usize {
         let base = T_SECTOR_SURFACE + map::level_index(self.wave) * 5;
-        if matches!(c, 8 | 9) { return base + 2; }
+        if c==9 {return base+1;}
+        if c==8 {return base+2;}
         if self.hell { return T_BOSS_ARENA + map::level_index(self.wave); }
         base + if matches!(c, 4 | 6) { 1 } else { 0 }
     }
@@ -2469,12 +2487,41 @@ impl Engine {
         }
     }
 
-    fn hurt_ent(&mut self, i: usize, mut dmg: i32, hx: f32, hy: f32) {
+    fn hurt_ent(&mut self, i: usize, dmg: i32, hx: f32, hy: f32) {
+        self.hurt_ent_role(i,dmg,hx,hy,None);
+    }
+
+    fn hurt_ent_role(&mut self, i: usize, mut dmg: i32, hx: f32, hy: f32, role: Option<tactical::Role>) {
         if i >= ENT_N || dmg <= 0 {
             return;
         }
         if self.ents[i].kind == 0 || self.ents[i].hp <= 0 {
             return;
+        }
+        if is_hostile_kind(self.ents[i].kind) {
+            use tactical::Role;
+            if let Some(r)=role {
+                if r==Role::Precision && self.tactical.acid[i]>0.0 {
+                    dmg=(dmg as f32*1.25).round() as i32;
+                    self.tactical.acid[i]=0.0;
+                    self.effect(EK_IMPACT,3,self.ents[i].x,self.ents[i].y,0.25,4.0);
+                }
+                match r {
+                    Role::Acid=>{if self.tactical.acid[i]<=0.0 {self.effect(EK_IMPACT,3,self.ents[i].x,self.ents[i].y,0.22,4.0);}self.tactical.acid[i]=3.0;},
+                    Role::Freeze=>{if self.tactical.slow[i]<=0.0 {self.effect(EK_IMPACT,2,self.ents[i].x,self.ents[i].y,0.22,4.0);}self.tactical.slow[i]=3.0;},
+                    Role::Shock if self.tactical.shock_lock[i]<=0.0=>{
+                        let boss=self.ents[i].kind==EK_BOSS;
+                        self.ents[i].stun=self.ents[i].stun.max(if boss {0.18}else{0.65});
+                        self.effect(EK_IMPACT,1,self.ents[i].x,self.ents[i].y,0.22,4.0);
+                        self.ents[i].shield_hp=(self.ents[i].shield_hp-20).max(0);
+                        self.tactical.shock_lock[i]=if boss {3.0}else{1.2};
+                    },
+                    Role::Stagger=>self.ents[i].stun=self.ents[i].stun.max(if self.ents[i].kind==EK_BOSS {0.10}else{0.34}),
+                    Role::Suppress=>self.ents[i].timer=self.ents[i].timer.max(if self.ents[i].kind==EK_BOSS {0.45}else{0.85}),
+                    Role::Control=>self.tactical.slow[i]=self.tactical.slow[i].max(0.6),
+                    _=>{}
+                }
+            }
         }
         let target = self.ents[i];
         let metal = target.armor_hp > 0 || target.shield_hp > 0 ||
@@ -2504,7 +2551,8 @@ impl Engine {
             }
         }
         if self.ents[i].armor_hp > 0 {
-            let soak = dmg.min(self.ents[i].armor_hp);
+            let eligible = if role==Some(tactical::Role::Precision) {dmg*3/5}else{dmg};
+            let soak = eligible.min(self.ents[i].armor_hp);
             self.ents[i].armor_hp -= soak;
             dmg -= soak;
             self.ents[i].bar_t = 2.0;
@@ -2579,8 +2627,16 @@ impl Engine {
         if !is_hostile_kind(kind) && kind != EK_BARREL {
             self.sound(if kind == EK_CRATE && !(150..=224).contains(&skin) {7} else if kind == EK_LAMP || kind == EK_PROP_SERVER {5} else {6}, 0, x, y);
         }
+        if matches!(kind,EK_PROP_SERVER|EK_PROP_AC|EK_PROP_REACTOR|EK_PROP_VENT) {
+            let role=match kind {EK_PROP_SERVER=>2,EK_PROP_AC=>1,EK_PROP_REACTOR=>0,_=>3};
+            let sector=map::level_index(self.wave);
+            if let Some(index)=tactical_roles::MACHINERY[sector].iter().position(|&r| r==role) {
+                self.machinery_destroyed(150+(sector*3+index) as u8,x,y);
+            }
+        }
         if kind == EK_CRATE {
             if (150..=224).contains(&skin) {
+                self.machinery_destroyed(skin,x,y);
                 self.campaign_impact(x, y, if (skin - 150) % 3 == 1 { 1 } else { 2 });
                 self.burst_fx(x, y, EK_SPARK, 5, 0.22);
                 self.light_dirty = true;
@@ -2642,7 +2698,7 @@ impl Engine {
                     }
                     (dmg as f32 * falloff).round().max(1.0) as i32
                 } else { dmg };
-                self.hurt_ent(i, damage, self.px, self.py);
+                self.player_hit(i, damage, self.px, self.py,self.weapon as usize);
                 self.burst_fx(ex, ey, EK_SPARK, 3, 0.28);
                 return true;
             }
@@ -2700,7 +2756,7 @@ impl Engine {
         for (n, &(distance, i)) in hits[..count].iter().take(3).enumerate() {
             if self.ents[i].kind == EK_NONE { continue; }
             let barrel = self.ents[i].kind == EK_BARREL;
-            self.hurt_ent(i, [160, 112, 78][n], self.px, self.py);
+            self.player_hit(i, [160, 112, 78][n], self.px, self.py,self.weapon as usize);
             if barrel || n == 2 { end = distance; break; }
         }
         // Short-lived tracer sprites have no gameplay collision; the beam resolves once.
@@ -2762,7 +2818,7 @@ impl Engine {
     }
 
     fn fire(&mut self) {
-        if self.state != 0 || self.cooldown > 0.0 {
+        if self.state != 0 || self.cooldown > 0.0 || self.tactical.cooldowns[self.weapon as usize]>0.0 {
             return;
         }
         let w = self.weapon as usize;
@@ -2978,6 +3034,7 @@ impl Engine {
         if self.power == field::POWER_FEED {
             self.cooldown *= 0.45;
         }
+        self.tactical.cooldowns[w]=self.cooldown;
     }
 
     /// Veyran's rail. Pierces every target in the lane, then bursts.
@@ -3005,7 +3062,7 @@ impl Engine {
         hits[..count].sort_unstable_by(|a, b| a.0.total_cmp(&b.0));
         for &(_, i) in &hits[..count] {
             if self.ents[i].hp <= 0 { continue; }
-            self.hurt_ent(i, 120, self.px, self.py);
+            self.player_hit(i, 120, self.px, self.py,self.weapon as usize);
         }
         let tip = (end - 0.2).max(0.4);
         let (x, y) = (self.px + dx * tip, self.py + dy * tip);
@@ -3081,7 +3138,7 @@ impl Engine {
             }
         }
         for (i, dmg) in hits {
-            self.hurt_ent(i, dmg.max(1), x, y);
+            self.player_hit(i, dmg.max(1), x, y,10);
         }
         self.scorch(x, y, 4.0);
     }
@@ -3121,7 +3178,7 @@ impl Engine {
             }
         }
         for j in hits {
-            self.hurt_ent(j, dmg, x, y);
+            if hurt_player {self.hurt_ent(j,dmg,x,y);}else{self.player_hit(j,dmg,x,y,10);}
         }
     }
 
@@ -3223,7 +3280,7 @@ impl Engine {
                 }
                 self.weapon = 1;
                 self.reload_t = 0.0;
-                self.pickup_t = 0.6;
+                self.pickup_t = 0.6;self.pickup_dur=0.6;
                 self.events |= EV_PICK_GOLD;
             }
             EK_GUN3 => {
@@ -3234,7 +3291,7 @@ impl Engine {
                 }
                 self.weapon = 2;
                 self.reload_t = 0.0;
-                self.pickup_t = 0.6;
+                self.pickup_t = 0.6;self.pickup_dur=0.6;
                 self.events |= EV_PICK_GOLD;
             }
             EK_GUN4 => {
@@ -3245,7 +3302,7 @@ impl Engine {
                 }
                 self.weapon = 3;
                 self.reload_t = 0.0;
-                self.pickup_t = 0.6;
+                self.pickup_t = 0.6;self.pickup_dur=0.6;
                 self.events |= EV_PICK_GOLD;
             }
             EK_GUN5 => {
@@ -3256,7 +3313,7 @@ impl Engine {
                 }
                 self.weapon = 4;
                 self.reload_t = 0.0;
-                self.pickup_t = 0.6;
+                self.pickup_t = 0.6;self.pickup_dur=0.6;
                 self.events |= EV_PICK_GOLD;
             }
             EK_GUN6 => {
@@ -3265,7 +3322,7 @@ impl Engine {
                 if self.mag[5] <= 0 { self.mag[5] = MAG_SZ[5]; }
                 self.weapon = 5;
                 self.reload_t = 0.0;
-                self.pickup_t = 0.6;
+                self.pickup_t = 0.6;self.pickup_dur=0.6;
                 self.events |= EV_PICK_GOLD;
             }
             EK_GUN7 => {
@@ -3274,7 +3331,7 @@ impl Engine {
                 if self.mag[6] <= 0 { self.mag[6] = MAG_SZ[6]; }
                 self.weapon = 6;
                 self.reload_t = 0.0;
-                self.pickup_t = 0.6;
+                self.pickup_t = 0.6;self.pickup_dur=0.6;
                 self.events |= EV_PICK_GOLD;
             }
             EK_GUN8 => {
@@ -3283,7 +3340,7 @@ impl Engine {
                 if self.mag[7] <= 0 { self.mag[7] = MAG_SZ[7]; }
                 self.weapon = 7;
                 self.reload_t = 0.0;
-                self.pickup_t = 0.6;
+                self.pickup_t = 0.6;self.pickup_dur=0.6;
                 self.events |= EV_PICK_GOLD;
             }
             k if field::is_boss_case(k) => {
@@ -3345,6 +3402,8 @@ impl Engine {
         if self.state == 0 {
             self.elapsed += dt;
         }
+        self.tactical.tick(dt);
+        let previous_weapon=self.weapon;
         self.cooldown = (self.cooldown - dt).max(0.0);
         if self.reload_t > 0.0 {
             self.reload_t = (self.reload_t - dt).max(0.0);
@@ -3541,6 +3600,8 @@ impl Engine {
             self.hud.speed = 0.0;
         }
 
+        if previous_weapon!=self.weapon {self.cooldown=self.cooldown.min(0.12);self.pickup_t=0.28;self.pickup_dur=0.28;}
+
         // AI
         self.flow_age += dt;
         if self.flow_age > 0.18 && self.state == 0 {
@@ -3602,7 +3663,7 @@ impl Engine {
                     let dist = (dx * dx + dy * dy).sqrt().max(0.01);
                     e.timer -= dt;
                     let role = combat::profile(e.skin, e.kind);
-                    let spd = role.speed * if e.shield != 0 { 0.82 } else { 1.0 };
+                    let spd = role.speed * if e.shield != 0 { 0.82 } else { 1.0 } * if self.tactical.slow[i]>0.0 {0.45}else{1.0};
                     let hold = role.range;
                     let (ex, ey, kind) = (e.x, e.y, e.kind);
                     let _ = e;
@@ -3761,7 +3822,8 @@ impl Engine {
                             }
                             if let Some(j) = hit {
                                 self.ents[i].kind = 0;
-                                self.hurt_ent(j, damage, ex, ey);
+                                let slot=if self.ents[i].projectile_visual>0 {7+self.ents[i].projectile_visual as usize}else if variant==4.0 {10}else{14};
+                                self.player_hit(j, damage, ex, ey,slot);
                                 if (230..=234).contains(&visual) {
                                     self.projectile_impact(ex, ey, visual, palette);
                                     if visual == 230 { self.explode(ex, ey, 1.6, damage as f32 * 0.4); }
@@ -4054,9 +4116,8 @@ impl Engine {
         let fx = self.px + self.pa.cos();
         let fy = self.py + self.pa.sin();
         let fc = self.cell(fx.floor() as i32, fy.floor() as i32);
-        if fc == 8 || fc == 9 {
-            prompt = 1;
-        }
+        let secret_closed=fc==9 && self.door[fy.floor() as usize*MAP_W+fx.floor() as usize]<0.05;
+        if fc==8 {prompt=1;}
         if prompt == 0 && (self.facing_prop(EK_LAMP, 2.6).is_some() || self.facing_prop(EK_CRATE, 1.8).is_some()) {
             prompt = 1;
         }
@@ -4100,6 +4161,13 @@ impl Engine {
             prompt = 16;
         }
 
+        if self.boss_intro<=0.0 && prompt!=16 && prompt!=2 {
+            if secret_closed {prompt=123;}
+            else if let Some(i)=self.facing_prop(EK_CRATE,4.5) {
+                if (150..=224).contains(&self.ents[i].skin) {prompt=120+((self.ents[i].skin-150)%3) as i32;}
+            }
+        }
+
         // v2 5x5 sheet cells: 0 full, 1 half, 2 low, 3 empty, 4 no
         // magazine, 5 unused, 6-9 pickup, 10-14 reload, 15-19 fire.
         // Cells 20-24 (alt-fire) have no mechanic and stay unused.
@@ -4123,7 +4191,7 @@ impl Engine {
                 19
             }
         } else if self.pickup_t > 0.0 {
-            6 + (((0.6 - self.pickup_t) / 0.6).clamp(0.0, 0.999) * 4.0) as i32
+            6 + (((self.pickup_dur - self.pickup_t) / self.pickup_dur.max(0.01)).clamp(0.0, 0.999) * 4.0) as i32
         } else if mag_now >= mag_max {
             0
         } else if mag_now == 0 && self.ammo[wpn] == 0 {
@@ -4497,6 +4565,16 @@ impl Engine {
     }
 
     fn blend_sigil(&self, base: u32, fx: f32, fy: f32) -> u32 {
+        let (x,y)=(fx.floor() as i32,fy.floor() as i32);
+        if x>=0 && y>=0 && x<MAP_W as i32 && y<MAP_H as i32 {
+            let style=self.floor[y as usize*MAP_W+x as usize];
+            if (5..=7).contains(&style) {
+                let (u,v)=(fx.fract(),fy.fract());
+                let mark=match style {5=>((u-v*0.25-0.25).abs()<0.018)||((u-v*0.25-0.61).abs()<0.018),6=>(u-0.35).abs()<0.025||(u-0.65).abs()<0.025,_=>(v*9.0).fract()<0.14&&u>0.2&&u<0.8};
+                if mark {return Self::blend(base,Self::pack(118,142,145,255),0.42);}
+                return base;
+            }
+        }
         let Some((u, v, level)) = self.sigil_uv(fx, fy) else { return base; };
         let mark = sigil_rgba(level, u, v);
         if mark[3] == 0 { return base; }
@@ -5409,6 +5487,8 @@ fn capture_save(e: &Engine) -> RunSave {
 }
 
 fn apply_save(e: &mut Engine, s: &RunSave) {
+    e.clear_boss_arena();
+    e.tactical=tactical::Tactical::new();
     e.wave = s.wave.max(1);
     e.health = s.health.clamp(1, 100);
     e.armor = s.armor.clamp(0, 100);
@@ -5634,6 +5714,25 @@ pub extern "C" fn hs_qa_boss(phase: i32) {
             2 => max_hp / 3,
             _ => max_hp,
         };
+    }
+}
+
+/// Local-only fixtures exercise the real USE / firing paths, never grant their rewards.
+#[no_mangle]
+pub extern "C" fn hs_qa_tactical(case:i32,index:i32) {
+    let e=eng();if !e.qa {return;}e.qa_heal();
+    let target=if case==0 {
+        e.map.iter().position(|&c|c==9).map(|i|((i%MAP_W) as f32+0.5,(i/MAP_W) as f32+0.5))
+    } else {
+        e.ents.iter().filter(|en|en.kind==EK_CRATE&&(150..=224).contains(&en.skin)&&en.hp>0).nth(index.max(0) as usize).map(|en|(en.x,en.y))
+    };
+    if let Some((x,y))=target {
+        for (dx,dy) in [(-1.0,0.0),(1.0,0.0),(0.0,-1.0),(0.0,1.0)] {
+            let (a,b)=(x+dx,y+dy);
+            if e.circle_blocked(a,b,e.pr) || (case!=0 && !e.los(a,b,x,y)) {continue;}
+            e.px=a;e.py=b;e.pa=(-dy).atan2(-dx);e.pitch=0.0;
+            e.weapon=0;e.mag[0]=12;e.cooldown=0.0;e.tactical.cooldowns.fill(0.0);break;
+        }
     }
 }
 
@@ -7097,9 +7196,9 @@ mod tests {
         assert_eq!(e.wall_tex(2, 1, 1), T_BOSS_ARENA);
         assert_eq!(e.wall_tex(6, 1, 1), T_BOSS_ARENA);
         assert_eq!(e.wall_tex(7, 1, 1), T_BOSS_ARENA);
-        assert_eq!(e.wall_tex(9, 1, 1), T_SECTOR_SURFACE + 2);
+        assert_eq!(e.wall_tex(9, 1, 1), T_SECTOR_SURFACE + 1);
         assert_eq!(e.wall_tex(8, 36, 18), T_SECTOR_SURFACE + 2);
-        assert_eq!(e.wall_tex(9, 36, 19), T_SECTOR_SURFACE + 2);
+        assert_eq!(e.wall_tex(9, 36, 19), T_SECTOR_SURFACE + 1);
     }
 
     #[test]

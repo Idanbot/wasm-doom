@@ -1,3 +1,4 @@
+import MACHINERY from "../../game/tactical-machinery.json" with { type: "json" };
 import BOSS_VOICE_LINES from "../../game/boss-voice-lines.json" with { type: "json" };
 import { migrateGameStorage, readGameStorage } from "../../lib/storage-migration.ts";
 import { DEFAULT_GFX, DEFAULT_RES, RES_MODES, type GfxOpts, type ResMode } from "../../game/types.ts";
@@ -47,14 +48,14 @@ export const WEAPONS = [
   { id: 0, name: "MK23-S", role: "Suppressed precision · 12 rounds", magSize: 12, lowAmmoAt: 3, reserve: 120, sheet: WEAPON_SHEETS[0]! },
   { id: 1, name: "BR-12 BREAKER", role: "8-shot breacher · heavy stagger", magSize: 8, lowAmmoAt: 2, reserve: 48, sheet: WEAPON_SHEETS[1]! },
   { id: 2, name: "KX-9 VECTOR", role: "36-round PDW · controlled burst", magSize: 36, lowAmmoAt: 9, reserve: 216, sheet: WEAPON_SHEETS[2]! },
-  { id: 3, name: "MR-4 LONGBOW", role: "Magnetic penetrator · pierces 3", magSize: 5, lowAmmoAt: 1, reserve: 20, sheet: WEAPON_SHEETS[3]! },
+  { id: 3, name: "MR-4 LONGBOW", role: "Armor bypass · pierces 3 targets", magSize: 5, lowAmmoAt: 1, reserve: 20, sheet: WEAPON_SHEETS[3]! },
   { id: 4, name: "VLK-6 WARDEN", role: "Guided micro-missile · blast radius", magSize: 4, lowAmmoAt: 1, reserve: 16, sheet: WEAPON_SHEETS[4]! },
-  { id: 5, name: "AX-12 VOLT", role: "Electrical carbine · precision shock", magSize: 10, lowAmmoAt: 2, reserve: 80, sheet: WEAPON_SHEETS[5]! },
-  { id: 6, name: "M91 CYCLONE", role: "Rotary cannon · sustained suppression", magSize: 90, lowAmmoAt: 22, reserve: 450, sheet: WEAPON_SHEETS[6]! },
+  { id: 5, name: "AX-12 VOLT", role: "Shock · interrupts and drains shields", magSize: 10, lowAmmoAt: 2, reserve: 80, sheet: WEAPON_SHEETS[5]! },
+  { id: 6, name: "M91 CYCLONE", role: "Suppression · delays enemy fire", magSize: 90, lowAmmoAt: 22, reserve: 450, sheet: WEAPON_SHEETS[6]! },
   { id: 7, name: "HX-8 PYRE", role: "Incendiary projector · leaves a burn", magSize: 6, lowAmmoAt: 2, reserve: 36, sheet: WEAPON_SHEETS[7]! },
   { id: 8, name: "VR-9 OVERRIDE", role: "Veyran rail · pierces the lane, then bursts", magSize: 4, lowAmmoAt: 1, reserve: 24, sheet: WEAPON_SHEETS[8]! },
   { id: 9, name: "HC-9 FORGE", role: "HECATE cutter · wide beam and impact splash", magSize: 14, lowAmmoAt: 3, reserve: 84, sheet: WEAPON_SHEETS[9]! },
-  { id: 10, name: "CM-9 CHIMERA", role: "Specimen fan · acid bursts and a short pool", magSize: 5, lowAmmoAt: 1, reserve: 30, sheet: WEAPON_SHEETS[10]! },
+  { id: 10, name: "CM-9 CHIMERA", role: "Acid primer · follow with precision", magSize: 5, lowAmmoAt: 1, reserve: 30, sheet: WEAPON_SHEETS[10]! },
   { id: 11, name: "AR-6 ARCHIVE", role: "Archivist rail · precise amber pulse", magSize: 9, lowAmmoAt: 2, reserve: 54, sheet: WEAPON_SHEETS[11]! },
   { id: 12, name: "OR-7 PREDICTOR", role: "Oracle rail · accurate double pulse", magSize: 4, lowAmmoAt: 1, reserve: 24, sheet: WEAPON_SHEETS[12]! },
   { id: 13, name: "GS-4 SINK", role: "Reactor scatter · dense pressure burst", magSize: 8, lowAmmoAt: 2, reserve: 48, sheet: WEAPON_SHEETS[13]! },
@@ -127,6 +128,8 @@ const MEMOS: Record<number, string> = {
 
 export function radioCopy(line: number, wave: number) {
   const sector = (Math.max(1, wave) - 1) % SECTORS.length;
+  if (line>=200 && line<=206) return {speaker:"HANDLER",text:["Coolant released. Nearby hostiles are slowed for six seconds.","Local power severed. Shield emitters in this circuit are offline.","Network severed. Nearby reinforcement arrivals are blocked.","Pressure released. Nearby hostiles are staggered.","Containment broken. Precision hits will rupture contaminated targets.","Fuel detonated. Keep your distance from live tanks.","Supply cache opened. Recover the ammunition and armor."][line-200]!};
+  if (line>=210 && line<=212) return {speaker:"RECOVERED LOG",text:[`${SECTORS[sector]!.name}: maintenance crews dragged supplies behind the false panels. Follow the worn tracks.`,`${SECTORS[sector]!.name}: the interrupted cable run conceals an unlisted service cache. No inventory reached Command.`,`${SECTORS[sector]!.name}: ventilation inspections concealed an emergency supply route. Someone prepared for this.`][line-210]!};
   const voice = BOSS_VOICE_LINES[sector]!;
   if (line === 2) return { speaker: voice.name, text: voice.intro };
   if (line === 8) return { speaker: voice.name, text: voice.death[bossDeathVariantForWave(wave)]! };
@@ -359,4 +362,11 @@ export function clearCheckpoint() {
   } catch {
     /* ignore */
   }
+}
+
+export function machineryHint(prompt: number, wave: number) {
+  if(prompt===123)return "SCUFFED SERVICE PANEL — USE E";
+  if(prompt<120 || prompt>122)return null;
+  const prop=MACHINERY[(Math.max(1,wave)-1)%25]!.props[prompt-120]!;
+  return `${prop.name.toUpperCase()} — ${prop.effect}`;
 }

@@ -1,3 +1,4 @@
+import { machineryHint } from "./game/data";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { asset } from "@/lib/asset";
 import { localQaRun } from "@/game/dev-run";
@@ -557,6 +558,11 @@ export function GameApp() {
           {radio && <RadioCard speaker={radio.speaker} text={radio.text} />}
           {enemyOptions.subtitles && (
             <EnemySubtitles lines={subtitles} size={enemyOptions.subtitleSize} />
+          )}
+          {hud.prompt >= 120 && hud.prompt <= 123 && (
+            <p className="pointer-events-none absolute bottom-48 left-1/2 w-[min(90vw,520px)] -translate-x-1/2 rounded bg-black/75 px-3 py-2 text-center font-display text-xs text-steel">
+              {machineryHint(hud.prompt,hud.wave)}
+            </p>
           )}
           {hud.prompt === 1 && (
             <p className="pointer-events-none absolute bottom-28 left-1/2 -translate-x-1/2 font-display text-sm tracking-[0.2em] text-steel">

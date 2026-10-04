@@ -1,6 +1,7 @@
 import { describe, it, beforeEach } from "node:test";
 import assert from "node:assert/strict";
 import {
+  machineryHint,
   fmtTime,
   gpuEnabled,
   loadBoard,
@@ -217,4 +218,21 @@ describe("boss reward labels", () => {
     assert.equal(bossRewardForWave(11).name, "MN-6 ECHO");
     assert.equal(bossRewardForWave(36).name, "MN-6 ECHO");
   });
+});
+
+describe("tactical machinery hints",()=>{
+ it("names each sector's actual prop and its gameplay effect",()=>{
+  const hints=Array.from({length:25},(_,i)=>[120,121,122].map(p=>machineryHint(p,i+1)));
+  assert.equal(new Set(hints.flat()).size,75);
+  for(const row of hints)for(const hint of row)assert.ok(hint && hint.includes(" — "));
+  assert.equal(machineryHint(123,1),"SCUFFED SERVICE PANEL — USE E");
+  assert.equal(machineryHint(19,1),null);
+  assert.equal(machineryHint(120,1),machineryHint(120,26));
+ });
+ it("keeps recovered logs and machinery reports separate from every terminal ID",()=>{
+  for(let wave=1;wave<=25;wave++){
+   for(const line of [200,201,202,203,204,205,206])assert.equal(radioCopy(line,wave)?.speaker,"HANDLER");
+   for(const line of [210,211,212])assert.equal(radioCopy(line,wave)?.speaker,"RECOVERED LOG");
+  }
+ });
 });

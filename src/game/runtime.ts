@@ -116,6 +116,7 @@ type WasmExports = {
   hs_qa_reward: () => void;
   hs_qa_boss: (phase: number) => void;
   hs_qa_objective: () => void;
+  hs_qa_tactical: (kind: number, index: number) => void;
   hs_save_ptr: () => number;
   hs_save_size: () => number;
   hs_load_ptr: () => number;
@@ -1445,6 +1446,9 @@ export class BlacksiteRuntime {
         this.wasm?.hs_qa_reward();
       },
       visitObjective: () => this.wasm?.hs_qa_objective(),
+      visitSecret: () => { this.qaOn=true;this.wasm?.hs_qa(this.qaBits,1);this.wasm?.hs_qa_tactical(0,0); },
+      visitMachinery: (index=0) => { this.qaOn=true;this.wasm?.hs_qa(this.qaBits,1);this.wasm?.hs_qa_tactical(1,index); },
+      getSecrets: () => this.hud.secrets,
       nextWave: () => this.nextWave(),
     };
   }
@@ -1496,6 +1500,9 @@ declare global {
       triggerBoss?: (phase?: number) => void;
       dropBossReward?: () => void;
       visitObjective?: () => void;
+      visitSecret?: () => void;
+      visitMachinery?: (index?: number) => void;
+      getSecrets?: () => number;
       nextWave?: () => void;
     };
   }
