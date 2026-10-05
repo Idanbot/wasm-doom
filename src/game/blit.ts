@@ -1,5 +1,6 @@
 import { TEX_N, compileShader, createWebGlWorld, createWebGpuWorld, type GpuWorld, type WorldFrame } from "./gpu-world";
 import { DEFAULT_GFX, type GfxOpts } from "./types";
+import { sectorEffect, type Shockwave } from "./sector-effects";
 
 export type BlitKind = "webgpu" | "webgl2" | "canvas2d";
 
@@ -8,6 +9,9 @@ export type BlitFx = {
   hurt: number;
   time: number;
   boss: number;
+  sector?: number;
+  yaw?: number;
+  shocks?: Shockwave[];
 };
 
 export type Blitter = {
@@ -22,6 +26,19 @@ export type Blitter = {
   setGfx: (g: GfxOpts) => void;
   dispose: () => void;
 };
+
+function writeEffectUniforms(data: Float32Array, fx?: BlitFx) {
+  data.fill(0, 12);
+  if (fx?.sector !== undefined) {
+    const profile = sectorEffect(fx.sector);
+    data.set([...profile.color, profile.kind], 12);
+    data.set([0, profile.drift, profile.index + 1, fx.yaw ?? 0], 16);
+  }
+  for (const [i, s] of (fx?.shocks ?? []).slice(0, 4).entries()) {
+    data.set([s.x, s.y, s.radius, s.strength], 20 + i * 4);
+    data[36 + i] = s.depth;
+  }
+}
 
 export async function createBlitter(
   canvas: HTMLCanvasElement,
@@ -78,6 +95,11 @@ struct Uni {
   bloom: f32,
   fog: f32,
   boss: f32,
+  padding: f32,
+  atmosphere: vec4<f32>,
+  motion: vec4<f32>,
+  shocks: array<vec4<f32>, 4>,
+  shockDepth: vec4<f32>,
 };
 @group(0) @binding(0) var fb: texture_2d<f32>;
 @group(0) @binding(1) var bloomTex: texture_2d<f32>;
@@ -134,7 +156,19 @@ fn fs_bloom(inp: VSOut) -> @location(0) vec4<f32> {
 
 @fragment
 fn fs(inp: VSOut) -> @location(0) vec4<f32> {
-  let uv = inp.uv;
+  var uv = inp.uv;
+  let aspect = u.display.x / max(u.display.y, 1.0);
+  let originalDepth = sample_near(uv).a;
+  for (var i = 0; i < 4; i++) {
+    let shock = u.shocks[i];
+    let d = (uv - shock.xy) * vec2<f32>(aspect, 1.0);
+    let r = length(d);
+    let edge = (r - shock.z) / 0.018;
+    let band = exp(-edge * edge);
+    let visible = smoothstep(u.shockDepth[i] - 0.025, u.shockDepth[i], originalDepth);
+    uv += d / max(r, 0.001) / vec2<f32>(aspect, 1.0) * band * shock.w * 0.014 * visible;
+  }
+  uv = clamp(uv, vec2<f32>(0.001), vec2<f32>(0.999));
   var c = sample_sharp(uv);
   let depth = c.a;
   // Screen-space light march. Alpha is view depth, so a short ray along the
@@ -149,6 +183,28 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
     ray += s.rgb * max(0.0, luma - 0.32) * open * 0.18;
   }
   c = vec4<f32>(c.rgb + ray, depth);
+  // Fine floating motes and layered haze pick up actual scene light and muzzle illumination.
+  let q = inp.uv * vec2<f32>(aspect, 1.0);
+  let seed = u.motion.z;
+  let drift = u.motion.y;
+  let kind = u.atmosphere.w;
+  let p = q * 38.0 + vec2<f32>(u.motion.w * 3.0, u.time * drift);
+  let cell = floor(p);
+  let rnd = fract(sin(dot(cell + seed, vec2<f32>(127.1, 311.7))) * 43758.5453);
+  let point = vec2<f32>(rnd, fract(rnd * 17.23));
+  let delta = fract(p) - point;
+  let shape = select(dot(delta, delta), delta.x * delta.x * 2.0 + delta.y * delta.y * 0.28, kind == 6.0);
+  var mote = exp(-shape * select(850.0, 220.0, kind == 2.0));
+  if (kind == 1.0) { mote = exp(-(abs(delta.x) + abs(delta.y)) * 55.0); }
+  if (kind == 7.0) { mote = exp(-min(abs(delta.x), abs(delta.y)) * 140.0) * exp(-dot(delta, delta) * 150.0); }
+  let flicker = sin(u.time * (1.2 + drift) + rnd * 6.28);
+  let twinkle = 0.45 + 0.55 * flicker * flicker;
+  let haze = pow(max(0.0, sin(q.x * (8.0 + seed * 0.13) + sin(q.y * 13.0 + u.time * drift) + u.motion.w)), 6.0);
+  let light = clamp(dot(c.rgb, vec3<f32>(0.3, 0.5, 0.2)) * 1.8 + u.muzzle * 1.7, 0.04, 1.5);
+  let depthMask = smoothstep(0.015, 0.12, depth);
+  let scan = select(1.0, pow(abs(sin(q.y * 55.0 + u.time * drift * 3.0)), 12.0), kind == 3.0 || kind == 7.0);
+  let ion = select(1.0, 0.45 + 0.55 * abs(sin(q.x * 16.0 - u.time * drift * 2.0)), kind == 4.0 || kind == 5.0);
+  c = vec4<f32>(c.rgb + u.atmosphere.rgb * (mote * twinkle * scan * ion * 0.28 + haze * 0.025) * light * depthMask, depth);
 
 
   if (u.fog > 0.5) {
@@ -218,7 +274,7 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
   let pipeline: GPURenderPipeline | null = null;
   let bloomPipe: GPURenderPipeline | null = null;
   let uniBuf: GPUBuffer | null = null;
-  const uniData = new Float32Array(12);
+  const uniData = new Float32Array(40);
   let tex: GPUTexture[] = [];
   let view: GPUTextureView[] = [];
   let bloomTex: GPUTexture | null = null;
@@ -356,7 +412,7 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
         primitive: { topology: "triangle-list" },
       });
       uniBuf = dev.createBuffer({
-        size: 48,
+        size: 160,
         usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
       });
       world?.dispose();
@@ -392,6 +448,7 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
     uniData[8] = gfx.bloom ? 1 : 0;
     uniData[9] = gfx.fog ? 1 : 0;
     uniData[10] = fx?.boss ?? -1;
+    writeEffectUniforms(uniData, fx);
 
     device.queue.writeBuffer(uniBuf, 0, uniData);
   };
@@ -532,7 +589,7 @@ void main(){
 }`;
 
 const GL_FS = `#version 300 es
-precision mediump float;
+precision highp float;
 uniform sampler2D t;
 uniform bool worldTexture;
 uniform vec2 res;
@@ -544,6 +601,10 @@ uniform float bloom;
 uniform float fog;
 uniform float boss;
 uniform float time;
+uniform vec4 atmosphere;
+uniform vec4 motion;
+uniform vec4 shocks[4];
+uniform vec4 shockDepth;
 in vec2 v;
 out vec4 o;
 
@@ -556,6 +617,18 @@ vec3 applyFog(vec4 c) {
 
 void main(){
   vec2 uv = worldTexture ? vec2(v.x, 1.0 - v.y) : v;
+  float aspect = display.x / max(display.y, 1.0);
+  float originalDepth = texture(t, uv).a;
+  vec2 offset = vec2(0.0);
+  for (int i=0; i<4; i++) {
+    vec2 d = (v-shocks[i].xy)*vec2(aspect,1.0);
+    float r = length(d);
+    float edge = (r-shocks[i].z)/0.018;
+    float band = exp(-edge*edge);
+    float visible = smoothstep(shockDepth[i]-0.025,shockDepth[i],originalDepth);
+    offset += d/max(r,0.001)/vec2(aspect,1.0)*band*shocks[i].w*0.014*visible;
+  }
+  uv = clamp(uv + offset * vec2(1.0, worldTexture ? -1.0 : 1.0), vec2(0.001), vec2(0.999));
   vec4 raw = texture(t, uv);
   vec3 rgb = applyFog(raw);
   vec2 g = v * 2.0 - 1.0;
@@ -594,6 +667,21 @@ void main(){
     ray += s * max(0.0, luma - 0.32) * 0.16;
   }
   rgb += ray;
+  vec2 q = v * vec2(aspect, 1.0);
+  vec2 p = q*38.0 + vec2(motion.w*3.0,time*motion.y);
+  vec2 cell = floor(p);
+  float rnd = fract(sin(dot(cell+motion.z,vec2(127.1,311.7)))*43758.5453);
+  vec2 delta = fract(p)-vec2(rnd,fract(rnd*17.23));
+  float shape = atmosphere.w==6.0?delta.x*delta.x*2.0+delta.y*delta.y*.28:dot(delta,delta);
+  float mote = exp(-shape*(atmosphere.w==2.0?220.0:850.0));
+  if (atmosphere.w==1.0) mote=exp(-(abs(delta.x)+abs(delta.y))*55.0);
+  if (atmosphere.w==7.0) mote=exp(-min(abs(delta.x),abs(delta.y))*140.0)*exp(-dot(delta,delta)*150.0);
+  float flicker = sin(time*(1.2+motion.y)+rnd*6.28);
+  float haze = pow(max(0.0,sin(q.x*(8.0+motion.z*.13)+sin(q.y*13.0+time*motion.y)+motion.w)),6.0);
+  float light = clamp(dot(raw.rgb,vec3(.3,.5,.2))*1.8+muzzle*1.7,.04,1.5);
+  float scan = atmosphere.w==3.0||atmosphere.w==7.0?pow(abs(sin(q.y*55.0+time*motion.y*3.0)),12.0):1.0;
+  float ion = atmosphere.w==4.0||atmosphere.w==5.0?.45+.55*abs(sin(q.x*16.0-time*motion.y*2.0)):1.0;
+  rgb += atmosphere.rgb*(mote*(.45+.55*flicker*flicker)*scan*ion*.28+haze*.025)*light*smoothstep(.015,.12,raw.a);
   o = vec4(rgb, 1.0);
 }
 `;
@@ -632,6 +720,18 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
   const locFog = gl.getUniformLocation(prog, "fog");
   const locBoss = gl.getUniformLocation(prog, "boss");
   const locTime = gl.getUniformLocation(prog, "time");
+  const locAtmosphere = gl.getUniformLocation(prog, "atmosphere");
+  const locMotion = gl.getUniformLocation(prog, "motion");
+  const locShocks = gl.getUniformLocation(prog, "shocks[0]");
+  const locShockDepth = gl.getUniformLocation(prog, "shockDepth");
+  const effectData = new Float32Array(40);
+  const uploadEffects = (fx?: BlitFx) => {
+    writeEffectUniforms(effectData, fx);
+    gl.uniform4fv(locAtmosphere, effectData.subarray(12, 16));
+    gl.uniform4fv(locMotion, effectData.subarray(16, 20));
+    gl.uniform4fv(locShocks, effectData.subarray(20, 36));
+    gl.uniform4fv(locShockDepth, effectData.subarray(36, 40));
+  };
 
   const vao = gl.createVertexArray();
   gl.bindVertexArray(vao);
@@ -691,6 +791,7 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
       gl.uniform1f(locFog, gfx.fog ? 1 : 0);
       gl.uniform1f(locBoss, fx?.boss ?? -1);
       gl.uniform1f(locTime, fx?.time ?? 0);
+      uploadEffects(fx);
       gl.bindVertexArray(vao);
       gl.viewport(0, 0, dw, dh);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
@@ -721,6 +822,7 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
       gl.uniform1f(locFog, gfx.fog ? 1 : 0);
       gl.uniform1f(locBoss, fx?.boss ?? -1);
       gl.uniform1f(locTime, fx?.time ?? 0);
+      uploadEffects(fx);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       return !gl.isContextLost();
 
@@ -749,7 +851,7 @@ function createCanvas2dBlit(canvas: HTMLCanvasElement): Blitter {
     resize() {
       syncDisplay(canvas);
     },
-    draw(pixels, w, h) {
+    draw(pixels, w, h, fx) {
       const { dw, dh } = syncDisplay(canvas);
       if (!octx) return false;
       if (off.width !== w || off.height !== h) {
@@ -771,6 +873,40 @@ function createCanvas2dBlit(canvas: HTMLCanvasElement): Blitter {
       ctx.fillRect(0, 0, dw, dh);
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(off, 0, 0, dw, dh);
+      // CPU fallback refracts the same frozen source, never the UI or previously warped tiles.
+      for (const shock of fx?.shocks ?? []) {
+        const tile = Math.max(12, Math.ceil(dh / 45));
+        for (let y = 0; y < dh; y += tile) for (let x = 0; x < dw; x += tile) {
+          const dx = (x + tile * .5 - shock.x * dw) / dh;
+          const dy = (y + tile * .5 - shock.y * dh) / dh;
+          const r = Math.hypot(dx, dy);
+          const band = Math.exp(-(((r - shock.radius) / .018) ** 2));
+          const px = Math.min(w - 1, Math.floor(x / dw * w));
+          const py = Math.min(h - 1, Math.floor(y / dh * h));
+          if (band < .03 || pixels[(py * w + px) * 4 + 3]! / 255 < shock.depth - .025) continue;
+          const amount = band * shock.strength * .014;
+          const sx = Math.max(0, Math.min(w - 1, x / dw * w + dx / Math.max(r, .001) * amount * w));
+          const sy = Math.max(0, Math.min(h - 1, y / dh * h + dy / Math.max(r, .001) * amount * h));
+          ctx.drawImage(off, sx, sy, Math.min(tile / dw * w, w - sx), Math.min(tile / dh * h, h - sy), x, y, tile, tile);
+        }
+      }
+      if (fx?.sector !== undefined) {
+        const profile = sectorEffect(fx.sector);
+        ctx.save(); ctx.globalCompositeOperation = "screen";
+        for (let i = 0; i < 110; i++) {
+          const seed = Math.sin(i * 127.1 + profile.index * 311.7) * 43758.5453;
+          const rand = seed - Math.floor(seed);
+          const x = ((rand + (fx.yaw ?? 0) * .04) % 1 + 1) % 1 * dw;
+          const y = ((rand * 17.23 + fx.time * profile.drift * .026) % 1) * dh;
+          const px = Math.min(w - 1, Math.floor(x / dw * w)), py = Math.min(h - 1, Math.floor(y / dh * h));
+          const k = (py * w + px) * 4;
+          if (pixels[k + 3]! < 5) continue;
+          const light = Math.min(.3, (pixels[k]! + pixels[k + 1]! + pixels[k + 2]!) / 2550 + fx.muzzle * .2);
+          ctx.fillStyle = `rgba(${profile.color.map(c => Math.round(c * 255)).join(",")},${light})`;
+          ctx.beginPath(); ctx.arc(x, y, Math.max(.6, dh / 850), 0, Math.PI * 2); ctx.fill();
+        }
+        ctx.restore();
+      }
       return true;
     },
   };

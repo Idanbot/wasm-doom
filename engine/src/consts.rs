@@ -50,7 +50,9 @@ pub(crate) const T_SECTOR_SURFACE: usize = T_PLAYER_MISSILE + 3;
 pub(crate) const T_SECTOR_PROP: usize = T_SECTOR_SURFACE + 25 * 5;
 pub(crate) const T_BOSS_PROJECTILE: usize = T_SECTOR_PROP + 25 * 3;
 pub(crate) const T_BOSS_ARENA: usize = T_BOSS_PROJECTILE + 25;
-pub(crate) const TEX_N: usize = T_BOSS_ARENA + 25;
+pub(crate) const T_CASING: usize = T_BOSS_ARENA + 25;
+pub(crate) const T_CASING_SHELL: usize = T_CASING + 1;
+pub(crate) const TEX_N: usize = T_CASING_SHELL + 1;
 pub(crate) const ENT_N: usize = 192;
 pub(crate) const T_BRICK: usize = 0;
 pub(crate) const T_METAL: usize = 1;
@@ -255,10 +257,10 @@ mod tests {
     fn texture_slots_cover_the_known_atlas() {
         assert_eq!(
             TEX_N,
-            ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT + 304 + ENEMY_PROJECTILE_COUNT
+            ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT + 306 + ENEMY_PROJECTILE_COUNT
         );
         assert_eq!(TEX, 256);
         assert_eq!(TEXM, 255);
-        assert_eq!(T_BOSS_ARENA + 25, TEX_N);
+        assert_eq!(T_CASING_SHELL + 1, TEX_N);
     }
 }

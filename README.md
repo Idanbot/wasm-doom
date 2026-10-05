@@ -31,7 +31,7 @@ firing, reload/charge, death and special. One-shot states show every pose and
 hold their last frame; movement and breathing loop. Native transparency avoids
 chroma-key holes in armor. [Enemy art sources and packing](art/enemies-v4/README.md)
 include prompts, hashes and a roster preview. Runtime sheets are 256×256,
-with four 128×128 cells; all 804 world atlas layers preload before play.
+with four 128×128 cells; all 806 world atlas layers preload before play.
 
 ## Sectors and boss rewards
 
@@ -95,7 +95,7 @@ The standard arsenal is MK23-S, BR-12 Breaker, KX-9 Vector, MR-4 Longbow, VLK-6 
 | `public/game/theme/` | Wall and door texture variants |
 | `public/game/voices/` | Runtime MP3 voices and subtitle manifest |
 | `public/game/music/` | Runtime MP3 music |
-| `public/game/sfx/v2/` | 103 CC0 recorded/mixed effects with MP3 fallbacks |
+| `public/game/sfx/v2/` | 130 CC0 recorded/mixed effects with MP3 fallbacks |
 | `art/audio/` | Selected original recordings, licenses, creator credits, hashes and rebuild recipes |
 | `public/game/fx25/` | Campaign projectile and four-frame impact atlases |
 | `public/game/projectiles/` | Isolated enemy projectiles and outgoing/incoming missiles |
@@ -106,7 +106,7 @@ The standard arsenal is MK23-S, BR-12 Breaker, KX-9 Vector, MR-4 Longbow, VLK-6 
 | `art/bosses/` | Boss source poses |
 | `art/source_hd/` | Source art and voice generation records |
 
-The [25-sector expansion guide](docs/CAMPAIGN_25.md) lists new bosses, mechanics, asset paths and endless scaling. Combat and interface background are documented in [combat notes](docs/blacksite-ifrit/COMBAT.md) and [voice/interface notes](docs/blacksite-ifrit/VOICES_AND_UI.md). [Sound effect credits and integration](art/audio/README.md) document the CC0 replacement set for [issue #1](https://github.com/Idanbot/wasm-doom/issues/1): distinct firing sounds for all 33 guns, frame-synced magazine/cell reloads, incremental BR-12 shell inserts, spatial enemy/world effects, moving projectile loops, material impacts, distinct pickups and UI cues. All 103 effects decode during loading; MP3 fallbacks support compatibility. Recorded injury vocals share the dialogue gate, and mute/volume controls apply through the existing mixer.
+The [25-sector expansion guide](docs/CAMPAIGN_25.md) lists new bosses, mechanics, asset paths and endless scaling. Combat and interface background are documented in [combat notes](docs/blacksite-ifrit/COMBAT.md) and [voice/interface notes](docs/blacksite-ifrit/VOICES_AND_UI.md). [Sound effect credits and integration](art/audio/README.md) document the CC0 replacement set for [issue #1](https://github.com/Idanbot/wasm-doom/issues/1): distinct firing sounds for all 33 guns, frame-synced magazine/cell reloads, incremental BR-12 shell inserts, spatial enemy/world effects, moving projectile loops, material impacts, distinct pickups and UI cues. All 130 effects decode during loading; MP3 fallbacks support compatibility. Recorded injury vocals share the dialogue gate, and mute/volume controls apply through the existing mixer.
 
 ## Architecture
 
@@ -134,7 +134,7 @@ src/components/game/        menus, HUD, arsenal, settings and touch controls
 src/components/catalog/     local-development asset review
 ```
 
-The HUD is a 228-byte Rust `#[repr(C)]` struct decoded with a DataView. Compile-time assertions, a boot-time `hs_hud_size` check and tests guard its layout. Saves cover 33 weapon slots in 300 bytes. Older supported checkpoints pad to the current slot count. The texture atlas has 804 layers.
+The HUD is a 228-byte Rust `#[repr(C)]` struct decoded with a DataView. Compile-time assertions, a boot-time `hs_hud_size` check and tests guard its layout. Saves cover 33 weapon slots in 300 bytes. Older supported checkpoints pad to the current slot count. The texture atlas has 806 layers.
 
 ## Develop
 
@@ -212,7 +212,7 @@ Every sector has a concealed service cache or its existing secret rooms. Scratch
 
 Shoot machinery to use the room tactically. Aim at the sector-specific object to see its name and effect. Coolant slows nearby enemies for six seconds; power equipment disables local shield emitters; network equipment blocks queued arrivals and ambush reinforcements within its circuit. Pressure equipment staggers, biological containment primes targets, fuel explodes dangerously, and supply fixtures yield ammunition and armor. Cover blocks these effects; outages and status effects reset on sector changes.
 
-Prop identities and effects: `src/game/tactical-machinery.json` and `engine/src/tactical_roles.rs`. Systems and tests: `engine/src/tactical.rs`, `scripts/tactical.browser.mjs`, and `scripts/tactical-data.test.mjs`. The HUD/save ABI and 804-layer atlas remain unchanged.
+Prop identities and effects: `src/game/tactical-machinery.json` and `engine/src/tactical_roles.rs`. Systems and tests: `engine/src/tactical.rs`, `scripts/tactical.browser.mjs`, and `scripts/tactical-data.test.mjs`. The HUD/save ABI remains unchanged; the world effects update adds two casing layers to the atlas (806 layers).
 
 
 Mouse look sensitivity spans **0.1×–3.0×**, with a 0.5× default and saved values clamped to the range. The minimap uses the live 48×32 engine layout; walkable hazard tiles and fully opened doors render as floor. Its player arrow follows the same world axes as movement. The hostile total includes living enemies and queued reinforcements, updates after boss support spawns, and reserves one incoming hostile during a boss introduction. Enemy spawning and post-phase collision checks use each enemy's full radius, including stunned enemies caught by closing doors. Regression checks cover all 25 sectors, both boss phase transitions, movement, and endless arrivals.
@@ -222,3 +222,5 @@ Resolution changes repaint the frozen world while paused. Graphics recovery recr
 Escape/P pause transitions ignore duplicate toggles for 300 ms. GPU sprites paint far to near, preserving transparent cutouts. An empty magazine repeats mechanical clicks every 220 ms while fire is held, stopping on release without a firing animation. New players get a one-time, three-second “Press R to reload” reminder after moving with an empty magazine for three seconds while reserve ammunition is available. The main menu states the campaign objective: defeat all 25 bosses and turn their reward weapons against the next boss.
 
 VLK-6 WARDEN uses a dedicated coaxial rear missile sprite: only the burner nozzle and foreshortened fin tips face the player. Native-alpha source: `art/sector-detail/missile-tactical-rear.png`; live 256×256 texture: `public/game/projectiles/missile_tactical_outgoing.png`. The ordnance atlas and 512×512 catalog effect share this art. `scripts/pack-sector-detail.py` preserves the rear-view override when repacking.
+
+Explosion shockwaves now refract the world with depth occlusion. Fine dust catches scene and muzzle light. Authored HD brass/shotgun shell sheets tumble, bounce with spatial landing sounds, settle, and expire; both preload before play. Each of the 25 maps has its own atmospheric profile and quiet CC0 sound accent. Effects freeze on pause and reset between sectors. See the [world effects asset and sector guide](art/world-fx-v1/README.md) for paths, frame sizes, per-map signatures and regeneration commands.

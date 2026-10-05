@@ -10,7 +10,9 @@ const hash = (p) => createHash("sha256").update(readFileSync(p)).digest("hex");
 test("all 33 gunshots, mechanisms and event families have local licensed audio with fallback", () => {
   const ids = new Set(runtime.clips.map((c) => c.id));
   assert.equal(ids.size, runtime.clips.length);
-  assert.equal(ids.size, 103);
+  assert.equal(ids.size, 130);
+  for (let n = 1; n <= 25; n++) assert.ok(ids.has(`sector-${n}`));
+  for (const id of ["casing-brass", "casing-shell"]) assert.ok(ids.has(id));
   for (let n = 0; n < 33; n++) assert.ok(ids.has(`fire${n}`));
   for (const name of [
     "mag-out",

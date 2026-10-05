@@ -37,6 +37,7 @@ export type GameAudio = {
   ui: (kind?: "click" | "confirm" | "back" | "error" | "transition") => void;
   updateWeapon: (hud: WeaponSoundState & { bossPhase: number }) => void;
   world: (kind: number, variant: number, x: number, y: number) => void;
+  sectorAccent: (sector: number) => void;
   updateLoops: (cues: { id: number; kind: number; x: number; y: number }[]) => void;
   sfxDiagnostics: () =>
     (ReturnType<SfxPlayer["diagnostics"]> & { levels: { master: number; sfx: number } }) | null;
@@ -733,7 +734,10 @@ export function createAudio(): GameAudio {
     updateLoops: (cues) => effects?.updateLoops(cues),
     world(kind, variant, x, y) {
       const intent = worldIntent(kind, variant);
-      if (intent) effects?.play(kind >= 21 ? intent : { ...intent, x, y });
+      if (intent) effects?.play(kind === 21 || kind === 22 ? intent : { ...intent, x, y });
+    },
+    sectorAccent(index) {
+      effects?.play({ id: `sector-${index + 1}`, gain: 0.22, group: "ambience" });
     },
     radio(line = 0) {
       resume();

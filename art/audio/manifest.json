@@ -2958,6 +2958,818 @@
           "mp3": "a574728a6e0de6fd5e7bfe124531bd4613b84024e976474d0d898bac22868690"
         }
       }
+    },
+    {
+      "id": "sector-1",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/spaceEngineSmall_000.ogg",
+          "rate": 0.7,
+          "duration": 1.8,
+          "lowpass": 1800,
+          "gain": 0.65
+        },
+        {
+          "source": "mechanical-fx/computerNoise_000.ogg",
+          "rate": 0.75,
+          "duration": 1.2,
+          "delay": 0.18,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.8,
+        "pcmPeakDb": -10,
+        "rmsDb": -20.19,
+        "files": {
+          "ogg": "c9f62bc16c10c4568aa21b7b9693bf0aca36adaaf851622919aeaac62b42a784",
+          "mp3": "48ed202992b84e823cabc1b77c7fdf3b2d195dcf114700cee29e6ca157cb5995"
+        }
+      }
+    },
+    {
+      "id": "sector-2",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/forceField_001.ogg",
+          "rate": 0.755,
+          "duration": 1.8,
+          "lowpass": 2200,
+          "gain": 0.65
+        },
+        {
+          "source": "impacts/impactGlass_light_000.ogg",
+          "rate": 0.81,
+          "duration": 1.2,
+          "delay": 0.26,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.2622,
+        "pcmPeakDb": -10,
+        "rmsDb": -22.5,
+        "files": {
+          "ogg": "35a179aa8a1e992168bbf9af851c40eddaf89f18561b75dc79cf32353447d472",
+          "mp3": "9f2717ed0ef1a62d6f4d6b94e196dc3013b6e625917a45f97986b682fca182fc"
+        }
+      }
+    },
+    {
+      "id": "sector-3",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/slime_000.ogg",
+          "rate": 0.81,
+          "duration": 1.8,
+          "lowpass": 2600,
+          "gain": 0.65
+        },
+        {
+          "source": "mechanical-fx/slime_001.ogg",
+          "rate": 0.87,
+          "duration": 1.2,
+          "delay": 0.33999999999999997,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.7193,
+        "pcmPeakDb": -10,
+        "rmsDb": -38.4,
+        "files": {
+          "ogg": "f4a7591700d43c5bdfd61bd3fa0f86916c73c84560c47f1da3c7bc3a19ec3b4d",
+          "mp3": "4d7b947b2a8ddb7c17bf773bc5e66d1d1f3435d26a59271b11b10b12281feca0"
+        }
+      }
+    },
+    {
+      "id": "sector-4",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/computerNoise_000.ogg",
+          "rate": 0.865,
+          "duration": 1.8,
+          "lowpass": 3000,
+          "gain": 0.65
+        },
+        {
+          "source": "mechanical-fx/computerNoise_002.ogg",
+          "rate": 0.93,
+          "duration": 1.2,
+          "delay": 0.42,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.8,
+        "pcmPeakDb": -10,
+        "rmsDb": -17.26,
+        "files": {
+          "ogg": "612e74ea518c40241cb7b5acbc2ed85308e70d9f4b4b2c1bdaf91d14a36332cd",
+          "mp3": "5be7a512431c3de10a3a1bdb8440fdfc34e5df835175de18eb4daee4d77f8c58"
+        }
+      }
+    },
+    {
+      "id": "sector-5",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/spaceEngineLow_000.ogg",
+          "rate": 0.92,
+          "duration": 1.8,
+          "lowpass": 3400,
+          "gain": 0.65
+        },
+        {
+          "source": "mechanical-fx/forceField_000.ogg",
+          "rate": 0.99,
+          "duration": 1.2,
+          "delay": 0.18,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.8,
+        "pcmPeakDb": -10,
+        "rmsDb": -19.2,
+        "files": {
+          "ogg": "744561908ee1c39afa054aa62c7841ddf07b72a96a77539483bb1098647ba880",
+          "mp3": "18a26706657eaca749c66d02ac71226156aa2911839f3bad5703a38b97aa86d6"
+        }
+      }
+    },
+    {
+      "id": "sector-6",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/forceField_002.ogg",
+          "rate": 0.975,
+          "duration": 1.8,
+          "lowpass": 1800,
+          "gain": 0.65
+        },
+        {
+          "source": "mechanical-fx/computerNoise_001.ogg",
+          "rate": 1.05,
+          "duration": 1.2,
+          "delay": 0.26,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.4029,
+        "pcmPeakDb": -10,
+        "rmsDb": -22.73,
+        "files": {
+          "ogg": "2d45eec5407285ebad11632784f86201bf1538debdd76c821aa70a50af30898e",
+          "mp3": "96fc97b29f316faee4c3d544794dbef1b0e8ee28a7332e771b4ecb0219b8545f"
+        }
+      }
+    },
+    {
+      "id": "sector-7",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/forceField_001.ogg",
+          "rate": 1.03,
+          "duration": 1.8,
+          "lowpass": 2200,
+          "gain": 0.65
+        },
+        {
+          "source": "impacts/impactGlass_light_001.ogg",
+          "rate": 0.75,
+          "duration": 1.2,
+          "delay": 0.33999999999999997,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 0.9257,
+        "pcmPeakDb": -10,
+        "rmsDb": -22.02,
+        "files": {
+          "ogg": "fc8ebfa0e01e2ecd71bde935dae177d0fba51bc5058686d611abd4e2da074d9d",
+          "mp3": "b40d104e3a054fa507931e7bf464091e6ff356c45d07ccdc763ad17be80b91e4"
+        }
+      }
+    },
+    {
+      "id": "sector-8",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/computerNoise_001.ogg",
+          "rate": 0.7,
+          "duration": 1.8,
+          "lowpass": 2600,
+          "gain": 0.65
+        },
+        {
+          "source": "mechanical-fx/laserSmall_001.ogg",
+          "rate": 0.81,
+          "duration": 1.2,
+          "delay": 0.42,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.8,
+        "pcmPeakDb": -10,
+        "rmsDb": -18.22,
+        "files": {
+          "ogg": "44069afb6b7de2cb40e0e5ba7a663e316519cc186a49041c51263fa6d2ee6537",
+          "mp3": "56d7b768454b2ce98625e00bed616df101082e40a888b2faa010ad4779bf54ec"
+        }
+      }
+    },
+    {
+      "id": "sector-9",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/spaceEngineLow_001.ogg",
+          "rate": 0.755,
+          "duration": 1.8,
+          "lowpass": 3000,
+          "gain": 0.65
+        },
+        {
+          "source": "impacts/impactMining_000.ogg",
+          "rate": 0.87,
+          "duration": 1.2,
+          "delay": 0.18,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.8,
+        "pcmPeakDb": -10,
+        "rmsDb": -18.23,
+        "files": {
+          "ogg": "2a3f7488bf572f33a7e73c8cd9a71c21282272c9ab87ecb63e468babc6a1803b",
+          "mp3": "8c5d22c79a177c3d6951f2ccb787bfecca86f3dda17b7e809196004d99f12c05"
+        }
+      }
+    },
+    {
+      "id": "sector-10",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/spaceEngineSmall_001.ogg",
+          "rate": 0.81,
+          "duration": 1.8,
+          "lowpass": 3400,
+          "gain": 0.65
+        },
+        {
+          "source": "mechanical-fx/doorClose_000.ogg",
+          "rate": 0.93,
+          "duration": 1.2,
+          "delay": 0.26,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.8,
+        "pcmPeakDb": -10,
+        "rmsDb": -24.72,
+        "files": {
+          "ogg": "843b66d69fd7edc34bb8b9c353576ecb86700be817d845dc515e02f76f8cddbc",
+          "mp3": "b983af581ca18ba6639c624579917fb758ca7988637a573a16e9264e736f7bb5"
+        }
+      }
+    },
+    {
+      "id": "sector-11",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/forceField_002.ogg",
+          "rate": 0.865,
+          "duration": 1.8,
+          "lowpass": 1800,
+          "gain": 0.65
+        },
+        {
+          "source": "impacts/impactBell_heavy_000.ogg",
+          "rate": 0.99,
+          "duration": 1.2,
+          "delay": 0.33999999999999997,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.5521,
+        "pcmPeakDb": -10,
+        "rmsDb": -23.69,
+        "files": {
+          "ogg": "3e0ec2793eb41cfd8582434bd9d0ae626b2c71e48546f77caa8ac51357ad9a18",
+          "mp3": "9d81b2f523b4439cdceb7286c6c79608e97f64565fc7138aa21122710578ed9f"
+        }
+      }
+    },
+    {
+      "id": "sector-12",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/thrusterFire_000.ogg",
+          "rate": 0.92,
+          "duration": 1.8,
+          "lowpass": 2200,
+          "gain": 0.65
+        },
+        {
+          "source": "impacts/impactMetal_light_000.ogg",
+          "rate": 1.05,
+          "duration": 1.2,
+          "delay": 0.42,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.8,
+        "pcmPeakDb": -10,
+        "rmsDb": -24.05,
+        "files": {
+          "ogg": "94439a3daaa115645726fbca83d5e1bc5cd66097a0ccda9aacc258758326294a",
+          "mp3": "2721a364e8aba7e4c364f2ff0f2760c4ca995eaa5313aeaebc51757c2411e5fa"
+        }
+      }
+    },
+    {
+      "id": "sector-13",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/slime_001.ogg",
+          "rate": 0.975,
+          "duration": 1.8,
+          "lowpass": 2600,
+          "gain": 0.65
+        },
+        {
+          "source": "mechanical-fx/spaceEngineLow_001.ogg",
+          "rate": 0.75,
+          "duration": 1.2,
+          "delay": 0.18,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.8,
+        "pcmPeakDb": -10,
+        "rmsDb": -27.02,
+        "files": {
+          "ogg": "ae94c5ef359a29f3a179ce2f660ef861b78e98051180ef1a5165197a4898c5de",
+          "mp3": "8e54a4606752832678069ada22c6033405af4c4b17985fd49c4ca2bd7fd2fa53"
+        }
+      }
+    },
+    {
+      "id": "sector-14",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/laserSmall_000.ogg",
+          "rate": 1.03,
+          "duration": 1.8,
+          "lowpass": 3000,
+          "gain": 0.65
+        },
+        {
+          "source": "mechanical-fx/computerNoise_002.ogg",
+          "rate": 0.81,
+          "duration": 1.2,
+          "delay": 0.26,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.7415,
+        "pcmPeakDb": -10,
+        "rmsDb": -25.59,
+        "files": {
+          "ogg": "ed8f6d51235ea068f175571e2cdbeabcf7767ee3346aa6efdc583e2600e6708f",
+          "mp3": "81c5c854558a8d2cccf27d59ba649a56ebfcab2fb9198e54887d136c4f82c6f5"
+        }
+      }
+    },
+    {
+      "id": "sector-15",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/forceField_000.ogg",
+          "rate": 0.7,
+          "duration": 1.8,
+          "lowpass": 3400,
+          "gain": 0.65
+        },
+        {
+          "source": "impacts/impactMetal_medium_000.ogg",
+          "rate": 0.87,
+          "duration": 1.2,
+          "delay": 0.33999999999999997,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.3622,
+        "pcmPeakDb": -10,
+        "rmsDb": -22.83,
+        "files": {
+          "ogg": "ab7b5ac8a5d6aa23ac753bb19cc0fc48fae13b5fa1870c4e4cf1c8b565a20302",
+          "mp3": "78ecf9af0c58c1368ec1de525dd488bfb36407cdef13f04813d5c3b6c635caaa"
+        }
+      }
+    },
+    {
+      "id": "sector-16",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/computerNoise_002.ogg",
+          "rate": 0.755,
+          "duration": 1.8,
+          "lowpass": 1800,
+          "gain": 0.65
+        },
+        {
+          "source": "mechanical-fx/spaceEngineSmall_000.ogg",
+          "rate": 0.93,
+          "duration": 1.2,
+          "delay": 0.42,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.8,
+        "pcmPeakDb": -10,
+        "rmsDb": -18.11,
+        "files": {
+          "ogg": "eff938c5139b1e0a6072d009d22093900167f87745f1672e59f3f56605a229b1",
+          "mp3": "33fd7358ea819043b442857905a95110c5f0077d9506adf7332d921978391b71"
+        }
+      }
+    },
+    {
+      "id": "sector-17",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/slime_000.ogg",
+          "rate": 0.81,
+          "duration": 1.8,
+          "lowpass": 2200,
+          "gain": 0.65
+        },
+        {
+          "source": "impacts/impactSoft_heavy_000.ogg",
+          "rate": 0.99,
+          "duration": 1.2,
+          "delay": 0.18,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 0.7121,
+        "pcmPeakDb": -10,
+        "rmsDb": -31.35,
+        "files": {
+          "ogg": "37d6c4494defe8879675e4bb4ff35da1eb0113b0cb77b230af739d42a87eac9b",
+          "mp3": "6fffbf6563c7c27c2af0dc0ee3d3ae765663187e6a2b610160e80e8c5372aa60"
+        }
+      }
+    },
+    {
+      "id": "sector-18",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/spaceEngineSmall_001.ogg",
+          "rate": 0.865,
+          "duration": 1.8,
+          "lowpass": 2600,
+          "gain": 0.65
+        },
+        {
+          "source": "mechanical-fx/computerNoise_001.ogg",
+          "rate": 1.05,
+          "duration": 1.2,
+          "delay": 0.26,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.8,
+        "pcmPeakDb": -10,
+        "rmsDb": -23.39,
+        "files": {
+          "ogg": "a07d2f3d2704312da09bf09612a6d701a906a69e19f577f113de91447c04bb65",
+          "mp3": "fe6333148941d715ecc68f695c101d8b7c0e2325954bcd2cce588b21e3b6aeb9"
+        }
+      }
+    },
+    {
+      "id": "sector-19",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/slime_001.ogg",
+          "rate": 0.92,
+          "duration": 1.8,
+          "lowpass": 3000,
+          "gain": 0.65
+        },
+        {
+          "source": "impacts/impactMetal_light_001.ogg",
+          "rate": 0.75,
+          "duration": 1.2,
+          "delay": 0.33999999999999997,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.8,
+        "pcmPeakDb": -10,
+        "rmsDb": -32.88,
+        "files": {
+          "ogg": "392152306ba02c00b1c074ba1831e059701b1ad8dd3adcec3bf338e4bf198c44",
+          "mp3": "c9d08ee9dd877e666c9007bd6e0a42635086c99c6c8772f531dced8c494522ee"
+        }
+      }
+    },
+    {
+      "id": "sector-20",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/forceField_002.ogg",
+          "rate": 0.975,
+          "duration": 1.8,
+          "lowpass": 3400,
+          "gain": 0.65
+        },
+        {
+          "source": "mechanical-fx/laserLarge_003.ogg",
+          "rate": 0.81,
+          "duration": 1.2,
+          "delay": 0.42,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.3037,
+        "pcmPeakDb": -10,
+        "rmsDb": -23.29,
+        "files": {
+          "ogg": "6272431f0ddc70e0976561c07ae64f116bf67a31a12c9f894db9d334b6624154",
+          "mp3": "739a9ecd1b5a596bae9bcec6fe257e85f02dd8c7017f511592b38c12337dc5a6"
+        }
+      }
+    },
+    {
+      "id": "sector-21",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/spaceEngineLow_002.ogg",
+          "rate": 1.03,
+          "duration": 1.8,
+          "lowpass": 1800,
+          "gain": 0.65
+        },
+        {
+          "source": "mechanical-fx/thrusterFire_001.ogg",
+          "rate": 0.87,
+          "duration": 1.2,
+          "delay": 0.18,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.7476,
+        "pcmPeakDb": -10,
+        "rmsDb": -22.11,
+        "files": {
+          "ogg": "1debd620693d3ce2f43c0e8c9f512061e5b6ea8fd0860b75cb51aecbc88a0e0d",
+          "mp3": "348c50ed766a586c907d1262834c8b0ff30544e771f1713aa1229af005d39108"
+        }
+      }
+    },
+    {
+      "id": "sector-22",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/spaceEngineLow_001.ogg",
+          "rate": 0.7,
+          "duration": 1.8,
+          "lowpass": 2200,
+          "gain": 0.65
+        },
+        {
+          "source": "mechanical-fx/slime_000.ogg",
+          "rate": 0.93,
+          "duration": 1.2,
+          "delay": 0.26,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.8,
+        "pcmPeakDb": -10,
+        "rmsDb": -20.15,
+        "files": {
+          "ogg": "87f3e5cdeafb669a28ce311aed520f5577c86665c2be838d44dc28f9d5ddfd3c",
+          "mp3": "5c6b0acb2ad4bb73d1a4acde8c33f78105e21215c560f9e4441cee543b35e43e"
+        }
+      }
+    },
+    {
+      "id": "sector-23",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/forceField_001.ogg",
+          "rate": 0.755,
+          "duration": 1.8,
+          "lowpass": 2600,
+          "gain": 0.65
+        },
+        {
+          "source": "mechanical-fx/computerNoise_002.ogg",
+          "rate": 0.99,
+          "duration": 1.2,
+          "delay": 0.33999999999999997,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.5521,
+        "pcmPeakDb": -10,
+        "rmsDb": -22.93,
+        "files": {
+          "ogg": "3ccd8e9811a83d32ebd1994c9de04c915adc70ef9624081d4928aa603ba2ea89",
+          "mp3": "03d3424e5aa5ba066081eaa1c64d03aa994138bf910d531b88951013e1a83d19"
+        }
+      }
+    },
+    {
+      "id": "sector-24",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/forceField_000.ogg",
+          "rate": 0.81,
+          "duration": 1.8,
+          "lowpass": 3000,
+          "gain": 0.65
+        },
+        {
+          "source": "impacts/impactGlass_medium_000.ogg",
+          "rate": 1.05,
+          "duration": 1.2,
+          "delay": 0.42,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.1774,
+        "pcmPeakDb": -10,
+        "rmsDb": -22.63,
+        "files": {
+          "ogg": "ca1f37bfa90593d17171b05a0b1a421cbae03f5cad47d8a3057e1e4802b77e84",
+          "mp3": "02d72b6d2b4a992b73e7b9611c6c28c1c6f97d39fd2b8af02892e4f68d4fd468"
+        }
+      }
+    },
+    {
+      "id": "sector-25",
+      "duration": 1.8,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "mechanical-fx/computerNoise_000.ogg",
+          "rate": 0.865,
+          "duration": 1.8,
+          "lowpass": 3400,
+          "gain": 0.65
+        },
+        {
+          "source": "mechanical-fx/spaceEngineLow_002.ogg",
+          "rate": 0.75,
+          "duration": 1.2,
+          "delay": 0.18,
+          "gain": 0.22
+        }
+      ],
+      "measurements": {
+        "duration": 1.8,
+        "pcmPeakDb": -10,
+        "rmsDb": -17.02,
+        "files": {
+          "ogg": "f49ea83b86958fc2e76402c3a61833339c8ebff8bc3ebcfd831b5ad51777e57d",
+          "mp3": "dbfc57c549461ca95be18e1cafe6e55d254fbefacb56bfefa885772322d8eb88"
+        }
+      }
+    },
+    {
+      "id": "casing-brass",
+      "duration": 0.38,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "impacts/impactMetal_light_000.ogg",
+          "rate": 1.2,
+          "duration": 0.26,
+          "highpass": 900,
+          "gain": 1
+        },
+        {
+          "source": "impacts/impactPlate_light_001.ogg",
+          "delay": 0.055,
+          "rate": 1.1,
+          "duration": 0.18,
+          "highpass": 1200,
+          "gain": 0.3
+        }
+      ],
+      "measurements": {
+        "duration": 0.2186,
+        "pcmPeakDb": -10,
+        "rmsDb": -27.64,
+        "files": {
+          "ogg": "658ed931c9640cbcfdd3aab11cd4c9ae31f7b2cdf1f938e64798b2dced96145e",
+          "mp3": "28b65a61cfb1ab8d4d1b65099f2b11c2d5bd1a250e3365821c0ddaecaf651c5a"
+        }
+      }
+    },
+    {
+      "id": "casing-shell",
+      "duration": 0.38,
+      "peakDb": -10,
+      "layers": [
+        {
+          "source": "impacts/impactTin_medium_000.ogg",
+          "rate": 1.2,
+          "duration": 0.26,
+          "highpass": 900,
+          "gain": 1
+        },
+        {
+          "source": "impacts/impactPlate_light_001.ogg",
+          "delay": 0.055,
+          "rate": 1.1,
+          "duration": 0.18,
+          "highpass": 1200,
+          "gain": 0.3
+        }
+      ],
+      "measurements": {
+        "duration": 0.2186,
+        "pcmPeakDb": -10,
+        "rmsDb": -32.06,
+        "files": {
+          "ogg": "aeb30f99d49a13225623123352f13a65fcc33fe871ac6aea516ac8faaa3d03fd",
+          "mp3": "b32ecfe3c5a1b925856b4a7f716909909f3280884ab54e8b2fb8548088626f59"
+        }
+      }
     }
   ]
 }

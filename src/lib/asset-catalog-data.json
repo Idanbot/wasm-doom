@@ -14342,5 +14342,214 @@
     "seamless": true,
     "level": 25,
     "boss": "THE SOVEREIGN"
+  },
+  {
+    "file": "/game/fx/casing-hd.png",
+    "name": "casing-hd.png",
+    "size": 447884,
+    "hash": "df70f53187e43e54a47bbceaf98fcd85d934e89e035618e8158bcea624d3e258",
+    "shortHash": "df70f531",
+    "width": 1024,
+    "height": 1024,
+    "group": "particles"
+  },
+  {
+    "file": "/game/fx/shell-hd.png",
+    "name": "shell-hd.png",
+    "size": 448102,
+    "hash": "b9ad68bf0a9af173f5cc4f3dfc0297a31a9fed9749815520036d2bc97a36bae9",
+    "shortHash": "b9ad68bf",
+    "width": 1024,
+    "height": 1024,
+    "group": "particles"
+  },
+  {
+    "file": "/game/sfx/v2/casing-brass.ogg",
+    "name": "casing-brass.ogg",
+    "size": 5720,
+    "hash": "658ed931c9640cbcfdd3aab11cd4c9ae31f7b2cdf1f938e64798b2dced96145e",
+    "shortHash": "658ed931"
+  },
+  {
+    "file": "/game/sfx/v2/casing-shell.ogg",
+    "name": "casing-shell.ogg",
+    "size": 5686,
+    "hash": "aeb30f99d49a13225623123352f13a65fcc33fe871ac6aea516ac8faaa3d03fd",
+    "shortHash": "aeb30f99"
+  },
+  {
+    "file": "/game/sfx/v2/sector-1.ogg",
+    "name": "sector-1.ogg",
+    "size": 19379,
+    "hash": "c9f62bc16c10c4568aa21b7b9693bf0aca36adaaf851622919aeaac62b42a784",
+    "shortHash": "c9f62bc1"
+  },
+  {
+    "file": "/game/sfx/v2/sector-10.ogg",
+    "name": "sector-10.ogg",
+    "size": 15306,
+    "hash": "843b66d69fd7edc34bb8b9c353576ecb86700be817d845dc515e02f76f8cddbc",
+    "shortHash": "843b66d6"
+  },
+  {
+    "file": "/game/sfx/v2/sector-11.ogg",
+    "name": "sector-11.ogg",
+    "size": 9843,
+    "hash": "3e0ec2793eb41cfd8582434bd9d0ae626b2c71e48546f77caa8ac51357ad9a18",
+    "shortHash": "3e0ec279"
+  },
+  {
+    "file": "/game/sfx/v2/sector-12.ogg",
+    "name": "sector-12.ogg",
+    "size": 18235,
+    "hash": "94439a3daaa115645726fbca83d5e1bc5cd66097a0ccda9aacc258758326294a",
+    "shortHash": "94439a3d"
+  },
+  {
+    "file": "/game/sfx/v2/sector-13.ogg",
+    "name": "sector-13.ogg",
+    "size": 19339,
+    "hash": "ae94c5ef359a29f3a179ce2f660ef861b78e98051180ef1a5165197a4898c5de",
+    "shortHash": "ae94c5ef"
+  },
+  {
+    "file": "/game/sfx/v2/sector-14.ogg",
+    "name": "sector-14.ogg",
+    "size": 20680,
+    "hash": "ed8f6d51235ea068f175571e2cdbeabcf7767ee3346aa6efdc583e2600e6708f",
+    "shortHash": "ed8f6d51"
+  },
+  {
+    "file": "/game/sfx/v2/sector-15.ogg",
+    "name": "sector-15.ogg",
+    "size": 9800,
+    "hash": "ab7b5ac8a5d6aa23ac753bb19cc0fc48fae13b5fa1870c4e4cf1c8b565a20302",
+    "shortHash": "ab7b5ac8"
+  },
+  {
+    "file": "/game/sfx/v2/sector-16.ogg",
+    "name": "sector-16.ogg",
+    "size": 16083,
+    "hash": "eff938c5139b1e0a6072d009d22093900167f87745f1672e59f3f56605a229b1",
+    "shortHash": "eff938c5"
+  },
+  {
+    "file": "/game/sfx/v2/sector-17.ogg",
+    "name": "sector-17.ogg",
+    "size": 10318,
+    "hash": "37d6c4494defe8879675e4bb4ff35da1eb0113b0cb77b230af739d42a87eac9b",
+    "shortHash": "37d6c449"
+  },
+  {
+    "file": "/game/sfx/v2/sector-18.ogg",
+    "name": "sector-18.ogg",
+    "size": 17357,
+    "hash": "a07d2f3d2704312da09bf09612a6d701a906a69e19f577f113de91447c04bb65",
+    "shortHash": "a07d2f3d"
+  },
+  {
+    "file": "/game/sfx/v2/sector-19.ogg",
+    "name": "sector-19.ogg",
+    "size": 20852,
+    "hash": "392152306ba02c00b1c074ba1831e059701b1ad8dd3adcec3bf338e4bf198c44",
+    "shortHash": "39215230"
+  },
+  {
+    "file": "/game/sfx/v2/sector-2.ogg",
+    "name": "sector-2.ogg",
+    "size": 8759,
+    "hash": "35a179aa8a1e992168bbf9af851c40eddaf89f18561b75dc79cf32353447d472",
+    "shortHash": "35a179aa"
+  },
+  {
+    "file": "/game/sfx/v2/sector-20.ogg",
+    "name": "sector-20.ogg",
+    "size": 13970,
+    "hash": "6272431f0ddc70e0976561c07ae64f116bf67a31a12c9f894db9d334b6624154",
+    "shortHash": "6272431f"
+  },
+  {
+    "file": "/game/sfx/v2/sector-21.ogg",
+    "name": "sector-21.ogg",
+    "size": 17697,
+    "hash": "1debd620693d3ce2f43c0e8c9f512061e5b6ea8fd0860b75cb51aecbc88a0e0d",
+    "shortHash": "1debd620"
+  },
+  {
+    "file": "/game/sfx/v2/sector-22.ogg",
+    "name": "sector-22.ogg",
+    "size": 13702,
+    "hash": "87f3e5cdeafb669a28ce311aed520f5577c86665c2be838d44dc28f9d5ddfd3c",
+    "shortHash": "87f3e5cd"
+  },
+  {
+    "file": "/game/sfx/v2/sector-23.ogg",
+    "name": "sector-23.ogg",
+    "size": 17471,
+    "hash": "3ccd8e9811a83d32ebd1994c9de04c915adc70ef9624081d4928aa603ba2ea89",
+    "shortHash": "3ccd8e98"
+  },
+  {
+    "file": "/game/sfx/v2/sector-24.ogg",
+    "name": "sector-24.ogg",
+    "size": 9269,
+    "hash": "ca1f37bfa90593d17171b05a0b1a421cbae03f5cad47d8a3057e1e4802b77e84",
+    "shortHash": "ca1f37bf"
+  },
+  {
+    "file": "/game/sfx/v2/sector-25.ogg",
+    "name": "sector-25.ogg",
+    "size": 16265,
+    "hash": "f49ea83b86958fc2e76402c3a61833339c8ebff8bc3ebcfd831b5ad51777e57d",
+    "shortHash": "f49ea83b"
+  },
+  {
+    "file": "/game/sfx/v2/sector-3.ogg",
+    "name": "sector-3.ogg",
+    "size": 23409,
+    "hash": "f4a7591700d43c5bdfd61bd3fa0f86916c73c84560c47f1da3c7bc3a19ec3b4d",
+    "shortHash": "f4a75917"
+  },
+  {
+    "file": "/game/sfx/v2/sector-4.ogg",
+    "name": "sector-4.ogg",
+    "size": 20268,
+    "hash": "612e74ea518c40241cb7b5acbc2ed85308e70d9f4b4b2c1bdaf91d14a36332cd",
+    "shortHash": "612e74ea"
+  },
+  {
+    "file": "/game/sfx/v2/sector-5.ogg",
+    "name": "sector-5.ogg",
+    "size": 12681,
+    "hash": "744561908ee1c39afa054aa62c7841ddf07b72a96a77539483bb1098647ba880",
+    "shortHash": "74456190"
+  },
+  {
+    "file": "/game/sfx/v2/sector-6.ogg",
+    "name": "sector-6.ogg",
+    "size": 15528,
+    "hash": "2d45eec5407285ebad11632784f86201bf1538debdd76c821aa70a50af30898e",
+    "shortHash": "2d45eec5"
+  },
+  {
+    "file": "/game/sfx/v2/sector-7.ogg",
+    "name": "sector-7.ogg",
+    "size": 7729,
+    "hash": "fc8ebfa0e01e2ecd71bde935dae177d0fba51bc5058686d611abd4e2da074d9d",
+    "shortHash": "fc8ebfa0"
+  },
+  {
+    "file": "/game/sfx/v2/sector-8.ogg",
+    "name": "sector-8.ogg",
+    "size": 15324,
+    "hash": "44069afb6b7de2cb40e0e5ba7a663e316519cc186a49041c51263fa6d2ee6537",
+    "shortHash": "44069afb"
+  },
+  {
+    "file": "/game/sfx/v2/sector-9.ogg",
+    "name": "sector-9.ogg",
+    "size": 12107,
+    "hash": "2a3f7488bf572f33a7e73c8cd9a71c21282272c9ab87ecb63e468babc6a1803b",
+    "shortHash": "2a3f7488"
   }
 ]

@@ -127,7 +127,7 @@ for (const mobile of [false, true])
         };
       });
       console.log(mobile ? "mobile" : "desktop", results);
-      assert.equal(results.decoded, 206);
+      assert.equal(results.decoded, 260);
       assert.ok(results.peak < 0.8, JSON.stringify(results));
       assert.ok(results.minEnergy > 1e-8);
       assert.ok(results.loud > 0.0001, JSON.stringify(results));
@@ -205,7 +205,7 @@ test("game loading waits for SFX and real firing/reload/pause events use recorde
     await page.goto(url.href, { waitUntil: "domcontentloaded" });
     await page.waitForFunction(
       () =>
-        window.__controlsTest?.getSfxAudio()?.loaded === 103 &&
+        window.__controlsTest?.getSfxAudio()?.loaded === 130 &&
         window.__controlsTest?.getReserve() === 72 &&
         document.body.innerText.includes("HEALTH"),
       null,

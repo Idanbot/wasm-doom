@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Rebuild the CC0 SFX from checked-in originals and exact recipes (requires ffmpeg)."""
-import array,hashlib,json,math,pathlib,re,subprocess
+import array,hashlib,json,math,pathlib,re,subprocess,sys
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 ART=ROOT/'art/audio'; OUT=ROOT/'public/game/sfx/v2'; SR=44100
 
@@ -33,8 +33,10 @@ def render(recipe):
     return {'duration':round(size/SR,4),'pcmPeakDb':recipe.get('peakDb',-6),'rmsDb':round(20*math.log10(math.sqrt(sum(x*x for x in mix)/size)),2),'files':{ext:hashlib.sha256((OUT/(recipe['id']+'.'+ext)).read_bytes()).hexdigest() for ext in ['ogg','mp3']}}
 
 def main():
-    m=json.loads((ART/'manifest.json').read_text()); OUT.mkdir(exist_ok=True,parents=True); true_peaks={}
+    m=json.loads((ART/'manifest.json').read_text()); OUT.mkdir(exist_ok=True,parents=True)
+    selected=set(sys.argv[1:]); true_peaks=json.loads((ART/'true-peaks.json').read_text()) if selected else {}
     for r in m['clips']:
+        if selected and r['id'] not in selected: continue
         r['measurements']=render(r)
         report=subprocess.run(['ffmpeg','-v','info','-i',str(OUT/(r['id']+'.ogg')),'-af','ebur128=peak=true','-f','null','-'],capture_output=True,text=True,check=True)
         true_peak=float(re.findall(r'Peak:\s*([-\d.]+) dBFS',report.stderr)[-1])

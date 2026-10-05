@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "provider": "native-imagegen",
+  "assets": [
+    {
+      "source": "art/world-fx-v1/casing-source.png",
+      "sourceSha256": "f4fe42c9f0cfd4c83a392b46bb669e0b67e70ac324dbabfa92e0156cdd5ca3b3",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "file": "public/game/fx/casing-hd.png",
+      "sha256": "df70f53187e43e54a47bbceaf98fcd85d934e89e035618e8158bcea624d3e258",
+      "sheetSize": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "frameSize": [
+        512,
+        512
+      ],
+      "alpha": "native",
+      "prompt": "Photorealistic spent empty brass rifle casing in four tumbling orientations, native transparency, isolated padded grid cells, detailed scratched metal and soot, no loaded bullets, backgrounds or text."
+    },
+    {
+      "source": "art/world-fx-v1/shell-source.png",
+      "sourceSha256": "7c20451bc6f6e948d2f4dad24121f6c7d09b0bef5db9bf698e113aec93487ca4",
+      "nativeSize": [
+        1254,
+        1254
+      ],
+      "file": "public/game/fx/shell-hd.png",
+      "sha256": "b9ad68bf0a9af173f5cc4f3dfc0297a31a9fed9749815520036d2bc97a36bae9",
+      "sheetSize": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "frameSize": [
+        512,
+        512
+      ],
+      "alpha": "native",
+      "prompt": "Photorealistic spent empty red 12 gauge shotgun shell in four tumbling orientations, native transparency, isolated padded grid cells, detailed scratched metal and soot, no loaded bullets, backgrounds or text."
+    }
+  ]
+}

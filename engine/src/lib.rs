@@ -366,6 +366,8 @@ fn sprite_style(e: &Ent) -> (usize, f32, bool, i32) {
             return (T_FLAME, 0.22 + e.frame.min(0.8) * 0.4, true, 1);
         },
         EK_FLAME | EK_FIREPATCH => return (T_FLAME, 0.58 + (e.frame * 7.0).sin() * 0.035, true, 0),
+        EK_SPARK if e.effect_tick == 5.0 => return (if e.skin == 1 { T_CASING_SHELL } else { T_CASING }, 0.12, true,
+            if e.shield >= 3 { 0 } else { ((e.frame * 18.0) as i32).rem_euclid(4) }),
         EK_SPARK => return if e.effect_tick < 4.0 {
             (T_MUZZLEFX, 0.10, true, e.effect_tick as i32)
         } else {
@@ -1685,7 +1687,7 @@ impl Engine {
                 anim: ANIM_IDLE,
                 anim_time: 0.0,
                 anim_lock: 0.0,
-                skin: SKIN_NONE,
+                skin: if f.kind == EK_SPARK && f.variant == 5 && self.weapon == 1 { 1 } else { SKIN_NONE },
                 projectile_visual: f.projectile_visual,
                 radius,
                 flash: 0.0,
@@ -3201,17 +3203,27 @@ impl Engine {
     }
 
     fn eject_casing(&mut self) {
+        // Cosmetic shells never crowd out hostiles or projectiles.
+        let shells: Vec<usize> = self.ents.iter().enumerate()
+            .filter(|(_, e)| e.kind == EK_SPARK && e.effect_tick == 5.0).map(|(i, _)| i).collect();
+        if shells.len() >= 24 {
+            if let Some(i) = shells.into_iter().min_by(|a, b| self.ents[*a].timer.total_cmp(&self.ents[*b].timer)) {
+                self.ents[i].kind = EK_NONE;
+            }
+        }
         let rx = -self.pa.sin();
         let ry = self.pa.cos();
-        let x = self.px + rx * 0.18;
-        let y = self.py + ry * 0.18;
+        let (x, y) = (self.px + self.pa.cos() * 0.55 + rx * 0.18,
+                      self.py + self.pa.sin() * 0.55 + ry * 0.18);
+        let (x, y) = if self.circle_blocked(x, y, 0.06) { (self.px, self.py) } else { (x, y) };
         let jx = 1.2 + self.rnd();
         let jy = 1.2 + self.rnd();
         let pax = self.pa.cos() * 0.2;
         let pay = self.pa.sin() * 0.2;
         let slot = self.fx_n;
-        self.queue_fx(EK_SPARK, x, y, rx * jx + pax, ry * jy + pay, 0.35, 12.0);
+        self.queue_fx(EK_SPARK, x, y, rx * jx + pax, ry * jy + pay, 6.0, self.h as f32 * 0.08);
         if self.fx_n > slot { self.fx_q[slot].variant = 5; }
+        self.spawn_timed(EK_SMOKE, x, y, 0.22, self.h as f32 * 0.08);
     }
 
     fn enemy_shoot(&mut self, i: usize) {
@@ -3890,6 +3902,37 @@ impl Engine {
                     }
                 }
                 EK_IMPACT | EK_SPARK | EK_SMOKE => {
+                    if e.kind == EK_SPARK && e.effect_tick == 5.0 {
+                        // aim is vertical velocity for casings; shield counts floor bounces.
+                        let h = self.h as f32;
+                        let old_x = e.x; let old_y = e.y;
+                        e.x += e.vx * dt; e.y += e.vy * dt;
+                        if e.frame <= dt * 1.1 { e.aim = -h * 0.65; }
+                        e.aim += h * 2.4 * dt;
+                        e.zoff += e.aim * dt;
+                        // Visible casing pixels end at 39% below their frame center.
+                        let floor = h * 0.45;
+                        let mut landed = false;
+                        if e.zoff >= floor {
+                            e.zoff = floor;
+                            if e.shield < 3 {
+                                landed = e.aim > h * 0.10;
+                                e.shield += 1;
+                                e.aim = -e.aim * 0.32;
+                                e.vx *= 0.5; e.vy *= 0.5;
+                            } else { e.aim = 0.0; e.vx = 0.0; e.vy = 0.0; }
+                        }
+                        e.timer -= dt;
+                        if e.timer <= 0.0 { e.kind = EK_NONE; }
+                        let (x, y, shell) = (e.x, e.y, e.skin == 1);
+                        let _ = e;
+                        if self.circle_blocked(x, y, 0.06) {
+                            self.ents[i].x = old_x; self.ents[i].y = old_y;
+                            self.ents[i].vx *= -0.4; self.ents[i].vy *= -0.4;
+                        }
+                        if landed { self.sound(23, u8::from(shell), old_x, old_y); }
+                        continue;
+                    }
                     e.x += e.vx * dt;
                     e.y += e.vy * dt;
                     if e.kind == EK_SMOKE && e.effect_tick >= 9.0 {
@@ -6475,6 +6518,42 @@ mod tests {
             assert!(!e.sound_cues.iter().any(|c| c.kind == 21.0));
         }
         assert_eq!(e.mag[0], 0);
+    }
+
+    #[test]
+    fn casings_tumble_bounce_sound_then_settle_and_expire() {
+        let mut e = arena();
+        e.eject_casing(); e.flush_fx();
+        let i = e.ents.iter().position(|p| p.kind == EK_SPARK && p.effect_tick == 5.0).unwrap();
+        assert_eq!(sprite_style(&e.ents[i]).0, T_CASING);
+        let initial = e.ents[i].zoff;
+        e.tick(1.0/60.0);
+        assert!(e.ents[i].zoff < initial, "initial ejection rises");
+        let mut clicks = 0;
+        for _ in 0..180 {
+            e.tick(1.0/60.0);
+            clicks += e.sound_cues.iter().filter(|c| c.kind == 23.0).count();
+            assert!(!e.circle_blocked(e.ents[i].x, e.ents[i].y, 0.04));
+        }
+        assert!((1..=3).contains(&clicks), "landing cues are physical and bounded: {clicks}");
+        assert_eq!(e.ents[i].shield, 3);
+        assert_eq!(e.ents[i].vx, 0.0); assert_eq!(e.ents[i].vy, 0.0);
+        assert_eq!(sprite_style(&e.ents[i]).3, 0, "settled casing stops tumbling");
+        for _ in 0..200 { e.tick(1.0/60.0); }
+        assert_eq!(e.ents[i].kind, EK_NONE);
+    }
+
+    #[test]
+    fn cosmetic_casings_are_capped_and_shotgun_uses_shell_landing_cue() {
+        let mut e = arena(); e.weapon = 1;
+        for _ in 0..40 { e.eject_casing(); e.flush_fx(); }
+        assert_eq!(e.ents.iter().filter(|p| p.kind == EK_SPARK && p.effect_tick == 5.0).count(), 24);
+        let mut shell_sound = false;
+        for _ in 0..120 {
+            e.tick(1.0/60.0);
+            shell_sound |= e.sound_cues.iter().any(|c| c.kind == 23.0 && c.variant == 1.0);
+        }
+        assert!(shell_sound);
     }
 
     #[test]

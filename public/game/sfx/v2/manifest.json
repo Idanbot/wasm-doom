@@ -618,6 +618,168 @@
       "url": "/game/sfx/v2/travel-flame.ogg",
       "fallback": "/game/sfx/v2/travel-flame.mp3",
       "vocal": false
+    },
+    {
+      "id": "sector-1",
+      "url": "/game/sfx/v2/sector-1.ogg",
+      "fallback": "/game/sfx/v2/sector-1.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-2",
+      "url": "/game/sfx/v2/sector-2.ogg",
+      "fallback": "/game/sfx/v2/sector-2.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-3",
+      "url": "/game/sfx/v2/sector-3.ogg",
+      "fallback": "/game/sfx/v2/sector-3.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-4",
+      "url": "/game/sfx/v2/sector-4.ogg",
+      "fallback": "/game/sfx/v2/sector-4.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-5",
+      "url": "/game/sfx/v2/sector-5.ogg",
+      "fallback": "/game/sfx/v2/sector-5.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-6",
+      "url": "/game/sfx/v2/sector-6.ogg",
+      "fallback": "/game/sfx/v2/sector-6.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-7",
+      "url": "/game/sfx/v2/sector-7.ogg",
+      "fallback": "/game/sfx/v2/sector-7.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-8",
+      "url": "/game/sfx/v2/sector-8.ogg",
+      "fallback": "/game/sfx/v2/sector-8.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-9",
+      "url": "/game/sfx/v2/sector-9.ogg",
+      "fallback": "/game/sfx/v2/sector-9.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-10",
+      "url": "/game/sfx/v2/sector-10.ogg",
+      "fallback": "/game/sfx/v2/sector-10.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-11",
+      "url": "/game/sfx/v2/sector-11.ogg",
+      "fallback": "/game/sfx/v2/sector-11.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-12",
+      "url": "/game/sfx/v2/sector-12.ogg",
+      "fallback": "/game/sfx/v2/sector-12.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-13",
+      "url": "/game/sfx/v2/sector-13.ogg",
+      "fallback": "/game/sfx/v2/sector-13.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-14",
+      "url": "/game/sfx/v2/sector-14.ogg",
+      "fallback": "/game/sfx/v2/sector-14.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-15",
+      "url": "/game/sfx/v2/sector-15.ogg",
+      "fallback": "/game/sfx/v2/sector-15.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-16",
+      "url": "/game/sfx/v2/sector-16.ogg",
+      "fallback": "/game/sfx/v2/sector-16.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-17",
+      "url": "/game/sfx/v2/sector-17.ogg",
+      "fallback": "/game/sfx/v2/sector-17.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-18",
+      "url": "/game/sfx/v2/sector-18.ogg",
+      "fallback": "/game/sfx/v2/sector-18.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-19",
+      "url": "/game/sfx/v2/sector-19.ogg",
+      "fallback": "/game/sfx/v2/sector-19.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-20",
+      "url": "/game/sfx/v2/sector-20.ogg",
+      "fallback": "/game/sfx/v2/sector-20.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-21",
+      "url": "/game/sfx/v2/sector-21.ogg",
+      "fallback": "/game/sfx/v2/sector-21.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-22",
+      "url": "/game/sfx/v2/sector-22.ogg",
+      "fallback": "/game/sfx/v2/sector-22.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-23",
+      "url": "/game/sfx/v2/sector-23.ogg",
+      "fallback": "/game/sfx/v2/sector-23.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-24",
+      "url": "/game/sfx/v2/sector-24.ogg",
+      "fallback": "/game/sfx/v2/sector-24.mp3",
+      "vocal": false
+    },
+    {
+      "id": "sector-25",
+      "url": "/game/sfx/v2/sector-25.ogg",
+      "fallback": "/game/sfx/v2/sector-25.mp3",
+      "vocal": false
+    },
+    {
+      "id": "casing-brass",
+      "url": "/game/sfx/v2/casing-brass.ogg",
+      "fallback": "/game/sfx/v2/casing-brass.mp3",
+      "vocal": false
+    },
+    {
+      "id": "casing-shell",
+      "url": "/game/sfx/v2/casing-shell.ogg",
+      "fallback": "/game/sfx/v2/casing-shell.mp3",
+      "vocal": false
     }
   ]
 }

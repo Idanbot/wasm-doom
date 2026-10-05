@@ -91,13 +91,14 @@ export function worldIntent(kind: number, variant = 0): SoundIntent | null {
       12: "hazard-ember",
       21: "empty",
       22: "ui-error",
+      23: variant === 1 ? "casing-shell" : "casing-brass",
       13: variant === 3 ? "hazard-acid" : variant === 1 ? "hazard-electric" : "hit-stone",
     } as Record<number, string>
   )[kind];
   return id
     ? {
         id,
-        gain: kind === 2 ? 0.75 : 0.65,
+        gain: kind === 2 ? 0.75 : kind === 23 ? 0.24 : 0.65,
         rate: kind === 1 && variant === 1 ? 0.9 : 1,
         group: kind === 12 ? "hazard" : "world",
       }

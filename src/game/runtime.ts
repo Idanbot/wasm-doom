@@ -7,6 +7,7 @@ import { CAMPAIGN_EXPANSION } from "./campaign25";
 import { asset } from "@/lib/asset";
 import { createAudio, type GameAudio } from "./audio";
 import { createBlitter, type BlitKind, type Blitter } from "./blit";
+import { WorldEffects, sectorEffect } from "./sector-effects";
 import {
   ENEMY_ANIM_COUNT,
   ENEMY_PROJECTILE_COUNT,
@@ -36,6 +37,8 @@ import {
   T_ENEMY_PROJECTILE,
   T_BOSS_PROJECTILE,
   T_BOSS_ARENA,
+  T_CASING,
+  T_CASING_SHELL,
   T_PLAYER_MISSILE,
   T_SECTOR_SURFACE,
   T_SECTOR_PROP,
@@ -332,6 +335,8 @@ const TEX_FILES: { id: number; src: string }[] = [
       src: `/game/enemy_${skin}_${animation}.png`,
     })),
   ),
+  { id: T_CASING, src: "/game/fx/casing-hd.png" },
+  { id: T_CASING_SHELL, src: "/game/fx/shell-hd.png" },
 ];
 
 const UI_CRITICAL = [
@@ -448,6 +453,7 @@ export class BlacksiteRuntime {
   private wasm: WasmExports | null = null;
   private blit: Blitter | null = null;
   private audio: GameAudio;
+  private worldEffects = new WorldEffects();
   private keys = new Set<string>();
   private bits = 0;
   private lookX = 0;
@@ -730,6 +736,7 @@ export class BlacksiteRuntime {
   };
 
   restart() {
+    this.worldEffects.reset();
     this.audio.clearEnemies(true);
     this.clearInput();
     this.accumulator = 0;
@@ -742,6 +749,7 @@ export class BlacksiteRuntime {
   }
 
   nextWave() {
+    this.worldEffects.reset();
     this.audio.advanceSectorVoices();
     this.wasm?.hs_next_wave();
     this.prevRadioSeq = 0;
@@ -1334,18 +1342,26 @@ export class BlacksiteRuntime {
       );
       this.lookX = this.lookY = this.touchLookX = this.touchLookY = 0;
       wasm.hs_tick(step);
+      const effectHud = new DataView(wasm.memory.buffer, wasm.hs_hud_ptr(), HUD_SIZE);
+      const effectWave = effectHud.getInt32(116, true);
+      if (effectHud.getInt32(24, true) === 0 && this.worldEffects.tick(step, effectWave)) {
+        const profile = sectorEffect(effectWave);
+        this.audio.sectorAccent(profile.index);
+      }
       // Drain world cues and the compact weapon state on every fixed step.
       // The complete HUD is decoded once below.
       this.sfxFromEvents(wasm.hs_events(), wasm.hs_ev_weapon());
       const soundCount = wasm.hs_sound_count();
       const soundData = new Float32Array(wasm.memory.buffer, wasm.hs_sound_cues(), soundCount * 4);
-      for (let n = 0; n < soundCount; n++)
+      for (let n = 0; n < soundCount; n++) {
+        if (soundData[n * 4] === 2) this.worldEffects.explosion(soundData[n * 4 + 2]!, soundData[n * 4 + 3]!);
         this.audio.world(
           soundData[n * 4]!,
           soundData[n * 4 + 1]!,
           soundData[n * 4 + 2]!,
           soundData[n * 4 + 3]!,
         );
+      }
       const soundHud = new DataView(wasm.memory.buffer, wasm.hs_hud_ptr(), HUD_SIZE);
       this.audio.updateWeapon({
         ammo: soundHud.getInt32(8, true),
@@ -1400,9 +1416,10 @@ export class BlacksiteRuntime {
     const wasm = this.wasm!, blit = this.blit!;
     if (this.atlasRevision !== blit.revision()) this.pushAtlas();
     const boss = -1;
-    const fx = { muzzle: hud.muzzle, hurt: hud.hurt, time: t * 0.001, boss };
     const w = wasm.hs_fb_w();
     const h = wasm.hs_fb_h();
+    const fx = { muzzle: hud.muzzle, hurt: hud.hurt, time: this.worldEffects.time, boss,
+      sector: hud.wave, yaw: hud.yaw, shocks: this.worldEffects.project(hud, w / h) };
     let presented = false;
     if (this.gpuReady && blit.drawWorld) {
       wasm.hs_prepare_gpu();
@@ -1490,6 +1507,8 @@ export class BlacksiteRuntime {
     window.__controlsTest = {
       getEnemyAudio: () => this.audio.enemyDiagnostics(),
       getSfxAudio: () => this.audio.sfxDiagnostics(),
+      getWorldEffects: () => ({ time: this.worldEffects.time, wave: this.hud.wave,
+        signature: sectorEffect(this.hud.wave).name }),
       getEnemies: () => this.lastEnemies.map((e) => ({ ...e })),
       getYaw: () => this.wasm?.hs_yaw() ?? 0,
       getSpeed: () => this.wasm?.hs_speed() ?? 0,
@@ -1585,6 +1604,7 @@ declare global {
     __controlsTest?: {
       getEnemyAudio: () => ReturnType<GameAudio["enemyDiagnostics"]>;
       getSfxAudio: () => ReturnType<GameAudio["sfxDiagnostics"]>;
+      getWorldEffects: () => { time: number; wave: number; signature: string };
       getEnemies?: () => EnemyCue[];
       getYaw: () => number;
       getSpeed: () => number;
