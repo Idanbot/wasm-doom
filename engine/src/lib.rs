@@ -1,3 +1,5 @@
+#[cfg(test)]
+mod spatial_checks;
 mod boss_arena;
 mod tactical;
 mod tactical_roles;
@@ -1190,6 +1192,11 @@ impl Engine {
             Some(d) => (d.hp, d.radius, d.zoff),
             None => (1, 0.2, 0.0),
         };
+        let (x, y) = if is_hostile_kind(kind) {
+            let position = self.nearest_open(x, y, radius);
+            if self.circle_blocked(position.0, position.1, radius) { return None; }
+            position
+        } else { (x, y) };
         if is_hostile_kind(kind) { hp = ((hp as f32) * campaign::health_scale(self.wave)).round() as i32; }
         let zoff = skin_def(skin).map(|d| d.zoff).unwrap_or(zoff);
         for (i, e) in self.ents.iter_mut().enumerate() {
@@ -2300,7 +2307,18 @@ impl Engine {
                 }
             }
         }
-        (x, y)
+        // Rare fallback for a spawn deep inside solid geometry: search the
+        // authored layout rather than returning an embedded hostile.
+        let mut best = None;
+        let mut distance = f32::INFINITY;
+        for cy in 1..MAP_H-1 { for cx in 1..MAP_W-1 {
+            let (nx, ny) = (cx as f32 + 0.5, cy as f32 + 0.5);
+            let d = (nx-x).powi(2) + (ny-y).powi(2);
+            if d < distance && !self.circle_blocked(nx, ny, radius) {
+                best = Some((nx, ny)); distance = d;
+            }
+        }}
+        best.unwrap_or((x, y))
     }
 
     pub(crate) fn spawn_clear(&mut self, kind: u8, x: f32, y: f32) -> Option<usize> {
@@ -3977,10 +3995,6 @@ impl Engine {
             self.damage_player(dmg);
         }
 
-
-
-        // push enemies out of walls / each other lightly skipped
-
         self.flush_fx();
 
         if self.state == 0 && self.pending_hostiles > 0 {
@@ -3990,12 +4004,7 @@ impl Engine {
                 self.spawn_reinforcement(true);
             }
         }
-        let mut living = self.pending_hostiles.min(i32::MAX as usize) as i32;
-        for e in self.ents.iter() {
-            if e.hp > 0 && is_hostile_kind(e.kind) {
-                living = living.saturating_add(1);
-            }
-        }
+
         if !self.boss_spawned && self.state == 0 {
             if self.boss_intro > 0.0 {
                 let prev = self.boss_intro;
@@ -4010,7 +4019,6 @@ impl Engine {
                     self.boss_intro = 0.0;
                     self.maybe_spawn_boss();
                 }
-                living = 1;
             }
         }
 
@@ -4110,8 +4118,23 @@ impl Engine {
         }
 
 
+        // Door closures, teleports and phase support can alter geometry after AI.
+        // Resolve overlap even for stunned enemies before publishing the frame.
+        for i in 0..ENT_N {
+            let en = self.ents[i];
+            if en.hp > 0 && is_hostile_kind(en.kind) && self.circle_blocked(en.x, en.y, en.radius) {
+                let (x, y) = self.nearest_open(en.x, en.y, en.radius);
+                self.ents[i].x = x; self.ents[i].y = y;
+                self.ents[i].vx = 0.0; self.ents[i].vy = 0.0;
+            }
+        }
+
         self.tick_boss_arena(dt);
 
+        // Count after boss spawning and phase support, including queued endless arrivals.
+        let living = (map::living_hostiles(self) + self.pending_hostiles)
+            .saturating_add(usize::from(!self.boss_spawned && self.boss_intro > 0.0))
+            .min(i32::MAX as usize) as i32;
         let mut prompt = 0;
         let fx = self.px + self.pa.cos();
         let fy = self.py + self.pa.sin();
@@ -5584,6 +5607,9 @@ pub extern "C" fn hs_load_run() {
 pub extern "C" fn hs_map_ptr() -> *const u8 {
     eng().map.as_ptr()
 }
+
+#[no_mangle]
+pub extern "C" fn hs_door_ptr() -> *const f32 { eng().door.as_ptr() }
 
 #[no_mangle]
 pub extern "C" fn hs_map_w() -> i32 { MAP_W as i32 }

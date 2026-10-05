@@ -1,3 +1,5 @@
+import { normalizeSensitivity } from "./input-settings";
+import { automapCells } from "./automap-data";
 import BOSS_ARENAS from "./boss-arena-data.json";
 import { SECTOR_ENEMIES } from "./sector-enemies";
 import { SECTOR_SLUGS, SECTOR_SURFACES } from "./sector-assets";
@@ -65,6 +67,8 @@ import { bossDeathVariantForWave, type RunSave } from "@/components/game/data";
 
 export { HUD_SIZE };
 
+type MapSnapshot = { width: number; height: number; map: number[]; doors: number[]; x: number; y: number; nodeX: number; nodeY: number; enemies: EnemyCue[] };
+
 type WasmExports = {
   memory: WebAssembly.Memory;
   hs_init: (w: number, h: number) => number;
@@ -122,6 +126,7 @@ type WasmExports = {
   hs_load_ptr: () => number;
   hs_load_run: () => void;
   hs_map_ptr: () => number;
+  hs_door_ptr: () => number;
   hs_map_w: () => number;
   hs_map_h: () => number;
 };
@@ -612,7 +617,7 @@ export class BlacksiteRuntime {
   }
 
   setSens(v: number) {
-    this.sens = v;
+    this.sens = normalizeSensitivity(v);
   }
 
   setEnemyOptions(options: EnemyOptions) {
@@ -859,11 +864,11 @@ export class BlacksiteRuntime {
   readMap(): Uint8Array | null {
     const wasm = this.wasm;
     if (!wasm) return null;
-    return new Uint8Array(
-      wasm.memory.buffer,
-      wasm.hs_map_ptr(),
-      wasm.hs_map_w() * wasm.hs_map_h(),
-    ).slice();
+    const count = wasm.hs_map_w() * wasm.hs_map_h();
+    return automapCells(
+      new Uint8Array(wasm.memory.buffer, wasm.hs_map_ptr(), count),
+      new Float32Array(wasm.memory.buffer, wasm.hs_door_ptr(), count),
+    );
   }
 
   getEnemies(): EnemyCue[] {
@@ -1449,6 +1454,17 @@ export class BlacksiteRuntime {
       visitSecret: () => { this.qaOn=true;this.wasm?.hs_qa(this.qaBits,1);this.wasm?.hs_qa_tactical(0,0); },
       visitMachinery: (index=0) => { this.qaOn=true;this.wasm?.hs_qa(this.qaBits,1);this.wasm?.hs_qa_tactical(1,index); },
       getSecrets: () => this.hud.secrets,
+      getMapState: () => {
+        const w = this.wasm;
+        if (!w) return null;
+        const width = w.hs_map_w(), height = w.hs_map_h(), count = width * height;
+        return { width, height,
+          map: Array.from(new Uint8Array(w.memory.buffer, w.hs_map_ptr(), count)),
+          doors: Array.from(new Float32Array(w.memory.buffer, w.hs_door_ptr(), count)),
+          x: this.hud.x, y: this.hud.y, nodeX: this.hud.nodeX, nodeY: this.hud.nodeY,
+          enemies: this.lastEnemies,
+        };
+      },
       nextWave: () => this.nextWave(),
     };
   }
@@ -1503,6 +1519,7 @@ declare global {
       visitSecret?: () => void;
       visitMachinery?: (index?: number) => void;
       getSecrets?: () => number;
+      getMapState?: () => MapSnapshot | null;
       nextWave?: () => void;
     };
   }

@@ -28,7 +28,7 @@ export function HudBar({
           <strong>{missionLine(hud)}</strong>
         </div>
       </div>
-      <div className="hud-threat">
+      <div className="hud-threat" aria-label="Remaining hostiles" title="Living enemies and incoming reinforcements">
         <Crosshair size={15} />
         <b>{hud.living}</b>
         <span>HOSTILES</span>

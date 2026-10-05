@@ -42,3 +42,23 @@ describe("enemy sprite alpha key", () => {
     assert.equal(data[armor], 255);
   });
 });
+
+import { normalizeSensitivity } from "./input-settings.ts";
+import { automapCells } from "./automap-data.ts";
+
+describe("input and minimap contracts", () => {
+  it("supports both sensitivity endpoints and clamps legacy saved values", () => {
+    assert.equal(normalizeSensitivity("0.1"), 0.1);
+    assert.equal(normalizeSensitivity(3), 3);
+    assert.equal(normalizeSensitivity("3.5"), 3);
+    assert.equal(normalizeSensitivity(0), 0.1);
+    assert.equal(normalizeSensitivity(null), 1.4);
+    assert.equal(normalizeSensitivity("bad"), 1.4);
+  });
+  it("preserves layout coordinates while displaying hazard floor and open doors as floor", () => {
+    const map = Uint8Array.from([1, 0, 10, 8, 8, 9, 9, 2]);
+    const doors = Float32Array.from([0, 0, 0, .97, 1, 0, 1, 0]);
+    assert.deepEqual([...automapCells(map, doors)], [1, 0, 0, 8, 0, 9, 0, 2]);
+    assert.deepEqual([...map], [1, 0, 10, 8, 8, 9, 9, 2]);
+  });
+});

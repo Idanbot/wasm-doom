@@ -1,3 +1,4 @@
+import { DEFAULT_SENSITIVITY, SENSITIVITY_MIN, SENSITIVITY_MAX } from "@/game/input-settings";
 import { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { SlidersHorizontal, X, Volume2, Monitor, Mouse, Captions, RotateCcw } from "lucide-react";
@@ -96,7 +97,7 @@ export function Settings(p: SettingsProps) {
   const [tab, setTab] = useState<string>("audio");
   const reset = () => {
     p.setVol({ ...DEFAULT_VOL });
-    p.setSens(1.4);
+    p.setSens(DEFAULT_SENSITIVITY);
     p.setGfx({ ...DEFAULT_GFX });
     p.setRes(DEFAULT_RES);
     p.setRequireGpu(false);
@@ -240,8 +241,8 @@ export function Settings(p: SettingsProps) {
                 <Slider
                   label="Look sensitivity"
                   value={p.sens}
-                  min={0.5}
-                  max={3.5}
+                  min={SENSITIVITY_MIN}
+                  max={SENSITIVITY_MAX}
                   step={0.05}
                   display={`${p.sens.toFixed(2)}×`}
                   onChange={p.setSens}

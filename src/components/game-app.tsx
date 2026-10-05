@@ -1,3 +1,4 @@
+import { DEFAULT_SENSITIVITY, normalizeSensitivity } from "@/game/input-settings";
 import { machineryHint } from "./game/data";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { asset } from "@/lib/asset";
@@ -75,10 +76,9 @@ export function GameApp() {
   const [res, setRes] = useState<ResMode>(loadRes);
   const [sens, setSens] = useState(() => {
     try {
-      const n = Number(localStorage.getItem("blacksite-sensitivity"));
-      return n >= 0.5 && n <= 3.5 ? n : 1.4;
+      return normalizeSensitivity(localStorage.getItem("blacksite-sensitivity"));
     } catch {
-      return 1.4;
+      return DEFAULT_SENSITIVITY;
     }
   });
   const [muted, setMuted] = useState(false);
