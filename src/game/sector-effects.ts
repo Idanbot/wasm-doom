@@ -1,3 +1,4 @@
+import bossProfiles from "./boss-arena-data.json" with { type: "json" };
 import { SECTOR_SLUGS } from "./sector-assets.ts";
 
 /** A quiet visual signature and a licensed non-vocal sound accent for every sector. */
@@ -36,23 +37,41 @@ export function sectorEffect(wave: number) {
     color: [0, 2, 4].map(i => parseInt(hex.slice(i, i + 2), 16) / 255) };
 }
 
+export type Entrance = { x: number; y: number; depth: number; phase: number; style: number; color: number[] };
+
 export type Shockwave = { x: number; y: number; radius: number; depth: number; strength: number };
 
 /** Simulation time freezes with pause; four recent explosions bound GPU work. */
 export class WorldEffects {
   time = 0;
   private wave = 0;
+  private entrance: {x:number;y:number;age:number;duration:number;style:number} | null = null;
   private nextAccent = 3;
   private shocks: { x: number; y: number; age: number }[] = [];
-  reset() { this.time = 0; this.wave = 0; this.nextAccent = 3; this.shocks = []; }
+  reset() { this.time = 0; this.wave = 0; this.nextAccent = 3; this.shocks = []; this.entrance = null; }
   tick(dt: number, wave: number): boolean {
     if (wave !== this.wave) { this.reset(); this.wave = wave; }
     this.time += dt;
+    if (this.entrance) {this.entrance.age += dt;if(this.entrance.age>=this.entrance.duration)this.entrance=null;}
     for (const s of this.shocks) s.age += dt;
     this.shocks = this.shocks.filter(s => s.age < .75);
     if (this.time < this.nextAccent) return false;
     this.nextAccent = this.time + sectorEffect(wave).interval;
     return true;
+  }
+  bossEntrance(x:number,y:number,variant:number) {
+    const style=Math.floor(variant/5),stage=variant%5;
+    // Cues are emitted for five stages. Only the first starts the clock.
+    if(stage===0)this.entrance={x,y,age:0,duration:bossProfiles[style]?.introSeconds??6,style};
+  }
+  projectEntrance(player:{x:number;y:number;yaw:number},aspect:number):Entrance|undefined {
+    const e=this.entrance;if(!e)return;
+    const dx=e.x-player.x,dy=e.y-player.y,c=Math.cos(player.yaw),s=Math.sin(player.yaw);
+    const depth=dx*c+dy*s;if(depth<.18)return;
+    const x=.5+(-s*dx+c*dy)/depth/(.72*aspect/1.6)*.5;
+    if(x<-.5||x>1.5)return;
+    return {x,y:.5,depth:Math.min(depth/28,1),phase:e.age/e.duration,
+      style:e.style,color:[0,2,4].map(i=>parseInt((bossProfiles[e.style]?.color??"ffffff").slice(i,i+2),16)/255)};
   }
   explosion(x: number, y: number) {
     this.shocks.push({ x, y, age: 0 });

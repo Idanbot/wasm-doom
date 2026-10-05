@@ -91,6 +91,7 @@ export function worldIntent(kind: number, variant = 0): SoundIntent | null {
       12: "hazard-ember",
       21: "empty",
       22: "ui-error",
+      24: variant % 5 === 0 ? `sector-${Math.floor(variant/5)+1}` : ["hazard-electric","hit-metal","hazard-acid","hazard-electric","explosion"][variant%5]!,
       23: variant === 1 ? "casing-shell" : "casing-brass",
       13: variant === 3 ? "hazard-acid" : variant === 1 ? "hazard-electric" : "hit-stone",
     } as Record<number, string>
@@ -99,7 +100,7 @@ export function worldIntent(kind: number, variant = 0): SoundIntent | null {
     ? {
         id,
         gain: kind === 2 ? 0.75 : kind === 23 ? 0.24 : 0.65,
-        rate: kind === 1 && variant === 1 ? 0.9 : 1,
+        rate: kind === 24 ? .8+(Math.floor(variant/5)%7)*.055 : kind === 1 && variant === 1 ? 0.9 : 1,
         group: kind === 12 ? "hazard" : "world",
       }
     : null;

@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { chromium } from "playwright";
 
-test("WebGPU effect shader and 160-byte uniform layout validate", async (t) => {
+test("WebGPU effect shader and 192-byte uniform layout validate", async (t) => {
   const browser = await chromium.launch({headless:true,args:["--enable-unsafe-webgpu","--use-angle=swiftshader"]});
   try {
     const page = await browser.newPage();
@@ -21,7 +21,7 @@ test("WebGPU effect shader and 160-byte uniform layout validate", async (t) => {
       const layout = device.createBindGroupLayout({entries:[
         {binding:0,visibility:GPUShaderStage.FRAGMENT,texture:{sampleType:"float"}},
         {binding:1,visibility:GPUShaderStage.FRAGMENT,texture:{sampleType:"float"}},
-        {binding:2,visibility:GPUShaderStage.FRAGMENT,buffer:{type:"uniform",minBindingSize:160}},
+        {binding:2,visibility:GPUShaderStage.FRAGMENT,buffer:{type:"uniform",minBindingSize:192}},
       ]});
       const pipeline = await device.createRenderPipelineAsync({layout:device.createPipelineLayout({bindGroupLayouts:[layout]}),
         vertex:{module:shader,entryPoint:"vs"},fragment:{module:shader,entryPoint:"fs",targets:[{format:"bgra8unorm"}]}});
@@ -64,13 +64,17 @@ test("GPU refraction respects depth; lit dust responds to muzzle light; HD casin
         framePixels.push(visible);
       }
       }
+      const entrance={x:.5,y:.5,phase:.5,style:3,depth:.2,color:[.2,.8,1]};
+      const entryFront=read({...base,entrance});
+      const entryBehind=read({...base,entrance:{...entrance,depth:.9}});
       // Leave the effect frame visible for inspection.
       read({...base,sector:15,muzzle:.4,shocks:[{x:.5,y:.5,radius:.24,depth:.2,strength:1}]});
-      return {kind:b.kind,error:gl.getError(),front:diff(a,front),behind:diff(a,behind),dust:diff(a,dust),lit:diff(flash,lit),framePixels,border};
+      return {kind:b.kind,error:gl.getError(),entryFront:diff(a,entryFront),entryBehind:diff(a,entryBehind),front:diff(a,front),behind:diff(a,behind),dust:diff(a,dust),lit:diff(flash,lit),framePixels,border};
     });
     await page.screenshot({path:"screenshots/worldfx-renderer.png"});
     assert.equal(result.kind,"webgl2");assert.equal(result.error,0);
     assert.ok(result.front>1000,JSON.stringify(result));assert.equal(result.behind,0);
+    assert.ok(result.entryFront>1000,JSON.stringify(result));assert.equal(result.entryBehind,0);
     assert.ok(result.dust>1000);assert.ok(result.lit>result.dust);
     assert.ok(result.framePixels.every(n=>n>6000));assert.equal(result.border,0);
     assert.deepEqual(errors,[]);
@@ -104,4 +108,31 @@ test("actual gameplay preloads new clips, plays casing landings and sector ambie
     assert.equal(await page.evaluate(()=>window.__controlsTest.getSfxAudio().active),0);
     assert.deepEqual(errors,[]);
   } finally {await browser.close();}
+});
+
+
+test("boss entrance preloads eight effects, advances five stages and freezes when paused",async()=>{
+  const browser=await chromium.launch({headless:true});
+  try {
+    const page=await browser.newPage({viewport:{width:1280,height:800}}),errors=[];
+    page.on("pageerror",e=>errors.push(e.message));
+    await page.addInitScript(()=>{localStorage.setItem("blacksite-res","320");performance.setResourceTimingBufferSize(5000);});
+    const url=new URL(process.env.BLACKSITE_TEST_URL??"http://127.0.0.1:8080/");url.searchParams.set("qa","1");
+    await page.goto(url.href,{waitUntil:"domcontentloaded"});
+    await page.waitForFunction(()=>window.__controlsTest&&document.body.innerText.includes("HEALTH"),null,{timeout:120000});
+    const loaded=await page.evaluate(()=>performance.getEntriesByType("resource").filter(e=>/boss-entry-\d\.png/.test(e.name)).map(e=>e.name));
+    assert.equal(new Set(loaded).size,8);
+    await page.evaluate(()=>{window.__controlsTest.heal();window.__controlsTest.visitObjective();window.__controlsTest.triggerBoss(-1);});
+    await page.waitForFunction(()=>window.__controlsTest.getWorldEffects().entrance?.phase>.1,null,{timeout:15000});
+    await page.screenshot({path:"screenshots/boss-entrance-1.png"});
+    await page.evaluate(()=>window.__controlsTest.setKeys([]));await page.keyboard.press("p");
+    await page.getByRole("heading",{name:"Operation paused"}).waitFor();
+    const frozen=await page.evaluate(()=>window.__controlsTest.getWorldEffects().entrance?.phase);
+    await page.waitForTimeout(300);assert.equal(await page.evaluate(()=>window.__controlsTest.getWorldEffects().entrance?.phase),frozen);
+    await page.keyboard.press("p");
+    await page.waitForFunction(()=>window.__controlsTest.getEnemies().some(e=>e.skin===12&&e.hp>0),null,{timeout:30000});
+    await page.waitForFunction(()=>!window.__controlsTest.getWorldEffects().entrance,null,{timeout:15000});
+    assert.ok(await page.evaluate(()=>window.__controlsTest.getEnemies().filter(e=>e.skin===37&&e.hp>0).length>=2));
+    assert.deepEqual(errors,[]);
+  }finally{await browser.close();}
 });

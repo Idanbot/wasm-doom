@@ -1,0 +1,104 @@
+{
+  "provider": "native-imagegen",
+  "source": "art/boss-entry-v1/source.png",
+  "sourceSha256": "801c859fde678860dc65a8ecce9e4e072560287cabbc734fcddf125c405fb3c6",
+  "nativeSize": [
+    1774,
+    887
+  ],
+  "grid": [
+    4,
+    2
+  ],
+  "prompt": "BLACKSITE native-alpha 4x2 atlas: lightning, ice, spores, laser flare, plasma, phase shards, metallic sparks, vapor; photorealistic volumetric detail; transparent padding; no scenery or text.",
+  "assets": [
+    {
+      "name": "Lightning knot",
+      "file": "public/game/fx/boss-entry-0.png",
+      "sha256": "ba889e46492f82bd50ec849088d2b0cf3664e570eba614bcb4b4508d2bc087d6",
+      "size": [
+        1024,
+        1024
+      ],
+      "textureSlot": 806,
+      "alpha": "native"
+    },
+    {
+      "name": "Ice shatter",
+      "file": "public/game/fx/boss-entry-1.png",
+      "sha256": "b9f25740f3fc77939cf90ac2a8d952f29f2a639a261a2ce6c3ea536a6d3c23d4",
+      "size": [
+        1024,
+        1024
+      ],
+      "textureSlot": 807,
+      "alpha": "native"
+    },
+    {
+      "name": "Spore plume",
+      "file": "public/game/fx/boss-entry-2.png",
+      "sha256": "8b82ab1cf9fdbdd0a46bd8ba0f1b9462e3aaabd283195b1ea297957cdde4486a",
+      "size": [
+        1024,
+        1024
+      ],
+      "textureSlot": 808,
+      "alpha": "native"
+    },
+    {
+      "name": "Laser flare",
+      "file": "public/game/fx/boss-entry-3.png",
+      "sha256": "f438f16dbf9d46ea0c63fc978786b82aed40fbbe1fdaf95ca528176a7b3afdd5",
+      "size": [
+        1024,
+        1024
+      ],
+      "textureSlot": 809,
+      "alpha": "native"
+    },
+    {
+      "name": "Plasma corona",
+      "file": "public/game/fx/boss-entry-4.png",
+      "sha256": "622196df00f26cabb8cc9bf3ae17dc0fe4ba46512d71110b88e5f84731c0eac7",
+      "size": [
+        1024,
+        1024
+      ],
+      "textureSlot": 810,
+      "alpha": "native"
+    },
+    {
+      "name": "Phase fracture",
+      "file": "public/game/fx/boss-entry-5.png",
+      "sha256": "cb013e7a4bb914b075f9e9eaf5433f6276af43486ad4d19fdaedaed828d3e710",
+      "size": [
+        1024,
+        1024
+      ],
+      "textureSlot": 811,
+      "alpha": "native"
+    },
+    {
+      "name": "Metal sparks",
+      "file": "public/game/fx/boss-entry-6.png",
+      "sha256": "96fb90c7b4076a21ca7cf05eeaa350a0239dcc088c443db32956a4b0b0483b9f",
+      "size": [
+        1024,
+        1024
+      ],
+      "textureSlot": 812,
+      "alpha": "native"
+    },
+    {
+      "name": "Pressure vapor",
+      "file": "public/game/fx/boss-entry-7.png",
+      "sha256": "f3cd4621a2775c5fde52461d5cfc23ed3c9445655cd7dddc37711c6fb3d9f3ea",
+      "size": [
+        1024,
+        1024
+      ],
+      "textureSlot": 813,
+      "alpha": "native"
+    }
+  ]
+}

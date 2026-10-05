@@ -37,6 +37,7 @@ import {
   T_ENEMY_PROJECTILE,
   T_BOSS_PROJECTILE,
   T_BOSS_ARENA,
+  T_BOSS_ENTRANCE,
   T_CASING,
   T_CASING_SHELL,
   T_PLAYER_MISSILE,
@@ -335,6 +336,7 @@ const TEX_FILES: { id: number; src: string }[] = [
       src: `/game/enemy_${skin}_${animation}.png`,
     })),
   ),
+  ...Array.from({length:8},(_,i)=>({id:T_BOSS_ENTRANCE+i,src:`/game/fx/boss-entry-${i}.png`})),
   { id: T_CASING, src: "/game/fx/casing-hd.png" },
   { id: T_CASING_SHELL, src: "/game/fx/shell-hd.png" },
 ];
@@ -1354,6 +1356,7 @@ export class BlacksiteRuntime {
       const soundCount = wasm.hs_sound_count();
       const soundData = new Float32Array(wasm.memory.buffer, wasm.hs_sound_cues(), soundCount * 4);
       for (let n = 0; n < soundCount; n++) {
+        if (soundData[n * 4] === 24) this.worldEffects.bossEntrance(soundData[n*4+2]!,soundData[n*4+3]!,soundData[n*4+1]!);
         if (soundData[n * 4] === 2) this.worldEffects.explosion(soundData[n * 4 + 2]!, soundData[n * 4 + 3]!);
         this.audio.world(
           soundData[n * 4]!,
@@ -1419,7 +1422,7 @@ export class BlacksiteRuntime {
     const w = wasm.hs_fb_w();
     const h = wasm.hs_fb_h();
     const fx = { muzzle: hud.muzzle, hurt: hud.hurt, time: this.worldEffects.time, boss,
-      sector: hud.wave, yaw: hud.yaw, shocks: this.worldEffects.project(hud, w / h) };
+      entrance: this.worldEffects.projectEntrance(hud,w/h), sector: hud.wave, yaw: hud.yaw, shocks: this.worldEffects.project(hud, w / h) };
     let presented = false;
     if (this.gpuReady && blit.drawWorld) {
       wasm.hs_prepare_gpu();
@@ -1508,7 +1511,7 @@ export class BlacksiteRuntime {
       getEnemyAudio: () => this.audio.enemyDiagnostics(),
       getSfxAudio: () => this.audio.sfxDiagnostics(),
       getWorldEffects: () => ({ time: this.worldEffects.time, wave: this.hud.wave,
-        signature: sectorEffect(this.hud.wave).name }),
+        signature: sectorEffect(this.hud.wave).name, entrance:this.worldEffects.projectEntrance(this.hud,1.6) }),
       getEnemies: () => this.lastEnemies.map((e) => ({ ...e })),
       getYaw: () => this.wasm?.hs_yaw() ?? 0,
       getSpeed: () => this.wasm?.hs_speed() ?? 0,
@@ -1604,7 +1607,7 @@ declare global {
     __controlsTest?: {
       getEnemyAudio: () => ReturnType<GameAudio["enemyDiagnostics"]>;
       getSfxAudio: () => ReturnType<GameAudio["sfxDiagnostics"]>;
-      getWorldEffects: () => { time: number; wave: number; signature: string };
+      getWorldEffects: () => { time: number; wave: number; signature: string; entrance?: ReturnType<WorldEffects["projectEntrance"]> };
       getEnemies?: () => EnemyCue[];
       getYaw: () => number;
       getSpeed: () => number;

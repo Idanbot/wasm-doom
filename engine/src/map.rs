@@ -882,6 +882,7 @@ pub(crate) fn place_level(e: &mut Engine) {
     e.announce_sector();
     split_barrels(e);
     e.replace_owned_weapon_drops();
+    e.recover_basic_weapons();
 }
 
 /// Three exclusive breakable machinery types in every sector, placed in open
@@ -1160,4 +1161,12 @@ mod tests {
             assert!(boss_spots(wave).iter().all(|spot| *spot != override_point(wave)));
         }
     }
+}
+
+/// Interior of the authored arrival room, including its doorway buffer.
+pub(crate) fn in_spawn_room(wave: i32, x: f32, y: f32) -> bool {
+    let (rx,ry,w,h)=if let Some(layout)=crate::layouts::layout(wave) {layout.rooms[0]}
+        else {[(1,12,11,8),(1,3,10,8),(1,12,10,8),(1,2,11,9),(1,20,12,10),
+               (1,12,11,9),(1,2,11,9),(1,20,11,10),(1,12,11,9)][level_index(wave)]};
+    x>=rx as f32-0.5 && x<=(rx+w) as f32+0.5 && y>=ry as f32-0.5 && y<=(ry+h) as f32+0.5
 }

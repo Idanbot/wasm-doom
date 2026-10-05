@@ -366,6 +366,8 @@ fn sprite_style(e: &Ent) -> (usize, f32, bool, i32) {
             return (T_FLAME, 0.22 + e.frame.min(0.8) * 0.4, true, 1);
         },
         EK_FLAME | EK_FIREPATCH => return (T_FLAME, 0.58 + (e.frame * 7.0).sin() * 0.035, true, 0),
+        EK_SPARK if (16.0..24.0).contains(&e.effect_tick) =>
+            return (T_BOSS_ENTRANCE+(e.effect_tick as usize-16),0.28+e.frame*0.35,false,0),
         EK_SPARK if e.effect_tick == 5.0 => return (if e.skin == 1 { T_CASING_SHELL } else { T_CASING }, 0.12, true,
             if e.shield >= 3 { 0 } else { ((e.frame * 18.0) as i32).rem_euclid(4) }),
         EK_SPARK => return if e.effect_tick < 4.0 {
@@ -761,20 +763,37 @@ impl Engine {
     fn boss_intro_effect(&mut self, stage: u8) {
         let sector=map::level_index(self.wave);
         let (x,y)=map::boss_spots(self.wave)[0];
-        let radius=1.0+stage as f32*1.25;
-        let count=6+(sector%7)*2;
-        for n in 0..count {
-            let angle=n as f32*core::f32::consts::TAU/count as f32+sector as f32*0.21;
-            let spread=if matches!(sector,3|9|17) {if n%2==0 {0.7}else{2.2}} else {radius};
-            self.spawn_timed(EK_SPARK,x+angle.cos()*spread,y+angle.sin()*spread,0.55,-14.0);
+        let progress=stage as f32/4.0;
+        // Each boss has its own ray count, rotation, radius and particle family.
+        // Ray marches stop at solid geometry; entrances never shine through walls.
+        let rays=3+sector%6;
+        let rotation=sector as f32*0.43+progress*(1.1+sector as f32*0.08);
+        let radius=1.0+(1.0-progress)*(2.0+sector as f32*0.07);
+        for ray in 0..rays {
+            let angle=rotation+ray as f32*core::f32::consts::TAU/rays as f32;
+            for step in 1..=6 {
+                let r=radius*step as f32/6.0;
+                let theta=angle+if sector%5==2 {r*0.75+progress*2.0} else {0.0};
+                let (dx,dy)=match sector%5 {
+                    1=>((if ray%2==0 {-1.0}else{1.0})*(radius-progress), (step as f32-3.5)*0.65),
+                    3=>((ray as f32-(rays-1) as f32*0.5)*0.6,(step as f32-3.5)*radius/3.0),
+                    4=>(angle.cos()*radius,angle.sin()*radius),
+                    _=>(theta.cos()*r,theta.sin()*r),
+                };
+                let distance=(dx*dx+dy*dy).sqrt().max(0.01);
+                let reach=(self.wall_distance(x,y,dx/distance,dy/distance,distance)-0.16).max(0.0);
+                if reach<0.1 {continue;}
+                let (sx,sy)=(x+dx*reach/distance,y+dy*reach/distance);
+                if self.blocked(sx.floor() as i32,sy.floor() as i32) || !self.los(x,y,sx,sy) {continue;}
+                let family=[6,1,2,3,4,5,1,0,6,7,5,6,7,3,4,3,2,0,7,5,4,7,5,1,0][sector];
+                self.effect(EK_SPARK,16+family,sx,sy,0.3+progress*0.35,
+                    self.h as f32*(-0.28+step as f32*0.07));
+            }
         }
-        if matches!(sector,4|6|12|21|23) {
-            self.spawn_smoke_cloud(x-1.3,y);
-            self.spawn_smoke_cloud(x+1.3,y);
-        }
-        if matches!(sector,2|16) {self.effect(EK_IMPACT,3,x,y,0.6,4.0);}
-        self.shake=(self.shake+if matches!(sector,0|8|9|18|24) {0.25+stage as f32*0.15}else{0.10}).min(0.7);
-        if stage==0 {self.events|=EV_BOSS_HUSH;} else {self.events|=EV_DOOR;self.sound(1,0,x,y);}
+        self.shake=(self.shake+0.06+progress*0.16).min(0.65);
+        self.sound(24,(sector*5+stage as usize) as u8,x,y);
+        if stage==0 {self.events|=EV_BOSS_HUSH;}
+        if stage==4 {self.hell=true;self.events|=EV_DOOR;}
     }
 
     fn room(&mut self, x: i32, y: i32, w: i32, h: i32, wall: u8, fl: u8) {
@@ -1675,7 +1694,7 @@ impl Engine {
                 _ => (1, 0.1, 0.0),
             };
             *e = Ent {
-                aim: 0.0,
+                aim: if f.kind == EK_SPARK && f.variant == 5 { 1.6 } else { 0.0 },
                 kind: f.kind,
                 x: f.x,
                 y: f.y,
@@ -1691,7 +1710,7 @@ impl Engine {
                 projectile_visual: f.projectile_visual,
                 radius,
                 flash: 0.0,
-                stun: 0.0,
+                stun: if f.kind == EK_SPARK && f.variant == 5 { 0.74 } else { 0.0 },
                 effect_tick: f.variant as f32,
                 shield: 0,
                 face: 0.0,
@@ -1831,6 +1850,46 @@ impl Engine {
         }
     }
 
+    /// Relocate authored threats outside the arrival room and doorway buffer.
+    fn safe_arrival_point(&self,x:f32,y:f32,radius:f32)->(f32,f32) {
+        let mut position = self.nearest_open(x, y, radius);
+        if map::in_spawn_room(self.wave, position.0, position.1) {
+            let mut best=None;
+            for cy in 1..MAP_H-1 { for cx in 1..MAP_W-1 {
+                let (sx,sy)=(cx as f32+0.5,cy as f32+0.5);
+                if map::in_spawn_room(self.wave,sx,sy) || self.circle_blocked(sx,sy,radius) {continue;}
+                let distance=(sx-x).powi(2)+(sy-y).powi(2);
+                if best.map_or(true,|(d,_,_)|distance<d) {best=Some((distance,sx,sy));}
+            }}
+            if let Some((_,sx,sy))=best {position=(sx,sy);}
+            // Fully synthetic test arenas may have no outside floor.
+        }
+        position
+    }
+
+
+    /// Missing starting weapons remain recoverable in later sectors.
+    fn recover_basic_weapons(&mut self) {
+        if self.wave<=1 {return;}
+        let kinds=[EK_GUN2,EK_GUN3,EK_GUN4,EK_GUN5,EK_GUN6,EK_GUN7];
+        let owned=[self.has_w2,self.has_w3,self.has_w4,self.has_w5,self.has_w6,self.has_w7];
+        for e in &mut self.ents {if kinds.contains(&e.kind) {e.kind=EK_NONE;}}
+        let mut cells=Vec::new();
+        for y in 1..MAP_H-1 {for x in 1..MAP_W-1 {
+            let (x,y)=(x as f32+0.5,y as f32+0.5);
+            if !map::in_spawn_room(self.wave,x,y) && !self.circle_blocked(x,y,0.35)
+                && self.ents.iter().all(|e| e.kind==EK_NONE || (e.x-x).powi(2)+(e.y-y).powi(2)>2.25) {
+                cells.push((x,y));
+            }
+        }}
+        for (i,&kind) in kinds.iter().enumerate() {
+            if owned[i] || cells.is_empty() {continue;}
+            let choice=(self.rnd()*cells.len() as f32) as usize % cells.len();
+            let (x,y)=cells.swap_remove(choice);self.spawn(kind,x,y);
+            cells.retain(|&(sx,sy)|(sx-x).powi(2)+(sy-y).powi(2)>16.0);
+        }
+    }
+
     fn spawn_hostiles(&mut self, mult: i32) {
         let roster = map::hostiles(self.wave).len();
         self.pending_hostiles = if self.wave > 25 { campaign::hostile_total(self.wave, roster) }
@@ -1861,14 +1920,14 @@ impl Engine {
         if telegraph && self.outage_at(x,y,2) {
             self.pending_hostiles-=1;self.reinforcement_cursor=self.reinforcement_cursor.saturating_add(1);return true;
         }
-        if self.reinforcement_cursor % roster.len() == 0 {
+        if (self.reinforcement_cursor % roster.len()) % 2 == 0 {
             (kind, packed) = enemies::sector_spawn(self.wave, packed);
         }
         let copy = self.reinforcement_cursor / roster.len();
         let jx = if copy == 0 { 0.0 } else { (self.rnd() - 0.5) * 2.2 };
         let jy = if copy == 0 { 0.0 } else { (self.rnd() - 0.5) * 2.2 };
         let radius = enemy_def(kind).map(|d| d.radius).unwrap_or(0.28);
-        let (sx, sy) = self.nearest_open(x + jx, y + jy, radius);
+        let (sx, sy) = self.safe_arrival_point(x + jx, y + jy, radius);
         if telegraph && (sx - self.px).powi(2) + (sy - self.py).powi(2) < 49.0 { return false; }
         let Some(i) = self.spawn_with_skin(kind, field::visual_skin(packed), sx, sy) else { return false; };
         if field::is_shielded_spawn(packed) { self.arm_shield(i); }
@@ -2036,7 +2095,9 @@ impl Engine {
             5 => [(EK_WRAITH, SKIN_MARKSMAN, -2.4, -1.6), (EK_HUSK, SKIN_RIFLEMAN, 2.4, -1.6), (EK_WRAITH, SKIN_HORNET, -2.8, 1.8), (EK_BRUTE, SKIN_GUNNER, 2.8, 1.8)],
             _ => [(EK_WRAITH, SKIN_HORNET, -2.4, -1.6), (EK_WRAITH, SKIN_MARKSMAN, 2.4, -1.6), (EK_HUSK, SKIN_RIFLEMAN, -2.8, 1.8), (EK_BRUTE, SKIN_LOADER, 2.8, 1.8)],
         };
-        for &(kind, skin, ox, oy) in &escorts[..(2 + self.wave.min(2) as usize)] {
+        for (n,&(kind, skin, ox, oy)) in escorts[..(2 + self.wave.min(2) as usize)].iter().enumerate() {
+            let (kind,skin)=if n%2==0 {enemies::sector_spawn(self.wave,skin)} else {(kind,skin)};
+            let skin=field::visual_skin(skin);
             let x = entry.0 + ox;
             let y = entry.1 + oy;
             if !self.blocked(x.floor() as i32, y.floor() as i32) {
@@ -2890,9 +2951,7 @@ impl Engine {
                 self.spread = (self.spread + 0.020).min(0.18);
                 let a = self.pa + (self.rnd() - 0.5) * (0.03 + self.spread);
                 self.hitscan(a, 8, 20.0);
-                if (self.rng & 1) == 0 {
-                    self.eject_casing();
-                }
+                self.eject_casing();
             }
             3 => {
                 self.cooldown = 0.78;
@@ -2935,7 +2994,7 @@ impl Engine {
                 self.spread = (self.spread + 0.014).min(0.17);
                 let a = self.pa + (self.rnd() - 0.5) * (0.035 + self.spread);
                 self.hitscan(a, 7, 24.0);
-                if (self.rng & 3) == 0 { self.eject_casing(); }
+                self.eject_casing();
             }
             7 => {
                 self.cooldown = 0.62;
@@ -3903,25 +3962,22 @@ impl Engine {
                 }
                 EK_IMPACT | EK_SPARK | EK_SMOKE => {
                     if e.kind == EK_SPARK && e.effect_tick == 5.0 {
-                        // aim is vertical velocity for casings; shield counts floor bounces.
+                        // World-space metres: stun stores elevation and aim vertical velocity.
+                        // Gravity is independent of framebuffer resolution and frame rate.
                         let h = self.h as f32;
-                        let old_x = e.x; let old_y = e.y;
-                        e.x += e.vx * dt; e.y += e.vy * dt;
-                        if e.frame <= dt * 1.1 { e.aim = -h * 0.65; }
-                        e.aim += h * 2.4 * dt;
-                        e.zoff += e.aim * dt;
-                        // Visible casing pixels end at 39% below their frame center.
-                        let floor = h * 0.45;
-                        let mut landed = false;
-                        if e.zoff >= floor {
-                            e.zoff = floor;
-                            if e.shield < 3 {
-                                landed = e.aim > h * 0.10;
-                                e.shield += 1;
-                                e.aim = -e.aim * 0.32;
-                                e.vx *= 0.5; e.vy *= 0.5;
-                            } else { e.aim = 0.0; e.vx = 0.0; e.vy = 0.0; }
+                        let old_x=e.x;let old_y=e.y;
+                        e.x+=e.vx*dt;e.y+=e.vy*dt;
+                        let mut landed=false;
+                        if e.shield<3 {
+                            e.aim-=9.8*dt;e.stun+=e.aim*dt;
+                            if e.stun<=0.0 {
+                                e.stun=0.0;landed=e.aim < -0.2;
+                                e.shield+=1;e.aim=-e.aim*0.32;
+                                e.vx*=0.5;e.vy*=0.5;
+                                if e.shield>=3 {e.aim=0.0;e.vx=0.0;e.vy=0.0;}
+                            }
                         }
+                        e.zoff=h*(0.45-e.stun*0.5);
                         e.timer -= dt;
                         if e.timer <= 0.0 { e.kind = EK_NONE; }
                         let (x, y, shell) = (e.x, e.y, e.skin == 1);
@@ -4052,11 +4108,10 @@ impl Engine {
             if self.boss_intro > 0.0 {
                 let prev = self.boss_intro;
                 self.boss_intro -= dt;
-                let half = self.boss_intro_duration() * 0.5;
-                if prev > half && self.boss_intro <= half { self.boss_intro_effect(0); }
-                if prev > 1.0 && self.boss_intro <= 1.0 {
-                    self.hell = true;
-                    self.boss_intro_effect(1);
+                let duration=self.boss_intro_duration();
+                for stage in 0..5 {
+                    let threshold=duration*(1.0-stage as f32*0.2)-0.01;
+                    if prev>threshold && self.boss_intro<=threshold {self.boss_intro_effect(stage);}
                 }
                 if self.boss_intro <= 0.0 {
                     self.boss_intro = 0.0;
@@ -4454,6 +4509,13 @@ impl Engine {
             self.add_light(&mut grid, e.x, e.y, radius, rgb);
             count += 1;
             if count == 28 { break; }
+        }
+        if self.boss_intro>0.0 && !self.boss_spawned {
+            let (x,y)=map::boss_spots(self.wave)[0];
+            let profile=boss_arena::PROFILES[map::level_index(self.wave)];
+            let progress=1.0-self.boss_intro/profile.intro;
+            let intensity=0.2+progress*0.9+(progress*40.0).sin().abs()*0.18;
+            self.add_light(&mut grid,x,y,7.0+progress*4.0,profile.color.map(|v|v*intensity));
         }
         if self.muzzle > 0.05 {
             let power = self.muzzle * if self.weapon == 0 { 0.28 } else { 0.72 };
@@ -5168,6 +5230,8 @@ impl Engine {
                 1.1 + 0.45 * (tnow * 13.0 + e.x).sin().abs()
             } else if matches!(e.kind, EK_FLAME | EK_BOLT | EK_FIREPATCH) {
                 1.3 + 0.45 * (tnow * 18.0 + e.x).sin().abs()
+            } else if e.kind == EK_SPARK && e.effect_tick == 5.0 {
+                1.0
             } else if e.kind == EK_IMPACT || e.kind == EK_SPARK || e.kind == EK_RAY {
                 1.45
             } else {
@@ -5780,6 +5844,11 @@ pub extern "C" fn hs_qa_end(state: i32) {
 pub extern "C" fn hs_qa_boss(phase: i32) {
     let e = eng();
     if !e.qa { return; }
+    if phase<0 {
+        e.boss_spawned=false;e.boss_phase=0;e.boss_intro=e.boss_intro_duration();
+        let (x,y)=map::boss_spots(e.wave)[0];e.pa=(y-e.py).atan2(x-e.px);
+        return;
+    }
     e.boss_spawned = false;
     e.boss_phase = 0;
     e.maybe_spawn_boss();
@@ -7240,7 +7309,7 @@ mod tests {
         e.wave = 5;
         assert_eq!(e.boss_intro_duration(), 5.0);
         e.boss_intro_effect(0);
-        assert!(e.smokes.iter().filter(|smoke| smoke.age >= 0.0).count() >= 2);
+        assert!(e.fx_q[..e.fx_n].iter().any(|fx| fx.variant == 20));
     }
 
     #[test]

@@ -1,6 +1,6 @@
 import { TEX_N, compileShader, createWebGlWorld, createWebGpuWorld, type GpuWorld, type WorldFrame } from "./gpu-world";
 import { DEFAULT_GFX, type GfxOpts } from "./types";
-import { sectorEffect, type Shockwave } from "./sector-effects";
+import { sectorEffect, type Entrance, type Shockwave } from "./sector-effects";
 
 export type BlitKind = "webgpu" | "webgl2" | "canvas2d";
 
@@ -12,6 +12,7 @@ export type BlitFx = {
   sector?: number;
   yaw?: number;
   shocks?: Shockwave[];
+  entrance?: Entrance;
 };
 
 export type Blitter = {
@@ -33,6 +34,10 @@ function writeEffectUniforms(data: Float32Array, fx?: BlitFx) {
     const profile = sectorEffect(fx.sector);
     data.set([...profile.color, profile.kind], 12);
     data.set([0, profile.drift, profile.index + 1, fx.yaw ?? 0], 16);
+  }
+  if(fx?.entrance) {
+    const e=fx.entrance;data.set([e.x,e.y,e.phase,e.depth],40);
+    data.set([...e.color,e.style+1],44);
   }
   for (const [i, s] of (fx?.shocks ?? []).slice(0, 4).entries()) {
     data.set([s.x, s.y, s.radius, s.strength], 20 + i * 4);
@@ -100,6 +105,8 @@ struct Uni {
   motion: vec4<f32>,
   shocks: array<vec4<f32>, 4>,
   shockDepth: vec4<f32>,
+  entrance: vec4<f32>,
+  entranceColor: vec4<f32>,
 };
 @group(0) @binding(0) var fb: texture_2d<f32>;
 @group(0) @binding(1) var bloomTex: texture_2d<f32>;
@@ -205,6 +212,20 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
   let scan = select(1.0, pow(abs(sin(q.y * 55.0 + u.time * drift * 3.0)), 12.0), kind == 3.0 || kind == 7.0);
   let ion = select(1.0, 0.45 + 0.55 * abs(sin(q.x * 16.0 - u.time * drift * 2.0)), kind == 4.0 || kind == 5.0);
   c = vec4<f32>(c.rgb + u.atmosphere.rgb * (mote * twinkle * scan * ion * 0.28 + haze * 0.025) * light * depthMask, depth);
+  if (u.entranceColor.w > 0.0) {
+    let ep = (inp.uv-u.entrance.xy)*vec2<f32>(aspect,1.0);
+    let radius=length(ep);let phase=u.entrance.z;
+    let angle=atan2(ep.y,ep.x);
+    let rays=3.0+u.entranceColor.w%6.0;
+    let jag=sin(radius*95.0+u.time*15.0+u.entranceColor.w)*0.13;
+    let beam=pow(abs(cos((angle+phase*(1.1+u.entranceColor.w*.08)+jag)*rays*.5)),90.0);
+    let ring=exp(-abs(radius-(1.0-phase)*.32)*90.0);
+    let visible=smoothstep(u.entrance.w-.025,u.entrance.w,depth);
+    let fade=sin(phase*3.14159);
+    let energy=(beam*.24+ring*.55)*exp(-radius*3.0)*fade*visible;
+    c=vec4<f32>(c.rgb+u.entranceColor.rgb*energy,depth);
+  }
+
 
 
   if (u.fog > 0.5) {
@@ -274,7 +295,7 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
   let pipeline: GPURenderPipeline | null = null;
   let bloomPipe: GPURenderPipeline | null = null;
   let uniBuf: GPUBuffer | null = null;
-  const uniData = new Float32Array(40);
+  const uniData = new Float32Array(48);
   let tex: GPUTexture[] = [];
   let view: GPUTextureView[] = [];
   let bloomTex: GPUTexture | null = null;
@@ -412,7 +433,7 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
         primitive: { topology: "triangle-list" },
       });
       uniBuf = dev.createBuffer({
-        size: 160,
+        size: 192,
         usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
       });
       world?.dispose();
@@ -605,6 +626,8 @@ uniform vec4 atmosphere;
 uniform vec4 motion;
 uniform vec4 shocks[4];
 uniform vec4 shockDepth;
+uniform vec4 entrance;
+uniform vec4 entranceColor;
 in vec2 v;
 out vec4 o;
 
@@ -682,6 +705,16 @@ void main(){
   float scan = atmosphere.w==3.0||atmosphere.w==7.0?pow(abs(sin(q.y*55.0+time*motion.y*3.0)),12.0):1.0;
   float ion = atmosphere.w==4.0||atmosphere.w==5.0?.45+.55*abs(sin(q.x*16.0-time*motion.y*2.0)):1.0;
   rgb += atmosphere.rgb*(mote*(.45+.55*flicker*flicker)*scan*ion*.28+haze*.025)*light*smoothstep(.015,.12,raw.a);
+  if(entranceColor.w>0.0) {
+    vec2 ep=(v-entrance.xy)*vec2(aspect,1.0);
+    float radius=length(ep),phase=entrance.z;
+    float angle=atan(ep.y,ep.x),rays=3.0+mod(entranceColor.w,6.0);
+    float jag=sin(radius*95.0+time*15.0+entranceColor.w)*.13;
+    float beam=pow(abs(cos((angle+phase*(1.1+entranceColor.w*.08)+jag)*rays*.5)),90.0);
+    float ring=exp(-abs(radius-(1.0-phase)*.32)*90.0);
+    float visible=smoothstep(entrance.w-.025,entrance.w,raw.a);
+    rgb+=entranceColor.rgb*(beam*.24+ring*.55)*exp(-radius*3.0)*sin(phase*3.14159)*visible;
+  }
   o = vec4(rgb, 1.0);
 }
 `;
@@ -723,13 +756,17 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
   const locAtmosphere = gl.getUniformLocation(prog, "atmosphere");
   const locMotion = gl.getUniformLocation(prog, "motion");
   const locShocks = gl.getUniformLocation(prog, "shocks[0]");
+  const locEntrance=gl.getUniformLocation(prog,"entrance");
+  const locEntranceColor=gl.getUniformLocation(prog,"entranceColor");
   const locShockDepth = gl.getUniformLocation(prog, "shockDepth");
-  const effectData = new Float32Array(40);
+  const effectData = new Float32Array(48);
   const uploadEffects = (fx?: BlitFx) => {
     writeEffectUniforms(effectData, fx);
     gl.uniform4fv(locAtmosphere, effectData.subarray(12, 16));
     gl.uniform4fv(locMotion, effectData.subarray(16, 20));
     gl.uniform4fv(locShocks, effectData.subarray(20, 36));
+    gl.uniform4fv(locEntrance,effectData.subarray(40,44));
+    gl.uniform4fv(locEntranceColor,effectData.subarray(44,48));
     gl.uniform4fv(locShockDepth, effectData.subarray(36, 40));
   };
 

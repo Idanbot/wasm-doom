@@ -31,7 +31,7 @@ firing, reload/charge, death and special. One-shot states show every pose and
 hold their last frame; movement and breathing loop. Native transparency avoids
 chroma-key holes in armor. [Enemy art sources and packing](art/enemies-v4/README.md)
 include prompts, hashes and a roster preview. Runtime sheets are 256×256,
-with four 128×128 cells; all 806 world atlas layers preload before play.
+with four 128×128 cells; all 814 world atlas layers preload before play.
 
 ## Sectors and boss rewards
 
@@ -134,7 +134,7 @@ src/components/game/        menus, HUD, arsenal, settings and touch controls
 src/components/catalog/     local-development asset review
 ```
 
-The HUD is a 228-byte Rust `#[repr(C)]` struct decoded with a DataView. Compile-time assertions, a boot-time `hs_hud_size` check and tests guard its layout. Saves cover 33 weapon slots in 300 bytes. Older supported checkpoints pad to the current slot count. The texture atlas has 806 layers.
+The HUD is a 228-byte Rust `#[repr(C)]` struct decoded with a DataView. Compile-time assertions, a boot-time `hs_hud_size` check and tests guard its layout. Saves cover 33 weapon slots in 300 bytes. Older supported checkpoints pad to the current slot count. The texture atlas has 814 layers.
 
 ## Develop
 
@@ -212,7 +212,7 @@ Every sector has a concealed service cache or its existing secret rooms. Scratch
 
 Shoot machinery to use the room tactically. Aim at the sector-specific object to see its name and effect. Coolant slows nearby enemies for six seconds; power equipment disables local shield emitters; network equipment blocks queued arrivals and ambush reinforcements within its circuit. Pressure equipment staggers, biological containment primes targets, fuel explodes dangerously, and supply fixtures yield ammunition and armor. Cover blocks these effects; outages and status effects reset on sector changes.
 
-Prop identities and effects: `src/game/tactical-machinery.json` and `engine/src/tactical_roles.rs`. Systems and tests: `engine/src/tactical.rs`, `scripts/tactical.browser.mjs`, and `scripts/tactical-data.test.mjs`. The HUD/save ABI remains unchanged; the world effects update adds two casing layers to the atlas (806 layers).
+Prop identities and effects: `src/game/tactical-machinery.json` and `engine/src/tactical_roles.rs`. Systems and tests: `engine/src/tactical.rs`, `scripts/tactical.browser.mjs`, and `scripts/tactical-data.test.mjs`. The HUD/save ABI remains unchanged; the world effects update includes two casing layers and eight boss entrance layers (814 layers).
 
 
 Mouse look sensitivity spans **0.1×–3.0×**, with a 0.5× default and saved values clamped to the range. The minimap uses the live 48×32 engine layout; walkable hazard tiles and fully opened doors render as floor. Its player arrow follows the same world axes as movement. The hostile total includes living enemies and queued reinforcements, updates after boss support spawns, and reserves one incoming hostile during a boss introduction. Enemy spawning and post-phase collision checks use each enemy's full radius, including stunned enemies caught by closing doors. Regression checks cover all 25 sectors, both boss phase transitions, movement, and endless arrivals.
@@ -224,3 +224,27 @@ Escape/P pause transitions ignore duplicate toggles for 300 ms. GPU sprites pain
 VLK-6 WARDEN uses a dedicated coaxial rear missile sprite: only the burner nozzle and foreshortened fin tips face the player. Native-alpha source: `art/sector-detail/missile-tactical-rear.png`; live 256×256 texture: `public/game/projectiles/missile_tactical_outgoing.png`. The ordnance atlas and 512×512 catalog effect share this art. `scripts/pack-sector-detail.py` preserves the rear-view override when repacking.
 
 Explosion shockwaves now refract the world with depth occlusion. Fine dust catches scene and muzzle light. Authored HD brass/shotgun shell sheets tumble, bounce with spatial landing sounds, settle, and expire; both preload before play. Each of the 25 maps has its own atmospheric profile and quiet CC0 sound accent. Effects freeze on pause and reset between sectors. See the [world effects asset and sector guide](art/world-fx-v1/README.md) for paths, frame sizes, per-map signatures and regeneration commands.
+
+### Sector arrivals and boss entrances
+
+All 25 authored sectors are checked for distinct room and wall geometry, ignoring
+texture/material changes. The arrival room and its doorway buffer start without
+hostiles. Each sector's dedicated enemy appears at distributed roster locations
+and joins its boss as two themed escorts. Endless runs reuse these authored sectors.
+
+Basic weapons 2–7 missed earlier reappear once each at randomized, clear floor
+locations in subsequent sectors. Owned basic weapons never respawn as gun drops.
+Boss reward ownership and progression are unchanged.
+
+Spent brass and shotgun shells are physical world objects: gravity in world units,
+wall deflection, three diminishing floor bounces, spatial landing sounds, and a
+settled pose before cleanup. A 24-case limit protects combat entity capacity.
+
+Every boss entrance has five timed stages with its own ray geometry, rotation,
+radius, particle family, colored light pulse and pitched spatial sound sequence.
+Eight new native-alpha 1024×1024 effects live in `public/game/fx/boss-entry-*.png`;
+source and generation records are in `art/boss-entry-v1/`. Beam particles stop at
+walls, dynamic illumination uses world line-of-sight, and WebGL/WebGPU laser and
+lightning bloom uses scene depth for occlusion. This is stylized lighting, not
+hardware ray tracing. The post-process uniform block is 192 bytes; HUD/save ABIs
+are unchanged. Pause and sector transitions stop/reset entrance effects.

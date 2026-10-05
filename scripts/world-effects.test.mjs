@@ -60,3 +60,36 @@ test("map changes discard shockwaves and restart accents; no tick means no pause
   assert.deepEqual(fx.project({x:0,y:0,yaw:0}, 1.6), []);
   assert.ok(fx.time < .02);
 });
+
+
+test("boss entrance clocks match authored durations, reset and respect camera projection", () => {
+  const profiles=JSON.parse(readFileSync("src/game/boss-arena-data.json"));
+  for(let sector=0;sector<25;sector++) {
+    const fx=new WorldEffects();fx.tick(.016,sector+1);
+    fx.bossEntrance(4,0,sector*5);
+    const player={x:0,y:0,yaw:0};
+    const initial=fx.projectEntrance(player,1.6);
+    assert.equal(initial.x,.5);assert.equal(initial.style,sector);assert.equal(initial.phase,0);
+    fx.tick(profiles[sector].introSeconds*.5,sector+1);
+    assert.ok(Math.abs(fx.projectEntrance(player,1.6).phase-.5)<.001);
+    fx.bossEntrance(4,0,sector*5+2);
+    assert.equal(fx.projectEntrance(player,1.6).phase,.5,"later stages never restart entrance");
+    assert.equal(fx.projectEntrance({...player,yaw:Math.PI},1.6),undefined);
+    fx.tick(profiles[sector].introSeconds*.51,sector+1);
+    assert.equal(fx.projectEntrance(player,1.6),undefined);
+    fx.bossEntrance(4,0,sector*5);fx.tick(.01,sector+2);
+    assert.equal(fx.projectEntrance(player,1.6),undefined);
+  }
+});
+
+test("eight native-alpha boss entrance motifs have valid hashes and texture slots", () => {
+  const manifest=JSON.parse(readFileSync("art/boss-entry-v1/manifest.json"));
+  const hash=p=>createHash("sha256").update(readFileSync(p)).digest("hex");
+  assert.equal(hash(manifest.source),manifest.sourceSha256);
+  assert.equal(manifest.assets.length,8);
+  for(const [i,a] of manifest.assets.entries()) {
+    assert.equal(a.textureSlot,806+i);assert.equal(hash(a.file),a.sha256);
+    const png=readFileSync(a.file);assert.equal(png.readUInt32BE(16),1024);assert.equal(png.readUInt32BE(20),1024);
+    assert.equal(png[25],6);assert.equal(a.alpha,"native");
+  }
+});

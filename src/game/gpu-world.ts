@@ -49,7 +49,8 @@ export const T_BOSS_PROJECTILE = T_SECTOR_PROP + 25 * 3;
 export const T_BOSS_ARENA = T_BOSS_PROJECTILE + 25;
 export const T_CASING = T_BOSS_ARENA + 25;
 export const T_CASING_SHELL = T_CASING + 1;
-export const TEX_N = T_CASING_SHELL + 1;
+export const T_BOSS_ENTRANCE = T_CASING_SHELL + 1;
+export const TEX_N = T_BOSS_ENTRANCE + 8;
 
 const arenaColors = BOSS_ARENAS.map(b => [0,2,4].map(i => (parseInt(b.color.slice(i,i+2),16)/255).toFixed(5)));
 const arenaColorsWgsl = arenaColors.map(c => `vec3<f32>(${c.join(",")})`).join(",");
