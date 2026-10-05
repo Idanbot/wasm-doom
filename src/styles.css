@@ -1464,3 +1464,18 @@ select:focus-visible {
     transition: none !important;
   }
 }
+
+.reload-hint {
+  position: absolute;
+  right: 12%;
+  bottom: 34%;
+  z-index: 35;
+  pointer-events: none;
+  padding: 12px 18px;
+  border: 1px solid var(--color-accent, #ff9c36);
+  background: #10191ef2;
+  color: #f2f6f7;
+  font-weight: 600;
+  box-shadow: 0 8px 24px #0009;
+}
+.reload-hint kbd { color: #ff9c36; padding: 0 4px; }

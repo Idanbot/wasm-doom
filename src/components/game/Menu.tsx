@@ -35,9 +35,9 @@ export function Menu(
         <div>
           <span>YOUR ORDERS</span>
           <p>
-            Recover the arsenal. Break containment.
+            Defeat all 25 bosses. Claim their weapons.
             <br />
-            Eliminate the signal at its source.
+            Turn their arsenal against the next boss.
           </p>
         </div>
       </div>

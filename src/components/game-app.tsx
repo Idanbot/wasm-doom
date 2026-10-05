@@ -30,6 +30,7 @@ import { Menu } from "./game/Menu";
 import { Pause } from "./game/Pause";
 import { TouchLayer } from "./game/TouchLayer";
 import { WeaponView } from "./game/WeaponView";
+import { ReloadHint } from "./game/ReloadHint";
 import { WeaponSpiral } from "./game/WeaponSpiral";
 import { EnemySubtitles } from "./game/EnemySubtitles";
 import { Automap } from "./game/Automap";
@@ -86,6 +87,7 @@ export function GameApp() {
   const [requireGpu, setRequireGpu] = useState(gpuEnabled);
   const qaRef = useRef(false);
   const hadPointerLock = useRef(false);
+  const pauseChangedAt = useRef(-Infinity);
   const [gfx, setGfx] = useState<GfxOpts>(loadGfx);
   const [board, setBoard] = useState<Score[]>([]);
   const [err, setErr] = useState<string | null>(null);
@@ -327,12 +329,14 @@ export function GameApp() {
   }, [sens, muted, vol]);
 
   const pause = useCallback(() => {
+    pauseChangedAt.current = performance.now();
     rtRef.current?.setPlaying(false);
     if (document.pointerLockElement) document.exitPointerLock();
     setScreen("pause");
   }, []);
 
   const resume = useCallback(() => {
+    pauseChangedAt.current = performance.now();
     rtRef.current?.setPlaying(true);
     setScreen("play");
     rtRef.current?.requestLock();
@@ -408,13 +412,16 @@ export function GameApp() {
   }, [hud.radioSeq, hud.radioLine, hud.wave, screen]);
   useLayoutEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.repeat) return;
+      if (e.repeat || e.defaultPrevented) return;
       if (
         document.querySelector('[role="dialog"]') ||
         /INPUT|SELECT|TEXTAREA/.test((e.target as HTMLElement)?.tagName)
       )
         return;
       if (e.code === "Escape" || e.code === "KeyP") {
+        e.preventDefault();
+        // Compare event creation time: queued duplicates may arrive after a slow frame.
+        if (e.timeStamp - pauseChangedAt.current < 300) return;
         if (screen === "play") {
           e.preventDefault();
           pause();
@@ -444,14 +451,14 @@ export function GameApp() {
   }, [screen]);
 
   useEffect(() => {
-    const onLock = () => {
+    const onLock = (event: Event) => {
       const locked = document.pointerLockElement === canvasRef.current;
       const lostLock = hadPointerLock.current && !locked;
       hadPointerLock.current = locked;
       // Browsers can consume Escape before keydown when releasing capture.
       // Pause on an actual loss of our lock, including local QA sessions.
       // Touch devices that never captured the mouse don't enter this path.
-      if (screen === "play" && lostLock) pause();
+      if (screen === "play" && lostLock && event.timeStamp - pauseChangedAt.current >= 300) pause();
     };
     document.addEventListener("pointerlockchange", onLock);
     return () => document.removeEventListener("pointerlockchange", onLock);
@@ -541,6 +548,7 @@ export function GameApp() {
             })()}
             name={(WEAPONS[hud.weapon] ?? WEAPONS[0]!).name}
           />
+          <ReloadHint hud={hud} />
           <Crosshair
             flash={hud.hitmarker}
             spread={(hud.weapon === 2 ? hud.spread : hud.weapon === 1 ? 0.1 : 0) + hud.kick * 0.04}

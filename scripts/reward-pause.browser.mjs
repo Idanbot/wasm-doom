@@ -13,18 +13,18 @@ test('Escape, P and actual pointer-lock loss pause; Obsidian reward says Echo an
     page.on('pageerror', (error) => errors.push(error.message));
     await page.goto(url.href);
     await page.waitForFunction(() => window.__controlsTest && document.body.innerText.includes('HEALTH'), null, { timeout: 90000 });
-    await page.waitForTimeout(200);
+    await page.waitForTimeout(350);
     for (const key of ['p', 'Escape']) {
       await page.keyboard.press(key);
       await page.getByRole('heading', { name: 'Operation paused' }).waitFor();
       const before = await page.evaluate(() => window.__controlsTest.getX());
       await page.keyboard.down('w');
-      await page.waitForTimeout(180);
+      await page.waitForTimeout(350);
       await page.keyboard.up('w');
       assert.equal(await page.evaluate(() => window.__controlsTest.getX()), before, `${key} didn't freeze simulation`);
       await page.keyboard.press(key);
       await page.waitForFunction(() => !document.body.innerText.includes('Operation paused'));
-      await page.waitForTimeout(200);
+      await page.waitForTimeout(350);
     }
     // Native Escape may never emit keydown. Exercise the capture-loss event.
     await page.locator('.game-canvas').evaluate((canvas) => {
@@ -34,6 +34,7 @@ test('Escape, P and actual pointer-lock loss pause; Obsidian reward says Echo an
     await page.waitForFunction(() => !!document.pointerLockElement);
     await page.evaluate(() => document.exitPointerLock());
     await page.getByRole('heading', { name: 'Operation paused' }).waitFor();
+    await page.waitForTimeout(350);
     await page.keyboard.press('p');
     await page.waitForFunction(() => !document.body.innerText.includes('Operation paused'));
     await page.evaluate(() => {

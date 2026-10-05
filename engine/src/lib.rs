@@ -97,6 +97,7 @@ struct Engine {
     secrets: i32,
     state: i32,
     bits: u32,
+    empty_trigger_latched: bool,
     mx: f32,
     my: f32,
     qa: bool,
@@ -492,6 +493,7 @@ impl Engine {
             secrets: 0,
             state: 0,
             bits: 0,
+            empty_trigger_latched: false,
             mx: 0.0,
             my: 0.0,
             qa: false,
@@ -2847,10 +2849,13 @@ impl Engine {
             self.reload_t = 0.0;
         }
         if self.mag[w] <= 0 {
-            self.sound(21, w as u8, self.px, self.py);
-            self.cooldown = 0.22;
+            if !self.empty_trigger_latched {
+                self.sound(21, w as u8, self.px, self.py);
+                self.empty_trigger_latched = true;
+            }
             return;
         }
+        self.empty_trigger_latched = false;
         self.mag[w] -= 1;
         if self.power == field::POWER_FEED {
             self.mag[w] += 1;
@@ -3597,6 +3602,8 @@ impl Engine {
 
             if bits & IN_FIRE != 0 {
                 self.fire();
+            } else {
+                self.empty_trigger_latched = false;
             }
 
             let mut pick: Vec<usize> = Vec::new();
@@ -4857,6 +4864,13 @@ impl Engine {
             };
             n += 1;
         }
+        // Sprites write RGB and packed depth into the shared world target.
+        // Paint far to near, matching the CPU path; transparent holes keep
+        // the already drawn scenery instead of overwriting closer entities.
+        scratch.sprites[..n].sort_by(|a, b| {
+            let depth = |s: &GpuSprite| (s.x - self.px) * dir_x + (s.y - self.py) * dir_y;
+            depth(b).total_cmp(&depth(a))
+        });
         scratch.sprite_n = n;
         scratch.view.sprite_n = n as f32;
     }
@@ -6450,6 +6464,27 @@ mod tests {
     }
 
     #[test]
+    fn empty_trigger_clicks_once_per_hold_and_again_after_release() {
+        let mut e = arena();
+        e.mag[0] = 0;
+        e.bits = IN_FIRE;
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.sound_cues.iter().filter(|c| c.kind == 21.0).count(), 1);
+        for _ in 0..60 {
+            e.tick(1.0 / 60.0);
+            assert!(!e.sound_cues.iter().any(|c| c.kind == 21.0));
+        }
+        e.bits = 0;
+        e.tick(1.0 / 60.0);
+        e.bits = IN_FIRE;
+        e.tick(1.0 / 60.0);
+        assert_eq!(e.sound_cues.iter().filter(|c| c.kind == 21.0).count(), 1);
+        assert_eq!(e.mag[0], 0);
+        assert_eq!(e.events & EV_FIRE, 0);
+        assert_eq!(e.hud.weap_frame, 3);
+    }
+
+    #[test]
     fn br12_reload_feeds_one_shell_per_step() {
         let mut e = arena();
         e.weapon = 1;
@@ -7288,6 +7323,15 @@ mod tests {
         assert!(cols.iter().any(|c| c.hit > 0.5), "the enclosed map must hit a wall");
         assert!(cols.iter().all(|c| c.perp.is_finite() && c.z.is_finite()));
         assert!(hs_gpu_sprite_count() > 0);
+        for angle in [0.0, 1.2, 3.14] {
+            eng().pa = angle;
+            hs_prepare_gpu();
+            let sprites = unsafe { std::slice::from_raw_parts(hs_gpu_sprites(), hs_gpu_sprite_count() as usize) };
+            let view = gpu_scratch().view;
+            let depth = |s: &GpuSprite| (s.x - view.px) * view.dir_x + (s.y - view.py) * view.dir_y;
+            assert!(sprites.windows(2).all(|pair| depth(&pair[0]) >= depth(&pair[1])),
+                "GPU sprites must paint far to near regardless of camera yaw");
+        }
         assert_eq!(std::mem::size_of::<GpuCol>() / 4, 16);
         assert_eq!(std::mem::size_of::<GpuView>() / 4, 16);
         assert_eq!(std::mem::size_of::<GpuSprite>() / 4, 8);
