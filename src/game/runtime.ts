@@ -1,4 +1,4 @@
-import { normalizeSensitivity } from "./input-settings";
+import { DEFAULT_SENSITIVITY, normalizeSensitivity } from "./input-settings";
 import { automapCells } from "./automap-data";
 import BOSS_ARENAS from "./boss-arena-data.json";
 import { SECTOR_ENEMIES } from "./sector-enemies";
@@ -476,7 +476,7 @@ export class BlacksiteRuntime {
   private lastBars: BarCue[] = [];
   private qaBits = 0;
   private qaOn = false;
-  private sens = 1;
+  private sens = DEFAULT_SENSITIVITY;
   private usePulse = 0;
   private reloadPulse = 0;
   private weaponPulse = 0;
@@ -489,6 +489,14 @@ export class BlacksiteRuntime {
   private fbBuf: ArrayBuffer | null = null;
   private fbLen = 0;
   private gpuReady = false;
+  private assetsReady = false;
+  private renderDirty = true;
+  private atlasRevision = -1;
+  private recovering: Promise<BlitKind> | null = null;
+  private contextLost = false;
+  private recoveryAttempts = 0;
+  private rendererWaitSince = 0;
+  private contextTimer: ReturnType<typeof setTimeout> | null = null;
   private lastThemeWave = 1;
 
   constructor(canvas: HTMLCanvasElement, hooks: RuntimeHooks) {
@@ -569,6 +577,8 @@ export class BlacksiteRuntime {
       }),
       document.fonts.ready,
     ]);
+    this.assetsReady = true;
+    this.renderDirty = true;
     report(1, "Ready");
     if (this.aborted) {
       this.running = false;
@@ -585,19 +595,19 @@ export class BlacksiteRuntime {
     const raw = Math.min(2560, Math.max(192, Math.round(Math.min(res.w, res.h * aspect))));
     const w = raw - (raw % 64);
     const h = Math.max(100, Math.round(w / aspect));
-    this.wasm.hs_resize(w, h);
+    if (this.wasm.hs_fb_w() !== w || this.wasm.hs_fb_h() !== h) this.wasm.hs_resize(w, h);
     this.fbView = null;
-    this.blit.resize(w, h);
-    // Mips depend on a fresh framebuffer; the GPU atlas content does not,
-    // so it is not re-uploaded here (35MB on every rotate/resize).
-    // The simulation itself is not restarted.
-    this.wasm.hs_textures_ready();
+    if (!this.recovering && !this.contextLost) this.blit.resize(w, h);
+    // Display resizing clears the canvas, including while simulation is paused.
+    // Texture mipmaps do not depend on framebuffer size; keep resident assets.
+    this.renderDirty = true;
     this.canvas.dataset.resolution = `${w} × ${h}`;
   }
 
   setPlaying(v: boolean) {
     const changed = this.playing !== v;
     this.playing = v;
+    this.renderDirty = true;
     this.clearInput();
     this.accumulator = 0;
     this.last = performance.now();
@@ -645,6 +655,7 @@ export class BlacksiteRuntime {
   setGfx(g: GfxOpts) {
     this.gfx = { ...g };
     this.blit?.setGfx(this.gfx);
+    this.renderDirty = true;
   }
 
   /** Switch WebGPU enforcement without restarting the sim or canvas. */
@@ -652,25 +663,72 @@ export class BlacksiteRuntime {
     if (!this.wasm || !this.blit || this.aborted) return this.renderer;
     if (requireGpu === this.requireGpu && this.blit.kind === this.renderer) return this.renderer;
     this.requireGpu = requireGpu;
-    const old = this.blit;
-    const next = await createBlitter(this.canvas, { requireGpu });
-    if (this.aborted) {
-      next.dispose();
-      return this.renderer;
-    }
-    this.blit = next;
-    this.renderer = next.kind;
-    next.setGfx(this.gfx);
-    if (this.resolution) this.setResolution(this.resolution);
-    // A fresh blit starts with an empty atlas; setResolution no longer
-    // uploads it (see above), so do it here explicitly.
-    this.pushAtlas();
-    old.dispose();
-    this.fbView = null;
-    this.fbBuf = null;
-    this.fbLen = 0;
-    return this.renderer;
+    return this.rebuildRenderer();
   }
+
+  private rebuildRenderer(): Promise<BlitKind> {
+    if (this.recovering) return this.recovering;
+    const work = async () => {
+      // Dispose before configuring the replacement: WebGPU shares the canvas
+      // context, so disposing afterwards would unconfigure the new renderer.
+      this.blit?.dispose();
+      this.gpuReady = false;
+      const next = await createBlitter(this.canvas, { requireGpu: this.requireGpu });
+      if (this.aborted) { next.dispose(); return this.renderer; }
+      this.blit = next;
+      this.renderer = next.kind;
+      next.setGfx(this.gfx);
+      if (this.resolution) this.setResolution(this.resolution);
+      next.resize(this.wasm!.hs_fb_w(), this.wasm!.hs_fb_h());
+      if (this.assetsReady) this.pushAtlas();
+      this.fbView = this.fbBuf = null;
+      this.fbLen = 0;
+      this.renderDirty = true;
+      this.last = performance.now();
+      this.accumulator = 0;
+      return this.renderer;
+    };
+    this.recovering = work().finally(() => { this.recovering = null; });
+    return this.recovering;
+  }
+
+  private recoverRenderer() {
+    if (this.recovering || this.contextLost || this.aborted) return;
+    if (++this.recoveryAttempts > 2) {
+      this.running = false;
+      cancelAnimationFrame(this.raf);
+      this.hooks.onError?.("Graphics recovery failed. Your level has not been restarted.");
+      return;
+    }
+    void this.rebuildRenderer().catch(err => {
+      if (!this.aborted) {
+        this.running = false;
+        cancelAnimationFrame(this.raf);
+        this.hooks.onError?.(err instanceof Error ? err.message : String(err));
+      }
+    });
+  }
+
+  private onContextLost = (event: Event) => {
+    event.preventDefault(); // Allow WebGL to restore its context.
+    this.contextLost = true;
+    this.renderDirty = true;
+    this.clearInput();
+    if (this.contextTimer) clearTimeout(this.contextTimer);
+    this.contextTimer = setTimeout(() => {
+      if (!this.aborted && this.contextLost) {
+        this.hooks.onError?.("The graphics context could not be restored. Your level has not been restarted.");
+      }
+    }, 8000);
+  };
+
+  private onContextRestored = () => {
+    this.contextLost = false;
+    if (this.contextTimer) clearTimeout(this.contextTimer);
+    this.contextTimer = null;
+    this.recoverRenderer();
+  };
+
   restart() {
     this.audio.clearEnemies(true);
     this.clearInput();
@@ -703,6 +761,7 @@ export class BlacksiteRuntime {
 
   stop() {
     this.aborted = true;
+    if (this.contextTimer) clearTimeout(this.contextTimer);
     this.running = false;
     cancelAnimationFrame(this.raf);
     this.unbind();
@@ -1022,6 +1081,8 @@ export class BlacksiteRuntime {
     );
   };
   private bind() {
+    this.canvas.addEventListener("webglcontextlost", this.onContextLost);
+    this.canvas.addEventListener("webglcontextrestored", this.onContextRestored);
     document.addEventListener("click", this.onUiClick);
     window.addEventListener("keydown", this.onKeyDown);
     window.addEventListener("keyup", this.onKeyUp);
@@ -1034,6 +1095,8 @@ export class BlacksiteRuntime {
   }
 
   private unbind() {
+    this.canvas.removeEventListener("webglcontextlost", this.onContextLost);
+    this.canvas.removeEventListener("webglcontextrestored", this.onContextRestored);
     document.removeEventListener("click", this.onUiClick);
     window.removeEventListener("keydown", this.onKeyDown);
     window.removeEventListener("keyup", this.onKeyUp);
@@ -1228,8 +1291,23 @@ export class BlacksiteRuntime {
     if (!wasm || !blit) return;
     if (typeof document !== "undefined" && document.hidden) return;
 
+    if (!this.assetsReady || this.contextLost || this.recovering) { this.last = t; return; }
+    if (!blit.isReady()) {
+      this.renderDirty = true;
+      this.last = t;
+      // Give WebGPU's own device recovery time to finish before rebuilding.
+      if (!this.rendererWaitSince) this.rendererWaitSince = t;
+      if (t - this.rendererWaitSince > 1500 && !this.contextLost) {
+        this.rendererWaitSince = 0;
+        this.recoverRenderer();
+      }
+      return;
+    }
+    this.rendererWaitSince = 0;
+    if (this.atlasRevision !== blit.revision()) this.renderDirty = true;
     const live = this.playing || this.qaOn;
     if (!live) {
+      if (this.renderDirty) this.presentFrame(this.readHud(), t);
       this.last = t;
       return;
     }
@@ -1284,6 +1362,43 @@ export class BlacksiteRuntime {
     // Wave transitions swap the wall/door theme inside the engine; push
     // the two layers before presenting so no frame shows the old theme.
     if (hud.wave !== this.lastThemeWave) this.refreshThemeLayers(hud.wave);
+    this.presentFrame(hud, t);
+    const w = wasm.hs_fb_w(), h = wasm.hs_fb_h();
+
+    // Radio text persists across frames and sector transitions. Boss death
+    // audio is driven by the one-tick engine event in sfxFromEvents instead.
+    if (hud.radioSeq !== this.prevRadioSeq) {
+      this.prevRadioSeq = hud.radioSeq;
+      if (hud.radioSeq !== 0) {
+        if (hud.radioLine !== 8) this.audio.radio(hud.radioLine);
+      }
+    }
+    this.hud = hud;
+    const count = wasm.hs_prepare_enemies();
+    // Cached for the QA probe (`getEnemies`) so browser tests can assert
+    // move/fire animation states without touching WASM memory.
+    const enemies = readEnemyCues(wasm.memory.buffer, wasm.hs_enemy_cues(), count);
+    this.lastEnemies = enemies;
+    const barCount = wasm.hs_prepare_bars();
+    this.lastBars = readBars(wasm.memory.buffer, wasm.hs_bars(), barCount);
+    const subtitles = this.audio.updateEnemies(enemies, hud);
+    const loopCount = wasm.hs_prepare_sound_loops();
+    const loopData = new Float32Array(wasm.memory.buffer, wasm.hs_sound_loops(), loopCount * 4);
+    const loops = Array.from({ length: loopCount }, (_, n) => ({
+      kind: loopData[n * 4]!,
+      id: loopData[n * 4 + 1]!,
+      x: loopData[n * 4 + 2]!,
+      y: loopData[n * 4 + 3]!,
+    }));
+    this.audio.updateLoops(loops);
+    this.hooks.onSubtitles?.(subtitles);
+    this.hooks.onHud(hud, this.fps, `${w} × ${h}`);
+    if (hud.state !== this.prevHud.state) this.hooks.onState(hud.state);
+    this.prevHud = hud;
+  }
+  private presentFrame(hud: HudState, t: number) {
+    const wasm = this.wasm!, blit = this.blit!;
+    if (this.atlasRevision !== blit.revision()) this.pushAtlas();
     const boss = -1;
     const fx = { muzzle: hud.muzzle, hurt: hud.hurt, time: t * 0.001, boss };
     const w = wasm.hs_fb_w();
@@ -1318,43 +1433,19 @@ export class BlacksiteRuntime {
         this.fbView = new Uint8Array(buf, ptr, len);
         this.fbLen = len;
       }
-      blit.draw(this.fbView, w, h, fx);
+      presented = blit.draw(this.fbView, w, h, fx);
     }
 
-    // Radio text persists across frames and sector transitions. Boss death
-    // audio is driven by the one-tick engine event in sfxFromEvents instead.
-    if (hud.radioSeq !== this.prevRadioSeq) {
-      this.prevRadioSeq = hud.radioSeq;
-      if (hud.radioSeq !== 0) {
-        if (hud.radioLine !== 8) this.audio.radio(hud.radioLine);
-      }
-    }
-    this.hud = hud;
-    const count = wasm.hs_prepare_enemies();
-    // Cached for the QA probe (`getEnemies`) so browser tests can assert
-    // move/fire animation states without touching WASM memory.
-    const enemies = readEnemyCues(wasm.memory.buffer, wasm.hs_enemy_cues(), count);
-    this.lastEnemies = enemies;
-    const barCount = wasm.hs_prepare_bars();
-    this.lastBars = readBars(wasm.memory.buffer, wasm.hs_bars(), barCount);
-    const subtitles = this.audio.updateEnemies(enemies, hud);
-    const loopCount = wasm.hs_prepare_sound_loops();
-    const loopData = new Float32Array(wasm.memory.buffer, wasm.hs_sound_loops(), loopCount * 4);
-    const loops = Array.from({ length: loopCount }, (_, n) => ({
-      kind: loopData[n * 4]!,
-      id: loopData[n * 4 + 1]!,
-      x: loopData[n * 4 + 2]!,
-      y: loopData[n * 4 + 3]!,
-    }));
-    this.audio.updateLoops(loops);
-    this.hooks.onSubtitles?.(subtitles);
-    this.hooks.onHud(hud, this.fps, `${w} × ${h}`);
-    if (hud.state !== this.prevHud.state) this.hooks.onState(hud.state);
-    this.prevHud = hud;
+    this.renderDirty = !presented;
+    if (presented) this.recoveryAttempts = 0;
+    else this.recoverRenderer();
   }
+
   private pushAtlas() {
     const wasm = this.wasm;
-    if (!wasm || !this.blit?.uploadAtlas) return;
+    if (!wasm || !this.blit) return;
+    this.atlasRevision = this.blit.revision();
+    if (!this.blit.uploadAtlas) return;
     const size = wasm.hs_tex_size();
     const layers = new Uint8Array(TEX_N * size * size * 4);
     for (let id = 0; id < TEX_N; id++) {
@@ -1363,6 +1454,7 @@ export class BlacksiteRuntime {
     }
     this.blit.uploadAtlas(layers);
     this.gpuReady = true;
+    this.atlasRevision = this.blit.revision();
   }
 
   private sfxFromEvents(events: number, evWeapon: number) {

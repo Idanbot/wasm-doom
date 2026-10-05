@@ -1,4 +1,4 @@
-import { DEFAULT_SENSITIVITY, normalizeSensitivity } from "@/game/input-settings";
+import { DEFAULT_SENSITIVITY, readSensitivity } from "@/game/input-settings";
 import { machineryHint } from "./game/data";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { asset } from "@/lib/asset";
@@ -76,7 +76,7 @@ export function GameApp() {
   const [res, setRes] = useState<ResMode>(loadRes);
   const [sens, setSens] = useState(() => {
     try {
-      return normalizeSensitivity(localStorage.getItem("blacksite-sensitivity"));
+      return readSensitivity(localStorage);
     } catch {
       return DEFAULT_SENSITIVITY;
     }
@@ -479,6 +479,7 @@ export function GameApp() {
     rtRef.current?.setSens(sens);
     try {
       localStorage.setItem("blacksite-sensitivity", String(sens));
+      localStorage.setItem("blacksite-sensitivity-version", "2");
     } catch {
       /* ignore unavailable storage */
     }

@@ -12,7 +12,9 @@ export type BlitFx = {
 
 export type Blitter = {
   kind: BlitKind;
-  draw: (pixels: Uint8Array<ArrayBuffer>, w: number, h: number, fx?: BlitFx) => void;
+  isReady: () => boolean;
+  revision: () => number;
+  draw: (pixels: Uint8Array<ArrayBuffer>, w: number, h: number, fx?: BlitFx) => boolean;
   uploadAtlas?: (layers: Uint8Array<ArrayBuffer>) => void;
   uploadAtlasLayer?: (id: number, rgba: Uint8Array<ArrayBuffer>) => void;
   drawWorld?: (frame: WorldFrame, fx?: BlitFx) => boolean;
@@ -228,6 +230,7 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
   let ping = 0;
   let ready = false;
   let gen = 0;
+  let atlasGen = -1;
   let recoveries = 0;
   let settingUp = false;
   let world: GpuWorld | null = null;
@@ -321,7 +324,7 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
       }
       device = dev;
       dev.addEventListener("uncapturederror", () => {
-        ready = false;
+        if (my === gen) ready = false;
       });
       format = gpuApi.getPreferredCanvasFormat();
       ctx = canvas.getContext("webgpu") as GPUCanvasContext | null;
@@ -395,6 +398,8 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
 
   return {
     kind: "webgpu",
+    isReady: () => ready,
+    revision: () => gen,
     dispose() {
       gen += 1;
       ready = false;
@@ -415,12 +420,13 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
     },
     uploadAtlas(layers) {
       world?.uploadAtlas(layers);
+      atlasGen = gen;
     },
     uploadAtlasLayer(id, rgba) {
       world?.uploadAtlasLayer(id, rgba);
     },
     drawWorld(frame, fx) {
-      if (!ready || !device || !ctx || !pipeline || !bloomPipe || !world) return false;
+      if (!ready || !device || !ctx || !pipeline || !bloomPipe || !world || atlasGen !== gen) return false;
       const { dw, dh, changed } = syncDisplay(canvas);
       if (changed) configure();
       ensureTex(frame.w, frame.h);
@@ -455,13 +461,13 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
       }
     },
     draw(pixels, w, h, fx) {
-      if (!ready || !device || !ctx || !pipeline || !bloomPipe) return;
+      if (!ready || !device || !ctx || !pipeline || !bloomPipe) return false;
       const { dw, dh, changed } = syncDisplay(canvas);
       if (changed) configure();
       ensureTex(w, h);
       const i = ping;
       ping ^= 1;
-      if (!tex[i] || !bind[i] || !bloomView) return;
+      if (!tex[i] || !bind[i] || !bloomView) return false;
       try {
         const upload = padRows(pixels, w, h);
         device.queue.writeTexture(
@@ -504,11 +510,13 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
         pass.draw(3);
         pass.end();
         device.queue.submit([encoder.finish()]);
+        return true;
       } catch {
         ready = false;
-        if (recoveries >= 2) return;
+        if (recoveries >= 2) return false;
         recoveries += 1;
         void setup();
+        return false;
       }
     },
   };
@@ -634,6 +642,8 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
 
   return {
     kind: "webgl2",
+    isReady: () => !gl.isContextLost(),
+    revision: () => 0,
     dispose() {
       world?.dispose();
       gl.deleteTexture(tex);
@@ -656,7 +666,7 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
       world?.uploadAtlasLayer(id, rgba);
     },
     drawWorld(frame, fx) {
-      if (!world) return false;
+      if (!world || gl.isContextLost()) return false;
       const { dw, dh, changed } = syncDisplay(canvas);
       if (changed) gl.viewport(0, 0, dw, dh);
       gl.activeTexture(gl.TEXTURE0);
@@ -687,6 +697,7 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
       return true;
     },
     draw(pixels, w, h, fx) {
+      if (gl.isContextLost()) return false;
       const { dw, dh, changed } = syncDisplay(canvas);
       if (changed) gl.viewport(0, 0, dw, dh);
       gl.activeTexture(gl.TEXTURE0);
@@ -711,6 +722,7 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
       gl.uniform1f(locBoss, fx?.boss ?? -1);
       gl.uniform1f(locTime, fx?.time ?? 0);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
+      return !gl.isContextLost();
 
     },
   };
@@ -728,6 +740,8 @@ function createCanvas2dBlit(canvas: HTMLCanvasElement): Blitter {
   let frame: ImageData | null = null;
   return {
     kind: "canvas2d",
+    isReady: () => !!octx,
+    revision: () => 0,
     dispose() { frame = null; off.width = off.height = 1; },
     setGfx(g) {
       gfx = { ...g };
@@ -737,7 +751,7 @@ function createCanvas2dBlit(canvas: HTMLCanvasElement): Blitter {
     },
     draw(pixels, w, h) {
       const { dw, dh } = syncDisplay(canvas);
-      if (!octx) return;
+      if (!octx) return false;
       if (off.width !== w || off.height !== h) {
         off.width = w;
         off.height = h;
@@ -757,6 +771,7 @@ function createCanvas2dBlit(canvas: HTMLCanvasElement): Blitter {
       ctx.fillRect(0, 0, dw, dh);
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(off, 0, 0, dw, dh);
+      return true;
     },
   };
 }

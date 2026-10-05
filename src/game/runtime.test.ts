@@ -43,7 +43,7 @@ describe("enemy sprite alpha key", () => {
   });
 });
 
-import { normalizeSensitivity } from "./input-settings.ts";
+import { normalizeSensitivity, readSensitivity } from "./input-settings.ts";
 import { automapCells } from "./automap-data.ts";
 
 describe("input and minimap contracts", () => {
@@ -52,8 +52,8 @@ describe("input and minimap contracts", () => {
     assert.equal(normalizeSensitivity(3), 3);
     assert.equal(normalizeSensitivity("3.5"), 3);
     assert.equal(normalizeSensitivity(0), 0.1);
-    assert.equal(normalizeSensitivity(null), 1.4);
-    assert.equal(normalizeSensitivity("bad"), 1.4);
+    assert.equal(normalizeSensitivity(null), 0.5);
+    assert.equal(normalizeSensitivity("bad"), 0.5);
   });
   it("preserves layout coordinates while displaying hazard floor and open doors as floor", () => {
     const map = Uint8Array.from([1, 0, 10, 8, 8, 9, 9, 2]);
@@ -61,4 +61,13 @@ describe("input and minimap contracts", () => {
     assert.deepEqual([...automapCells(map, doors)], [1, 0, 0, 8, 0, 9, 0, 2]);
     assert.deepEqual([...map], [1, 0, 10, 8, 8, 9, 9, 2]);
   });
+});
+
+it("migrates the old automatic sensitivity default and preserves versioned choices", () => {
+  const read = (value: string | null, version: string | null = null) => readSensitivity({getItem: key => key === "blacksite-sensitivity" ? value : version});
+  assert.equal(read(null), .5);
+  assert.equal(read("1.4"), .5);
+  assert.equal(read("1.4", "2"), 1.4);
+  assert.equal(read(".8"), .8);
+  assert.equal(read("3.5"), 3);
 });
