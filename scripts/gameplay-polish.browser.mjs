@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { chromium } from "playwright";
 
-test("Escape transitions debounce; empty triggers click once; first-play reload hint expires", async () => {
+test("Escape transitions debounce; held empty triggers repeat clicks; first-play reload hint expires", async () => {
   const browser = await chromium.launch({ headless: true });
   try {
     const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
@@ -50,27 +50,18 @@ test("Escape transitions debounce; empty triggers click once; first-play reload 
         () => window.__controlsTest.getSfxAudio().recent.filter((id) => id === "empty").length,
       );
     const once = await emptyCount();
-    assert.equal(
+    assert.ok(once >= 1);
+    await page.waitForFunction(
+      (before) =>
+        window.__controlsTest.getSfxAudio().recent.filter((id) => id === "empty").length > before,
       once,
-      1,
-      JSON.stringify(
-        await page.evaluate(() => ({
-          audio: window.__controlsTest.getSfxAudio(),
-          weapon: window.__controlsTest.getWeapon(),
-          frame: window.__controlsTest.getWeaponFrame(),
-          reload: window.__controlsTest.getReloading(),
-          reserve: window.__controlsTest.getReserve(),
-        })),
-      ),
+      { timeout: 5000 },
     );
-    await page.waitForTimeout(900);
-    assert.equal(await emptyCount(), once, "holding empty trigger must not repeat clicks");
     await page.evaluate(() => window.__controlsTest.setKeys([]));
-    await page.waitForTimeout(100);
-    await page.locator(".game-canvas").dispatchEvent("mousedown", { button: 0 });
-    await page.waitForTimeout(100);
-    await page.locator(".game-canvas").dispatchEvent("mouseup", { button: 0 });
-    assert.equal(await emptyCount(), once + 1);
+    await page.waitForTimeout(300);
+    const released = await emptyCount();
+    await page.waitForTimeout(500);
+    assert.equal(await emptyCount(), released, "clicks stop when the trigger is released");
     assert.equal(await page.evaluate(() => window.__controlsTest.getAmmo()), 0);
     await page.evaluate(() => window.__controlsTest.setKeys(["KeyW", "ArrowRight"]));
     const hint = page.getByRole("status").filter({ hasText: "Press R to reload" });

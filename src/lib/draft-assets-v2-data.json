@@ -420,9 +420,9 @@
   {
     "file": "/game/draft/v2/fx/projectile_rocket.png",
     "name": "projectile_rocket.png",
-    "size": 121779,
-    "hash": "9f3a87b4e90b3d251df347706a7aee3b4191a4e29b46e830a499dcf9809421c2",
-    "shortHash": "9f3a87b4",
+    "size": 393767,
+    "hash": "b4f8b1fb6a5dcf9760d5df18bd9e52eb7fc611bb84be83adab4d4e6881e74945",
+    "shortHash": "b4f8b1fb",
     "width": 512,
     "height": 512,
     "group": "particles"
@@ -4339,10 +4339,10 @@
   },
   {
     "file": "/game/projectiles/missile_tactical_outgoing.png",
-    "name": "missile_tactical_outgoing.png",
-    "size": 19306,
-    "hash": "7f0c169ebb9d74e25accb72a194962b3dc73277caac14a7efc243ee7937bdd7e",
-    "shortHash": "7f0c169e",
+    "name": "VLK-6 \u00b7 rear-facing burner projectile",
+    "size": 104025,
+    "hash": "2e861380aabe38be3b027a682bb15be6e58862c00d40005ba09b74a4c2992b2e",
+    "shortHash": "2e861380",
     "width": 256,
     "height": 256,
     "group": "fx"

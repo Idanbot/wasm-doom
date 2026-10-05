@@ -97,7 +97,6 @@ struct Engine {
     secrets: i32,
     state: i32,
     bits: u32,
-    empty_trigger_latched: bool,
     mx: f32,
     my: f32,
     qa: bool,
@@ -493,7 +492,6 @@ impl Engine {
             secrets: 0,
             state: 0,
             bits: 0,
-            empty_trigger_latched: false,
             mx: 0.0,
             my: 0.0,
             qa: false,
@@ -2849,13 +2847,10 @@ impl Engine {
             self.reload_t = 0.0;
         }
         if self.mag[w] <= 0 {
-            if !self.empty_trigger_latched {
-                self.sound(21, w as u8, self.px, self.py);
-                self.empty_trigger_latched = true;
-            }
+            self.sound(21, w as u8, self.px, self.py);
+            self.cooldown = 0.22;
             return;
         }
-        self.empty_trigger_latched = false;
         self.mag[w] -= 1;
         if self.power == field::POWER_FEED {
             self.mag[w] += 1;
@@ -3602,8 +3597,6 @@ impl Engine {
 
             if bits & IN_FIRE != 0 {
                 self.fire();
-            } else {
-                self.empty_trigger_latched = false;
             }
 
             let mut pick: Vec<usize> = Vec::new();
@@ -6464,24 +6457,24 @@ mod tests {
     }
 
     #[test]
-    fn empty_trigger_clicks_once_per_hold_and_again_after_release() {
+    fn empty_trigger_repeats_at_bounded_cadence_without_firing_animation() {
         let mut e = arena();
         e.mag[0] = 0;
         e.bits = IN_FIRE;
-        e.tick(1.0 / 60.0);
-        assert_eq!(e.sound_cues.iter().filter(|c| c.kind == 21.0).count(), 1);
+        let mut clicks = 0;
         for _ in 0..60 {
+            e.tick(1.0 / 60.0);
+            clicks += e.sound_cues.iter().filter(|c| c.kind == 21.0).count();
+            assert_eq!(e.events & EV_FIRE, 0);
+            assert_eq!(e.hud.weap_frame, 3);
+        }
+        assert!((4..=5).contains(&clicks), "empty trigger should click about 4.5 times/sec: {clicks}");
+        e.bits = 0;
+        for _ in 0..30 {
             e.tick(1.0 / 60.0);
             assert!(!e.sound_cues.iter().any(|c| c.kind == 21.0));
         }
-        e.bits = 0;
-        e.tick(1.0 / 60.0);
-        e.bits = IN_FIRE;
-        e.tick(1.0 / 60.0);
-        assert_eq!(e.sound_cues.iter().filter(|c| c.kind == 21.0).count(), 1);
         assert_eq!(e.mag[0], 0);
-        assert_eq!(e.events & EV_FIRE, 0);
-        assert_eq!(e.hud.weap_frame, 3);
     }
 
     #[test]

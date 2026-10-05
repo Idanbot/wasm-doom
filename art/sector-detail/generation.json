@@ -348,5 +348,20 @@
     "source": "art/sector-detail/fusion-chamber-props.png",
     "provider": "native imagegen",
     "sha256": "bfaef91a7d07609adf16cd1bb404455986234540057a5dcda85e5d4e4dc2f19c"
+  },
+  {
+    "id": "missile-tactical-rear",
+    "source": "art/sector-detail/missile-tactical-rear.png",
+    "provider": "native imagegen",
+    "sha256": "1cdc3c58640cea31c53a91034c29fd7555a80317f72cfee2dabdb4077cc3b3b4",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "runtime_size": [
+      256,
+      256
+    ],
+    "prompt": "Exact coaxial rear elevation of a tactical micro-missile flying directly away from the camera. Only concentric titanium burner nozzle and recessed white-orange ignition core visible, four foreshortened fin tips. No side profile, missile body, nose or warhead. Centered native transparent RGBA sprite, detailed realistic BLACKSITE military art."
   }
 ]

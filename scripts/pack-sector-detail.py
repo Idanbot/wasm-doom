@@ -57,7 +57,10 @@ def main():
   save(isolated(cell),OUT/'projectiles'/('enemy_'+s['slug']+'.png'))
  board=Image.open(SOURCE/'missiles.png').convert('RGBA')
  for i,name in enumerate(['tactical','siege','naval']):
-  for r,direction in enumerate(['outgoing','incoming']):save(isolated(panel(board,i,r,3,2)),OUT/'projectiles'/f'missile_{name}_{direction}.png')
+  for r,direction in enumerate(['outgoing','incoming']):
+   rear=SOURCE/f'missile-{name}-rear.png'
+   image=Image.open(rear).convert('RGBA') if direction=='outgoing' and rear.exists() else panel(board,i,r,3,2)
+   save(isolated(image),OUT/'projectiles'/f'missile_{name}_{direction}.png')
  # The three missile bosses use their own incoming model, with a centered nose.
  for name,model in [('titan','siege'),('astra','tactical'),('nautilus','naval')]:
   save(Image.open(OUT/'projectiles'/f'missile_{model}_incoming.png').convert('RGBA'),OUT/'projectiles'/f'enemy_{name}.png')
@@ -68,6 +71,7 @@ def main():
   for i,p in enumerate(paths):atlas.alpha_composite(Image.open(OUT/'projectiles'/p).convert('RGBA'),((i%2)*256,(i//2)*256))
   save(atlas,OUT/'spr_ordnance.png')
  rocket=Image.open(OUT/'projectiles/missile_tactical_outgoing.png').convert('RGBA')
- save(rocket.resize((512,512),Image.Resampling.LANCZOS),OUT/'draft/v2/fx/projectile_rocket.png')
+ rear=SOURCE/'missile-tactical-rear.png'
+ save(isolated(Image.open(rear).convert('RGBA'),512) if rear.exists() else rocket.resize((512,512),Image.Resampling.LANCZOS),OUT/'draft/v2/fx/projectile_rocket.png')
  print('Packed sector-specific materials, props and isolated directional projectiles')
 if __name__=='__main__':main()

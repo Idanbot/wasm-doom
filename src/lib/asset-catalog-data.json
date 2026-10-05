@@ -1253,9 +1253,9 @@
   {
     "file": "/game/spr_ordnance.png",
     "name": "spr_ordnance.png",
-    "size": 230212,
-    "hash": "dc28f7cba8a418a5d56a313d462781392fd320bea20fcff337b4a8a6f7b3af8b",
-    "shortHash": "dc28f7cb",
+    "size": 298741,
+    "hash": "48a9d31aff0ccdf8604dbca0a61b55998f1a70b85b7a85e324529e8bbefef04c",
+    "shortHash": "48a9d31a",
     "width": 512,
     "height": 512
   },
@@ -9914,10 +9914,10 @@
   },
   {
     "file": "/game/projectiles/missile_tactical_outgoing.png",
-    "name": "missile_tactical_outgoing.png",
-    "size": 19306,
-    "hash": "7f0c169ebb9d74e25accb72a194962b3dc73277caac14a7efc243ee7937bdd7e",
-    "shortHash": "7f0c169e",
+    "name": "VLK-6 \u00b7 rear-facing burner projectile",
+    "size": 104025,
+    "hash": "2e861380aabe38be3b027a682bb15be6e58862c00d40005ba09b74a4c2992b2e",
+    "shortHash": "2e861380",
     "width": 256,
     "height": 256
   },
