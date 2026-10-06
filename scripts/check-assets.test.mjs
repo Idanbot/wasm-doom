@@ -8,7 +8,6 @@ import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
 import { deflateSync } from "node:zlib";
 import {
-  checkAssets,
   checkBudgetFiles,
   isSnakePng,
   readPngInfo,

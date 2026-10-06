@@ -84,7 +84,6 @@ pub(crate) const T_PIPES: usize = 26;
 pub(crate) const T_GUN2: usize = 27;
 /// Sector override floor beacon. This replaced the occult boss seal: the
 /// player now reaches a physical control station and deliberately uses it.
-
 pub(crate) const EK_NONE: u8 = 0;
 pub(crate) const EK_HUSK: u8 = 1;
 pub(crate) const EK_BRUTE: u8 = 2;
@@ -210,11 +209,45 @@ pub(crate) const IN_W16: u32 = 33554432;
 pub(crate) const IN_W17: u32 = 67108864;
 pub(crate) const IN_W18: u32 = 134217728;
 
+/// Weapon-select input bit per slot 0..=18, matching the `IN_W*` constants above.
+pub(crate) const IN_W_SLOT: [u32; 19] = [
+    IN_W1, IN_W2, IN_W3, IN_W4, IN_W5, IN_W6, IN_W7, IN_W8, IN_W9, IN_W10, IN_W11, IN_W12, IN_W13,
+    IN_W14, IN_W15, IN_W16, IN_W17, IN_W18, IN_W19,
+];
+/// Every weapon-select bit, for latching.
+pub(crate) const IN_W_ALL: u32 = IN_W1 | IN_W2 | IN_W3 | IN_W4 | IN_W5 | IN_W6 | IN_W7 | IN_W8
+    | IN_W9 | IN_W10 | IN_W11 | IN_W12 | IN_W13 | IN_W14 | IN_W15 | IN_W16 | IN_W17 | IN_W18
+    | IN_W19;
+
 pub(crate) const WEP_N: usize = 33;
 pub(crate) const MAG_SZ: [i32; WEP_N] = [12, 8, 36, 5, 4, 10, 90, 6, 4, 14, 5, 9, 4, 8, 6, 24, 3, 30, 12, 8, 6, 15, 10, 12, 9, 4, 24, 14, 7, 5, 8, 10, 18];
 pub(crate) const RELOAD_T: [f32; WEP_N] = [0.95, 1.75, 1.30, 1.60, 1.95, 1.55, 2.45, 1.85, 1.70, 1.35, 1.55, 1.8, 2.0, 2.1, 2.15, 1.7, 2.6, 1.6, 1.9, 1.9, 2.1, 1.7, 2.0, 2.2, 1.8, 2.5, 2.1, 1.8, 2.2, 2.4, 1.9, 2.0, 2.3];
+/// Reserve ammo cap per slot. Authoritative for both the pickup ceiling and the
+/// per-wave refill; must stay equal to `WEAPONS[].reserve` in
+/// `src/components/game/data.ts` (pinned by `reserve_caps_match_the_arsenal`).
+/// The first 19 are hand-tuned rather than derived from the magazine size.
+pub(crate) const RESERVE_CAP: [i32; WEP_N] = [
+    120, 48, 216, 20, 16, 80, 450, 36, 24, 84, 30, 54, 24, 48, 36, 144, 18, 180, 72,
+    48, 36, 90, 60, 72, 54, 24, 144, 84, 42, 30, 48, 60, 108,
+];
+/// Number of tracked ownership flags: slots 1..=18. Slot 0 is always owned and
+/// slots 19.. are tracked in the `extra_weapons` bitset.
+pub(crate) const OWNED_GUNS: usize = 18;
+
 pub(crate) const MAP_CELLS: usize = MAP_W * MAP_H;
+/// Rounds an ammo pickup grants per slot. The first eight are hand-tuned;
+/// later slots grant one full magazine.
+pub(crate) const AMMO_PICKUP: [i32; WEP_N] = [
+    18, 10, 45, 5, 2, 15, 90, 6, 4, 14, 5, 9, 4, 8, 6, 24, 3, 30, 12, 8, 6, 15, 10, 12, 9, 4, 24, 14,
+    7, 5, 8, 10, 18,
+];
+/// Rounds a floor weapon pickup grants, indexed by weapon slot 1..=7.
+pub(crate) const GROUND_GUN_PICKUP: [i32; 8] = [8, 54, 7, 4, 20, 180, 12, 0];
 pub(crate) const FX_CAP: usize = 64;
+/// Dynamic light emitters kept per frame, nearest to the player first.
+pub(crate) const DYNAMIC_LIGHT_BUDGET: usize = 40;
+/// Radius in cells within which a dynamic emitter can reach the player.
+pub(crate) const DYNAMIC_LIGHT_RANGE: f32 = 18.0;
 
 #[cfg(test)]
 mod tests {
@@ -230,6 +263,10 @@ mod tests {
     fn weapon_tables_cover_all_thirty_three_guns() {
         assert_eq!(MAG_SZ.len(), WEP_N);
         assert_eq!(RELOAD_T.len(), WEP_N);
+        assert_eq!(RESERVE_CAP.len(), WEP_N);
+        for c in RESERVE_CAP {
+            assert!(c > 0);
+        }
         for m in MAG_SZ {
             assert!(m > 0);
         }

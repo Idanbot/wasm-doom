@@ -101,7 +101,7 @@ mod tests {
     fn arena()->Engine {let mut e=Engine::new(160,100);e.map.fill(0);for en in &mut e.ents {en.kind=EK_NONE;}e.px=4.5;e.py=4.5;e}
     #[test]
     fn fast_equip_still_presents_all_four_handling_frames() {
-        let mut e=arena();e.has_w6=true;e.mag[5]=10;e.select_weapon(5);
+        let mut e=arena();e.owned[4]=true;e.mag[5]=10;e.select_weapon(5);
         assert_eq!(e.pickup_dur,0.28);
         let mut frames=std::collections::HashSet::new();
         for _ in 0..8 {e.tick(0.04);frames.insert(e.hud.weap_frame);}
@@ -135,7 +135,7 @@ mod tests {
     }
     #[test]
     fn switching_enables_combos_without_bypassing_weapon_cadence() {
-        let mut e=arena();e.has_w6=true;e.mag[0]=12;e.mag[5]=10;e.fire();assert_eq!(e.mag[0],11);
+        let mut e=arena();e.owned[4]=true;e.mag[0]=12;e.mag[5]=10;e.fire();assert_eq!(e.mag[0],11);
         e.select_weapon(5);e.cooldown=0.0;e.fire();assert_eq!(e.mag[5],9);
         e.select_weapon(0);e.cooldown=0.0;e.fire();assert_eq!(e.mag[0],11);
         e.tactical.tick(1.0);e.cooldown=0.0;e.fire();assert_eq!(e.mag[0],10);

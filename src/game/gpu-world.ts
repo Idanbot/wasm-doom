@@ -1,56 +1,17 @@
 import BOSS_ARENAS from "./boss-arena-data.json";
+import {
+  VIEW_FLOATS,
+  COL_FLOATS,
+  SPR_FLOATS,
+  MAP_W,
+  MAP_H,
+  T_SECTOR_SURFACE,
+  T_BOSS_ARENA,
+  TEX_N,
+} from "./atlas-slots";
 
 /** GPU wall/floor/sprite fill. The sim still casts columns; this only textures them. */
-
-export const VIEW_FLOATS = 16;
-export const COL_FLOATS = 16;
-export const SPR_FLOATS = 8;
-export const MAP_W = 48;
-export const MAP_H = 32;
-export const ENEMY_ANIM_COUNT = 7;
-export const ENEMY_SKIN_COUNT = 62;
-export const ENEMY_PROJECTILE_COUNT = 37;
-export const ENEMY_TEX_BASE = 29;
-export const T_ORDNANCE = ENEMY_TEX_BASE + ENEMY_ANIM_COUNT * ENEMY_SKIN_COUNT;
-export const T_GUN3 = T_ORDNANCE + 1;
-export const T_GUN4 = T_ORDNANCE + 2;
-export const T_GUN5 = T_ORDNANCE + 3;
-export const T_GUN6 = T_ORDNANCE + 4;
-export const T_GUN7 = T_ORDNANCE + 5;
-export const T_GUN8 = T_GUN7 + 4;
-export const T_GUN9 = T_GUN8 + 1;
-export const T_GUN10 = T_GUN8 + 2;
-export const T_TECH = 18;
-export const T_DOOR = 4;
-export const T_GUN11 = T_GUN8 + 3;
-export const T_GUN12 = T_GUN11 + 1;
-export const T_GUN13 = T_GUN12 + 1;
-export const T_GUN14 = T_GUN13 + 1;
-export const T_GUN15 = T_GUN14 + 1;
-export const T_GUN16 = T_GUN15 + 1;
-export const T_GUN17 = T_GUN16 + 1;
-export const T_GUN18 = T_GUN17 + 1;
-export const T_GUN19 = T_GUN18 + 1;
-export const T_PROP_REACTOR = T_GUN19 + 1;
-export const T_PROP_SERVER = T_GUN19 + 2;
-export const T_PROP_AC = T_GUN19 + 3;
-export const T_PROP_VENT = T_GUN19 + 4;
-export const T_PROP_WLIGHT_C = T_GUN19 + 5;
-export const T_PROP_WLIGHT_W = T_GUN19 + 6;
-export const T_PROP_BEACON = T_GUN19 + 7;
-export const T_EXPANSION_CASE = T_PROP_BEACON + 1;
-export const T_PROJECTILE_NEW = T_EXPANSION_CASE + 14;
-export const T_IMPACT_NEW = T_PROJECTILE_NEW + 5;
-export const T_ENEMY_PROJECTILE = T_IMPACT_NEW + 4;
-export const T_PLAYER_MISSILE = T_ENEMY_PROJECTILE + ENEMY_PROJECTILE_COUNT;
-export const T_SECTOR_SURFACE = T_PLAYER_MISSILE + 3;
-export const T_SECTOR_PROP = T_SECTOR_SURFACE + 25 * 5;
-export const T_BOSS_PROJECTILE = T_SECTOR_PROP + 25 * 3;
-export const T_BOSS_ARENA = T_BOSS_PROJECTILE + 25;
-export const T_CASING = T_BOSS_ARENA + 25;
-export const T_CASING_SHELL = T_CASING + 1;
-export const T_BOSS_ENTRANCE = T_CASING_SHELL + 1;
-export const TEX_N = T_BOSS_ENTRANCE + 8;
+export * from "./atlas-slots";
 
 const arenaColors = BOSS_ARENAS.map(b => [0,2,4].map(i => (parseInt(b.color.slice(i,i+2),16)/255).toFixed(5)));
 const arenaColorsWgsl = arenaColors.map(c => `vec3<f32>(${c.join(",")})`).join(",");
@@ -792,6 +753,50 @@ void main() {
 export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
   const prog = glProgram(gl, GL_FILL_VS, GL_FILL_FS);
   const sprProg = glProgram(gl, GL_SPR_VS, GL_SPR_FS);
+  if (!prog || !sprProg) throw new Error("WebGL world shader failed to link");
+  // `getUniformLocation` is a synchronous driver round-trip. These names are
+  // constant for the life of the program, so resolve them once instead of
+  // five times per sprite per frame.
+  const FILL_U = {
+    atlas: gl.getUniformLocation(prog, "atlas"),
+    floorTex: gl.getUniformLocation(prog, "floorTex"),
+    lightTex: gl.getUniformLocation(prog, "lightTex"),
+    cols: gl.getUniformLocation(prog, "cols"),
+    view: [0, 1, 2, 3].map((i) => gl.getUniformLocation(prog, "view" + i)),
+  } as const;
+  const SPR_U = {
+    atlas: gl.getUniformLocation(sprProg, "atlas"),
+    cols: gl.getUniformLocation(sprProg, "cols"),
+    viewW: gl.getUniformLocation(sprProg, "viewW"),
+    depth: gl.getUniformLocation(sprProg, "depth"),
+    texId: gl.getUniformLocation(sprProg, "texId"),
+    frame: gl.getUniformLocation(sprProg, "frame"),
+    flash: gl.getUniformLocation(sprProg, "flash"),
+    kind: gl.getUniformLocation(sprProg, "kind"),
+  } as const;
+
+  // Per-frame textures keep a stable size for the life of the world, so they
+  // are allocated once and refreshed with `texSubImage2D`.
+  const texSize = { cols: { w: 0, h: 0 }, floor: { w: 0, h: 0 }, light: { w: 0, h: 0 } };
+  function uploadTex(
+    tex: WebGLTexture,
+    target: number,
+    internal: number,
+    format: number,
+    type: number,
+    w: number,
+    h: number,
+    data: ArrayBufferView,
+    sized: { w: number; h: number },
+  ) {
+    if (sized.w !== w || sized.h !== h) {
+      gl.texImage2D(target, 0, internal, w, h, 0, format, type, data);
+      sized.w = w;
+      sized.h = h;
+      return;
+    }
+    gl.texSubImage2D(target, 0, 0, 0, w, h, format, type, data);
+  }
   if (!prog || !sprProg) return null;
   const colsTex = gl.createTexture();
   const floorTex = gl.createTexture();
@@ -839,11 +844,11 @@ export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
       gl.bindTexture(gl.TEXTURE_2D, colsTex);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA32F, frame.w, 4, 0, gl.RGBA, gl.FLOAT, colsImg.subarray(0, frame.w * 16));
+      uploadTex(colsTex, gl.TEXTURE_2D, gl.RGBA32F, gl.RGBA, gl.FLOAT, frame.w, 4, colsImg.subarray(0, frame.w * 16), texSize.cols);
       gl.bindTexture(gl.TEXTURE_2D, floorTex);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.R8, MAP_W, MAP_H, 0, gl.RED, gl.UNSIGNED_BYTE, frame.floor);
+      uploadTex(floorTex, gl.TEXTURE_2D, gl.R8, gl.RED, gl.UNSIGNED_BYTE, MAP_W, MAP_H, frame.floor, texSize.floor);
       for (let i = 0; i < MAP_W * MAP_H; i++) {
         lightRgba[i * 4] = frame.light[i * 3] ?? 0;
         lightRgba[i * 4 + 1] = frame.light[i * 3 + 1] ?? 0;
@@ -853,7 +858,7 @@ export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
       gl.bindTexture(gl.TEXTURE_2D, lightTex);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA32F, MAP_W, MAP_H, 0, gl.RGBA, gl.FLOAT, lightRgba);
+      uploadTex(lightTex, gl.TEXTURE_2D, gl.RGBA32F, gl.RGBA, gl.FLOAT, MAP_W, MAP_H, lightRgba, texSize.light);
       gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
       gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, target, 0);
       if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) {
@@ -865,20 +870,19 @@ export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
       gl.useProgram(prog);
       gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D_ARRAY, atlas);
-      gl.uniform1i(gl.getUniformLocation(prog, "atlas"), 0);
+      gl.uniform1i(FILL_U.atlas, 0);
       gl.activeTexture(gl.TEXTURE1);
       gl.bindTexture(gl.TEXTURE_2D, floorTex);
-      gl.uniform1i(gl.getUniformLocation(prog, "floorTex"), 1);
+      gl.uniform1i(FILL_U.floorTex, 1);
       gl.activeTexture(gl.TEXTURE2);
       gl.bindTexture(gl.TEXTURE_2D, lightTex);
-      gl.uniform1i(gl.getUniformLocation(prog, "lightTex"), 2);
+      gl.uniform1i(FILL_U.lightTex, 2);
       gl.activeTexture(gl.TEXTURE3);
       gl.bindTexture(gl.TEXTURE_2D, colsTex);
-      gl.uniform1i(gl.getUniformLocation(prog, "cols"), 3);
-      gl.uniform4fv(gl.getUniformLocation(prog, "view0"), frame.view.subarray(0, 4));
-      gl.uniform4fv(gl.getUniformLocation(prog, "view1"), frame.view.subarray(4, 8));
-      gl.uniform4fv(gl.getUniformLocation(prog, "view2"), frame.view.subarray(8, 12));
-      gl.uniform4fv(gl.getUniformLocation(prog, "view3"), frame.view.subarray(12, 16));
+      gl.uniform1i(FILL_U.cols, 3);
+      for (let i = 0; i < 4; i++) {
+        gl.uniform4fv(FILL_U.view[i]!, frame.view.subarray(i * 4, i * 4 + 4));
+      }
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       const v = frame.view;
       const invDet = 1 / (v[4]! * v[3]! - v[2]! * v[5]!);
@@ -887,11 +891,11 @@ export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
       gl.useProgram(sprProg);
       gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D_ARRAY, atlas);
-      gl.uniform1i(gl.getUniformLocation(sprProg, "atlas"), 0);
+      gl.uniform1i(SPR_U.atlas, 0);
       gl.activeTexture(gl.TEXTURE3);
       gl.bindTexture(gl.TEXTURE_2D, colsTex);
-      gl.uniform1i(gl.getUniformLocation(sprProg, "cols"), 3);
-      gl.uniform1f(gl.getUniformLocation(sprProg, "viewW"), frame.w);
+      gl.uniform1i(SPR_U.cols, 3);
+      gl.uniform1f(SPR_U.viewW, frame.w);
       gl.bindBuffer(gl.ARRAY_BUFFER, sprBuf);
       gl.enableVertexAttribArray(0);
       gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 16, 0);
@@ -914,11 +918,11 @@ export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
         const verts = [x0, y0, 0, 0, x1, y0, 1, 0, x0, y1, 0, 1, x0, y1, 0, 1, x1, y0, 1, 0, x1, y1, 1, 1];
         quad.set(verts);
         gl.bufferData(gl.ARRAY_BUFFER, quad, gl.DYNAMIC_DRAW);
-        gl.uniform1f(gl.getUniformLocation(sprProg, "depth"), ty);
-        gl.uniform1f(gl.getUniformLocation(sprProg, "texId"), frame.sprites[o + 4]!);
-        gl.uniform1f(gl.getUniformLocation(sprProg, "frame"), frame.sprites[o + 5]!);
-        gl.uniform1f(gl.getUniformLocation(sprProg, "flash"), frame.sprites[o + 6]!);
-        gl.uniform1f(gl.getUniformLocation(sprProg, "kind"), frame.sprites[o + 7]!);
+        gl.uniform1f(SPR_U.depth, ty);
+        gl.uniform1f(SPR_U.texId, frame.sprites[o + 4]!);
+        gl.uniform1f(SPR_U.frame, frame.sprites[o + 5]!);
+        gl.uniform1f(SPR_U.flash, frame.sprites[o + 6]!);
+        gl.uniform1f(SPR_U.kind, frame.sprites[o + 7]!);
         gl.drawArrays(gl.TRIANGLES, 0, 6);
       }
       gl.bindFramebuffer(gl.FRAMEBUFFER, null);

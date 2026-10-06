@@ -100,7 +100,9 @@ export class SfxPlayer {
       if (!group || sound.group === group) {
         try {
           sound.source.stop();
-        } catch {}
+        } catch {
+          // Already stopped.
+        }
         this.release(sound);
       }
     if (!group) this.next.clear();

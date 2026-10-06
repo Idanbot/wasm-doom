@@ -4,6 +4,42 @@ import type { EnemyCue } from "@/game/enemy-presentation";
 
 const MAP_W = 48;
 const MAP_H = 32;
+const SCALE = 5;
+
+/**
+ * Theme tokens are resolved once and cached: reading them inside the draw
+ * effect forced a style recalculation on every HUD update (up to 60 Hz).
+ *
+ * The ref is lazy because `canvasRef.current` is still null on the first
+ * render, so resolution happens on the first draw that has a canvas rather than
+ * relying on a later render to retry it.
+ */
+function useMapColors() {
+  return useRef<MapColors | null>(null);
+}
+
+type MapColors = {
+  open: string;
+  wall: string;
+  door: string;
+  secret: string;
+  node: string;
+  player: string;
+  hostile: string;
+};
+
+function readMapColors(canvas: HTMLCanvasElement): MapColors {
+  const token = getComputedStyle(canvas);
+  return {
+    open: token.getPropertyValue("--color-bg").trim(),
+    wall: token.getPropertyValue("--color-elevated").trim(),
+    door: token.getPropertyValue("--color-steel").trim(),
+    secret: token.getPropertyValue("--color-danger").trim(),
+    node: token.getPropertyValue("--color-primary").trim(),
+    player: token.getPropertyValue("--color-fg").trim(),
+    hostile: token.getPropertyValue("--color-danger").trim() || "#e23b2f",
+  };
+}
 
 export function Automap({
   hud,
@@ -17,6 +53,7 @@ export function Automap({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const seen = useRef(new Uint8Array(MAP_W * MAP_H));
   const wave = useRef(hud.wave);
+  const colorsRef = useMapColors();
 
   useEffect(() => {
     if (wave.current !== hud.wave) {
@@ -28,6 +65,8 @@ export function Automap({
     if (!canvas || !map) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+    // First draw after mount: capture the tokens once and reuse them after.
+    colorsRef.current ??= readMapColors(canvas);
     const px = Math.floor(hud.x);
     const py = Math.floor(hud.y);
     for (let y = py - 5; y <= py + 5; y++) {
@@ -36,17 +75,14 @@ export function Automap({
         seen.current[y * MAP_W + x] = 1;
       }
     }
-    const scale = 5;
-    canvas.width = MAP_W * scale;
-    canvas.height = MAP_H * scale;
-    const token = getComputedStyle(canvas);
-    const open = token.getPropertyValue("--color-bg").trim();
-    const wall = token.getPropertyValue("--color-elevated").trim();
-    const door = token.getPropertyValue("--color-steel").trim();
-    const secret = token.getPropertyValue("--color-danger").trim();
-    const node = token.getPropertyValue("--color-primary").trim();
-    const player = token.getPropertyValue("--color-fg").trim();
-    const hostile = token.getPropertyValue("--color-danger").trim() || "#e23b2f";
+    const scale = SCALE;
+    // Reassigning width/height reallocates and clears the backing store, so
+    // only do it when the element actually changes size.
+    if (canvas.width !== MAP_W * scale || canvas.height !== MAP_H * scale) {
+      canvas.width = MAP_W * scale;
+      canvas.height = MAP_H * scale;
+    }
+    const { open, wall, door, secret, node, player, hostile } = colorsRef.current;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let i = 0; i < map.length; i++) {
       if (!seen.current[i]) continue;
@@ -85,7 +121,7 @@ export function Automap({
     ctx.closePath();
     ctx.fill();
     ctx.restore();
-  }, [hud.x, hud.y, hud.yaw, hud.wave, hud.nodeX, hud.nodeY, hud.objective, hud.living, hud.elapsedMs, readMap, getEnemies]);
+  }, [hud.x, hud.y, hud.yaw, hud.wave, hud.nodeX, hud.nodeY, hud.objective, hud.living, hud.elapsedMs, readMap, getEnemies, colorsRef]);
 
   return <canvas ref={canvasRef} className="automap" aria-label="Sector map" />;
 }

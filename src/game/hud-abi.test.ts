@@ -10,7 +10,7 @@ import { HUD_OFFSETS, HUD_SIZE } from "./hud-abi.ts";
  */
 describe("HUD ABI", () => {
   it("struct size matches the Rust repr(C) layout", () => {
-    assert.equal(HUD_SIZE, 228);
+    assert.equal(HUD_SIZE, 236);
   });
 
   it("field offsets match engine/src/hud.rs HUD_OFFSETS", () => {
@@ -40,6 +40,8 @@ describe("HUD ABI", () => {
       hasW18: 216,
   hasW19: 220,
       extraWeapons: 224,
+      hurtDir: 228,
+      strain: 232,
     });
   });
 

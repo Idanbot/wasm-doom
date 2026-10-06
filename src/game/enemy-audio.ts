@@ -191,7 +191,9 @@ export class EnemyAudio {
     for (const sound of [...this.active]) {
       try {
         sound.source.stop();
-      } catch {}
+      } catch {
+        // Already stopped.
+      }
       this.dispose(sound);
     }
     this.active = [];
@@ -209,7 +211,9 @@ export class EnemyAudio {
       }
       try {
         sound.source.stop();
-      } catch {}
+      } catch {
+        // Already stopped.
+      }
       this.dispose(sound);
     }
     this.subtitles = [];
@@ -232,8 +236,17 @@ export class EnemyAudio {
   private place(sound: SpatialSound, enemy: EnemyCue) {
     const t = this.ctx.currentTime;
     writePannerPosition(sound.panner, enemy.x, 0, enemy.y);
-    sound.filter.frequency.setTargetAtTime(enemy.sight ? 11000 : enemy.skin >= 12 && enemy.skin <= 36 ? 2500 : 750, t, 0.04);
-    sound.gain.gain.setTargetAtTime((enemy.sight ? 1 : enemy.skin >= 12 && enemy.skin <= 36 ? 0.45 : 0.18) * (sound.line ? 1.1 : 0.24), t, 0.04);
+    sound.filter.frequency.setTargetAtTime(
+      enemy.sight ? 11000 : enemy.skin >= 12 && enemy.skin <= 36 ? 2500 : 750,
+      t,
+      0.04,
+    );
+    sound.gain.gain.setTargetAtTime(
+      (enemy.sight ? 1 : enemy.skin >= 12 && enemy.skin <= 36 ? 0.45 : 0.18) *
+        (sound.line ? 1.1 : 0.24),
+      t,
+      0.04,
+    );
     sound.panner.panningModel = this.options.spatial ? "HRTF" : "equalpower";
     // Spatial off means centered sound; distance attenuation stays useful.
     if (!this.options.spatial) {
@@ -315,7 +328,9 @@ export class EnemyAudio {
       ) {
         try {
           sound.source.stop();
-        } catch {}
+        } catch {
+          // Already stopped.
+        }
         this.dispose(sound);
         continue;
       }

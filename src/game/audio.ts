@@ -48,9 +48,6 @@ export type GameAudio = {
   foot: () => void;
 };
 
-const BPM = 136;
-const BEAT = 60 / BPM;
-
 export function createAudio(): GameAudio {
   let ctx: AudioContext | null = null;
   let enemies: EnemyAudio | null = null;
@@ -72,13 +69,7 @@ export function createAudio(): GameAudio {
   let menuV = 0.7;
   let noise: AudioBuffer | null = null;
   let musicOn = false;
-  let musicTimer: number | null = null;
-  let musicNext = 0;
-  let musicBar = 0;
-  let musicGen = 0;
   let bossMode = false;
-  let guitarBus: GainNode | null = null;
-  let drumBus: GainNode | null = null;
   let bed: HTMLAudioElement | null = null;
   let bossBed: HTMLAudioElement | null = null;
   let menuBed: HTMLAudioElement | null = null;
@@ -226,177 +217,6 @@ export function createAudio(): GameAudio {
     void element.play().catch(done);
   }
 
-  function toneAt(
-    dest: GainNode,
-    when: number,
-    freq: number,
-    dur: number,
-    vol: number,
-    type: OscillatorType,
-    slide = 0,
-  ) {
-    if (!ctx) return;
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
-    o.type = type;
-    o.frequency.setValueAtTime(freq, when);
-    if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(28, freq + slide), when + dur);
-    g.gain.setValueAtTime(0.0001, when);
-    g.gain.exponentialRampToValueAtTime(Math.max(0.0002, vol), when + 0.01);
-    g.gain.exponentialRampToValueAtTime(0.0001, when + dur);
-    o.connect(g);
-    g.connect(dest);
-    o.start(when);
-    o.stop(when + dur + 0.04);
-  }
-
-  function noiseAt(
-    dest: GainNode,
-    when: number,
-    dur: number,
-    vol: number,
-    freq: number,
-    type: BiquadFilterType,
-    rate = 1,
-  ) {
-    if (!ctx || !noise) return;
-    const src = ctx.createBufferSource();
-    src.buffer = noise;
-    src.playbackRate.value = rate;
-    const g = ctx.createGain();
-    const f = ctx.createBiquadFilter();
-    f.type = type;
-    f.frequency.value = freq;
-    f.Q.value = 0.85;
-    g.gain.setValueAtTime(vol, when);
-    g.gain.exponentialRampToValueAtTime(0.0001, when + dur);
-    src.connect(f);
-    f.connect(g);
-    g.connect(dest);
-    src.start(when);
-    src.stop(when + dur);
-  }
-
-  function chug(dest: GainNode, when: number, accent: boolean) {
-    const vol = accent ? 0.28 : 0.16;
-    toneAt(dest, when, 82.41, 0.07, vol, "sawtooth", -28);
-    toneAt(dest, when, 123.47, 0.055, vol * 0.7, "sawtooth", -34);
-    toneAt(dest, when, 164.81, 0.04, vol * 0.28, "square", -40);
-  }
-
-  function kick(dest: GainNode, when: number) {
-    toneAt(dest, when, 150, 0.14, 0.28, "sine", -115);
-    noiseAt(dest, when, 0.06, 0.1, 80, "lowpass", 0.4);
-  }
-
-  function snare(dest: GainNode, when: number) {
-    noiseAt(dest, when, 0.09, 0.16, 1800, "bandpass", 1.6);
-    toneAt(dest, when, 180, 0.06, 0.08, "triangle", -80);
-  }
-
-  function hat(dest: GainNode, when: number, open: boolean) {
-    noiseAt(
-      dest,
-      when,
-      open ? 0.08 : 0.03,
-      open ? 0.07 : 0.045,
-      open ? 7000 : 9000,
-      "highpass",
-      2.4,
-    );
-  }
-
-  function lead(dest: GainNode, when: number, freq: number, dur: number) {
-    toneAt(dest, when, freq, dur, 0.09, "sawtooth", -freq * 0.04);
-    toneAt(dest, when, freq * 1.997, dur, 0.045, "square", -freq * 0.03);
-    toneAt(dest, when, freq * 0.5, dur * 0.8, 0.03, "triangle");
-  }
-
-  function scheduleBar(start: number, bar: number) {
-    if (!guitarBus || !drumBus) return;
-    const eighth = BEAT / 2;
-    const sixteenth = BEAT / 4;
-    const phase = bar & 7;
-
-    for (let beat = 0; beat < 4; beat++) {
-      const base = start + beat * BEAT;
-      chug(guitarBus, base, true);
-      chug(guitarBus, base + sixteenth, false);
-      chug(guitarBus, base + sixteenth * 3, false);
-      if (bossMode) {
-        chug(guitarBus, base + sixteenth * 2, false);
-        toneAt(guitarBus, base, 55, 0.08, 0.08, "sawtooth", -20);
-      }
-    }
-    if (phase === 4 || phase === 5) {
-      toneAt(guitarBus, start + BEAT * 3 + sixteenth * 2, 116.54, 0.18, 0.14, "sawtooth", -10);
-      toneAt(guitarBus, start + BEAT * 3 + sixteenth * 2, 233.08, 0.14, 0.07, "square", -14);
-    }
-
-    kick(drumBus, start);
-    snare(drumBus, start + BEAT);
-    kick(drumBus, start + BEAT * 2);
-    if (bossMode) {
-      kick(drumBus, start + BEAT * 0.5);
-      kick(drumBus, start + BEAT * 2.5);
-      kick(drumBus, start + BEAT * 3 + sixteenth * 2);
-    } else if (phase === 7) {
-      kick(drumBus, start + BEAT * 2 + sixteenth * 2);
-    }
-    snare(drumBus, start + BEAT * 3);
-
-    for (let i = 0; i < 8; i++) {
-      hat(drumBus, start + i * eighth, i === 7 && (phase & 1) === 1);
-    }
-
-    const E3 = 164.81;
-    const Fs3 = 185.0;
-    const G3 = 196.0;
-    const A3 = 220.0;
-    const Bb3 = 233.08;
-    const B3 = 246.94;
-    const D4 = 293.66;
-    const E4 = 329.63;
-    const G4 = 392.0;
-
-    if (phase === 2 || phase === 3 || bossMode) {
-      const riff = [
-        [0, E3, 0.16],
-        [1, G3, 0.12],
-        [2, E3, 0.12],
-        [3, Bb3, 0.16],
-        [4, A3, 0.12],
-        [5, G3, 0.12],
-        [6, Fs3, 0.12],
-        [7, E3, 0.2],
-      ] as const;
-      for (const [i, f, d] of riff) lead(guitarBus, start + i * eighth, f, d);
-    } else if (phase === 6) {
-      const riff = [
-        [0, E4, 0.12],
-        [1, E4, 0.1],
-        [2, D4, 0.1],
-        [3, E4, 0.16],
-        [4, G4, 0.14],
-        [5, Fs3 * 2, 0.12],
-        [6, E4, 0.12],
-        [7, D4, 0.18],
-      ] as const;
-      for (const [i, f, d] of riff) lead(guitarBus, start + i * eighth, f, d);
-    } else if (phase === 7) {
-      const riff = [
-        [0, B3, 0.14],
-        [1, A3, 0.12],
-        [2, G3, 0.12],
-        [3, Fs3, 0.14],
-        [4, E3, 0.16],
-        [6, Bb3, 0.2],
-        [7, E3, 0.26],
-      ] as const;
-      for (const [i, f, d] of riff) lead(guitarBus, start + i * eighth, f, d);
-    }
-  }
-
   function hookBed(url: string): HTMLAudioElement | null {
     if (!ctx || !music) return null;
     const el = new Audio();
@@ -489,7 +309,6 @@ export function createAudio(): GameAudio {
     if (!ctx || !music) return;
     ensureBed();
     menuBed?.pause();
-    stopSynth();
     if (bossMode && bossBed) {
       bed?.pause();
       playEl(bossBed);
@@ -503,75 +322,9 @@ export function createAudio(): GameAudio {
     // Every background bed is an MP3; no generated fallback music.
   }
 
-  function startSynth() {
-    if (!ctx || !music) return;
-    musicGen += 1;
-    if (!guitarBus) {
-      const dist = ctx.createWaveShaper();
-      const n = 2048;
-      const curveArr = new Float32Array(n);
-      for (let i = 0; i < n; i++) {
-        const x = (i / (n - 1)) * 2 - 1;
-        curveArr[i] = Math.tanh(x * 8.5);
-      }
-      dist.curve = curveArr;
-      dist.oversample = "4x";
-      const lp = ctx.createBiquadFilter();
-      lp.type = "lowpass";
-      lp.frequency.value = 1750;
-      lp.Q.value = 1.1;
-      guitarBus = ctx.createGain();
-      guitarBus.gain.value = 0.0001;
-      guitarBus.connect(dist);
-      dist.connect(lp);
-      lp.connect(music);
-      drumBus = ctx.createGain();
-      drumBus.gain.value = 0.55;
-      drumBus.connect(music);
-    }
-    const t = ctx.currentTime;
-    guitarBus.gain.cancelScheduledValues(t);
-    guitarBus.gain.setTargetAtTime(0.9, t, 0.08);
-    if (drumBus) {
-      drumBus.gain.cancelScheduledValues(t);
-      drumBus.gain.setTargetAtTime(0.55, t, 0.08);
-    }
-    musicBar = 0;
-    musicNext = t + 0.05;
-    pumpMusic();
-  }
-
-  function pumpMusic() {
-    if (musicTimer != null) window.clearTimeout(musicTimer);
-    if (!musicOn || !ctx || (bed && !bedFailed)) return;
-    const now = ctx.currentTime;
-    const barLen = BEAT * 4;
-    while (musicNext < now + barLen * 2.2) {
-      scheduleBar(musicNext, musicBar);
-      musicNext += barLen;
-      musicBar += 1;
-    }
-    musicTimer = window.setTimeout(pumpMusic, 160);
-  }
-
-  function stopSynth() {
-    if (musicTimer != null) window.clearTimeout(musicTimer);
-    musicTimer = null;
-    const t = ctx?.currentTime ?? 0;
-    const gen = ++musicGen;
-    if (guitarBus && ctx) guitarBus.gain.setTargetAtTime(0.0001, t, 0.12);
-    if (drumBus && ctx) drumBus.gain.setTargetAtTime(0.0001, t, 0.12);
-    window.setTimeout(() => {
-      if (gen !== musicGen) return;
-      guitarBus = null;
-      drumBus = null;
-    }, 400);
-  }
-
   function stopGate() {
     bed?.pause();
     bossBed?.pause();
-    stopSynth();
   }
 
   return {
@@ -662,7 +415,6 @@ export function createAudio(): GameAudio {
         if (menuBed) {
           bed?.pause();
           bossBed?.pause();
-          stopSynth();
           menuBed.volume = muted ? 0 : menuV;
           playEl(menuBed);
         }

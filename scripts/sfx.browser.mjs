@@ -1,7 +1,12 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { chromium } from "playwright";
+import { readFileSync } from "node:fs";
 const base = process.env.BLACKSITE_TEST_URL ?? "http://127.0.0.1:8080/";
+// Clip counts come from the shipped manifest: url + mp3 fallback per clip.
+const manifest = JSON.parse(readFileSync("public/game/sfx/v2/manifest.json", "utf8"));
+const CLIP_COUNT = manifest.clips.length;
+const DECODED_COUNT = CLIP_COUNT * 2;
 async function fixture(browser, mobile = false) {
   const context = await browser.newContext(
     mobile ? { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true } : {},
@@ -127,7 +132,7 @@ for (const mobile of [false, true])
         };
       });
       console.log(mobile ? "mobile" : "desktop", results);
-      assert.equal(results.decoded, 260);
+      assert.equal(results.decoded, DECODED_COUNT);
       assert.ok(results.peak < 0.8, JSON.stringify(results));
       assert.ok(results.minEnergy > 1e-8);
       assert.ok(results.loud > 0.0001, JSON.stringify(results));
@@ -204,11 +209,11 @@ test("game loading waits for SFX and real firing/reload/pause events use recorde
     url.searchParams.set("qa", "1");
     await page.goto(url.href, { waitUntil: "domcontentloaded" });
     await page.waitForFunction(
-      () =>
-        window.__controlsTest?.getSfxAudio()?.loaded === 130 &&
-        window.__controlsTest?.getReserve() === 72 &&
+      (count) =>
+        window.__controlsTest?.getSfxAudio()?.loaded === count &&
+        window.__controlsTest?.isLive() &&
         document.body.innerText.includes("HEALTH"),
-      null,
+      CLIP_COUNT,
       { timeout: 90000 },
     );
     await page.locator(".game-canvas").click({ force: true });

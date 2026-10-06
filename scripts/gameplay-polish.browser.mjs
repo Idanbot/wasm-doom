@@ -12,7 +12,7 @@ test("Escape transitions debounce; held empty triggers repeat clicks; first-play
     url.searchParams.set("qa", "1");
     await page.addInitScript(() => localStorage.setItem("blacksite-res", "640"));
     await page.goto(url.href);
-    await page.waitForFunction(() => window.__controlsTest?.getReserve() === 72, null, {
+    await page.waitForFunction(() => window.__controlsTest?.isLive(), null, {
       timeout: 120000,
     });
     await page.evaluate(

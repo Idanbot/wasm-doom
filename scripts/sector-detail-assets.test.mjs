@@ -20,12 +20,12 @@ test('all 25 sectors have five exclusive seamless materials and three exclusive 
     const bytes=read(`public/game/sectors/${sector.slug}/${name}.png`);const info=readPngInfo(bytes);
     assert.deepEqual([info.width,info.height],[256,256],sector.slug+' '+name);assert.ok(info.hasAlpha);
     const set=name.startsWith('prop')?props:materials;assert.ok(!set.has(hash(bytes)),`${sector.slug}/${name} repeats another sector's asset`);set.add(hash(bytes));
-    const result=await page.evaluate(async({src,prop})=>{
+    const result=await page.evaluate(async({src})=>{
      const im=new Image();im.src=src;await im.decode();const c=document.createElement('canvas');c.width=c.height=256;const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(im,0,0);const a=ctx.getImageData(0,0,256,256).data;
      let opaque=0,seam=0;for(let i=3;i<a.length;i+=4)if(a[i]>128)opaque++;
      for(let i=0;i<256;i++)for(let ch=0;ch<3;ch++){seam=Math.max(seam,Math.abs(a[(i*256)*4+ch]-a[(i*256+255)*4+ch]),Math.abs(a[i*4+ch]-a[(255*256+i)*4+ch]));}
      return {coverage:opaque/65536,seam,corners:[a[3],a[255*4+3],a[255*256*4+3],a[a.length-1]]};
-    },{src:`data:image/png;base64,${bytes.toString('base64')}`,prop:name.startsWith('prop')});
+    },{src:`data:image/png;base64,${bytes.toString('base64')}`});
     if(name.startsWith('prop')){assert.ok(result.coverage>.08&&result.coverage<.78,`${sector.slug}/${name}: missing prop or opaque backdrop (${result.coverage})`);assert.deepEqual(result.corners,[0,0,0,0],`${sector.slug}/${name}: backdrop pixels`);}
     else{assert.equal(result.coverage,1,`${sector.slug}/${name}: material holes`);assert.equal(result.seam,0,`${sector.slug}/${name}: opposite edges do not join`);}
    }

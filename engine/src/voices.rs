@@ -10,12 +10,15 @@ pub struct EnemyCue {
     pub sight: f32, pub distance: f32,
 }
 
-pub(crate) fn snapshot(e: &Engine, out: &mut [EnemyCue; ENT_N]) -> usize {
+pub(crate) fn snapshot(e: &Engine, out: &mut [EnemyCue]) -> usize {
     let (dx, dy) = (e.pa.cos(), e.pa.sin());
     let plane = 0.72 * (e.w as f32 / e.h as f32 / 1.6);
     let horizon = e.h as f32 * (0.5 + e.pitch * 0.9);
     let mut n = 0;
     for (id, enemy) in e.ents.iter().enumerate() {
+        // Mirrors `snapshot_bars`: never index past the caller's buffer, even if
+        // the entity array is ever grown past the cue array.
+        if n >= out.len() { break; }
         if enemy.kind == 0 { continue; }
         let Some(skin) = skin_def(enemy.skin) else { continue; };
         let (sx, sy) = (enemy.x - e.px, enemy.y - e.py);

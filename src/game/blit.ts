@@ -13,6 +13,10 @@ export type BlitFx = {
   yaw?: number;
   shocks?: Shockwave[];
   entrance?: Entrance;
+  /** Yaw-relative bearing (radians) of the last damage source. */
+  hurtDir?: number;
+  /** 0..1 low-health strain. */
+  strain?: number;
 };
 
 export type Blitter = {
@@ -43,6 +47,11 @@ function writeEffectUniforms(data: Float32Array, fx?: BlitFx) {
     data.set([s.x, s.y, s.radius, s.strength], 20 + i * 4);
     data[36 + i] = s.depth;
   }
+  // `feedback`: x = directional hurt bearing, y = low-health strain.
+  data[48] = fx?.hurtDir ?? 0;
+  data[49] = fx?.strain ?? 0;
+  data[50] = 0;
+  data[51] = 0;
 }
 
 export async function createBlitter(
@@ -77,16 +86,73 @@ function padRows(pixels: Uint8Array<ArrayBuffer>, w: number, h: number) {
   return { data, stride };
 }
 
-function syncDisplay(canvas: HTMLCanvasElement) {
+/**
+ * Backing-store size cache keyed by canvas.
+ *
+ * `canvas.clientWidth` is a layout-forcing read, so calling it from the frame
+ * loop forces a synchronous style/layout pass five times per frame. Device
+ * pixel ratio and CSS size can only change on resize, so a `ResizeObserver`
+ * keeps the value current and the hot path reads a plain object instead.
+ */
+type DisplaySize = { dw: number; dh: number; changed: boolean; obs: ResizeObserver };
+
+function targetSize(canvas: HTMLCanvasElement) {
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  const dw = Math.max(1, Math.round((canvas.clientWidth || 320) * dpr));
-  const dh = Math.max(1, Math.round((canvas.clientHeight || 200) * dpr));
-  const changed = canvas.width !== dw || canvas.height !== dh;
-  if (changed) {
-    canvas.width = dw;
-    canvas.height = dh;
+  return {
+    dw: Math.max(1, Math.round((canvas.clientWidth || 320) * dpr)),
+    dh: Math.max(1, Math.round((canvas.clientHeight || 200) * dpr)),
+  };
+}
+
+const displayCache = new WeakMap<HTMLCanvasElement, DisplaySize>();
+/** WeakMap is not iterable, so live entries are tracked here to reach them on
+ *  DPR change and to tear down on dispose. One entry per game canvas. */
+const displayEntries = new Set<DisplaySize>();
+
+function syncDisplay(canvas: HTMLCanvasElement): DisplaySize {
+  let entry = displayCache.get(canvas);
+  if (!entry) {
+    const { dw, dh } = targetSize(canvas);
+    // Start dirty so the backing store is claimed on this first call, exactly as
+    // the eager version did. Leaving it clean defers to an asynchronous
+    // ResizeObserver callback, which lets a caller read pixels at a canvas size
+    // the blitter has not actually rendered into yet.
+    entry = { dw, dh, changed: true, obs: new ResizeObserver(() => {}) };
+    displayCache.set(canvas, entry);
+    // Re-measure whenever the element resizes, never during the frame loop.
+    entry.obs = new ResizeObserver(() => {
+      const next = targetSize(canvas);
+      entry!.dw = next.dw;
+      entry!.dh = next.dh;
+      entry!.changed = true;
+    });
+    entry.obs.observe(canvas);
+    window.addEventListener("resize", markDisplayDirty, { passive: true });
+    displayEntries.add(entry);
   }
-  return { dw, dh, changed };
+  if (entry.changed) {
+    if (canvas.width !== entry.dw || canvas.height !== entry.dh) {
+      canvas.width = entry.dw;
+      canvas.height = entry.dh;
+    }
+    entry.changed = false;
+  }
+  return entry;
+}
+
+/** DPR can change without a CSS resize (moving a window between monitors). */
+function markDisplayDirty() {
+  for (const entry of displayEntries) entry.changed = true;
+}
+
+/** Detaches the observer and the window listener backing one canvas. */
+function releaseDisplay(canvas: HTMLCanvasElement) {
+  const entry = displayCache.get(canvas);
+  if (!entry) return;
+  entry.obs.disconnect();
+  window.removeEventListener("resize", markDisplayDirty);
+  displayEntries.delete(entry);
+  displayCache.delete(canvas);
 }
 
 const POST_WGSL = `
@@ -107,6 +173,7 @@ struct Uni {
   shockDepth: vec4<f32>,
   entrance: vec4<f32>,
   entranceColor: vec4<f32>,
+  feedback: vec4<f32>,
 };
 @group(0) @binding(0) var fb: texture_2d<f32>;
 @group(0) @binding(1) var bloomTex: texture_2d<f32>;
@@ -231,7 +298,11 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
   if (u.fog > 0.5) {
     let t = 1.0 - clamp(c.a, 0.0, 1.0);
     let t2 = t * t;
-    let fogc = vec3<f32>(0.07, 0.043, 0.039);
+    // Sector-tinted fog. The base is the authored warm haze; atmosphere.rgb is
+    // the current sector's identity colour, so the far field reads as part of
+    // the level instead of erasing it.
+    let tint = normalize(u.atmosphere.rgb + vec3<f32>(0.18, 0.18, 0.18));
+    let fogc = mix(vec3<f32>(0.07, 0.043, 0.039), tint * 0.19, 0.45);
     c = vec4<f32>(mix(fogc, c.rgb, t2), 1.0);
   } else {
     c.a = 1.0;
@@ -241,9 +312,27 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
   c = vec4<f32>(c.rgb * (1.0 - 0.22 * dot(g, g)), 1.0);
 
   if (u.hurt > 0.04) {
+    // Directional: the vignette arc is centred on the bearing the damage came
+    // from, so the player can tell which side was hit instead of seeing a
+    // symmetric ring. feedback.x is the yaw-relative source bearing.
     let edge = pow(max(abs(g.x), abs(g.y)), 2.2);
-    let f = u.hurt * 0.38 * smoothstep(0.32, 1.0, edge);
+    // Screen direction of the source. Facing forward maps to screen-up (0,-1);
+    // a source 90 degrees to the player's left maps to screen-left (-1,0).
+    // Hence (-sin, -cos): with +x right and +y down on screen.
+    let toSource = normalize(g);
+    let bearing = vec2<f32>(-sin(u.feedback.x), -cos(u.feedback.x));
+    let facing = clamp(dot(toSource, bearing), -1.0, 1.0);
+    let arc = 0.55 + 0.45 * facing;
+    let f = u.hurt * 0.46 * arc * smoothstep(0.28, 1.0, edge);
     c = vec4<f32>(mix(c.rgb, vec3<f32>(0.55, 0.05, 0.05), f), 1.0);
+  }
+
+  if (u.feedback.y > 0.01) {
+    // Low-health strain: a tight desaturating pulse that crowds the frame
+    // edges without hiding the crosshair or the threat ahead.
+    let f = u.feedback.y * 0.34 * smoothstep(0.42, 1.05, length(g));
+    let grey = dot(c.rgb, vec3<f32>(0.299, 0.587, 0.114));
+    c = vec4<f32>(mix(c.rgb, vec3<f32>(grey) * vec3<f32>(0.86, 0.2, 0.2), f), 1.0);
   }
 
   if (u.muzzle > 0.05) {
@@ -254,16 +343,22 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
   }
 
   if (u.bloom > 0.5) {
-    let bp = vec2<i32>(uv * vec2<f32>(textureDimensions(bloomTex)));
+    // Offsets scale with resolution so the blur radius stays a constant
+    // fraction of the screen. Integer-texel taps made bloom ~2px at 1080p and
+    // proportionally ~12x wider at 320x200.
+    let dims = vec2<f32>(textureDimensions(bloomTex));
+    let bp = vec2<i32>(uv * dims);
+    let d1 = max(vec2<i32>(dims / 640.0), vec2<i32>(1, 1));
+    let d2 = max(vec2<i32>(dims / 320.0), vec2<i32>(2, 2));
     var bl = load_px(bloomTex, bp).rgb * 0.25;
-    bl += (load_px(bloomTex, bp + vec2<i32>(1, 0)).rgb
-         + load_px(bloomTex, bp - vec2<i32>(1, 0)).rgb
-         + load_px(bloomTex, bp + vec2<i32>(0, 1)).rgb
-         + load_px(bloomTex, bp - vec2<i32>(0, 1)).rgb) * 0.125;
-    bl += (load_px(bloomTex, bp + vec2<i32>(2, 2)).rgb
-         + load_px(bloomTex, bp - vec2<i32>(2, 2)).rgb
-         + load_px(bloomTex, bp + vec2<i32>(2, -2)).rgb
-         + load_px(bloomTex, bp + vec2<i32>(-2, 2)).rgb) * 0.0625;
+    bl += (load_px(bloomTex, bp + vec2<i32>(d1.x, 0)).rgb
+         + load_px(bloomTex, bp - vec2<i32>(d1.x, 0)).rgb
+         + load_px(bloomTex, bp + vec2<i32>(0, d1.y)).rgb
+         + load_px(bloomTex, bp - vec2<i32>(0, d1.y)).rgb) * 0.125;
+    bl += (load_px(bloomTex, bp + vec2<i32>(d2.x, d2.y)).rgb
+         + load_px(bloomTex, bp - vec2<i32>(d2.x, d2.y)).rgb
+         + load_px(bloomTex, bp + vec2<i32>(d2.x, -d2.y)).rgb
+         + load_px(bloomTex, bp - vec2<i32>(-d2.x, d2.y)).rgb) * 0.0625;
     c = vec4<f32>(c.rgb + bl * 0.42, 1.0);
   }
 
@@ -295,7 +390,7 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
   let pipeline: GPURenderPipeline | null = null;
   let bloomPipe: GPURenderPipeline | null = null;
   let uniBuf: GPUBuffer | null = null;
-  const uniData = new Float32Array(48);
+  const uniData = new Float32Array(52);
   let tex: GPUTexture[] = [];
   let view: GPUTextureView[] = [];
   let bloomTex: GPUTexture | null = null;
@@ -433,7 +528,7 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
         primitive: { topology: "triangle-list" },
       });
       uniBuf = dev.createBuffer({
-        size: 192,
+        size: 208,
         usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
       });
       world?.dispose();
@@ -481,6 +576,7 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
     dispose() {
       gen += 1;
       ready = false;
+      releaseDisplay(canvas);
       world?.dispose();
       world = null;
       destroyTex();
@@ -628,6 +724,7 @@ uniform vec4 shocks[4];
 uniform vec4 shockDepth;
 uniform vec4 entrance;
 uniform vec4 entranceColor;
+uniform vec4 feedback;
 in vec2 v;
 out vec4 o;
 
@@ -635,7 +732,10 @@ vec3 applyFog(vec4 c) {
   if (fog < 0.5) return c.rgb;
   float t = 1.0 - clamp(c.a, 0.0, 1.0);
   float t2 = t * t;
-  return mix(vec3(0.07, 0.043, 0.039), c.rgb, t2);
+  // Sector-tinted, matching the WebGPU post shader.
+  vec3 tint = normalize(atmosphere.rgb + vec3(0.18));
+  vec3 fogc = mix(vec3(0.07, 0.043, 0.039), tint * 0.19, 0.45);
+  return mix(fogc, c.rgb, t2);
 }
 
 void main(){
@@ -659,8 +759,15 @@ void main(){
 
   if (hurt > 0.04) {
     float edge = pow(max(abs(g.x), abs(g.y)), 2.2);
-    float f = hurt * 0.38 * smoothstep(0.32, 1.0, edge);
+    vec2 bearing = vec2(-sin(feedback.x), -cos(feedback.x));
+    float facing = clamp(dot(normalize(g), bearing), -1.0, 1.0);
+    float f = hurt * 0.46 * (0.55 + 0.45 * facing) * smoothstep(0.28, 1.0, edge);
     rgb = mix(rgb, vec3(0.55, 0.05, 0.05), f);
+  }
+  if (feedback.y > 0.01) {
+    float f = feedback.y * 0.34 * smoothstep(0.42, 1.05, length(g));
+    float grey = dot(rgb, vec3(0.299, 0.587, 0.114));
+    rgb = mix(rgb, vec3(grey) * vec3(0.86, 0.2, 0.2), f);
   }
   if (muzzle > 0.05) {
     vec2 muv = g - vec2(0.2, 0.44);
@@ -669,14 +776,22 @@ void main(){
     rgb += vec3(1.0, 0.74, 0.32) * (core + fill);
   }
   if (bloom > 0.5) {
-    vec3 acc = vec3(0.0);
+    // Same 9-tap shape and weight as the WebGPU path, with resolution-scaled
+    // offsets. Previously this was a 4-tap smear gated on the centre pixel's
+    // own luminance, so the two backends looked nothing alike.
+    vec3 bl = texture(t, uv).rgb * 0.25;
+    vec2 d1 = max(vec2(res.x / 640.0, 1.0), vec2(1.0));
+    vec2 d2 = max(vec2(res.x / 320.0, 2.0), vec2(2.0));
     vec2 px = 1.0 / res;
-    acc += texture(t, uv + px * vec2(1.0, 0.0)).rgb;
-    acc += texture(t, uv + px * vec2(-1.0, 0.0)).rgb;
-    acc += texture(t, uv + px * vec2(0.0, 1.0)).rgb;
-    acc += texture(t, uv + px * vec2(0.0, -1.0)).rgb;
-    float luma = dot(raw.rgb, vec3(0.26, 0.45, 0.12));
-    rgb += acc * 0.08 * max(0.0, luma - 0.35);
+    bl += (texture(t, uv + px * vec2(d1.x, 0.0)).rgb
+         + texture(t, uv - px * vec2(d1.x, 0.0)).rgb
+         + texture(t, uv + px * vec2(0.0, d1.y)).rgb
+         + texture(t, uv - px * vec2(0.0, d1.y)).rgb) * 0.125;
+    bl += (texture(t, uv + px * vec2(d2.x, d2.y)).rgb
+         + texture(t, uv - px * vec2(d2.x, d2.y)).rgb
+         + texture(t, uv + px * vec2(d2.x, -d2.y)).rgb
+         + texture(t, uv - px * vec2(-d2.x, d2.y)).rgb) * 0.0625;
+    rgb += bl * 0.42;
   }
   if (crt > 0.5) {
     rgb *= 1.0 - 0.14 * abs(sin(uv.y * res.y * 3.14159265));
@@ -759,7 +874,10 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
   const locEntrance=gl.getUniformLocation(prog,"entrance");
   const locEntranceColor=gl.getUniformLocation(prog,"entranceColor");
   const locShockDepth = gl.getUniformLocation(prog, "shockDepth");
-  const effectData = new Float32Array(48);
+  // Mirrors the WGSL uniform: 48 floats of existing effects + a 4-float
+  // feedback block (hurtDir, strain, 2 spare). Must match `writeEffectUniforms`.
+  const effectData = new Float32Array(52);
+  const locFeedback = gl.getUniformLocation(prog, "feedback");
   const uploadEffects = (fx?: BlitFx) => {
     writeEffectUniforms(effectData, fx);
     gl.uniform4fv(locAtmosphere, effectData.subarray(12, 16));
@@ -768,6 +886,7 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
     gl.uniform4fv(locEntrance,effectData.subarray(40,44));
     gl.uniform4fv(locEntranceColor,effectData.subarray(44,48));
     gl.uniform4fv(locShockDepth, effectData.subarray(36, 40));
+    gl.uniform4fv(locFeedback, effectData.subarray(48, 52));
   };
 
   const vao = gl.createVertexArray();
@@ -782,6 +901,7 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
     isReady: () => !gl.isContextLost(),
     revision: () => 0,
     dispose() {
+      releaseDisplay(canvas);
       world?.dispose();
       gl.deleteTexture(tex);
       gl.deleteVertexArray(vao);
@@ -881,7 +1001,11 @@ function createCanvas2dBlit(canvas: HTMLCanvasElement): Blitter {
     kind: "canvas2d",
     isReady: () => !!octx,
     revision: () => 0,
-    dispose() { frame = null; off.width = off.height = 1; },
+    dispose() {
+      releaseDisplay(canvas);
+      frame = null;
+      off.width = off.height = 1;
+    },
     setGfx(g) {
       gfx = { ...g };
     },

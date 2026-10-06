@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { chromium } from "playwright";
 
-test("WebGPU effect shader and 192-byte uniform layout validate", async (t) => {
+test("WebGPU effect shader and its uniform layout validate", async (t) => {
   const browser = await chromium.launch({headless:true,args:["--enable-unsafe-webgpu","--use-angle=swiftshader"]});
   try {
     const page = await browser.newPage();
@@ -15,21 +15,29 @@ test("WebGPU effect shader and 192-byte uniform layout validate", async (t) => {
       const source = await (await fetch("/src/game/blit.ts")).text();
       const code = source.match(/const POST_WGSL = `([\s\S]*?)`;/)?.[1];
       if (!code) throw new Error("Post shader source missing");
+      // Derive the uniform size from the renderer so growing the block cannot
+      // leave this layout check asserting a stale byte count.
+      const uniformSize = Number(source.match(/size:\s*(\d+),\s*\n\s*usage: GPUBufferUsage\.UNIFORM/)?.[1]);
+      if (!uniformSize) throw new Error("Could not determine the effect uniform size from blit.ts");
       const shader = device.createShaderModule({code});
       const messages = (await shader.getCompilationInfo()).messages.filter(m=>m.type==="error").map(m=>m.message);
       device.pushErrorScope("validation");
       const layout = device.createBindGroupLayout({entries:[
         {binding:0,visibility:GPUShaderStage.FRAGMENT,texture:{sampleType:"float"}},
         {binding:1,visibility:GPUShaderStage.FRAGMENT,texture:{sampleType:"float"}},
-        {binding:2,visibility:GPUShaderStage.FRAGMENT,buffer:{type:"uniform",minBindingSize:192}},
+        {binding:2,visibility:GPUShaderStage.FRAGMENT,buffer:{type:"uniform",minBindingSize:uniformSize}},
       ]});
       const pipeline = await device.createRenderPipelineAsync({layout:device.createPipelineLayout({bindGroupLayouts:[layout]}),
         vertex:{module:shader,entryPoint:"vs"},fragment:{module:shader,entryPoint:"fs",targets:[{format:"bgra8unorm"}]}});
       const error = await device.popErrorScope(); device.destroy();
-      return {messages,error:error?.message??null,pipeline:!!pipeline};
+      return {messages,error:error?.message??null,pipeline:!!pipeline,uniformSize};
     });
     if (result.unavailable) {t.skip("WebGPU adapter unavailable on this runner");return;}
     assert.deepEqual(result.messages,[]);assert.equal(result.error,null);assert.equal(result.pipeline,true);
+    // 16-byte aligned and large enough for the feedback block the hurt/strain
+    // effects read.
+    assert.equal(result.uniformSize % 16,0);
+    assert.ok(result.uniformSize >= 208,`uniform too small: ${result.uniformSize}`);
   } finally {await browser.close();}
 });
 
@@ -89,8 +97,8 @@ test("actual gameplay preloads new clips, plays casing landings and sector ambie
     await page.addInitScript(()=>localStorage.setItem("blacksite-res","320"));
     const url=new URL(process.env.BLACKSITE_TEST_URL??"http://127.0.0.1:8080/");url.searchParams.set("qa","1");
     await page.goto(url.href);
-    await page.waitForFunction(()=>window.__controlsTest?.getReserve()===72,null,{timeout:120000});
-    assert.equal(await page.evaluate(()=>window.__controlsTest.getSfxAudio().loaded),130);
+    await page.waitForFunction(()=>window.__controlsTest?.isLive(),null,{timeout:120000});
+    assert.equal(await page.evaluate(()=>window.__controlsTest.getSfxAudio().loaded),await page.evaluate(async()=>(await (await fetch('/game/sfx/v2/manifest.json')).json()).clips.length));
     await page.locator(".game-canvas").click();
     await page.evaluate(()=>{window.__controlsTest.heal();window.__controlsTest.setKeys(["Space"]);});
     await page.waitForFunction(()=>window.__controlsTest.getSfxAudio().recent.includes("casing-brass"),null,{timeout:15000});

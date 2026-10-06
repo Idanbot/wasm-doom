@@ -1,6 +1,6 @@
 import { ArrowUpRight, Volume2, VolumeX, Crosshair, ShieldAlert } from "lucide-react";
 import { fmtTime, type Score } from "./data";
-import { Settings, type SettingsProps } from "./Settings";
+import { LazySettings, type SettingsProps } from "./LazySettings";
 
 export function Menu(
   p: SettingsProps & {
@@ -83,7 +83,7 @@ export function Menu(
           </span>
         </button>
       )}
-      <Settings {...p} />
+      <LazySettings {...p} />
       <div className="menu-footer">
         <button type="button" onClick={() => p.setMuted(!p.muted)}>
           {p.muted ? <VolumeX size={16} /> : <Volume2 size={16} />}

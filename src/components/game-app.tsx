@@ -1,6 +1,6 @@
 import { DEFAULT_SENSITIVITY, readSensitivity } from "@/game/input-settings";
 import { machineryHint } from "./game/data";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, lazy, Suspense } from "react";
 import { asset } from "@/lib/asset";
 import { localQaRun } from "@/game/dev-run";
 import { BlacksiteRuntime, weaponSheetImage } from "@/game/runtime";
@@ -37,8 +37,20 @@ import { Automap } from "./game/Automap";
 import { EnemyBars } from "./game/EnemyBars";
 import { RadioCard } from "./game/RadioCard";
 import { loadEnemyOptions, type EnemySubtitle } from "@/game/enemy-presentation";
-import { AssetCatalog } from "./catalog/AssetCatalog";
 import { isCatalogEnabled } from "@/lib/catalog-guard";
+
+/**
+ * The catalog is a local development affordance and pulls in ~600 kB of JSON.
+ * `import.meta.env.DEV` folds to the literal `false` in a production build, so
+ * this ternary collapses and Rollup drops the dynamic import entirely rather
+ * than shipping dead asset data. `isCatalogEnabled()` is a runtime value check
+ * and cannot be constant-folded, which is why it is not used here.
+ */
+const AssetCatalog = import.meta.env.DEV
+  ? lazy(() =>
+      import("./catalog/AssetCatalog").then((m) => ({ default: m.AssetCatalog })),
+    )
+  : null;
 
 export function GameApp() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -50,6 +62,16 @@ export function GameApp() {
   const lastHudKey = useRef("");
   const lastSubtitleAt = useRef(0);
   const lastWeapon = useRef(-1);
+  // The viewmodel canvas and its 2D context are stable for the mount; querying
+  // them inside the 60 Hz `onHud` bridge walked the DOM on every frame.
+  const weaponCtxCache = useRef<CanvasRenderingContext2D | null>(null);
+  const weaponCtx = () => {
+    if (weaponCtxCache.current) return weaponCtxCache.current;
+    const el = weaponRef.current?.querySelector("canvas");
+    if (!el) return null; // viewmodel not mounted yet; retry next frame
+    weaponCtxCache.current = el.getContext("2d");
+    return weaponCtxCache.current;
+  };
   const swapAt = useRef(-1e9);
   const [enemyOptions, setEnemyOptions] = useState(loadEnemyOptions);
   const [subtitles, setSubtitles] = useState<EnemySubtitle[]>([]);
@@ -151,8 +173,7 @@ export function GameApp() {
           // covers idle, dry, pickup, reload and fire states.
           const fr = Math.max(0, Math.min(24, h.weapFrame | 0));
           const sheet = artMissing ? null : weaponSheetImage(wpn.sheet);
-          const frameCanvas = weapEl.querySelector("canvas");
-          const frameContext = frameCanvas?.getContext("2d");
+          const frameContext = weaponCtx();
           if (frameContext) {
             frameContext.clearRect(0, 0, 512, 384);
             if (sheet) {
@@ -514,8 +535,12 @@ export function GameApp() {
     }
   }, [vol]);
 
-  if (view === "catalog" && catalogEnabled) {
-    return <AssetCatalog onBackToGame={() => setView("game")} />;
+  if (view === "catalog" && catalogEnabled && AssetCatalog) {
+    return (
+      <Suspense fallback={null}>
+        <AssetCatalog onBackToGame={() => setView("game")} />
+      </Suspense>
+    );
   }
 
   const overlay = screen !== "play";

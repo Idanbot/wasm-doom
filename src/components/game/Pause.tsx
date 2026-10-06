@@ -1,5 +1,5 @@
 import { Play, RotateCcw, LogOut, Volume2 } from "lucide-react";
-import { Settings, type SettingsProps } from "./Settings";
+import { LazySettings, type SettingsProps } from "./LazySettings";
 
 export function Pause(
   p: SettingsProps & {
@@ -21,7 +21,7 @@ export function Pause(
           Resume operation<small>Return to the field</small>
         </span>
       </button>
-      <Settings {...p} />
+      <LazySettings {...p} />
       <div className="pause-actions">
         <button type="button" onClick={p.onRetryWave}>
           <RotateCcw size={16} />

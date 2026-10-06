@@ -24,7 +24,7 @@ for (const mode of ["webgl2", "canvas2d"])
       const url = new URL(process.env.BLACKSITE_TEST_URL ?? "http://127.0.0.1:8080/");
       url.searchParams.set("qa", "1");
       await page.goto(url.href);
-      await page.waitForFunction(() => window.__controlsTest?.getReserve() === 72, null, {
+      await page.waitForFunction(() => window.__controlsTest?.isLive(), null, {
         timeout: 120000,
       });
       await page.keyboard.press("p");

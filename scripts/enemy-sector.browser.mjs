@@ -2,7 +2,9 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
 import { readFileSync } from 'node:fs';
+import { SECTOR_COUNT, ENEMY_ANIM_COUNT } from '../src/game/atlas-slots.ts';
 const specs = JSON.parse(readFileSync(new URL('../art/enemies-v4/specs.json', import.meta.url)));
+const SECTOR_SHEETS = SECTOR_COUNT * ENEMY_ANIM_COUNT;
 test('every sector presents its exclusive enemy after all new animation assets preload', async () => {
  const browser = await chromium.launch({ headless: true });
  try {
@@ -14,7 +16,7 @@ test('every sector presents its exclusive enemy after all new animation assets p
   await page.goto(url.href,{waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>window.__controlsTest&&document.body.innerText.includes('HEALTH'),null,{timeout:180000});
   const loaded=await page.evaluate(()=>performance.getEntriesByType('resource').filter(e=>/\/game\/enemy_sector-.*\.png/.test(e.name)).map(e=>e.name));
-  assert.equal(new Set(loaded).size,175,'every sector sheet must finish loading before play');
+  assert.equal(new Set(loaded).size,SECTOR_SHEETS,'every sector sheet must finish loading before play');
   for(const enemy of specs.enemies.filter(e=>e.level)) {
    await page.waitForFunction(skin=>window.__controlsTest.getEnemies().some(e=>e.skin===skin&&e.hp>0),enemy.id,{timeout:15000});
    const wrong=await page.evaluate(skin=>window.__controlsTest.getEnemies().filter(e=>e.skin>=37&&e.skin<62&&e.hp>0&&e.skin!==skin),enemy.id);

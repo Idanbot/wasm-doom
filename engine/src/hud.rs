@@ -66,6 +66,13 @@ pub struct Hud {
     pub has_w18: i32,
     pub has_w19: i32,
     pub extra_weapons: u32,
+    /// Yaw-relative bearing of the most recent damage source, 0 = dead ahead.
+    /// Drives the directional hurt vignette; without it the player cannot tell
+    /// where a hit came from.
+    pub hurt_dir: f32,
+    /// 0..1 low-health strain. Ramps as health falls and pulses at 1 Hz so the
+    /// player can feel how close they are to death without reading the HUD.
+    pub strain: f32,
 }
 
 /// Byte size of the HUD struct as seen by TypeScript.
@@ -73,7 +80,7 @@ pub const HUD_SIZE: usize = core::mem::size_of::<Hud>();
 
 /// Field offsets as seen by TypeScript. Kept next to the struct so a
 /// reorder forces an update here instead of a silent desync.
-pub const HUD_OFFSETS: [(u32, &str); 25] = [
+pub const HUD_OFFSETS: [(u32, &str); 27] = [
     (108, "events"),
     (112, "ev_weapon"),
     (88, "reserve"),
@@ -99,9 +106,11 @@ pub const HUD_OFFSETS: [(u32, &str); 25] = [
     (216, "has_w18"),
     (220, "has_w19"),
     (224, "extra_weapons"),
+    (228, "hurt_dir"),
+    (232, "strain"),
 ];
 
-const _: () = assert!(HUD_SIZE == 228, "Hud layout changed; update runtime.ts");
+const _: () = assert!(HUD_SIZE == 236, "Hud layout changed; update runtime.ts");
 
 #[cfg(test)]
 mod tests {
@@ -111,7 +120,7 @@ mod tests {
     fn hud_size_matches_ts_side() {
         // Mirrors src/game/hud-abi.ts. The compile-time assert above is the
         // real guard; this keeps the value visible in test output.
-        assert_eq!(HUD_SIZE, 228);
+        assert_eq!(HUD_SIZE, 236);
     }
 
     #[test]

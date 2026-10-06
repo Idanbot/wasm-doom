@@ -88,9 +88,9 @@ fn missed_basic_weapons_reappear_randomly_but_owned_weapons_never_drop() {
     for wave in 2..=25 {
         e.wave=wave;e.door.fill(0.0);e.build_map();e.place_ents();
         for kind in kinds {assert_eq!(e.ents.iter().filter(|en|en.kind==kind).count(),1,"missing recovery weapon {kind} in {wave}");}
-        e.has_w2=true;e.has_w3=true;e.has_w4=true;e.has_w5=true;e.has_w6=true;e.has_w7=true;
+        e.owned[0]=true;e.owned[1]=true;e.owned[2]=true;e.owned[3]=true;e.owned[4]=true;e.owned[5]=true;
         e.place_ents();assert!(!e.ents.iter().any(|en|kinds.contains(&en.kind)));
-        e.has_w2=false;e.has_w3=false;e.has_w4=false;e.has_w5=false;e.has_w6=false;e.has_w7=false;
+        e.owned[0]=false;e.owned[1]=false;e.owned[2]=false;e.owned[3]=false;e.owned[4]=false;e.owned[5]=false;
     }
 }
 

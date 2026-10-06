@@ -1,3 +1,8 @@
+// Fixed-size parallel tables (MAG_SZ/RESERVE_CAP/AMMO_PICKUP/IN_W_SLOT and the
+// light/sprite scratch grids) are indexed by slot throughout; the `zip` rewrite
+// Clippy suggests reads worse and hides the slot invariant.
+#![allow(clippy::needless_range_loop)]
+
 #[cfg(test)]
 mod spatial_checks;
 mod boss_arena;
@@ -59,24 +64,13 @@ struct Engine {
     ammo: [i32; WEP_N],
     mag: [i32; WEP_N],
     weapon: i32,
-    has_w2: bool,
-    has_w3: bool,
-    has_w4: bool,
-    has_w5: bool,
-    has_w6: bool,
-    has_w7: bool,
-    has_w8: bool,
-    has_w9: bool,
-    has_w10: bool,
-    has_w11: bool,
-    has_w12: bool,
-    has_w13: bool,
-    has_w14: bool,
-    has_w15: bool,
-    has_w16: bool,
-    has_w17: bool,
-    has_w18: bool,
-    has_w19: bool,
+    /// Ownership flags for slots 1..=18. Slot 0 is the starting sidearm;
+    /// slots 19.. live in `extra_weapons`.
+    owned: [bool; OWNED_GUNS],
+    /// Yaw-relative bearing of the last damage source, for the hurt vignette.
+    hurt_dir: f32,
+    /// Cached low-health strain level, refreshed every tick.
+    strain: f32,
     extra_weapons: u32,
     pending_hostiles: usize,
     reinforcement_t: f32,
@@ -153,6 +147,10 @@ static mut E: Option<Engine> = None;
 fn eng() -> &'static mut Engine {
     #[allow(static_mut_refs)]
     unsafe {
+        // `&raw mut` avoids a `static_mut_refs` reference; clippy's suggested
+        // bare `E` would take a real borrow of the static for the returned
+        // lifetime, which is what this accessor is written to avoid.
+        #[allow(clippy::deref_addrof)]
         (*(&raw mut E)).as_mut().expect("engine")
     }
 }
@@ -162,6 +160,20 @@ fn eng_init(w: usize, h: usize) {
     unsafe {
         E = Some(Engine::new(w, h));
     }
+}
+
+/// Sanitises a float crossing the WASM ABI. `f32::clamp` propagates NaN and
+/// leaves infinities alone, so a single bad value from JavaScript could
+/// otherwise latch into permanent simulation state.
+#[inline]
+fn finite(v: f32) -> f32 {
+    if v.is_finite() { v } else { 0.0 }
+}
+
+/// Step clamp for the ABI: finite, non-negative, and capped. NaN becomes 0.
+#[inline]
+fn safe_dt(v: f32) -> f32 {
+    finite(v).clamp(0.0, 0.08)
 }
 
 fn clamp_i(v: i32, a: i32, b: i32) -> i32 {
@@ -458,24 +470,9 @@ impl Engine {
             ammo: { let mut a = [0; WEP_N]; a[0] = 36; a },
             mag: { let mut a = [0; WEP_N]; a[0] = 12; a },
             weapon: 0,
-            has_w2: false,
-            has_w3: false,
-            has_w4: false,
-            has_w5: false,
-            has_w6: false,
-            has_w7: false,
-            has_w8: false,
-            has_w9: false,
-            has_w10: false,
-            has_w11: false,
-            has_w12: false,
-            has_w13: false,
-            has_w14: false,
-            has_w15: false,
-            has_w16: false,
-            has_w17: false,
-            has_w18: false,
-            has_w19: false,
+            owned: [false; OWNED_GUNS],
+            hurt_dir: 0.0,
+            strain: 0.0,
             extra_weapons: 0,
             pending_hostiles: 0,
             reinforcement_t: 0.0,
@@ -501,6 +498,8 @@ impl Engine {
             qa: false,
             qa_bits: 0,
             hud: Hud {
+                hurt_dir: 0.0,
+                strain: 0.0,
                 health: 100,
                 armor: 0,
                 ammo: 12,
@@ -1194,7 +1193,7 @@ impl Engine {
             (dx * dx + dy * dy) < 16 * 16
         };
         let body = cx.abs() < (18.0 + n * 4.0) as i32 && y > 40 && y < 100;
-        let legs = (cx.abs() - 8).abs() < 7 && y >= 96 && y < 122;
+        let legs = (cx.abs() - 8).abs() < 7 && (96..122).contains(&y);
         if head || body || legs {
             color
         } else {
@@ -1272,7 +1271,12 @@ impl Engine {
     }
 
     pub(crate) fn announce_sector(&mut self) {
-        for slot in 19..WEP_N { if self.owns_slot(slot) { self.mag[slot] = MAG_SZ[slot]; self.ammo[slot] = MAG_SZ[slot] * 6; } }
+        for slot in 19..WEP_N {
+            if self.owns_slot(slot) {
+                self.mag[slot] = MAG_SZ[slot];
+                self.ammo[slot] = RESERVE_CAP[slot];
+            }
+        }
         self.node_done = false;
         self.lockdown = false;
         self.boss_vuln = 0.0;
@@ -1440,12 +1444,30 @@ impl Engine {
         }
     }
 
+    /// Ownership flag for slot `i + 1` of the `owned` array.
+    #[inline]
+    fn has_w(&self, i: usize) -> bool {
+        self.owned.get(i).copied().unwrap_or(false)
+    }
+
+    /// Same flag in the 0/1 form the `Hud` wire struct carries.
+    #[inline]
+    fn owned_flag(&self, i: usize) -> i32 {
+        self.has_w(i) as i32
+    }
+
+    /// Grants ownership of slot `i + 1`.
+    #[inline]
+    fn set_w(&mut self, i: usize) {
+        if let Some(slot) = self.owned.get_mut(i) {
+            *slot = true;
+        }
+    }
+
     fn owns_slot(&self, slot: usize) -> bool {
         if slot >= 19 { return slot < WEP_N && self.extra_weapons & (1 << (slot - 19)) != 0; }
-        [true, self.has_w2, self.has_w3, self.has_w4, self.has_w5, self.has_w6,
-         self.has_w7, self.has_w8, self.has_w9, self.has_w10, self.has_w11,
-         self.has_w12, self.has_w13, self.has_w14, self.has_w15, self.has_w16,
-         self.has_w17, self.has_w18, self.has_w19][slot]
+        if slot == 0 { return true; }
+        self.has_w(slot - 1)
     }
 
     fn select_weapon(&mut self, slot: usize) {
@@ -1579,22 +1601,12 @@ impl Engine {
 
     fn grant_slot(&mut self, slot: usize) {
         match slot {
-            8 => self.has_w9 = true,
-            9 => self.has_w10 = true,
-            10 => self.has_w11 = true,
-            11 => self.has_w12 = true,
-            12 => self.has_w13 = true,
-            13 => self.has_w14 = true,
-            14 => self.has_w15 = true,
-            15 => self.has_w16 = true,
-            16 => self.has_w17 = true,
-            17 => self.has_w18 = true,
-            18 => self.has_w19 = true,
+            1..=18 => self.owned[slot - 1] = true,
             19..=32 => self.extra_weapons |= 1 << (slot - 19),
             _ => return,
         }
         let grant = MAG_SZ[slot] * 2;
-        let cap = MAG_SZ[slot] * 6;
+        let cap = RESERVE_CAP[slot];
         self.ammo[slot] = (self.ammo[slot] + grant).min(cap);
         if self.mag[slot] <= 0 {
             self.mag[slot] = MAG_SZ[slot];
@@ -1653,6 +1665,7 @@ impl Engine {
         }
     }
 
+    #[allow(clippy::too_many_arguments)]
     fn queue_fx(&mut self, kind: u8, x: f32, y: f32, vx: f32, vy: f32, timer: f32, zoff: f32) {
         if self.fx_n >= FX_CAP {
             return;
@@ -1809,11 +1822,7 @@ impl Engine {
 
     /// Map guns the player already owns become a supply drop instead.
     pub(crate) fn replace_owned_weapon_drops(&mut self) {
-        let owned = [
-            self.has_w2, self.has_w3, self.has_w4, self.has_w5, self.has_w6,
-            self.has_w7, self.has_w8, self.has_w9, self.has_w10, self.has_w11, self.has_w12,
-            self.has_w13, self.has_w14, self.has_w15, self.has_w16, self.has_w17, self.has_w18, self.has_w19,
-        ];
+        let owned = self.owned;
         let slot = |kind: u8| match kind {
             EK_GUN2 => Some(0),
             EK_GUN3 => Some(1),
@@ -1859,7 +1868,7 @@ impl Engine {
                 let (sx,sy)=(cx as f32+0.5,cy as f32+0.5);
                 if map::in_spawn_room(self.wave,sx,sy) || self.circle_blocked(sx,sy,radius) {continue;}
                 let distance=(sx-x).powi(2)+(sy-y).powi(2);
-                if best.map_or(true,|(d,_,_)|distance<d) {best=Some((distance,sx,sy));}
+                if best.is_none_or(|(d,_,_)|distance<d) {best=Some((distance,sx,sy));}
             }}
             if let Some((_,sx,sy))=best {position=(sx,sy);}
             // Fully synthetic test arenas may have no outside floor.
@@ -1872,7 +1881,7 @@ impl Engine {
     fn recover_basic_weapons(&mut self) {
         if self.wave<=1 {return;}
         let kinds=[EK_GUN2,EK_GUN3,EK_GUN4,EK_GUN5,EK_GUN6,EK_GUN7];
-        let owned=[self.has_w2,self.has_w3,self.has_w4,self.has_w5,self.has_w6,self.has_w7];
+        let owned=self.owned;
         for e in &mut self.ents {if kinds.contains(&e.kind) {e.kind=EK_NONE;}}
         let mut cells=Vec::new();
         for y in 1..MAP_H-1 {for x in 1..MAP_W-1 {
@@ -1920,7 +1929,7 @@ impl Engine {
         if telegraph && self.outage_at(x,y,2) {
             self.pending_hostiles-=1;self.reinforcement_cursor=self.reinforcement_cursor.saturating_add(1);return true;
         }
-        if (self.reinforcement_cursor % roster.len()) % 2 == 0 {
+        if (self.reinforcement_cursor % roster.len()).is_multiple_of(2) {
             (kind, packed) = enemies::sector_spawn(self.wave, packed);
         }
         let copy = self.reinforcement_cursor / roster.len();
@@ -1966,54 +1975,11 @@ impl Engine {
         self.muzzle = 0.0;
         self.kick = 0.0;
         self.shake = 0.0;
-        self.mag[0] = MAG_SZ[0];
-        self.ammo[0] = 120;
-        if self.has_w2 {
-            self.mag[1] = MAG_SZ[1];
-            self.ammo[1] = 48;
-        }
-        if self.has_w3 {
-            self.mag[2] = MAG_SZ[2];
-            self.ammo[2] = 216;
-        }
-        if self.has_w4 {
-            self.mag[3] = MAG_SZ[3];
-            self.ammo[3] = 20;
-        }
-        if self.has_w5 {
-            self.mag[4] = MAG_SZ[4];
-            self.ammo[4] = 16;
-        }
-        if self.has_w6 {
-            self.mag[5] = MAG_SZ[5];
-            self.ammo[5] = 80;
-        }
-        if self.has_w7 {
-            self.mag[6] = MAG_SZ[6];
-            self.ammo[6] = 450;
-        }
-        if self.has_w8 {
-            self.mag[7] = MAG_SZ[7];
-            self.ammo[7] = 36;
-        }
-        if self.has_w9 {
-            self.mag[8] = MAG_SZ[8];
-            self.ammo[8] = MAG_SZ[8] * 6;
-        }
-        if self.has_w10 {
-            self.mag[9] = MAG_SZ[9];
-            self.ammo[9] = MAG_SZ[9] * 6;
-        }
-        if self.has_w11 {
-            self.mag[10] = MAG_SZ[10];
-            self.ammo[10] = MAG_SZ[10] * 6;
-        }
-        if self.has_w12 {
-            self.mag[11] = MAG_SZ[11];
-            self.ammo[11] = MAG_SZ[11] * 6;
-        }
-        for (slot, owned) in [(12, self.has_w13), (13, self.has_w14), (14, self.has_w15), (15, self.has_w16), (16, self.has_w17), (17, self.has_w18), (18, self.has_w19)] {
-            if owned { self.mag[slot] = MAG_SZ[slot]; self.ammo[slot] = MAG_SZ[slot] * 6; }
+        // Slot 0 is always carried; owned slots refill to their authored cap.
+        for slot in 0..WEP_N {
+            if slot != 0 && !self.has_w(slot - 1) { continue; }
+            self.mag[slot] = MAG_SZ[slot];
+            self.ammo[slot] = RESERVE_CAP[slot];
         }
         self.node_done = false;
         self.lockdown = false;
@@ -2150,7 +2116,7 @@ impl Engine {
     /// wave change doesn't pay for all 140 layers).
     fn rebuild_mipmap_layer(&mut self, id: usize) {
         for level in 1..=8 {
-            if level - 1 >= self.mipmaps.len() {
+            if level > self.mipmaps.len() {
                 return;
             }
             // Borrow the previous level's pixels without aliasing self.
@@ -2499,7 +2465,15 @@ impl Engine {
         }
     }
 
+    /// Damage with no known source: used by tests and scripted hazards. The
+    /// vignette stays centred because there is nothing to point at.
     fn damage_player(&mut self, dmg: i32) {
+        self.damage_player_from(dmg, self.px, self.py);
+    }
+
+    /// Damage the player and record where it came from, so the hurt vignette
+    /// can point at the shooter instead of ringing the whole screen.
+    fn damage_player_from(&mut self, dmg: i32, sx: f32, sy: f32) {
         if self.iframes > 0.0 || self.state != 0 {
             return;
         }
@@ -2523,9 +2497,18 @@ impl Engine {
             self.armor -= take;
             d -= take;
         }
+        // Bearing of the source relative to facing: 0 dead ahead, +pi behind.
+        // `pa` follows `atan2(dy, dx)` (see `pa.cos()/pa.sin()`), and Rust's
+        // `y.atan2(x)` is the angle of the point `(x, y)`, so the y delta is the
+        // receiver. Stored wrapped to [-pi, pi] so the shader's sin/cos can
+        // consume it directly.
+        let bearing = (sy - self.py).atan2(sx - self.px);
+        self.hurt_dir = (bearing - self.pa + core::f32::consts::PI)
+            .rem_euclid(core::f32::consts::TAU)
+            - core::f32::consts::PI;
+        self.hurt = 1.0;
         self.health -= d.max(1);
         self.iframes = 0.35;
-        self.hurt = 1.0;
         self.shake = (self.shake + 0.55).min(1.0);
         self.events |= EV_HURT;
         if self.health <= 0 {
@@ -2544,7 +2527,7 @@ impl Engine {
         let pd = ((self.px - x).powi(2) + (self.py - y).powi(2)).sqrt();
         if pd < radius && self.los(x, y, self.px, self.py) {
             let fall = 1.0 - pd / radius;
-            self.damage_player((dmg * fall) as i32);
+            self.damage_player_from((dmg * fall) as i32, x, y);
         }
         let mut hits: Vec<(usize, i32)> = Vec::new();
         for (i, e) in self.ents.iter().enumerate() {
@@ -2639,7 +2622,8 @@ impl Engine {
             self.ents[i].bar_t = 2.0;
             self.ents[i].flash = 0.16;
             if dmg <= 0 {
-                self.hitmarker = 1.0;
+                // Absorbed by armor: a weaker, shorter confirm than a flesh hit.
+                self.hitmarker = 0.7;
                 self.events |= EV_HIT;
                 return;
             }
@@ -2833,7 +2817,10 @@ impl Engine {
             hits[count] = (entry, i);
             count += 1;
         }
-        hits[..count].sort_unstable_by(|a, b| a.0.total_cmp(&b.0));
+        // Nearest first, with the entity index as a deterministic tiebreak: two
+        // entities at an identical f32 depth must always resolve the same way,
+        // because the rank below decides who eats the falloff damage.
+        hits[..count].sort_unstable_by(|a, b| a.0.total_cmp(&b.0).then(a.1.cmp(&b.1)));
         for (n, &(distance, i)) in hits[..count].iter().take(3).enumerate() {
             if self.ents[i].kind == EK_NONE { continue; }
             let barrel = self.ents[i].kind == EK_BARREL;
@@ -3138,7 +3125,8 @@ impl Engine {
             hits[count] = (t, i);
             count += 1;
         }
-        hits[..count].sort_unstable_by(|a, b| a.0.total_cmp(&b.0));
+        // Index tiebreak keeps equally-deep targets in a stable damage order.
+        hits[..count].sort_unstable_by(|a, b| a.0.total_cmp(&b.0).then(a.1.cmp(&b.1)));
         for &(_, i) in &hits[..count] {
             if self.ents[i].hp <= 0 { continue; }
             self.player_hit(i, 120, self.px, self.py,self.weapon as usize);
@@ -3244,7 +3232,7 @@ impl Engine {
         if (self.px-x).powi(2) + (self.py-y).powi(2) < 64.0 { self.sound(12, 0, x, y); }
         let pd = (self.px - x).powi(2) + (self.py - y).powi(2);
         if hurt_player && pd < 0.9 * 0.9 && self.los(x, y, self.px, self.py) {
-            self.damage_player(dmg);
+            self.damage_player_from(dmg, x, y);
         }
         let mut hits = Vec::new();
         for (j, target) in self.ents.iter().enumerate() {
@@ -3328,32 +3316,9 @@ impl Engine {
                 self.events |= EV_PICK_SILVER;
             }
             EK_AMMO => {
-                self.ammo[0] = (self.ammo[0] + 18).min(120);
-                if self.has_w2 {
-                    self.ammo[1] = (self.ammo[1] + 10).min(48);
-                }
-                if self.has_w3 {
-                    self.ammo[2] = (self.ammo[2] + 45).min(216);
-                }
-                if self.has_w4 {
-                    self.ammo[3] = (self.ammo[3] + 5).min(20);
-                }
-                if self.has_w5 {
-                    self.ammo[4] = (self.ammo[4] + 2).min(16);
-                }
-                if self.has_w6 {
-                    self.ammo[5] = (self.ammo[5] + 15).min(80);
-                }
-                if self.has_w7 {
-                    self.ammo[6] = (self.ammo[6] + 90).min(450);
-                }
-                if self.has_w8 {
-                    self.ammo[7] = (self.ammo[7] + 6).min(36);
-                }
-                for (slot, owned) in [(8, self.has_w9), (9, self.has_w10), (10, self.has_w11), (11, self.has_w12), (12, self.has_w13), (13, self.has_w14), (14, self.has_w15), (15, self.has_w16), (16, self.has_w17), (17, self.has_w18), (18, self.has_w19)] {
-                    if owned {
-                        self.ammo[slot] = (self.ammo[slot] + MAG_SZ[slot]).min(MAG_SZ[slot] * 6);
-                    }
+                for slot in 0..WEP_N {
+                    if slot != 0 && !self.has_w(slot - 1) { continue; }
+                    self.ammo[slot] = (self.ammo[slot] + AMMO_PICKUP[slot]).min(RESERVE_CAP[slot]);
                 }
                 self.events |= EV_PICK_SILVER;
             }
@@ -3361,73 +3326,22 @@ impl Engine {
                 self.armor = (self.armor + 50).min(100);
                 self.events |= EV_PICK_SILVER;
             }
-            EK_GUN2 => {
-                self.has_w2 = true;
-                self.ammo[1] = (self.ammo[1] + 8).min(48);
-                if self.mag[1] <= 0 {
-                    self.mag[1] = MAG_SZ[1];
-                }
-                self.weapon = 1;
-                self.reload_t = 0.0;
-                self.pickup_t = 0.6;self.pickup_dur=0.6;
-                self.events |= EV_PICK_GOLD;
-            }
-            EK_GUN3 => {
-                self.has_w3 = true;
-                self.ammo[2] = (self.ammo[2] + 54).min(216);
-                if self.mag[2] <= 0 {
-                    self.mag[2] = MAG_SZ[2];
-                }
-                self.weapon = 2;
-                self.reload_t = 0.0;
-                self.pickup_t = 0.6;self.pickup_dur=0.6;
-                self.events |= EV_PICK_GOLD;
-            }
-            EK_GUN4 => {
-                self.has_w4 = true;
-                self.ammo[3] = (self.ammo[3] + 7).min(20);
-                if self.mag[3] <= 0 {
-                    self.mag[3] = MAG_SZ[3];
-                }
-                self.weapon = 3;
-                self.reload_t = 0.0;
-                self.pickup_t = 0.6;self.pickup_dur=0.6;
-                self.events |= EV_PICK_GOLD;
-            }
-            EK_GUN5 => {
-                self.has_w5 = true;
-                self.ammo[4] = (self.ammo[4] + 4).min(16);
-                if self.mag[4] <= 0 {
-                    self.mag[4] = MAG_SZ[4];
-                }
-                self.weapon = 4;
-                self.reload_t = 0.0;
-                self.pickup_t = 0.6;self.pickup_dur=0.6;
-                self.events |= EV_PICK_GOLD;
-            }
-            EK_GUN6 => {
-                self.has_w6 = true;
-                self.ammo[5] = (self.ammo[5] + 20).min(80);
-                if self.mag[5] <= 0 { self.mag[5] = MAG_SZ[5]; }
-                self.weapon = 5;
-                self.reload_t = 0.0;
-                self.pickup_t = 0.6;self.pickup_dur=0.6;
-                self.events |= EV_PICK_GOLD;
-            }
-            EK_GUN7 => {
-                self.has_w7 = true;
-                self.ammo[6] = (self.ammo[6] + 180).min(450);
-                if self.mag[6] <= 0 { self.mag[6] = MAG_SZ[6]; }
-                self.weapon = 6;
-                self.reload_t = 0.0;
-                self.pickup_t = 0.6;self.pickup_dur=0.6;
-                self.events |= EV_PICK_GOLD;
-            }
-            EK_GUN8 => {
-                self.has_w8 = true;
-                self.ammo[7] = (self.ammo[7] + 12).min(36);
-                if self.mag[7] <= 0 { self.mag[7] = MAG_SZ[7]; }
-                self.weapon = 7;
+            // Kinds are not contiguous (EK_OVERRIDE_CONSOLE, EK_NODE and
+            // EK_TERMINAL sit between them), so the seven guns are named.
+            EK_GUN2 | EK_GUN3 | EK_GUN4 | EK_GUN5 | EK_GUN6 | EK_GUN7 | EK_GUN8 => {
+                let slot = match kind {
+                    EK_GUN2 => 1,
+    EK_GUN3 => 2,
+    EK_GUN4 => 3,
+    EK_GUN5 => 4,
+                    EK_GUN6 => 5,
+    EK_GUN7 => 6,
+    _ => 7,
+                };
+                self.set_w(slot - 1);
+                self.ammo[slot] = (self.ammo[slot] + GROUND_GUN_PICKUP[slot]).min(RESERVE_CAP[slot]);
+                if self.mag[slot] <= 0 { self.mag[slot] = MAG_SZ[slot]; }
+                self.weapon = slot as i32;
                 self.reload_t = 0.0;
                 self.pickup_t = 0.6;self.pickup_dur=0.6;
                 self.events |= EV_PICK_GOLD;
@@ -3452,26 +3366,15 @@ impl Engine {
         match kind {
             EK_MED => self.health < 100,
             EK_ARMOR => self.armor < 100,
-            EK_AMMO => self.ammo[0] < 120
-                || (self.has_w2 && self.ammo[1] < 48)
-                || (self.has_w3 && self.ammo[2] < 216)
-                || (self.has_w4 && self.ammo[3] < 20)
-                || (self.has_w5 && self.ammo[4] < 16)
-                || (self.has_w6 && self.ammo[5] < 80)
-                || (self.has_w7 && self.ammo[6] < 450)
-                || (self.has_w8 && self.ammo[7] < 36)
-                || (self.has_w9 && self.ammo[8] < MAG_SZ[8] * 6)
-                || (self.has_w10 && self.ammo[9] < MAG_SZ[9] * 6)
-                || (self.has_w11 && self.ammo[10] < MAG_SZ[10] * 6)
-                || (self.has_w12 && self.ammo[11] < MAG_SZ[11] * 6)
-                || (19..WEP_N).any(|slot| self.owns_slot(slot) && self.ammo[slot] < MAG_SZ[slot] * 6)
-                || [(12, self.has_w13), (13, self.has_w14), (14, self.has_w15), (15, self.has_w16), (16, self.has_w17), (17, self.has_w18), (18, self.has_w19)].iter().any(|&(slot, owned)| owned && self.ammo[slot] < MAG_SZ[slot] * 6),
+            EK_AMMO => (0..WEP_N).any(|slot| {
+                self.owns_slot(slot) && self.ammo[slot] < RESERVE_CAP[slot]
+            }),
             _ => true,
         }
     }
 
     fn tick(&mut self, dt: f32) {
-        let dt = dt.clamp(0.0, 0.08);
+        let dt = safe_dt(dt);
         self.time += dt;
         self.age_smoke(dt);
         self.boss_vuln = (self.boss_vuln - dt).max(0.0);
@@ -3506,7 +3409,15 @@ impl Engine {
         self.muzzle = (self.muzzle - dt * 8.0).max(0.0);
         self.hurt = (self.hurt - dt * 2.6).max(0.0);
         self.kick = (self.kick - dt * 6.0).max(0.0);
-        self.hitmarker = (self.hitmarker - dt * 4.0).max(0.0);
+        self.hitmarker = (self.hitmarker - dt * if self.hitmarker > 1.0 { 2.4 } else { 5.0 }).max(0.0);
+        // Low-health strain: ramps in under 35 HP and breathes at ~1 Hz, so the
+        // player feels danger without having to read the health plate.
+        self.strain = if self.state != 0 || self.health >= 35 {
+            (self.strain - dt * 2.2).max(0.0)
+        } else {
+            let base = 1.0 - (self.health.max(0) as f32 / 35.0);
+            (base * 0.72 + (base * (self.time * 2.2).sin() * 0.5 + 0.5) * 0.28).min(1.0)
+        };
         if self.cooldown <= 0.0 || self.weapon != 2 {
             self.spread = (self.spread - dt * 0.28).max(0.0);
         }
@@ -3535,58 +3446,13 @@ impl Engine {
                 self.pa += 2.4 * dt;
             }
 
-            if bits & IN_W1 != 0 && self.wpn_latched & IN_W1 == 0 {
-                self.weapon = 0;
-                self.reload_t = 0.0;
+            for (slot, &bit) in IN_W_SLOT.iter().enumerate() {
+                if bits & bit != 0 && self.wpn_latched & bit == 0 && self.owns_slot(slot) {
+                    self.weapon = slot as i32;
+                    self.reload_t = 0.0;
+                }
             }
-            if bits & IN_W2 != 0 && self.has_w2 && self.wpn_latched & IN_W2 == 0 {
-                self.weapon = 1;
-                self.reload_t = 0.0;
-            }
-            if bits & IN_W3 != 0 && self.has_w3 && self.wpn_latched & IN_W3 == 0 {
-                self.weapon = 2;
-                self.reload_t = 0.0;
-            }
-            if bits & IN_W4 != 0 && self.has_w4 && self.wpn_latched & IN_W4 == 0 {
-                self.weapon = 3;
-                self.reload_t = 0.0;
-            }
-            if bits & IN_W5 != 0 && self.has_w5 && self.wpn_latched & IN_W5 == 0 {
-                self.weapon = 4;
-                self.reload_t = 0.0;
-            }
-            if bits & IN_W6 != 0 && self.has_w6 && self.wpn_latched & IN_W6 == 0 {
-                self.weapon = 5;
-                self.reload_t = 0.0;
-            }
-            if bits & IN_W7 != 0 && self.has_w7 && self.wpn_latched & IN_W7 == 0 {
-                self.weapon = 6;
-                self.reload_t = 0.0;
-            }
-            if bits & IN_W8 != 0 && self.has_w8 && self.wpn_latched & IN_W8 == 0 {
-                self.weapon = 7;
-                self.reload_t = 0.0;
-            }
-            if bits & IN_W9 != 0 && self.has_w9 && self.wpn_latched & IN_W9 == 0 {
-                self.weapon = 8;
-                self.reload_t = 0.0;
-            }
-            if bits & IN_W10 != 0 && self.has_w10 && self.wpn_latched & IN_W10 == 0 {
-                self.weapon = 9;
-                self.reload_t = 0.0;
-            }
-            if bits & IN_W11 != 0 && self.has_w11 && self.wpn_latched & IN_W11 == 0 {
-                self.weapon = 10;
-                self.reload_t = 0.0;
-            }
-            if bits & IN_W12 != 0 && self.has_w12 && self.wpn_latched & IN_W12 == 0 {
-                self.weapon = 11;
-                self.reload_t = 0.0;
-            }
-            for (bit, slot, owned) in [(IN_W13, 12, self.has_w13), (IN_W14, 13, self.has_w14), (IN_W15, 14, self.has_w15), (IN_W16, 15, self.has_w16), (IN_W17, 16, self.has_w17), (IN_W18, 17, self.has_w18), (IN_W19, 18, self.has_w19)] {
-                if bits & bit != 0 && owned && self.wpn_latched & bit == 0 { self.weapon = slot; self.reload_t = 0.0; }
-            }
-            self.wpn_latched = bits & (IN_W1 | IN_W2 | IN_W3 | IN_W4 | IN_W5 | IN_W6 | IN_W7 | IN_W8 | IN_W9 | IN_W10 | IN_W11 | IN_W12 | IN_W13 | IN_W14 | IN_W15 | IN_W16 | IN_W17 | IN_W18 | IN_W19);
+            self.wpn_latched = bits & IN_W_ALL;
 
             if bits & IN_RELOAD != 0 {
                 if !self.reload_latched {
@@ -4091,7 +3957,7 @@ impl Engine {
                 self.explode(x, y, 2.4, 55.0);
                 continue;
             }
-            self.damage_player(dmg);
+            self.damage_player_from(dmg, self.ents[i].x, self.ents[i].y);
         }
 
         self.flush_fx();
@@ -4104,8 +3970,8 @@ impl Engine {
             }
         }
 
-        if !self.boss_spawned && self.state == 0 {
-            if self.boss_intro > 0.0 {
+        if !self.boss_spawned && self.state == 0 && self.boss_intro > 0.0 {
+            {
                 let prev = self.boss_intro;
                 self.boss_intro -= dt;
                 let duration=self.boss_intro_duration();
@@ -4359,8 +4225,8 @@ impl Engine {
             living,
             state: self.state,
             prompt,
-            has_w2: if self.has_w2 { 1 } else { 0 },
-            has_w3: if self.has_w3 { 1 } else { 0 },
+            has_w2: self.owned_flag(0),
+            has_w3: self.owned_flag(1),
             secrets: self.secrets,
             elapsed_ms: (self.elapsed * 1000.0) as i32,
             shake: self.shake * self.shake,
@@ -4380,35 +4246,37 @@ impl Engine {
                 0.0
             },
             weap_frame,
-            has_w4: if self.has_w4 { 1 } else { 0 },
-            has_w5: if self.has_w5 { 1 } else { 0 },
+            has_w4: self.owned_flag(2),
+            has_w5: self.owned_flag(3),
             events: self.events,
             ev_weapon: self.ev_weapon,
             wave: self.wave,
             boss_health,
             boss_max_health: if boss_health > 0 { self.boss_max_health() } else { 0 },
             boss_phase: if boss_health > 0 { self.boss_phase as i32 } else { 0 },
-            has_w6: if self.has_w6 { 1 } else { 0 },
-            has_w7: if self.has_w7 { 1 } else { 0 },
-            has_w8: if self.has_w8 { 1 } else { 0 },
+            has_w6: self.owned_flag(4),
+            has_w7: self.owned_flag(5),
+            has_w8: self.owned_flag(6),
             objective: if self.node_done { 1 } else { 0 },
             radio_seq: self.radio_seq,
             radio_line: self.radio_line,
             vuln: self.boss_vuln,
             node_x: field::node_point(self.wave).0,
             node_y: field::node_point(self.wave).1,
-            has_w9: if self.has_w9 { 1 } else { 0 },
-            has_w10: if self.has_w10 { 1 } else { 0 },
-            has_w11: if self.has_w11 { 1 } else { 0 },
-            has_w12: if self.has_w12 { 1 } else { 0 },
-            has_w13: if self.has_w13 { 1 } else { 0 },
-            has_w14: if self.has_w14 { 1 } else { 0 },
-            has_w15: if self.has_w15 { 1 } else { 0 },
-            has_w16: if self.has_w16 { 1 } else { 0 },
-            has_w17: if self.has_w17 { 1 } else { 0 },
-            has_w18: if self.has_w18 { 1 } else { 0 },
-            has_w19: if self.has_w19 { 1 } else { 0 },
+            has_w9: self.owned_flag(7),
+            has_w10: self.owned_flag(8),
+            has_w11: self.owned_flag(9),
+            has_w12: self.owned_flag(10),
+            has_w13: self.owned_flag(11),
+            has_w14: self.owned_flag(12),
+            has_w15: self.owned_flag(13),
+            has_w16: self.owned_flag(14),
+            has_w17: self.owned_flag(15),
+            has_w18: self.owned_flag(16),
+            has_w19: self.owned_flag(17),
             extra_weapons: self.extra_weapons,
+            hurt_dir: self.hurt_dir,
+            strain: self.strain,
             power: self.power as i32,
             power_t: self.power_t,
             splash,
@@ -4478,10 +4346,19 @@ impl Engine {
         }
         let mut grid = std::mem::take(&mut self.light_grid);
         grid.copy_from_slice(&self.static_light);
-        let mut count = 0;
-        for e in &self.ents {
-            if !matches!(e.kind, EK_PROJ | EK_RAY | EK_BOLT | EK_FIREPATCH | EK_IMPACT | EK_BOSS)
-                || (e.x - self.px).powi(2) + (e.y - self.py).powi(2) > 324.0 { continue; }
+        // Emitters are ranked by distance to the player before the budget is
+        // applied. Walking the entity array in index order made which
+        // projectiles lit the room an allocation accident.
+        let mut emitters: Vec<(f32, usize)> = self.ents.iter().enumerate()
+            .filter(|(_, e)| matches!(e.kind, EK_PROJ | EK_RAY | EK_BOLT | EK_FIREPATCH | EK_IMPACT | EK_BOSS))
+            .map(|(i, e)| ((e.x - self.px).powi(2) + (e.y - self.py).powi(2), i))
+            .filter(|&(d2, _)| d2 <= DYNAMIC_LIGHT_RANGE * DYNAMIC_LIGHT_RANGE)
+            .collect();
+        emitters.sort_unstable_by(|a, b| a.0.total_cmp(&b.0).then(a.1.cmp(&b.1)));
+        emitters.truncate(DYNAMIC_LIGHT_BUDGET);
+        let count = emitters.len();
+        for &(_, i) in &emitters {
+            let e = &self.ents[i];
             let rgb = if e.kind == EK_BOSS && (23..=36).contains(&e.skin) {
                 campaign::LIGHTS[(e.skin - 23) as usize]
             } else if e.kind == EK_BOSS {
@@ -4507,9 +4384,8 @@ impl Engine {
             };
             let radius = if e.kind == EK_BOSS { 9.5 } else { 5.2 };
             self.add_light(&mut grid, e.x, e.y, radius, rgb);
-            count += 1;
-            if count == 28 { break; }
         }
+        debug_assert!(count <= DYNAMIC_LIGHT_BUDGET);
         if self.boss_intro>0.0 && !self.boss_spawned {
             let (x,y)=map::boss_spots(self.wave)[0];
             let profile=boss_arena::PROFILES[map::level_index(self.wave)];
@@ -4532,9 +4408,18 @@ impl Engine {
         self.bounce_light();
     }
 
-    fn bounce_light(&mut self) {
-        self.light_src.copy_from_slice(&self.light_grid);
-        let src = core::mem::take(&mut self.light_src);
+
+    /// Two passes at decreasing weight. A single pass stopped light dead at
+    /// wall corners; the second lets it wrap one cell further, which is what
+    /// makes a lit doorway read as connected to the room beyond.
+    /// Two diffusion passes at decreasing weight, ping-ponging between the two
+    /// scratch buffers so no pass can cascade within itself. One pass left
+    /// light dead at wall corners; the second lets it wrap a cell further,
+    /// which is what makes a lit doorway read as connected to the room beyond.
+    /// Diffuses light from `src` into `dst` by a fraction of each open cell's
+    /// mean neighbour brightness. `src` and `dst` must be distinct buffers so a
+    /// pass cannot cascade within itself.
+    fn bounce_pass(&self, src: &[[f32; 3]], dst: &mut [[f32; 3]], weight: f32) {
         for y in 1..MAP_H - 1 {
             for x in 1..MAP_W - 1 {
                 if self.blocked(x as i32, y as i32) { continue; }
@@ -4550,10 +4435,25 @@ impl Engine {
                     n += 1.0;
                 }
                 if n <= 0.0 { continue; }
-                for c in 0..3 { self.light_grid[i][c] += acc[c] / n * 0.22; }
+                for c in 0..3 { dst[i][c] += acc[c] / n * weight; }
             }
         }
-        self.light_src = src;
+    }
+
+    /// Two passes at decreasing weight. A single pass left light dead at wall
+    /// corners; the second lets it wrap a cell further, which is what makes a
+    /// lit doorway read as connected to the room beyond.
+    fn bounce_light(&mut self) {
+        let mut grid = core::mem::take(&mut self.light_grid);
+        let mut scratch = core::mem::take(&mut self.light_src);
+        scratch.copy_from_slice(&grid);
+        self.bounce_pass(&scratch, &mut grid, 0.22);
+        self.bounce_pass(&grid, &mut scratch, 0.10);
+        for (cell, extra) in grid.iter_mut().zip(scratch.iter()) {
+            for c in 0..3 { cell[c] += extra[c]; }
+        }
+        self.light_grid = grid;
+        self.light_src = scratch;
     }
 
     fn light_at(&self, x: f32, y: f32) -> [f32; 3] {
@@ -4706,7 +4606,7 @@ impl Engine {
         let Some((u, v, level)) = self.sigil_uv(fx, fy) else { return base; };
         let mark = sigil_rgba(level, u, v);
         if mark[3] == 0 { return base; }
-        let a = mark[3] as u32;
+        let a = mark[3];
         let inv = 255 - a;
         let ch = |shift: u32, src: u32| {
             (((base >> shift) & 255) * inv + src * a) / 255
@@ -4920,8 +4820,8 @@ impl Engine {
             tex_x = (tex_x + (open * TEX as f32) as i32) & TEXM;
             let mut tid = if hit == 0 { 0 } else { self.wall_tex(hit, map_x, map_y) };
             let hash = (map_x.wrapping_mul(19) + map_y.wrapping_mul(7)) as u32;
-            if tid == T_METAL && hash % 7 == 0 { tid = T_HAZARD; }
-            if tid == T_BRICK && hash % 5 == 0 { tid = T_SKULL; }
+            if tid == T_METAL && hash.is_multiple_of(7) { tid = T_HAZARD; }
+            if tid == T_BRICK && hash.is_multiple_of(5) { tid = T_SKULL; }
             let light = self.light_at(self.px + (perp - 0.03) * rdx, self.py + (perp - 0.03) * rdy);
             let dec = if map_x >= 0 && map_y >= 0 && (map_x as usize) < MAP_W && (map_y as usize) < MAP_H {
                 self.decal[map_y as usize * MAP_W + map_x as usize]
@@ -5084,10 +4984,10 @@ impl Engine {
             tex_x = (tex_x + (open * TEX as f32) as i32) & TEXM;
             let mut tid = self.wall_tex(hit, map_x, map_y);
             let hash = (map_x.wrapping_mul(19) + map_y.wrapping_mul(7)) as u32;
-            if tid == T_METAL && hash % 7 == 0 {
+            if tid == T_METAL && hash.is_multiple_of(7) {
                 tid = T_HAZARD;
             }
-            if tid == T_BRICK && hash % 5 == 0 {
+            if tid == T_BRICK && hash.is_multiple_of(5) {
                 tid = T_SKULL;
             }
             let step = TEX as f32 / line_h.max(1) as f32;
@@ -5197,7 +5097,9 @@ impl Engine {
             order[count] = (depth, i);
             count += 1;
         }
-        order[..count].sort_unstable_by(|a, b| b.0.total_cmp(&a.0));
+        // Painter's order, far to near. Index tiebreak so equal depths resolve
+        // identically every frame instead of flickering.
+        order[..count].sort_unstable_by(|a, b| b.0.total_cmp(&a.0).then(a.1.cmp(&b.1)));
         let inv_det = 1.0 / (plane_x * dir_y - dir_x * plane_y);
         for &(_d, i) in &order[..count] {
             let e = self.ents[i];
@@ -5262,7 +5164,7 @@ impl Engine {
                     for y in hy0.max(0)..hy1.min(h as i32) {
                         let ny = (y as f32 - (horizon + voff)) / (hs_h * 0.5);
                         let rad = (nx * nx + ny * ny).sqrt();
-                        if rad < 0.9 || rad > 1.0 {
+                        if !(0.9..=1.0).contains(&rad) {
                             continue;
                         }
                         let band = 1.0 - ((rad - 0.95).abs() / 0.05);
@@ -5590,24 +5492,9 @@ pub struct RunSave {
 
 fn capture_save(e: &Engine) -> RunSave {
     let mut flags = 0;
-    if e.has_w2 { flags |= 1; }
-    if e.has_w3 { flags |= 2; }
-    if e.has_w4 { flags |= 4; }
-    if e.has_w5 { flags |= 8; }
-    if e.has_w6 { flags |= 16; }
-    if e.has_w7 { flags |= 32; }
-    if e.has_w8 { flags |= 64; }
-    if e.has_w9 { flags |= 128; }
-    if e.has_w10 { flags |= 256; }
-    if e.has_w11 { flags |= 512; }
-    if e.has_w12 { flags |= 1024; }
-    if e.has_w13 { flags |= 2048; }
-    if e.has_w14 { flags |= 4096; }
-    if e.has_w15 { flags |= 8192; }
-    if e.has_w16 { flags |= 16384; }
-    if e.has_w17 { flags |= 32768; }
-    if e.has_w18 { flags |= 65536; }
-    if e.has_w19 { flags |= 131072; }
+    for (i, owned) in e.owned.iter().enumerate() {
+        if *owned { flags |= 1 << i; }
+    }
     RunSave {
         wave: e.wave,
         health: e.health,
@@ -5632,24 +5519,9 @@ fn apply_save(e: &mut Engine, s: &RunSave) {
     e.kills = s.kills.max(0);
     e.secrets = s.secrets.max(0);
     e.elapsed = (s.elapsed_ms.max(0) as f32) / 1000.0;
-    e.has_w2 = s.flags & 1 != 0;
-    e.has_w3 = s.flags & 2 != 0;
-    e.has_w4 = s.flags & 4 != 0;
-    e.has_w5 = s.flags & 8 != 0;
-    e.has_w6 = s.flags & 16 != 0;
-    e.has_w7 = s.flags & 32 != 0;
-    e.has_w8 = s.flags & 64 != 0;
-    e.has_w9 = s.flags & 128 != 0;
-    e.has_w10 = s.flags & 256 != 0;
-    e.has_w11 = s.flags & 512 != 0;
-    e.has_w12 = s.flags & 1024 != 0;
-    e.has_w13 = s.flags & 2048 != 0;
-    e.has_w14 = s.flags & 4096 != 0;
-    e.has_w15 = s.flags & 8192 != 0;
-    e.has_w16 = s.flags & 16384 != 0;
-    e.has_w17 = s.flags & 32768 != 0;
-    e.has_w18 = s.flags & 65536 != 0;
-    e.has_w19 = s.flags & 131072 != 0;
+    for (i, slot) in e.owned.iter_mut().enumerate() {
+        *slot = s.flags & (1 << i) != 0;
+    }
     e.ammo = s.ammo;
     e.mag = s.mag;
     e.extra_weapons = s.extra_weapons & 16383;
@@ -5744,8 +5616,13 @@ pub extern "C" fn hs_ev_weapon() -> i32 {
 
 #[no_mangle]
 pub extern "C" fn hs_tex_ptr(id: i32) -> *mut u8 {
-    let id = id.clamp(0, TEX_N as i32 - 1) as usize;
-    let o = id * TEX * TEX;
+    // Reject out-of-range slots instead of silently clamping: a clamped id would
+    // hand TypeScript a valid pointer to the wrong texture. Mirrors hs_theme_ptr.
+    if id < 0 || id >= TEX_N as i32 {
+        return core::ptr::null_mut();
+    }
+    let o = id as usize * TEX * TEX;
+    debug_assert!(o + TEX * TEX <= eng().tex.len(), "atlas layer out of bounds");
     unsafe { eng().tex.as_mut_ptr().add(o) as *mut u8 }
 }
 
@@ -5767,6 +5644,7 @@ pub extern "C" fn hs_theme_ptr(slot: i32) -> *mut u8 {
         return core::ptr::null_mut();
     }
     let o = slot as usize * TEX * TEX;
+    debug_assert!(o + TEX * TEX <= eng().theme_tex.len(), "theme layer out of bounds");
     unsafe { eng().theme_tex.as_mut_ptr().add(o) as *mut u8 }
 }
 
@@ -5780,8 +5658,10 @@ pub extern "C" fn hs_apply_theme(wave: i32) {
 pub extern "C" fn hs_input(bits: u32, mx: f32, my: f32) {
     let e = eng();
     e.bits = bits;
-    e.mx = mx;
-    e.my = my;
+    // A NaN or inf arriving from JavaScript would otherwise propagate straight
+    // into `pa` and poison every downstream transform.
+    e.mx = finite(mx);
+    e.my = finite(my);
 }
 
 #[no_mangle]
@@ -5795,26 +5675,9 @@ pub extern "C" fn hs_qa(bits: u32, enabled: i32) {
 pub extern "C" fn hs_qa_armory() {
     let e = eng();
     if !e.qa { return; }
-    e.has_w2 = true;
-    e.has_w3 = true;
-    e.has_w4 = true;
-    e.has_w5 = true;
-    e.has_w6 = true;
-    e.has_w7 = true;
-    e.has_w8 = true;
-    e.has_w9 = true;
-    e.has_w10 = true;
-    e.has_w11 = true;
-    e.has_w12 = true;
-    e.has_w13 = true;
-    e.has_w14 = true;
-    e.has_w15 = true;
-    e.has_w16 = true;
-    e.has_w17 = true;
-    e.has_w18 = true;
-    e.has_w19 = true;
+    e.owned = [true; OWNED_GUNS];
     e.mag = MAG_SZ;
-    for slot in 0..WEP_N { e.ammo[slot] = MAG_SZ[slot] * 6; }
+    for slot in 0..WEP_N { e.ammo[slot] = RESERVE_CAP[slot]; }
     e.extra_weapons = 16383;
 }
 
@@ -6437,9 +6300,9 @@ mod tests {
     #[test]
     fn echo_reward_unlocks_fires_and_survives_save() {
         let mut e = arena();
-        assert!(!e.has_w19);
+        assert!(!e.has_w(17));
         e.pickup(EK_GUN19);
-        assert!(e.has_w19);
+        assert!(e.has_w(17));
         assert_eq!(e.weapon, 18);
         assert_eq!(e.mag[18], MAG_SZ[18]);
         e.pa = 0.0;
@@ -6453,7 +6316,7 @@ mod tests {
         let save = capture_save(&e);
         let mut restored = arena();
         apply_save(&mut restored, &save);
-        assert!(restored.has_w19);
+        assert!(restored.has_w(17));
         assert_eq!(restored.mag[18], e.mag[18]);
         assert_eq!(restored.weapon, 18);
     }
@@ -6629,7 +6492,7 @@ mod tests {
     fn br12_reload_feeds_one_shell_per_step() {
         let mut e = arena();
         e.weapon = 1;
-        e.has_w2 = true;
+        e.set_w(0);
         e.mag[1] = 2;
         e.ammo[1] = 3;
         e.begin_reload();
@@ -6646,7 +6509,7 @@ mod tests {
     fn br12_trigger_interrupts_shell_feed_after_a_shell_is_loaded() {
         let mut e = arena();
         e.weapon = 1;
-        e.has_w2 = true;
+        e.set_w(0);
         e.mag[1] = 0;
         e.ammo[1] = 3;
         e.begin_reload();
@@ -6962,7 +6825,7 @@ mod tests {
     #[test]
     fn held_weapon_key_does_not_cancel_reload() {
         let mut e = arena();
-        e.has_w2 = true;
+        e.set_w(0);
         e.mag[1] = MAG_SZ[1];
         e.ammo[1] = 6;
         e.bits = IN_W2;
@@ -6990,13 +6853,13 @@ mod tests {
     #[test]
     fn number_keys_select_every_available_weapon_once_per_press() {
         let mut e = arena();
-        e.has_w2 = true;
-        e.has_w3 = true;
-        e.has_w4 = true;
-        e.has_w5 = true;
-        e.has_w6 = true;
-        e.has_w7 = true;
-        e.has_w8 = true;
+        e.set_w(0);
+        e.set_w(1);
+        e.set_w(2);
+        e.set_w(3);
+        e.set_w(4);
+        e.set_w(5);
+        e.set_w(6);
         for (expected, bit) in [IN_W1, IN_W2, IN_W3, IN_W4, IN_W5, IN_W6, IN_W7, IN_W8]
             .into_iter()
             .enumerate()
@@ -7020,13 +6883,13 @@ mod tests {
             e.tick(1.0 / 60.0);
         }
         e.pickup(EK_GUN6);
-        assert!(e.has_w6);
+        assert!(e.has_w(4));
         assert_eq!(e.weapon, 5);
         e.pickup(EK_GUN7);
-        assert!(e.has_w7);
+        assert!(e.has_w(5));
         assert_eq!(e.weapon, 6);
         e.pickup(EK_GUN8);
-        assert!(e.has_w8);
+        assert!(e.has_w(6));
         assert_eq!(e.weapon, 7);
     }
 
@@ -7129,7 +6992,7 @@ mod tests {
         let case = e.ents.iter().position(|en| field::is_boss_case(en.kind)).unwrap();
         e.pickup(e.ents[case].kind);
         assert_eq!(e.state, 2, "taking the boss weapon ends the level");
-        assert!(e.has_w9);
+        assert!(e.has_w(7));
         e.next_wave();
         assert_eq!((e.state, e.wave), (0, 2));
         assert!(!e.boss_spawned && !e.hell);
@@ -7167,7 +7030,7 @@ mod tests {
         let mut e = arena();
         e.health = 11;
         e.state = 1;
-        e.has_w4 = true;
+        e.set_w(2);
         e.weapon = 3;
         e.ammo[3] = 1;
         e.mag[3] = 0;
@@ -7177,7 +7040,7 @@ mod tests {
         assert_eq!(e.wave, 2);
         assert_eq!(e.health, 100);
         assert_eq!(e.state, 0);
-        assert!(e.has_w4);
+        assert!(e.has_w(2));
         assert_eq!(e.weapon, 3, "a found gun stays in hand");
         assert_eq!(e.mag[3], MAG_SZ[3]);
         assert!(e.ammo[3] >= 8);
@@ -7193,6 +7056,120 @@ mod tests {
         assert!(e.ents.iter().any(|en| en.kind == EK_MED));
     }
 
+    /// Pulls every `reserve: <int>` out of the TypeScript arsenal table. Kept
+    /// dependency-free (no regex crate) because this only runs in tests.
+    fn ts_reserve_caps(ts: &str) -> Vec<i32> {
+        let mut out = Vec::new();
+        let mut rest = ts;
+        while let Some(at) = rest.find("reserve: ") {
+            rest = &rest[at + "reserve: ".len()..];
+            let digits: String = rest.chars().take_while(char::is_ascii_digit).collect();
+            if digits.is_empty() { continue; }
+            out.push(digits.parse().expect("numeric reserve cap"));
+        }
+        out
+    }
+
+    #[test]
+    fn damage_records_the_bearing_of_its_source() {
+        let mut e = arena();
+        e.state = 0;
+        e.pa = 0.0;
+        e.iframes = 0.0;
+        // Facing +x, so a source at +y sits 90 degrees to the left and one at
+        // -y sits to the right.
+        e.damage_player_from(10, e.px, e.py + 4.0);
+        assert!((e.hurt_dir - core::f32::consts::FRAC_PI_2).abs() < 1e-4,
+            "a source to the left should read +pi/2, got {}", e.hurt_dir);
+        e.iframes = 0.0;
+        e.health = 100;
+        e.damage_player_from(10, e.px, e.py - 4.0);
+        assert!((e.hurt_dir + core::f32::consts::FRAC_PI_2).abs() < 1e-4,
+            "a source to the right should read -pi/2, got {}", e.hurt_dir);
+        e.iframes = 0.0;
+        e.health = 100;
+        e.damage_player_from(10, e.px + 4.0, e.py);
+        assert!(e.hurt_dir.abs() < 1e-4, "a source dead ahead should read 0, got {}", e.hurt_dir);
+        e.iframes = 0.0;
+        e.health = 100;
+        e.damage_player_from(10, e.px - 4.0, e.py);
+        assert!((e.hurt_dir.abs() - core::f32::consts::PI).abs() < 1e-4,
+            "a source behind should read +-pi, got {}", e.hurt_dir);
+        // The bearing stays wrapped into [-pi, pi] so the shader's sin/cos
+        // can consume it directly.
+        e.iframes = 0.0;
+        e.health = 100;
+        e.pa = 2.9;
+        e.damage_player_from(10, e.px - 4.0, e.py + 4.0);
+        assert!((-core::f32::consts::PI..=core::f32::consts::PI).contains(&e.hurt_dir),
+            "hurt_dir escaped [-pi, pi]: {}", e.hurt_dir);
+        assert!(e.hurt_dir.is_finite());
+    }
+
+    #[test]
+    fn low_health_strain_only_appears_when_it_should() {
+        let mut e = arena();
+        e.state = 0;
+        e.health = 100;
+        for _ in 0..30 { e.tick(1.0 / 60.0); }
+        assert_eq!(e.strain, 0.0, "a healthy player has no strain");
+
+        // Cross the threshold: strain rises but stays bounded.
+        e.health = 20;
+        e.strain = 0.0;
+        let mut peak = 0.0f32;
+        for _ in 0..240 { e.tick(1.0 / 60.0); peak = peak.max(e.strain); }
+        assert!(peak > 0.4, "low health must be felt, peak was {peak}");
+        assert!(peak <= 1.0, "strain must stay in 0..1, peak was {peak}");
+        // It breathes rather than sitting still.
+        let a = e.strain;
+        for _ in 0..12 { e.tick(1.0 / 60.0); }
+        assert!((e.strain - a).abs() > 1e-4, "strain must pulse, it was static at {a}");
+
+        // Healing clears it.
+        e.health = 100;
+        for _ in 0..180 { e.tick(1.0 / 60.0); }
+        assert!(e.strain < 0.02, "strain should decay after healing, got {}", e.strain);
+        // Dying clears it too, so the death card is not tinted.
+        e.state = 1;
+        e.health = 10;
+        for _ in 0..180 { e.tick(1.0 / 60.0); }
+        assert!(e.strain < 0.02, "strain must not persist into the death state");
+    }
+
+    #[test]
+    fn reserve_caps_match_the_arsenal_table() {
+        // `WEAPONS[].reserve` in src/components/game/data.ts documents itself as
+        // mirroring the engine pickup caps. Parsed from the TS source so a
+        // data-side retune cannot silently diverge from the engine.
+        let ts = include_str!("../../src/components/game/data.ts");
+        let expected = ts_reserve_caps(ts);
+        assert_eq!(expected.len(), 19, "could not read the first 19 arsenal reserves");
+        assert_eq!(&RESERVE_CAP[..19], &expected[..], "engine and TS reserve caps diverged");
+        for (slot, cap) in RESERVE_CAP.iter().enumerate() {
+            assert!(*cap > 0 && *cap <= MAG_SZ[slot] * 12, "slot {slot} reserve {cap} is implausible");
+        }
+    }
+
+    #[test]
+    fn weapon_ownership_survives_a_save_round_trip() {
+        let fresh = arena();
+        assert!(!fresh.has_w(0), "a fresh run owns only the starting sidearm");
+        assert!(fresh.owns_slot(0), "slot 0 is always carried");
+        assert!(!fresh.owns_slot(1));
+        assert_eq!(capture_save(&fresh).flags, 0, "nothing outside slot 0 starts owned");
+        // Every tracked flag must survive the flag word, including the last one.
+        for i in 0..OWNED_GUNS {
+            let mut r = arena();
+            r.owned = [false; OWNED_GUNS];
+            r.set_w(i);
+            assert!(r.owns_slot(i + 1), "set_w({i}) did not grant slot {}", i + 1);
+            let save = capture_save(&r);
+            assert!(save.flags & (1 << i) != 0, "flag {i} lost its bit");
+            assert_eq!(save.flags, 1 << i, "flag {i} leaked into other bits");
+        }
+    }
+
     #[test]
     fn a_hitch_cannot_outrun_the_step_cap() {
         let mut e = arena();
@@ -7206,6 +7183,46 @@ mod tests {
         e.tick(-3.0);
         assert!((e.time - 0.08).abs() < 1e-5, "a negative step must not rewind");
         assert!((e.px - x).abs() < 0.001);
+    }
+
+    #[test]
+    fn non_finite_abi_input_cannot_poison_the_simulation() {
+        // Feeding sanitised look deltas keeps every downstream transform finite.
+        // `finite()` is exactly what `hs_input` applies before storing them.
+        for bad in [f32::NAN, f32::INFINITY, f32::NEG_INFINITY] {
+            let mut e = arena();
+            e.px = 4.5;
+            e.py = 4.5;
+            e.pa = 0.0;
+            e.mx = finite(bad);
+            e.my = finite(bad);
+            e.tick(1.0 / 60.0);
+            assert!(e.time.is_finite(), "time must stay finite after {bad}");
+            assert!(e.px.is_finite() && e.py.is_finite(), "position must stay finite after {bad}");
+            assert!(e.pa.is_finite() && e.pitch.is_finite(), "facing must stay finite after {bad}");
+        }
+
+        // A NaN step advances nothing rather than rewinding or exploding.
+        let mut n = arena();
+        n.pa = 0.0;
+        n.tick(f32::NAN);
+        assert!((n.time - 0.0).abs() < 1e-6, "a NaN step must not advance time");
+        assert!(n.time.is_finite());
+
+        // The sanitisers themselves: `hs_input` and `hs_tick` are the only doors
+        // in and both route through these.
+        assert_eq!(finite(f32::NAN), 0.0);
+        assert_eq!(finite(f32::INFINITY), 0.0);
+        assert_eq!(finite(f32::NEG_INFINITY), 0.0);
+        assert_eq!(finite(0.5), 0.5);
+        assert_eq!(finite(-2.0), -2.0);
+        assert_eq!(safe_dt(f32::NAN), 0.0);
+        // A non-finite step becomes a no-op rather than a full-length jump.
+        assert_eq!(safe_dt(f32::INFINITY), 0.0);
+        assert_eq!(safe_dt(f32::NEG_INFINITY), 0.0);
+        assert_eq!(safe_dt(-1.0), 0.0);
+        assert_eq!(safe_dt(0.5), 0.08);
+        assert_eq!(safe_dt(1.0 / 60.0), 1.0 / 60.0);
     }
 
     #[test]
@@ -7225,13 +7242,13 @@ mod tests {
     #[test]
     fn ammo_crates_restock_the_complete_eight_weapon_arsenal() {
         let mut e = arena();
-        e.has_w2 = true;
-        e.has_w3 = true;
-        e.has_w4 = true;
-        e.has_w5 = true;
-        e.has_w6 = true;
-        e.has_w7 = true;
-        e.has_w8 = true;
+        e.set_w(0);
+        e.set_w(1);
+        e.set_w(2);
+        e.set_w(3);
+        e.set_w(4);
+        e.set_w(5);
+        e.set_w(6);
         e.ammo = [0; WEP_N];
         let item = e.spawn(EK_AMMO, e.px, e.py).unwrap();
         e.tick(1.0 / 60.0);
@@ -7464,7 +7481,7 @@ mod tests {
         assert!(cols.iter().any(|c| c.hit > 0.5), "the enclosed map must hit a wall");
         assert!(cols.iter().all(|c| c.perp.is_finite() && c.z.is_finite()));
         assert!(hs_gpu_sprite_count() > 0);
-        for angle in [0.0, 1.2, 3.14] {
+        for angle in [0.0, 1.2, core::f32::consts::PI] {
             eng().pa = angle;
             hs_prepare_gpu();
             let sprites = unsafe { std::slice::from_raw_parts(hs_gpu_sprites(), hs_gpu_sprite_count() as usize) };
@@ -7514,7 +7531,7 @@ mod tests {
     #[test]
     fn pyre_leaves_a_fire_patch() {
         let mut e = arena();
-        e.has_w8 = true;
+        e.set_w(6);
         e.weapon = 7;
         e.mag[7] = 6;
         e.fire();
@@ -7594,7 +7611,7 @@ mod tests {
     #[test]
     fn chimera_fan_does_not_leave_a_pyre() {
         let mut e = arena();
-        e.has_w11 = true;
+        e.set_w(9);
         e.weapon = 10;
         e.mag[10] = 5;
         e.fire();
@@ -7605,7 +7622,7 @@ mod tests {
     #[test]
     fn pyre_shot_flames_burn_then_expire() {
         let mut e = arena();
-        e.has_w8 = true;
+        e.set_w(6);
         e.weapon = 7;
         e.mag[7] = 6;
         let target = e.spawn(EK_HUSK, 6.2, 4.5).unwrap();
@@ -7638,7 +7655,7 @@ mod tests {
     #[test]
     fn override_pierces_the_lane_for_boss_damage() {
         let mut e = arena();
-        e.has_w9 = true;
+        e.set_w(7);
         e.weapon = 8;
         e.mag[8] = 4;
         let a = e.spawn(EK_HUSK, 6.5, 4.5).unwrap();
@@ -7684,8 +7701,8 @@ mod tests {
     #[test]
     fn owned_map_guns_become_supplies_on_the_next_sector() {
         let mut e = Engine::new(160, 100);
-        e.has_w2 = true;
-        e.has_w8 = true;
+        e.set_w(0);
+        e.set_w(6);
         e.wave = 1;
         e.build_map();
         map::place_level(&mut e);
@@ -7698,7 +7715,7 @@ mod tests {
     #[test]
     fn chimera_bolts_hurt_enemies_and_not_the_shooter() {
         let mut e = arena();
-        e.has_w11 = true;
+        e.set_w(9);
         e.weapon = 10;
         e.mag[10] = 5;
         e.health = 100;

@@ -10,10 +10,17 @@ export default tseslint.config(
   {
     ignores: [
       "dist/**",
+      // The GitHub Pages build output. Without this, `eslint .` parses the
+      // minified bundle and reports thousands of bogus findings.
+      "dist-pages/**",
+      "artifacts/**",
+      "public/**",
       ".output/**",
       ".vercel/**",
       ".nitro/**",
       "node_modules/**",
+      "screenshots/**",
+      ".blacksite/**",
       "src/routeTree.gen.ts",
     ],
   },

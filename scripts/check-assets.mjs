@@ -14,6 +14,7 @@
 import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
 import { join, dirname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
+import { TEX_N } from "../src/game/atlas-slots.ts";
 
 const KNOWN_KINDS = new Set([
   "EK_HUSK",
@@ -23,7 +24,8 @@ const KNOWN_KINDS = new Set([
   "EK_BARREL",
   "EK_MARTYR",
 ]);
-const ATLAS_SLOTS = 814; // World + 62 × 7 enemy animation layers, cases, props and campaign FX
+// Derived from the engine's own atlas layout, never restated here.
+const ATLAS_SLOTS = TEX_N;
 const STATUSES = new Set(["planned", "ready"]);
 
 export function isSnakePng(name) {

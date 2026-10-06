@@ -20,6 +20,7 @@ jobs:
       - run: python3 -m pip install --disable-pip-version-check --break-system-packages -r art/enemies-v4/requirements.txt
       - run: npm ci
       - run: npm run typecheck
+      - run: npm run lint
       - run: npm run check:wasm
       - run: npm run check:assets
       - run: npm run check:environment
@@ -36,6 +37,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: stable
+      - run: cargo clippy --manifest-path engine/Cargo.toml --all-targets -- -D warnings
       - run: cargo test --manifest-path engine/Cargo.toml
         env:
           RUSTFLAGS: -D warnings
@@ -72,7 +74,7 @@ jobs:
           curl -sf http://127.0.0.1:8080/ > /dev/null
       - run: node scripts/browser-smoke.mjs http://127.0.0.1:8080/ screenshots/ci-menu.png
       - run: node scripts/combat-smoke.mjs http://127.0.0.1:8080/
-      - run: node --test --test-concurrency=1 scripts/world-effects.browser.mjs scripts/gameplay-polish.browser.mjs scripts/resolution-recovery.browser.mjs scripts/map-controls.browser.mjs scripts/tactical.browser.mjs scripts/boss-arena.browser.mjs scripts/reward-pause.browser.mjs scripts/qa-run.browser.mjs scripts/campaign25.browser.mjs scripts/projectile-presentation.browser.mjs scripts/layouts-10-25.browser.mjs scripts/enemy-sector.browser.mjs scripts/sfx.browser.mjs
+      - run: node --experimental-strip-types --test --test-concurrency=1 scripts/world-effects.browser.mjs scripts/gameplay-polish.browser.mjs scripts/resolution-recovery.browser.mjs scripts/map-controls.browser.mjs scripts/tactical.browser.mjs scripts/boss-arena.browser.mjs scripts/reward-pause.browser.mjs scripts/qa-run.browser.mjs scripts/campaign25.browser.mjs scripts/projectile-presentation.browser.mjs scripts/layouts-10-25.browser.mjs scripts/enemy-sector.browser.mjs scripts/sfx.browser.mjs
       - run: node scripts/end-screen-smoke.mjs http://127.0.0.1:8080/
       - run: PAGES_BASE=/blacksite/ npm run build:pages
       - run: |

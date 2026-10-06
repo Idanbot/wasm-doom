@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /** Generate one 1024px design render per BLACKSITE enemy from the locked plan. */
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { dirname, resolve } from "node:path";
+import { resolve } from "node:path";
 
 const args = new Map();
 for (let i = 2; i < process.argv.length; i += 1) {

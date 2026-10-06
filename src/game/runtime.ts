@@ -471,6 +471,8 @@ export class BlacksiteRuntime {
   private playing = false;
   private raf = 0;
   private last = 0;
+  /** Frames actually handed to the blitter; the QA readiness signal. */
+  private presentedFrames = 0;
   private accumulator = 0;
   private resolution: ResMode | null = null;
   private resizeObserver: ResizeObserver | null = null;
@@ -1009,6 +1011,7 @@ export class BlacksiteRuntime {
           );
         }
         const ptr = wasm.hs_tex_ptr(id);
+        if (!ptr) throw new RangeError(`Atlas slot ${id} is out of range`);
         const view = new Uint8Array(wasm.memory.buffer, ptr, size * size * 4);
         view.set(pixels.data);
       } catch {
@@ -1046,6 +1049,10 @@ export class BlacksiteRuntime {
         ctx.drawImage(img, 0, 0, size, size);
         const pixels = ctx.getImageData(0, 0, size, size);
         const ptr = wasm.hs_theme_ptr(slot);
+        if (!ptr) {
+          failed.push(src);
+          continue;
+        }
         new Uint8Array(wasm.memory.buffer, ptr, size * size * 4).set(pixels.data);
       } catch {
         failed.push(src);
@@ -1068,6 +1075,7 @@ export class BlacksiteRuntime {
     const size = wasm.hs_tex_size();
     for (const id of [T_TECH, T_DOOR]) {
       const ptr = wasm.hs_tex_ptr(id);
+      if (!ptr) continue;
       blit.uploadAtlasLayer?.(id, new Uint8Array(wasm.memory.buffer, ptr, size * size * 4));
     }
     this.lastThemeWave = wave;
@@ -1229,6 +1237,8 @@ export class BlacksiteRuntime {
       bob: dv.getFloat32(60, true),
       kick: dv.getFloat32(64, true),
       hitmarker: dv.getFloat32(68, true),
+      hurtDir: dv.getFloat32(228, true),
+      strain: dv.getFloat32(232, true),
       spread: wasm.hs_spread(),
       yaw: dv.getFloat32(72, true),
       speed: dv.getFloat32(76, true),
@@ -1317,7 +1327,7 @@ export class BlacksiteRuntime {
     if (this.atlasRevision !== blit.revision()) this.renderDirty = true;
     const live = this.playing || this.qaOn;
     if (!live) {
-      if (this.renderDirty) this.presentFrame(this.readHud(), t);
+      if (this.renderDirty) this.presentFrame(this.readHud());
       this.last = t;
       return;
     }
@@ -1381,7 +1391,8 @@ export class BlacksiteRuntime {
     // Wave transitions swap the wall/door theme inside the engine; push
     // the two layers before presenting so no frame shows the old theme.
     if (hud.wave !== this.lastThemeWave) this.refreshThemeLayers(hud.wave);
-    this.presentFrame(hud, t);
+    this.presentedFrames += 1;
+    this.presentFrame(hud);
     const w = wasm.hs_fb_w(), h = wasm.hs_fb_h();
 
     // Radio text persists across frames and sector transitions. Boss death
@@ -1415,13 +1426,14 @@ export class BlacksiteRuntime {
     if (hud.state !== this.prevHud.state) this.hooks.onState(hud.state);
     this.prevHud = hud;
   }
-  private presentFrame(hud: HudState, t: number) {
+  private presentFrame(hud: HudState) {
     const wasm = this.wasm!, blit = this.blit!;
     if (this.atlasRevision !== blit.revision()) this.pushAtlas();
     const boss = -1;
     const w = wasm.hs_fb_w();
     const h = wasm.hs_fb_h();
     const fx = { muzzle: hud.muzzle, hurt: hud.hurt, time: this.worldEffects.time, boss,
+      hurtDir: hud.hurtDir, strain: hud.strain,
       entrance: this.worldEffects.projectEntrance(hud,w/h), sector: hud.wave, yaw: hud.yaw, shocks: this.worldEffects.project(hud, w / h) };
     let presented = false;
     if (this.gpuReady && blit.drawWorld) {
@@ -1535,6 +1547,14 @@ export class BlacksiteRuntime {
       },
       getAmmo: () => this.hud.ammo,
       getReserve: () => this.hud.reserve,
+      /**
+       * True once the QA armory has been granted, the sim has ticked, and at
+       * least one frame has been presented. Smoke tests previously spied on a
+       * hardcoded reserve count as a "first live frame" sentinel, which broke
+       * whenever a weapon's balance numbers changed.
+       */
+      isLive: () =>
+        this.wasm !== null && this.presentedFrames > 0 && this.hud.reserve > 0,
       getReloading: () => this.hud.reloading,
       getWeapon: () => this.hud.weapon,
       selectWeapon: (slot: number) => this.wasm?.hs_select_weapon(slot),
@@ -1617,6 +1637,7 @@ declare global {
       setSteer?: (v: number) => void;
       look?: (mx: number, my: number) => void;
       getAmmo?: () => number;
+      isLive?: () => boolean;
       getReserve?: () => number;
       getReloading?: () => number;
       getWeapon?: () => number;

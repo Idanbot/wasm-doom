@@ -17,6 +17,10 @@ export type HudState = {
   bob: number;
   kick: number;
   hitmarker: number;
+  /** Yaw-relative bearing (radians) of the last damage source. */
+  hurtDir: number;
+  /** 0..1 low-health strain used by the vignette. */
+  strain: number;
   spread: number;
   yaw: number;
   speed: number;
@@ -109,6 +113,8 @@ export const DEFAULT_HUD: HudState = {
   bob: 0,
   kick: 0,
   hitmarker: 0,
+  hurtDir: 0,
+  strain: 0,
   spread: 0,
   yaw: 0,
   speed: 0,

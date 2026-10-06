@@ -48,7 +48,7 @@ try {
     () => !!window.__controlsTest && document.body.innerText.includes("HEALTH"),
     null, { timeout: 90000 },
   );
-  await page.waitForFunction(() => window.__controlsTest.getReserve() === 72, null, { timeout: 120000 });
+  await page.waitForFunction(() => window.__controlsTest.isLive(), null, { timeout: 120000 });
   // Slots 7-10 use Digit8/Digit9/Digit0/Minus (there is no Digit10).
   const slots = [
     [0, "MK23-S", 12, "Digit1"],
@@ -134,7 +134,7 @@ try {
   );
   // HEALTH initially renders from DEFAULT_HUD; wait for the QA armory's
   // reserve count to confirm the renderer has completed its first live frame.
-  await page.waitForFunction(() => window.__controlsTest.getReserve() === 72, null, { timeout: 120000 });
+  await page.waitForFunction(() => window.__controlsTest.isLive(), null, { timeout: 120000 });
   await page.evaluate(() => window.__controlsTest.heal());
   const controls = await page.evaluate(async () => {
     const t = window.__controlsTest;
@@ -219,7 +219,7 @@ try {
     () => !!window.__controlsTest && document.body.innerText.includes("HEALTH"),
     null, { timeout: 90000 },
   );
-  await page.waitForFunction(() => window.__controlsTest.getReserve() === 72, null, { timeout: 120000 });
+  await page.waitForFunction(() => window.__controlsTest.isLive(), null, { timeout: 120000 });
   await page.evaluate(() => {
     const t = window.__controlsTest;
     t.grantWeapons();
@@ -252,7 +252,7 @@ try {
   );
   // HEALTH is rendered from DEFAULT_HUD before the QA run begins.
   // Wait for a live engine frame before issuing the boss command.
-  await mobile.waitForFunction(() => window.__controlsTest.getReserve() === 72, null, { timeout: 120000 });
+  await mobile.waitForFunction(() => window.__controlsTest.isLive(), null, { timeout: 120000 });
   await mobile.evaluate(() => {
     const t = window.__controlsTest;
     t.setKeys(["KeyW"]);
@@ -276,7 +276,7 @@ try {
     () => !!window.__controlsTest && document.body.innerText.includes("HEALTH"),
     null, { timeout: 90000 },
   );
-  await narrow.waitForFunction(() => window.__controlsTest.getReserve() === 72, null, { timeout: 120000 });
+  await narrow.waitForFunction(() => window.__controlsTest.isLive(), null, { timeout: 120000 });
   assert.ok(await narrow.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
   await assertHudTextContained(narrow, "320px");
   if (process.env.BLACKSITE_CAPTURE_COMBAT === "1") await narrow.screenshot({ path: "screenshots/combat-hud-320.png" });

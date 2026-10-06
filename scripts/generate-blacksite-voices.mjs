@@ -63,7 +63,9 @@ for (const enemy of plan.enemies) {
     let cached = false;
     try {
       cached = JSON.parse(await readFile(`${raw}.json`, "utf8")).signature === signature;
-    } catch {}
+    } catch {
+      // No cache file yet.
+    }
     if (!cached) {
       if (generated >= limit) throw new Error("Generation limit reached; rerun to resume.");
       const request = {

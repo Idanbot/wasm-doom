@@ -24,7 +24,7 @@ test('sensitivity endpoints persist and minimap pixels match the live row-major 
   await page.screenshot({path:'screenshots/map-controls-settings.png'});
   const url=new URL(base);url.searchParams.set('qa','1');url.searchParams.set('lvl','11');
   await page.goto(url.href);
-  await page.waitForFunction(()=>window.__controlsTest?.getReserve()===72,null,{timeout:120000});
+  await page.waitForFunction(()=>window.__controlsTest?.isLive(),null,{timeout:120000});
   const result=await page.evaluate(()=>{
    const state=window.__controlsTest.getMapState(),canvas=document.querySelector('.automap');
    const ctx=canvas.getContext('2d');const pixels=ctx.getImageData(0,0,canvas.width,canvas.height).data;

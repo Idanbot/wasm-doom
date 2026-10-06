@@ -427,7 +427,7 @@ fn build_bioforge(e: &mut Engine) {
         (36, 14),
         (41, 17),
     ] {
-        e.pillar(x, y, if y < 12 || y > 20 { 3 } else { 5 });
+        e.pillar(x, y, if !(12..=20).contains(&y) { 3 } else { 5 });
     }
     for (x, y) in [(14, 13), (14, 14), (45, 15), (45, 16)] {
         e.set_cell(x, y, 9);
@@ -898,7 +898,7 @@ fn place_sector_destructibles(e: &mut Engine) {
             if e.blocked(x as i32, y as i32) || e.floor[y * MAP_W + x] == 2 { continue; }
             if (px-start.0).powi(2)+(py-start.1).powi(2) < 16.0 || (px-objective.0).powi(2)+(py-objective.1).powi(2) < 9.0 { continue; }
             let adjacent_wall = [(1,0),(-1,0),(0,1),(0,-1)].iter().any(|&(dx,dy)| e.blocked(x as i32+dx,y as i32+dy));
-            if !adjacent_wall || (x + y + sector) % 4 != 0 { continue; }
+            if !adjacent_wall || !(x + y + sector).is_multiple_of(4) { continue; }
             if e.tactical.secret_rooms.iter().any(|&(_,_,a,b)| (px-a).hypot(py-b)<2.5) {continue;}
             if e.ents.iter().any(|ent| ent.kind != EK_NONE && (ent.x-px).powi(2)+(ent.y-py).powi(2) < 2.25) { continue; }
             let skin = 150 + (sector * 3 + placed % 3) as u8;
@@ -969,6 +969,14 @@ pub(crate) fn living_hostiles(e: &Engine) -> usize {
         .iter()
         .filter(|x| x.hp > 0 && is_hostile_kind(x.kind))
         .count()
+}
+
+/// Interior of the authored arrival room, including its doorway buffer.
+pub(crate) fn in_spawn_room(wave: i32, x: f32, y: f32) -> bool {
+    let (rx,ry,w,h)=if let Some(layout)=crate::layouts::layout(wave) {layout.rooms[0]}
+        else {[(1,12,11,8),(1,3,10,8),(1,12,10,8),(1,2,11,9),(1,20,12,10),
+               (1,12,11,9),(1,2,11,9),(1,20,11,10),(1,12,11,9)][level_index(wave)]};
+    x>=rx as f32-0.5 && x<=(rx+w) as f32+0.5 && y>=ry as f32-0.5 && y<=(ry+h) as f32+0.5
 }
 
 #[cfg(test)]
@@ -1161,12 +1169,4 @@ mod tests {
             assert!(boss_spots(wave).iter().all(|spot| *spot != override_point(wave)));
         }
     }
-}
-
-/// Interior of the authored arrival room, including its doorway buffer.
-pub(crate) fn in_spawn_room(wave: i32, x: f32, y: f32) -> bool {
-    let (rx,ry,w,h)=if let Some(layout)=crate::layouts::layout(wave) {layout.rooms[0]}
-        else {[(1,12,11,8),(1,3,10,8),(1,12,10,8),(1,2,11,9),(1,20,12,10),
-               (1,12,11,9),(1,2,11,9),(1,20,11,10),(1,12,11,9)][level_index(wave)]};
-    x>=rx as f32-0.5 && x<=(rx+w) as f32+0.5 && y>=ry as f32-0.5 && y<=(ry+h) as f32+0.5
 }

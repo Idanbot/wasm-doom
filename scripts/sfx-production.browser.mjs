@@ -35,7 +35,9 @@ test("production SFX preload and MP3 exports respect the deployment base path", 
       await ctx.close();
       return { decoded, clips: manifest.clips };
     }, base);
-    assert.equal(exports.decoded, 103);
+    // Derived from the shipped manifest so adding a clip cannot desync this test.
+    assert.equal(exports.decoded, exports.clips.length);
+    assert.ok(exports.clips.length > 0, "the production SFX manifest must not be empty");
     for (const c of exports.clips)
       assert.ok(
         requested.has(new URL(c.url.replace(/^\//, ""), base).pathname),
