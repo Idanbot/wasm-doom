@@ -471,8 +471,10 @@ export class BlacksiteRuntime {
   private playing = false;
   private raf = 0;
   private last = 0;
-  /** Frames actually handed to the blitter; the QA readiness signal. */
+  /** Frames actually handed to the blitter; part of the QA readiness signal. */
   private presentedFrames = 0;
+  /** Set once the local QA run has armed the engine and granted the arsenal. */
+  private qaArmored = false;
   private accumulator = 0;
   private resolution: ResMode | null = null;
   private resizeObserver: ResizeObserver | null = null;
@@ -769,6 +771,7 @@ export class BlacksiteRuntime {
     this.wasm?.hs_qa(0, 1);
     this.wasm?.hs_qa_armory();
     this.wasm?.hs_qa(0, 0);
+    this.qaArmored = true;
   }
 
   stop() {
@@ -1548,13 +1551,17 @@ export class BlacksiteRuntime {
       getAmmo: () => this.hud.ammo,
       getReserve: () => this.hud.reserve,
       /**
-       * True once the QA armory has been granted, the sim has ticked, and at
-       * least one frame has been presented. Smoke tests previously spied on a
-       * hardcoded reserve count as a "first live frame" sentinel, which broke
-       * whenever a weapon's balance numbers changed.
+       * True once the QA run has armed the engine and granted the arsenal, and
+       * at least one frame has been presented.
+       *
+       * Smoke tests previously spied on a hardcoded reserve count as a "first
+       * live frame" sentinel, which broke whenever a weapon's balance numbers
+       * changed. This must stay tied to `qaArmored` rather than any ammo value:
+       * the placeholder HUD ships a non-zero reserve, so an ammo-based check
+       * reports ready before the engine is actually QA-armed and the test's
+       * first `heal()` silently no-ops.
        */
-      isLive: () =>
-        this.wasm !== null && this.presentedFrames > 0 && this.hud.reserve > 0,
+      isLive: () => this.wasm !== null && this.qaArmored && this.presentedFrames > 0,
       getReloading: () => this.hud.reloading,
       getWeapon: () => this.hud.weapon,
       selectWeapon: (slot: number) => this.wasm?.hs_select_weapon(slot),

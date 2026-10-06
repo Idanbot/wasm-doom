@@ -37,8 +37,12 @@ test("Escape transitions debounce; held empty triggers repeat clicks; first-play
       window.__controlsTest.heal();
       window.__controlsTest.setKeys(["Space"]);
     });
+    // Draining a 12-round magazine while the sim is capped at 0.08s per frame
+    // takes far longer than 15s on a slow runner. Every other wait for game
+    // progress in this file (and in the repo) allows 60s+; this one was the
+    // outlier and was the sole reason the suite tipped over.
     await page.waitForFunction(() => window.__controlsTest.getAmmo() === 0, null, {
-      timeout: 15000,
+      timeout: 60000,
     });
     await page.waitForFunction(
       () => window.__controlsTest.getSfxAudio().recent.includes("empty"),
