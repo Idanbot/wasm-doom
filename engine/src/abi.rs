@@ -11,6 +11,7 @@
 //! turns a panic into an unrecoverable WASM trap.
 
 use super::*;
+use super::render::{gpu_scratch, GpuCol, GpuSprite, GpuView};
 
 #[no_mangle]
 pub extern "C" fn hs_sound_count() -> i32 { eng().sound_cues.len() as i32 }
