@@ -1021,16 +1021,80 @@ export class BlacksiteRuntime {
         throw new Error(`World texture could not be prepared: ${TEX_FILES[i]!.src}`);
       }
     }
-    await this.uploadThemeVariants(ctx, size);
+    await this.uploadThemeVariants(ctx, size, onItem);
     wasm.hs_apply_theme(1);
     wasm.hs_textures_ready();
     this.pushAtlas();
+  }
+
+  /**
+   * Re-fetches and re-uploads every visual asset: the 814-layer world atlas, the
+   * 16 theme variants, and the cached weapon sheet/thumbnail images.
+   *
+   * A decode that failed once (a flaky connection, a GPU context loss during a
+   * paused resolution change) would otherwise stay failed for the whole session
+   * and the player is left with blank textures and no way to recover. Callers
+   * should treat this as a slow, blocking repair rather than a normal action.
+   */
+  async reloadAllAssets(onItem?: (done: number, total: number) => void): Promise<void> {
+    if (this.aborted || !this.wasm) return;
+    const total = TEX_FILES.length + THEME_FILES.length;
+
+    // Drop the decoded-image caches so the fetches actually happen again.
+    weaponSheetCache.clear();
+    pendingWeaponSheets.clear();
+
+    this.assetsReady = false;
+    this.renderDirty = true;
+    await this.uploadTextures((d) => onItem?.(d, total));
+    // Re-apply the live wave's palette so the atlas matches the level in play.
+    this.wasm.hs_apply_theme(this.hud.wave);
+    this.wasm.hs_textures_ready();
+    this.pushAtlas();
+
+    // Preload the current weapon's sheet so the viewmodel never draws blank.
+    const wpn = this.hud.weapon;
+    if (wpn >= 0) {
+      const sheet = weaponSheetPaths.has(this.hudArtSheet(wpn)) ? this.hudArtSheet(wpn) : null;
+      if (sheet) await this.awaitWeaponSheet(sheet);
+    }
+    this.assetsReady = true;
+  }
+
+  /** Sheet path for a weapon slot; keeps `reloadAllAssets` out of UI modules. */
+  private hudArtSheet(slot: number): string {
+    return WEAPON_SHEETS[slot] ?? "";
+  }
+
+  /** Resolves once the sheet has decoded, or immediately if it cannot. */
+  private awaitWeaponSheet(src: string): Promise<void> {
+    if (weaponSheetCache.has(src)) return Promise.resolve();
+    return new Promise((resolve) => {
+      const image = new Image();
+      const done = () => {
+        weaponSheetCache.set(src, image);
+        pendingWeaponSheets.delete(src);
+        resolve();
+      };
+      image.onload = done;
+      image.onerror = () => {
+        pendingWeaponSheets.delete(src);
+        resolve();
+      };
+      image.src = asset(src);
+    });
+  }
+
+  /** Forces the next frame to redraw; used after an out-of-band asset repair. */
+  invalidate() {
+    this.renderDirty = true;
   }
 
   /** Decode the 16 per-theme wall/door layers into engine staging memory. */
   private async uploadThemeVariants(
     ctx: CanvasRenderingContext2D,
     size: number,
+    onItem?: (done: number, total: number) => void,
   ): Promise<string[]> {
     const wasm = this.wasm;
     if (!wasm) return [];
@@ -1059,6 +1123,8 @@ export class BlacksiteRuntime {
         new Uint8Array(wasm.memory.buffer, ptr, size * size * 4).set(pixels.data);
       } catch {
         failed.push(src);
+      } finally {
+        onItem?.(i + 1, THEME_FILES.length);
       }
     }
     if (failed.length) throw new Error(`Sector textures could not load: ${failed.join(", ")}`);
@@ -1513,6 +1579,10 @@ export class BlacksiteRuntime {
   }
 
   private installQa() {
+    // Expose the runtime itself under the QA flag so browser tests can drive
+    // out-of-band repairs (asset reload) without reaching through React.
+    if (import.meta.env.DEV) (window as unknown as Record<string, unknown>).__blacksiteRuntimeTest = this;
+
     // Debug hooks (grantWeapons/triggerEnd/nextWave) are dev-only. They
     // power the Playwright smokes against `npm run dev`; exposing them in
     // production lets anyone skip sectors on the live site.

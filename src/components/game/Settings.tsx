@@ -1,7 +1,7 @@
 import { DEFAULT_SENSITIVITY, SENSITIVITY_MIN, SENSITIVITY_MAX } from "@/game/input-settings";
 import { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import { SlidersHorizontal, X, Volume2, Monitor, Mouse, Captions, RotateCcw } from "lucide-react";
+import { SlidersHorizontal, X, Volume2, Monitor, Mouse, Captions, RotateCcw, RefreshCw } from "lucide-react";
 import { DEFAULT_GFX, DEFAULT_RES, RES_MODES, type GfxOpts, type ResMode } from "@/game/types";
 import { DEFAULT_ENEMY_OPTIONS, type EnemyOptions } from "@/game/enemy-presentation";
 import { DEFAULT_VOL, type Vol } from "./data";
@@ -20,6 +20,10 @@ export type SettingsProps = {
   enemyOptions: EnemyOptions;
   setEnemyOptions: (v: EnemyOptions) => void;
   onPreviewVoice: (skin: number) => void;
+  /** Re-fetches every visual asset. Optional so older callers still work. */
+  onReloadAssets?: () => void;
+  /** Progress of an in-flight asset reload, 0..1, or null when idle. */
+  reloadProgress?: number | null;
 };
 function Slider({
   label,
@@ -234,6 +238,31 @@ export function Settings(p: SettingsProps) {
                   checked={p.enemyOptions.showStats}
                   onChange={(showStats) => p.setEnemyOptions({ ...p.enemyOptions, showStats })}
                 />
+                {p.onReloadAssets && (
+                  <div className="setting-row">
+                    <span>
+                      <strong>Reload all assets</strong>
+                      <small>
+                        Re-downloads every map texture, sprite and weapon sheet. Use this if the
+                        world looks wrong after a resolution change or a graphics reset.
+                      </small>
+                    </span>
+                    <button
+                      type="button"
+                      className="action-primary"
+                      disabled={p.reloadProgress != null}
+                      onClick={p.onReloadAssets}
+                    >
+                      <RefreshCw
+                        size={14}
+                        className={p.reloadProgress != null ? "animate-spin" : undefined}
+                      />
+                      {p.reloadProgress == null
+                        ? "Reload"
+                        : `${Math.round(p.reloadProgress * 100)}%`}
+                    </button>
+                  </div>
+                )}
               </>
             )}
             {tab === "controls" && (
