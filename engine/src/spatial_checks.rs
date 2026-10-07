@@ -124,4 +124,76 @@ fn casing_gravity_uses_world_units_at_all_render_resolutions() {
         heights.push((e.ents[i].stun,e.ents[i].zoff/h as f32));
     }
     for height in &heights {assert!((height.0-heights[0].0).abs()<0.001);assert!((height.1-heights[0].1).abs()<0.001);}
+
+}
+
+/// Placed items must not share a cell across the whole campaign.
+///
+/// Authored tables list furniture independently, so a terminal could be
+/// listed on the same coordinate as a reactor prop. Everything goes through
+/// `place_item`, which enforces `map::ITEM_GAP`; this is the regression
+/// guard for that.
+#[test]
+fn no_two_placed_items_overlap_in_any_sector() {
+    for wave in 1..=25 {
+        let mut e = Engine::new(320, 200);
+        e.map.fill(0);
+        e.wave = wave;
+        e.build_map();
+        e.light_dirty = true;
+        crate::map::place_level(&mut e);
+        let items: Vec<&Ent> = e
+            .ents
+            .iter()
+            .filter(|ent| ent.kind != EK_NONE && crate::helpers::floor_prop(ent.kind))
+            .collect();
+        for (i, a) in items.iter().enumerate() {
+            for b in &items[i + 1..] {
+                let gap = ((a.x - b.x).powi(2) + (a.y - b.y).powi(2)).sqrt();
+                assert!(
+                    gap >= crate::map::ITEM_GAP - 1e-3,
+                    "wave {wave}: kind {} and kind {} are {gap:.2} cells apart at ({:.1},{:.1})",
+                    a.kind,
+                    b.kind,
+                    a.x,
+                    a.y
+                );
+            }
+        }
+        // Overlap checking is quadratic; keep the roster bounded.
+        assert!(
+            items.len() < 400,
+            "wave {wave}: unexpected entity flood ({} items)",
+            items.len()
+        );
+    }
+}
+
+/// Every sector still gets its full set of objectives after nudging.
+#[test]
+fn item_clearance_never_drops_sector_requirements() {
+    for wave in 1..=25 {
+        let mut e = Engine::new(320, 200);
+        e.map.fill(0);
+        e.wave = wave;
+        e.build_map();
+        e.light_dirty = true;
+        crate::map::place_level(&mut e);
+        for kind in [EK_OVERRIDE_CONSOLE, EK_NODE] {
+            assert!(
+                e.ents.iter().any(|ent| ent.kind == kind),
+                "wave {wave} lost its {kind:?} to clearance nudging"
+            );
+        }
+        assert_eq!(
+            e.ents.iter().filter(|ent| ent.kind == EK_TERMINAL).count(),
+            crate::field::terminals(wave).len(),
+            "wave {wave} lost a terminal to clearance nudging"
+        );
+        assert_eq!(
+            e.ents.iter().filter(|ent| ent.kind == EK_POWER).count(),
+            1,
+            "wave {wave} lost its powerup"
+        );
+    }
 }

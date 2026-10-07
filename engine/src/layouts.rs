@@ -45,7 +45,7 @@ pub(crate) fn place(e: &mut Engine) {
     let machine=match theme { 9|10|13|15|17|19|22|23|24 => EK_PROP_SERVER, 14|20=>EK_PROP_REACTOR, _=>EK_PROP_AC };
     for &(x,y,w,h) in s.rooms {
         for (kind,px,py) in [(machine,x+1,y+1),(EK_PROP_VENT,x+w-2,y+1),(EK_PROP_WLIGHT_C,x+1,y+h-2),(EK_CRATE,x+w-2,y+h-2)] {
-            if !e.blocked(px,py) { e.spawn(kind,px as f32+0.5,py as f32+0.5); }
+            if !e.blocked(px,py) { crate::map::place_item(e,kind,0,px as f32+0.5,py as f32+0.5); }
         }
     }
 }

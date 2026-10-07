@@ -15,10 +15,65 @@
 //! engine surgery.
 
 use crate::consts::*;
-use crate::enemies::is_hostile_kind;
+use crate::enemies::{enemy_def, is_hostile_kind};
 use crate::field;
+use crate::helpers::floor_prop;
 use crate::types::AmbushTrigger;
 use crate::Engine;
+
+/// Minimum centre-to-centre distance between two placed items, in cells.
+///
+/// Authored tables list coordinates independently, so a terminal can be listed
+/// on the same cell as a reactor prop. Everything placed through `place_item`
+/// is nudged out to this clearance instead of stacking.
+pub(crate) const ITEM_GAP: f32 = 0.9;
+
+/// True when an item already occupies (or crowds) this cell.
+///
+/// Only `floor_prop` kinds count: they are the placed, visible things. Hostiles
+/// move, and pickups are handled by the same rule, so both are included.
+fn item_crowds(e: &Engine, x: f32, y: f32, gap: f32) -> bool {
+    let gap2 = gap * gap;
+    e.ents.iter().any(|ent| {
+        ent.kind != EK_NONE
+            && floor_prop(ent.kind)
+            && (ent.x - x).powi(2) + (ent.y - y).powi(2) < gap2
+    })
+}
+
+/// Places an item, nudging it to the nearest cell that respects [`ITEM_GAP`].
+///
+/// Returns the position actually used. The authored coordinate is kept when it
+/// is already clear, so sector objectives stay exactly where the level design
+/// put them; only genuinely overlapping placements move, and by at most a cell
+/// or so.
+pub(crate) fn place_item(e: &mut Engine, kind: u8, skin: u8, x: f32, y: f32) -> (f32, f32) {
+    let radius = enemy_def(kind).map(|d| d.radius).unwrap_or(0.28);
+    if !item_crowds(e, x, y, ITEM_GAP) && !e.circle_blocked(x, y, radius) {
+        e.spawn_with_skin(kind, skin, x, y);
+        return (x, y);
+    }
+    // Ring search outward from the authored spot; the first clear cell wins.
+    for ring in 1..=6 {
+        let step = ring as f32 * 0.5;
+        for n in 0..8 {
+            let a = n as f32 * core::f32::consts::TAU / 8.0;
+            let (nx, ny) = (x + a.cos() * step, y + a.sin() * step);
+            if nx < 1.2 || ny < 1.2 || nx > MAP_W as f32 - 1.2 || ny > MAP_H as f32 - 1.2 {
+                continue;
+            }
+            if !item_crowds(e, nx, ny, ITEM_GAP) && !e.circle_blocked(nx, ny, radius) {
+                e.spawn_with_skin(kind, skin, nx, ny);
+                return (nx, ny);
+            }
+        }
+    }
+    // Nowhere clear nearby: still place it, just nudged onto open floor, so the
+    // sector keeps the item its objectives may depend on.
+    let (nx, ny) = e.nearest_open(x, y, radius);
+    e.spawn_with_skin(kind, skin, nx, ny);
+    (nx, ny)
+}
 
 /// Player spawn: hangar floor, facing east into the west lane.
 pub(crate) const PLAYER_START: (f32, f32, f32) = (4.5, 15.5, 0.0);
@@ -587,61 +642,61 @@ pub(crate) fn build_level(e: &mut Engine) {
 pub(crate) fn place_hub_spoke(e: &mut Engine) {
     reset_level_entities(e);
     // Hangar: safe start, one medkit, crates to strafe around.
-    e.spawn(EK_MED, 3.5, 17.5);
-    e.spawn(EK_LAMP, 3.5, 13.5);
-    e.spawn(EK_LAMP, 8.5, 13.5);
-    e.spawn(EK_CRATE, 6.5, 17.5);
-    e.spawn(EK_CRATE, 9.5, 16.5);
-    e.spawn(EK_BARREL, 5.5, 13.5);
+    place_item(e, EK_MED, 0, 3.5, 17.5);
+    place_item(e, EK_LAMP, 0, 3.5, 13.5);
+    place_item(e, EK_LAMP, 0, 8.5, 13.5);
+    place_item(e, EK_CRATE, 0, 6.5, 17.5);
+    place_item(e, EK_CRATE, 0, 9.5, 16.5);
+    place_item(e, EK_BARREL, 0, 5.5, 13.5);
     // West lane dressing.
-    e.spawn(EK_CHAIN, 13.5, 14.2);
-    e.spawn(EK_LAMP, 15.5, 15.5);
+    place_item(e, EK_CHAIN, 0, 13.5, 14.2);
+    place_item(e, EK_LAMP, 0, 15.5, 15.5);
     // Plaza: landmark lamps, bait in the open (commit before the fight).
-    e.spawn(EK_LAMP, 17.5, 11.5);
-    e.spawn(EK_LAMP, 27.5, 11.5);
-    e.spawn(EK_LAMP, 17.5, 19.5);
-    e.spawn(EK_LAMP, 27.5, 19.5);
-    e.spawn(EK_MED, 20.5, 15.5);
-    e.spawn(EK_AMMO, 24.5, 15.5);
-    e.spawn(EK_CRATE, 18.5, 18.5);
-    e.spawn(EK_CHAIN, 22.5, 12.5);
+    place_item(e, EK_LAMP, 0, 17.5, 11.5);
+    place_item(e, EK_LAMP, 0, 27.5, 11.5);
+    place_item(e, EK_LAMP, 0, 17.5, 19.5);
+    place_item(e, EK_LAMP, 0, 27.5, 19.5);
+    place_item(e, EK_MED, 0, 20.5, 15.5);
+    place_item(e, EK_AMMO, 0, 24.5, 15.5);
+    place_item(e, EK_CRATE, 0, 18.5, 18.5);
+    place_item(e, EK_CHAIN, 0, 22.5, 12.5);
     // North lane + tech lab: Scattergun behind the ambush.
-    e.spawn(EK_CHAIN, 22.5, 9.3);
-    e.spawn(EK_GUN2, 22.5, 3.5);
-    e.spawn(EK_AMMO, 25.5, 4.5);
-    e.spawn(EK_LAMP, 17.5, 2.5);
-    e.spawn(EK_LAMP, 26.5, 4.5);
+    place_item(e, EK_CHAIN, 0, 22.5, 9.3);
+    place_item(e, EK_GUN2, 0, 22.5, 3.5);
+    place_item(e, EK_AMMO, 0, 25.5, 4.5);
+    place_item(e, EK_LAMP, 0, 17.5, 2.5);
+    place_item(e, EK_LAMP, 0, 26.5, 4.5);
     // East lane + chapel: Lance before the long firing line.
-    e.spawn(EK_CHAIN, 32.5, 16.5);
-    e.spawn(EK_GUN4, 37.5, 12.5);
-    e.spawn(EK_AMMO, 39.5, 15.5);
-    e.spawn(EK_MED, 34.5, 16.5);
-    e.spawn(EK_LAMP, 34.5, 11.5);
-    e.spawn(EK_LAMP, 39.5, 11.5);
-    e.spawn(EK_BARREL, 40.5, 16.5);
+    place_item(e, EK_CHAIN, 0, 32.5, 16.5);
+    place_item(e, EK_GUN4, 0, 37.5, 12.5);
+    place_item(e, EK_AMMO, 0, 39.5, 15.5);
+    place_item(e, EK_MED, 0, 34.5, 16.5);
+    place_item(e, EK_LAMP, 0, 34.5, 11.5);
+    place_item(e, EK_LAMP, 0, 39.5, 11.5);
+    place_item(e, EK_BARREL, 0, 40.5, 16.5);
     // Vault: stocked for the override breach, barrels punish clustering.
-    e.spawn(EK_MED, 43.5, 26.5);
-    e.spawn(EK_AMMO, 39.5, 22.5);
-    e.spawn(EK_BARREL, 35.5, 26.5);
-    e.spawn(EK_BARREL, 42.5, 21.5);
-    e.spawn(EK_LAMP, 39.5, 20.5);
-    e.spawn(EK_CHAIN, 38.5, 24.5);
+    place_item(e, EK_MED, 0, 43.5, 26.5);
+    place_item(e, EK_AMMO, 0, 39.5, 22.5);
+    place_item(e, EK_BARREL, 0, 35.5, 26.5);
+    place_item(e, EK_BARREL, 0, 42.5, 21.5);
+    place_item(e, EK_LAMP, 0, 39.5, 20.5);
+    place_item(e, EK_CHAIN, 0, 38.5, 24.5);
     // South lane + flesh pit.
-    e.spawn(EK_CRATE, 22.5, 22.5);
-    e.spawn(EK_GUN5, 22.5, 26.5);
-    e.spawn(EK_BARREL, 18.5, 25.5);
-    e.spawn(EK_BARREL, 20.5, 27.5);
-    e.spawn(EK_MED, 26.5, 24.5);
-    e.spawn(EK_AMMO, 19.5, 27.5);
-    e.spawn(EK_LAMP, 22.5, 24.5);
-    e.spawn(EK_BARREL, 26.5, 25.5);
-    e.spawn(EK_ARMOR, 5.5, 20.5);
-    e.spawn(EK_GUN3, 30.5, 12.5);
-    e.spawn(EK_AMMO, 31.5, 13.5);
-    e.spawn(EK_ARMOR, 31.5, 24.5);
-    e.spawn(EK_MED, 32.5, 25.5);
-    e.spawn(EK_GUN6, 41.5, 24.5);
-    e.spawn(EK_GUN7, 4.5, 20.5);
+    place_item(e, EK_CRATE, 0, 22.5, 22.5);
+    place_item(e, EK_GUN5, 0, 22.5, 26.5);
+    place_item(e, EK_BARREL, 0, 18.5, 25.5);
+    place_item(e, EK_BARREL, 0, 20.5, 27.5);
+    place_item(e, EK_MED, 0, 26.5, 24.5);
+    place_item(e, EK_AMMO, 0, 19.5, 27.5);
+    place_item(e, EK_LAMP, 0, 22.5, 24.5);
+    place_item(e, EK_BARREL, 0, 26.5, 25.5);
+    place_item(e, EK_ARMOR, 0, 5.5, 20.5);
+    place_item(e, EK_GUN3, 0, 30.5, 12.5);
+    place_item(e, EK_AMMO, 0, 31.5, 13.5);
+    place_item(e, EK_ARMOR, 0, 31.5, 24.5);
+    place_item(e, EK_MED, 0, 32.5, 25.5);
+    place_item(e, EK_GUN6, 0, 41.5, 24.5);
+    place_item(e, EK_GUN7, 0, 4.5, 20.5);
     // Upper works: data racks and white service lights throughout the facility.
     for &(kind, x, y) in &[
         (EK_PROP_SERVER, 6.5, 14.5), (EK_PROP_SERVER, 19.5, 13.5),
@@ -715,7 +770,7 @@ fn place_foundry(e: &mut Engine) {
         (EK_LAMP, 37.5, 27.5),
         (EK_BARREL, 34.5, 23.5),
     ] {
-        e.spawn(kind, x, y);
+        place_item(e, kind, 0, x, y);
     }
     // Foundry: reactor banks, power distribution and cyan maintenance lights.
     for &(kind, x, y) in &[
@@ -749,7 +804,7 @@ fn place_bioforge(e: &mut Engine) {
         (EK_LAMP, 44.5, 13.5),
         (EK_CRATE, 37.5, 17.5),
     ] {
-        e.spawn(kind, x, y);
+        place_item(e, kind, 0, x, y);
     }
     // Bioforge: specimen ventilation and sealed security sensor pylons.
     for &(kind, x, y) in &[
@@ -846,9 +901,11 @@ fn place_expansion(e: &mut Engine, sector: usize) {
 
 /// Static v2 machinery: nearest-open seating keeps a hand-authored
 /// coordinate from embedding inside a wall after a carve change.
+/// Places a scenery prop (reactor, gas bottle, server rack, ...) with the same
+/// clearance rule as every other item, so a prop cannot land on a crate or a
+/// terminal listed at the same coordinate.
 fn prop(e: &mut Engine, kind: u8, x: f32, y: f32) {
-    let (sx, sy) = e.nearest_open(x, y, 0.3);
-    e.spawn(kind, sx, sy);
+    place_item(e, kind, 0, x, y);
 }
 
 pub(crate) fn place_level(e: &mut Engine) {
@@ -866,17 +923,20 @@ pub(crate) fn place_level(e: &mut Engine) {
     let (x, y) = override_point(e.wave);
     let skin = [SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_BIOFORGE, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER,
                 SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_FOUNDRY, SKIN_CONSOLE_UPPER, SKIN_CONSOLE_UPPER].get(level_index(e.wave)).copied().unwrap_or(SKIN_CONSOLE_UPPER);
-    e.spawn_with_skin(EK_OVERRIDE_CONSOLE, skin, x, y);
+    // Sector furniture goes through `place_item` so a terminal listed on the
+    // same cell as a reactor prop is nudged aside instead of stacking.
+    place_item(e, EK_OVERRIDE_CONSOLE, skin, x, y);
     let (nx, ny) = field::node_point(e.wave);
-    e.spawn_with_skin(EK_NODE, skin, nx, ny);
+    place_item(e, EK_NODE, skin, nx, ny);
     for &(tx, ty) in field::terminals(e.wave) {
-        e.spawn_with_skin(EK_TERMINAL, skin, tx, ty);
+        place_item(e, EK_TERMINAL, skin, tx, ty);
     }
     for &(kind, sx, sy) in field::resupply(e.wave) {
-        e.spawn(kind, sx, sy);
+        let (px, py) = place_item(e, kind, 0, sx, sy);
+        let _ = (px, py);
     }
     let (px, py) = field::powerup_point(e.wave);
-    e.spawn(EK_POWER, px, py);
+    place_item(e, EK_POWER, 0, px, py);
     place_sector_destructibles(e);
     e.place_secret_clues();
     e.announce_sector();
@@ -902,7 +962,8 @@ fn place_sector_destructibles(e: &mut Engine) {
             if e.tactical.secret_rooms.iter().any(|&(_,_,a,b)| (px-a).hypot(py-b)<2.5) {continue;}
             if e.ents.iter().any(|ent| ent.kind != EK_NONE && (ent.x-px).powi(2)+(ent.y-py).powi(2) < 2.25) { continue; }
             let skin = 150 + (sector * 3 + placed % 3) as u8;
-            if let Some(i) = e.spawn_with_skin(EK_CRATE, skin, px, py) {
+            let (cx, cy) = place_item(e, EK_CRATE, skin, px, py);
+            if let Some(i) = e.ents.iter().position(|ent| ent.kind == EK_CRATE && (ent.x - cx).powi(2) + (ent.y - cy).powi(2) < 0.01) {
                 e.ents[i].hp = 35 + (placed % 3) as i32 * 10;
                 e.ents[i].radius = 0.36;
                 e.ents[i].armor_hp = 0;

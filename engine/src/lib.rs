@@ -45,12 +45,15 @@ struct Smoke {
     x: f32,
     y: f32,
     age: f32,
+    /// Radius multiplier for this cloud. Firing and blast smoke uses a smaller
+    /// puff than authored arena smoke; see `spawn_smoke_cloud_scaled`.
+    scale: f32,
     vx: f32,
     vy: f32,
 }
 
 impl Smoke {
-    const DEAD: Self = Self { x: 0.0, y: 0.0, age: -1.0, vx: 0.0, vy: 0.0 };
+    const DEAD: Self = Self { x: 0.0, y: 0.0, age: -1.0, scale: 1.0, vx: 0.0, vy: 0.0 };
 }
 
 struct Engine {

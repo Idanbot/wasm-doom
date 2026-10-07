@@ -4,14 +4,36 @@
 //! geometry plus a budgeted set of dynamic emitters, then two diffusion passes so
 //! light wraps corners. Smoke rides the same grid in its alpha channel.
 //!
+//! Every cloud carries a `scale`: authored arena smoke is full size, while
+//! weapon fire and blasts use [`SMOKE_FIRE_SCALE`] (half) so a single shot does
+//! not fog the room.
+//!
 //! Dynamic emitters are ranked by distance to the player before the budget is
 //! applied; walking the entity array in index order made which projectiles lit
 //! the room an allocation accident.
 
 use super::*;
 
+/// Radius multiplier for smoke produced by weapon fire and blasts. Authored
+/// arena smoke uses the full size; a single shot should not fog the room.
+pub(crate) const SMOKE_FIRE_SCALE: f32 = 0.5;
+
+/// Number of slow signature lamps added to each sector's static light.
+const SECTOR_SIGNATURE_LIGHTS: usize = 5;
+/// Peak brightness of a signature lamp.
+const SECTOR_SIGNATURE_STRENGTH: f32 = 0.30;
+/// Reach of a signature lamp, in cells.
+const SECTOR_SIGNATURE_RADIUS: f32 = 5.2;
+
 impl Engine {
     pub(crate) fn spawn_smoke_cloud(&mut self, x: f32, y: f32) {
+        self.spawn_smoke_cloud_scaled(x, y, 1.0);
+    }
+
+    /// Smoke with a caller-chosen radius. Weapon fire and blast puffs use
+    /// [`SMOKE_FIRE_SCALE`] so a single shot does not fog the room; authored
+    /// arena smoke keeps its full size.
+    pub(crate) fn spawn_smoke_cloud_scaled(&mut self, x: f32, y: f32, scale: f32) {
         let mut slot = 0usize;
         let mut oldest = -1.0f32;
         for (i, s) in self.smokes.iter().enumerate() {
@@ -31,6 +53,7 @@ impl Engine {
             x,
             y,
             age: 0.0,
+            scale,
             vx: drift.cos() * 0.22,
             vy: drift.sin() * 0.22,
         };
@@ -58,6 +81,22 @@ impl Engine {
             self.smokes[i].vx = vx * 0.985;
             self.smokes[i].vy = vy * 0.985;
         }
+    }
+
+    /// Sector palette colour, reused as that level's light signature. These are
+    /// the same hues as `SECTOR_EFFECTS` in src/game/sector-effects.ts so the
+    /// ambient wash, the fog tint and the drifting motes agree.
+    pub(crate) fn sector_tint(wave: i32) -> [f32; 3] {
+        const TINTS: [[f32; 3]; 25] = [
+            [1.00, 0.42, 0.22], [0.34, 0.78, 0.98], [0.52, 0.82, 0.36], [0.24, 0.72, 0.94],
+            [0.40, 0.94, 0.66], [0.62, 0.52, 0.92], [0.76, 0.92, 1.00], [0.86, 0.62, 0.96],
+            [0.78, 0.62, 0.44], [0.70, 0.80, 0.68], [0.56, 0.48, 0.84], [0.92, 0.56, 0.40],
+            [0.34, 0.80, 0.74], [0.94, 0.76, 0.54], [0.94, 0.58, 0.36], [0.94, 0.76, 0.42],
+            [0.52, 0.76, 0.44], [0.56, 0.70, 1.00], [0.74, 0.86, 0.34], [0.62, 0.48, 0.78],
+            [1.00, 0.72, 0.44], [0.56, 0.84, 0.92], [0.72, 0.66, 0.94], [0.48, 0.70, 0.96],
+            [0.94, 0.72, 0.44],
+        ];
+        TINTS[crate::map::level_index(wave) % 25]
     }
 
     pub(crate) fn smoke_radius(age: f32) -> f32 {
@@ -94,8 +133,8 @@ impl Engine {
         self.smoke_next = next;
         for s in self.smokes {
             if s.age < 0.0 { continue; }
-            let radius = Self::smoke_radius(s.age);
-            let strength = Self::smoke_strength(s.age);
+            let radius = Self::smoke_radius(s.age) * s.scale;
+            let strength = Self::smoke_strength(s.age) * s.scale;
             let x0 = (s.x - radius).floor().max(0.0) as usize;
             let y0 = (s.y - radius).floor().max(0.0) as usize;
             let x1 = ((s.x + radius).ceil() as usize).min(MAP_W - 1);
@@ -170,6 +209,29 @@ impl Engine {
                                 y as f32 + 0.5 + dy as f32 * 0.6, 6.4, [0.10, 0.42, 0.62]);
                         }
                     }
+                }
+            }
+            // Sector light signature: every level gets a faint ambient wash in
+            // its own palette colour plus a handful of slow-pulsing signature
+            // lamps, so a room reads as "Foundry" or "Cryo" before the HUD says
+            // so. Static because it only depends on the built map.
+            let tint = Self::sector_tint(self.wave);
+            for cell in grid.iter_mut() {
+                for c in 0..3 { cell[c] += tint[c] * 0.030; }
+            }
+            let mut placed = 0;
+            'outer: for y in 2..MAP_H - 2 {
+                for x in 2..MAP_W - 2 {
+                    if placed >= SECTOR_SIGNATURE_LIGHTS { break 'outer; }
+                    if self.blocked(x as i32, y as i32) || self.cell(x as i32, y as i32) == 6 { continue; }
+                    // Spread the lamps out instead of clustering them.
+                    if !(x * 7 + y * 13 + crate::map::level_index(self.wave)).is_multiple_of(11) { continue; }
+                    if !self.los(self.px, self.py, x as f32 + 0.5, y as f32 + 0.5) { continue; }
+                    let pulse = 0.55 + 0.45 * (self.time * 0.6 + (x + y) as f32 * 0.35).sin();
+                    let amp = SECTOR_SIGNATURE_STRENGTH * pulse;
+                    self.add_light(&mut grid, x as f32 + 0.5, y as f32 + 0.5,
+                        SECTOR_SIGNATURE_RADIUS, [tint[0] * amp, tint[1] * amp, tint[2] * amp]);
+                    placed += 1;
                 }
             }
             self.static_light = grid;

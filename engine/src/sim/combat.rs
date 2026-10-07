@@ -200,7 +200,9 @@ impl Engine {
     pub(crate) fn explode(&mut self, x: f32, y: f32, radius: f32, dmg: f32) {
         self.sound(2, 0, x, y);
         self.effect(EK_IMPACT, 2, x, y, 0.38, 10.0);
-        self.spawn_smoke_cloud(x, y);
+        // Blast smoke is what the player sees when firing explosive weapons;
+        // keep it half the authored arena size so it reads as a puff.
+        self.spawn_smoke_cloud_scaled(x, y, crate::lighting::SMOKE_FIRE_SCALE);
         self.shake = (self.shake + 0.8).min(1.0);
         self.events |= EV_EXPLODE;
         let pd = ((self.px - x).powi(2) + (self.py - y).powi(2)).sqrt();
