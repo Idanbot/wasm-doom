@@ -1,6 +1,6 @@
 import { readdir, readFile, mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { summarizeDecisions } from './metrics.mjs';
+import { summarizeDecisions, reloadAvailability } from './metrics.mjs';
 
 const root = process.argv[2] ?? '.blacksite/ai-artifacts';
 const out = process.argv[3] ?? '.blacksite/ai-comparison';
@@ -11,6 +11,9 @@ for (const entry of await readdir(root, { withFileTypes: true })) {
     const directory = join(root, entry.name);
     const report = JSON.parse(await readFile(join(directory, 'report.json')));
     const records = (await readFile(join(directory, 'trace.jsonl'), 'utf8')).trim().split('\n').filter(Boolean).map((s) => JSON.parse(s));
+    // Regenerate availability from the actual schema, including older reports
+    // which counted empty reserve-bearing weapons even when reload was unoffered.
+    Object.assign(report.metrics, reloadAvailability(records));
     const name = report.model.kind;
     models[name] ??= { reports: [], records: [] };
     models[name].reports.push(report); models[name].records.push(...records);
@@ -31,7 +34,7 @@ for (const [name, { reports, records }] of Object.entries(models)) {
     'observedEnemyHpLoss', 'armorAbsorbed', 'ammoConsumed', 'pathDistance', 'movingSeconds', 'stationarySeconds',
     'emptyMagazineSeconds', 'criticalHealthSeconds', 'reloadingSeconds', 'visibleCombatSeconds',
     'shotsWithVisibleTarget', 'emptyReloadOpportunities', 'reloadChoicesOnEmpty', 'engageOpportunities',
-    'engageChoices', 'interactionAttempts', 'interactionEffectsObserved', 'objectiveActivations',
+    'engageChoices', 'reloadNotOfferedDecisions', 'weaponChanges', 'interactionAttempts', 'interactionEffectsObserved', 'objectiveActivations',
     'bossEncounters', 'bossPhaseChanges', 'stuckIntervals', 'invalidModelOutputs'].map((key) => [key, sum(key)]));
   aggregates[name] = { totals, telemetry: summarizeDecisions(records),
     modelPeakRssMiB: Math.max(...reports.map((r) => r.model.peakRssMiB)),
@@ -50,13 +53,16 @@ const summary = `BLACKSITE EXTENDED CPU COMPARISON\nIndependent sector starts; c
       `  Kills / deaths / completed sectors: ${t.kills} / ${t.deaths} / ${t.sectorsCompleted}\n` +
       `  Reloads / empty-mag time: ${t.reloads} / ${t.emptyMagazineSeconds.toFixed(1)}s\n` +
       `  Empty-mag reload choices / opportunities: ${t.reloadChoicesOnEmpty} / ${t.emptyReloadOpportunities}\n` +
+      `  Empty-mag decisions with reload unavailable in controller: ${t.reloadNotOfferedDecisions}\n` +
       `  Latency median / p95: ${r.telemetry.inferenceLatencySeconds.p50?.toFixed(2) ?? 'n/a'} / ${r.telemetry.inferenceLatencySeconds.p95?.toFixed(2) ?? 'n/a'}s\n` +
       `  Mean chosen probability movement/combat/utility: ${['movement', 'combat', 'utility'].map((key) => c[key]?.selectedProbability.mean?.toFixed(3) ?? 'n/a').join(' / ')}\n` +
       `  Objective / boss activations: ${t.objectiveActivations} / ${t.bossEncounters}\n` +
       `  Terminations: ${JSON.stringify(r.terminationReasons)}\n`;
   }).join('\n') + `\nSystem/integration failures: ${JSON.stringify(failures)}\nRESULT: ${status}\n`;
 await mkdir(out, { recursive: true });
-await writeFile(join(out, 'report.json'), JSON.stringify({ schemaVersion: 2, status, aggregates, failures }, null, 2) + '\n');
+await writeFile(join(out, 'report.json'), JSON.stringify({ schemaVersion: 2, status,
+  sourceRunId: process.env.QA_SOURCE_RUN ?? null, reloadAvailabilityComputedFromTrace: true,
+  aggregates, failures }, null, 2) + '\n');
 await writeFile(join(out, 'summary.txt'), summary);
 console.log(summary);
 process.exitCode = status === 'PASS' ? 0 : 1;

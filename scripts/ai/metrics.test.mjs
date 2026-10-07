@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { choiceConfidence, distribution, summarizeDecisions } from './metrics.mjs';
+import { choiceConfidence, distribution, summarizeDecisions, reloadAvailability } from './metrics.mjs';
 
 test('confidence uses selected option probability rather than SDK entropy confidence', () => {
   const row = { choice: 'reload', probabilities: { nothing: 0.2, reload: 0.8 }, confidence: 0.01 };
@@ -8,6 +8,14 @@ test('confidence uses selected option probability rather than SDK entropy confid
   assert.equal(value.selectedProbability, 0.8);
   assert.ok(Math.abs(value.topTwoMargin - 0.6) < 1e-10);
   assert.ok(value.normalizedEntropy > 0 && value.normalizedEntropy < 1);
+});
+
+test('reload opportunities count only offered legal actions and expose controller gaps separately', () => {
+  const observation = { magazine: 0, reserve: 20, reloading: false };
+  const legal = { observation, questions: { utility: { criteria: { reload: 'Reload', nothing: 'Wait' } } }, action: { utility: 'reload' } };
+  const unavailable = { observation, questions: {}, action: { utility: 'nothing' } };
+  assert.deepEqual(reloadAvailability([legal, unavailable, { ...legal, observation: { ...observation, reloading: true } }]),
+    { emptyReloadOpportunities: 1, reloadChoicesOnEmpty: 1, reloadNotOfferedDecisions: 1 });
 });
 
 test('rounded SDK probabilities normalize; malformed or absent telemetry is missing, never invented', () => {

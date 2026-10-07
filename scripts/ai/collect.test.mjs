@@ -15,8 +15,9 @@ test('extended comparison combines six episodes and fails clearly for a missing 
     await writeFile(join(directory, 'report.json'), JSON.stringify({ status: 'PASS',
       model: { kind: model, peakRssMiB: 200 }, finalHud: { wave: sector },
       terminationReason: 'decision_limit', metrics: { kills: sector, decisions: 1, inferenceCount: 1,
-        inferenceSeconds: sector, simulationSeconds: 1 }, nodePeakRssMiB: 100, checks: {}, playerWarnings: [] }));
+        inferenceSeconds: sector, simulationSeconds: 1, emptyReloadOpportunities: 999 }, nodePeakRssMiB: 100, checks: {}, playerWarnings: [] }));
     await writeFile(join(directory, 'trace.jsonl'), JSON.stringify({ inferenceSeconds: sector,
+      observation: { magazine: 0, reserve: 10, reloading: false },
       questions: { utility: { criteria: { reload: 'Reload', nothing: 'Wait' } } },
       action: { utility: 'reload' }, answers: { utility: { choice: 'reload', probabilities: { reload: 0.8, nothing: 0.2 } } } }) + '\n');
   }
@@ -25,6 +26,9 @@ test('extended comparison combines six episodes and fails clearly for a missing 
   assert.equal(run().status, 0);
   let report = JSON.parse(await readFile(join(out, 'report.json')));
   assert.equal(report.aggregates.laya.totals.kills, 6);
+  assert.equal(report.aggregates.laya.totals.emptyReloadOpportunities, 3);
+  assert.equal(report.aggregates.laya.totals.reloadChoicesOnEmpty, 3);
+  assert.equal(report.reloadAvailabilityComputedFromTrace, true);
   assert.equal(report.aggregates.decider.telemetry.confidence.utility.selectedProbability.count, 3);
   assert.equal(report.aggregates.decider.telemetry.inferenceLatencySeconds.p95, 3);
   await rm(join(artifacts, 'ai-game-decider-extended-sector-3-1'), { recursive: true });

@@ -44,3 +44,16 @@ export function summarizeDecisions(records) {
       missing, diagnosticOnly: true,
     }])), actionCounts };
 }
+
+export function reloadAvailability(records) {
+  const counts = { emptyReloadOpportunities: 0, reloadChoicesOnEmpty: 0, reloadNotOfferedDecisions: 0 };
+  for (const r of records) {
+    const o = r.observation;
+    if (!o || o.magazine !== 0 || o.reserve <= 0 || o.reloading) continue;
+    if (Object.hasOwn(r.questions.utility?.criteria ?? {}, 'reload')) {
+      counts.emptyReloadOpportunities++;
+      if (r.action.utility === 'reload') counts.reloadChoicesOnEmpty++;
+    } else counts.reloadNotOfferedDecisions++;
+  }
+  return counts;
+}

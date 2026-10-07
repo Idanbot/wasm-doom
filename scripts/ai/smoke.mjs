@@ -8,7 +8,7 @@ import { loadSimulation, snapshot, assertValid, observe, questions, validateDeci
   translate, step, fingerprint, preflight, angle } from './simulation.mjs';
 
 import { loadScenario, scriptedDecision } from './scenarios.mjs';
-import { summarizeDecisions, choiceConfidence } from './metrics.mjs';
+import { summarizeDecisions, choiceConfidence, reloadAvailability } from './metrics.mjs';
 
 const modelKind = process.env.BLACKSITE_AI_MODEL ?? 'laya';
 if (!['laya', 'decider', 'scripted'].includes(modelKind)) throw new Error('Unsupported QA model');
@@ -34,7 +34,7 @@ const report = { schemaVersion: 2, tier: process.env.BLACKSITE_AI_TIER ?? 'smoke
     movingSeconds: 0, stationarySeconds: 0, emptyMagazineSeconds: 0, reloadingSeconds: 0,
     visibleCombatSeconds: 0, criticalHealthSeconds: 0, pathDistance: 0, observedEnemyHpLoss: 0,
     ammoConsumed: 0, armorAbsorbed: 0, shotsWithVisibleTarget: 0, weaponChanges: 0,
-    emptyReloadOpportunities: 0, reloadChoicesOnEmpty: 0, engageOpportunities: 0, engageChoices: 0,
+    emptyReloadOpportunities: 0, reloadChoicesOnEmpty: 0, reloadNotOfferedDecisions: 0, engageOpportunities: 0, engageChoices: 0,
     stuckIntervals: 0, invalidModelOutputs: 0 },
   limitations: ['Sector and boss completion are observations, not pass conditions; this is not a campaign.',
     'Interaction effect is checked only when a nearby door/object is actually encountered.',
@@ -76,10 +76,6 @@ try {
       report.failures.push({ category: 'model/integration', decision: n, errors: validated.errors });
     }
     const input = translate(validated.action, observation);
-    if (observation.magazine === 0 && observation.reserve > 0 && !observation.reloading) {
-      report.metrics.emptyReloadOpportunities++;
-      if (validated.action.utility === 'reload') report.metrics.reloadChoicesOnEmpty++;
-    }
     if (Object.hasOwn(schema.combat.criteria, 'engage_nearest')) {
       report.metrics.engageOpportunities++;
       if (validated.action.combat === 'engage_nearest') report.metrics.engageChoices++;
@@ -156,6 +152,7 @@ try {
   report.terminationReason = s.hud.state === 1 ? 'player_death' : s.hud.state === 2 ? 'sector_won'
     : report.metrics.inferenceSeconds >= config.inferenceBudgetSeconds ? 'inference_time_limit' : 'decision_limit';
   report.decisionTelemetry = summarizeDecisions(records);
+  Object.assign(report.metrics, reloadAvailability(records));
   report.metrics.simulationSeconds = report.metrics.simulationFrames * config.tickSeconds;
   report.metrics.simulationSecondsPerInferenceSecond = report.metrics.inferenceSeconds > 0
     ? report.metrics.simulationSeconds / report.metrics.inferenceSeconds : null;

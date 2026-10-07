@@ -341,3 +341,52 @@ observations. HP loss covers enemies present in consecutive snapshots and is
 not proof of exact player-attributed damage or shot accuracy. Time is measured
 in simulation ticks, not inference wall time. Aggregate confidence/latency uses
 all trace samples rather than averaging episode percentiles or averages.
+
+
+Reports can be regenerated from a completed extended run without loading models
+or replaying gameplay:
+
+```sh
+gh workflow run ai-game-smoke.yml -f tier=extended -f model=comparison -f source_run=37671589589
+```
+
+`source_attempt` defaults to 1; set it to the artifact attempt being analyzed.
+The combined JSON records the source run ID. Reload opportunity counts are
+recomputed from each trace's actual offered choices, including for old reports.
+`reloadNotOfferedDecisions` counts empty magazines with reserve ammo where the
+controller did not offer reload. The current controller offers reload only for
+the pistol; this limitation can leave an automatically equipped pickup empty.
+These intervals must not be treated as a model refusing an available reload.
+
+## Hosted extended comparison
+
+[Extended comparison run](https://github.com/Idanbot/wasm-doom/actions/runs/37671589589)
+passed all six simulation/replay checks with the 192-decision / 600-second
+per-episode budgets. Starts and budgets matched; actual gameplay exposure differed.
+
+| Metric, summed across sectors 1–3 unless stated | Laya | Decider Q4 |
+| --- | ---: | ---: |
+| Decisions | 130 | 93 |
+| Simulation seconds | 93.0 | 63.7 |
+| Inference seconds | 409.7 | 1,647.3 |
+| Median / p95 inference seconds | 2.64 / 4.76 | 17.63 / 21.58 |
+| Peak model memory, GiB | 2.72 | 4.91 |
+| Kills / deaths | 10 / 3 | 16 / 1 |
+| Shots / reloads | 50 / 3 | 42 / 6 |
+| Reload selected / legally offered on empty magazine | 0 / 7 | 10 / 10 |
+| Empty-magazine decisions without reload offered | 25 | 5 |
+| Empty-magazine simulation seconds | 21.0 | 11.5 |
+| Movement chosen-option probability, mean | 33.0% | 74.7% |
+| Combat chosen-option probability, mean | 49.7% | 63.0% |
+| Utility chosen-option probability, mean | 55.9% | 68.0% |
+| Objective activations / sector wins | 2 / 0 | 0 / 0 |
+
+The reload rows are corrected from the recorded question schemas; the original
+run's summary counted unavailable reloads as opportunities. Regenerate its report
+with the command above to obtain corrected JSON and text artifacts. All Laya
+episodes ended in ordinary player death. Decider died in sector 3 and reached the
+inference cap in sectors 1 and 2. More time improved its coverage, but neither
+player completed a sector or reached a boss. Higher reported probability does not
+establish better decision accuracy. These are three individual starts per model,
+not enough to estimate reliable win rates. Improve the controller's handling of
+all equipped weapons and objective exploration before increasing budgets again.
