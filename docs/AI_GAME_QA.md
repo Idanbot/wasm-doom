@@ -441,3 +441,39 @@ improve exploration, all-weapon handling and adaptive action durations before
 expecting campaign completion. Reports and full traces are in the run's
 `ai-game-decider-extended-1` artifact; `budget.json` records the seed, fixtures,
 limits, actual wall time and decision count.
+
+
+## Observable controller, version 2
+
+The test player now receives the equipped gun's capacity and role, ammo for
+owned weapons from the normal checkpoint ABI, objective status, three recent
+actions, movement failure and a count of visited minimap cells. Instructions
+prioritize reloading an empty magazine, switching away from an exhausted weapon,
+interacting at doors/objectives and avoiding repeated failed movement. All 33
+guns use their canonical HUD capacities for legal reload choices. Switching uses
+normal `hs_select_weapon`, with ownership validated before execution. No weapon,
+ammo, healing or QA ability is granted by the controller.
+
+Routing uses minimap geometry and remembered visits. After reaching/activating
+the objective or when its route is unavailable, exploration targets reachable
+unvisited cells, then the least visited reachable cell. Failed navigation edges
+are avoided for ten simulated seconds. Memory never uses hidden enemy positions.
+
+One model decision may now drive up to six simulated seconds of safe navigation,
+two seconds of combat or three seconds of reloading. Danger shortens the action.
+Steering/aim is refreshed every six ticks (0.1 seconds), without another inference.
+Actions stop on significant damage, new enemies, kills, empty magazines, target
+loss, weapon changes, completed reloads, objective/boss changes, doors or stalls.
+A selected reload suppresses a simultaneous firing choice so it can complete;
+the controller never initiates reload, interaction or switching unless chosen.
+`BLACKSITE_AI_ADAPTIVE=0` keeps the original maximum action interval for local
+comparisons, while preserving the new controller and legal choices.
+
+Every steering segment records its actual ABI input and executed frames.
+Deterministic replay uses those segments rather than treating an adaptive action
+as a single held input. Reports include explored cells, steering segment counts,
+interruptions and controller override reasons/frame counts, with version 2 in
+configuration. Summed explored cells are per-episode visits, not campaign-wide
+unique cells. Confidence describes the model's initial choices; it does not
+attribute the steering controller's contribution to the model. The shared
+30-minute/512-decision budget and eleven fixtures remain unchanged.

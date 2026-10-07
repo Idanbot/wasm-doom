@@ -3,6 +3,7 @@ import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { createWriteStream } from 'node:fs';
 import { performance } from 'node:perf_hooks';
 import { join } from 'node:path';
+import { createMemory, executeAction } from './controller.mjs';
 import { startPlayer } from './model-client.mjs';
 import { loadSimulation, snapshot, assertValid, observe, questions, validateDecision,
   translate, step, fingerprint, preflight, angle } from './simulation.mjs';
@@ -21,6 +22,8 @@ config.framesPerDecision = Number(process.env.BLACKSITE_AI_FRAMES ?? config.fram
 config.inferenceBudgetSeconds = Number(process.env.BLACKSITE_AI_INFERENCE_SECONDS ?? 600);
 if (!Number.isInteger(config.decisions) || config.decisions < 1 || config.decisions > 512 || ![30, 60].includes(config.framesPerDecision)) throw new Error('Invalid playtest budget');
 if (!Number.isFinite(config.inferenceBudgetSeconds) || config.inferenceBudgetSeconds < 1 || config.inferenceBudgetSeconds > 1800) throw new Error('Invalid inference budget');
+config.adaptiveActions = process.env.BLACKSITE_AI_ADAPTIVE !== '0';
+config.controllerVersion = 2;
 config.scenario = `${scenarioKind === 'boss' ? 'isolated-boss' : 'independent-stock-sector'}-${sector}`;
 const out = process.env.BLACKSITE_AI_OUTPUT ?? '.blacksite/ai-smoke';
 const started = performance.now();
@@ -39,7 +42,8 @@ const report = { schemaVersion: 2, tier: process.env.BLACKSITE_AI_TIER ?? 'smoke
     visibleCombatSeconds: 0, criticalHealthSeconds: 0, pathDistance: 0, observedEnemyHpLoss: 0,
     ammoConsumed: 0, armorAbsorbed: 0, shotsWithVisibleTarget: 0, weaponChanges: 0,
     emptyReloadOpportunities: 0, reloadChoicesOnEmpty: 0, reloadNotOfferedDecisions: 0, engageOpportunities: 0, engageChoices: 0,
-    stuckIntervals: 0, invalidModelOutputs: 0 },
+    controllerSegments: 0, controllerOverrideFrames: 0, exploredCells: 0, interruptionCounts: {}, controllerOverrides: {}, stuckIntervals: 0, invalidModelOutputs: 0 },
+  controller: { version: 2, adaptive: config.adaptiveActions, maxNavigationSeconds: 6, steeringSeconds: 0.1, memory: 'visited minimap cells, failed edges and last three actions' },
   limitations: ['Sector and boss completion are observations, not pass conditions; this is not a campaign.',
     'Interaction effect is checked only when a nearby door/object is actually encountered.',
     'Survival and combat skill are observations, not CI pass conditions.'] };
@@ -53,6 +57,7 @@ try {
   let s = snapshot(w); assertValid(s);
   report.metrics.bossEncounters = s.hud.bossHealth > 0 ? 1 : 0;
   const initialHash = fingerprint(s);
+  const memory = createMemory(s);
   const records = [];
   currentFailure = 'model/integration';
   worker = modelKind === 'scripted' ? { ready: async () => ({ device: 'cpu', revision: config.revision, sdk: config.sdk, peakRssMiB: 0 }),
@@ -65,7 +70,7 @@ try {
   currentFailure = 'game/system';
   let previous;
   for (let n = 0; n < config.decisions && s.hud.state === 0 && report.metrics.inferenceSeconds < config.inferenceBudgetSeconds && performance.now() + 60000 < deadline; n++) {
-    const observation = observe(s, previous);
+    const observation = observe(s, previous, memory);
     const schema = questions(observation);
     currentFailure = 'model/integration';
     const result = await worker.decide(observation, schema);
@@ -87,7 +92,7 @@ try {
     }
     previous = s;
     currentFailure = 'game/system';
-    const interval = step(w, input, config.framesPerDecision, (frame) => {
+    const interval = executeAction(w, validated.action, memory, (frame) => {
       const event = frame.hud.events;
       const visible = s.enemies.some((e) => e.hp > 0 && e.sight && e.screenX >= 0 && e.screenX <= 1);
       const travel = Math.hypot(frame.hud.x - s.hud.x, frame.hud.y - s.hud.y);
@@ -107,8 +112,8 @@ try {
       if (event & 1) report.metrics.shotsFired++;
       if (event & 4) report.metrics.reloads++;
       if (event & 8) report.metrics.hitSignals++;
-      // EV_HIT is also raised for environmental interactions. Count enemy damage
-      // only when a pistol shot changes an enemy's health or the kill counter.
+      // EV_HIT also covers environmental interactions. Require a fired shot
+      // plus changed enemy HP/kills for the damage event metric.
       if ((event & 1) && (frame.hud.kills > s.hud.kills || frame.enemies.some((e) =>
         s.enemies.some((old) => old.id === e.id && old.skin === e.skin && old.hp > e.hp)))) {
         report.metrics.enemyDamageEvents++;
@@ -120,19 +125,19 @@ try {
       if (s.hud.bossPhase !== frame.hud.bossPhase) report.metrics.bossPhaseChanges++;
       report.metrics.turnRadians += Math.abs(angle(frame.hud.yaw - s.hud.yaw));
       s = frame;
-      // Interrupt held actions for changes a player can observe.
-      return !(frame.hud.health <= previous.hud.health - 8 ||
-        frame.hud.kills > previous.hud.kills ||
-        (previous.hud.ammo > 0 && frame.hud.ammo === 0) ||
-        (previous.hud.reloading > 0 && frame.hud.reloading === 0) ||
-        frame.hud.bossPhase !== previous.hud.bossPhase ||
-        (observation.visibleEnemies.length === 0 && observe(frame).visibleEnemies.length > 0));
-    });
+    }, { adaptive: config.adaptiveActions, baseFrames: config.framesPerDecision });
+    report.metrics.controllerSegments += interval.segments.length;
+    report.metrics.exploredCells = memory.visited.size;
+    report.metrics.interruptionCounts[interval.interruptedBy] = (report.metrics.interruptionCounts[interval.interruptedBy] ?? 0) + 1;
+    for (const [reason, frames] of Object.entries(interval.overrides)) {
+      report.metrics.controllerOverrides[reason] = (report.metrics.controllerOverrides[reason] ?? 0) + frames;
+    }
+    report.metrics.controllerOverrideFrames += Object.values(interval.overrides).reduce((n, frames) => n + frames, 0);
     s = interval.snapshot;
     if (s.hud.state === 0 && s.hud.elapsedMs <= previous.hud.elapsedMs) throw new Error('Simulation clock stopped');
     const moved = Math.hypot(s.hud.x - previous.hud.x, s.hud.y - previous.hud.y);
     report.metrics.distanceMoved += moved;
-    if ((input.bits & 15) && moved < 0.01) report.metrics.stuckIntervals++;
+    if (interval.interruptedBy === 'stuck') report.metrics.stuckIntervals++;
     if (input.bits & 64) {
       report.metrics.interactionAttempts++;
       if ((interval.events & 1024) || s.hud.objective !== previous.hud.objective ||
@@ -142,7 +147,7 @@ try {
     report.metrics.decisions++;
     report.metrics.simulationFrames += interval.frames;
     const record = { decision: n, observation, questions: schema, answers: result.answers,
-      action: validated.action, input, frames: interval.frames, stateHash: fingerprint(s),
+      action: validated.action, input, segments: interval.segments, controller: { interruptedBy: interval.interruptedBy, maxFrames: interval.maxFrames, overrides: interval.overrides }, frames: interval.frames, stateHash: fingerprint(s),
       hud: s.hud, inferenceSeconds: result.seconds, inferenceCpuSeconds: result.cpuSeconds ?? null,
       modelInference: modelKind !== 'scripted',
       confidence: Object.fromEntries(Object.entries(schema).map(([name, question]) =>
@@ -181,7 +186,9 @@ try {
   const replay = await loadScenario(sector, scenarioKind);
   if (fingerprint(snapshot(replay.w)) !== initialHash) throw new Error('Initial conditions diverged');
   for (const record of records) {
-    const result = step(replay.w, record.input, record.frames);
+    let result;
+    for (const segment of record.segments) result = step(replay.w, segment.input, segment.frames);
+    if (!result) throw new Error('Action produced no replayable frames');
     if (fingerprint(result.snapshot) !== record.stateHash) throw new Error(`Deterministic replay diverged at decision ${record.decision}`);
   }
   report.checks.deterministicReplay = true;

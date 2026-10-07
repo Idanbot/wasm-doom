@@ -41,8 +41,12 @@ for (const [name, { reports, records }] of Object.entries(models)) {
     'emptyMagazineSeconds', 'criticalHealthSeconds', 'reloadingSeconds', 'visibleCombatSeconds',
     'shotsWithVisibleTarget', 'emptyReloadOpportunities', 'reloadChoicesOnEmpty', 'engageOpportunities',
     'engageChoices', 'reloadNotOfferedDecisions', 'weaponChanges', 'interactionAttempts', 'interactionEffectsObserved', 'objectiveActivations',
-    'bossEncounters', 'bossPhaseChanges', 'stuckIntervals', 'invalidModelOutputs'].map((key) => [key, sum(key)]));
-  aggregates[name] = { totals, telemetry: summarizeDecisions(records),
+    'bossEncounters', 'bossPhaseChanges', 'controllerSegments', 'controllerOverrideFrames', 'exploredCells', 'stuckIntervals', 'invalidModelOutputs'].map((key) => [key, sum(key)]));
+  const mergeCounts = key => reports.reduce((all, r) => {
+    for (const [reason, count] of Object.entries(r.metrics[key] ?? {})) all[reason] = (all[reason] ?? 0) + count;
+    return all;
+  }, {});
+  aggregates[name] = { totals, interruptionCounts: mergeCounts('interruptionCounts'), controllerOverrides: mergeCounts('controllerOverrides'), telemetry: summarizeDecisions(records),
     modelPeakRssMiB: Math.max(...reports.map((r) => r.model.peakRssMiB)),
     nodePeakRssMiB: Math.max(...reports.map((r) => r.nodePeakRssMiB)),
     terminationReasons: reports.reduce((counts, r) => {
@@ -62,6 +66,8 @@ const summary = `BLACKSITE EXTENDED CPU QA\nIndependent sector starts; confidenc
       `  Empty-mag decisions with reload unavailable in controller: ${t.reloadNotOfferedDecisions}\n` +
       `  Latency median / p95: ${r.telemetry.inferenceLatencySeconds.p50?.toFixed(2) ?? 'n/a'} / ${r.telemetry.inferenceLatencySeconds.p95?.toFixed(2) ?? 'n/a'}s\n` +
       `  Mean chosen probability movement/combat/utility: ${['movement', 'combat', 'utility'].map((key) => c[key]?.selectedProbability.mean?.toFixed(3) ?? 'n/a').join(' / ')}\n` +
+      `  Simulation seconds per decision: ${t.decisions ? (t.simulationSeconds / t.decisions).toFixed(2) : 'n/a'}\n` +
+      `  Steering segments / explored cells (summed per episode): ${t.controllerSegments} / ${t.exploredCells}\n` +
       `  Objective / boss activations: ${t.objectiveActivations} / ${t.bossEncounters}\n` +
       `  Terminations: ${JSON.stringify(r.terminationReasons)}\n`;
   }).join('\n') + `\nSystem/integration failures: ${JSON.stringify(failures)}\nRESULT: ${status}\n`;

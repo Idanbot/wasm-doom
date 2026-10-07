@@ -68,7 +68,7 @@ test('test input constants match the Rust ABI and AI code cannot call debug/wave
     fire: 'FIRE', sprint: 'SPRINT', interact: 'USE', turn_left: 'TURNL', turn_right: 'TURNR', reload: 'RELOAD' })) {
     assert.match(rust, new RegExp(`IN_${name}: u32 = ${INPUT[key]};`));
   }
-  for (const path of ['scripts/ai/simulation.mjs', 'scripts/ai/smoke.mjs']) {
+  for (const path of ['scripts/ai/simulation.mjs', 'scripts/ai/smoke.mjs', 'scripts/ai/controller.mjs']) {
     assert.doesNotMatch(readFileSync(path, 'utf8'), /\.hs_(?:qa\w*|next_wave|load_run|restart|render|prepare_gpu)\s*\(/);
   }
 });

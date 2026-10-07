@@ -161,7 +161,10 @@ campaign completion. Death or victory ends an episode early and frees budget
 for later scenarios. One workflow runs at a time; new requests queue.
 The `smoke` and `short` tiers remain available for quick checks.
 Reports include confidence, gameplay metrics and deterministic input replay;
-model confidence is diagnostic and does not decide test success.
+model confidence is diagnostic and does not decide test success. The test
+controller supports reload/switching for all owned guns, remembers explored
+minimap cells and failed routes, and updates steering during longer actions
+without extra inference. Every resulting input segment is replayed exactly.
 The immutable checkpoint cache survives budget changes. This adds no shipped
 runtime dependency and needs no browser, GPU, cloud API or secrets.
 
