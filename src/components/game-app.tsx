@@ -62,15 +62,28 @@ export function GameApp() {
   const lastHudKey = useRef("");
   const lastSubtitleAt = useRef(0);
   const lastWeapon = useRef(-1);
-  // The viewmodel canvas and its 2D context are stable for the mount; querying
-  // them inside the 60 Hz `onHud` bridge walked the DOM on every frame.
-  const weaponCtxCache = useRef<CanvasRenderingContext2D | null>(null);
+  // The viewmodel canvas and its 2D context are cached so the 60 Hz `onHud`
+  // bridge does not walk the DOM every frame. The cache must be dropped when
+  // the canvas is replaced: the viewmodel unmounts while the game is paused
+  // (and when art is reported missing), and a context bound to a detached
+  // canvas silently draws nothing - which is how the gun went invisible after
+  // a resolution change on the pause screen.
+  const weaponCtxCache = useRef<{
+    el: HTMLCanvasElement;
+    ctx: CanvasRenderingContext2D | null;
+  } | null>(null);
   const weaponCtx = () => {
-    if (weaponCtxCache.current) return weaponCtxCache.current;
+    const cached = weaponCtxCache.current;
+    // `isConnected` is a cheap property read, not a layout query.
+    if (cached && cached.el.isConnected) return cached.ctx;
     const el = weaponRef.current?.querySelector("canvas");
-    if (!el) return null; // viewmodel not mounted yet; retry next frame
-    weaponCtxCache.current = el.getContext("2d");
-    return weaponCtxCache.current;
+    if (!el) {
+      weaponCtxCache.current = null;
+      return null; // viewmodel not mounted; retry next frame
+    }
+    const ctx = el.getContext("2d");
+    weaponCtxCache.current = { el, ctx };
+    return ctx;
   };
   const swapAt = useRef(-1e9);
   const [enemyOptions, setEnemyOptions] = useState(loadEnemyOptions);
@@ -121,6 +134,9 @@ export function GameApp() {
   const [radio, setRadio] = useState<{ speaker: string; text: string } | null>(null);
   const shownRadioSeq = useRef(0);
   const [missingArt, setMissingArt] = useState<string[]>([]);
+  // Asset reload progress (null = idle). Kept separate from `load` so a repair
+  // in flight does not look like the initial boot.
+  const [reloadProgress, setReloadProgress] = useState<number | null>(null);
   const missingRef = useRef<string[]>([]);
   missingRef.current = missingArt;
   const persistRef = useRef<(save: RunSave) => void>(() => {});
@@ -128,6 +144,21 @@ export function GameApp() {
     saveCheckpoint(save);
     setCheckpoint(save);
   };
+
+  // Repair path for assets that failed to decode once and would otherwise stay
+  // broken for the rest of the session.
+  const reloadAssets = useCallback(async () => {
+    const rt = rtRef.current;
+    if (!rt || reloadProgress != null) return;
+    setReloadProgress(0);
+    try {
+      await rt.reloadAllAssets((done, total) => setReloadProgress(done / total));
+      setMissingArt([]);
+      rtRef.current?.invalidate();
+    } finally {
+      setReloadProgress(null);
+    }
+  }, [reloadProgress]);
 
   // Boot once. Renderer switches happen via switchRenderer (no sim restart,
   // no canvas remount) — see handleRequireGpu below.
@@ -690,6 +721,8 @@ export function GameApp() {
                 enemyOptions={enemyOptions}
                 setEnemyOptions={setEnemyOptions}
                 onPreviewVoice={(skin) => rtRef.current?.previewEnemy(skin)}
+                onReloadAssets={reloadAssets}
+                reloadProgress={reloadProgress}
                 onStart={start}
                 onOpenCatalog={catalogEnabled ? () => setView("catalog") : undefined}
                 ready={ready}
@@ -716,6 +749,8 @@ export function GameApp() {
                 enemyOptions={enemyOptions}
                 setEnemyOptions={setEnemyOptions}
                 onPreviewVoice={(skin) => rtRef.current?.previewEnemy(skin)}
+                onReloadAssets={reloadAssets}
+                reloadProgress={reloadProgress}
                 res={res}
                 setRes={setRes}
                 sens={sens}
