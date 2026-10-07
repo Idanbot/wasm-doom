@@ -24,11 +24,17 @@ export function HudBar({
       <div className="hud-mission">
         <Radio size={15} />
         <div>
-          <span>{sector.code} / {sector.name}</span>
+          <span>
+            {sector.code} / {sector.name}
+          </span>
           <strong>{missionLine(hud)}</strong>
         </div>
       </div>
-      <div className="hud-threat" aria-label="Remaining hostiles" title="Living enemies and incoming reinforcements">
+      <div
+        className="hud-threat"
+        aria-label="Remaining hostiles"
+        title="Living enemies and incoming reinforcements"
+      >
         <Crosshair size={15} />
         <b>{hud.living}</b>
         <span>HOSTILES</span>
@@ -64,52 +70,62 @@ export function HudBar({
           className={cn("hud-plate hud-vitals", hud.health < 30 && "hud-critical")}
           aria-label="Vitals"
         >
-          <div className="hud-health">
-            <HeartPulse size={18} />
-            <div>
-              <span className="hud-label">HEALTH</span>
-              <strong>
-                {hud.health}
-                <small> / 100</small>
-              </strong>
+          <div className="hud-content">
+            <div className="hud-health">
+              <HeartPulse size={18} />
+              <div>
+                <span className="hud-label">HEALTH</span>
+                <strong>
+                  {hud.health}
+                  <small> / 100</small>
+                </strong>
+              </div>
             </div>
-          </div>
-          <div className="vital-track">
-            <span
-              className={cn("vital-fill", hud.health < 30 && "vital-critical")}
-              style={{ width: `${Math.max(0, Math.min(100, hud.health))}%` }}
-            />
-          </div>
-          <div className="hud-armour">
-            <Shield size={13} />
-            <span>ARMOR</span>
-            <b>{hud.armor}</b>
-            <span className="armour-track">
-              <i style={{ width: `${Math.min(100, hud.armor)}%` }} />
-            </span>
+            <div className="vital-track">
+              <span
+                className={cn("vital-fill", hud.health < 30 && "vital-critical")}
+                style={{ width: `${Math.max(0, Math.min(100, hud.health))}%` }}
+              />
+            </div>
+            <div className="hud-armour">
+              <Shield size={13} />
+              <span>ARMOR</span>
+              <b>{hud.armor}</b>
+              <span className="armour-track">
+                <i style={{ width: `${Math.min(100, hud.armor)}%` }} />
+              </span>
+            </div>
           </div>
         </section>
         <section
           className={cn("hud-plate hud-ammo", lowAmmo && "hud-low-ammo")}
           aria-label="Weapon ammunition"
         >
-          <div className="hud-ammo-heading">
-            <span>{weapon.name}</span>
-            <span>{hud.reloading > 0.001 ? "RELOADING" : lowAmmo ? "LOW AMMO" : "AMMO"}</span>
+          <div className="hud-content">
+            <div className="hud-ammo-heading">
+              <span>{weapon.name}</span>
+              <span>{hud.reloading > 0.001 ? "RELOADING" : lowAmmo ? "LOW AMMO" : "AMMO"}</span>
+            </div>
+            <strong className={cn("hud-amount", hud.ammo === 0 && "text-danger")}>
+              {String(hud.ammo).padStart(2, "0")}
+              <small> / {hud.reserve}</small>
+            </strong>
+            <div className="vital-track">
+              <span
+                className="vital-fill"
+                style={{
+                  width: `${hud.weapon !== 1 && hud.reloading > 0.001 ? hud.reloading * 100 : (hud.ammo / weapon.magSize) * 100}%`,
+                }}
+              />
+            </div>
+            <p>
+              {hud.reloading > 0.001
+                ? hud.weapon === 1
+                  ? "LOADING SHELLS"
+                  : "CHANGING MAGAZINE"
+                : weapon.role}
+            </p>
           </div>
-          <strong className={hud.ammo === 0 ? "text-danger" : ""}>
-            {String(hud.ammo).padStart(2, "0")}
-            <small> / {hud.reserve}</small>
-          </strong>
-          <div className="vital-track">
-            <span
-              className="vital-fill"
-              style={{
-                width: `${hud.weapon !== 1 && hud.reloading > 0.001 ? hud.reloading * 100 : (hud.ammo / weapon.magSize) * 100}%`,
-              }}
-            />
-          </div>
-          <p>{hud.reloading > 0.001 ? hud.weapon === 1 ? "LOADING SHELLS" : "CHANGING MAGAZINE" : weapon.role}</p>
         </section>
       </div>
     </div>

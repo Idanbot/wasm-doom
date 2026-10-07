@@ -7,6 +7,39 @@ use crate::*;
 use crate::abi::*;
 
 #[test]
+fn placed_objects_keep_their_kind_texture_and_height() {
+    let mut e = arena();
+    for def in enemies::ENEMY_DEFS.iter().filter(|d| !d.hostile && d.role != "fx") {
+        map::place_item(&mut e, def.kind, 0, 10.5, 10.5);
+        let ent = e.ents.iter().find(|ent| ent.kind == def.kind).unwrap();
+        let expected_texture = if matches!(def.kind, EK_OVERRIDE_CONSOLE | EK_NODE | EK_TERMINAL) {
+            T_CONSOLE_UPPER
+        } else { def.texture };
+        assert_eq!(sprite_style(ent).0, expected_texture, "{} rendered as an enemy", def.name);
+        assert_eq!(ent.zoff, def.zoff, "{} inherited enemy height", def.name);
+        let mut cues = [voices::EnemyCue::default(); 8];
+        assert_eq!(voices::snapshot(&e, &mut cues), 0, "{} emitted an enemy voice cue", def.name);
+        for ent in &mut e.ents { ent.kind = EK_NONE; }
+    }
+}
+
+#[test]
+fn authored_sector_objects_never_select_enemy_animation_layers() {
+    let mut e = arena();
+    for wave in 1..=25 {
+        e.wave = wave;
+        e.door.fill(0.0);
+        e.build_map();
+        e.place_ents();
+        for ent in e.ents.iter().filter(|ent| ent.kind != EK_NONE && !is_hostile_kind(ent.kind)) {
+            let texture = sprite_style(ent).0;
+            assert!(!(ENEMY_TEX_BASE..T_ORDNANCE).contains(&texture),
+                "sector {wave} object kind {} skin {} selected enemy texture {texture}", ent.kind, ent.skin);
+        }
+    }
+}
+
+#[test]
 fn held_weapon_key_does_not_cancel_reload() {
     let mut e = arena();
     e.set_w(0);

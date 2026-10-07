@@ -127,6 +127,7 @@ export function GameApp() {
   const [board, setBoard] = useState<Score[]>([]);
   const [err, setErr] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
+  const [bootAttempt, setBootAttempt] = useState(0);
   const [load, setLoad] = useState({ ratio: 0, label: "Engine" });
   const [isCoarse, setIsCoarse] = useState(false);
   const [renderer, setRenderer] = useState("webgl2");
@@ -294,6 +295,7 @@ export function GameApp() {
       onAssetError: (failed) => setMissingArt(failed),
       onError: (msg) => {
         rt.setPlaying(false);
+        setReady(false);
         setErr(`Engine fault: ${msg}. Reload the page and deploy again.`);
         setScreen("menu");
       },
@@ -301,9 +303,15 @@ export function GameApp() {
     rtRef.current = rt;
     rt.setEnemyOptions(loadEnemyOptions());
     rt.setGfx(loadGfx());
+    rt.setSens(sens);
+    rt.setMuted(muted);
+    rt.setVolumes(vol.master, vol.music, vol.sfx, vol.menu);
+    rt.setMenuBed(true);
     let dead = false;
     setErr(null);
     setReady(false);
+    setLoad({ ratio: 0, label: "Engine" });
+    setMissingArt([]);
     const qa = localQaRun(window.location.search, import.meta.env.DEV, window.location.hostname);
     const initialRes = loadRes();
     setRes(initialRes);
@@ -323,6 +331,7 @@ export function GameApp() {
       })
       .catch((e: unknown) => {
         if (dead) return;
+        rt.stop();
         setReady(false);
         setErr(e instanceof Error ? e.message : "Failed to load WASM core");
       });
@@ -330,7 +339,7 @@ export function GameApp() {
       dead = true;
       rt.stop();
     };
-  }, []);
+  }, [bootAttempt]);
 
   useLayoutEffect(() => {
     const root = document.documentElement;
@@ -726,6 +735,7 @@ export function GameApp() {
                 onStart={start}
                 onOpenCatalog={catalogEnabled ? () => setView("catalog") : undefined}
                 ready={ready}
+                onRetry={() => setBootAttempt(attempt => attempt + 1)}
                 load={load}
                 err={err}
                 board={board}

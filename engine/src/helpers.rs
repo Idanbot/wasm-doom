@@ -181,7 +181,9 @@ pub(crate) fn sprite_style(e: &Ent) -> (usize, f32, bool, i32) {
             let scale = if e.kind == EK_TERMINAL { 0.62 } else if e.kind == EK_NODE { 0.82 } else { 0.95 };
             return (texture, scale, false, 0);
         }
-        if let Some(skin) = skin_def(e.skin) {
+        // Skin numbers are shared by props, effects and enemies. Only hostile
+        // kinds may select enemy animation sheets (ordinary placed props use 0).
+        if let Some(skin) = skin_def(e.skin).filter(|_| is_hostile_kind(e.kind)) {
             return (skin.texture + (e.anim as usize).min(ENEMY_ANIM_COUNT - 1), if e.kind == EK_BOSS { skin.scale.max(1.9) } else { skin.scale }, true, anim_frame(e));
         }
     }

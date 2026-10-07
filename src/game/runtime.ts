@@ -347,6 +347,7 @@ const UI_CRITICAL = [
   "/game/ui/hud-panel.webp",
   "/game/ui/menu-reactor.webp",
   "/game/ui-plaque.svg",
+  "/game/ui/loading-operator.webp",
 ];
 const weaponSheetPaths = new Set<string>(WEAPON_SHEETS);
 const weaponSheetCache = new Map<string, HTMLImageElement>();
@@ -517,8 +518,15 @@ export class BlacksiteRuntime {
     this.audio = createAudio();
   }
   async boot(res: ResMode, opts?: { requireGpu?: boolean }) {
-    const report = (ratio: number, label: string) => this.hooks.onLoad?.({ ratio, label });
+    let progress = 0;
+    const report = (ratio: number, label: string) => {
+      if (this.aborted) return;
+      progress = Math.max(progress, ratio);
+      this.hooks.onLoad?.({ ratio: progress, label });
+    };
     report(0.02, "Engine");
+    // Let React paint the loading animation before allocating the WASM atlas.
+    await new Promise<void>(resolve => requestAnimationFrame(() => setTimeout(resolve, 0)));
     const wasm = await loadWasm();
     if (this.aborted) return;
     this.wasm = wasm;
@@ -549,13 +557,14 @@ export class BlacksiteRuntime {
     this.last = performance.now();
     this.loop(this.last);
     const slices = { tex: 0, ui: 0, voice: 0, media: 0 };
-    const paint = (label: string) => {
+    const paint = (_label: string) => {
       report(
         Math.min(
           0.99,
           0.12 + 0.4 * slices.tex + 0.25 * slices.ui + 0.15 * slices.voice + 0.08 * slices.media,
         ),
-        label,
+        slices.tex < 1 ? "World textures" : slices.ui < 1 ? "Arsenal & interface" :
+          slices.voice < 1 ? "Enemy voices" : "Sound & music",
       );
     };
     await Promise.all([
@@ -591,6 +600,18 @@ export class BlacksiteRuntime {
     ]);
     this.assetsReady = true;
     this.renderDirty = true;
+    if (this.aborted) return;
+    report(0.99, "Preparing first frame");
+    wasm.hs_tick(0);
+    const hud = this.readHud();
+    const deadline = performance.now() + 15000;
+    while (!this.blit.isReady() || !this.presentFrame(hud)) {
+      if (this.aborted) return;
+      if (performance.now() > deadline) throw new Error("Renderer could not present the loaded sector");
+      await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+    }
+    this.hud = hud;
+    this.hooks.onHud(hud, 0, `${wasm.hs_fb_w()} × ${wasm.hs_fb_h()}`);
     report(1, "Ready");
     if (this.aborted) {
       this.running = false;
@@ -748,7 +769,9 @@ export class BlacksiteRuntime {
     this.accumulator = 0;
     this.wasm?.hs_restart();
     this.refreshThemeLayers(1);
-    this.hud = { ...DEFAULT_HUD };
+    this.wasm?.hs_tick(0);
+    this.hud = this.wasm ? this.readHud() : { ...DEFAULT_HUD };
+    if (this.wasm) this.hooks.onHud(this.hud, 0, `${this.wasm.hs_fb_w()} × ${this.wasm.hs_fb_h()}`);
     this.prevHud = { ...DEFAULT_HUD };
     this.prevRadioSeq = 0;
     this.audio.setBoss(false);
@@ -772,6 +795,7 @@ export class BlacksiteRuntime {
     this.wasm?.hs_qa_armory();
     this.wasm?.hs_qa(0, 0);
     this.qaArmored = true;
+    this.presentedFrames = 0;
   }
 
   stop() {
@@ -1460,7 +1484,6 @@ export class BlacksiteRuntime {
     // Wave transitions swap the wall/door theme inside the engine; push
     // the two layers before presenting so no frame shows the old theme.
     if (hud.wave !== this.lastThemeWave) this.refreshThemeLayers(hud.wave);
-    this.presentedFrames += 1;
     this.presentFrame(hud);
     const w = wasm.hs_fb_w(), h = wasm.hs_fb_h();
 
@@ -1492,6 +1515,7 @@ export class BlacksiteRuntime {
     this.audio.updateLoops(loops);
     this.hooks.onSubtitles?.(subtitles);
     this.hooks.onHud(hud, this.fps, `${w} × ${h}`);
+    if (!this.renderDirty) this.presentedFrames += 1;
     if (hud.state !== this.prevHud.state) this.hooks.onState(hud.state);
     this.prevHud = hud;
   }
@@ -1540,6 +1564,7 @@ export class BlacksiteRuntime {
     this.renderDirty = !presented;
     if (presented) this.recoveryAttempts = 0;
     else this.recoverRenderer();
+    return presented;
   }
 
   private pushAtlas() {

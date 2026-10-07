@@ -9,12 +9,13 @@ test('every sector presents its exclusive enemy after all new animation assets p
  const browser = await chromium.launch({ headless: true });
  try {
   const page = await browser.newPage({viewport:{width:1280,height:800}});
+  await page.addInitScript(() => localStorage.setItem('blacksite-res', '320'));
   await page.addInitScript(() => performance.setResourceTimingBufferSize(3000));
   const errors=[],failed=[];page.on('pageerror',e=>errors.push(e.message));
   page.on('response',r=>{if(r.status()>=400&&r.url().includes('/game/enemy_'))failed.push(r.url());});
   const url = new URL(process.env.BLACKSITE_TEST_URL ?? 'http://127.0.0.1:8080/');url.searchParams.set('qa','1');
   await page.goto(url.href,{waitUntil:'domcontentloaded'});
-  await page.waitForFunction(()=>window.__controlsTest&&document.body.innerText.includes('HEALTH'),null,{timeout:180000});
+  await page.waitForFunction(()=>window.__controlsTest?.isLive(),null,{timeout:180000});
   const loaded=await page.evaluate(()=>performance.getEntriesByType('resource').filter(e=>/\/game\/enemy_sector-.*\.png/.test(e.name)).map(e=>e.name));
   assert.equal(new Set(loaded).size,SECTOR_SHEETS,'every sector sheet must finish loading before play');
   for(const enemy of specs.enemies.filter(e=>e.level)) {

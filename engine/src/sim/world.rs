@@ -62,7 +62,7 @@ impl Engine {
             position
         } else { (x, y) };
         if is_hostile_kind(kind) { hp = ((hp as f32) * campaign::health_scale(self.wave)).round() as i32; }
-        let zoff = skin_def(skin).map(|d| d.zoff).unwrap_or(zoff);
+        let zoff = skin_def(skin).filter(|_| is_hostile_kind(kind)).map(|d| d.zoff).unwrap_or(zoff);
         for (i, e) in self.ents.iter_mut().enumerate() {
             if e.kind == 0 {
                 *e = Ent {

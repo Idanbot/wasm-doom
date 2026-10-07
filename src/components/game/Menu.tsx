@@ -1,6 +1,7 @@
 import { ArrowUpRight, Volume2, VolumeX, Crosshair, ShieldAlert } from "lucide-react";
 import { fmtTime, type Score } from "./data";
 import { LazySettings, type SettingsProps } from "./LazySettings";
+import { asset } from "@/lib/asset";
 
 export function Menu(
   p: SettingsProps & {
@@ -11,6 +12,7 @@ export function Menu(
     muted: boolean;
     setMuted: (v: boolean) => void;
     onStart: () => void;
+    onRetry: () => void;
     onOpenCatalog?: () => void;
   },
 ) {
@@ -46,7 +48,15 @@ export function Menu(
           {p.err}
         </p>
       )}
-      {!p.ready && (
+      {!p.ready && !p.err && (
+        <div className="deployment-loading" role="status" aria-live="polite">
+          <span className="loading-operator" aria-hidden="true">
+            <img src={asset("/game/ui/loading-operator.webp")} alt="" width={1536} height={96} />
+          </span>
+          <span>Preparing your deployment<small>{p.load?.label ?? "Engine"}</small></span>
+        </div>
+      )}
+      {!p.ready && !p.err && (
         <div
           className="load-meter"
           role="progressbar"
@@ -58,6 +68,7 @@ export function Menu(
           <span style={{ width: `${Math.round((p.load?.ratio ?? 0) * 100)}%` }} />
         </div>
       )}
+      {p.err && <button type="button" className="menu-secondary" onClick={p.onRetry}>Retry loading</button>}
       <button type="button" className="deploy-button" disabled={!p.ready} onClick={p.onStart}>
         <Crosshair size={22} />
         <span>

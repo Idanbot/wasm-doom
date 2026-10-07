@@ -1,0 +1,26 @@
+{
+  "tool": "built-in image_gen",
+  "source": "art/loading/operator-source.png",
+  "runtime": "public/game/ui/loading-operator.webp",
+  "source_size": [
+    1254,
+    1254
+  ],
+  "runtime_size": [
+    1536,
+    96
+  ],
+  "frames": 16,
+  "cell": [
+    96,
+    96
+  ],
+  "sequence": [
+    "run:0-3",
+    "stop:4-7",
+    "fire:8-11",
+    "reload:12-15"
+  ],
+  "prompt": "Use case: stylized-concept. Asset type: BLACKSITE browser FPS loading animation sprite sheet. Create one square 1024x1024 RGBA transparent sprite atlas, exact evenly spaced 4 columns by 4 rows, sixteen 256x256 cells, no text, no borders, no backdrop. Same single realistic detailed tactical operator in charcoal body armor, helmet with small amber visor, combat boots, holding a modern compact assault rifle, strict right-facing side view, whole body visible in every cell. Consistent character scale and grounded feet at same baseline inside each cell with generous transparent padding, no overlapping cells. Row 1 four distinct running gait poses rightward (alternating legs and arms). Row 2 decelerating to stopped ready stance, four distinct poses, gun aimed right. Row 3 four firing poses including brief small amber muzzle flashes, slight recoil and recovery. Row 4 four reload poses: lower gun and pull magazine out, insert fresh magazine, operate charging handle, return to aim. High quality painted realistic game sprite, crisp silhouette readable at small 80px display size, muted gunmetal colors with restrained orange/cyan accents matching industrial cyberpunk BLACKSITE. No sci-fi magic. Genuine transparent background including between arms and body. Exact regular grid, isolated complete poses, same helmet armor and rifle across all sixteen cells.",
+  "sha256": "b1d5102814b8f6175b22d10265d09179bc79f3a96d6d71efb5fa1409343217a7"
+}

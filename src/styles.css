@@ -1034,8 +1034,10 @@ select:focus-visible {
 .hud-plate {
   background: var(--hud-panel, url("../public/game/ui/hud-panel.webp")) center / 100% 100% no-repeat;
   width: 300px;
-  height: 144px;
-  padding: 18px 26px 28px;
+  --hud-card-height: 164px;
+  height: var(--hud-card-height);
+  /* The art has deep top/bottom rails: keep all content in its dark inset. */
+  padding: calc(var(--hud-card-height) * .20) 26px calc(var(--hud-card-height) * .24);
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -1043,6 +1045,33 @@ select:focus-visible {
   min-width: 0;
   text-shadow: 0 1px 3px var(--color-bg);
 }
+.hud-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+.hud-content > * { flex-shrink: 0; }
+.deployment-loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0 4px;
+  color: var(--color-steel);
+  font: 600 12px/1.5 var(--font-display);
+}
+.deployment-loading small { display: block; color: var(--color-muted); font-size: 10px; }
+.loading-operator { display: block; width: 80px; height: 80px; overflow: hidden; flex-shrink: 0; }
+.loading-operator img {
+  display: block;
+  max-width: none;
+  width: 1280px;
+  height: 80px;
+  animation: deployment-drill 3.2s steps(16) infinite;
+  will-change: transform;
+}
+@keyframes deployment-drill { to { transform: translate3d(-100%, 0, 0); } }
 .hud-ammo {
   width: 300px;
 }
@@ -1069,7 +1098,7 @@ select:focus-visible {
   color: var(--color-muted);
 }
 .hud-health strong,
-.hud-ammo > strong {
+.hud-ammo .hud-amount {
   display: block;
   font: 700 38px/1.1 var(--font-display);
   font-variant-numeric: tabular-nums;
@@ -1077,7 +1106,7 @@ select:focus-visible {
   white-space: nowrap;
 }
 .hud-health strong small,
-.hud-ammo > strong small {
+.hud-ammo .hud-amount small {
   font-size: 14px;
   color: var(--color-muted);
   letter-spacing: 0;
@@ -1115,7 +1144,7 @@ select:focus-visible {
   align-items: baseline;
   gap: 8px;
   color: var(--color-primary);
-  margin: 0 0 8px;
+  margin: 0 0 4px;
 }
 .hud-ammo-heading > span {
   min-width: 0;
@@ -1127,7 +1156,7 @@ select:focus-visible {
   color: var(--color-muted);
   font-size: 8px;
 }
-.hud-ammo > strong {
+.hud-ammo .hud-amount {
   text-align: right;
 }
 .hud-ammo .vital-fill {
@@ -1225,7 +1254,8 @@ select:focus-visible {
 @media (max-width: 900px) {
   .hud-plate {
     width: 265px;
-    padding: 24px 28px 30px;
+    padding-left: 24px;
+    padding-right: 24px;
   }
 }
 @media (max-width: 600px) {
@@ -1388,8 +1418,9 @@ select:focus-visible {
   }
   .hud-plate {
     width: 50%;
-    height: 124px;
-    padding: 12px 16px 25px;
+    --hud-card-height: 148px;
+    padding-left: 18px;
+    padding-right: 18px;
   }
   .hud-ammo {
     width: 50%;
@@ -1404,11 +1435,11 @@ select:focus-visible {
     width: 14px;
   }
   .hud-health strong,
-  .hud-ammo > strong {
+  .hud-ammo .hud-amount {
     font-size: clamp(23px, 7vw, 28px);
   }
   .hud-health strong small,
-  .hud-ammo > strong small {
+  .hud-ammo .hud-amount small {
     font-size: 10px;
   }
   .hud-label,
@@ -1420,6 +1451,7 @@ select:focus-visible {
     font-size: 7px;
     line-height: 1.2;
     min-height: 17px;
+    margin-top: 5px;
   }
   .hud-ammo-heading {
     margin: 0 0 6px;
@@ -1467,11 +1499,10 @@ select:focus-visible {
     margin-top: 18px;
   }
   .hud-plate {
-    padding-top: 12px;
-    padding-bottom: 25px;
+    --hud-card-height: 148px;
   }
   .hud-health strong,
-  .hud-ammo > strong {
+  .hud-ammo .hud-amount {
     font-size: 28px;
   }
 }

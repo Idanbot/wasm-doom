@@ -141,6 +141,10 @@ npm run test:browser
 `PAGES_BASE` sets the deployment base path; GitHub Actions derives it from the
 repository name.
 
+Deployment stays disabled until all assets decode, the HUD initializes and the renderer presents the first sector frame. Loading shows a 16-pose operator drill (run, stop, fire, reload); failed loads offer **Retry loading**. Sprite sources and the animation contract live in `art/loading/manifest.json`.
+
+HUD cards reserve a safe inset inside the decorative rails. `scripts/hud-insets.browser.mjs` checks all 33 guns and reload labels at four desktop/mobile sizes; `scripts/loading-ready.browser.mjs` checks loading animation, progress, retry and the initial HUD.
+
 ## Local QA
 
 Append `?qa=1` for the full arsenal and god-mode helpers, or `?qa=1&lvl=N` to

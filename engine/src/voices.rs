@@ -19,7 +19,7 @@ pub(crate) fn snapshot(e: &Engine, out: &mut [EnemyCue]) -> usize {
         // Mirrors `snapshot_bars`: never index past the caller's buffer, even if
         // the entity array is ever grown past the cue array.
         if n >= out.len() { break; }
-        if enemy.kind == 0 { continue; }
+        if !crate::enemies::is_hostile_kind(enemy.kind) { continue; }
         let Some(skin) = skin_def(enemy.skin) else { continue; };
         let (sx, sy) = (enemy.x - e.px, enemy.y - e.py);
         let depth = sx * dx + sy * dy;
