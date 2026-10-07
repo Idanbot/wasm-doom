@@ -154,11 +154,11 @@ HUD cards reserve a safe inset inside the decorative rails. `scripts/hud-insets.
 
 The manually runnable **AI gameplay QA** workflow uses only pinned CPU
 Decider-4B v2.1 Q4_K_M as a test-time player of the real Rust/WASM simulation.
-Its default `extended` tier tests sectors 1–3 sequentially, allowing up to
-256 decisions and **30 minutes of inference per sector**. Death or victory
-ends an episode earlier; independent starts do not imply campaign completion.
-Only one workflow execution and one sector job run at a time; subsequent
-workflow requests queue instead of cancelling the active run.
+Its default `extended` tier shares **30 minutes of wall-clock time and at most
+512 decisions across the entire test**: sectors 1, 2, 3, 5, 10, 15, 20 and 25,
+plus three seeded random boss encounters. Independent starts do not imply
+campaign completion. Death or victory ends an episode early and frees budget
+for later scenarios. One workflow runs at a time; new requests queue.
 The `smoke` and `short` tiers remain available for quick checks.
 Reports include confidence, gameplay metrics and deterministic input replay;
 model confidence is diagnostic and does not decide test success.

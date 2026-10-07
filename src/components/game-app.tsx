@@ -119,6 +119,9 @@ export function GameApp() {
   });
   const [muted, setMuted] = useState(false);
   const [vol, setVol] = useState(loadVol);
+  // Boot/retry uses current settings without restarting the engine on a slider change.
+  const bootSettings = useRef({ sens, muted, vol });
+  bootSettings.current = { sens, muted, vol };
   const [requireGpu, setRequireGpu] = useState(gpuEnabled);
   const qaRef = useRef(false);
   const hadPointerLock = useRef(false);
@@ -303,9 +306,10 @@ export function GameApp() {
     rtRef.current = rt;
     rt.setEnemyOptions(loadEnemyOptions());
     rt.setGfx(loadGfx());
-    rt.setSens(sens);
-    rt.setMuted(muted);
-    rt.setVolumes(vol.master, vol.music, vol.sfx, vol.menu);
+    const settings = bootSettings.current;
+    rt.setSens(settings.sens);
+    rt.setMuted(settings.muted);
+    rt.setVolumes(settings.vol.master, settings.vol.music, settings.vol.sfx, settings.vol.menu);
     rt.setMenuBed(true);
     let dead = false;
     setErr(null);

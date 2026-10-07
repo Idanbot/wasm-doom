@@ -21,10 +21,16 @@ for (const entry of await readdir(root, { withFileTypes: true })) {
   } catch (error) { failures.push({ artifact: entry.name, message: error.message }); }
 }
 if (!Object.keys(models).length) failures.push({ message: 'No model episode reports found' });
-const expected = process.env.QA_MODELS === 'laya' ? ['laya'] : process.env.QA_MODELS === 'decider' ? ['decider'] : ['laya', 'decider'];
+const expected = process.env.QA_SCENARIOS && process.env.QA_MODELS !== 'comparison' ? [process.env.QA_MODELS ?? 'decider'] : process.env.QA_MODELS === 'laya' ? ['laya'] : process.env.QA_MODELS === 'decider' ? ['decider'] : ['laya', 'decider'];
 for (const name of expected) {
-  const sectors = models[name]?.reports.map((r) => r.finalHud?.wave).sort() ?? [];
-  if (JSON.stringify(sectors) !== '[1,2,3]') failures.push({ model: name, message: 'Expected exactly sectors 1, 2 and 3', sectors });
+  if (process.env.QA_SCENARIOS) {
+    const required = JSON.parse(process.env.QA_SCENARIOS).map(f => f.id).sort();
+    const actual = models[name]?.reports.map(r => r.fixture?.id).sort() ?? [];
+    if (JSON.stringify(actual) !== JSON.stringify(required)) failures.push({ model: name, message: 'Missing or duplicate scenario reports', required, actual });
+  } else {
+    const sectors = models[name]?.reports.map((r) => r.finalHud?.wave).sort() ?? [];
+    if (JSON.stringify(sectors) !== '[1,2,3]') failures.push({ model: name, message: 'Expected exactly sectors 1, 2 and 3', sectors });
+  }
 }
 const aggregates = {};
 for (const [name, { reports, records }] of Object.entries(models)) {
@@ -41,12 +47,12 @@ for (const [name, { reports, records }] of Object.entries(models)) {
     nodePeakRssMiB: Math.max(...reports.map((r) => r.nodePeakRssMiB)),
     terminationReasons: reports.reduce((counts, r) => {
       counts[r.terminationReason] = (counts[r.terminationReason] ?? 0) + 1; return counts;
-    }, {}), episodes: reports.map((r) => ({ sector: r.finalHud?.wave, status: r.status,
+    }, {}), episodes: reports.map((r) => ({ sector: r.finalHud?.wave, fixture: r.fixture, status: r.status,
       terminationReason: r.terminationReason, finalHud: r.finalHud, metrics: r.metrics,
       checks: r.checks, warnings: r.playerWarnings })) };
 }
 const status = failures.length ? 'FAIL' : 'PASS';
-const summary = `BLACKSITE EXTENDED CPU COMPARISON\nIndependent sector starts; confidence is diagnostic, not validated gameplay accuracy.\n\n` +
+const summary = `BLACKSITE EXTENDED CPU QA\nIndependent sector starts; confidence is diagnostic, not validated gameplay accuracy.\n\n` +
   Object.entries(aggregates).map(([name, r]) => {
     const t = r.totals, c = r.telemetry.confidence;
     return `${name}: ${t.decisions} decisions / ${t.inferenceSeconds.toFixed(1)}s inference / ${t.simulationSeconds.toFixed(1)}s gameplay\n` +

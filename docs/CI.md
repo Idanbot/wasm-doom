@@ -68,19 +68,16 @@ run; no fixed speedup is promised.
 The separate manually dispatched `ai-game-smoke.yml` workflow uses only pinned
 Decider-4B v2.1 Q4_K_M on a standard CPU runner against the real WASM simulation.
 It uses neither a browser nor the renderer and does not gate Pages deployment.
-The default `extended` tier tests sectors 1–3 with at most 256 decisions and
-1,800 inference seconds per sector. A 45-minute job timeout leaves room for
-installation, checkpoint loading, replay and artifact upload. Normal death or
-victory ends an episode earlier.
+The default `extended` tier runs one sequential test process with a shared
+30-minute wall-clock / 512-decision cap across eight sectors (1, 2, 3, 5, 10,
+15, 20, 25) and three reproducible random boss fixtures. A repository-wide
+concurrency group queues dispatches without cancelling active runs, even across
+branches. The job's 40-minute timeout leaves room for installation and artifact
+upload outside the 30-minute harness budget. Normal death or victory ends an
+episode early; remaining time and decisions are distributed across later cases.
 
-A repository-wide workflow concurrency group queues dispatches without cancelling
-active runs, even across branches. Matrix `max-parallel: 1` executes sector jobs
-sequentially. Three full-budget episodes can therefore take about 90 minutes of
-inference in total, plus setup; 30 minutes is a per-sector inference budget, not
-a workflow wall-clock deadline. `smoke` (24 decisions) and `short` (48 decisions /
-180 inference seconds per sector) retain their smaller budgets.
-
-The dependent report job combines confidence, latency, CPU usage and gameplay
-metrics and checks for missing sector reports. Checkpoint cache keys are unchanged
-by runtime budgets. See [AI gameplay QA](AI_GAME_QA.md) for model pins, setup,
-reports and historical comparisons.
+`smoke` (24 decisions) and `short` (48 decisions / 180 inference seconds per
+sector in sectors 1–3) retain smaller budgets. The same job aggregates confidence,
+latency and gameplay metrics and checks that all 11 scenario reports exist.
+Checkpoint cache keys are unchanged. See [AI gameplay QA](AI_GAME_QA.md) for
+model pins, setup, reports and historical comparisons.

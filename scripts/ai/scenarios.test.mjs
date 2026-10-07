@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { loadScenario, scriptedDecision, SECTORS } from './scenarios.mjs';
+import { loadScenario, scriptedDecision, SECTORS, extendedScenarios, EXTENDED_SECTORS } from './scenarios.mjs';
 import { snapshot, step, observe, questions, validateDecision, translate, fingerprint, INPUT, assertValid } from './simulation.mjs';
 
 test('three distinct stock sector checkpoints initialize and replay deterministically', async () => {
@@ -89,4 +89,23 @@ test('state and input validation reject nonfinite values, negative ammo and unsa
   }
   assert.throws(() => step(w, { bits: 0, mx: 0, my: Infinity }, 1), /Unsafe/);
   assert.throws(() => step(w, { bits: 0, mx: 0, my: 0 }, 181), /Unsafe/);
+});
+
+
+test('extended fixtures cover eight sectors and three distinct seeded real boss fights with normal health', async () => {
+  const fixtures = extendedScenarios();
+  assert.deepEqual(fixtures, extendedScenarios());
+  assert.notDeepEqual(fixtures, extendedScenarios(1730));
+  assert.deepEqual(fixtures.filter(f => f.kind === 'sector').map(f => f.sector), EXTENDED_SECTORS);
+  const bosses = fixtures.filter(f => f.kind === 'boss');
+  assert.equal(new Set(bosses.map(f => f.sector)).size, 3);
+  for (const f of fixtures) {
+    const a = await loadScenario(f.sector, f.kind), b = await loadScenario(f.sector, f.kind);
+    const s = snapshot(a.w); assertValid(s);
+    assert.equal(s.hud.health, 100);
+    assert.equal(fingerprint(s), fingerprint(snapshot(b.w)));
+    if (f.kind === 'boss') assert.ok(s.hud.bossHealth > 0);
+    const input = { bits: INPUT.fire, mx: 0, my: 0 };
+    assert.equal(fingerprint(step(a.w, input, 60).snapshot), fingerprint(step(b.w, input, 60).snapshot));
+  }
 });

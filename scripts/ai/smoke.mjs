@@ -13,21 +13,25 @@ import { summarizeDecisions, choiceConfidence, reloadAvailability } from './metr
 const modelKind = process.env.BLACKSITE_AI_MODEL ?? 'decider';
 if (!['laya', 'decider', 'scripted'].includes(modelKind)) throw new Error('Unsupported QA model');
 const sector = Number(process.env.BLACKSITE_AI_SECTOR ?? 1);
+const scenarioKind = process.env.BLACKSITE_AI_SCENARIO_KIND ?? 'sector';
 const config = JSON.parse(await readFile(new URL('./config.json', import.meta.url)));
 if (modelKind === 'decider') Object.assign(config, JSON.parse(await readFile(new URL('./decider-config.json', import.meta.url))));
 config.decisions = Number(process.env.BLACKSITE_AI_DECISIONS ?? config.decisions);
 config.framesPerDecision = Number(process.env.BLACKSITE_AI_FRAMES ?? config.framesPerDecision);
 config.inferenceBudgetSeconds = Number(process.env.BLACKSITE_AI_INFERENCE_SECONDS ?? 600);
-if (!Number.isInteger(config.decisions) || config.decisions < 1 || config.decisions > 256 || ![30, 60].includes(config.framesPerDecision)) throw new Error('Invalid playtest budget');
+if (!Number.isInteger(config.decisions) || config.decisions < 1 || config.decisions > 512 || ![30, 60].includes(config.framesPerDecision)) throw new Error('Invalid playtest budget');
 if (!Number.isFinite(config.inferenceBudgetSeconds) || config.inferenceBudgetSeconds < 1 || config.inferenceBudgetSeconds > 1800) throw new Error('Invalid inference budget');
-config.scenario = `independent-stock-sector-${sector}`;
+config.scenario = `${scenarioKind === 'boss' ? 'isolated-boss' : 'independent-stock-sector'}-${sector}`;
 const out = process.env.BLACKSITE_AI_OUTPUT ?? '.blacksite/ai-smoke';
 const started = performance.now();
+const wallSeconds = Number(process.env.BLACKSITE_AI_WALL_SECONDS ?? 3600);
+if (!Number.isFinite(wallSeconds) || wallSeconds < 1 || wallSeconds > 3600) throw new Error('Invalid wall budget');
+const deadline = started + wallSeconds * 1000;
 await mkdir(out, { recursive: true });
 const log = createWriteStream(join(out, `${modelKind}.log`));
 const trace = createWriteStream(join(out, 'trace.jsonl'));
 const report = { schemaVersion: 2, tier: process.env.BLACKSITE_AI_TIER ?? 'smoke', status: 'FAIL', failures: [], playerWarnings: [],
-  configuration: config, checks: {}, metrics: { decisions: 0, inferenceCount: 0, inferenceSeconds: 0, inferenceCpuSeconds: 0,
+  fixture: { sector, kind: scenarioKind, id: `${scenarioKind}-${sector}` }, configuration: config, checks: {}, metrics: { decisions: 0, inferenceCount: 0, inferenceSeconds: 0, inferenceCpuSeconds: 0,
     simulationFrames: 0, distanceMoved: 0, shotsFired: 0, reloads: 0, hitSignals: 0, enemyDamageEvents: 0, kills: 0,
     damageTaken: 0, interactionAttempts: 0, interactionEffectsObserved: 0, visibleEnemyObservations: 0,
     objectiveActivations: 0, bossEncounters: 0, bossPhaseChanges: 0, turnRadians: 0,
@@ -44,9 +48,10 @@ try {
   currentFailure = 'game/system';
   const probe = await loadSimulation();
   report.checks.engineInputs = preflight(probe.w);
-  const { w, wasmSha256 } = await loadScenario(sector);
+  const { w, wasmSha256 } = await loadScenario(sector, scenarioKind);
   report.wasmSha256 = wasmSha256;
   let s = snapshot(w); assertValid(s);
+  report.metrics.bossEncounters = s.hud.bossHealth > 0 ? 1 : 0;
   const initialHash = fingerprint(s);
   const records = [];
   currentFailure = 'model/integration';
@@ -59,7 +64,7 @@ try {
   report.checks.modelLoadedOnCpu = modelKind !== 'scripted';
   currentFailure = 'game/system';
   let previous;
-  for (let n = 0; n < config.decisions && s.hud.state === 0 && report.metrics.inferenceSeconds < config.inferenceBudgetSeconds; n++) {
+  for (let n = 0; n < config.decisions && s.hud.state === 0 && report.metrics.inferenceSeconds < config.inferenceBudgetSeconds && performance.now() + 60000 < deadline; n++) {
     const observation = observe(s, previous);
     const schema = questions(observation);
     currentFailure = 'model/integration';
@@ -150,6 +155,7 @@ try {
   report.metrics.deaths = s.hud.state === 1 ? 1 : 0;
   report.metrics.sectorsCompleted = s.hud.state === 2 ? 1 : 0;
   report.terminationReason = s.hud.state === 1 ? 'player_death' : s.hud.state === 2 ? 'sector_won'
+    : performance.now() + 60000 >= deadline ? 'wall_time_limit'
     : report.metrics.inferenceSeconds >= config.inferenceBudgetSeconds ? 'inference_time_limit' : 'decision_limit';
   report.decisionTelemetry = summarizeDecisions(records);
   Object.assign(report.metrics, reloadAvailability(records));
@@ -172,7 +178,7 @@ try {
   if (report.metrics.turnRadians > 6 * Math.PI && report.metrics.distanceMoved < 1) report.playerWarnings.push('Repeated spinning without effective movement; inspect trace.');
   if (Math.abs(angle(s.hud.yaw - previous?.hud.yaw)) > 1) report.playerWarnings.push('Large final turn; inspect trace.');
   // Replay recorded inputs, not model predictions: CPU inference timing cannot affect the clock.
-  const replay = await loadScenario(sector);
+  const replay = await loadScenario(sector, scenarioKind);
   if (fingerprint(snapshot(replay.w)) !== initialHash) throw new Error('Initial conditions diverged');
   for (const record of records) {
     const result = step(replay.w, record.input, record.frames);

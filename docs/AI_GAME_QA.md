@@ -109,19 +109,29 @@ Tests of input validation, observations and deterministic replay need no model:
 node --experimental-strip-types --test scripts/ai/simulation.test.mjs
 ```
 
-Dispatch the **AI gameplay QA** workflow with
-`gh workflow run ai-game-smoke.yml -f tier=extended`. Hosted runs use only the
-pinned Decider v2.1 Q4_K_M CPU checkpoint documented below; there is no model
-selector. The default extended tier allows 256 decisions and 1,800 inference
-seconds **per sector**, testing sectors 1–3 sequentially. Death or victory still
-ends an episode early. Each sector job has a 45-minute safety timeout to allow
-setup, replay and reporting. A full three-sector run can use about 90 minutes of
-inference plus setup time.
+Dispatch with `gh workflow run ai-game-smoke.yml -f tier=extended`.
+Hosted runs use only pinned Decider v2.1 Q4_K_M. The extended tier has a shared
+**30-minute wall-clock budget and 512-decision cap for the whole harness**,
+including model startup and replay, rather than granting each sector 30 minutes.
+It tests sectors 1, 2, 3, 5, 10, 15, 20, 25 and three boss encounters sampled
+without replacement from levels 1–25. Seed 1729 selects bosses 24, 12 and 20;
+`BLACKSITE_AI_SCENARIO_SEED` changes the reproducible local selection.
 
-Only one workflow execution can run repository-wide, across branches; new
-requests queue rather than cancel it. Matrix concurrency is also limited to one
-sector job. The `smoke` and `short` tiers retain their smaller budgets. There is
-no PR trigger or deployment dependency. Checkpoint cache keys remain unchanged.
+Boss setup uses existing QA fixture exports to enter the arena, remove ordinary
+hostiles and spawn the real full-health boss with its support enemies, then
+turns QA **off** before gameplay. Health, armor and pistol inventory remain stock.
+The model cannot invoke these exports. These isolated fixtures test actual boss
+combat, not successful navigation or normal boss activation. Fixture identity
+is recorded and used for deterministic input replay.
+
+Each remaining scenario receives a fair share of remaining time and decisions;
+unused budget after death or victory rolls forward. Inference reserves its
+60-second response deadline before starting another request. Missing scenario
+reports fail collection. The 40-minute job safety timeout allows setup and
+artifact upload outside the harness budget. Only one workflow executes across
+branches, with later dispatches queued. `smoke` and `short` remain small.
+The extended artifact contains the combined report, `budget.json`, and per-case
+reports, traces and diagnostics under `episodes/`. No PR or deployment dependency.
 
 The output directory defaults to ignored `.blacksite/ai-smoke/` and contains:
 
@@ -307,6 +317,10 @@ The per-model 14-day artifacts include the baseline, all three reports, input
 traces and model diagnostics.
 
 ## Initial extended comparison and confidence telemetry (historical)
+
+Commands and workflow inputs in this historical section describe the previous
+comparison workflow; the current workflow has no model or source-run selector.
+To rescore downloaded historical traces locally, use `scripts/ai/collect.mjs`.
 
 `gh workflow run ai-game-smoke.yml -f tier=extended -f model=comparison`
 runs six independent jobs: both pinned players in each of sectors 1, 2 and 3.
