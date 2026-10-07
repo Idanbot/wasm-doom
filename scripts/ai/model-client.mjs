@@ -2,7 +2,7 @@ import { spawn } from 'node:child_process';
 import { createInterface } from 'node:readline';
 
 export function startPlayer({ python = process.env.BLACKSITE_AI_PYTHON ?? 'python3', stderr } = {}) {
-  const child = spawn(python, ['-u', process.env.BLACKSITE_AI_MODEL === 'decider' ? 'scripts/ai/decider-worker.py' : 'scripts/ai/laya-worker.py'], {
+  const child = spawn(python, ['-u', (process.env.BLACKSITE_AI_MODEL ?? 'decider') === 'decider' ? 'scripts/ai/decider-worker.py' : 'scripts/ai/laya-worker.py'], {
     stdio: ['pipe', 'pipe', 'pipe'], env: { ...process.env, USE_TF: '0', TOKENIZERS_PARALLELISM: 'false' },
   });
   child.stderr.on('data', (data) => stderr?.write(data));

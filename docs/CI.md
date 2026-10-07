@@ -65,18 +65,22 @@ run; no fixed speedup is promised.
 
 ## Optional AI gameplay QA
 
-The separate manually dispatched `ai-game-smoke.yml` workflow defaults to local Laya
-Typed Decisions on a standard CPU runner against the real WASM simulation. It
-uses neither a browser nor the renderer, and is independent of Pages deployment.
-The initial scenario has at most 24 model decisions and verifies deterministic
-input replay. See [AI gameplay QA](AI_GAME_QA.md) for architecture, installation,
-reports, model pins and the limits of the first milestone.
+The separate manually dispatched `ai-game-smoke.yml` workflow uses only pinned
+Decider-4B v2.1 Q4_K_M on a standard CPU runner against the real WASM simulation.
+It uses neither a browser nor the renderer and does not gate Pages deployment.
+The default `extended` tier tests sectors 1–3 with at most 256 decisions and
+1,800 inference seconds per sector. A 45-minute job timeout leaves room for
+installation, checkpoint loading, replay and artifact upload. Normal death or
+victory ends an episode earlier.
 
-The manual `short` tier runs three stock sector fixtures (48 decisions each);
-`model=comparison` adds the pinned Decider-4B v2.1 CPU GGUF player. Each model
-runs in a separate free standard runner job, capped at 25 minutes. Separate
-checkpoint caches survive budget changes. Neither workflow gates deployment.
+A repository-wide workflow concurrency group queues dispatches without cancelling
+active runs, even across branches. Matrix `max-parallel: 1` executes sector jobs
+sequentially. Three full-budget episodes can therefore take about 90 minutes of
+inference in total, plus setup; 30 minutes is a per-sector inference budget, not
+a workflow wall-clock deadline. `smoke` (24 decisions) and `short` (48 decisions /
+180 inference seconds per sector) retain their smaller budgets.
 
-The manual `extended` tier splits the three sectors across parallel free CPU jobs
-(192 decisions / 600 inference seconds each). Its dependent report job combines
-confidence, latency, CPU usage and gameplay metrics and checks for missing reports.
+The dependent report job combines confidence, latency, CPU usage and gameplay
+metrics and checks for missing sector reports. Checkpoint cache keys are unchanged
+by runtime budgets. See [AI gameplay QA](AI_GAME_QA.md) for model pins, setup,
+reports and historical comparisons.

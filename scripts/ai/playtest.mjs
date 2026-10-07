@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { SECTORS } from './scenarios.mjs';
 
 const out = process.env.BLACKSITE_AI_OUTPUT ?? '.blacksite/ai-playtest';
-const model = process.env.BLACKSITE_AI_MODEL ?? 'laya';
+const model = process.env.BLACKSITE_AI_MODEL ?? 'decider';
 await mkdir(out, { recursive: true });
 const results = [];
 for (const sector of SECTORS) {

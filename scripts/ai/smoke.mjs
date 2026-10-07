@@ -10,7 +10,7 @@ import { loadSimulation, snapshot, assertValid, observe, questions, validateDeci
 import { loadScenario, scriptedDecision } from './scenarios.mjs';
 import { summarizeDecisions, choiceConfidence, reloadAvailability } from './metrics.mjs';
 
-const modelKind = process.env.BLACKSITE_AI_MODEL ?? 'laya';
+const modelKind = process.env.BLACKSITE_AI_MODEL ?? 'decider';
 if (!['laya', 'decider', 'scripted'].includes(modelKind)) throw new Error('Unsupported QA model');
 const sector = Number(process.env.BLACKSITE_AI_SECTOR ?? 1);
 const config = JSON.parse(await readFile(new URL('./config.json', import.meta.url)));
@@ -19,7 +19,7 @@ config.decisions = Number(process.env.BLACKSITE_AI_DECISIONS ?? config.decisions
 config.framesPerDecision = Number(process.env.BLACKSITE_AI_FRAMES ?? config.framesPerDecision);
 config.inferenceBudgetSeconds = Number(process.env.BLACKSITE_AI_INFERENCE_SECONDS ?? 600);
 if (!Number.isInteger(config.decisions) || config.decisions < 1 || config.decisions > 256 || ![30, 60].includes(config.framesPerDecision)) throw new Error('Invalid playtest budget');
-if (!Number.isFinite(config.inferenceBudgetSeconds) || config.inferenceBudgetSeconds < 1 || config.inferenceBudgetSeconds > 600) throw new Error('Invalid inference budget');
+if (!Number.isFinite(config.inferenceBudgetSeconds) || config.inferenceBudgetSeconds < 1 || config.inferenceBudgetSeconds > 1800) throw new Error('Invalid inference budget');
 config.scenario = `independent-stock-sector-${sector}`;
 const out = process.env.BLACKSITE_AI_OUTPUT ?? '.blacksite/ai-smoke';
 const started = performance.now();

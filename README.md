@@ -152,18 +152,18 @@ HUD cards reserve a safe inset inside the decorative rails. `scripts/hud-insets.
 
 ## AI gameplay QA
 
-The manually runnable **AI gameplay QA** workflow defaults to CPU-only Laya Typed
-Decisions as a test-time player of the real Rust/WASM simulation. It executes up
-to 24 decisions, validates normal inputs and replays them deterministically.
-Reports separate agent performance from engine/integration failures. It needs no
-browser, GPU, cloud API or secrets and adds no production runtime dependency.
-Choose the manual `short` tier to test three distinct sectors, or `comparison`
-to compare Laya with pinned CPU Decider-4B v2.1 Q4_K_M. Both produce per-sector
-reports and exact input replay; independent starts do not imply campaign completion.
-The `extended` tier gives each model 192 decisions / 10 minutes of inference per
-sector, runs sectors in parallel and combines confidence and gameplay metrics.
-Model confidence is diagnostic and does not decide test success.
-Model caches are separate and keyed by checkpoint rather than test length.
+The manually runnable **AI gameplay QA** workflow uses only pinned CPU
+Decider-4B v2.1 Q4_K_M as a test-time player of the real Rust/WASM simulation.
+Its default `extended` tier tests sectors 1–3 sequentially, allowing up to
+256 decisions and **30 minutes of inference per sector**. Death or victory
+ends an episode earlier; independent starts do not imply campaign completion.
+Only one workflow execution and one sector job run at a time; subsequent
+workflow requests queue instead of cancelling the active run.
+The `smoke` and `short` tiers remain available for quick checks.
+Reports include confidence, gameplay metrics and deterministic input replay;
+model confidence is diagnostic and does not decide test success.
+The immutable checkpoint cache survives budget changes. This adds no shipped
+runtime dependency and needs no browser, GPU, cloud API or secrets.
 
 See [setup, model pins and smoke-test limits](docs/AI_GAME_QA.md).
 

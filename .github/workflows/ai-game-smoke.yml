@@ -7,12 +7,7 @@ on:
         description: Bounded playtest length
         type: choice
         options: [smoke, short, extended]
-        default: smoke
-      model:
-        description: CPU player (comparison runs both against identical scenarios)
-        type: choice
-        options: [laya, decider, comparison]
-        default: laya
+        default: extended
       source_run:
         description: Optional prior extended run ID; regenerate reports without inference
         type: string
@@ -27,8 +22,8 @@ permissions:
   actions: read
 
 concurrency:
-  group: ai-game-smoke-${{ github.ref }}
-  cancel-in-progress: true
+  group: blacksite-ai-gameplay-qa
+  cancel-in-progress: false
 
 defaults:
   run:
@@ -45,16 +40,16 @@ jobs:
     if: inputs.source_run == ''
     strategy:
       fail-fast: false
+      max-parallel: 1
       matrix:
         sector: ${{ fromJSON(inputs.tier == 'extended' && '[1,2,3]' || '[0]') }}
-        model: ${{ fromJSON(inputs.model == 'comparison' && '["laya","decider"]' || inputs.model == 'decider' && '["decider"]' || '["laya"]') }}
-    name: ${{ matrix.model }} CPU / ${{ inputs.tier }}${{ matrix.sector && format(' / sector {0}', matrix.sector) || '' }}
+    name: Decider CPU / ${{ inputs.tier }}${{ matrix.sector && format(' / sector {0}', matrix.sector) || '' }}
     env:
-      BLACKSITE_AI_MODEL: ${{ matrix.model }}
+      BLACKSITE_AI_MODEL: decider
       BLACKSITE_AI_SECTOR: ${{ matrix.sector || 1 }}
     # Standard free public-repository runner. No GPU, browser or renderer.
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v7.0.1
       - uses: actions/setup-node@v7.0.0
@@ -64,7 +59,7 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
-          cache-dependency-path: ${{ matrix.model == 'laya' && 'scripts/ai/requirements.txt' || 'scripts/ai/decider-requirements.txt' }}
+          cache-dependency-path: scripts/ai/decider-requirements.txt
       - name: Check committed simulation and harness contracts
         run: |
           node scripts/check-wasm-sync.mjs
@@ -72,11 +67,7 @@ jobs:
           BLACKSITE_AI_MODEL=scripted BLACKSITE_AI_OUTPUT=.blacksite/ai-smoke/baseline node --experimental-strip-types scripts/ai/playtest.mjs
       - name: Install pinned CPU-only PyTorch
         run: python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.8.0+cpu
-      - name: Install pinned Laya runtime
-        if: matrix.model == 'laya'
-        run: python -m pip install -r scripts/ai/requirements.txt
       - name: Install pinned Decider CPU GGUF runtime
-        if: matrix.model == 'decider'
         env:
           CMAKE_ARGS: -DGGML_CUDA=OFF -DGGML_NATIVE=OFF
           CMAKE_BUILD_PARALLEL_LEVEL: '4'
@@ -89,22 +80,20 @@ jobs:
         run: |
           node --input-type=module <<'JS'
           import { readFileSync, appendFileSync } from 'node:fs';
-          const model = process.env.BLACKSITE_AI_MODEL;
-          const c = JSON.parse(readFileSync(`scripts/ai/${model === 'laya' ? 'config' : 'decider-config'}.json`));
-          const format = model === 'laya' ? c.subfolder : c.file;
-          appendFileSync(process.env.GITHUB_OUTPUT, `key=blacksite-${model}-${c.revision}-${format}\n`);
+          const c = JSON.parse(readFileSync('scripts/ai/decider-config.json'));
+          appendFileSync(process.env.GITHUB_OUTPUT, `key=blacksite-decider-${c.revision}-${c.file}\n`);
           JS
       - name: Cache pinned typed-decisions checkpoint
         uses: actions/cache@v5.0.0
         with:
-          path: ${{ matrix.model == 'laya' && '.blacksite/huggingface/hub/models--convaiinnovations--laya' || '.blacksite/decider-model' }}
+          path: .blacksite/decider-model
           key: ${{ steps.checkpoint.outputs.key }}
       - name: Run bounded real gameplay and deterministic replay
         env:
           QA_TIER: ${{ inputs.tier }}
         run: |
           if [[ "$QA_TIER" == "extended" ]]; then
-            BLACKSITE_AI_TIER=extended BLACKSITE_AI_DECISIONS=192 BLACKSITE_AI_INFERENCE_SECONDS=600 BLACKSITE_AI_FRAMES=60 node --experimental-strip-types scripts/ai/smoke.mjs
+            BLACKSITE_AI_TIER=extended BLACKSITE_AI_DECISIONS=256 BLACKSITE_AI_INFERENCE_SECONDS=1800 BLACKSITE_AI_FRAMES=60 node --experimental-strip-types scripts/ai/smoke.mjs
           elif [[ "$QA_TIER" == "short" ]]; then
             node --experimental-strip-types scripts/ai/playtest.mjs
           else
@@ -125,7 +114,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7.0.2
         with:
-          name: ai-game-${{ matrix.model }}-${{ inputs.tier }}-sector-${{ matrix.sector }}-${{ github.run_attempt }}
+          name: ai-game-decider-${{ inputs.tier }}-sector-${{ matrix.sector }}-${{ github.run_attempt }}
           path: .blacksite/ai-smoke/
           include-hidden-files: true
           if-no-files-found: warn
@@ -144,13 +133,13 @@ jobs:
           node-version: 24
       - uses: actions/download-artifact@v8.0.2
         with:
-          pattern: ai-game-*-extended-sector-*-${{ inputs.source_run && inputs.source_attempt || github.run_attempt }}
+          pattern: ai-game-decider-extended-sector-*-${{ inputs.source_run && inputs.source_attempt || github.run_attempt }}
           path: .blacksite/ai-artifacts
           run-id: ${{ inputs.source_run || github.run_id }}
           github-token: ${{ github.token }}
       - name: Aggregate confidence and gameplay metrics
         env:
-          QA_MODELS: ${{ inputs.model }}
+          QA_MODELS: decider
           QA_SOURCE_RUN: ${{ inputs.source_run || github.run_id }}
         run: node scripts/ai/collect.mjs
       - name: Publish comparison summary

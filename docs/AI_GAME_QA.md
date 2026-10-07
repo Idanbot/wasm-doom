@@ -1,6 +1,8 @@
 # AI gameplay QA
 
-Laya and optional Decider are test-time players, never shipped BLACKSITE dependencies.
+The hosted workflow now uses only Decider; local Laya support and earlier
+comparisons below are retained as historical/reference tooling. Neither is a
+shipped BLACKSITE dependency.
 Stage 1 proves the engine/state/decision/input loop with a small manual CI run.
 It does not assert campaign or boss completion, establish weapon balance, or
 replace the existing browser and Rust tests.
@@ -17,7 +19,7 @@ flowchart LR
     R --> D[Replay inputs and compare state hashes]
 ```
 
-## Exact runtime
+## Original Laya runtime (local/historical)
 
 - Model: `convaiinnovations/laya`, subfolder `typed-decisions`.
 - Revision: `7b928d828b7b0e022f929d9bd2e44165aa270148`.
@@ -107,13 +109,19 @@ Tests of input validation, observations and deterministic replay need no model:
 node --experimental-strip-types --test scripts/ai/simulation.test.mjs
 ```
 
-Dispatch the **AI gameplay QA** workflow in GitHub Actions or use
-`gh workflow run ai-game-smoke.yml`. It runs on the standard `ubuntu-latest` CPU
-runner, checks committed WASM synchronization, installs CPU-only Torch and pinned
-packages, caches model files and runs the short smoke test. It has a 25-minute job timeout per model, no PR trigger and no deployment
-dependency. The default remains the 24-decision Laya smoke. Select `short` for
-three independent sector starts, with at most 48 decisions per sector and 60
-ticks per decision and a 180-second inference budget per sector, or `comparison` to run both models on identical scenarios.
+Dispatch the **AI gameplay QA** workflow with
+`gh workflow run ai-game-smoke.yml -f tier=extended`. Hosted runs use only the
+pinned Decider v2.1 Q4_K_M CPU checkpoint documented below; there is no model
+selector. The default extended tier allows 256 decisions and 1,800 inference
+seconds **per sector**, testing sectors 1–3 sequentially. Death or victory still
+ends an episode early. Each sector job has a 45-minute safety timeout to allow
+setup, replay and reporting. A full three-sector run can use about 90 minutes of
+inference plus setup time.
+
+Only one workflow execution can run repository-wide, across branches; new
+requests queue rather than cancel it. Matrix concurrency is also limited to one
+sector job. The `smoke` and `short` tiers retain their smaller budgets. There is
+no PR trigger or deployment dependency. Checkpoint cache keys remain unchanged.
 
 The output directory defaults to ignored `.blacksite/ai-smoke/` and contains:
 
@@ -298,7 +306,7 @@ reuse the checkpoint and CPU wheel; no warm-run timing has been measured yet.
 The per-model 14-day artifacts include the baseline, all three reports, input
 traces and model diagnostics.
 
-## Extended tier and confidence telemetry
+## Initial extended comparison and confidence telemetry (historical)
 
 `gh workflow run ai-game-smoke.yml -f tier=extended -f model=comparison`
 runs six independent jobs: both pinned players in each of sectors 1, 2 and 3.
@@ -347,10 +355,12 @@ Reports can be regenerated from a completed extended run without loading models
 or replaying gameplay:
 
 ```sh
-gh workflow run ai-game-smoke.yml -f tier=extended -f model=comparison -f source_run=37671589589
+gh workflow run ai-game-smoke.yml -f tier=extended -f source_run=37671589589
 ```
 
-`source_attempt` defaults to 1; set it to the artifact attempt being analyzed.
+Report regeneration now selects only Decider artifacts, even from a historical
+comparison run. `source_attempt` defaults to 1; set it to the artifact attempt
+being analyzed.
 The combined JSON records the source run ID. Reload opportunity counts are
 recomputed from each trace's actual offered choices, including for old reports.
 `reloadNotOfferedDecisions` counts empty magazines with reserve ammo where the
