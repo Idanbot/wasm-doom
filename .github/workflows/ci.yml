@@ -2,90 +2,300 @@ name: ci
 on:
   push:
   pull_request:
+  workflow_dispatch:
 permissions:
   contents: read
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
+defaults:
+  run:
+    shell: bash
+env:
+  PAGES_BASE: /${{ github.event.repository.name }}/
 jobs:
-  check:
-    runs-on: ubuntu-latest
+  quality:
+    name: TypeScript and lint
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7.0.1
-      - uses: actions/setup-node@v7.0.0
-        with:
-          # npm 11 (Node 24). npm 10 rejects this lockfile.
-          node-version: 24
-          cache: npm
-      - run: python3 -m pip install --disable-pip-version-check --break-system-packages -r art/enemies-v4/requirements.txt
-      - run: npm ci
-      - run: npm run typecheck
-      - run: npm run lint
-      - run: npm run check:wasm
-      - run: npm run check:assets
-      - run: npm run check:environment
-      - run: npm run check:maps
-      - run: npm run check:projectiles
-      - run: npm run check:sfx
-      - run: npm run check:voices
-      - run: npm run build
-      - run: node scripts/renderer-benchmark.mjs /tmp/perf-current.json
-      - run: node scripts/check-perf.mjs art/perf-baseline.json /tmp/perf-current.json
-      - run: node --experimental-strip-types --test scripts/map-object-presentation.test.mjs scripts/world-effects.test.mjs src/components/game/data.test.ts src/game/hud-abi.test.ts src/game/save-abi.test.ts src/game/runtime.test.ts src/game/dev-run.test.ts src/game/voice-gate.test.ts src/game/sfx-director.test.ts src/lib/storage-migration.test.ts
-      # Latest action commit is master (2026-09-12). The only release tag is v1 from 2022.
-      # toolchain: stable installs the current stable Rust channel.
-      - uses: dtolnay/rust-toolchain@master
-        with:
-          toolchain: stable
-      - run: cargo clippy --manifest-path engine/Cargo.toml --all-targets -- -D warnings
-      - run: cargo test --manifest-path engine/Cargo.toml
+      - name: Validate GitHub Actions definitions
         env:
-          RUSTFLAGS: -D warnings
-  e2e:
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download v1.7.12 --repo rhysd/actionlint --pattern actionlint_1.7.12_linux_amd64.tar.gz --dir "$RUNNER_TEMP"
+          tar -xzf "$RUNNER_TEMP/actionlint_1.7.12_linux_amd64.tar.gz" -C "$RUNNER_TEMP" actionlint
+          "$RUNNER_TEMP/actionlint" -color
+      - uses: ./.github/actions/setup-node
+      - name: Check TypeScript
+        run: npm run typecheck
+      - name: Check lint
+        run: npm run lint
+
+  assets:
+    name: Assets and JavaScript tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: ./.github/actions/setup-node
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: art/enemies-v4/requirements.txt
+      - name: Install art validation dependencies
+        run: python -m pip install -r art/enemies-v4/requirements.txt
+      - name: Check committed WASM synchronization
+        run: npm run check:wasm
+      - name: Check texture and sprite manifest
+        run: npm run check:assets
+      - name: Check environmental objects
+        run: npm run check:environment
+      - name: Check map authoring data
+        run: npm run check:maps
+      - name: Check projectile assets
+        run: npm run check:projectiles
+      - name: Check licensed sound effects
+        run: npm run check:sfx
+      - name: Check enemy voices
+        run: npm run check:voices
+      - name: Run asset and JavaScript unit tests
+        run: npm test
+
+  engine:
+    name: Rust and WASM
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      RUSTFLAGS: -D warnings
     steps:
       - uses: actions/checkout@v7.0.1
       - uses: actions/setup-node@v7.0.0
         with:
           node-version: 24
-          cache: npm
-      - run: python3 -m pip install --disable-pip-version-check --break-system-packages -r art/enemies-v4/requirements.txt
-      - run: npm ci
-      - uses: actions/cache@v5.0.0
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-      - run: npx playwright install chromium --with-deps
-      - run: node --test scripts/tactical-data.test.mjs scripts/boss-arena-assets.test.mjs scripts/enemy-art-v4.test.mjs scripts/boss-animation-assets.test.mjs scripts/boss-reward-art.test.mjs scripts/campaign25-assets.test.mjs scripts/sector-detail-assets.test.mjs scripts/weapon-frame-edges.test.mjs
+      # This action has no current stable release beyond its legacy v1 tag.
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: stable
           targets: wasm32-unknown-unknown
-      - run: npm run build:wasm
-        env:
-          RUSTFLAGS: -D warnings
-      - run: npm run dev > dev.log 2>&1 &
-      - run: |
-          for i in $(seq 1 60); do
-            curl -sf http://127.0.0.1:8080/ && break
+      - uses: Swatinem/rust-cache@v2.9.2
+        with:
+          workspaces: engine -> target
+      - name: Reject stale committed WASM before rebuilding
+        run: npm run check:wasm
+      - name: Run Clippy
+        run: cargo clippy --manifest-path engine/Cargo.toml --all-targets -- -D warnings
+      - name: Run Rust behavior tests
+        run: cargo test --release --manifest-path engine/Cargo.toml -- --test-threads=2
+      - name: Build WASM once for all downstream jobs
+        run: npm run build:wasm
+      - name: Check rebuilt WASM synchronization
+        run: npm run check:wasm
+      - name: Test the published WASM presentation contract
+        run: node --experimental-strip-types --test scripts/map-object-presentation.test.mjs
+      - name: Share verified WASM
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: verified-wasm
+          path: |
+            public/blacksite.wasm
+            public/blacksite.sha256
+          if-no-files-found: error
+          retention-days: 3
+
+  build:
+    name: Production builds
+    needs: [quality, engine]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: ./.github/actions/setup-node
+      - name: Use verified engine
+        uses: actions/download-artifact@v8.0.2
+        with:
+          name: verified-wasm
+          path: public
+      - name: Build TanStack and Vercel output
+        run: npm run build
+      - name: Build GitHub Pages output
+        run: npm run build:pages
+      # Media stays in the checkout. Transfer only the generated shell so every
+      # consumer serves the same build without uploading 479MB of unchanged art.
+      - name: Share Pages shell
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: pages-shell
+          path: |
+            dist-pages/**
+            !dist-pages/game/**
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 3
+
+  performance:
+    name: Isolated renderer performance
+    needs: engine
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 24
+      - uses: actions/download-artifact@v8.0.2
+        with:
+          name: verified-wasm
+          path: public
+      - name: Measure renderer without competing browsers
+        run: node scripts/renderer-benchmark.mjs perf-current.json
+      - name: Compare renderer baseline
+        run: node scripts/check-perf.mjs art/perf-baseline.json perf-current.json
+      - name: Preserve performance measurements
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: renderer-performance
+          path: perf-current.json
+          retention-days: 7
+
+  browser:
+    name: Browser / ${{ matrix.group }}
+    needs: [quality, assets, engine]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        group: [interface, combat, campaign, smoke]
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: ./.github/actions/setup-node
+      - uses: ./.github/actions/setup-browser
+      - name: Use verified engine
+        uses: actions/download-artifact@v8.0.2
+        with:
+          name: verified-wasm
+          path: public
+      - name: Start local game server
+        run: |
+          mkdir -p .blacksite screenshots
+          setsid npm run dev > .blacksite/dev.log 2>&1 &
+          echo $! > .blacksite/dev.pid
+      - name: Wait for local game server
+        run: |
+          for attempt in $(seq 1 30); do
+            if curl -sf http://127.0.0.1:8080/ > /dev/null; then exit 0; fi
             sleep 2
           done
-          curl -sf http://127.0.0.1:8080/ > /dev/null
-      - run: node scripts/browser-smoke.mjs http://127.0.0.1:8080/ screenshots/ci-menu.png
-      - run: node scripts/combat-smoke.mjs http://127.0.0.1:8080/
-      - run: node --experimental-strip-types --test --test-concurrency=1 scripts/hud-insets.browser.mjs scripts/loading-ready.browser.mjs scripts/world-effects.browser.mjs scripts/gameplay-polish.browser.mjs scripts/resolution-recovery.browser.mjs scripts/map-controls.browser.mjs scripts/tactical.browser.mjs scripts/boss-arena.browser.mjs scripts/reward-pause.browser.mjs scripts/qa-run.browser.mjs scripts/campaign25.browser.mjs scripts/projectile-presentation.browser.mjs scripts/layouts-10-25.browser.mjs scripts/enemy-sector.browser.mjs scripts/sfx.browser.mjs scripts/weapon-viewmodel.browser.mjs scripts/asset-reload.browser.mjs
-      - run: node scripts/end-screen-smoke.mjs http://127.0.0.1:8080/
-      - run: PAGES_BASE=/blacksite/ npm run build:pages
-      - run: |
-          mkdir -p .blacksite/qa-pages-root
-          ln -sfn ../../dist-pages .blacksite/qa-pages-root/blacksite
-          python3 -m http.server 8082 --bind 127.0.0.1 --directory .blacksite/qa-pages-root > pages-test.log 2>&1 &
-          for i in $(seq 1 30); do
-            curl -sf http://127.0.0.1:8082/blacksite/ > /dev/null && break
+          cat .blacksite/dev.log
+          exit 1
+      - name: HUD, loading, input and renderer recovery
+        if: matrix.group == 'interface'
+        run: node --experimental-strip-types --test --test-concurrency=1 scripts/hud-insets.browser.mjs scripts/loading-ready.browser.mjs scripts/resolution-recovery.browser.mjs scripts/map-controls.browser.mjs scripts/weapon-viewmodel.browser.mjs scripts/asset-reload.browser.mjs scripts/arsenal.browser.mjs
+      - name: Combat, effects, tactical systems and audio
+        if: matrix.group == 'combat'
+        run: node --experimental-strip-types --test --test-concurrency=1 scripts/world-effects.browser.mjs scripts/gameplay-polish.browser.mjs scripts/tactical.browser.mjs scripts/boss-arena.browser.mjs scripts/projectile-presentation.browser.mjs scripts/sfx.browser.mjs
+      - name: Campaign layouts, enemies and boss rewards
+        if: matrix.group == 'campaign'
+        run: node --experimental-strip-types --test --test-concurrency=1 scripts/reward-pause.browser.mjs scripts/qa-run.browser.mjs scripts/campaign25.browser.mjs scripts/layouts-10-25.browser.mjs scripts/enemy-sector.browser.mjs
+      - name: Desktop and mobile menu smoke
+        if: matrix.group == 'smoke'
+        run: node scripts/browser-smoke.mjs http://127.0.0.1:8080/ screenshots/ci-menu.png
+      - name: Live movement and combat smoke
+        if: matrix.group == 'smoke'
+        run: node scripts/combat-smoke.mjs http://127.0.0.1:8080/
+      - name: Death and victory screen smoke
+        if: matrix.group == 'smoke'
+        run: node scripts/end-screen-smoke.mjs http://127.0.0.1:8080/
+      - name: Preserve browser screenshots and logs
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: browser-${{ matrix.group }}
+          path: |
+            screenshots/
+            .blacksite/dev.log
+          include-hidden-files: true
+          retention-days: 7
+      - name: Stop local game server
+        if: always()
+        run: |
+          if test -f .blacksite/dev.pid; then
+            kill -- -"$(cat .blacksite/dev.pid)" 2>/dev/null || true
+          fi
+
+  pages:
+    name: Built Pages browser checks
+    needs: [build, assets]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      BLACKSITE_PAGES_URL: http://127.0.0.1:8082/${{ github.event.repository.name }}/
+      BLACKSITE_PRODUCTION_URL: http://127.0.0.1:8082/${{ github.event.repository.name }}/
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: ./.github/actions/setup-node
+      - uses: ./.github/actions/setup-browser
+      - name: Download the exact Pages build
+        uses: actions/download-artifact@v8.0.2
+        with:
+          name: pages-shell
+          path: dist-pages
+      - name: Attach committed game media and start Pages server
+        run: |
+          cp -a public/game dist-pages/game
+          mkdir -p .blacksite/qa-pages-root screenshots
+          ln -sfn ../../dist-pages ".blacksite/qa-pages-root/${{ github.event.repository.name }}"
+          python3 -m http.server 8082 --bind 127.0.0.1 --directory .blacksite/qa-pages-root > .blacksite/pages.log 2>&1 &
+          echo $! > .blacksite/pages.pid
+      - name: Wait for Pages server
+        run: |
+          for attempt in $(seq 1 30); do
+            if curl -sf "$BLACKSITE_PAGES_URL" > /dev/null; then exit 0; fi
             sleep 1
           done
-      - run: node --test --test-concurrency=1 --test-name-pattern=production scripts/qa-run.browser.mjs scripts/sfx-production.browser.mjs
+          cat .blacksite/pages.log
+          exit 1
+      - name: Check deployed arsenal paths
+        run: npm run test:pages
+      - name: Check production QA restrictions and audio
+        run: node --experimental-strip-types --test --test-concurrency=1 --test-name-pattern=production scripts/qa-run.browser.mjs scripts/sfx-production.browser.mjs
+      - name: Preserve production diagnostics
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: pages-browser
+          path: |
+            screenshots/
+            .blacksite/pages.log
+          include-hidden-files: true
+          retention-days: 7
+      - name: Stop Pages server
+        if: always()
+        run: |
+          if test -f .blacksite/pages.pid; then
+            kill "$(cat .blacksite/pages.pid)" 2>/dev/null || true
+          fi
+
+  check:
+    name: check
+    if: always()
+    needs: [quality, assets, engine, build, performance, browser, pages]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - name: Require every dependency to pass
         env:
-          BLACKSITE_PRODUCTION_URL: http://127.0.0.1:8082/blacksite/
-      - run: pkill -f "vite dev" || true
+          RESULTS: ${{ toJSON(needs) }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          jobs = json.loads(os.environ['RESULTS'])
+          failed = {name: job['result'] for name, job in jobs.items() if job['result'] != 'success'}
+          if failed:
+              raise SystemExit(f"Required jobs did not pass: {failed}")
+          print('All BLACKSITE checks passed.')
+          PY

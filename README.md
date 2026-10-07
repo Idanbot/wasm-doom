@@ -141,6 +141,11 @@ npm run test:browser
 `PAGES_BASE` sets the deployment base path; GitHub Actions derives it from the
 repository name.
 
+CI runs source, asset and engine checks in parallel, shares one verified WASM
+build and splits browser checks into four groups. Pages deployment waits for all
+checks and publishes the exact tested build. See [CI dependencies and optional
+small-model game testing](docs/CI.md).
+
 Deployment stays disabled until all assets decode, the HUD initializes and the renderer presents the first sector frame. Loading shows a 16-pose operator drill (run, stop, fire, reload); failed loads offer **Retry loading**. Sprite sources and the animation contract live in `art/loading/manifest.json`.
 
 HUD cards reserve a safe inset inside the decorative rails. `scripts/hud-insets.browser.mjs` checks all 33 guns and reload labels at four desktop/mobile sizes; `scripts/loading-ready.browser.mjs` checks loading animation, progress, retry and the initial HUD.
