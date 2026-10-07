@@ -1,0 +1,13 @@
+{
+  "model": "Mapika/decider-4b-GGUF",
+  "revision": "b79f09d9ba7837f1b744295ea267b55d08e958ec",
+  "file": "decider-4b-v2.1-Q4_K_M.gguf",
+  "sha256": "c7083fcfc93f650cd66caeade4a3840ef9eeeeb1e80920907c554f70619d7c56",
+  "bytes": 2708804640,
+  "sdk": "1.8.1",
+  "parametersApprox": 4000000000,
+  "device": "cpu",
+  "threads": 4,
+  "version": "2.1",
+  "contextTokens": 2048
+}

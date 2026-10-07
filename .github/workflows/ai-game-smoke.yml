@@ -1,7 +1,18 @@
-name: AI gameplay smoke
+name: AI gameplay QA
 
 on:
   workflow_dispatch:
+    inputs:
+      tier:
+        description: Bounded playtest length
+        type: choice
+        options: [smoke, short]
+        default: smoke
+      model:
+        description: CPU player (comparison runs both against identical scenarios)
+        type: choice
+        options: [laya, decider, comparison]
+        default: laya
 
 permissions:
   contents: read
@@ -22,10 +33,16 @@ env:
 
 jobs:
   smoke:
-    name: Laya CPU and real WASM loop
+    strategy:
+      fail-fast: false
+      matrix:
+        model: ${{ fromJSON(inputs.model == 'comparison' && '["laya","decider"]' || inputs.model == 'decider' && '["decider"]' || '["laya"]') }}
+    name: ${{ matrix.model }} CPU / ${{ inputs.tier }}
+    env:
+      BLACKSITE_AI_MODEL: ${{ matrix.model }}
     # Standard free public-repository runner. No GPU, browser or renderer.
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v7.0.1
       - uses: actions/setup-node@v7.0.0
@@ -35,22 +52,50 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
-          cache-dependency-path: scripts/ai/requirements.txt
+          cache-dependency-path: ${{ matrix.model == 'laya' && 'scripts/ai/requirements.txt' || 'scripts/ai/decider-requirements.txt' }}
       - name: Check committed simulation and harness contracts
         run: |
           node scripts/check-wasm-sync.mjs
-          node --experimental-strip-types --test scripts/ai/simulation.test.mjs
+          node --experimental-strip-types --test scripts/ai/*.test.mjs
+          BLACKSITE_AI_MODEL=scripted BLACKSITE_AI_OUTPUT=.blacksite/ai-smoke/baseline node --experimental-strip-types scripts/ai/playtest.mjs
       - name: Install pinned CPU-only PyTorch
         run: python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.8.0+cpu
-      - name: Install pinned local inference runtime
+      - name: Install pinned Laya runtime
+        if: matrix.model == 'laya'
         run: python -m pip install -r scripts/ai/requirements.txt
+      - name: Install pinned Decider CPU GGUF runtime
+        if: matrix.model == 'decider'
+        env:
+          CMAKE_ARGS: -DGGML_CUDA=OFF -DGGML_NATIVE=OFF
+          CMAKE_BUILD_PARALLEL_LEVEL: '4'
+        run: |
+          python -m pip install -r scripts/ai/decider-requirements.txt
+          # Only the GGUF SDK path is used; do not install GPU Triton/FLA dependencies.
+          python -m pip install --no-deps decider-ai==1.8.1
+      - name: Resolve immutable checkpoint cache key
+        id: checkpoint
+        run: |
+          node --input-type=module <<'JS'
+          import { readFileSync, appendFileSync } from 'node:fs';
+          const model = process.env.BLACKSITE_AI_MODEL;
+          const c = JSON.parse(readFileSync(`scripts/ai/${model === 'laya' ? 'config' : 'decider-config'}.json`));
+          const format = model === 'laya' ? c.subfolder : c.file;
+          appendFileSync(process.env.GITHUB_OUTPUT, `key=blacksite-${model}-${c.revision}-${format}\n`);
+          JS
       - name: Cache pinned typed-decisions checkpoint
         uses: actions/cache@v5.0.0
         with:
-          path: .blacksite/huggingface
-          key: laya-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('scripts/ai/config.json') }}
-      - name: Run 24 bounded decisions and deterministic input replay
-        run: node --experimental-strip-types scripts/ai/smoke.mjs
+          path: ${{ matrix.model == 'laya' && '.blacksite/huggingface/hub/models--convaiinnovations--laya' || '.blacksite/decider-model' }}
+          key: ${{ steps.checkpoint.outputs.key }}
+      - name: Run bounded real gameplay and deterministic replay
+        env:
+          QA_TIER: ${{ inputs.tier }}
+        run: |
+          if [[ "$QA_TIER" == "short" ]]; then
+            node --experimental-strip-types scripts/ai/playtest.mjs
+          else
+            node --experimental-strip-types scripts/ai/smoke.mjs
+          fi
       - name: Publish readable job summary
         if: always()
         run: |
@@ -66,7 +111,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7.0.2
         with:
-          name: ai-game-smoke-${{ github.run_attempt }}
+          name: ai-game-${{ matrix.model }}-${{ inputs.tier }}-${{ github.run_attempt }}
           path: .blacksite/ai-smoke/
           include-hidden-files: true
           if-no-files-found: warn

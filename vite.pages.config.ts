@@ -8,6 +8,7 @@ const base = process.env.PAGES_BASE || (repository ? `/${repository}/` : "/black
 
 export default defineConfig({
   base,
+  server: { watch: { ignored: ["**/.blacksite/**"] } },
   plugins: [tailwindcss(), react()],
   resolve: { tsconfigPaths: true },
   build: {

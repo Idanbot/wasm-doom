@@ -63,11 +63,16 @@ Parallel jobs reduce the critical path, but add runner setup and checkout work.
 Compare actual workflow duration and total runner minutes after the first hosted
 run; no fixed speedup is promised.
 
-## Optional AI gameplay smoke
+## Optional AI gameplay QA
 
-The separate manually dispatched `ai-game-smoke.yml` workflow runs local Laya
+The separate manually dispatched `ai-game-smoke.yml` workflow defaults to local Laya
 Typed Decisions on a standard CPU runner against the real WASM simulation. It
 uses neither a browser nor the renderer, and is independent of Pages deployment.
 The initial scenario has at most 24 model decisions and verifies deterministic
 input replay. See [AI gameplay QA](AI_GAME_QA.md) for architecture, installation,
 reports, model pins and the limits of the first milestone.
+
+The manual `short` tier runs three stock sector fixtures (48 decisions each);
+`model=comparison` adds the pinned Decider-4B v2.1 CPU GGUF player. Each model
+runs in a separate free standard runner job, capped at 25 minutes. Separate
+checkpoint caches survive budget changes. Neither workflow gates deployment.

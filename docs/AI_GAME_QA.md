@@ -1,4 +1,4 @@
-# AI gameplay QA: first milestone
+# AI gameplay QA
 
 Laya is a test-time autonomous player, never a shipped BLACKSITE dependency.
 Stage 1 proves the engine/state/decision/input loop with a small manual CI run.
@@ -59,8 +59,10 @@ phase changes and a newly visible enemy interrupt the interval. Wall time spent
 in model inference does not advance game time. Normal death ends the run and
 is reported as player failure, rather than failing CI.
 
-The harness does not call `hs_qa`, grant weapons, teleport, patch memory, advance
-waves, render frames or enable god mode. A separate normal-input preflight checks
+During play the harness does not call `hs_qa`, grant weapons, teleport, patch
+memory, skip waves, render frames or enable god mode. Short-tier setup uses the
+normal checkpoint loader to start isolated stock sectors 2 and 3; only the saved
+sector number changes. The agent cannot call that loader. A separate normal-input preflight checks
 movement, turning, ammo consumption, reload transfer and interaction input
 acceptance. It does not count those probe actions as AI gameplay. Interaction
 acceptance at spawn is not proof of objective completion; an actual nearby
@@ -105,11 +107,13 @@ Tests of input validation, observations and deterministic replay need no model:
 node --experimental-strip-types --test scripts/ai/simulation.test.mjs
 ```
 
-Dispatch the **AI gameplay smoke** workflow in GitHub Actions or use
+Dispatch the **AI gameplay QA** workflow in GitHub Actions or use
 `gh workflow run ai-game-smoke.yml`. It runs on the standard `ubuntu-latest` CPU
 runner, checks committed WASM synchronization, installs CPU-only Torch and pinned
-packages, caches model files and runs the short smoke test. It has a 15-minute
-job timeout, no PR trigger, no long-run tier and no deployment dependency.
+packages, caches model files and runs the short smoke test. It has a 25-minute job timeout per model, no PR trigger and no deployment
+dependency. The default remains the 24-decision Laya smoke. Select `short` for
+three independent sector starts, with at most 48 decisions per sector and 60
+ticks per decision and a 180-second inference budget per sector, or `comparison` to run both models on identical scenarios.
 
 The output directory defaults to ignored `.blacksite/ai-smoke/` and contains:
 
@@ -118,10 +122,10 @@ The output directory defaults to ignored `.blacksite/ai-smoke/` and contains:
 - `summary.txt`: readable PASS/FAIL and observed gameplay actions.
 - `trace.jsonl`: observations, choices, effective inputs, ticks, state hashes and
   inference timings/token usage for each decision.
-- `laya.log`: model initialization/inference diagnostics.
+- `laya.log` or `decider.log`: model initialization/inference diagnostics.
 
 The workflow publishes the text as its job summary and retains all four files
-as a 14-day artifact. `wallSeconds` measures the harness; total workflow runtime
+as a 14-day artifact per model. `wallSeconds` measures the harness; total workflow runtime
 also includes provisioning, dependency installation and model/cache transfer.
 
 ## Measurements and next step
@@ -170,8 +174,77 @@ the harness nevertheless does not use model confidence as a correctness oracle.
 The model is trained on business decision workflows, so its gameplay skill needs
 independent evaluation.
 
-Next: a few short, hand-authored **normal gameplay** scenarios for door/terminal
-interaction, visible-target damage, reload interruption and first-boss progression.
-Measure a scripted policy against Laya with identical starts and input budgets.
-Only after that comparison should we add game-specific fine-tuning, multiple
-sectors, balance comparisons or required PR execution.
+Next after the expanded scenarios below: add first-boss progression and genuine
+consecutive sector completion using normal play. Evaluate survival and objective
+coverage across repeated matched trials before selecting a different default
+model, game-specific fine-tuning or required PR execution.
+
+## Expanded scenarios and optional Decider
+
+The short tier exercises stock sectors 1, 2 and 3 independently, with unchanged
+health, pistol, inventory and engine difficulty. Each sector has its own report,
+input trace and deterministic replay, plus an aggregate report. Each sector stops after 48 decisions, death, victory
+or 180 seconds of accumulated inference (checked after each response); no more
+than one 60-second inference can overshoot the time budget. Budget exhaustion
+is recorded as a warning, not a fabricated engine regression. These starts are
+checkpoint fixtures, not a claim that the agent cleared previous sectors. Death
+ends that episode; the next independent scenario still runs. Sector completion
+is reported only if the real game reaches its won state. There is no automatic
+boss skip or forced campaign advance.
+
+A scripted observable-state baseline runs the same scenarios before ML setup.
+It demonstrates combat/reload/door behavior without requiring a model to choose
+well. Its decisions are not counted as inference calls or AI achievements.
+The model-independent tests additionally cover distinct sector layouts, exact
+checkpoint replay, held fire with empty magazines, reserve conservation, explicit
+reload, real door interaction and enemy damage, long mixed-input sequences,
+invalid states and unsafe input rejection. Regular CI runs these without loading
+any model.
+
+Keep **Laya as the default smoke model**, with **Decider as a manual comparison**
+until the reports establish better survival, progress or coverage at a reasonable
+CPU cost. A larger parameter count is not evidence of better BLACKSITE play.
+The original [Decider-4B repository](https://huggingface.co/Mapika/decider-4b)
+is correct, but its root currently serves v2.1; v2 is tag `v2`, commit
+`49564ddcfccafb6db563eb757c1d41e6c78dcb56`.
+
+This harness uses the publisher's [4B GGUF v2.1 Q4_K_M](https://huggingface.co/Mapika/decider-4b-GGUF),
+explicitly labeled **v2.1**, not v2. It is 2,708,804,640 bytes, pinned to
+`b79f09d9ba7837f1b744295ea267b55d08e958ec`, with a verified SHA-256 in
+`decider-config.json`. The Apache 2.0 model remains external to the repository
+and deployed game. Decider SDK 1.8.1 reads typed option-letter logits through
+llama-cpp-python 0.3.35, with four CPU threads, zero GPU layers and a bounded
+2,048-token context. It does not generate arbitrary command text. The GGUF SDK
+path is installed with `--no-deps` after its explicitly pinned CPU dependencies;
+GPU-only Flash Linear Attention/Triton packages are unnecessary.
+
+The [standard public Ubuntu runner](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)
+has 4 CPUs, 16 GB RAM and 14 GB SSD. The 2.7 GB quantization leaves substantially
+more room than 8.4 GB BF16 weights. Publisher timings use eight server CPU threads
+and short prompts; they are not a prediction of this workflow's performance.
+
+Checkpoint caches are separate and keyed only by model, immutable revision and
+format. Changing scenario length does not download weights again. Only Laya's
+model directory or Decider's Q4 weights/tokenizer/config are cached; BF16 and Q8
+are excluded. Pip's cache separately retains the built CPU llama.cpp wheel and
+pinned dependencies. No paid cache expansion is configured. Cache eviction is
+safe: a miss downloads the same pinned checkpoint again.
+
+```sh
+# Existing Laya environment; three bounded independent sectors:
+BLACKSITE_AI_PYTHON="$PWD/.blacksite/laya-venv/bin/python" \
+  HF_HOME="$PWD/.blacksite/huggingface" npm run test:ai:short
+# Fast baseline, no Python/model required:
+BLACKSITE_AI_MODEL=scripted npm run test:ai:short
+# Hosted head-to-head comparison:
+gh workflow run ai-game-smoke.yml -f tier=short -f model=comparison
+```
+
+For a separate local Decider environment, install CPU Torch as above, then
+`pip install -r scripts/ai/decider-requirements.txt` and
+`pip install --no-deps decider-ai==1.8.1`. Set `CMAKE_ARGS=-DGGML_CUDA=OFF\ -DGGML_NATIVE=OFF`
+and `CMAKE_BUILD_PARALLEL_LEVEL=4` before installing the requirements. Run with
+`BLACKSITE_AI_MODEL=decider BLACKSITE_AI_PYTHON=<that-venv>/bin/python`.
+Both players share exactly the same observations, legal choices, translator,
+normal input API, limits and replay checks. Models load sequentially across
+sectors to release memory. No trained model is imported by production code.

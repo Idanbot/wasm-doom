@@ -152,11 +152,16 @@ HUD cards reserve a safe inset inside the decorative rails. `scripts/hud-insets.
 
 ## AI gameplay QA
 
-The manually runnable **AI gameplay smoke** workflow uses CPU-only Laya Typed
+The manually runnable **AI gameplay QA** workflow defaults to CPU-only Laya Typed
 Decisions as a test-time player of the real Rust/WASM simulation. It executes up
 to 24 decisions, validates normal inputs and replays them deterministically.
 Reports separate agent performance from engine/integration failures. It needs no
 browser, GPU, cloud API or secrets and adds no production runtime dependency.
+Choose the manual `short` tier to test three distinct sectors, or `comparison`
+to compare Laya with pinned CPU Decider-4B v2.1 Q4_K_M. Both produce per-sector
+reports and exact input replay; independent starts do not imply campaign completion.
+Model caches are separate and keyed by checkpoint rather than test length.
+
 See [setup, model pins and smoke-test limits](docs/AI_GAME_QA.md).
 
 ## Local QA

@@ -3,21 +3,35 @@ import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { createWriteStream } from 'node:fs';
 import { performance } from 'node:perf_hooks';
 import { join } from 'node:path';
-import { startLaya } from './laya-client.mjs';
+import { startPlayer } from './model-client.mjs';
 import { loadSimulation, snapshot, assertValid, observe, questions, validateDecision,
   translate, step, fingerprint, preflight, angle } from './simulation.mjs';
 
+import { loadScenario, scriptedDecision } from './scenarios.mjs';
+
+const modelKind = process.env.BLACKSITE_AI_MODEL ?? 'laya';
+if (!['laya', 'decider', 'scripted'].includes(modelKind)) throw new Error('Unsupported QA model');
+const sector = Number(process.env.BLACKSITE_AI_SECTOR ?? 1);
 const config = JSON.parse(await readFile(new URL('./config.json', import.meta.url)));
+if (modelKind === 'decider') Object.assign(config, JSON.parse(await readFile(new URL('./decider-config.json', import.meta.url))));
+config.decisions = Number(process.env.BLACKSITE_AI_DECISIONS ?? config.decisions);
+config.framesPerDecision = Number(process.env.BLACKSITE_AI_FRAMES ?? config.framesPerDecision);
+config.inferenceBudgetSeconds = Number(process.env.BLACKSITE_AI_INFERENCE_SECONDS ?? 600);
+if (!Number.isInteger(config.decisions) || config.decisions < 1 || config.decisions > 96 || ![30, 60].includes(config.framesPerDecision)) throw new Error('Invalid playtest budget');
+if (!Number.isFinite(config.inferenceBudgetSeconds) || config.inferenceBudgetSeconds < 1 || config.inferenceBudgetSeconds > 600) throw new Error('Invalid inference budget');
+config.scenario = `independent-stock-sector-${sector}`;
 const out = process.env.BLACKSITE_AI_OUTPUT ?? '.blacksite/ai-smoke';
 const started = performance.now();
 await mkdir(out, { recursive: true });
-const log = createWriteStream(join(out, 'laya.log'));
+const log = createWriteStream(join(out, `${modelKind}.log`));
 const trace = createWriteStream(join(out, 'trace.jsonl'));
-const report = { schemaVersion: 1, tier: 'smoke', status: 'FAIL', failures: [], playerWarnings: [],
+const report = { schemaVersion: 1, tier: process.env.BLACKSITE_AI_TIER ?? 'smoke', status: 'FAIL', failures: [], playerWarnings: [],
   configuration: config, checks: {}, metrics: { decisions: 0, inferenceCount: 0, inferenceSeconds: 0,
     simulationFrames: 0, distanceMoved: 0, shotsFired: 0, reloads: 0, hitSignals: 0, enemyDamageEvents: 0, kills: 0,
-    damageTaken: 0, interactionAttempts: 0, interactionEffectsObserved: 0, visibleEnemyObservations: 0, stuckIntervals: 0, invalidModelOutputs: 0 },
-  limitations: ['No campaign, sector completion or boss-completion assertion in stage 1.',
+    damageTaken: 0, interactionAttempts: 0, interactionEffectsObserved: 0, visibleEnemyObservations: 0,
+    objectiveActivations: 0, bossEncounters: 0, bossPhaseChanges: 0, turnRadians: 0,
+    stuckIntervals: 0, invalidModelOutputs: 0 },
+  limitations: ['Sector and boss completion are observations, not pass conditions; this is not a campaign.',
     'Interaction effect is checked only when a nearby door/object is actually encountered.',
     'Survival and combat skill are observations, not CI pass conditions.'] };
 let worker, currentFailure = 'integration';
@@ -25,26 +39,29 @@ try {
   currentFailure = 'game/system';
   const probe = await loadSimulation();
   report.checks.engineInputs = preflight(probe.w);
-  const { w, wasmSha256 } = await loadSimulation();
+  const { w, wasmSha256 } = await loadScenario(sector);
   report.wasmSha256 = wasmSha256;
   let s = snapshot(w); assertValid(s);
   const initialHash = fingerprint(s);
   const records = [];
   currentFailure = 'model/integration';
-  worker = startLaya({ stderr: log });
-  report.model = await worker.ready();
+  worker = modelKind === 'scripted' ? { ready: async () => ({ device: 'cpu', revision: config.revision, sdk: config.sdk, peakRssMiB: 0 }),
+    decide: async (o, schema) => ({ answers: scriptedDecision(o, schema), seconds: 0, peakRssMiB: 0 }), close: async () => {} }
+    : startPlayer({ stderr: log });
+  report.model = { ...(await worker.ready()), kind: modelKind };
   if (report.model.revision !== config.revision || report.model.sdk !== config.sdk) throw new Error('Model pin mismatch');
-  report.checks.modelLoadedOnCpu = true;
+  report.checks.playerInitializedOnCpu = true;
+  report.checks.modelLoadedOnCpu = modelKind !== 'scripted';
   currentFailure = 'game/system';
   let previous;
-  for (let n = 0; n < config.decisions && s.hud.state === 0; n++) {
+  for (let n = 0; n < config.decisions && s.hud.state === 0 && report.metrics.inferenceSeconds < config.inferenceBudgetSeconds; n++) {
     const observation = observe(s, previous);
     const schema = questions(observation);
     currentFailure = 'model/integration';
     const result = await worker.decide(observation, schema);
     if (result.usage?.truncated) throw new Error('Model context truncated the observation/questions');
     const validated = validateDecision(result.answers, schema);
-    report.metrics.inferenceCount++;
+    if (modelKind !== 'scripted') report.metrics.inferenceCount++;
     report.metrics.inferenceSeconds += result.seconds;
     report.model.peakRssMiB = Math.max(report.model.peakRssMiB, result.peakRssMiB);
     if (validated.errors.length) {
@@ -66,6 +83,10 @@ try {
         report.metrics.enemyDamageEvents++;
       }
       report.metrics.damageTaken += Math.max(0, s.hud.health - frame.hud.health);
+      if (!s.hud.objective && frame.hud.objective) report.metrics.objectiveActivations++;
+      if (!s.hud.bossHealth && frame.hud.bossHealth > 0) report.metrics.bossEncounters++;
+      if (s.hud.bossPhase !== frame.hud.bossPhase) report.metrics.bossPhaseChanges++;
+      report.metrics.turnRadians += Math.abs(angle(frame.hud.yaw - s.hud.yaw));
       s = frame;
       // Interrupt held actions for changes a player can observe.
       return !(frame.hud.health <= previous.hud.health - 8 ||
@@ -97,6 +118,7 @@ try {
   report.finalHud = s.hud;
   report.metrics.kills = s.hud.kills;
   report.metrics.deaths = s.hud.state === 1 ? 1 : 0;
+  report.metrics.sectorsCompleted = s.hud.state === 2 ? 1 : 0;
   report.metrics.simulationSeconds = report.metrics.simulationFrames * config.tickSeconds;
   report.checks.agentMoved = report.metrics.distanceMoved > 0.1;
   report.checks.agentFired = report.metrics.shotsFired > 0;
@@ -105,12 +127,14 @@ try {
   report.checks.damageDealt = report.metrics.enemyDamageEvents > 0;
   report.checks.stateRemainedValid = true;
   if (s.hud.state === 1) report.playerWarnings.push('Player died during normal gameplay.');
+  if (report.metrics.inferenceSeconds >= config.inferenceBudgetSeconds) report.playerWarnings.push('Inference time budget exhausted; episode ended at a valid decision boundary.');
   if (!report.checks.agentMoved) report.playerWarnings.push('Model did not choose effective movement.');
   if (s.hud.ammo === 0 && s.hud.reserve > 0 && !report.checks.agentReloaded) report.playerWarnings.push('Model did not reload its empty magazine.');
   if (report.metrics.stuckIntervals > 3) report.playerWarnings.push('Model attempted movement into geometry repeatedly.');
+  if (report.metrics.turnRadians > 6 * Math.PI && report.metrics.distanceMoved < 1) report.playerWarnings.push('Repeated spinning without effective movement; inspect trace.');
   if (Math.abs(angle(s.hud.yaw - previous?.hud.yaw)) > 1) report.playerWarnings.push('Large final turn; inspect trace.');
   // Replay recorded inputs, not model predictions: CPU inference timing cannot affect the clock.
-  const replay = await loadSimulation();
+  const replay = await loadScenario(sector);
   if (fingerprint(snapshot(replay.w)) !== initialHash) throw new Error('Initial conditions diverged');
   for (const record of records) {
     const result = step(replay.w, record.input, record.frames);
@@ -126,8 +150,8 @@ try {
   report.wallSeconds = (performance.now() - started) / 1000;
   report.nodePeakRssMiB = process.resourceUsage().maxRSS / 1024;
   const observed = (v) => v ? 'YES' : 'NO (not required in smoke)';
-  const summary = `BLACKSITE LAYA SMOKE TEST\n\n` +
-    `Model loaded on CPU: ${report.checks.modelLoadedOnCpu ? 'PASS' : 'FAIL'}\n` +
+  const summary = `BLACKSITE ${modelKind.toUpperCase()} SECTOR ${sector} TEST\n\n` +
+    `CPU player initialized: ${report.checks.playerInitializedOnCpu ? 'PASS' : 'FAIL'}\n` +
     `Engine input preflight: ${report.checks.engineInputs ? 'PASS' : 'FAIL'}\n` +
     `Decisions / inference calls: ${report.metrics.decisions} / ${report.metrics.inferenceCount}\n` +
     `Simulation time: ${(report.metrics.simulationSeconds ?? 0).toFixed(2)} sec\n` +
