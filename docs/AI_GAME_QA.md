@@ -414,3 +414,30 @@ player completed a sector or reached a boss. Higher reported probability does no
 establish better decision accuracy. These are three individual starts per model,
 not enough to estimate reliable win rates. Improve the controller's handling of
 all equipped weapons and objective exploration before increasing budgets again.
+
+
+## Hosted shared-budget run
+
+[Decider-only run](https://github.com/Idanbot/wasm-doom/actions/runs/37681313235)
+passed all eight sector starts and three seeded boss fixtures (24, 12, 20).
+The harness used 1,747.926 seconds (29m 8s) of its shared 1,800-second cap and
+155 of 512 allowed decisions. All eleven input traces replayed exactly; no
+invalid model outputs or simulation states occurred. The entire hosted job also
+includes dependency setup and artifact upload outside that harness budget.
+
+Totals: 118.3 simulation seconds, 16 kills, zero deaths, 97 shots, 13 reloads,
+1,183 observed enemy HP loss and two stuck intervals. Median/p95 inference
+latency was 10.65/13.52 seconds; peak model RSS was 5,027 MiB (4.91 GiB).
+Mean selected-option probabilities were 75.5% movement, 61.5% combat and 71.1%
+utility; these remain uncalibrated diagnostics, not success probabilities.
+
+All episodes reached their allocated wall-time boundary. No sector completed,
+no objective activated and no boss died or changed phase. Each boss lost 60 HP;
+its support enemies were also damaged/killed. Sector 10 encountered no visible
+enemy and fired no shots, despite moving and taking damage. These are coverage
+limitations rather than proven engine faults. At CPU inference speeds, spreading
+30 minutes across eleven starts gives only brief simulated play per case. Next
+improve exploration, all-weapon handling and adaptive action durations before
+expecting campaign completion. Reports and full traces are in the run's
+`ai-game-decider-extended-1` artifact; `budget.json` records the seed, fixtures,
+limits, actual wall time and decision count.
