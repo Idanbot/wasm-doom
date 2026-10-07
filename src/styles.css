@@ -685,6 +685,24 @@ select:focus-visible {
   font: 700 12px var(--font-display);
   color: var(--color-steel);
 }
+/* Asset reload action in Settings > Display. */
+.setting-row button:disabled {
+  opacity: 0.65;
+  cursor: progress;
+}
+.setting-row .animate-spin {
+  animation: setting-spin 900ms linear infinite;
+}
+@keyframes setting-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .setting-row .animate-spin {
+    animation: none;
+  }
+}
 .setting-slider {
   display: grid;
   grid-template-columns: 1fr auto;

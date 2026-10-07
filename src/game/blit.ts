@@ -309,7 +309,32 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
   }
 
   let g = uv * 2.0 - 1.0;
-  c = vec4<f32>(c.rgb * (1.0 - 0.22 * dot(g, g)), 1.0);
+  c = vec4<f32>(c.rgb * (1.0 - 0.22 * dot(g, g)), depth);
+
+  if (u.muzzle > 0.02) {
+    // Heat shimmer: a short upward wobble that rises with the shot and decays
+    // with it, strongest low in the frame where the muzzle flash sits.
+    let amp = u.muzzle * 0.0032;
+    let rise = u.time * 2.4;
+    let wob = sin(inp.uv.y * 46.0 - rise) * sin(inp.uv.x * 31.0 + rise * 0.7);
+    let low = smoothstep(0.85, 0.05, inp.uv.y);
+    let off = vec2<f32>(wob * amp * low, 0.0);
+    let warped = clamp(inp.uv + off, vec2<f32>(0.001), vec2<f32>(0.999));
+    let re = sample_sharp(warped);
+    c = vec4<f32>(mix(c.rgb, re.rgb, clamp(u.muzzle * 1.2, 0.0, 1.0)), c.a);
+  }
+
+  {
+    // Chromatic aberration, scaled by damage and boss phase so heavy hits and
+    // boss encounters read hotter without costing a separate pass.
+    let ca = u.hurt * 0.0030 + max(u.boss, 0.0) * 0.0012;
+    if (ca > 0.0002) {
+      let dir = (inp.uv - 0.5);
+      let cr = sample_sharp(inp.uv + dir * ca).r;
+      let cb = sample_sharp(inp.uv - dir * ca).b;
+      c = vec4<f32>(vec3<f32>(cr, c.g, cb), c.a);
+    }
+  }
 
   if (u.hurt > 0.04) {
     // Directional: the vignette arc is centred on the bearing the damage came
@@ -756,6 +781,25 @@ void main(){
   vec3 rgb = applyFog(raw);
   vec2 g = v * 2.0 - 1.0;
   rgb *= 1.0 - 0.22 * dot(g, g);
+
+  if (muzzle > 0.02) {
+    float amp = muzzle * 0.0032;
+    float rise = time * 2.4;
+    float wob = sin(v.y * 46.0 - rise) * sin(v.x * 31.0 + rise * 0.7);
+    float low = smoothstep(0.85, 0.05, v.y);
+    vec4 re = texture(t, clamp(v + vec2(wob * amp * low, 0.0), vec2(0.001), vec2(0.999)));
+    rgb = mix(rgb, re.rgb, clamp(muzzle * 1.2, 0.0, 1.0));
+  }
+
+  {
+    float ca = hurt * 0.0030 + max(boss, 0.0) * 0.0012;
+    if (ca > 0.0002) {
+      vec2 dir = v - 0.5;
+      float cr = texture(t, v + dir * ca).r;
+      float cb = texture(t, v - dir * ca).b;
+      rgb = vec3(cr, rgb.g, cb);
+    }
+  }
 
   if (hurt > 0.04) {
     float edge = pow(max(abs(g.x), abs(g.y)), 2.2);
