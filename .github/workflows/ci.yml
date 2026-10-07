@@ -40,6 +40,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.1
       - uses: ./.github/actions/setup-node
+      # Art tests decode PNG/WebP with Chromium, even without a game server.
+      - uses: ./.github/actions/setup-browser
       - uses: actions/setup-python@v7.0.0
         with:
           python-version: '3.12'
@@ -186,7 +188,7 @@ jobs:
           echo $! > .blacksite/dev.pid
       - name: Wait for local game server
         run: |
-          for attempt in $(seq 1 30); do
+          for ((attempt=0; attempt<30; attempt++)); do
             if curl -sf http://127.0.0.1:8080/ > /dev/null; then exit 0; fi
             sleep 2
           done
@@ -253,7 +255,7 @@ jobs:
           echo $! > .blacksite/pages.pid
       - name: Wait for Pages server
         run: |
-          for attempt in $(seq 1 30); do
+          for ((attempt=0; attempt<30; attempt++)); do
             if curl -sf "$BLACKSITE_PAGES_URL" > /dev/null; then exit 0; fi
             sleep 1
           done

@@ -30,7 +30,8 @@ flowchart TD
   separate TypeScript and lint steps.
 - **assets:** validates committed WASM synchronization, texture and environment
   manifests, maps, projectiles, audio and voices, then runs the full JavaScript
-  and asset unit suite. Python dependencies use a managed interpreter and cache.
+  and asset unit suite. Chromium supplies image decoding for art tests. Python
+  dependencies use a managed interpreter and cache.
 - **engine:** rejects a stale committed WASM before rebuilding; runs Clippy and
   release-mode Rust tests with two test threads; builds WASM once and tests its
   map-object presentation contract. Shares `verified-wasm` with its source hash.
