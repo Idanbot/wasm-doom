@@ -1,0 +1,73 @@
+name: AI gameplay smoke
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ai-game-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  HF_HOME: ${{ github.workspace }}/.blacksite/huggingface
+  USE_TF: '0'
+  TOKENIZERS_PARALLELISM: 'false'
+  BLACKSITE_AI_OUTPUT: .blacksite/ai-smoke
+
+jobs:
+  smoke:
+    name: Laya CPU and real WASM loop
+    # Standard free public-repository runner. No GPU, browser or renderer.
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 24
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: scripts/ai/requirements.txt
+      - name: Check committed simulation and harness contracts
+        run: |
+          node scripts/check-wasm-sync.mjs
+          node --experimental-strip-types --test scripts/ai/simulation.test.mjs
+      - name: Install pinned CPU-only PyTorch
+        run: python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.8.0+cpu
+      - name: Install pinned local inference runtime
+        run: python -m pip install -r scripts/ai/requirements.txt
+      - name: Cache pinned typed-decisions checkpoint
+        uses: actions/cache@v5.0.0
+        with:
+          path: .blacksite/huggingface
+          key: laya-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('scripts/ai/config.json') }}
+      - name: Run 24 bounded decisions and deterministic input replay
+        run: node --experimental-strip-types scripts/ai/smoke.mjs
+      - name: Publish readable job summary
+        if: always()
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import os
+          summary = Path('.blacksite/ai-smoke/summary.txt')
+          text = summary.read_text() if summary.exists() else 'Harness did not start; inspect setup logs.'
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
+              f.write('```text\n' + text + '\n```\n')
+          PY
+      - name: Preserve reports, decisions and inference diagnostics
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: ai-game-smoke-${{ github.run_attempt }}
+          path: .blacksite/ai-smoke/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 14

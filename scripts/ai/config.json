@@ -1,0 +1,14 @@
+{
+  "model": "convaiinnovations/laya",
+  "subfolder": "typed-decisions",
+  "revision": "7b928d828b7b0e022f929d9bd2e44165aa270148",
+  "sdk": "0.4.0",
+  "parametersApprox": 421000000,
+  "device": "cpu",
+  "threads": 2,
+  "modelSeed": 1729,
+  "scenario": "fresh-sector-1-stock-gameplay",
+  "decisions": 24,
+  "framesPerDecision": 30,
+  "tickSeconds": 0.016666666666666666
+}

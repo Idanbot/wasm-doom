@@ -144,11 +144,20 @@ repository name.
 CI runs source, asset and engine checks in parallel, shares one verified WASM
 build and splits browser checks into four groups. Pages deployment waits for all
 checks and publishes the exact tested build. See [CI dependencies and optional
-small-model game testing](docs/CI.md).
+AI game testing](docs/CI.md).
 
 Deployment stays disabled until all assets decode, the HUD initializes and the renderer presents the first sector frame. Loading shows a 16-pose operator drill (run, stop, fire, reload); failed loads offer **Retry loading**. Sprite sources and the animation contract live in `art/loading/manifest.json`.
 
 HUD cards reserve a safe inset inside the decorative rails. `scripts/hud-insets.browser.mjs` checks all 33 guns and reload labels at four desktop/mobile sizes; `scripts/loading-ready.browser.mjs` checks loading animation, progress, retry and the initial HUD.
+
+## AI gameplay QA
+
+The manually runnable **AI gameplay smoke** workflow uses CPU-only Laya Typed
+Decisions as a test-time player of the real Rust/WASM simulation. It executes up
+to 24 decisions, validates normal inputs and replays them deterministically.
+Reports separate agent performance from engine/integration failures. It needs no
+browser, GPU, cloud API or secrets and adds no production runtime dependency.
+See [setup, model pins and smoke-test limits](docs/AI_GAME_QA.md).
 
 ## Local QA
 
