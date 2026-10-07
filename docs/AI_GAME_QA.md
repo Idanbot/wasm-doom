@@ -1,6 +1,6 @@
 # AI gameplay QA
 
-Laya is a test-time autonomous player, never a shipped BLACKSITE dependency.
+Laya and optional Decider are test-time players, never shipped BLACKSITE dependencies.
 Stage 1 proves the engine/state/decision/input loop with a small manual CI run.
 It does not assert campaign or boss completion, establish weapon balance, or
 replace the existing browser and Rust tests.
@@ -8,7 +8,7 @@ replace the existing browser and Rust tests.
 ```mermaid
 flowchart LR
     W[Real committed Rust/WASM] --> S[Player-observable snapshot]
-    S --> L[Pinned Laya on CPU]
+    S --> L[Pinned typed-decision player on CPU]
     L --> V[Validate typed choices]
     V --> C[Navigation and aim controller]
     C --> I[Normal hs_input and hs_tick]
@@ -248,3 +248,52 @@ and `CMAKE_BUILD_PARALLEL_LEVEL=4` before installing the requirements. Run with
 Both players share exactly the same observations, legal choices, translator,
 normal input API, limits and replay checks. Models load sequentially across
 sectors to release memory. No trained model is imported by production code.
+
+## Hosted three-sector comparison, 2026-10-07
+
+The [head-to-head short run](https://github.com/Idanbot/wasm-doom/actions/runs/37666294801)
+passed for both models on standard free public-repository Ubuntu CPU runners.
+The [normal CI](https://github.com/Idanbot/wasm-doom/actions/runs/37666287484) and
+[Pages deployment](https://github.com/Idanbot/wasm-doom/actions/runs/37668040392)
+also passed for code commit `f397e5b`.
+
+| Three independent stock sectors | Laya | Decider-4B v2.1 Q4_K_M |
+| --- | --- | --- |
+| Hosted job runtime, including first setup/cache work | 7m 55s | 14m 46s |
+| Decisions / model calls | 112 | 40 |
+| Total inference | 363.53s | 570.72s |
+| Mean inference per decision | 3.25s | 14.27s |
+| Simulated gameplay | 82.48s | 26.02s |
+| Peak model-process RSS | 2.74 GiB | 5.05 GiB |
+| Peak Node/WASM RSS | 1.31 GiB | 1.30 GiB |
+| Kills | 10 | 7 |
+| Reloads / sectors in which a reload occurred | 3 / 1 | 3 / 3 |
+| Objective activations | 2 | 0 |
+| Deaths | 2 | 0 |
+| Completed sectors / boss encounters | 0 / 0 | 0 / 0 |
+| Invalid outputs / replay failures | 0 / 0 | 0 / 0 |
+
+Decider hit the inference cap in all three episodes, stopping after 13, 13 and
+14 decisions at valid boundaries. Its zero deaths do not establish better
+survival: it simulated substantially less gameplay. Laya reached the decision
+cap in sector 1 and died normally in sectors 2 and 3. Both had identical start
+conditions and upper budgets, but early events/death/time limits produce different
+actual action counts. This is one fixed scenario per sector, not a statistical
+comparison or proof that either player can finish a level.
+
+**Decision: retain Laya as the default.** Decider fits the runner and showed more
+consistent reloading, but cost about 4.4 times as much inference time per action
+and delivered less gameplay coverage per CPU budget. Keep it available manually
+for further comparisons rather than making it a required CI dependency. Next
+improve the controller's weapon handling and exploration, then add a reproducible
+first-boss scenario and normal consecutive progression; model size alone does not
+provide those capabilities.
+
+Both immutable checkpoint caches and the separate Decider pip/wheel cache were
+saved successfully. After this run, total repository cache usage was about 5.9 GB,
+including existing build/browser caches, below GitHub's
+[default free 10 GB cache limit](https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching#usage-limits-and-eviction-policy).
+No increased quota, GPU, paid inference or secrets were used. The next run can
+reuse the checkpoint and CPU wheel; no warm-run timing has been measured yet.
+The per-model 14-day artifacts include the baseline, all three reports, input
+traces and model diagnostics.
