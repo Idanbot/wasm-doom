@@ -138,6 +138,32 @@ its harness wall time was 305 seconds while other local checks were running.
 The agent did not reload its empty pistol despite reserve ammo; the independent
 reload contract passed, so this is a player warning, not an engine failure.
 
+The first [hosted CPU validation](https://github.com/Idanbot/wasm-doom/actions/runs/37661281048)
+on 2026-10-07 **passed** on the standard free public-repository `ubuntu-latest`
+runner, with no GPU or inference service:
+
+| Measurement | Result |
+| --- | --- |
+| Total workflow runtime, including setup/artifact/cache work | 3 minutes 18 seconds |
+| Harness wall time | 106.72 seconds |
+| Model loading | 10.02 seconds |
+| Model decisions / SDK predictions | 24 / 24 |
+| Inference time, all predictions | 95.01 seconds |
+| Simulation time | 9.77 seconds, 586 ticks |
+| Model parameters | 421,293,827 |
+| Python/Laya peak RSS | 2,805 MiB (2.74 GiB) |
+| Node/WASM peak RSS | 926 MiB (0.90 GiB) |
+| Shots / kills | 12 / 2 |
+| Interaction attempts / effects observed | 5 / 1 |
+| Player health remaining / damage taken | 88 / 12 |
+| Deterministic input replay | PASS |
+| Invalid model outputs / system failures | 0 / 0 |
+
+The hosted run reproduced the local gameplay outcome and recorded the same
+reload warning. Runtime and memory include no guarantee for later runners or
+larger scenarios. The run's `ai-game-smoke-1` artifact contains the full JSON
+report, trace, summary and diagnostics.
+
 The checkpoint emits a warning about an out-of-range calibration temperature
 for choices with eleven or more options. Our schemas have at most six choices;
 the harness nevertheless does not use model confidence as a correctness oracle.
