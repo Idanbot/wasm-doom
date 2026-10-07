@@ -149,7 +149,9 @@ try {
         const started = performance.now();
         const sample = () => {
           const distance = (t.getX() - x) * -Math.sin(yaw) + (t.getY() - y) * Math.cos(yaw);
-          if (Math.abs(distance) >= 0.08 || performance.now() - started >= 2000) resolve();
+          // The sim advances at most 0.08s per rendered frame, so a slow runner
+          // needs a generous budget before the strafe distance is reached.
+          if (Math.abs(distance) >= 0.08 || performance.now() - started >= 15000) resolve();
           else requestAnimationFrame(sample);
         };
         requestAnimationFrame(sample);
