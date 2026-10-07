@@ -297,3 +297,47 @@ No increased quota, GPU, paid inference or secrets were used. The next run can
 reuse the checkpoint and CPU wheel; no warm-run timing has been measured yet.
 The per-model 14-day artifacts include the baseline, all three reports, input
 traces and model diagnostics.
+
+## Extended tier and confidence telemetry
+
+`gh workflow run ai-game-smoke.yml -f tier=extended -f model=comparison`
+runs six independent jobs: both pinned players in each of sectors 1, 2 and 3.
+Each episode allows **192 decisions and 600 seconds of accumulated inference**,
+up from the short tier's 48 / 180. The normal death/win conditions still end an
+episode. Each job retains a 25-minute safety timeout; one in-flight response can
+overshoot the inference cap by at most its 60-second deadline. Parallel sector
+jobs reduce wall-clock waiting while using standard free public Ubuntu runners.
+The smoke and short defaults retain their previous budgets and checkpoint keys.
+
+A dependent report job downloads all episode artifacts, verifies that every
+requested model has exactly three sector reports, and publishes a combined JSON
+report/text summary. Missing or failed episode reports fail this collection;
+normal player death still does not fail system QA. The combined artifact is
+`ai-game-extended-comparison-<attempt>`. Per-episode artifacts now include their
+sector identifier, and reports use schema version 2.
+
+Both SDKs provide option distributions, but their fields called `confidence`
+differ: Laya's original value measures normalized entropy, while Decider's is
+chosen-option probability. Common telemetry therefore derives:
+
+- Chosen-option probability, its distribution/mean/minimum and count below 0.5.
+- Normalized Shannon entropy (0 concentrated, 1 uniform) and top-two margin.
+- Separate movement, combat and utility confidence; missing/invalid telemetry
+  remains missing, never a fabricated zero or certainty.
+
+The full option distributions and original SDK values remain in each trace.
+These are **model diagnostics**, not gameplay correctness probabilities or
+statistical confidence intervals. Neither model has been calibrated on BLACKSITE
+outcomes; confidence never gates actions or determines PASS/FAIL. Question types
+and option counts differ over time, so compare like questions and episodes.
+
+Additional metrics include inference median/p95 and CPU seconds, action counts,
+actual path length, time moving/stationary, empty-magazine/reload/visible-combat/
+critical-health time, ammo consumption, shots with a visible target, observable
+enemy HP loss (excluding overkill), health/armor decreases, weapon changes, reload
+and engagement choices versus available opportunities, and explicit termination
+reason. Enemy HP telemetry is a test oracle; it is still excluded from model
+observations. HP loss covers enemies present in consecutive snapshots and is
+not proof of exact player-attributed damage or shot accuracy. Time is measured
+in simulation ticks, not inference wall time. Aggregate confidence/latency uses
+all trace samples rather than averaging episode percentiles or averages.

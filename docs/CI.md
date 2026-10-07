@@ -76,3 +76,7 @@ The manual `short` tier runs three stock sector fixtures (48 decisions each);
 `model=comparison` adds the pinned Decider-4B v2.1 CPU GGUF player. Each model
 runs in a separate free standard runner job, capped at 25 minutes. Separate
 checkpoint caches survive budget changes. Neither workflow gates deployment.
+
+The manual `extended` tier splits the three sectors across parallel free CPU jobs
+(192 decisions / 600 inference seconds each). Its dependent report job combines
+confidence, latency, CPU usage and gameplay metrics and checks for missing reports.

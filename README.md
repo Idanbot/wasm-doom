@@ -160,6 +160,9 @@ browser, GPU, cloud API or secrets and adds no production runtime dependency.
 Choose the manual `short` tier to test three distinct sectors, or `comparison`
 to compare Laya with pinned CPU Decider-4B v2.1 Q4_K_M. Both produce per-sector
 reports and exact input replay; independent starts do not imply campaign completion.
+The `extended` tier gives each model 192 decisions / 10 minutes of inference per
+sector, runs sectors in parallel and combines confidence and gameplay metrics.
+Model confidence is diagnostic and does not decide test success.
 Model caches are separate and keyed by checkpoint rather than test length.
 
 See [setup, model pins and smoke-test limits](docs/AI_GAME_QA.md).

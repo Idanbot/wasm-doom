@@ -39,11 +39,12 @@ def main():
         if request.get("type") == "stop":
             break
         started = time.perf_counter()
+        cpu_started = time.process_time()
         try:
             with contextlib.redirect_stdout(sys.stderr):
                 result = agent.predict(request["state"], request["questions"], max_len=1024)
             emit({"type": "decision", "id": request["id"], "answers": result["answers"], "usage": result.get("usage", {}),
-                  "seconds": time.perf_counter() - started,
+                  "seconds": time.perf_counter() - started, "cpuSeconds": time.process_time() - cpu_started,
                   "peakRssMiB": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024})
         except Exception as error:
             emit({"type": "error", "id": request["id"], "message": str(error)})

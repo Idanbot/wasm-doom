@@ -8,6 +8,7 @@ import { loadSimulation, snapshot, assertValid, observe, questions, validateDeci
   translate, step, fingerprint, preflight, angle } from './simulation.mjs';
 
 import { loadScenario, scriptedDecision } from './scenarios.mjs';
+import { summarizeDecisions, choiceConfidence } from './metrics.mjs';
 
 const modelKind = process.env.BLACKSITE_AI_MODEL ?? 'laya';
 if (!['laya', 'decider', 'scripted'].includes(modelKind)) throw new Error('Unsupported QA model');
@@ -17,7 +18,7 @@ if (modelKind === 'decider') Object.assign(config, JSON.parse(await readFile(new
 config.decisions = Number(process.env.BLACKSITE_AI_DECISIONS ?? config.decisions);
 config.framesPerDecision = Number(process.env.BLACKSITE_AI_FRAMES ?? config.framesPerDecision);
 config.inferenceBudgetSeconds = Number(process.env.BLACKSITE_AI_INFERENCE_SECONDS ?? 600);
-if (!Number.isInteger(config.decisions) || config.decisions < 1 || config.decisions > 96 || ![30, 60].includes(config.framesPerDecision)) throw new Error('Invalid playtest budget');
+if (!Number.isInteger(config.decisions) || config.decisions < 1 || config.decisions > 256 || ![30, 60].includes(config.framesPerDecision)) throw new Error('Invalid playtest budget');
 if (!Number.isFinite(config.inferenceBudgetSeconds) || config.inferenceBudgetSeconds < 1 || config.inferenceBudgetSeconds > 600) throw new Error('Invalid inference budget');
 config.scenario = `independent-stock-sector-${sector}`;
 const out = process.env.BLACKSITE_AI_OUTPUT ?? '.blacksite/ai-smoke';
@@ -25,11 +26,15 @@ const started = performance.now();
 await mkdir(out, { recursive: true });
 const log = createWriteStream(join(out, `${modelKind}.log`));
 const trace = createWriteStream(join(out, 'trace.jsonl'));
-const report = { schemaVersion: 1, tier: process.env.BLACKSITE_AI_TIER ?? 'smoke', status: 'FAIL', failures: [], playerWarnings: [],
-  configuration: config, checks: {}, metrics: { decisions: 0, inferenceCount: 0, inferenceSeconds: 0,
+const report = { schemaVersion: 2, tier: process.env.BLACKSITE_AI_TIER ?? 'smoke', status: 'FAIL', failures: [], playerWarnings: [],
+  configuration: config, checks: {}, metrics: { decisions: 0, inferenceCount: 0, inferenceSeconds: 0, inferenceCpuSeconds: 0,
     simulationFrames: 0, distanceMoved: 0, shotsFired: 0, reloads: 0, hitSignals: 0, enemyDamageEvents: 0, kills: 0,
     damageTaken: 0, interactionAttempts: 0, interactionEffectsObserved: 0, visibleEnemyObservations: 0,
     objectiveActivations: 0, bossEncounters: 0, bossPhaseChanges: 0, turnRadians: 0,
+    movingSeconds: 0, stationarySeconds: 0, emptyMagazineSeconds: 0, reloadingSeconds: 0,
+    visibleCombatSeconds: 0, criticalHealthSeconds: 0, pathDistance: 0, observedEnemyHpLoss: 0,
+    ammoConsumed: 0, armorAbsorbed: 0, shotsWithVisibleTarget: 0, weaponChanges: 0,
+    emptyReloadOpportunities: 0, reloadChoicesOnEmpty: 0, engageOpportunities: 0, engageChoices: 0,
     stuckIntervals: 0, invalidModelOutputs: 0 },
   limitations: ['Sector and boss completion are observations, not pass conditions; this is not a campaign.',
     'Interaction effect is checked only when a nearby door/object is actually encountered.',
@@ -61,18 +66,43 @@ try {
     const result = await worker.decide(observation, schema);
     if (result.usage?.truncated) throw new Error('Model context truncated the observation/questions');
     const validated = validateDecision(result.answers, schema);
+    if (!Number.isFinite(result.seconds) || result.seconds < 0) throw new Error('Invalid inference timing');
     if (modelKind !== 'scripted') report.metrics.inferenceCount++;
     report.metrics.inferenceSeconds += result.seconds;
+    report.metrics.inferenceCpuSeconds += result.cpuSeconds ?? 0;
     report.model.peakRssMiB = Math.max(report.model.peakRssMiB, result.peakRssMiB);
     if (validated.errors.length) {
       report.metrics.invalidModelOutputs++;
       report.failures.push({ category: 'model/integration', decision: n, errors: validated.errors });
     }
     const input = translate(validated.action, observation);
+    if (observation.magazine === 0 && observation.reserve > 0 && !observation.reloading) {
+      report.metrics.emptyReloadOpportunities++;
+      if (validated.action.utility === 'reload') report.metrics.reloadChoicesOnEmpty++;
+    }
+    if (Object.hasOwn(schema.combat.criteria, 'engage_nearest')) {
+      report.metrics.engageOpportunities++;
+      if (validated.action.combat === 'engage_nearest') report.metrics.engageChoices++;
+    }
     previous = s;
     currentFailure = 'game/system';
     const interval = step(w, input, config.framesPerDecision, (frame) => {
       const event = frame.hud.events;
+      const visible = s.enemies.some((e) => e.hp > 0 && e.sight && e.screenX >= 0 && e.screenX <= 1);
+      const travel = Math.hypot(frame.hud.x - s.hud.x, frame.hud.y - s.hud.y);
+      report.metrics.pathDistance += travel;
+      report.metrics[travel > 0.0001 ? 'movingSeconds' : 'stationarySeconds'] += config.tickSeconds;
+      if (s.hud.ammo === 0) report.metrics.emptyMagazineSeconds += config.tickSeconds;
+      if (s.hud.reloading > 0) report.metrics.reloadingSeconds += config.tickSeconds;
+      if (visible) report.metrics.visibleCombatSeconds += config.tickSeconds;
+      if (s.hud.health <= 25) report.metrics.criticalHealthSeconds += config.tickSeconds;
+      if (frame.hud.weapon !== s.hud.weapon) report.metrics.weaponChanges++;
+      if ((event & 1) && visible) report.metrics.shotsWithVisibleTarget++;
+      if ((event & 1) && frame.hud.weapon === s.hud.weapon) report.metrics.ammoConsumed += Math.max(0, s.hud.ammo - frame.hud.ammo);
+      for (const e of frame.enemies) {
+        const old = s.enemies.find((previous) => previous.id === e.id && previous.skin === e.skin);
+        if (old) report.metrics.observedEnemyHpLoss += Math.max(0, Math.max(0, old.hp) - Math.max(0, e.hp));
+      }
       if (event & 1) report.metrics.shotsFired++;
       if (event & 4) report.metrics.reloads++;
       if (event & 8) report.metrics.hitSignals++;
@@ -83,6 +113,7 @@ try {
         report.metrics.enemyDamageEvents++;
       }
       report.metrics.damageTaken += Math.max(0, s.hud.health - frame.hud.health);
+      report.metrics.armorAbsorbed += Math.max(0, s.hud.armor - frame.hud.armor);
       if (!s.hud.objective && frame.hud.objective) report.metrics.objectiveActivations++;
       if (!s.hud.bossHealth && frame.hud.bossHealth > 0) report.metrics.bossEncounters++;
       if (s.hud.bossPhase !== frame.hud.bossPhase) report.metrics.bossPhaseChanges++;
@@ -111,7 +142,10 @@ try {
     report.metrics.simulationFrames += interval.frames;
     const record = { decision: n, observation, questions: schema, answers: result.answers,
       action: validated.action, input, frames: interval.frames, stateHash: fingerprint(s),
-      hud: s.hud, inferenceSeconds: result.seconds, usage: result.usage };
+      hud: s.hud, inferenceSeconds: result.seconds, inferenceCpuSeconds: result.cpuSeconds ?? null,
+      modelInference: modelKind !== 'scripted',
+      confidence: Object.fromEntries(Object.entries(schema).map(([name, question]) =>
+        [name, choiceConfidence(result.answers?.[name], question.criteria)])), usage: result.usage };
     records.push(record); trace.write(JSON.stringify(record) + '\n');
   }
   if (report.metrics.decisions === 0) throw new Error('No model decisions executed');
@@ -119,7 +153,14 @@ try {
   report.metrics.kills = s.hud.kills;
   report.metrics.deaths = s.hud.state === 1 ? 1 : 0;
   report.metrics.sectorsCompleted = s.hud.state === 2 ? 1 : 0;
+  report.terminationReason = s.hud.state === 1 ? 'player_death' : s.hud.state === 2 ? 'sector_won'
+    : report.metrics.inferenceSeconds >= config.inferenceBudgetSeconds ? 'inference_time_limit' : 'decision_limit';
+  report.decisionTelemetry = summarizeDecisions(records);
   report.metrics.simulationSeconds = report.metrics.simulationFrames * config.tickSeconds;
+  report.metrics.simulationSecondsPerInferenceSecond = report.metrics.inferenceSeconds > 0
+    ? report.metrics.simulationSeconds / report.metrics.inferenceSeconds : null;
+  report.metrics.inferenceAverageCpuCores = report.metrics.inferenceSeconds > 0
+    ? report.metrics.inferenceCpuSeconds / report.metrics.inferenceSeconds : null;
   report.checks.agentMoved = report.metrics.distanceMoved > 0.1;
   report.checks.agentFired = report.metrics.shotsFired > 0;
   report.checks.agentReloaded = report.metrics.reloads > 0;
@@ -149,6 +190,7 @@ try {
   await Promise.all([new Promise((resolve) => log.end(resolve)), new Promise((resolve) => trace.end(resolve))]);
   report.wallSeconds = (performance.now() - started) / 1000;
   report.nodePeakRssMiB = process.resourceUsage().maxRSS / 1024;
+  report.terminationReason ??= 'system_failure';
   const observed = (v) => v ? 'YES' : 'NO (not required in smoke)';
   const summary = `BLACKSITE ${modelKind.toUpperCase()} SECTOR ${sector} TEST\n\n` +
     `CPU player initialized: ${report.checks.playerInitializedOnCpu ? 'PASS' : 'FAIL'}\n` +
@@ -159,6 +201,10 @@ try {
     `Enemy encountered / damage dealt: ${observed(report.checks.enemyEncountered)} / ${observed(report.checks.damageDealt)}\n` +
     `Deterministic input replay: ${report.checks.deterministicReplay ? 'PASS' : 'FAIL'}\n` +
     `Wall time: ${report.wallSeconds.toFixed(2)} sec\n` +
+    `Termination: ${report.terminationReason}\n` +
+    `Inference median / p95: ${report.decisionTelemetry?.inferenceLatencySeconds.p50?.toFixed(2) ?? 'n/a'} / ${report.decisionTelemetry?.inferenceLatencySeconds.p95?.toFixed(2) ?? 'n/a'} sec\n` +
+    `Mean chosen probability (movement/combat/utility): ${['movement', 'combat', 'utility'].map((name) => report.decisionTelemetry?.confidence[name]?.selectedProbability.mean?.toFixed(3) ?? 'n/a').join(' / ')} (diagnostic only)\n` +
+    `Moving / empty magazine / critical health: ${report.metrics.movingSeconds.toFixed(2)} / ${report.metrics.emptyMagazineSeconds.toFixed(2)} / ${report.metrics.criticalHealthSeconds.toFixed(2)} sec\n` +
     `Player warnings: ${report.playerWarnings.join('; ') || 'none'}\n` +
     `System/integration failures: ${JSON.stringify(report.failures)}\n\nRESULT: ${report.status}\n`;
   await writeFile(join(out, 'report.json'), JSON.stringify(report, null, 2) + '\n');

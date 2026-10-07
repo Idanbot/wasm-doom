@@ -42,6 +42,7 @@ def main():
         if request.get("type") == "stop":
             break
         started = time.perf_counter()
+        cpu_started = time.process_time()
         try:
             names = list(request["questions"])
             questions = [{"question": request["questions"][n]["instructions"],
@@ -62,10 +63,12 @@ def main():
                 matching = [k for k, v in choices.items() if row["choice"] == f"{k}: {v}"]
                 if len(matching) != 1:
                     raise RuntimeError("Decider returned invalid choice")
-                answers[name] = {"type": "choice", "choice": matching[0]}
+                answers[name] = {"type": "choice", "choice": matching[0],
+                                 "answer_confidence": row["confidence"],
+                                 "probabilities": {k: row["probs"][f"{k}: {v}"] for k, v in choices.items()}}
             emit({"type": "decision", "id": request["id"], "answers": answers,
                   "usage": {"stateTokens": state_tokens, "truncated": False},
-                  "seconds": time.perf_counter() - started,
+                  "seconds": time.perf_counter() - started, "cpuSeconds": time.process_time() - cpu_started,
                   "peakRssMiB": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024})
         except Exception as error:
             emit({"type": "error", "id": request["id"], "message": str(error)})

@@ -6,7 +6,7 @@ on:
       tier:
         description: Bounded playtest length
         type: choice
-        options: [smoke, short]
+        options: [smoke, short, extended]
         default: smoke
       model:
         description: CPU player (comparison runs both against identical scenarios)
@@ -36,10 +36,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        sector: ${{ fromJSON(inputs.tier == 'extended' && '[1,2,3]' || '[0]') }}
         model: ${{ fromJSON(inputs.model == 'comparison' && '["laya","decider"]' || inputs.model == 'decider' && '["decider"]' || '["laya"]') }}
-    name: ${{ matrix.model }} CPU / ${{ inputs.tier }}
+    name: ${{ matrix.model }} CPU / ${{ inputs.tier }}${{ matrix.sector && format(' / sector {0}', matrix.sector) || '' }}
     env:
       BLACKSITE_AI_MODEL: ${{ matrix.model }}
+      BLACKSITE_AI_SECTOR: ${{ matrix.sector || 1 }}
     # Standard free public-repository runner. No GPU, browser or renderer.
     runs-on: ubuntu-latest
     timeout-minutes: 25
@@ -91,7 +93,9 @@ jobs:
         env:
           QA_TIER: ${{ inputs.tier }}
         run: |
-          if [[ "$QA_TIER" == "short" ]]; then
+          if [[ "$QA_TIER" == "extended" ]]; then
+            BLACKSITE_AI_TIER=extended BLACKSITE_AI_DECISIONS=192 BLACKSITE_AI_INFERENCE_SECONDS=600 BLACKSITE_AI_FRAMES=60 node --experimental-strip-types scripts/ai/smoke.mjs
+          elif [[ "$QA_TIER" == "short" ]]; then
             node --experimental-strip-types scripts/ai/playtest.mjs
           else
             node --experimental-strip-types scripts/ai/smoke.mjs
@@ -111,8 +115,41 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7.0.2
         with:
-          name: ai-game-${{ matrix.model }}-${{ inputs.tier }}-${{ github.run_attempt }}
+          name: ai-game-${{ matrix.model }}-${{ inputs.tier }}-sector-${{ matrix.sector }}-${{ github.run_attempt }}
           path: .blacksite/ai-smoke/
           include-hidden-files: true
           if-no-files-found: warn
+          retention-days: 14
+
+  comparison-report:
+    name: Combined extended report
+    needs: smoke
+    if: always() && inputs.tier == 'extended'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 24
+      - uses: actions/download-artifact@v8.0.2
+        with:
+          pattern: ai-game-*-extended-sector-*-${{ github.run_attempt }}
+          path: .blacksite/ai-artifacts
+      - name: Aggregate confidence and gameplay metrics
+        env:
+          QA_MODELS: ${{ inputs.model }}
+        run: node scripts/ai/collect.mjs
+      - name: Publish comparison summary
+        if: always()
+        run: |
+          if [[ -f .blacksite/ai-comparison/summary.txt ]]; then
+            { echo '```text'; cat .blacksite/ai-comparison/summary.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v7.0.2
+        if: always()
+        with:
+          name: ai-game-extended-comparison-${{ github.run_attempt }}
+          path: .blacksite/ai-comparison
+          include-hidden-files: true
           retention-days: 14
