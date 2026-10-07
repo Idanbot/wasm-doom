@@ -30,6 +30,9 @@ export function executeAction(w, action, memory, onFrame = () => {}, { adaptive 
     }
     const input = translate(action, now);
     const reasons = [];
+    if (action.utility === 'interact' && now.nearbyDoor) {
+      input.bits &= ~15; reasons.push('waiting_for_door');
+    }
     if (action.utility === 'reload' && action.combat === 'engage_nearest') reasons.push('reload_priority');
     if (action.movement === 'move_toward_objective' && now.routeBearing !== null &&
         action.combat !== 'engage_nearest' && Math.abs(now.routeBearing) > 0.3) {
@@ -54,7 +57,7 @@ export function executeAction(w, action, memory, onFrame = () => {}, { adaptive 
       else if (h.bossPhase !== initial.hud.bossPhase || Boolean(h.bossHealth) !== Boolean(initial.hud.bossHealth)) interruptedBy = 'boss';
       else if (wasReloading && h.reloading === 0) interruptedBy = 'reload_complete';
       else if (!o.visibleEnemies.length && frame.enemies.some(e => e.hp > 0 && e.sight && e.screenX >= 0 && e.screenX <= 1)) interruptedBy = 'enemy_appeared';
-      else if (action.utility === 'interact' && (h.radioSeq !== initial.hud.radioSeq || frame.doors.some((v, i) => v > initial.doors[i]))) interruptedBy = 'interaction';
+      else if (action.utility === 'interact' && (h.radioSeq !== initial.hud.radioSeq || frame.doors.some((v, i) => v >= 0.98 && initial.doors[i] < 0.98))) interruptedBy = 'interaction';
       wasReloading ||= h.reloading > 0;
       // Use elapsed simulation time, not model/CI latency, for stall detection.
       if (h.elapsedMs - chunkStart.hud.elapsedMs >= 500) {

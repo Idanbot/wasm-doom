@@ -91,3 +91,16 @@ test('combat stops at empty ammo and safe controller never invents a reload', as
   assert.equal(result.snapshot.hud.reserve, before.hud.reserve);
   assert.ok(result.segments.every(segment => !(segment.input.bits & INPUT.reload)));
 });
+
+
+test('door interaction waits for an opening instead of requesting new inference on every door animation tick', async () => {
+  const { w } = await loadSimulation();
+  const memory = createMemory(snapshot(w));
+  const approach = executeAction(w, { ...idle, movement: 'move_toward_objective' }, memory);
+  assert.equal(approach.interruptedBy, 'door');
+  const result = executeAction(w, { ...idle, movement: 'move_toward_objective', utility: 'interact' }, memory);
+  assert.ok(result.frames > 1);
+  assert.ok(result.snapshot.doors.some(v => v > 0));
+  assert.ok(result.overrides.waiting_for_door > 0);
+  assert.notEqual(result.interruptedBy, 'stuck');
+});
