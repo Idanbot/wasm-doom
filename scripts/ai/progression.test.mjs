@@ -105,3 +105,17 @@ test("model sees named mission interactions and weapon roles instead of opaque H
   assert.match(request.questions.utility.criteria.equip_2, /Shotgun/);
   assert.ok(request.questions.utility.criteria.interact);
 });
+
+test("previously failing boss approach reroutes refused doors and completes with ordinary inputs", async () => {
+  const { w } = await loadScenario(),
+    m = progressionMemory();
+  step(w, { bits: 0, mx: 0.35 / 0.0062, my: 0 }, 1);
+  let s = snapshot(w);
+  for (let n = 0; n < 30 && s.hud.state === 0; n++) {
+    const goal = n === 2 ? "progress" : "aggressive";
+    s = executeGoal(w, { goal }, m, "commander").snapshot;
+  }
+  assert.equal(s.hud.state, 2);
+  assert.ok(s.hud.health > 0);
+  assert.equal(s.hud.bossHealth, 0);
+});

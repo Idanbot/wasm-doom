@@ -101,3 +101,37 @@ These are local measurements. Repeated starting-orientation tests on the actual
 free GitHub CPU runner are required before claiming hosted completion
 reliability. The dated original three-run review remains an integration baseline,
 not evidence of a completed campaign.
+
+## Initial comparison and hosted robustness test
+
+The complete initial local comparison used the same sector start and stock
+inventory. All input traces replayed exactly; no system failures occurred.
+
+| Initial approach | Completion | Decisions | Simulation seconds | Inference seconds |
+| --- | --- | ---: | ---: | ---: |
+| Compact controls | Budget-inconclusive, node not activated | 64 | 102.7 | 1,260.9 |
+| Persistent controls | Player death, node not activated | 8 | 46.9 | 270.3 |
+| Hybrid commander | Complete, 97 HP | 8 | 83.3 | 136.9 |
+
+The revised commander was then tested on the free GitHub runner in
+[run 37843896931](https://github.com/Idanbot/wasm-doom/actions/runs/37843896931).
+It completed four of five orientations in 344.2 seconds of harness time:
+43 decisions, median inference 6.8–7.9 seconds per episode, approximately
+4.8 GiB model RSS, no system failures and exact replay for all five traces.
+The one normal death was at +0.35 radians during the boss's last phase.
+**Integration PASS was not treated as meeting the completion target.**
+
+Replaying that failure exposed a local-controller problem: it stopped before
+some doors were reachable, then repeatedly tried a boss-sealed door to collect
+supplies outside the arena. Stalled USE attempts were excluded from the movement
+stuck detector. The executor now approaches doors while pulsing USE and counts
+refused interactions toward blocked-route memory. It reroutes using its observed
+failure, without inspecting hidden lock rules or changing the game. A regression
+scenario replays the formerly failing tactical choices and requires a genuine
+sector win. The corrected five-orientation hosted test is evaluated separately.
+
+The corrected direct persistent controller was also tested with the real local
+model: 17 decisions, 51.5 simulation seconds, node activation on decision three,
+14 kills, then a normal player death. Median inference was 22.1 seconds, total
+harness time 395.6 seconds, and replay passed. Semantic prompts improved objective
+use, but direct movement/combat choices remain less robust than the commander.

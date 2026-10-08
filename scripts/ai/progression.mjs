@@ -387,7 +387,10 @@ export function executeGoal(w, choices, m, approach, onFrame = () => {}) {
     if (utility === "interact") {
       // USE is edge-triggered: pulse and release it, including consecutive model choices.
       if (frames % 12 < 6) bits |= INPUT.interact;
-      if (v.nearbyDoor || [3, 13].includes(h.prompt)) bits &= ~15;
+      // A route can notice a door before USE reaches it; approach while pulsing.
+      const withinDoorReach =
+        v.nearbyDoor && Math.hypot(v.plan.route.x - h.x, v.plan.route.y - h.y) < 1.1;
+      if (withinDoorReach || [3, 13].includes(h.prompt)) bits &= ~15;
     }
     const gun = h.inventory.find(
       (g) => `equip_${g.id}` === utility && g.id !== h.weapon + 1 && g.magazine + g.reserve > 0,
@@ -456,7 +459,11 @@ export function executeGoal(w, choices, m, approach, onFrame = () => {}) {
     frames += interval.frames;
     events |= interval.events;
     if (s.hud.elapsedMs - anchor.hud.elapsedMs >= 600) {
-      if (bits & 15 && Math.hypot(s.hud.x - anchor.hud.x, s.hud.y - anchor.hud.y) < 0.04) stall++;
+      if (
+        (bits & 15 || (utility === "interact" && v.nearbyDoor)) &&
+        Math.hypot(s.hud.x - anchor.hud.x, s.hud.y - anchor.hud.y) < 0.04
+      )
+        stall++;
       else stall = 0;
       anchor = s;
       if (stall >= 2 && v.plan.route) {
