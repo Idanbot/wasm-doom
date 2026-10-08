@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { HUD_SIZE, HUD_OFFSETS as H } from '../../src/game/hud-abi.ts';
+import { bossAttackForWave } from '../../src/game/boss-attacks.ts';
 import { WEAPONS } from '../../src/components/game/data.ts';
 import { SAVE_SIZE, SAVE_AMMO_BASE, SAVE_MAG_BASE } from '../../src/game/save-abi.ts';
 import { readEnemyCues } from '../../src/game/enemy-presentation.ts';
@@ -33,7 +34,8 @@ export function snapshot(w) {
     yaw: f(72), x: f(80), y: f(84), reserve: i(H.reserve), reloading: f(H.reloading),
     events: v.getUint32(H.events, true), wave: i(H.wave), objective: i(H.objective),
     radioSeq: i(H.radioSeq), bossHealth: i(H.bossHealth), bossPhase: i(H.bossPhase), nodeX: f(160), nodeY: f(164),
-    splash: f(H.splash), hurtDir: f(H.hurtDir) };
+    splash: f(H.splash), hurtDir: f(H.hurtDir),
+    bossAttackState: i(H.bossAttackState), bossAttackT: f(H.bossAttackT) };
   const offsets = [32, 36, 100, 104, 132, 136, 140, 168, 172, 176, 192, 196, 200, 204, 208, 212, 216, 220];
   hud.ownedWeapons = [0, ...offsets.flatMap((o, n) => i(o) ? [n + 1] : [])];
   const extra = v.getUint32(H.extraWeapons, true);
@@ -129,7 +131,10 @@ export function observe(s, previous, memory) {
     navigationMode: route?.mode ?? 'scan', visitedCells: memory?.visited.size ?? 0,
     recentActions: memory?.recent ?? [], movementFailed: (memory?.stuck ?? 0) > 0,
     nearbyDoor: Boolean(route?.door), interactPrompt: h.prompt,
-    splashRisk: h.splash > 0, movedDistance: moved, bossHealth: h.bossHealth, bossPhase: h.bossPhase };
+    splashRisk: h.splash > 0, movedDistance: moved, bossHealth: h.bossHealth, bossPhase: h.bossPhase,
+    ...(h.bossHealth > 0 ? { bossAttack: { stage: ['idle', 'warning', 'recovery'][h.bossAttackState],
+      seconds: rounded(h.bossAttackT), name: bossAttackForWave(h.wave).name,
+      counter: h.bossAttackState === 2 ? bossAttackForWave(h.wave).weak : bossAttackForWave(h.wave).dodge } } : {}) };
   o.position = { x: rounded(h.x), y: rounded(h.y), yaw: rounded(angle(h.yaw)) };
   o.visibleEnemies = o.visibleEnemies.map((e) => ({ ...e, distance: rounded(e.distance), bearing: rounded(e.bearing), screenX: rounded(e.screenX) }));
   for (const k of ['damageBearing', 'objectiveBearing', 'objectiveDistance', 'routeBearing', 'movedDistance']) o[k] = rounded(o[k]);

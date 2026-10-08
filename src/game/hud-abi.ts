@@ -9,7 +9,7 @@
  */
 
 /** Byte size of the Hud struct. Must match `HUD_SIZE` in engine/src/hud.rs. */
-export const HUD_SIZE = 236;
+export const HUD_SIZE = 244;
 /** Byte offsets of key fields inside the HUD struct. */
 export const HUD_OFFSETS = {
   state: 24,
@@ -39,4 +39,6 @@ export const HUD_OFFSETS = {
   extraWeapons: 224,
   hurtDir: 228,
   strain: 232,
+  bossAttackState: 236,
+  bossAttackT: 240,
 } as const;

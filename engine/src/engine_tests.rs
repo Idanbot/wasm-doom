@@ -576,34 +576,26 @@ fn boss_health_phases_call_support_with_electrical_entry_fx() {
 }
 
 #[test]
-fn sector_bosses_release_distinct_phase_barrages() {
-    let mut foundry = arena();
-    foundry.wave = 2;
-    foundry.boss_spawned = true;
-    let boss = foundry.spawn_with_skin(EK_BOSS, map::boss_skin(2), 9.5, 4.5).unwrap();
-    foundry.ents[boss].hp = foundry.boss_max_health() / 2;
-    foundry.tick(1.0 / 60.0);
-    assert_eq!(foundry.ents.iter().filter(|e| e.kind == EK_PROJ).count(), 8);
-    assert!(foundry.ents.iter().any(|e| e.skin == SKIN_HECATE && e.kind == EK_BOSS));
-
-    let mut bioforge = arena();
-    bioforge.wave = 3;
-    bioforge.boss_spawned = true;
-    let boss = bioforge.spawn_with_skin(EK_BOSS, map::boss_skin(3), 9.5, 4.5).unwrap();
-    bioforge.ents[boss].hp = bioforge.boss_max_health() / 2;
-    bioforge.tick(1.0 / 60.0);
-    assert_eq!(bioforge.ents.iter().filter(|e| e.kind == EK_PROJ && e.effect_tick == 3.0).count(), 6);
-    assert!(bioforge.ents.iter().any(|e| e.skin == SKIN_CHIMERA && e.kind == EK_BOSS));
-
-    for (wave, skin, _hp, barrage) in [(4, SKIN_ORACLE, 1000, 10), (5, SKIN_GRAVEMIND, 1600, 12)] {
-        let mut level = arena();
-        level.wave = wave;
-        level.boss_spawned = true;
-        let boss = level.spawn_with_skin(EK_BOSS, map::boss_skin(wave), 9.5, 4.5).unwrap();
-        level.ents[boss].hp = level.boss_max_health() / 2;
-        level.tick(1.0 / 60.0);
-        assert_eq!(level.ents.iter().filter(|e| e.kind == EK_PROJ).count(), barrage);
-        assert!(level.ents.iter().any(|e| e.skin == skin && e.kind == EK_BOSS));
+fn phase_changes_schedule_warned_boss_attacks_instead_of_instant_barrages() {
+    let mut e=arena();
+    for wave in 1..=25 {
+        for ent in &mut e.ents {ent.kind=EK_NONE;}
+        e.boss_attack=boss_attacks::AttackState::new();e.boss_phase=0;
+        e.wave=wave;e.state=0;e.boss_spawned=true;e.boss_intro=0.0;
+        e.clear_boss_arena();e.px=4.5;e.py=4.5;
+        let boss=e.spawn_with_skin(EK_BOSS,map::boss_skin(wave),9.5,4.5).unwrap();
+        e.ents[boss].hp=e.boss_max_health()/2;
+        e.tick(1.0/60.0);
+        assert_eq!(e.boss_phase,1);
+        assert!(!e.ents.iter().any(|en|en.kind==EK_PROJ),"instant phase damage in sector {wave}");
+        // Clear support to isolate the boss's attack path.
+        for ent in &mut e.ents {if is_hostile_kind(ent.kind)&&ent.kind!=EK_BOSS {ent.kind=EK_NONE;}}
+        e.px=e.ents[boss].x-3.0;e.py=e.ents[boss].y;
+        e.ents[boss].timer=0.0;
+        e.tick(1.0/60.0);
+        assert_eq!(e.hud.boss_attack_state,1,"sector {wave} should warn");
+        assert!(e.hud.boss_attack_t>=0.8);
+        assert!(!e.ents.iter().any(|en|en.kind==EK_PROJ));
     }
 }
 

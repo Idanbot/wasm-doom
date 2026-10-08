@@ -69,6 +69,9 @@ atmospheric particle profile.
 ## Game logic
 
 - 25 sectors, each with its own layout, enemy cast, machinery and boss.
+  Each boss now has a gun-inspired, locked attack warning and an exposed recovery
+  window; the HUD shows its dodge instruction and preferred counter weapon role.
+  See [boss counterplay](docs/BOSS_COUNTERPLAY.md).
 - Sector loop: complete the node objective, activate the override station,
   defeat the boss, collect the reward case.
 - 33 weapons — 19 standard plus one exclusive reward per boss — with magazine,
@@ -168,7 +171,8 @@ without extra inference. Every resulting input segment is replayed exactly.
 The immutable checkpoint cache survives budget changes. This adds no shipped
 runtime dependency and needs no browser, GPU, cloud API or secrets.
 
-See [setup, model pins and smoke-test limits](docs/AI_GAME_QA.md).
+See [setup, model pins and smoke-test limits](docs/AI_GAME_QA.md) and the
+[latest three-run review](docs/AI_GAME_QA_REVIEW_2026-10-08.md).
 
 ## Local QA
 

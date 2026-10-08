@@ -124,6 +124,7 @@ impl Engine {
         self.node_done = false;
         self.lockdown = false;
         self.boss_vuln = 0.0;
+        self.boss_attack = boss_attacks::AttackState::new();
         self.say(field::RADIO_HANDLER);
     }
 
@@ -423,6 +424,7 @@ impl Engine {
         self.node_done = false;
         self.lockdown = false;
         self.boss_vuln = 0.0;
+        self.boss_attack = boss_attacks::AttackState::new();
         self.apply_theme(self.wave);
         self.clear_boss_arena();
         self.tactical=tactical::Tactical::new();

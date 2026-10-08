@@ -69,63 +69,6 @@ impl Engine {
         }
     }
 
-    pub(crate) fn fire_campaign_boss(&mut self, i: usize) {
-        let shooter = self.ents[i];
-        let index = (shooter.skin - 23) as usize;
-        let mut spec = campaign::WEAPONS[index];
-        spec.damage = combat::profile(shooter.skin, EK_BOSS).damage;
-        spec.speed = (spec.speed * 0.48).max(3.5);
-        let visual = match spec.mode { 0 | 6 | 10 => 0, 1 | 12 => 2, 5 => 3, 8 | 13 => 4, _ => 1 };
-        set_anim(&mut self.ents[i], ANIM_FIRE, 0.3);
-        if spec.mode == 4 {
-            for n in 0..3 {
-                if map::living_hostiles(self) >= campaign::ACTIVE_HOSTILES { break; }
-                let a = shooter.aim + (n as f32 - 1.0) * 0.7;
-                let (x, y) = self.nearest_open(shooter.x + a.cos() * 1.6, shooter.y + a.sin() * 1.6, 0.28);
-                let _ = self.spawn_with_skin(EK_MARTYR, SKIN_MARTYR, x, y);
-                self.campaign_impact(x, y, 2);
-            }
-            return;
-        }
-        if spec.mode == 8 {
-            let a = shooter.aim + 1.3;
-            let (x, y) = self.nearest_open(shooter.x + a.cos() * 3.0, shooter.y + a.sin() * 3.0, shooter.radius);
-            self.campaign_impact(shooter.x, shooter.y, 3);
-            self.ents[i].x = x; self.ents[i].y = y;
-        }
-        if spec.mode == 12 && self.boss_phase > 0 {
-            self.ents[i].shield = 1;
-            self.ents[i].shield_hp = self.ents[i].shield_hp.max(35);
-            self.ents[i].face = shooter.aim;
-        }
-        if spec.mode == 3 {
-            let dx = shooter.x - self.px; let dy = shooter.y - self.py;
-            let distance = (dx * dx + dy * dy).sqrt();
-            if distance > 4.0 && self.los(shooter.x, shooter.y, self.px, self.py) {
-                self.try_move(self.px + dx / distance * 0.35, self.py + dy / distance * 0.35);
-                self.shake = self.shake.max(0.22);
-            }
-        }
-        if spec.mode == 13 && self.boss_phase > 0 {
-            let guards = self.ents.iter().filter(|ent| ent.kind == EK_BRUTE && ent.skin == SKIN_GUNNER && ent.shield != 0 && ent.hp > 0).count();
-            if guards < 4 && map::living_hostiles(self) < campaign::ACTIVE_HOSTILES {
-                let (x,y) = self.nearest_open(shooter.x + 2.0, shooter.y + 1.5, 0.34);
-                if let Some(guard) = self.spawn_with_skin(EK_BRUTE, SKIN_GUNNER, x, y) { self.arm_shield(guard); }
-                self.campaign_impact(x,y,2);
-            }
-        }
-        let count = [3, 1, 3, 5, 3, 4, 3, 7, 2, 8, 2, 3, 5, 6][index];
-        for n in 0..count {
-            let a = if spec.mode == 9 { n as f32 * core::f32::consts::TAU / count as f32 }
-                else { shooter.aim + (n as f32 - (count - 1) as f32 * 0.5) * (0.04 + (index % 4) as f32 * 0.025) };
-            let mut shot = spec;
-            if spec.mode == 11 { shot.speed *= 0.7 + n as f32 * 0.25; }
-            self.campaign_projectile(shooter.x, shooter.y, a, shot, false, visual);
-        }
-        self.campaign_impact(shooter.x, shooter.y, match spec.mode { 0 | 5 | 7 => 0, 1 | 2 | 12 => 1, 9 | 11 => 3, _ => 2 });
-        if self.boss_phase >= 2 { self.boss_vuln = self.boss_vuln.max(1.2); }
-    }
-
     pub(crate) fn grant_slot(&mut self, slot: usize) {
         match slot {
             1..=18 => self.owned[slot - 1] = true,
@@ -311,6 +254,9 @@ impl Engine {
         }
         if self.ents[i].kind == EK_BOSS && self.boss_vuln > 0.0 {
             dmg = (dmg * 2).max(2);
+            if self.boss_attack.stage==2 && role==Some(boss_attacks::PROFILES[map::level_index(self.wave)].weak) {
+                dmg = dmg * 5 / 4;
+            }
         }
         let kind;
         let skin;
@@ -331,11 +277,11 @@ impl Engine {
             x = e.x;
             y = e.y;
             if e.hp > 0 {
-                if is_hostile_kind(kind) {
+                if is_hostile_kind(kind) && kind != EK_BOSS {
                     e.effect_tick = 0.0;
                     e.timer = e.timer.max(0.45);
                 }
-                set_anim(e, ANIM_PAIN, 0.24);
+                if kind!=EK_BOSS || self.boss_attack.stage!=1 {set_anim(e, ANIM_PAIN, 0.24);}
                 self.hitmarker = 1.0;
                 self.events |= EV_HIT;
                 return;
@@ -955,8 +901,8 @@ impl Engine {
     }
 
     pub(crate) fn enemy_shoot(&mut self, i: usize) {
-        if (23..=36).contains(&self.ents[i].skin) {
-            self.fire_campaign_boss(i);
+        if self.ents[i].kind == EK_BOSS {
+            self.resolve_boss_attack(i);
             return;
         }
         let shooter = self.ents[i];

@@ -247,6 +247,7 @@ export function GameApp() {
           h.objective,
           h.radioSeq,
           h.bossPhase,
+          h.bossAttackState,
           h.splash > 0.5,
           h.reloading > 0.001,
         ].join("|");

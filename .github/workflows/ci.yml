@@ -199,7 +199,7 @@ jobs:
         run: node --experimental-strip-types --test --test-concurrency=1 scripts/hud-insets.browser.mjs scripts/loading-ready.browser.mjs scripts/resolution-recovery.browser.mjs scripts/map-controls.browser.mjs scripts/weapon-viewmodel.browser.mjs scripts/asset-reload.browser.mjs scripts/arsenal.browser.mjs
       - name: Combat, effects, tactical systems and audio
         if: matrix.group == 'combat'
-        run: node --experimental-strip-types --test --test-concurrency=1 scripts/world-effects.browser.mjs scripts/gameplay-polish.browser.mjs scripts/tactical.browser.mjs scripts/boss-arena.browser.mjs scripts/projectile-presentation.browser.mjs scripts/sfx.browser.mjs
+        run: node --experimental-strip-types --test --test-concurrency=1 scripts/world-effects.browser.mjs scripts/gameplay-polish.browser.mjs scripts/tactical.browser.mjs scripts/boss-arena.browser.mjs scripts/boss-counterplay.browser.mjs scripts/projectile-presentation.browser.mjs scripts/sfx.browser.mjs
       - name: Campaign layouts, enemies and boss rewards
         if: matrix.group == 'campaign'
         run: node --experimental-strip-types --test --test-concurrency=1 scripts/reward-pause.browser.mjs scripts/qa-run.browser.mjs scripts/campaign25.browser.mjs scripts/layouts-10-25.browser.mjs scripts/enemy-sector.browser.mjs

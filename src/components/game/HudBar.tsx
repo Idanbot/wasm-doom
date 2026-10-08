@@ -1,4 +1,5 @@
 import { HeartPulse, Shield, Crosshair, Radio } from "lucide-react";
+import { bossAttackForWave } from "@/game/boss-attacks";
 import type { HudState } from "@/game/types";
 import { cn } from "@/lib/utils";
 import { WEAPONS, fmtTime, missionLine, sectorForWave } from "./data";
@@ -18,6 +19,7 @@ export function HudBar({
 }) {
   const weapon = WEAPONS[hud.weapon] ?? WEAPONS[0]!;
   const sector = sectorForWave(hud.wave);
+  const attack = bossAttackForWave(hud.wave);
   const lowAmmo = hud.ammo > 0 && hud.ammo <= weapon.lowAmmoAt && hud.reloading <= 0.001;
   return (
     <div className="field-hud">
@@ -51,7 +53,13 @@ export function HudBar({
           <div>
             <span>{sector.bossTitle}</span>
             <strong>{sector.bossName}</strong>
-            <em>{hud.vuln > 0.05 ? "EXPOSED" : `PHASE ${hud.bossPhase + 1} / 3`}</em>
+            <em>
+              {hud.bossAttackState === 1
+                ? "CHARGING"
+                : hud.vuln > 0.05
+                  ? "EXPOSED"
+                  : `PHASE ${hud.bossPhase + 1} / 3`}
+            </em>
           </div>
           <div className="hud-boss-track">
             <i
@@ -60,6 +68,21 @@ export function HudBar({
               }}
             />
           </div>
+          {(hud.bossAttackState === 1 || hud.vuln > 0.05) && (
+            <p className={cn("hud-boss-cue", hud.bossAttackState === 1 && "hud-boss-warning")}>
+              <b>{hud.bossAttackState === 1 ? attack.name : "CORE EXPOSED"}</b>
+              <span>
+                {hud.bossAttackState === 1
+                  ? attack.dodge
+                  : hud.bossAttackState === 2
+                    ? `${attack.weak.toUpperCase()} · +25% recovery damage`
+                    : "Fire while vulnerable · double damage"}
+              </span>
+              <time>
+                {Math.max(0, hud.bossAttackState === 1 ? hud.bossAttackT : hud.vuln).toFixed(1)}s
+              </time>
+            </p>
+          )}
           <small>
             {hud.bossHealth} / {hud.bossMaxHealth}
           </small>

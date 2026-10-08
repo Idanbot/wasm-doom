@@ -58,6 +58,8 @@ export type HudState = {
   bossHealth: number;
   bossMaxHealth: number;
   bossPhase: number;
+  bossAttackState: number;
+  bossAttackT: number;
   splash: number;
 };
 
@@ -152,5 +154,7 @@ export const DEFAULT_HUD: HudState = {
   bossHealth: 0,
   bossMaxHealth: 0,
   bossPhase: 0,
+  bossAttackState: 0,
+  bossAttackT: 0,
   splash: 0,
 };

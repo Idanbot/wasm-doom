@@ -1332,6 +1332,8 @@ export class BlacksiteRuntime {
       hitmarker: dv.getFloat32(68, true),
       hurtDir: dv.getFloat32(228, true),
       strain: dv.getFloat32(232, true),
+      bossAttackState: dv.getInt32(236, true),
+      bossAttackT: dv.getFloat32(240, true),
       spread: wasm.hs_spread(),
       yaw: dv.getFloat32(72, true),
       speed: dv.getFloat32(76, true),
@@ -1618,6 +1620,7 @@ export class BlacksiteRuntime {
       return bits;
     };
     window.__controlsTest = {
+      getBossAttack: () => ({ state: this.hud.bossAttackState, seconds: this.hud.bossAttackT, health: this.hud.bossHealth, vuln: this.hud.vuln }),
       getEnemyAudio: () => this.audio.enemyDiagnostics(),
       getSfxAudio: () => this.audio.sfxDiagnostics(),
       getWorldEffects: () => ({ time: this.worldEffects.time, wave: this.hud.wave,
@@ -1727,6 +1730,7 @@ async function loadWasm(): Promise<WasmExports> {
 declare global {
   interface Window {
     __controlsTest?: {
+      getBossAttack?: () => { state: number; seconds: number; health: number; vuln: number };
       getEnemyAudio: () => ReturnType<GameAudio["enemyDiagnostics"]>;
       getSfxAudio: () => ReturnType<GameAudio["sfxDiagnostics"]>;
       getWorldEffects: () => { time: number; wave: number; signature: string; entrance?: ReturnType<WorldEffects["projectEntrance"]> };

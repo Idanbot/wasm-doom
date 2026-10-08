@@ -424,7 +424,10 @@ fn enemy_attacks_use_isolated_type_specific_projectiles() {
     let mut e = arena();
     for skin in [0, 1, 3, 4, 7, 8, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 28, 29, 30, 31, 32, 33, 34, 35, 36] {
         for ent in &mut e.ents { ent.kind = EK_NONE; }
-        let shooter = e.spawn_with_skin(EK_BOSS, skin, 9.5, 4.5).unwrap();
+        let wave=(1..=25).find(|&wave|map::boss_skin(wave)==skin);
+        e.boss_attack=boss_attacks::AttackState::new();
+        let shooter = e.spawn_with_skin(if wave.is_some() {EK_BOSS}else{EK_WRAITH}, skin, 9.5, 4.5).unwrap();
+        if let Some(wave)=wave {e.wave=wave;e.ents[shooter].timer=0.0;e.tick_boss_attack(shooter,0.01);e.tick_boss_attack(shooter,2.0);}
         e.ents[shooter].aim = core::f32::consts::PI;
         e.enemy_shoot(shooter);
         let shots: Vec<_> = e.ents.iter().filter(|ent| ent.kind == EK_PROJ).collect();
@@ -439,20 +442,18 @@ fn enemy_attacks_use_isolated_type_specific_projectiles() {
 
 #[test]
 fn new_boss_attacks_have_distinct_summon_phase_and_shield_behaviors() {
-    let mut e = arena();
-    let brood = e.spawn_with_skin(EK_BOSS, 27, 9.5, 4.5).unwrap();
-    e.enemy_shoot(brood);
-    assert_eq!(e.ents.iter().filter(|ent| ent.kind == EK_MARTYR).count(), 3);
-    let umbra = e.spawn_with_skin(EK_BOSS, 31, 12.5, 6.5).unwrap();
-    let before = (e.ents[umbra].x, e.ents[umbra].y);
-    e.enemy_shoot(umbra);
-    assert_ne!((e.ents[umbra].x, e.ents[umbra].y), before);
-    assert!(e.ents.iter().any(|ent| ent.kind == EK_PROJ && ent.skin == 131));
-    let boreas = e.spawn_with_skin(EK_BOSS, 35, 15.5, 7.5).unwrap();
-    e.boss_phase = 1;
-    e.enemy_shoot(boreas);
-    assert!(e.ents[boreas].shield_hp >= 35);
-    assert!(e.ents.iter().any(|ent| ent.kind == EK_PROJ && ent.skin == 135));
+    for wave in [16,20,24] {
+        let mut e=arena();e.wave=wave;e.px=11.5;e.py=4.5;
+        let boss=e.spawn_with_skin(EK_BOSS,map::boss_skin(wave),7.5,4.5).unwrap();
+        e.ents[boss].timer=0.0;e.tick_boss_attack(boss,0.01);
+        assert!(!e.ents.iter().any(|ent|ent.kind==EK_PROJ));
+        if wave==24 {assert!(e.ents[boss].shield_hp>0);}
+        e.py=7.5;e.tick_boss_attack(boss,2.0);
+        if wave==16 {assert_eq!(e.ents.iter().filter(|ent|ent.kind==EK_MARTYR).count(),1);}
+        if wave==20 {assert!((e.ents[boss].x-11.5).hypot(e.ents[boss].y-4.5)<0.6);}
+        assert!(e.ents.iter().any(|ent|ent.kind==EK_PROJ&&ent.skin==100+map::boss_skin(wave)));
+        assert_eq!(e.ents[boss].shield_hp,0,"recovery opens shield");
+    }
 }
 
 #[test]

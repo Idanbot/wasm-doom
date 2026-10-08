@@ -13,6 +13,7 @@ mod render;
 mod sim;
 mod textures;
 mod boss_arena;
+mod boss_attacks;
 mod tactical;
 mod tactical_roles;
 mod combat;
@@ -140,6 +141,7 @@ struct Engine {
     boss_intro: f32,
     boss_phase: u8,
     boss_arena: boss_arena::ArenaState,
+    boss_attack: boss_attacks::AttackState,
     tactical: tactical::Tactical,
     node_done: bool,
     lockdown: bool,
@@ -282,6 +284,8 @@ impl Engine {
             hud: Hud {
                 hurt_dir: 0.0,
                 strain: 0.0,
+                boss_attack_state: 0,
+                boss_attack_t: 0.0,
                 health: 100,
                 armor: 0,
                 ammo: 12,
@@ -377,6 +381,7 @@ impl Engine {
             boss_intro: 0.0,
             boss_phase: 0,
             boss_arena: boss_arena::ArenaState::new(),
+            boss_attack: boss_attacks::AttackState::new(),
             tactical: tactical::Tactical::new(),
             node_done: false,
             lockdown: false,
@@ -616,6 +621,13 @@ impl Engine {
                     self.ents[i].vy += (a.sin()*speed-e.vy)*blend;
                     self.ents[i].zoff = 8.0 + (e.frame*18.0+i as f32*1.7).sin()*2.2;
                 }
+            }
+            if self.ents[i].kind == EK_BOSS && self.ents[i].hp > 0 && self.tick_boss_attack(i, dt) {
+                let e = &mut self.ents[i];
+                e.flash = (e.flash-dt).max(0.0);
+                e.bar_t = (e.bar_t-dt).max(0.0);
+                advance_anim(e, dt);
+                continue;
             }
             let e = &mut self.ents[i];
             e.flash = (e.flash - dt).max(0.0);
@@ -1090,24 +1102,12 @@ impl Engine {
                         self.spawn_timed(EK_SPARK, x + a.cos() * 0.35, y + a.sin() * 0.35, 0.55, -12.0);
                     }
                 }
-                // HECATE-9 discharges a fast electrical ring; CHIMERA-9
-                // launches a slower corrosive nova before its support closes.
-                if map::level_index(self.wave) > 0 {
-                    if let Some((bx, by)) = self.ents.iter().find(|e| e.kind == EK_BOSS && e.hp > 0).map(|e| (e.x, e.y)) {
-                        let sector = map::level_index(self.wave);
-                        let count = [0, 8, 6, 10, 12, 14, 12, 16, 10, 18, 20].get(sector).copied().unwrap_or(6 + (sector % 7) * 2);
-                        for n in 0..count {
-                            let a = n as f32 * core::f32::consts::TAU / count as f32 + phase as f32 * 0.18;
-                            if let Some(i) = self.spawn(EK_PROJ, bx, by) {
-                                let speed = if sector == 5 { if n % 2 == 0 { 6.2 } else { 4.3 } } else { [0.0, 6.7, 4.1, 7.5, 3.6, 0.0, 4.2, 7.4, 3.5, 8.0, 5.4].get(sector).copied().unwrap_or(4.2 + (sector % 5) as f32 * 0.4) };
-                                self.ents[i].vx = a.cos() * speed;
-                                self.ents[i].vy = a.sin() * speed;
-                                self.ents[i].timer = 3.2;
-                                self.ents[i].hp = if phase == 2 { 18 } else { 12 };
-                                self.ents[i].effect_tick = if sector == 2 { 3.0 } else { 0.0 };
-                            }
-                        }
-                    }
+                // Phase transitions schedule the boss's own warned pattern.
+                if let Some(i)=self.ents.iter().position(|e|e.kind==EK_BOSS&&e.hp>0) {
+                    self.boss_attack.stage=0;
+                    self.boss_attack.remaining=0.0;
+                    self.ents[i].effect_tick=0.0;
+                    self.ents[i].timer=0.6;
                 }
             }
         }
@@ -1124,6 +1124,10 @@ impl Engine {
             }
         }
 
+        if !self.ents.iter().any(|e|e.kind==EK_BOSS&&e.hp>0) || self.state!=0 {
+            self.boss_attack = boss_attacks::AttackState::new();
+            self.boss_vuln=0.0;
+        }
         self.tick_boss_arena(dt);
 
         // Count after boss spawning and phase support, including queued endless arrivals.
@@ -1292,6 +1296,8 @@ impl Engine {
             radio_seq: self.radio_seq,
             radio_line: self.radio_line,
             vuln: self.boss_vuln,
+            boss_attack_state: self.boss_attack.stage,
+            boss_attack_t: self.boss_attack.remaining,
             node_x: field::node_point(self.wave).0,
             node_y: field::node_point(self.wave).1,
             has_w9: self.owned_flag(7),
