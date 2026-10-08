@@ -154,3 +154,40 @@ cancelled after reproducing this engine defect.
 The workflow's default is now `completion`, commander, five orientations. The
 original extended scenarios remain selectable; concurrency, checkpoint cache
 and total 30-minute/512-decision limits are unchanged.
+
+## Verified final hosted result
+
+[Run 37847676691](https://github.com/Idanbot/wasm-doom/actions/runs/37847676691)
+used commit `a071efe` and the pinned Decider model on `ubuntu-latest` CPU.
+**Five of five sector starts completed**, including actual node use, boss defeat
+and reward pickup. Every episode's normal inputs replayed exactly. There were
+no deaths, system failures or budget-inconclusive episodes.
+
+| Initial turn (radians) | Decisions | Simulation seconds | Final health | Replay |
+| ---: | ---: | ---: | ---: | --- |
+| 0 | 9 | 109.0 | 94 | PASS |
+| +0.35 | 8 | 95.8 | 100 | PASS |
+| -0.35 | 8 | 95.8 | 100 | PASS |
+| +0.70 | 9 | 132.3 | 82 | PASS |
+| -0.70 | 8 | 93.9 | 94 | PASS |
+
+The harness took **448.2 seconds (7.5 minutes)**, including model load and replay,
+and used 42 of its 512 permitted decisions. Per-episode median inference was
+10.0–10.3 seconds. Model peak RSS was 4,899 MiB, load time 9.1 seconds, and mean
+chosen-goal probability was 58–64% per episode. All 42 choices were aggressive.
+Confidence remains diagnostic; it does not establish an independent ability to
+play without the local controller. The immutable checkpoint/cache was unchanged.
+
+This establishes completion for the tested first-sector starts, not a general
+win rate across random encounters or a completed campaign. Some starting turns
+converge to the same subsequent route. The next useful test is sectors 2–3,
+then consecutive sectors retaining legitimately earned inventory.
+
+Full verification included 160 release-mode Rust tests, 200 JavaScript/TypeScript
+tests, Clippy, typecheck, lint, WASM synchronization and both production builds.
+The code CI passed in [run 37847670498](https://github.com/Idanbot/wasm-doom/actions/runs/37847670498).
+Browser verification also identified a premature local QA readiness signal:
+`isLive` now requires loaded assets and a ready renderer. The atlas-reload test
+asserts it remains false throughout replacement; boss cues were retested on
+desktop and mobile after the fix. This dev helper does not affect the headless
+Decider results above.

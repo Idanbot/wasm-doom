@@ -85,12 +85,17 @@ test("asset reload re-uploads every atlas layer and leaves the game rendering", 
       const rt = window.__blacksiteRuntimeTest;
       let total = 0;
       let calls = 0;
+      let liveDuringReload = false;
       await rt.reloadAllAssets((done, all) => {
         total = all;
         calls++;
+        liveDuringReload ||= window.__controlsTest.isLive();
       });
-      return { total, calls };
+      return { total, calls, liveDuringReload };
     });
+
+    assert.equal(result.liveDuringReload, false, "QA must not report live while the atlas is being replaced");
+    await page.waitForFunction(() => window.__controlsTest.isLive(), null, { timeout: 30000 });
 
     // Every atlas layer and theme variant is walked, not just the visible ones.
     assert.ok(result.total > 800, `expected the whole atlas, got ${result.total} items`);

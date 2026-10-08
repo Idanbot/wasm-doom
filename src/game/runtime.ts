@@ -1659,7 +1659,10 @@ export class BlacksiteRuntime {
        * reports ready before the engine is actually QA-armed and the test's
        * first `heal()` silently no-ops.
        */
-      isLive: () => this.wasm !== null && this.qaArmored && this.presentedFrames > 0,
+      isLive: () =>
+        this.wasm !== null && this.assetsReady && this.qaArmored &&
+        this.presentedFrames > 0 && !this.contextLost && !this.recovering &&
+        this.blit?.isReady() === true,
       getReloading: () => this.hud.reloading,
       getWeapon: () => this.hud.weapon,
       selectWeapon: (slot: number) => this.wasm?.hs_select_weapon(slot),

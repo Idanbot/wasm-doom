@@ -171,6 +171,9 @@ five starting orientations; a win requires boss defeat and reward collection.
 The commander lets Decider select tactics while an explicit local executor
 handles aiming, reloads, pickups and navigation. Its success measures the hybrid
 QA player, rather than unaided model skill.
+The verified free-runner completion test won **5/5 first-sector starts** in
+7.5 minutes with 42 decisions and exact replay; it also exposed and fixed a
+player collision trap caused by closing boss doors.
 Reports include confidence, gameplay metrics and deterministic input replay;
 model confidence is diagnostic and does not decide test success. The test
 controller supports reload/switching for all owned guns, remembers explored
