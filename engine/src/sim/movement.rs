@@ -7,18 +7,41 @@ use crate::*;
 impl Engine {
     pub(crate) fn try_move(&mut self, nx: f32, ny: f32) {
         let r = self.pr;
-        if !self.circle_blocked(nx, ny, r) {
+        if self.clear_or_escaping(nx, ny, r) {
             self.px = nx;
             self.py = ny;
             return;
         }
         // Resolve both intended components independently so walls preserve tangential motion.
-        if !self.circle_blocked(nx, self.py, r) {
+        if self.clear_or_escaping(nx, self.py, r) {
             self.px = nx;
         }
-        if !self.circle_blocked(self.px, ny, r) {
+        if self.clear_or_escaping(self.px, ny, r) {
             self.py = ny;
         }
+    }
+
+    // A closing door can overlap the player's radius while their center stays
+    // on floor. Permit incremental escape, never deeper penetration or entry
+    // into a solid cell. Ordinary collision/sliding retains its existing rules.
+    fn clear_or_escaping(&self, x: f32, y: f32, r: f32) -> bool {
+        if !self.circle_blocked(x, y, r) { return true; }
+        if self.blocked(x.floor() as i32, y.floor() as i32) { return false; }
+        let before = self.circle_penetration(self.px, self.py, r);
+        before > 0.0 && self.circle_penetration(x, y, r) < before - 0.000001
+    }
+
+    fn circle_penetration(&self, x: f32, y: f32, r: f32) -> f32 {
+        let mut depth: f32 = 0.0;
+        for cy in (y-r).floor() as i32..=(y+r).floor() as i32 {
+            for cx in (x-r).floor() as i32..=(x+r).floor() as i32 {
+                if !self.blocked(cx, cy) { continue; }
+                let ox = ((x-(cx as f32+0.5)).abs()-0.5).max(0.0);
+                let oy = ((y-(cy as f32+0.5)).abs()-0.5).max(0.0);
+                depth = depth.max((r-ox.hypot(oy)).max(0.0));
+            }
+        }
+        depth
     }
 
     pub(crate) fn circle_blocked(&self, x: f32, y: f32, r: f32) -> bool {
@@ -103,5 +126,33 @@ impl Engine {
             }
         }
         true
+    }
+}
+
+#[cfg(test)]
+mod escape_tests {
+    use crate::*;
+    #[test]
+    fn closing_door_overlap_allows_gradual_escape_but_never_wall_entry() {
+        let mut e = crate::testutil::arena();
+        let door = 3 * MAP_W + 4;
+        e.map[door] = 8;
+        e.door[door] = 0.0;
+        e.px = 4.5; e.py = 4.06;
+        assert!(e.circle_blocked(e.px, e.py, e.pr));
+        e.try_move(4.5, 4.02);
+        assert_eq!(e.py, 4.06, "moving further into the door stays blocked");
+        e.try_move(4.5, 3.9);
+        assert_eq!(e.py, 4.06, "escape cannot enter a solid door cell");
+        for _ in 0..10 {
+            let before = e.py;
+            e.try_move(4.5, before+0.04);
+            assert!(e.py>before && e.py-before<0.041, "ordinary small steps must escape without teleporting");
+        }
+        assert!(!e.circle_blocked(e.px, e.py, e.pr));
+        assert_eq!(e.door[door], 0.0, "movement does not open sealed doors");
+        let before=e.py;
+        e.try_move(4.5, 3.9);
+        assert_eq!(e.py,before, "normal movement remains blocked by the closed door");
     }
 }

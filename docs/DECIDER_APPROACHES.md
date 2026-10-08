@@ -135,3 +135,22 @@ model: 17 decisions, 51.5 simulation seconds, node activation on decision three,
 14 kills, then a normal player death. Median inference was 22.1 seconds, total
 harness time 395.6 seconds, and replay passed. Semantic prompts improved objective
 use, but direct movement/combat choices remain less robust than the commander.
+
+Additional controller-only checks using aggressive tactics exposed a genuine
+simulation collision defect at both ±0.35-radian starts: after a boss door
+closed into the player's radius, none of eight normal movement directions
+worked. Their centers were still on floor, so ordinary state validation missed
+it. The player could kill the boss but could not approach the reward.
+
+Movement now permits small steps that strictly reduce an existing overlap while
+rejecting deeper penetration and entry into solid cells. It does not teleport,
+open sealed doors, change damage or grant resources. A Rust regression verifies
+incremental escape and the original wall-blocking rules. All five aggressive
+controller-only checks then completed; they are diagnostic execution tests,
+not independent model wins. The superseded hosted run
+[37845879404](https://github.com/Idanbot/wasm-doom/actions/runs/37845879404) was
+cancelled after reproducing this engine defect.
+
+The workflow's default is now `completion`, commander, five orientations. The
+original extended scenarios remain selectable; concurrency, checkpoint cache
+and total 30-minute/512-decision limits are unchanged.
