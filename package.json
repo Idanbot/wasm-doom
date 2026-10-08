@@ -36,7 +36,8 @@
     "assets:sfx": "python3 scripts/process-blacksite-sfx.py",
     "check:sfx": "node --test scripts/sfx-assets.test.mjs",
     "test:ai:smoke": "node --experimental-strip-types scripts/ai/smoke.mjs",
-    "test:ai:short": "node --experimental-strip-types scripts/ai/playtest.mjs"
+    "test:ai:short": "node --experimental-strip-types scripts/ai/playtest.mjs",
+    "test:ai:approaches": "node --experimental-strip-types scripts/ai/experiments.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.7.0",

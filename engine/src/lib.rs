@@ -20,6 +20,7 @@ mod combat;
 mod campaign;
 mod field;
 mod voices;
+mod agent_view;
 mod sound;
 mod consts;
 mod enemies;

@@ -7,6 +7,12 @@ Stage 1 proves the engine/state/decision/input loop with a small manual CI run.
 It does not assert campaign or boss completion, establish weapon balance, or
 replace the existing browser and Rust tests.
 
+The newer `approaches` and `completion` tiers separately test genuine sector
+wins using ordinary gameplay. See [Decider sector-completion experiments](DECIDER_APPROACHES.md)
+for the policy variants, visible-item ABI, controller responsibilities, measured
+results and remaining limitations. Historical model recommendations below are
+retained as dated results; the hosted workflow still uses only Decider.
+
 ```mermaid
 flowchart LR
     W[Real committed Rust/WASM] --> S[Player-observable snapshot]

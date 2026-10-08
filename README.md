@@ -163,6 +163,12 @@ plus three seeded random boss encounters. Independent starts do not imply
 campaign completion. Death or victory ends an episode early and frees budget
 for later scenarios. One workflow runs at a time; new requests queue.
 The `smoke` and `short` tiers remain available for quick checks.
+The `approaches` tier compares compact controls, longer control intervals and a
+hybrid commander. The `completion` tier repeats the selected policy from up to
+five starting orientations; a win requires boss defeat and reward collection.
+The commander lets Decider select tactics while an explicit local executor
+handles aiming, reloads, pickups and navigation. Its success measures the hybrid
+QA player, rather than unaided model skill.
 Reports include confidence, gameplay metrics and deterministic input replay;
 model confidence is diagnostic and does not decide test success. The test
 controller supports reload/switching for all owned guns, remembers explored
@@ -172,7 +178,8 @@ The immutable checkpoint cache survives budget changes. This adds no shipped
 runtime dependency and needs no browser, GPU, cloud API or secrets.
 
 See [setup, model pins and smoke-test limits](docs/AI_GAME_QA.md) and the
-[latest three-run review](docs/AI_GAME_QA_REVIEW_2026-10-08.md).
+[latest three-run review](docs/AI_GAME_QA_REVIEW_2026-10-08.md), and
+[sector-completion comparisons](docs/DECIDER_APPROACHES.md).
 
 ## Local QA
 

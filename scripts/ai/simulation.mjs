@@ -16,7 +16,8 @@ export async function loadSimulation(path = 'public/blacksite.wasm') {
   const { instance } = await WebAssembly.instantiate(bytes);
   const w = instance.exports;
   for (const name of ['hs_init', 'hs_input', 'hs_tick', 'hs_hud_ptr', 'hs_hud_size',
-    'hs_prepare_enemies', 'hs_enemy_cues', 'hs_map_ptr', 'hs_map_w', 'hs_map_h', 'hs_door_ptr']) {
+    'hs_prepare_enemies', 'hs_enemy_cues', 'hs_map_ptr', 'hs_map_w', 'hs_map_h', 'hs_door_ptr',
+    'hs_prepare_agent_items', 'hs_agent_items', 'hs_floor_ptr']) {
     if (typeof w[name] !== 'function') throw new Error(`Missing ABI export: ${name}`);
   }
   if (w.hs_hud_size() !== HUD_SIZE) throw new Error('HUD ABI mismatch');
@@ -53,7 +54,12 @@ export function snapshot(w) {
   if (width < 1 || height < 1 || width * height > 10000) throw new Error('Invalid map dimensions');
   const map = Array.from(new Uint8Array(w.memory.buffer, w.hs_map_ptr(), width * height));
   const doors = Array.from(new Float32Array(w.memory.buffer, w.hs_door_ptr(), width * height));
-  return { hud, enemies, width, height, map, doors };
+  const itemCount=w.hs_prepare_agent_items();
+  if(itemCount<0||itemCount>192)throw new Error('Invalid visible item count');
+  const itemView=new Float32Array(w.memory.buffer,w.hs_agent_items(),itemCount*7);
+  const items=Array.from({length:itemCount},(_,n)=>({id:itemView[n*7],category:itemView[n*7+1],x:itemView[n*7+2],y:itemView[n*7+3],screenX:itemView[n*7+4],distance:itemView[n*7+5],slot:itemView[n*7+6]}));
+  const floor=Array.from(new Uint8Array(w.memory.buffer,w.hs_floor_ptr(),width*height));
+  return { hud, enemies, items, width, height, map, doors, floor };
 }
 
 export function assertValid(s) {
@@ -69,6 +75,14 @@ export function assertValid(s) {
   }
   for (const e of s.enemies) for (const [key, value] of Object.entries(e)) {
     if (typeof value === 'number' && !Number.isFinite(value)) throw new Error(`Invalid enemy ${key}`);
+  }
+  for (const item of s.items) {
+    if (Object.values(item).some(v => !Number.isFinite(v)) || !Number.isInteger(item.id) ||
+        item.id < 0 || ![1, 2, 3, 4, 5, 6, 7].includes(item.category) ||
+        item.x < 0 || item.x >= s.width || item.y < 0 || item.y >= s.height ||
+        item.screenX < 0 || item.screenX > 1 || item.distance < 0 || item.distance > 14) {
+      throw new Error('Invalid visible item');
+    }
   }
   if (s.doors.some((v) => !Number.isFinite(v) || v < 0 || v > 1)) throw new Error('Invalid door state');
 }

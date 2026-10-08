@@ -529,3 +529,13 @@ pub extern "C" fn hs_x() -> f32 {
 pub extern "C" fn hs_y() -> f32 {
     eng().py
 }
+
+static mut AGENT_ITEMS: [agent_view::ItemCue; ENT_N] = [agent_view::ItemCue { id:0.0, category:0.0,x:0.0,y:0.0,screen_x:0.0,distance:0.0,slot:0.0 }; ENT_N];
+#[no_mangle]
+pub extern "C" fn hs_prepare_agent_items()->i32 {
+    // Same single-threaded scratch contract as enemy presentation cues.
+    let out=unsafe { &mut *core::ptr::addr_of_mut!(AGENT_ITEMS) };
+    agent_view::snapshot(eng(),out) as i32
+}
+#[no_mangle]
+pub extern "C" fn hs_agent_items()->*const agent_view::ItemCue {core::ptr::addr_of!(AGENT_ITEMS).cast()}

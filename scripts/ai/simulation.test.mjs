@@ -85,3 +85,15 @@ test('a validated typed reload choice transfers real ammo through the normal inp
   assert.ok(after.hud.ammo > before.hud.ammo);
   assert.equal(before.hud.reserve - after.hud.reserve, after.hud.ammo - before.hud.ammo);
 });
+
+
+test('read-only item cues stay within view and malformed item telemetry fails clearly', async () => {
+  const { w } = await loadSimulation(), s = snapshot(w);
+  assertValid(s);
+  assert.ok(s.items.length > 0);
+  const item = { ...s.items[0] };
+  for (const bad of [{ distance: NaN }, { screenX: -1 }, { category: 0 }, { x: s.width }]) {
+    s.items = [{ ...item, ...bad }];
+    assert.throws(() => assertValid(s), /Invalid visible item/);
+  }
+});
