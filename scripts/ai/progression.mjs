@@ -1,3 +1,4 @@
+import { navigationTree } from "./navigation.mjs";
 import { INPUT, angle, observe, snapshot, step, fingerprint } from "./simulation.mjs";
 
 export const APPROACHES = Object.freeze(["compact", "persistent", "commander"]);
@@ -19,6 +20,8 @@ export function remember(s, m) {
     for (let x = Math.floor(h.x) - 5; x <= Math.floor(h.x) + 5; x++) {
       if (x >= 0 && y >= 0 && x < s.width && y < s.height) m.seen.add(y * s.width + x);
     }
+  for (const cache of [m.blocked, m.failed])
+    for (const [key, until] of cache) if (until <= h.elapsedMs) cache.delete(key);
   const cell = cellOf(s);
   m.visited.set(cell, (m.visited.get(cell) ?? 0) + 1);
   for (const item of s.items ?? []) m.items.set(item.id, { ...item });
@@ -27,7 +30,7 @@ export function remember(s, m) {
     const distance = Math.hypot(item.x - h.x, item.y - h.y),
       bearing = angle(Math.atan2(item.y - h.y, item.x - h.x) - h.yaw);
     if (
-      distance < 1.0 ||
+      distance < 0.67 ||
       (distance < 6 && Math.abs(bearing) < 0.4 && lineClear(s, h.x, h.y, item.x, item.y))
     ) {
       if (!s.items.some((i) => i.id === id)) m.items.delete(id);
@@ -46,46 +49,6 @@ export function lineClear(s, x, y, tx, ty) {
   }
   return true;
 }
-function path(s, m, target) {
-  const start = cellOf(s),
-    goal = Math.floor(target.y) * s.width + Math.floor(target.x);
-  const queue = [start],
-    parent = new Int32Array(s.map.length).fill(-1);
-  parent[start] = start;
-  for (let n = 0; n < queue.length; n++) {
-    const c = queue[n],
-      x = c % s.width,
-      y = Math.floor(c / s.width);
-    for (const [nx, ny] of [
-      [x + 1, y],
-      [x, y + 1],
-      [x - 1, y],
-      [x, y - 1],
-    ]) {
-      if (nx < 0 || ny < 0 || nx >= s.width || ny >= s.height) continue;
-      const next = ny * s.width + nx;
-      if (
-        parent[next] >= 0 ||
-        ![0, 8, 10].includes(s.map[next]) ||
-        (m.blocked.get(`${c}:${next}`) ?? 0) > s.hud.elapsedMs
-      )
-        continue;
-      parent[next] = c;
-      queue.push(next);
-    }
-  }
-  if (parent[goal] < 0) return null;
-  if (start === goal) return { ...target, cell: goal, goal };
-  let next = goal;
-  while (parent[next] !== start) next = parent[next];
-  return {
-    x: (next % s.width) + 0.5,
-    y: Math.floor(next / s.width) + 0.5,
-    cell: next,
-    goal,
-    mode: target.mode,
-  };
-}
 export function plan(s, m) {
   const h = s.hud,
     distance = (p) => Math.hypot(p.x - h.x, p.y - h.y);
@@ -93,7 +56,8 @@ export function plan(s, m) {
     (p) => (m.failed.get(`item:${p.id}`) ?? 0) <= h.elapsedMs,
   );
   const byDistance = (a) => a.sort((a, b) => distance(a) - distance(b) || a.id - b.id);
-  let candidates = [];
+  const routeTo = navigationTree(s, m),
+    candidates = [];
   const reward = byDistance(items.filter((i) => i.category === 7))[0];
   const supplies = byDistance(
     items.filter(
@@ -105,7 +69,7 @@ export function plan(s, m) {
     ),
   );
   if (reward) candidates.push({ ...reward, mode: "reward" });
-  if (supplies.length) candidates.push({ ...supplies[0], mode: "supply" });
+  candidates.push(...supplies.map((item) => ({ ...item, mode: "supply" })));
   if (!h.objective) candidates.push({ x: h.nodeX, y: h.nodeY, mode: "node" });
   // These exact contacts are also drawn by the shipped minimap. Never route to unrestricted hidden entities.
   const contacts = byDistance(
@@ -117,13 +81,13 @@ export function plan(s, m) {
     ),
   );
   if (h.objective && h.living > 0 && contacts.length)
-    candidates.push({ ...contacts[0], mode: "contact" });
+    candidates.push(...contacts.map((contact) => ({ ...contact, mode: "contact" })));
   if (h.objective && h.living === 0) {
     const console = items.find((i) => i.category === 6);
     if (console) candidates.push({ ...console, mode: "console" });
   }
   for (const target of candidates) {
-    const route = path(s, m, target);
+    const route = routeTo(target);
     if (route) return { target, route };
   }
   // Patrol unexplored frontiers, then least visited reachable space. Stable ties.
@@ -144,13 +108,13 @@ export function plan(s, m) {
       h.elapsedMs
     )
   ) {
-    const route = path(s, m, m.target);
+    const route = routeTo(m.target);
     if (route) return { target: m.target, route };
   }
   for (const c of cells) {
     if ((m.failed.get(`cell:${c}`) ?? 0) > h.elapsedMs) continue;
     const target = { x: (c % s.width) + 0.5, y: Math.floor(c / s.width) + 0.5, mode: "explore" };
-    const route = path(s, m, target);
+    const route = routeTo(target);
     if (route) {
       m.target = target;
       return { target, route };
@@ -286,6 +250,34 @@ function movementBits(relative) {
   else if (Math.sin(relative) < -0.38) bits |= INPUT.strafe_left;
   return bits;
 }
+export function commanderUtility(h, v, m) {
+  const weapons = h.inventory
+    .filter((g) => g.magazine + g.reserve > 0)
+    .sort(
+      (a, b) =>
+        Number(b.id !== 1) - Number(a.id !== 1) ||
+        b.magazine + b.reserve - (a.magazine + a.reserve),
+    );
+  const bossTarget = v.visible[0] && v.visible[0].skin >= 12 && v.visible[0].skin <= 36;
+  const preferred = weapons.find(
+    (g) => g.id === (bossTarget ? 4 : v.visible[0]?.distance < 4 ? 2 : 3),
+  );
+  if (!h.reloading && preferred && preferred.id !== h.weapon + 1 && h.elapsedMs > m.equipUntil) {
+    m.equipUntil = h.elapsedMs + 1500;
+    return `equip_${preferred.id}`;
+  } else if (!h.reloading && h.ammo === 0 && h.reserve === 0 && weapons.length) {
+    return `equip_${weapons[0].id}`;
+  } else if (
+    !h.reloading &&
+    h.reserve > 0 &&
+    (h.ammo === 0 || (!v.visible.length && h.ammo <= v.magazineCapacity / 3))
+  ) {
+    return "reload";
+  } else if (v.nearbyDoor || [3, 13].includes(h.prompt)) {
+    return "interact";
+  }
+  return "nothing";
+}
 export function executeGoal(w, choices, m, approach, onFrame = () => {}) {
   let s = snapshot(w),
     initial = s;
@@ -310,35 +302,8 @@ export function executeGoal(w, choices, m, approach, onFrame = () => {}) {
     if (auto) {
       movement = "navigate";
       combat = v.visible.length ? "engage" : "scan";
-      const weapons = h.inventory
-        .filter((g) => g.magazine + g.reserve > 0)
-        .sort(
-          (a, b) =>
-            Number(b.id !== 1) - Number(a.id !== 1) ||
-            b.magazine + b.reserve - (a.magazine + a.reserve),
-        );
-      const bossTarget = v.visible[0] && v.visible[0].skin >= 12 && v.visible[0].skin <= 36;
-      const preferred = weapons.find(
-        (g) => g.id === (bossTarget ? 4 : v.visible[0]?.distance < 4 ? 2 : 3),
-      );
-      if (preferred && preferred.id !== h.weapon + 1 && h.elapsedMs > m.equipUntil) {
-        utility = `equip_${preferred.id}`;
-        m.equipUntil = h.elapsedMs + 1500;
-        mark("equip");
-      } else if (h.ammo === 0 && h.reserve === 0 && weapons.length) {
-        utility = `equip_${weapons[0].id}`;
-        mark("equip");
-      } else if (
-        !h.reloading &&
-        h.reserve > 0 &&
-        (h.ammo === 0 || (!v.visible.length && h.ammo <= v.magazineCapacity / 3))
-      ) {
-        utility = "reload";
-        mark("reload");
-      } else if (v.nearbyDoor || [3, 13].includes(h.prompt)) {
-        utility = "interact";
-        mark("interact");
-      }
+      utility = commanderUtility(h, v, m);
+      if (utility !== "nothing") mark(utility.startsWith("equip_") ? "equip" : utility);
       if (choices.goal === "cautious" && v.visible.length) movement = "hold";
     }
     let bits = 0,

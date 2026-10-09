@@ -178,7 +178,14 @@ Reports include confidence, gameplay metrics and deterministic input replay;
 model confidence is diagnostic and does not decide test success. The test
 controller supports reload/switching for all owned guns, remembers explored
 minimap cells and failed routes, and updates steering during longer actions
-without extra inference. Every resulting input segment is replayed exactly.
+without extra inference. Navigation shares one deterministic route search across
+all candidate goals, tries reachable pickups when the nearest is blocked, and
+expires temporary route failures. Pickup memory preserves unseen supplies behind
+the player, and weapon switching waits for an active reload to finish. Regression
+tests cover these cases plus full sector completion and exact replay from all
+five starting orientations. These controller tests use fixed tactical choices;
+they do not invoke Decider or replace the separate model-integration workflow.
+Every resulting input segment is replayed exactly.
 The immutable checkpoint cache survives budget changes. This adds no shipped
 runtime dependency and needs no browser, GPU, cloud API or secrets.
 
