@@ -66,6 +66,19 @@ test("commander tries reachable supplies after an unreachable nearest pickup", (
   assert.equal(plan(s, m).target.id, 2);
 });
 
+test("mission planning seeks ammo for a depleted gun even with a stocked launcher", () => {
+  const s = navigationFixture(),
+    m = progressionMemory();
+  s.hud.inventory = [
+    { capacity: 36, magazine: 0, reserve: 0 },
+    { capacity: 4, magazine: 4, reserve: 100 },
+  ];
+  m.items.set(7, { id: 7, category: 2, x: 1.5, y: 2.5 });
+  assert.equal(plan(s, m).target.id, 7);
+  s.hud.inventory[0].reserve = 72;
+  assert.equal(plan(s, m).target.mode, "node");
+});
+
 test("memory preserves an unchecked pickup behind the player and expires route failures", () => {
   const s = navigationFixture(),
     m = progressionMemory();

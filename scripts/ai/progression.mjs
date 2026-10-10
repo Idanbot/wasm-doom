@@ -1,3 +1,4 @@
+import { combatTarget, needsAmmo } from "./tactics.mjs";
 import { navigationTree } from "./navigation.mjs";
 import { INPUT, angle, observe, snapshot, step, fingerprint } from "./simulation.mjs";
 
@@ -12,6 +13,7 @@ export function progressionMemory() {
     failed: new Map(),
     target: null,
     equipUntil: 0,
+    combatTargetId: null,
   };
 }
 export function remember(s, m) {
@@ -57,7 +59,8 @@ export function plan(s, m) {
   );
   const byDistance = (a) => a.sort((a, b) => distance(a) - distance(b) || a.id - b.id);
   const routeTo = navigationTree(s, m),
-    candidates = [];
+    candidates = [],
+    ammoNeeded = needsAmmo(h.inventory);
   const reward = byDistance(items.filter((i) => i.category === 7))[0];
   const supplies = byDistance(
     items.filter(
@@ -65,7 +68,7 @@ export function plan(s, m) {
         (i.category === 1 && !h.ownedWeapons.includes(i.slot)) ||
         (i.category === 3 && h.health < 75) ||
         (i.category === 4 && h.armor < 60) ||
-        (i.category === 2 && h.inventory.reduce((sum, g) => sum + g.magazine + g.reserve, 0) < 65),
+        (i.category === 2 && ammoNeeded),
     ),
   );
   if (reward) candidates.push({ ...reward, mode: "reward" });
@@ -250,7 +253,7 @@ function movementBits(relative) {
   else if (Math.sin(relative) < -0.38) bits |= INPUT.strafe_left;
   return bits;
 }
-export function commanderUtility(h, v, m) {
+export function commanderUtility(h, v, m, target = v.visible[0]) {
   const weapons = h.inventory
     .filter((g) => g.magazine + g.reserve > 0)
     .sort(
@@ -258,10 +261,8 @@ export function commanderUtility(h, v, m) {
         Number(b.id !== 1) - Number(a.id !== 1) ||
         b.magazine + b.reserve - (a.magazine + a.reserve),
     );
-  const bossTarget = v.visible[0] && v.visible[0].skin >= 12 && v.visible[0].skin <= 36;
-  const preferred = weapons.find(
-    (g) => g.id === (bossTarget ? 4 : v.visible[0]?.distance < 4 ? 2 : 3),
-  );
+  const bossTarget = target && target.skin >= 12 && target.skin <= 36;
+  const preferred = weapons.find((g) => g.id === (bossTarget ? 4 : target?.distance < 4 ? 2 : 3));
   if (!h.reloading && preferred && preferred.id !== h.weapon + 1 && h.elapsedMs > m.equipUntil) {
     m.equipUntil = h.elapsedMs + 1500;
     return `equip_${preferred.id}`;
@@ -294,7 +295,9 @@ export function executeGoal(w, choices, m, approach, onFrame = () => {}) {
     remember(s, m);
     const v = view(s, m),
       h = s.hud,
-      auto = approach === "commander";
+      auto = approach === "commander",
+      target = auto ? combatTarget(v.visible, m.combatTargetId) : v.visible[0];
+    if (auto) m.combatTargetId = target?.id ?? null;
     let combat = choices.combat,
       utility = choices.utility ?? "nothing",
       movement = choices.movement;
@@ -302,14 +305,13 @@ export function executeGoal(w, choices, m, approach, onFrame = () => {}) {
     if (auto) {
       movement = "navigate";
       combat = v.visible.length ? "engage" : "scan";
-      utility = commanderUtility(h, v, m);
+      utility = commanderUtility(h, v, m, target);
       if (utility !== "nothing") mark(utility.startsWith("equip_") ? "equip" : utility);
       if (choices.goal === "cautious" && v.visible.length) movement = "hold";
     }
     let bits = 0,
       turn = 0,
       slot;
-    const target = v.visible[0];
     if (
       combat === "engage" &&
       target &&

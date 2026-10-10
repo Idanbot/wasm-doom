@@ -16,6 +16,7 @@ import {
   APPROACHES,
 } from "./progression.mjs";
 import { startPlayer } from "./model-client.mjs";
+import { verifiedCompletion, completionStatus } from "./experiment-results.mjs";
 import { summarizeDecisions } from "./metrics.mjs";
 
 const out = process.env.BLACKSITE_AI_OUTPUT ?? ".blacksite/decider-experiments";
@@ -230,7 +231,7 @@ const aggregates = Object.fromEntries(
       a,
       {
         runs: runs.length,
-        completed: runs.filter((e) => e.completed).length,
+        completed: runs.filter(verifiedCompletion).length,
         deaths: runs.filter((e) => e.status === "PLAYER_FAILURE").length,
         inconclusive: runs.filter((e) => e.status === "INCONCLUSIVE").length,
         systemFailures: runs.filter((e) => e.status === "SYSTEM_FAILURE").length,
@@ -246,11 +247,7 @@ const report = {
   totalDecisions,
   decisionsUsed,
   systemStatus: failed ? "FAIL" : "PASS",
-  completionStatus: episodes.every((e) => e.completed)
-    ? "MET"
-    : episodes.some((e) => e.status === "INCONCLUSIVE")
-      ? "INCONCLUSIVE"
-      : "NOT_MET",
+  completionStatus: completionStatus(episodes),
   wallSeconds: (performance.now() - started) / 1000,
   aggregates,
   episodes,

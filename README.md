@@ -185,6 +185,12 @@ the player, and weapon switching waits for an active reload to finish. Regressio
 tests cover these cases plus full sector completion and exact replay from all
 five starting orientations. These controller tests use fixed tactical choices;
 they do not invoke Decider or replace the separate model-integration workflow.
+Combat steering retains a visible target through small distance changes, but
+switches immediately to a close threat or a substantially nearer enemy. Ammo
+collection compares each owned gun against two of its own magazines; abundant
+launcher rounds no longer mask an empty rifle. Completion reports count a win
+only after exact input replay succeeds, and system failures cannot be hidden by
+other scenarios exhausting their budget.
 Every resulting input segment is replayed exactly.
 The immutable checkpoint cache survives budget changes. This adds no shipped
 runtime dependency and needs no browser, GPU, cloud API or secrets.
