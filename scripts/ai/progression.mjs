@@ -1,7 +1,8 @@
-import { combatTarget, needsAmmo } from "./tactics.mjs";
+import { combatTarget, needsAmmo, combatAim, availableWeapons } from "./tactics.mjs";
 import { navigationTree } from "./navigation.mjs";
 import { INPUT, angle, observe, snapshot, step, fingerprint } from "./simulation.mjs";
 
+const MOVEMENT_MASK = INPUT.advance | INPUT.retreat | INPUT.strafe_left | INPUT.strafe_right;
 export const APPROACHES = Object.freeze(["compact", "persistent", "commander"]);
 const cellOf = (s) => Math.floor(s.hud.y) * s.width + Math.floor(s.hud.x);
 export function progressionMemory() {
@@ -254,15 +255,11 @@ function movementBits(relative) {
   return bits;
 }
 export function commanderUtility(h, v, m, target = v.visible[0]) {
-  const weapons = h.inventory
-    .filter((g) => g.magazine + g.reserve > 0)
-    .sort(
-      (a, b) =>
-        Number(b.id !== 1) - Number(a.id !== 1) ||
-        b.magazine + b.reserve - (a.magazine + a.reserve),
-    );
+  const weapons = availableWeapons(h.inventory);
   const bossTarget = target && target.skin >= 12 && target.skin <= 36;
-  const preferred = weapons.find((g) => g.id === (bossTarget ? 4 : target?.distance < 4 ? 2 : 3));
+  const preferred = weapons.find(
+    (g) => g.magazine > 0 && g.id === (bossTarget ? 4 : target?.distance < 4 ? 2 : 3),
+  );
   if (!h.reloading && preferred && preferred.id !== h.weapon + 1 && h.elapsedMs > m.equipUntil) {
     m.equipUntil = h.elapsedMs + 1500;
     return `equip_${preferred.id}`;
@@ -312,23 +309,23 @@ export function executeGoal(w, choices, m, approach, onFrame = () => {}) {
     let bits = 0,
       turn = 0,
       slot;
+    const engaging = combat === "engage" && target;
+    if (engaging) turn = angle(Math.atan2(target.y - h.y, target.x - h.x) - h.yaw);
+    else if (v.plan.route && movement === "navigate")
+      turn = angle(Math.atan2(v.plan.route.y - h.y, v.plan.route.x - h.x) - h.yaw);
+    else if (combat === "scan" && !target) turn = 0.18;
+    const { delta, aligned } = combatAim(turn),
+      facing = h.yaw + delta;
     if (
-      combat === "engage" &&
-      target &&
+      engaging &&
+      (!auto || aligned) &&
       h.ammo > 0 &&
       !h.reloading &&
       utility !== "reload" &&
+      !utility.startsWith("equip_") &&
       !v.splashRisk
-    ) {
-      turn = angle(Math.atan2(target.y - h.y, target.x - h.x) - h.yaw);
+    )
       bits |= INPUT.fire;
-    } else if (v.plan.route && movement === "navigate")
-      turn = angle(Math.atan2(v.plan.route.y - h.y, v.plan.route.x - h.x) - h.yaw);
-    else if (combat === "scan" && !target) {
-      turn = 0.18;
-    }
-    const delta = Math.max(-0.45, Math.min(0.45, turn)),
-      facing = h.yaw + delta;
     if (movement === "navigate" && v.plan.route) {
       const bearing = Math.atan2(v.plan.route.y - h.y, v.plan.route.x - h.x);
       const d = Math.hypot(v.plan.route.x - h.x, v.plan.route.y - h.y);
@@ -338,11 +335,11 @@ export function executeGoal(w, choices, m, approach, onFrame = () => {}) {
     if (auto && target) {
       // Orbit at medium range, retreat from close hostiles; ordinary WASD inputs.
       if (target.distance < 3.0) {
-        bits &= ~15;
+        bits &= ~MOVEMENT_MASK;
         bits |= INPUT.retreat;
         mark("evade");
       } else if (h.hurt > 0.1 || choices.goal !== "aggressive") {
-        bits &= ~15;
+        bits &= ~MOVEMENT_MASK;
         bits |= Math.floor(h.elapsedMs / 1400) % 2 ? INPUT.strafe_left : INPUT.strafe_right;
         mark("strafe");
       }
@@ -357,13 +354,13 @@ export function executeGoal(w, choices, m, approach, onFrame = () => {}) {
       // A route can notice a door before USE reaches it; approach while pulsing.
       const withinDoorReach =
         v.nearbyDoor && Math.hypot(v.plan.route.x - h.x, v.plan.route.y - h.y) < 1.1;
-      if (withinDoorReach || [3, 13].includes(h.prompt)) bits &= ~15;
+      if (withinDoorReach || [3, 13].includes(h.prompt)) bits &= ~MOVEMENT_MASK;
     }
     const gun = h.inventory.find(
       (g) => `equip_${g.id}` === utility && g.id !== h.weapon + 1 && g.magazine + g.reserve > 0,
     );
     if (gun) slot = gun.id - 1;
-    if (auto && bits & 15) {
+    if (auto && bits & MOVEMENT_MASK) {
       const safe = (b) => {
         let dx = 0,
           dy = 0;
@@ -399,14 +396,14 @@ export function executeGoal(w, choices, m, approach, onFrame = () => {}) {
         }
         return s.floor?.[Math.floor(y) * s.width + Math.floor(x)] !== 4;
       };
-      if (!safe(bits & 15)) {
+      if (!safe(bits & MOVEMENT_MASK)) {
         const alternative = [
           INPUT.strafe_left,
           INPUT.strafe_right,
           INPUT.retreat,
           INPUT.advance,
         ].find(safe);
-        bits = (bits & ~15) | (alternative ?? 0);
+        bits = (bits & ~MOVEMENT_MASK) | (alternative ?? 0);
         mark("avoid_wall_or_hazard");
       }
     }
@@ -427,7 +424,7 @@ export function executeGoal(w, choices, m, approach, onFrame = () => {}) {
     events |= interval.events;
     if (s.hud.elapsedMs - anchor.hud.elapsedMs >= 600) {
       if (
-        (bits & 15 || (utility === "interact" && v.nearbyDoor)) &&
+        (bits & MOVEMENT_MASK || (utility === "interact" && v.nearbyDoor)) &&
         Math.hypot(s.hud.x - anchor.hud.x, s.hud.y - anchor.hud.y) < 0.04
       )
         stall++;

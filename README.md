@@ -191,6 +191,10 @@ collection compares each owned gun against two of its own magazines; abundant
 launcher rounds no longer mask an empty rifle. Completion reports count a win
 only after exact input replay succeeds, and system failures cannot be hidden by
 other scenarios exhausting their budget.
+The commander tracks visible enemies while reloading and waits for large aim
+corrections to settle before firing. It also holds fire during weapon changes,
+avoids switching to an empty preferred gun, and prioritizes a loaded fallback
+when its current weapon is completely dry—even during the normal equip cooldown.
 Every resulting input segment is replayed exactly.
 The immutable checkpoint cache survives budget changes. This adds no shipped
 runtime dependency and needs no browser, GPU, cloud API or secrets.

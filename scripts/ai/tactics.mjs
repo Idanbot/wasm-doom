@@ -12,3 +12,22 @@ export function combatTarget(visible, previousId) {
 export function needsAmmo(inventory) {
   return inventory.some((gun) => gun.magazine + gun.reserve < gun.capacity * 2);
 }
+
+// Mouse movement is applied once before the six-frame input interval. Wait for
+// the residual aim error to shrink before spending ammunition (radians).
+export function combatAim(turn) {
+  const delta = Math.max(-0.45, Math.min(0.45, turn));
+  return { delta, aligned: Math.abs(turn - delta) <= 0.08 };
+}
+
+export function availableWeapons(inventory) {
+  return inventory
+    .filter((gun) => gun.magazine + gun.reserve > 0)
+    .sort(
+      (a, b) =>
+        Number(b.magazine > 0) - Number(a.magazine > 0) ||
+        Number(b.id !== 1) - Number(a.id !== 1) ||
+        b.magazine + b.reserve - (a.magazine + a.reserve) ||
+        a.id - b.id,
+    );
+}

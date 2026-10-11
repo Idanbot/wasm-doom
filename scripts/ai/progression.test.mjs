@@ -116,6 +116,45 @@ test("commander finishes an ongoing reload before switching to a preferred weapo
   assert.equal(m.equipUntil, 3500);
 });
 
+test("commander avoids an empty preferred rifle while its current pistol can fire", () => {
+  const h = {
+      weapon: 0,
+      ammo: 12,
+      reserve: 20,
+      reloading: false,
+      elapsedMs: 2000,
+      prompt: 0,
+      inventory: [
+        { id: 1, magazine: 12, reserve: 20 },
+        { id: 3, magazine: 0, reserve: 216 },
+      ],
+    },
+    v = { visible: [{ skin: 1, distance: 8 }], nearbyDoor: false, magazineCapacity: 12 };
+  assert.equal(commanderUtility(h, v, progressionMemory()), "nothing");
+  h.ammo = 0;
+  assert.equal(commanderUtility(h, v, progressionMemory()), "reload");
+});
+
+test("a completely dry gun switches to a loaded fallback despite the normal equip cooldown", () => {
+  const h = {
+      weapon: 3,
+      ammo: 0,
+      reserve: 0,
+      reloading: false,
+      elapsedMs: 2000,
+      prompt: 0,
+      inventory: [
+        { id: 4, magazine: 0, reserve: 0 },
+        { id: 1, magazine: 12, reserve: 0 },
+        { id: 7, magazine: 0, reserve: 450 },
+      ],
+    },
+    v = { visible: [{ skin: 12, distance: 8 }], nearbyDoor: false, magazineCapacity: 5 },
+    m = progressionMemory();
+  m.equipUntil = 3500;
+  assert.equal(commanderUtility(h, v, m), "equip_1");
+});
+
 test("compact schemas accept only offered actions and commander is explicitly a high-level executor", async () => {
   const { w } = await loadScenario();
   const m = progressionMemory(),
