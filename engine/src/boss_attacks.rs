@@ -354,7 +354,7 @@ impl Engine {
                     self.resolve_boss_attack(i);
                 } else {
                     self.boss_attack.stage = 0;
-                    self.ents[i].timer = 0.55; // reset instead of retaining a stale cooldown
+                    self.ents[i].timer = crate::boss_movement::reposition_time(map::level_index(self.wave));
                     set_anim(&mut self.ents[i], ANIM_IDLE, 0.2);
                 }
             }

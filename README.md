@@ -71,7 +71,10 @@ atmospheric particle profile.
 - 25 sectors, each with its own layout, enemy cast, machinery and boss.
   Each boss now has a gun-inspired, locked attack warning and an exposed recovery
   window; the HUD shows its dodge instruction and preferred counter weapon role.
-  See [boss counterplay](docs/BOSS_COUNTERPLAY.md).
+  Each boss also has authored footwork between attacks, with its own spacing,
+  tempo and direction; warnings and recovery windows remain stationary.
+  See [boss counterplay](docs/BOSS_COUNTERPLAY.md) and
+  [movement patterns](docs/BOSS_MOVEMENT.md).
 - Sector loop: complete the node objective, activate the override station,
   defeat the boss, collect the reward case.
 - 33 weapons — 19 standard plus one exclusive reward per boss — with magazine,

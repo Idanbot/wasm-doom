@@ -14,6 +14,7 @@ mod sim;
 mod textures;
 mod boss_arena;
 mod boss_attacks;
+mod boss_movement;
 mod tactical;
 mod tactical_roles;
 mod combat;
@@ -690,7 +691,11 @@ impl Engine {
                         continue;
                     }
                     let (ex0, ey0) = (e.x, e.y);
-                    if dist > hold {
+                    if kind == EK_BOSS && clear {
+                        let (mx, my) = boss_movement::steering(map::level_index(self.wave), self.boss_phase, self.time, dx, dy);
+                        e.x += mx * spd * dt;
+                        e.y += my * spd * dt;
+                    } else if dist > hold {
                         if clear {
                             e.x += dx / dist * spd * dt;
                             e.y += dy / dist * spd * dt;
