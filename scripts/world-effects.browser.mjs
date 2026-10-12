@@ -89,10 +89,12 @@ test("GPU refraction respects depth; lit dust responds to muzzle light; HD casin
   } finally {await browser.close();}
 });
 
+// Keep real gameplay at a bounded software-GPU size; desktop/mobile layout is
+// covered separately by browser-smoke. Audio assertions follow simulation time.
 test("actual gameplay preloads new clips, plays casing landings and sector ambience, and pauses them",async()=>{
   const browser=await chromium.launch({headless:true});
   try {
-    const page=await browser.newPage({viewport:{width:1280,height:800}}),errors=[];
+    const page=await browser.newPage({viewport:{width:640,height:400}}),errors=[];
     page.on("pageerror",e=>errors.push(e.message));
     await page.addInitScript(()=>localStorage.setItem("blacksite-res","320"));
     const url=new URL(process.env.BLACKSITE_TEST_URL??"http://127.0.0.1:8080/");url.searchParams.set("qa","1");
@@ -122,7 +124,7 @@ test("actual gameplay preloads new clips, plays casing landings and sector ambie
 test("boss entrance preloads eight effects, advances five stages and freezes when paused",async()=>{
   const browser=await chromium.launch({headless:true});
   try {
-    const page=await browser.newPage({viewport:{width:1280,height:800}}),errors=[];
+    const page=await browser.newPage({viewport:{width:640,height:400}}),errors=[];
     page.on("pageerror",e=>errors.push(e.message));
     await page.addInitScript(()=>{localStorage.setItem("blacksite-res","320");performance.setResourceTimingBufferSize(5000);});
     const url=new URL(process.env.BLACKSITE_TEST_URL??"http://127.0.0.1:8080/");url.searchParams.set("qa","1");

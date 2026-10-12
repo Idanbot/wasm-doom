@@ -93,3 +93,29 @@ test("eight native-alpha boss entrance motifs have valid hashes and texture slot
     assert.equal(png[25],6);assert.equal(a.alpha,"native");
   }
 });
+
+test("boss phase atmosphere fires once per transition, freezes without ticks, clears on death and sector change", () => {
+  const fx = new WorldEffects();
+  fx.tick(.01, 11); fx.updateBoss(0, true);
+  assert.equal(fx.bossAtmosphere().pulse, 1);
+  assert.equal(fx.bossAtmosphere().phase, 1);
+  fx.tick(.7, 11); fx.updateBoss(0, true);
+  assert.ok(Math.abs(fx.bossAtmosphere().pulse - .5) < .001);
+  const frozen = fx.bossAtmosphere();
+  for (let i = 0; i < 60; i++) assert.deepEqual(fx.bossAtmosphere(), frozen);
+  fx.updateBoss(1, true);
+  assert.equal(fx.bossAtmosphere().pulse, 1);
+  assert.equal(fx.bossAtmosphere().phase, 2);
+  fx.tick(2, 11); fx.updateBoss(1, true);
+  assert.equal(fx.bossAtmosphere().pulse, 0);
+  fx.updateBoss(0, false); assert.equal(fx.bossAtmosphere(), undefined);
+  fx.updateBoss(2, true); fx.tick(.01, 12);
+  assert.equal(fx.bossAtmosphere(), undefined);
+  const colors = new Set();
+  for (let wave = 1; wave <= 25; wave++) {
+    fx.tick(.01, wave); fx.updateBoss(0, true);
+    colors.add(fx.bossAtmosphere().color.join(","));
+    assert.ok(fx.bossAtmosphere().color.every(c => c >= 0 && c <= 1));
+  }
+  assert.equal(colors.size, 25);
+});

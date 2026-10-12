@@ -1455,6 +1455,7 @@ export class BlacksiteRuntime {
         const profile = sectorEffect(effectWave);
         this.audio.sectorAccent(profile.index);
       }
+      this.worldEffects.updateBoss(effectHud.getInt32(128, true), effectHud.getInt32(120, true) > 0);
       // Drain world cues and the compact weapon state on every fixed step.
       // The complete HUD is decoded once below.
       this.sfxFromEvents(wasm.hs_events(), wasm.hs_ev_weapon());
@@ -1528,7 +1529,7 @@ export class BlacksiteRuntime {
     const w = wasm.hs_fb_w();
     const h = wasm.hs_fb_h();
     const fx = { muzzle: hud.muzzle, hurt: hud.hurt, time: this.worldEffects.time, boss,
-      hurtDir: hud.hurtDir, strain: hud.strain,
+      hurtDir: hud.hurtDir, strain: hud.strain, encounter: this.worldEffects.bossAtmosphere(),
       entrance: this.worldEffects.projectEntrance(hud,w/h), sector: hud.wave, yaw: hud.yaw, shocks: this.worldEffects.project(hud, w / h) };
     let presented = false;
     if (this.gpuReady && blit.drawWorld) {

@@ -1,3 +1,4 @@
+import { MATERIAL_WGSL, MATERIAL_GL } from "./world-materials";
 import BOSS_ARENAS from "./boss-arena-data.json";
 import {
   VIEW_FLOATS,
@@ -135,6 +136,8 @@ fn sigil(level: i32, u: f32, v: f32) -> vec4<f32> {
   return vec4<f32>(0.95, 0.62, 0.22, max(ring, max(slit, iris * 0.85)));
 }
 
+${MATERIAL_WGSL}
+
 @fragment
 fn fs(inp: VSOut) -> @location(0) vec4<f32> {
   let w = max(view.v[2].z, 1.0);
@@ -167,7 +170,11 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
     rgb = clamp(rgb * clamp(vec3<f32>(dist) + light, vec3<f32>(0.18), vec3<f32>(1.8)), vec3<f32>(0.0), vec3<f32>(1.0));
     let cam = 2.0 * (f32(x) + 0.5) / w - 1.0;
     let ray = view.v[0].zw + view.v[1].xy * cam;
-  rgb = through_smoke(rgb, view.v[0].x, view.v[0].y, view.v[0].x + perp * ray.x, view.v[0].y + perp * ray.y);
+    let hit = view.v[0].xy + perp * ray;
+    rgb = surface_finish(rgb, vec2<f32>(hit.x + hit.y, ty / 256.0), perp, false, 0.0);
+    let panel = 1.0 - smoothstep(0.015, 0.08, abs(fract(tex_x / 256.0) - 0.5));
+    rgb += max(light, vec3<f32>(0.0)) * panel * 0.055 / (1.0 + perp * 0.1);
+    rgb = lit_air(through_smoke(rgb, view.v[0].x, view.v[0].y, hit.x, hit.y), view.v[0].xy, hit, 1.0 - inp.uv.y);
     return vec4<f32>(rgb, clamp(perp / 28.0, 0.0, 1.0));
   }
   let p = f32(py) - view.v[1].z;
@@ -203,7 +210,7 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
       let shade_k = 0.72 + 0.2 / (1.0 + dist * 0.2) + muzzle * 0.45 / (1.0 + dist * dist);
       let lit = light_at(fx, fy) * 1.35;
       rgb = clamp(rgb * clamp(vec3<f32>(shade_k) + lit, vec3<f32>(0.16), vec3<f32>(2.2)), vec3<f32>(0.0), vec3<f32>(1.0));
-      rgb = through_smoke(rgb, view.v[0].x, view.v[0].y, fx, fy);
+      rgb = lit_air(through_smoke(rgb, view.v[0].x, view.v[0].y, fx, fy), view.v[0].xy, vec2<f32>(fx, fy), 1.0 - inp.uv.y);
       return vec4<f32>(rgb, clamp(dist / 28.0, 0.0, 1.0));
     } else if (style > 0.5) {
       id = 6;
@@ -228,7 +235,8 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
     else {mark=fract(uv.y*9.0)<0.14 && uv.x>0.2 && uv.x<0.8;}
     if (mark) {rgb=mix(rgb,vec3<f32>(0.463,0.557,0.569),0.42);}
   }
-  rgb = through_smoke(rgb, view.v[0].x, view.v[0].y, fx, fy);
+  rgb = surface_finish(rgb, vec2<f32>(fx, fy), dist, on_floor, style);
+  rgb = lit_air(through_smoke(rgb, view.v[0].x, view.v[0].y, fx, fy), view.v[0].xy, vec2<f32>(fx, fy), 1.0 - inp.uv.y);
   return vec4<f32>(rgb, clamp(dist / 28.0, 0.0, 1.0));
 }
 `;
@@ -600,6 +608,7 @@ vec3 lightAt(vec2 w) {
   vec3 d = texelFetch(lightTex, i + ivec2(1, 1), 0).rgb;
   return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
 }
+${MATERIAL_GL}
 void main() {
   float w = max(view2.z, 1.0);
   float h = max(view2.w, 1.0);
@@ -621,6 +630,12 @@ void main() {
     float dist = (1.0 / (1.0 + c0.x * 0.12)) * sideMul + view2.y * 0.55 / (1.0 + c0.x * c0.x * 0.3);
     vec3 light = vec3(c0.z, c0.w, c1.x);
     rgb = clamp(rgb * clamp(vec3(dist) + light, vec3(0.18), vec3(1.8)), vec3(0.0), vec3(1.0));
+    vec2 ray = view0.zw + view1.xy * (2.0 * (float(x) + 0.5) / w - 1.0);
+    vec2 hit = view0.xy + c0.x * ray;
+    rgb = surfaceFinish(rgb, vec2(hit.x + hit.y, ty / 256.0), c0.x, false, 0.0);
+    float panel = 1.0 - smoothstep(.015, .08, abs(fract(c0.y / 256.0) - .5));
+    rgb += max(light, vec3(0.0)) * panel * .055 / (1.0 + c0.x * .1);
+    rgb = litAir(rgb, view0.xy, hit, 1.0 - vUv.y);
     outColor = vec4(rgb, clamp(c0.x / 28.0, 0.0, 1.0));
     return;
   }
@@ -649,6 +664,7 @@ void main() {
       sealed = mix(sealed, mark.rgb, mark.a * (1.0 - smoothstep(0.92, 1.02, length(p))));
       float shadeK = 0.72 + 0.2 / (1.0 + dist * 0.2) + view2.y * 0.45 / (1.0 + dist * dist);
       sealed = clamp(sealed * clamp(vec3(shadeK) + lightAt(vec2(fx, fy)) * 1.35, vec3(0.16), vec3(2.2)), vec3(0.0), vec3(1.0));
+      sealed = litAir(sealed, view0.xy, vec2(fx, fy), 1.0 - vUv.y);
       outColor = vec4(sealed, clamp(dist / 28.0, 0.0, 1.0));
       return;
     } else if (style > 0.5) id = 6;
@@ -669,6 +685,8 @@ void main() {
     bool mark=style<5.5 ? abs(uv.x-uv.y*.25-.25)<.018 || abs(uv.x-uv.y*.25-.61)<.018 : style<6.5 ? abs(uv.x-.35)<.025 || abs(uv.x-.65)<.025 : fract(uv.y*9.0)<.14 && uv.x>.2 && uv.x<.8;
     if(mark)rgb=mix(rgb,vec3(.463,.557,.569),.42);
   }
+  rgb = surfaceFinish(rgb, vec2(fx, fy), dist, onFloor, style);
+  rgb = litAir(rgb, view0.xy, vec2(fx, fy), 1.0 - vUv.y);
   outColor = vec4(rgb, clamp(dist / 28.0, 0.0, 1.0));
 }
 `;
@@ -685,7 +703,10 @@ function glProgram(gl: WebGL2RenderingContext, vsSrc: string, fsSrc: string): We
   gl.attachShader(prog, vs);
   gl.attachShader(prog, fs);
   gl.linkProgram(prog);
-  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return null;
+  const linked = gl.getProgramParameter(prog, gl.LINK_STATUS);
+  const diagnostics = linked ? "" : [gl.getShaderInfoLog(vs), gl.getShaderInfoLog(fs), gl.getProgramInfoLog(prog)].filter(Boolean).join("\n");
+  gl.deleteShader(vs); gl.deleteShader(fs);
+  if (!linked) { gl.deleteProgram(prog); throw new Error(`World shader failed: ${diagnostics}`); }
   return prog;
 }
 
@@ -942,3 +963,5 @@ export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
     },
   };
 }
+
+export const WORLD_SHADER_SOURCES = { fillWgsl: FILL_WGSL, spriteWgsl: SPRITE_WGSL };

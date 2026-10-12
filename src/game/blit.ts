@@ -13,6 +13,7 @@ export type BlitFx = {
   yaw?: number;
   shocks?: Shockwave[];
   entrance?: Entrance;
+  encounter?: { phase: number; pulse: number; color: number[] };
   /** Yaw-relative bearing (radians) of the last damage source. */
   hurtDir?: number;
   /** 0..1 low-health strain. */
@@ -50,8 +51,9 @@ function writeEffectUniforms(data: Float32Array, fx?: BlitFx) {
   // `feedback`: x = directional hurt bearing, y = low-health strain.
   data[48] = fx?.hurtDir ?? 0;
   data[49] = fx?.strain ?? 0;
-  data[50] = 0;
-  data[51] = 0;
+  data[50] = fx?.encounter?.phase ?? 0;
+  data[51] = fx?.encounter?.pulse ?? 0;
+  if (fx?.encounter) data.set(fx.encounter.color, 12);
 }
 
 export async function createBlitter(
@@ -279,6 +281,17 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
   let scan = select(1.0, pow(abs(sin(q.y * 55.0 + u.time * drift * 3.0)), 12.0), kind == 3.0 || kind == 7.0);
   let ion = select(1.0, 0.45 + 0.55 * abs(sin(q.x * 16.0 - u.time * drift * 2.0)), kind == 4.0 || kind == 5.0);
   c = vec4<f32>(c.rgb + u.atmosphere.rgb * (mote * twinkle * scan * ion * 0.28 + haze * 0.025) * light * depthMask, depth);
+  if (u.feedback.z > 0.0) {
+    // Palette shift and an expanding phase ripple touch distant world pixels;
+    // zero-depth weapon pixels keep their authored colours.
+    let world = smoothstep(0.015, 0.10, depth);
+    let phase = u.feedback.z;
+    let pulse = u.feedback.w;
+    let radius = length((inp.uv - 0.5) * vec2<f32>(aspect, 1.0));
+    let wave = exp(-abs(radius - (1.0 - pulse) * 0.85) * 45.0) * pulse;
+    let energy = (0.018 * phase + 0.035 * pulse + wave * 0.12) * world;
+    c = vec4<f32>(mix(c.rgb, c.rgb * (vec3<f32>(0.86) + u.atmosphere.rgb * 0.22), world * 0.3) + u.atmosphere.rgb * energy, depth);
+  }
   if (u.entranceColor.w > 0.0) {
     let ep = (inp.uv-u.entrance.xy)*vec2<f32>(aspect,1.0);
     let radius=length(ep);let phase=u.entrance.z;
@@ -864,6 +877,14 @@ void main(){
   float scan = atmosphere.w==3.0||atmosphere.w==7.0?pow(abs(sin(q.y*55.0+time*motion.y*3.0)),12.0):1.0;
   float ion = atmosphere.w==4.0||atmosphere.w==5.0?.45+.55*abs(sin(q.x*16.0-time*motion.y*2.0)):1.0;
   rgb += atmosphere.rgb*(mote*(.45+.55*flicker*flicker)*scan*ion*.28+haze*.025)*light*smoothstep(.015,.12,raw.a);
+  if (feedback.z > 0.0) {
+    float world = smoothstep(.015,.10,raw.a);
+    float pulse = feedback.w;
+    float radius = length((v-.5)*vec2(aspect,1.0));
+    float wave = exp(-abs(radius-(1.0-pulse)*.85)*45.0)*pulse;
+    float energy = (.018*feedback.z+.035*pulse+wave*.12)*world;
+    rgb = mix(rgb,rgb*(vec3(.86)+atmosphere.rgb*.22),world*.3)+atmosphere.rgb*energy;
+  }
   if(entranceColor.w>0.0) {
     vec2 ep=(v-entrance.xy)*vec2(aspect,1.0);
     float radius=length(ep),phase=entrance.z;
@@ -1094,6 +1115,17 @@ function createCanvas2dBlit(canvas: HTMLCanvasElement): Blitter {
           const sy = Math.max(0, Math.min(h - 1, y / dh * h + dy / Math.max(r, .001) * amount * h));
           ctx.drawImage(off, sx, sy, Math.min(tile / dw * w, w - sx), Math.min(tile / dh * h, h - sy), x, y, tile, tile);
         }
+      }
+      if (fx?.encounter) {
+        const e = fx.encounter;
+        ctx.save(); ctx.globalCompositeOperation = "screen";
+        ctx.fillStyle = `rgba(${e.color.map(c => Math.round(c * 255)).join(",")},${.015 * e.phase + .05 * e.pulse})`;
+        const tile = Math.max(8, Math.ceil(dh / 32));
+        for (let y = 0; y < dh; y += tile) for (let x = 0; x < dw; x += tile) {
+          const px = Math.min(w - 1, Math.floor(x / dw * w)), py = Math.min(h - 1, Math.floor(y / dh * h));
+          if (pixels[(py * w + px) * 4 + 3]! > 25) ctx.fillRect(x, y, tile, tile);
+        }
+        ctx.restore();
       }
       if (fx?.sector !== undefined) {
         const profile = sectorEffect(fx.sector);

@@ -980,3 +980,41 @@ fn reload_draws_reserve_and_blocks_the_trigger() {
     assert_eq!(e.reload_t, 0.0);
     assert_eq!(e.mag[0], 0);
 }
+
+#[test]
+fn indirect_lighting_preserves_energy_and_cannot_cross_a_sealed_wall() {
+    let mut e = arena();
+    for y in 0..MAP_H { e.set_cell(8, y as i32, 1); }
+    e.light_grid.fill([0.0; 3]);
+    let origin = 4 * MAP_W + 6;
+    e.light_grid[origin] = [1.0, 0.4, 0.1];
+    e.bounce_light();
+    assert!(e.light_grid[origin][0] >= 1.0 && e.light_grid[origin][0] < 1.04,
+        "direct illumination must not be counted twice: {:?}", e.light_grid[origin]);
+    assert!(e.light_grid[origin + 1][0] > 0.0);
+    assert!(e.light_grid[origin + 1][0] > e.light_grid[origin + 1][1]);
+    for y in 0..MAP_H { for x in 8..MAP_W { assert_eq!(e.light_grid[y * MAP_W + x], [0.0; 3]); } }
+    assert!(e.light_grid.iter().flatten().all(|v| v.is_finite() && *v >= 0.0));
+}
+
+#[test]
+fn reactor_light_and_boss_phase_palette_are_read_only_and_clear_after_death() {
+    let mut e = arena();
+    let reactor = e.spawn(EK_PROP_REACTOR, 12.5, 12.5).unwrap();
+    e.wave = 5; e.light_dirty = true;
+    e.update_lighting();
+    let light = e.light_at(e.ents[reactor].x, e.ents[reactor].y);
+    assert!(light[1] > light[0] && light[1] > light[2]);
+    let boss = e.spawn(EK_BOSS, 30.5, 20.5).unwrap();
+    e.boss_phase = 0; e.update_lighting();
+    let baseline = e.light_at(4.5, 4.5);
+    let rng = e.rng; let elapsed = e.elapsed;
+    e.boss_phase = 2; e.update_lighting();
+    let hot = e.light_at(4.5, 4.5);
+    assert!(hot.iter().zip(baseline).any(|(h, b)| *h > b));
+    let stable = e.light_grid.clone(); e.update_lighting();
+    assert_eq!(e.light_grid, stable);
+    assert_eq!(e.rng, rng); assert_eq!(e.elapsed, elapsed);
+    e.ents[boss].hp = 0; e.update_lighting();
+    assert!(e.light_at(4.5, 4.5).iter().zip(hot).any(|(l, h)| *l < h));
+}

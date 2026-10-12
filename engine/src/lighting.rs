@@ -188,6 +188,9 @@ impl Engine {
                     self.add_light(&mut grid, e.x, e.y, 5.4, [0.62, 0.18, 0.04]);
                 } else if matches!(e.kind, EK_TERMINAL | EK_NODE | EK_OVERRIDE_CONSOLE) {
                     self.add_light(&mut grid, e.x, e.y, 6.4, [0.16, 0.42, 0.62]);
+                } else if matches!(e.kind, EK_PROP_REACTOR | EK_PROP_SERVER | EK_POWER) {
+                    let tint = Self::sector_tint(self.wave);
+                    self.add_light(&mut grid, e.x, e.y, 5.8, tint.map(|c| c * 0.34));
                 } else if e.kind == EK_PROP_WLIGHT_C {
                     self.add_light(&mut grid, e.x, e.y, 6.0, [0.20, 0.70, 0.80]);
                 } else if e.kind == EK_PROP_WLIGHT_W {
@@ -290,6 +293,18 @@ impl Engine {
             let power = self.muzzle * if self.weapon == 0 { 0.28 } else { 0.72 };
             self.add_light(&mut grid, self.px, self.py, 5.2, [power, power * 0.55, power * 0.18]);
         }
+        // Active encounters pulse the arena palette. The read-only render path
+        // uses simulation time, so pause freezes the atmosphere and RNG is untouched.
+        if self.ents.iter().any(|e| e.kind == EK_BOSS && e.hp > 0) {
+            let profile = boss_arena::PROFILES[map::level_index(self.wave)];
+            let pulse = (self.time * (0.8 + self.boss_phase as f32 * 0.35)).sin();
+            let energy = 0.025 + self.boss_phase as f32 * 0.012 + pulse * pulse * 0.025;
+            for (i, cell) in grid.iter_mut().enumerate() {
+                if !self.blocked((i % MAP_W) as i32, (i / MAP_W) as i32) {
+                    for c in 0..3 { cell[c] += profile.color[c] * energy; }
+                }
+            }
+        }
         if self.boss_arena.armed && self.boss_arena.stage != 0 {
             let color=boss_arena::PROFILES[map::level_index(self.wave)].color;
             let intensity=if self.boss_arena.stage==4 {0.44}else{0.10};
@@ -301,17 +316,10 @@ impl Engine {
         self.bounce_light();
     }
 
-    /// Two passes at decreasing weight. A single pass stopped light dead at
-    /// wall corners; the second lets it wrap one cell further, which is what
-    /// makes a lit doorway read as connected to the room beyond.
-    /// Two diffusion passes at decreasing weight, ping-ponging between the two
-    /// scratch buffers so no pass can cascade within itself. One pass left
-    /// light dead at wall corners; the second lets it wrap a cell further,
-    /// which is what makes a lit doorway read as connected to the room beyond.
-    /// Diffuses light from `src` into `dst` by a fraction of each open cell's
-    /// mean neighbour brightness. `src` and `dst` must be distinct buffers so a
-    /// pass cannot cascade within itself.
+    /// Diffuse only indirect energy into open neighbouring cells. Destination
+    /// is cleared each pass so direct illumination is never counted twice.
     pub(crate) fn bounce_pass(&self, src: &[[f32; 3]], dst: &mut [[f32; 3]], weight: f32) {
+        dst.fill([0.0; 3]);
         for y in 1..MAP_H - 1 {
             for x in 1..MAP_W - 1 {
                 if self.blocked(x as i32, y as i32) { continue; }
@@ -338,11 +346,13 @@ impl Engine {
     pub(crate) fn bounce_light(&mut self) {
         let mut grid = core::mem::take(&mut self.light_grid);
         let mut scratch = core::mem::take(&mut self.light_src);
-        scratch.copy_from_slice(&grid);
-        self.bounce_pass(&scratch, &mut grid, 0.22);
+        self.bounce_pass(&grid, &mut scratch, 0.22);
+        for (cell, indirect) in grid.iter_mut().zip(scratch.iter()) {
+            for c in 0..3 { cell[c] += indirect[c]; }
+        }
         self.bounce_pass(&grid, &mut scratch, 0.10);
-        for (cell, extra) in grid.iter_mut().zip(scratch.iter()) {
-            for c in 0..3 { cell[c] += extra[c]; }
+        for (cell, indirect) in grid.iter_mut().zip(scratch.iter()) {
+            for c in 0..3 { cell[c] += indirect[c]; }
         }
         self.light_grid = grid;
         self.light_src = scratch;

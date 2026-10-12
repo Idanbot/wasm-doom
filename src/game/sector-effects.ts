@@ -45,19 +45,35 @@ export type Shockwave = { x: number; y: number; radius: number; depth: number; s
 export class WorldEffects {
   time = 0;
   private wave = 0;
+  private bossPhase = 0;
+  private phasePulse = 0;
   private entrance: {x:number;y:number;age:number;duration:number;style:number} | null = null;
   private nextAccent = 3;
   private shocks: { x: number; y: number; age: number }[] = [];
-  reset() { this.time = 0; this.wave = 0; this.nextAccent = 3; this.shocks = []; this.entrance = null; }
+  reset() { this.time = 0; this.wave = 0; this.nextAccent = 3; this.shocks = []; this.entrance = null; this.bossPhase = 0; this.phasePulse = 0; }
   tick(dt: number, wave: number): boolean {
     if (wave !== this.wave) { this.reset(); this.wave = wave; }
     this.time += dt;
+    this.phasePulse = Math.max(0, this.phasePulse - dt / 1.4);
     if (this.entrance) {this.entrance.age += dt;if(this.entrance.age>=this.entrance.duration)this.entrance=null;}
     for (const s of this.shocks) s.age += dt;
     this.shocks = this.shocks.filter(s => s.age < .75);
     if (this.time < this.nextAccent) return false;
     this.nextAccent = this.time + sectorEffect(wave).interval;
     return true;
+  }
+  /** Called on fixed simulation steps; rendering cannot restart a phase pulse. */
+  updateBoss(phase: number, alive: boolean) {
+    const next = alive ? Math.max(1, Math.min(4, Math.floor(phase) + 1)) : 0;
+    if (next > this.bossPhase) this.phasePulse = 1;
+    if (!alive) this.phasePulse = 0;
+    this.bossPhase = next;
+  }
+  bossAtmosphere() {
+    if (!this.bossPhase) return undefined;
+    const profile = bossProfiles[sectorEffect(this.wave).index]!;
+    return { phase: this.bossPhase, pulse: this.phasePulse,
+      color: [0, 2, 4].map(i => parseInt(profile.color.slice(i, i + 2), 16) / 255) };
   }
   bossEntrance(x:number,y:number,variant:number) {
     const style=Math.floor(variant/5),stage=variant%5;

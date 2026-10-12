@@ -215,3 +215,10 @@ production builds. The asset catalogue lives at `/catalog` on the local server.
 If the world renders incorrectly after a graphics reset, **Settings → Display →
 Reload all assets** re-fetches and re-uploads every texture, sprite and weapon
 sheet.
+
+BLACKSITE now adds sector-specific cosmetic surface layers, wet-floor ceiling/light
+reflections, illuminated dust shafts, colored machinery bounce light, and boss
+phase palette pulses. WebGPU and WebGL2 share these effects; Canvas2D uses reduced
+atmosphere effects. Reflections use local probes rather than hardware ray tracing.
+See [world material contracts](art/world-materials-v1/README.md) for quality limits
+and regression coverage.
