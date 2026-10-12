@@ -2,12 +2,12 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { T_RELOAD_DEBRIS, TEX_N } from '../src/game/atlas-slots.ts';
+import { T_RELOAD_DEBRIS, T_WEAPON_FEED } from '../src/game/atlas-slots.ts';
 
 test('reload debris has four verified RGBA sheets and dedicated atlas slots', () => {
   const manifest = JSON.parse(readFileSync('art/weapon-debris-v1/manifest.json'));
   assert.equal(manifest.assets.length, 4);
-  assert.equal(TEX_N - T_RELOAD_DEBRIS, 4);
+  assert.equal(T_WEAPON_FEED - T_RELOAD_DEBRIS, 4);
   for (const asset of manifest.assets) {
     const bytes = readFileSync(asset.file);
     assert.equal(createHash('sha256').update(bytes).digest('hex'), asset.sha256);

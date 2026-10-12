@@ -17,11 +17,11 @@
   },
   {
     "weapon": "ax12",
-    "removed_pixels": 293
+    "removed_pixels": 820
   },
   {
     "weapon": "m91",
-    "removed_pixels": 229
+    "removed_pixels": 902
   },
   {
     "weapon": "vr9",
@@ -49,7 +49,7 @@
   },
   {
     "weapon": "vx2",
-    "removed_pixels": 4870
+    "removed_pixels": 6812
   },
   {
     "weapon": "lv8",
@@ -65,7 +65,7 @@
   },
   {
     "weapon": "bm3",
-    "removed_pixels": 1085
+    "removed_pixels": 1422
   },
   {
     "weapon": "my9",
@@ -77,7 +77,7 @@
   },
   {
     "weapon": "sc6",
-    "removed_pixels": 804
+    "removed_pixels": 2180
   },
   {
     "weapon": "ub1",
@@ -85,7 +85,7 @@
   },
   {
     "weapon": "sl12",
-    "removed_pixels": 325
+    "removed_pixels": 655
   },
   {
     "weapon": "nt4",
@@ -93,11 +93,11 @@
   },
   {
     "weapon": "ch8",
-    "removed_pixels": 460
+    "removed_pixels": 771
   },
   {
     "weapon": "bo11",
-    "removed_pixels": 1082
+    "removed_pixels": 1354
   },
   {
     "weapon": "sv25",

@@ -499,7 +499,11 @@ impl Engine {
         self.reload_t = self.reload_dur;
         self.events |= EV_RELOAD;
         // Feed removal is the first reload pose. Emit once, not on refill ticks.
-        if let Some(material) = match w { 7 => Some(2), 10 => Some(3), 24 => Some(4), 20 => Some(5), _ => None } {
+        if let Some(material) = match w {
+            1 => None, // BR-12 inserts shells into its fixed tube.
+            7 => Some(2), 10 => Some(3), 24 => Some(4), 20 => Some(5),
+            _ => Some(6 + w as u8),
+        } {
             self.eject_debris(material);
         }
     }
@@ -901,8 +905,15 @@ impl Engine {
         let (x, y) = (self.px + self.pa.cos() * 0.55 + rx * 0.18,
                       self.py + self.pa.sin() * 0.55 + ry * 0.18);
         let (x, y) = if self.circle_blocked(x, y, 0.06) { (self.px, self.py) } else { (x, y) };
-        let jx = 1.2 + self.rnd();
-        let jy = 1.2 + self.rnd();
+        let (jx, jy) = if material >= 6 {
+            // New cosmetic feeds must not advance the combat random stream.
+            let hash = self.time.to_bits().rotate_left(11) ^ self.px.to_bits()
+                ^ self.py.to_bits().rotate_left(7) ^ (material as u32).wrapping_mul(2654435761);
+            (1.2 + (hash & 1023) as f32 / 1024.0,
+             1.2 + ((hash >> 10) & 1023) as f32 / 1024.0)
+        } else {
+            (1.2 + self.rnd(), 1.2 + self.rnd())
+        };
         let pax = self.pa.cos() * 0.2;
         let pay = self.pa.sin() * 0.2;
         let slot = self.fx_n;

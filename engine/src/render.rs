@@ -646,20 +646,7 @@ impl Engine {
                     }
                     tex_y += ov;
                     let mut col = self.sample(tid, tex_x, tex_y);
-                    if e.kind == EK_RAY {
-                        let nx = (stripe as f32 - screen_x) / (sprite_w * 0.5).max(0.001);
-                        let ny = (y as f32 - (horizon + voff)) / (sprite_h * 0.5).max(0.001);
-                        let rad = nx * nx + ny * ny;
-                        if rad >= 1.0 {
-                            continue;
-                        }
-                        let core = (1.0 - rad).powf(2.2);
-                        col = if e.zoff >= 11.0 {
-                            Self::pack(255, (148.0 + core * 90.0) as u32, (34.0 + core * 150.0) as u32, (core * 235.0) as u32)
-                        } else {
-                            Self::pack((115.0 + core * 140.0) as u32, (210.0 + core * 45.0) as u32, 255, (core * 230.0) as u32)
-                        };
-                    } else {
+                    {
                         let a = (col >> 24) & 255;
                         if a < 16 {
                             continue;

@@ -1,0 +1,363 @@
+{
+  "provider": "OpenAI imagegen (built-in)",
+  "assets": [
+    {
+      "id": "enemy_hornet",
+      "category": "projectile",
+      "prompt": "Use case: stylized-concept. High quality realistic BLACKSITE FPS projectile asset replacing enemy_hornet. Reference image supplies identity and palette, not its old sideways orientation. Create mechanical silver teal energy projectile with small sharp white core, intricate contained electrical filaments and subtle vapor, incoming, facing directly toward camera, leading tip or emitter clearly visible. Centered head-on axial view along flight direction, mostly compact circular/faceted silhouette, strong legible metal/energy core, fine restrained cyan blue emissive accents, detailed physically plausible surfaces and delicate transparent glow. Sharp center, beautiful premium sci-fi VFX. Native transparent background; standalone single projectile, generous padding, no ground shadows, no hands/weapons/text, no sideways missile profile, no long vertical torch, no big featureless blue orb. Square 1024x1024.",
+      "reference": "public/game/projectiles/enemy_hornet.png",
+      "source": "art/projectiles-v4/enemy_hornet-source.png",
+      "file": "public/game/projectiles/v4/enemy_hornet.png",
+      "replaces": "/game/projectiles/enemy_hornet.png",
+      "sha256": "4f49f28697c9d780a1a09dea2d9173ff47d0cf846b240bd3f2b11a3665256183",
+      "source_sha256": "9f55ecd6a9ac94f77a3a41ba9df51359709146f4e6aa086a04dae0447b4ddf61",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "padding": 112
+    },
+    {
+      "id": "enemy_halcyon",
+      "category": "projectile",
+      "prompt": "Use case: stylized-concept. High quality realistic BLACKSITE FPS projectile asset replacing enemy_halcyon. Reference image supplies identity and palette, not its old sideways orientation. Create faceted frost crystal and fine ice vapor, incoming, facing directly toward camera, leading tip or emitter clearly visible. Centered head-on axial view along flight direction, mostly compact circular/faceted silhouette, strong legible metal/energy core, fine restrained cyan blue emissive accents, detailed physically plausible surfaces and delicate transparent glow. Sharp center, beautiful premium sci-fi VFX. Native transparent background; standalone single projectile, generous padding, no ground shadows, no hands/weapons/text, no sideways missile profile, no long vertical torch, no big featureless blue orb. Square 1024x1024.",
+      "reference": "public/game/projectiles/enemy_halcyon.png",
+      "source": "art/projectiles-v4/enemy_halcyon-source.png",
+      "file": "public/game/projectiles/v4/enemy_halcyon.png",
+      "replaces": "/game/projectiles/enemy_halcyon.png",
+      "sha256": "554c570d5d407523f43b98f01f48dce07b2e8b99fdc08f50757da55d57cd0ca3",
+      "source_sha256": "48d519c13b212756a32eebf3bce4fd08011f5f6517a351a46c1b3b713ebbeb1f",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "padding": 112
+    },
+    {
+      "id": "boss_weapon_9",
+      "category": "projectile",
+      "prompt": "Use case: stylized-concept. High quality realistic BLACKSITE FPS projectile asset replacing boss_weapon_9. Reference image supplies identity and palette, not its old sideways orientation. Create mechanical silver teal energy projectile with small sharp white core, intricate contained electrical filaments and subtle vapor, outgoing, traveling directly away from camera, viewed straight from rear; hide front nose and warhead, show rear core or engine exhaust. Centered head-on axial view along flight direction, mostly compact circular/faceted silhouette, strong legible metal/energy core, fine restrained cyan blue emissive accents, detailed physically plausible surfaces and delicate transparent glow. Sharp center, beautiful premium sci-fi VFX. Native transparent background; standalone single projectile, generous padding, no ground shadows, no hands/weapons/text, no sideways missile profile, no long vertical torch, no big featureless blue orb. Square 1024x1024.",
+      "reference": "public/game/projectiles/boss_weapon_9.png",
+      "source": "art/projectiles-v4/boss_weapon_9-source.png",
+      "file": "public/game/projectiles/v4/boss_weapon_9.png",
+      "replaces": "/game/projectiles/boss_weapon_9.png",
+      "sha256": "3d9e6726c297306321f68b052fd07b3dd27f3821c5cccb9a643eb10f896379ea",
+      "source_sha256": "3f476409dc99ced9d02fc45fe9d0b8c0185d7bb43e703b166dc0b8b486844691",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "padding": 112
+    },
+    {
+      "id": "missile_naval_incoming",
+      "category": "projectile",
+      "prompt": "Use case: stylized-concept. High quality realistic BLACKSITE FPS projectile asset replacing missile_naval_incoming. Reference image supplies identity and palette, not its old sideways orientation. Create naval teal armored missile, incoming, facing directly toward camera, leading tip or emitter clearly visible. Centered head-on axial view along flight direction, mostly compact circular/faceted silhouette, strong legible metal/energy core, fine restrained cyan blue emissive accents, detailed physically plausible surfaces and delicate transparent glow. Sharp center, beautiful premium sci-fi VFX. Native transparent background; standalone single projectile, generous padding, no ground shadows, no hands/weapons/text, no sideways missile profile, no long vertical torch, no big featureless blue orb. Square 1024x1024.",
+      "reference": "public/game/projectiles/missile_naval_incoming.png",
+      "source": "art/projectiles-v4/missile_naval_incoming-source.png",
+      "file": "public/game/projectiles/v4/missile_naval_incoming.png",
+      "replaces": "/game/projectiles/missile_naval_incoming.png",
+      "revision_prompt": "Edit incoming naval torpedo into exact head-on view: closed convex pointed steel nose cone toward camera, small cyan targeting sensor ring, fins behind nose, body foreshortened, no open tube, burner or exhaust facing camera. Preserve teal naval metal and gold fasteners; transparent isolated 1024x1024 sprite with generous padding.",
+      "sha256": "ea493fd65ab02a23e197d05ff74b54c3c8472411c286dcbb9ec391af8b41558f",
+      "source_sha256": "6c3a54d26deee51e3a1c26733494a3fd32e097f76e4f12baa4c6595054c4b215",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "padding": 112
+    },
+    {
+      "id": "boss_weapon_14",
+      "category": "projectile",
+      "prompt": "Use case: stylized-concept. High quality realistic BLACKSITE FPS projectile asset replacing boss_weapon_14. Reference image supplies identity and palette, not its old sideways orientation. Create faceted frost crystal and fine ice vapor, outgoing, traveling directly away from camera, viewed straight from rear; hide front nose and warhead, show rear core or engine exhaust. Centered head-on axial view along flight direction, mostly compact circular/faceted silhouette, strong legible metal/energy core, fine restrained cyan blue emissive accents, detailed physically plausible surfaces and delicate transparent glow. Sharp center, beautiful premium sci-fi VFX. Native transparent background; standalone single projectile, generous padding, no ground shadows, no hands/weapons/text, no sideways missile profile, no long vertical torch, no big featureless blue orb. Square 1024x1024.",
+      "reference": "public/game/projectiles/boss_weapon_14.png",
+      "source": "art/projectiles-v4/boss_weapon_14-source.png",
+      "file": "public/game/projectiles/v4/boss_weapon_14.png",
+      "replaces": "/game/projectiles/boss_weapon_14.png",
+      "sha256": "a6b992ec0c69a4ac08382867e3789841837f542f718849a9cb66a849cce8847e",
+      "source_sha256": "2e97ee9a147a276ad2ad0ad933526cd1b8ba574e93a2d16afff097c4ca0ca2a9",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "padding": 112
+    },
+    {
+      "id": "boss_weapon_12",
+      "category": "projectile",
+      "prompt": "Use case: stylized-concept. High quality realistic BLACKSITE FPS projectile asset replacing boss_weapon_12. Reference image supplies identity and palette, not its old sideways orientation. Create compact chrome optical prism with delicate refracted cyan light, outgoing, traveling directly away from camera, viewed straight from rear; hide front nose and warhead, show rear core or engine exhaust. Centered head-on axial view along flight direction, mostly compact circular/faceted silhouette, strong legible metal/energy core, fine restrained cyan blue emissive accents, detailed physically plausible surfaces and delicate transparent glow. Sharp center, beautiful premium sci-fi VFX. Native transparent background; standalone single projectile, generous padding, no ground shadows, no hands/weapons/text, no sideways missile profile, no long vertical torch, no big featureless blue orb. Square 1024x1024.",
+      "reference": "public/game/projectiles/boss_weapon_12.png",
+      "source": "art/projectiles-v4/boss_weapon_12-source.png",
+      "file": "public/game/projectiles/v4/boss_weapon_12.png",
+      "replaces": "/game/projectiles/boss_weapon_12.png",
+      "sha256": "ed2429d2f5cc3efb75872aafbb5a44672f0ae4d50ac5981c20f49b7b9c03b116",
+      "source_sha256": "fe8058709937bdc58001d63fe314d7dd46b86a571b5fa061a01d7fe3c5fa21e0",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "padding": 112
+    },
+    {
+      "id": "enemy_oracle",
+      "category": "projectile",
+      "prompt": "Use case: stylized-concept. High quality realistic BLACKSITE FPS projectile asset replacing enemy_oracle. Reference image supplies identity and palette, not its old sideways orientation. Create compact chrome optical prism with delicate refracted cyan light, incoming, facing directly toward camera, leading tip or emitter clearly visible. Centered head-on axial view along flight direction, mostly compact circular/faceted silhouette, strong legible metal/energy core, fine restrained cyan blue emissive accents, detailed physically plausible surfaces and delicate transparent glow. Sharp center, beautiful premium sci-fi VFX. Native transparent background; standalone single projectile, generous padding, no ground shadows, no hands/weapons/text, no sideways missile profile, no long vertical torch, no big featureless blue orb. Square 1024x1024.",
+      "reference": "public/game/projectiles/enemy_oracle.png",
+      "source": "art/projectiles-v4/enemy_oracle-source.png",
+      "file": "public/game/projectiles/v4/enemy_oracle.png",
+      "replaces": "/game/projectiles/enemy_oracle.png",
+      "sha256": "da0a91c2167451ca383dcf6e5567a6eeca9d0957a7d4c3568d1984c8e7f984f1",
+      "source_sha256": "39a37f1df80f5ad23cb34a85b8f3f752f47f4c65cab06ecee76268e1826caa3d",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "padding": 112
+    },
+    {
+      "id": "boss_weapon_21",
+      "category": "projectile",
+      "prompt": "Use case: stylized-concept. High quality realistic BLACKSITE FPS projectile asset replacing boss_weapon_21. Reference image supplies identity and palette, not its old sideways orientation. Create compact chrome optical prism with delicate refracted cyan light, outgoing, traveling directly away from camera, viewed straight from rear; hide front nose and warhead, show rear core or engine exhaust. Centered head-on axial view along flight direction, mostly compact circular/faceted silhouette, strong legible metal/energy core, fine restrained cyan blue emissive accents, detailed physically plausible surfaces and delicate transparent glow. Sharp center, beautiful premium sci-fi VFX. Native transparent background; standalone single projectile, generous padding, no ground shadows, no hands/weapons/text, no sideways missile profile, no long vertical torch, no big featureless blue orb. Square 1024x1024.",
+      "reference": "public/game/projectiles/boss_weapon_21.png",
+      "source": "art/projectiles-v4/boss_weapon_21-source.png",
+      "file": "public/game/projectiles/v4/boss_weapon_21.png",
+      "replaces": "/game/projectiles/boss_weapon_21.png",
+      "sha256": "06569b26a75ef7df27a99eecd5210bb50905c5786188f7236490e957b80f51f1",
+      "source_sha256": "8fd1f4895a16e91889c9d223a0ba291135df945a124521a9eb1578c392093129",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "padding": 112
+    },
+    {
+      "id": "enemy_hecate",
+      "category": "projectile",
+      "prompt": "Use case: stylized-concept. High quality realistic BLACKSITE FPS projectile asset replacing enemy_hecate. Reference image supplies identity and palette, not its old sideways orientation. Create mechanical silver teal energy projectile with small sharp white core, intricate contained electrical filaments and subtle vapor, incoming, facing directly toward camera, leading tip or emitter clearly visible. Centered head-on axial view along flight direction, mostly compact circular/faceted silhouette, strong legible metal/energy core, fine restrained cyan blue emissive accents, detailed physically plausible surfaces and delicate transparent glow. Sharp center, beautiful premium sci-fi VFX. Native transparent background; standalone single projectile, generous padding, no ground shadows, no hands/weapons/text, no sideways missile profile, no long vertical torch, no big featureless blue orb. Square 1024x1024.",
+      "reference": "public/game/projectiles/enemy_hecate.png",
+      "source": "art/projectiles-v4/enemy_hecate-source.png",
+      "file": "public/game/projectiles/v4/enemy_hecate.png",
+      "replaces": "/game/projectiles/enemy_hecate.png",
+      "sha256": "a3ebfc93de7888f80a32597c037457f89444c96882efb342d63404cdac0d6b01",
+      "source_sha256": "2a08a6d2ebbea1b929ce388fb7736f50397d6b74677da03edb6bb0f292a27fbe",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "padding": 112
+    },
+    {
+      "id": "boss_weapon_29",
+      "category": "projectile",
+      "prompt": "Use case: stylized-concept. High quality realistic BLACKSITE FPS projectile asset replacing boss_weapon_29. Reference image supplies identity and palette, not its old sideways orientation. Create naval teal armored missile, outgoing, traveling directly away from camera, viewed straight from rear; hide front nose and warhead, show rear core or engine exhaust. Centered head-on axial view along flight direction, mostly compact circular/faceted silhouette, strong legible metal/energy core, fine restrained cyan blue emissive accents, detailed physically plausible surfaces and delicate transparent glow. Sharp center, beautiful premium sci-fi VFX. Native transparent background; standalone single projectile, generous padding, no ground shadows, no hands/weapons/text, no sideways missile profile, no long vertical torch, no big featureless blue orb. Square 1024x1024.",
+      "reference": "public/game/projectiles/boss_weapon_29.png",
+      "source": "art/projectiles-v4/boss_weapon_29-source.png",
+      "file": "public/game/projectiles/v4/boss_weapon_29.png",
+      "replaces": "/game/projectiles/boss_weapon_29.png",
+      "sha256": "0851279ba7d9909ef7de4dfd62fb5b91416e285c9420d15c51376e0422d60d17",
+      "source_sha256": "bb9ee661fc4f8bfac5a939805984dabb8f3bb002180069fafd9fe84aa68a5c75",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "padding": 112
+    },
+    {
+      "id": "enemy_prism",
+      "category": "projectile",
+      "prompt": "Use case: stylized-concept. High quality realistic BLACKSITE FPS projectile asset replacing enemy_prism. Reference image supplies identity and palette, not its old sideways orientation. Create compact chrome optical prism with delicate refracted cyan light, incoming, facing directly toward camera, leading tip or emitter clearly visible. Centered head-on axial view along flight direction, mostly compact circular/faceted silhouette, strong legible metal/energy core, fine restrained cyan blue emissive accents, detailed physically plausible surfaces and delicate transparent glow. Sharp center, beautiful premium sci-fi VFX. Native transparent background; standalone single projectile, generous padding, no ground shadows, no hands/weapons/text, no sideways missile profile, no long vertical torch, no big featureless blue orb. Square 1024x1024.",
+      "reference": "public/game/projectiles/enemy_prism.png",
+      "source": "art/projectiles-v4/enemy_prism-source.png",
+      "file": "public/game/projectiles/v4/enemy_prism.png",
+      "replaces": "/game/projectiles/enemy_prism.png",
+      "sha256": "7d0875ddee3f5de43f92b4a43d547f394233a2e1682088980a84a09045895714",
+      "source_sha256": "c004f441a611201e777a121e6379426f0ecfcb1c26d8f350ece5368669b9d762",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "padding": 112
+    },
+    {
+      "id": "enemy_nautilus",
+      "category": "projectile",
+      "prompt": "Use case: stylized-concept. High quality realistic BLACKSITE FPS projectile asset replacing enemy_nautilus. Reference image supplies identity and palette, not its old sideways orientation. Create naval teal armored missile, incoming, facing directly toward camera, leading tip or emitter clearly visible. Centered head-on axial view along flight direction, mostly compact circular/faceted silhouette, strong legible metal/energy core, fine restrained cyan blue emissive accents, detailed physically plausible surfaces and delicate transparent glow. Sharp center, beautiful premium sci-fi VFX. Native transparent background; standalone single projectile, generous padding, no ground shadows, no hands/weapons/text, no sideways missile profile, no long vertical torch, no big featureless blue orb. Square 1024x1024.",
+      "reference": "public/game/projectiles/enemy_nautilus.png",
+      "source": "art/projectiles-v4/enemy_nautilus-source.png",
+      "file": "public/game/projectiles/v4/enemy_nautilus.png",
+      "replaces": "/game/projectiles/enemy_nautilus.png",
+      "revision_prompt": "Edit incoming naval torpedo into exact head-on view: closed convex pointed steel nose cone toward camera, small cyan targeting sensor ring, fins behind nose, body foreshortened, no open tube, burner or exhaust facing camera. Preserve teal naval metal and gold fasteners; transparent isolated 1024x1024 sprite with generous padding.",
+      "sha256": "f16610d8b6e0a9b0e3481fd04c7ff0227428e6500beef30dff2584d13d3a337e",
+      "source_sha256": "4831bbda2042e2d2de20e742df55a90229787a89bc4581331e8c60b8be4674fc",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "padding": 112
+    },
+    {
+      "id": "missile_naval_outgoing",
+      "category": "projectile",
+      "prompt": "Use case: stylized-concept. High quality realistic BLACKSITE FPS projectile asset replacing missile_naval_outgoing. Reference image supplies identity and palette, not its old sideways orientation. Create naval teal armored missile, outgoing, traveling directly away from camera, viewed straight from rear; hide front nose and warhead, show rear core or engine exhaust. Centered head-on axial view along flight direction, mostly compact circular/faceted silhouette, strong legible metal/energy core, fine restrained cyan blue emissive accents, detailed physically plausible surfaces and delicate transparent glow. Sharp center, beautiful premium sci-fi VFX. Native transparent background; standalone single projectile, generous padding, no ground shadows, no hands/weapons/text, no sideways missile profile, no long vertical torch, no big featureless blue orb. Square 1024x1024.",
+      "reference": "public/game/projectiles/missile_naval_outgoing.png",
+      "source": "art/projectiles-v4/missile_naval_outgoing-source.png",
+      "file": "public/game/projectiles/v4/missile_naval_outgoing.png",
+      "replaces": "/game/projectiles/missile_naval_outgoing.png",
+      "sha256": "4c89d8f9b005a6a7b9a54cda0ef4e717c33fde846a324520d8647bab996e1ff8",
+      "source_sha256": "e5692189b3d525e99be9b011de58c656c6ddb88c8b1683adca9287bd6eda99a0",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "padding": 112
+    },
+    {
+      "id": "boss_weapon_31",
+      "category": "projectile",
+      "prompt": "Use case: stylized-concept. High quality realistic BLACKSITE FPS projectile asset replacing boss_weapon_31. Reference image supplies identity and palette, not its old sideways orientation. Create faceted frost crystal and fine ice vapor, outgoing, traveling directly away from camera, viewed straight from rear; hide front nose and warhead, show rear core or engine exhaust. Centered head-on axial view along flight direction, mostly compact circular/faceted silhouette, strong legible metal/energy core, fine restrained cyan blue emissive accents, detailed physically plausible surfaces and delicate transparent glow. Sharp center, beautiful premium sci-fi VFX. Native transparent background; standalone single projectile, generous padding, no ground shadows, no hands/weapons/text, no sideways missile profile, no long vertical torch, no big featureless blue orb. Square 1024x1024.",
+      "reference": "public/game/projectiles/boss_weapon_31.png",
+      "source": "art/projectiles-v4/boss_weapon_31-source.png",
+      "file": "public/game/projectiles/v4/boss_weapon_31.png",
+      "replaces": "/game/projectiles/boss_weapon_31.png",
+      "sha256": "01717d5223fe35e215cd400f63650c59261a0b969fd593f89c552d0f2f48f968",
+      "source_sha256": "15ada511af5b54b0f31f5d62db042e4025aceca3a64438e3a193508f3b896942",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "padding": 112
+    },
+    {
+      "id": "ion-bolt",
+      "category": "projectile",
+      "prompt": "Use case: stylized-concept. High quality realistic BLACKSITE FPS projectile asset replacing ion-bolt. Reference image supplies identity and palette, not its old sideways orientation. Create mechanical silver teal energy projectile with small sharp white core, intricate contained electrical filaments and subtle vapor, outgoing, traveling directly away from camera, viewed straight from rear; hide front nose and warhead, show rear core or engine exhaust. Centered head-on axial view along flight direction, mostly compact circular/faceted silhouette, strong legible metal/energy core, fine restrained cyan blue emissive accents, detailed physically plausible surfaces and delicate transparent glow. Sharp center, beautiful premium sci-fi VFX. Native transparent background; standalone single projectile, generous padding, no ground shadows, no hands/weapons/text, no sideways missile profile, no long vertical torch, no big featureless blue orb. Square 1024x1024.",
+      "reference": "public/game/fx25/ion-bolt.png",
+      "source": "art/projectiles-v4/ion-bolt-source.png",
+      "file": "public/game/projectiles/v4/ion-bolt.png",
+      "replaces": "/game/fx25/ion-bolt.png",
+      "sha256": "de680230a0e10b5c7f33457c658ac2a0a8e9d14b68650884cea9eedac1a78d8e",
+      "source_sha256": "2c912fbbc402c6e8b33c22dc9e01495cfb72ed4da55bbc3575fa69eac4dc125f",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "padding": 112
+    },
+    {
+      "id": "cryo-shard",
+      "category": "projectile",
+      "prompt": "Use case: stylized-concept. High quality realistic BLACKSITE FPS projectile asset replacing cryo-shard. Reference image supplies identity and palette, not its old sideways orientation. Create faceted frost crystal and fine ice vapor, outgoing, traveling directly away from camera, viewed straight from rear; hide front nose and warhead, show rear core or engine exhaust. Centered head-on axial view along flight direction, mostly compact circular/faceted silhouette, strong legible metal/energy core, fine restrained cyan blue emissive accents, detailed physically plausible surfaces and delicate transparent glow. Sharp center, beautiful premium sci-fi VFX. Native transparent background; standalone single projectile, generous padding, no ground shadows, no hands/weapons/text, no sideways missile profile, no long vertical torch, no big featureless blue orb. Square 1024x1024.",
+      "reference": "public/game/fx25/cryo-shard.png",
+      "source": "art/projectiles-v4/cryo-shard-source.png",
+      "file": "public/game/projectiles/v4/cryo-shard.png",
+      "replaces": "/game/fx25/cryo-shard.png",
+      "sha256": "29a20497f560e1914488b73a279669ce8847668ad40c79999a2e3f13128e4651",
+      "source_sha256": "e51b0f69c42c55d99df1e20ab98eb65c1f4669fb9a65f0acedf9540f2eca92dc",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "padding": 112
+    },
+    {
+      "id": "arc-ray",
+      "category": "projectile",
+      "prompt": "Use case: stylized-concept. BLACKSITE premium FPS beam sample projectile viewed directly along its flight axis. A small intricate sharp circular energy cross-section, fine white-cyan electromagnetic filaments with a restrained teal halo, a precise bright center and asymmetrical fine plasma details, delicate native-alpha glow. Photoreal high quality VFX, centered isolated object occupying 60 percent of frame, square 1024x1024 transparent background. No large flat orb, no text, no long beam seen sideways. Single asset.",
+      "source": "art/projectiles-v4/arc-ray-source.png",
+      "file": "public/game/projectiles/v4/arc-ray.png",
+      "sha256": "1878f744247c8db479f725a1bc22628ca2f735f85ef68e1f90d92be438d64174",
+      "source_sha256": "292d22571c208b3bdaae778922178049fa4c63be29332e33ddd89ab5d21408cc",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "padding": 112
+    },
+    {
+      "id": "precision-ray",
+      "category": "projectile",
+      "prompt": "Use case: stylized-concept. BLACKSITE premium FPS beam sample projectile viewed directly along its flight axis. A small intricate sharp circular energy cross-section, warm white tungsten core with fine amber ion filaments, a precise bright center and asymmetrical fine plasma details, delicate native-alpha glow. Photoreal high quality VFX, centered isolated object occupying 60 percent of frame, square 1024x1024 transparent background. No large flat orb, no text, no long beam seen sideways. Single asset.",
+      "source": "art/projectiles-v4/precision-ray-source.png",
+      "file": "public/game/projectiles/v4/precision-ray.png",
+      "sha256": "2c9505e1f76a977763d7894e89131997db76f7fba953fe3e2ab8c85bdfc32dc1",
+      "source_sha256": "51fde1932119640b1bf183cc13dcb6f5cf87c993aa686884be584401f751d5ca",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "padding": 112
+    }
+  ]
+}

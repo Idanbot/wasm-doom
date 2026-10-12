@@ -1,0 +1,565 @@
+{
+  "provider": "OpenAI imagegen (built-in)",
+  "assets": [
+    {
+      "id": "mk23s",
+      "slot": 0,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for MK23S discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached short black steel pistol box magazine, beveled baseplate and empty follower. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_mk23s_aim.png",
+      "source": "art/weapon-feeds-v2/mk23s-source.png",
+      "file": "public/game/fx/feeds/mk23s.png",
+      "sha256": "e622d71ec75dfcd40956e4eee9f91986419ef4073ee210e9c8df22e919b65ed2",
+      "source_sha256": "29ba3db1dbb0e92ef961932b611b2932ecadb5b6acd714c63318c3c5ae4da4f5",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "kx9",
+      "slot": 2,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for KX9 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached long slim curved charcoal PDW magazine with translucent empty witness strip. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_kx9_aim.png",
+      "source": "art/weapon-feeds-v2/kx9-source.png",
+      "file": "public/game/fx/feeds/kx9.png",
+      "sha256": "629839972dc198adf38cb634e6ed487c6845cb1903f5bb44ddf24edb0eec5e52",
+      "source_sha256": "a96ba7e6352c84d00cce5764ea274d1e3488f7af5ee5c3cf6c925820e48d51a2",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "mr4",
+      "slot": 3,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for MR4 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached short straight dark steel precision rifle box magazine. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_mr4_aim.png",
+      "source": "art/weapon-feeds-v2/mr4-source.png",
+      "file": "public/game/fx/feeds/mr4.png",
+      "sha256": "1c0e003af40ae2a3551120b86a68ed22e58552a42bfba6daac9138c6a9266727",
+      "source_sha256": "a19d99d959222253b462b4df30eda209528097ff92ccca25576f26be129d0ddf",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "vlk6",
+      "slot": 4,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for VLK6 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached olive tactical rectangular empty rocket feed cassette with cylindrical sockets. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_vlk6_aim.png",
+      "source": "art/weapon-feeds-v2/vlk6-source.png",
+      "file": "public/game/fx/feeds/vlk6.png",
+      "sha256": "e49b4f127339a0968ac6bd7168ec24762b65729b00b5faad1923b2678bd096c8",
+      "source_sha256": "19ac5ad33df87f9b814593bb21905549fc32ccc1ccb589ea0726f05043c9ad62",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "ax12",
+      "slot": 5,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for AX12 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached compact black battery magazine with subdued amber electrical contacts. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_ax12_aim.png",
+      "source": "art/weapon-feeds-v2/ax12-source.png",
+      "file": "public/game/fx/feeds/ax12.png",
+      "sha256": "b5531c0966f5f862c81957627bf90876becaded2d43283cfcc57206958e213e7",
+      "source_sha256": "b757e7406dccc773496176d2a3526aa64d65c9f04c5cae7573fcc8dd26af40da",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "m91",
+      "slot": 6,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for M91 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached olive drab machine gun belt ammunition box, empty black feed opening, no linked rounds. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_m91_aim.png",
+      "source": "art/weapon-feeds-v2/m91-source.png",
+      "file": "public/game/fx/feeds/m91.png",
+      "sha256": "28e7b6108eed2a396f87b5f3ce59b36df54caf7591d5939e43004ae9a73423a4",
+      "source_sha256": "debc13d31e4e4240ced8d6b5f4eea32cbaa9f85a09576fa750ee78496288af73",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "vr9",
+      "slot": 8,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for VR9 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached long black railgun power magazine with cold amber contact strips. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_vr9_aim.png",
+      "source": "art/weapon-feeds-v2/vr9-source.png",
+      "file": "public/game/fx/feeds/vr9.png",
+      "sha256": "9cd186d3016db8480a78528fd14788c1f797c3b7195f8c3e61d44808ae3ca93f",
+      "source_sha256": "605bb13821abab61560e707b02fcae02620cf42fc9f7bade00d5a775d496b4a7",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "hc9",
+      "slot": 9,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for HC9 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached round dark industrial cutter energy cassette, steel housing, unlit cyan vent windows. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_hc9_aim.png",
+      "source": "art/weapon-feeds-v2/hc9-source.png",
+      "file": "public/game/fx/feeds/hc9.png",
+      "sha256": "e24b83f9556c84541cf077585d3b7ae18cb868c225f383ee3a32d6c7dc357f0e",
+      "source_sha256": "bb55873fb1d2ae2dd9f25785d4f1ce3ccfc48db8c29da720f0fe3516c6256b49",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "ar6",
+      "slot": 11,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for AR6 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached angular gunmetal archive pulse battery with depleted amber windows. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_ar6_aim.png",
+      "source": "art/weapon-feeds-v2/ar6-source.png",
+      "file": "public/game/fx/feeds/ar6.png",
+      "sha256": "00aed439a216db1fd02ac105347b9f73fb64f436772a81eeab99069339fe1ec6",
+      "source_sha256": "4cffe8455bcbabb8a8d911767579e0ee270f5a69d8ef7f23e2f78ff03c560a0f",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "or7",
+      "slot": 12,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for OR7 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached black teal precision predictor cell with small cold cyan contact plates. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_or7_aim.png",
+      "source": "art/weapon-feeds-v2/or7-source.png",
+      "file": "public/game/fx/feeds/or7.png",
+      "sha256": "c3d946499ea8a130b44abaae1e588e6097270fe833ab9481b61682ed55376a30",
+      "source_sha256": "080725973844921a8254aa006da5f2f4bcf529a196fe50eda74224f3f1ea1cf4",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "gs4",
+      "slot": 13,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for GS4 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached bronze pressure scattergun drum, chunky copper feed sockets. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_gs4_aim.png",
+      "source": "art/weapon-feeds-v2/gs4-source.png",
+      "file": "public/game/fx/feeds/gs4.png",
+      "sha256": "23154ebe59e7066e5cac8eea6f01276804c29bd89d0a9d4cafe47b37e0d6076a",
+      "source_sha256": "bb9ea8672a34ac875559b67469186b09e2a0f5ce0d3f6b323a93a5b77f46e159",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "cr3",
+      "slot": 14,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for CR3 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached white ceramic steel coolant magazine with empty frost-blue chamber. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_cr3_aim.png",
+      "source": "art/weapon-feeds-v2/cr3-source.png",
+      "file": "public/game/fx/feeds/cr3.png",
+      "sha256": "70664f72eff8167ba1955c732bcd0c48320fb24669c41f3ec5d9d6a33d576978",
+      "source_sha256": "ad0827743c5b0453ca4ff4092cb6ae0570798eaf24e602136cdbc265862ac882",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "sr0",
+      "slot": 15,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for SR0 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached angular black signal rifle power magazine with inactive magenta contacts. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_sr0_aim.png",
+      "source": "art/weapon-feeds-v2/sr0-source.png",
+      "file": "public/game/fx/feeds/sr0.png",
+      "sha256": "abed32489a51f1f767eb47de7fb3b3a5110c13c850124b259a744277f2b6b389",
+      "source_sha256": "8e5e1959dd94bd702332c0a0fd2df1d45c041f8d1b951902078c60922acabb38",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "ts12",
+      "slot": 16,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for TS12 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached heavy yellow industrial siege ammunition cassette with empty shell cavities. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_ts12_aim.png",
+      "source": "art/weapon-feeds-v2/ts12-source.png",
+      "file": "public/game/fx/feeds/ts12.png",
+      "sha256": "d35c41d82b12e5f83c0ee2cd6b53f2bb01e626d69b732942763f6d7913b81667",
+      "source_sha256": "f26267589db3b59c7fbc6a71293d7687092f7b1630ab0383920e3f6ed9351d0f",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "ks8",
+      "slot": 17,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for KS8 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached red black armored ballistic magazine, straight heavy ribbed metal. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_ks8_aim.png",
+      "source": "art/weapon-feeds-v2/ks8-source.png",
+      "file": "public/game/fx/feeds/ks8.png",
+      "sha256": "8167b26074ceb01b3d78270b530a84ec06ca0f51f585c9d05bf0dae4c8f9a719",
+      "source_sha256": "2e8cb063d45236041a966a575a1abbef0fbd97141b1534e80fd7f97104d9f064",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "mn6",
+      "slot": 18,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for MN6 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached dark steel echo energy magazine with inactive violet containment contacts. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_mn6_aim.png",
+      "source": "art/weapon-feeds-v2/mn6-source.png",
+      "file": "public/game/fx/feeds/mn6.png",
+      "sha256": "955f8e9c36de013dc0eea074d6108783ea03e9ee06647c77355fae4f93d51db7",
+      "source_sha256": "87a07a2defd9a77c31051369755b8be015533892c4c46c69be01a40df19b85a7",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "vx2",
+      "slot": 19,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for VX2 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached soot black rectangular power cell orange ceramic shields cold contacts. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_vx2_aim.png",
+      "source": "art/weapon-feeds-v2/vx2-source.png",
+      "file": "public/game/fx/feeds/vx2.png",
+      "sha256": "5c05e4f60d8bbdb86932be9a7ae7ec8ffd79fafab2251f1e7637cc43fb42d0dd",
+      "source_sha256": "26b06147bc4bf222ab633b53018841b86695cee237241c92866d5818d084d4ad",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "pr5",
+      "slot": 21,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for PR5 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached chrome triangular optical crystal battery depleted pale cyan glass. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_pr5_aim.png",
+      "source": "art/weapon-feeds-v2/pr5-source.png",
+      "file": "public/game/fx/feeds/pr5.png",
+      "sha256": "a4d281483813945dedcc70521eebd6691063cfa0aefa7ac64c99ac08f62cb6e0",
+      "source_sha256": "bc302b8f5bbf59552060866828a56a1e0dac6f3048c51f136cb732d510aadf97",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "mg4",
+      "slot": 22,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for MG4 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached copper coil energy block with dark red insulated windings. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_mg4_aim.png",
+      "source": "art/weapon-feeds-v2/mg4-source.png",
+      "file": "public/game/fx/feeds/mg4.png",
+      "sha256": "7ea2660b1f347df88af3ca0c28e332d25e71bec992383a750665f04af432ba6d",
+      "source_sha256": "556e67d52008fbfa177d6529c86c0af1f77617f645e94f5d4c822252dac758c5",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "bm3",
+      "slot": 23,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for BM3 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached dark steel microdrone ammunition cassette empty hexagonal sockets amber trim. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_bm3_aim.png",
+      "source": "art/weapon-feeds-v2/bm3-source.png",
+      "file": "public/game/fx/feeds/bm3.png",
+      "sha256": "461a81b3682705d8e6e238178fc355ace7bcbb9255d123ec20deb7aafe63f180",
+      "source_sha256": "d41661aa9eac635969b33e0f11637e7438e9d29cb9f0695166fde188507d51ae",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "as7",
+      "slot": 25,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for AS7 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached violet black smart missile cassette with empty cylindrical feed sockets. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_as7_aim.png",
+      "source": "art/weapon-feeds-v2/as7-source.png",
+      "file": "public/game/fx/feeds/as7.png",
+      "sha256": "6ce6c2b8104fe9864ca77259907086cbbc8167061cf60b8bf9a2f8940387dae3",
+      "source_sha256": "917ab917bb1b3c50608baf50adeb9d39c2e5299815870e909b9ebf947595ff03",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "sc6",
+      "slot": 26,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for SC6 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached rugged copper steel flechette drum magazine with perforated shroud. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_sc6_aim.png",
+      "source": "art/weapon-feeds-v2/sc6-source.png",
+      "file": "public/game/fx/feeds/sc6.png",
+      "sha256": "ffc6bf3a43cecb5ad221f3fccbdc83927aeb74297a5649372ea575fb9f31476c",
+      "source_sha256": "abad0ee8cb85e361e3aea536a08ae7665f4aae6af4768fc02b7b48e5e7a1336c",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "ub1",
+      "slot": 27,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for UB1 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached obsidian phase containment battery violet metallic fins inactive glass. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_ub1_aim.png",
+      "source": "art/weapon-feeds-v2/ub1-source.png",
+      "file": "public/game/fx/feeds/ub1.png",
+      "sha256": "52a4006847f70b2d9faccae5b9afbecc682c5e055affab1259d875805bc91e11",
+      "source_sha256": "a42bda10cb7cf48da33d8b688aef843be4cdd03259604511dc5f57df9dae059b",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "sl12",
+      "slot": 28,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for SL12 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached white ceramic gold solar hexagonal reactor battery cold amber windows. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_sl12_aim.png",
+      "source": "art/weapon-feeds-v2/sl12-source.png",
+      "file": "public/game/fx/feeds/sl12.png",
+      "sha256": "627f4aac2afe79ba3f564b82653c0cc9611b6cd2e814d7ba71dd4f7a0238b28c",
+      "source_sha256": "395a05b32255fda6623b4150d4834279c2a1316f3ddb5e640c2e1cde95363185",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "nt4",
+      "slot": 29,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for NT4 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached teal naval torpedo pressure feed cassette round steel hardware orange safety latches. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_nt4_aim.png",
+      "source": "art/weapon-feeds-v2/nt4-source.png",
+      "file": "public/game/fx/feeds/nt4.png",
+      "sha256": "8911a2aaf3cc2e5fae8371c9b90515f051473b5aed4531f1ea3a14eba0f05950",
+      "source_sha256": "78449c8d96c41ec5e7b9245ef9047aa7ed9b2be377d054e44fad80ff346f45a9",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "ch8",
+      "slot": 30,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for CH8 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached bronze narrow precision power magazine with depleted amber gyroscope cell. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_ch8_aim.png",
+      "source": "art/weapon-feeds-v2/ch8-source.png",
+      "file": "public/game/fx/feeds/ch8.png",
+      "sha256": "0e2f3560ed1883ae94ec6f880b58c78b528b304d76bd3cf840485364c3557d9c",
+      "source_sha256": "40c372046611ad2a4b740397674113d77ca744f1129c09dc313a1361a71e85cd",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "bo11",
+      "slot": 31,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for BO11 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached black cryogenic coolant magazine with empty ice-blue containment windows. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_bo11_aim.png",
+      "source": "art/weapon-feeds-v2/bo11-source.png",
+      "file": "public/game/fx/feeds/bo11.png",
+      "sha256": "44915bea2ba2b7afc9255200fc0c45371603ae485f7647c3e9abde2d58059501",
+      "source_sha256": "71e33a6403a20112d4d852a7d9ed530f2549d0f429247e47d9ef9a82f0c83f1d",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    },
+    {
+      "id": "sv25",
+      "slot": 32,
+      "category": "feed",
+      "prompt": "Use case: product-mockup. Production BLACKSITE game sprite sheet for SV25 discarded reload feed. The attached image is the approved weapon DESIGN REFERENCE only; create its matching detached black gold apex rifle power cassette intricate gold contact rails depleted amber inserts. Four views of SAME empty magazine/feed in a strict 2x2 equal-cell sprite sheet, exactly one complete isolated object per cell, different tumbling rotations (diagonal left, diagonal right, end-on, horizontal). Highly realistic detailed worn tactical metal, believable mechanical catches and seams, faithful weapon material colors and proportions. Empty/depleted; no loose rounds, no luminous full-charge effects. Native transparent alpha background, generous padding of at least 12 percent inside EVERY cell, objects may not cross cell boundaries. Even soft studio illumination, no floor shadow, no weapon, hands, case, lettering, icons or border. Square 1024x1024. Preserve fine crisp alpha edges.",
+      "reference": "public/game/draft/v2/weap_sv25_aim.png",
+      "source": "art/weapon-feeds-v2/sv25-source.png",
+      "file": "public/game/fx/feeds/sv25.png",
+      "sha256": "6ca9d09a9ce055922955752110807d3385b10f4a93a4d886f461dd83c59fc095",
+      "source_sha256": "0a49d4c6d211c80172902d7f45037def9a346a58717b2068718f11aec81a6732",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "padding": 56
+    }
+  ]
+}

@@ -8,7 +8,9 @@ url.searchParams.set('qa', '1');
 test('Escape, P and actual pointer-lock loss pause; Obsidian reward says Echo and can be collected', async () => {
   const browser = await chromium.launch({ headless: true });
   try {
-    const page = await browser.newPage();
+    // Bound software-GPU work; desktop/mobile presentation has separate checks.
+    const page = await browser.newPage({ viewport: { width: 640, height: 400 } });
+    await page.addInitScript(() => localStorage.setItem("blacksite-res", "320"));
     const errors = [];
     page.on('pageerror', (error) => errors.push(error.message));
     await page.goto(url.href);

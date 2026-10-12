@@ -17,7 +17,10 @@ def clean(frame, handling=True):
  a=np.asarray(frame).copy(); labels,_=label(a[:,:,3]>10);sizes=np.bincount(labels.ravel());sizes[0]=0
  keep=sizes>=(max(128,sizes.max()*.01) if handling else 8)
  for index,box in enumerate(find_objects(labels),1):
-  if box and min(b.stop-b.start for b in box)<=3:keep[index]=False
+  if box:
+   y,x=box
+   narrow_edge = x.stop-x.start <= 64 and (x.start == 0 or x.stop == frame.width) and sizes[index] < 5000
+   if min(b.stop-b.start for b in box)<=3 or narrow_edge:keep[index]=False
  mask=binary_dilation(keep[labels],iterations=2)
  a[:,:,3][~mask]=0;a[:,:,3][(labels>0)&~keep[labels]]=0;a[:,:,3][a[:,:,3]<4]=0
  return Image.fromarray(a)

@@ -190,7 +190,7 @@ pub(crate) fn sprite_style(e: &Ent) -> (usize, f32, bool, i32) {
     // VFX cells are distinct effects, not animation frames. Animate scale
     // over lifetime without cycling flames into smoke or muzzle flashes.
     match e.kind {
-        EK_RAY => return (T_BALL, if e.zoff >= 11.0 { 0.07 } else { 0.065 }, false, 0),
+        EK_RAY => return (T_BEAM + usize::from(e.zoff >= 11.0), if e.zoff >= 11.0 { 0.07 } else { 0.065 }, false, 0),
         EK_PROJ => {
             if (230..=234).contains(&e.skin) {
                 let visual = (e.skin - 230) as usize;
@@ -212,8 +212,17 @@ pub(crate) fn sprite_style(e: &Ent) -> (usize, f32, bool, i32) {
         EK_FLAME | EK_FIREPATCH => return (T_FLAME, 0.58 + (e.frame * 7.0).sin() * 0.035, true, 0),
         EK_SPARK if (16.0..24.0).contains(&e.effect_tick) =>
             return (T_BOSS_ENTRANCE+(e.effect_tick as usize-16),0.28+e.frame*0.35,false,0),
-        EK_SPARK if e.effect_tick == 5.0 => return (if (2..=5).contains(&e.skin) { T_RELOAD_DEBRIS + (e.skin - 2) as usize } else if e.skin == 1 { T_CASING_SHELL } else { T_CASING }, if e.skin >= 2 && e.skin <= 5 { 0.28 } else { 0.12 }, true,
-            if e.shield >= 3 { 0 } else { ((e.frame * 18.0) as i32).rem_euclid(4) }),
+        EK_SPARK if e.effect_tick == 5.0 => {
+            let texture = match e.skin {
+                1 => T_CASING_SHELL,
+                2..=5 => T_RELOAD_DEBRIS + (e.skin - 2) as usize,
+                6..=38 => T_WEAPON_FEED + (e.skin - 6) as usize,
+                _ => T_CASING,
+            };
+            let scale = if (2..=38).contains(&e.skin) { 0.28 } else { 0.12 };
+            return (texture, scale, true,
+                if e.shield >= 3 { 0 } else { ((e.frame * 18.0) as i32).rem_euclid(4) });
+        },
         EK_SPARK => return if e.effect_tick < 4.0 {
             (T_MUZZLEFX, 0.10, true, e.effect_tick as i32)
         } else {

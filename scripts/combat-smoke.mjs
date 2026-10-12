@@ -35,7 +35,8 @@ const assertHudTextContained = async (page, label) => {
   assert.deepEqual(escaped, [], `${label} HUD text escaped its panel`);
 };
 try {
-  const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+  const page = await browser.newPage({ viewport: { width: 640, height: 400 } });
+  await page.addInitScript(() => localStorage.setItem("blacksite-res", "320"));
   page.on("pageerror", (error) => errors.push(error.message));
   page.on("console", (message) => {
     if (message.type() === "error") errors.push(message.text());

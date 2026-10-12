@@ -1052,3 +1052,63 @@ fn rejected_reload_does_not_discard_container() {
     e.flush_fx();
     assert!(!e.ents.iter().any(|p| p.kind == EK_SPARK && p.effect_tick == 5.0));
 }
+
+#[test]
+fn every_removable_weapon_feed_ejects_its_own_reload_art() {
+    let mut e = Engine::new(320, 200);
+    e.state = 0;
+    for slot in 0..WEP_N {
+        for ent in &mut e.ents { ent.kind = EK_NONE; }
+        e.weapon = slot as i32;
+        e.reload_t = 0.0;
+        e.mag[slot] = 0;
+        e.ammo[slot] = MAG_SZ[slot] * 2;
+        e.begin_reload();
+        e.begin_reload();
+        e.flush_fx();
+        let feeds: Vec<_> = e.ents.iter().filter(|p| p.kind == EK_SPARK && p.effect_tick == 5.0).collect();
+        if slot == 1 {
+            assert!(feeds.is_empty(), "fixed-tube shotgun must not eject a magazine");
+            continue;
+        }
+        assert_eq!(feeds.len(), 1, "slot {slot} must eject exactly one feed");
+        let expected = match slot {
+            7 => T_RELOAD_DEBRIS, 10 => T_RELOAD_DEBRIS + 1,
+            24 => T_RELOAD_DEBRIS + 2, 20 => T_RELOAD_DEBRIS + 3,
+            _ => T_WEAPON_FEED + slot,
+        };
+        let (texture, scale, sheet, _) = sprite_style(feeds[0]);
+        assert_eq!(texture, expected, "slot {slot} lost its magazine artwork");
+        assert!(sheet && scale > 0.12);
+        assert!(feeds[0].aim < 1.0);
+    }
+}
+
+#[test]
+fn beam_sprites_use_artwork_and_preserve_boss_projectile_identity() {
+    let mut e = Engine::new(160, 100);
+    let i = e.spawn(EK_RAY, e.px + 1.0, e.py).unwrap();
+    e.ents[i].zoff = 4.0;
+    assert_eq!(sprite_style(&e.ents[i]).0, T_BEAM);
+    e.ents[i].zoff = 14.0;
+    assert_eq!(sprite_style(&e.ents[i]).0, T_BEAM + 1);
+    e.ents[i].projectile_visual = 2;
+    assert_eq!(sprite_style(&e.ents[i]).0, T_BOSS_PROJECTILE + 1);
+}
+
+#[test]
+fn cosmetic_magazine_ejection_preserves_combat_randomness() {
+    let mut e = Engine::new(160, 100);
+    for slot in 0..WEP_N {
+        if matches!(slot, 1 | 7 | 10 | 20 | 24) { continue; }
+        e.state = 0;
+        e.weapon = slot as i32;
+        e.mag[slot] = 0;
+        e.ammo[slot] = 10;
+        e.reload_t = 0.0;
+        let before = e.rng;
+        e.begin_reload();
+        assert_eq!(e.rng, before, "slot {slot} cosmetic reload changed combat RNG");
+        e.flush_fx();
+    }
+}

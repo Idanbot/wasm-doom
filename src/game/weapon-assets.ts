@@ -7,3 +7,14 @@ export const WEAPON_SLUGS = [
 
 export const WEAPON_SHEETS = WEAPON_SLUGS.map((slug) => `/game/draft/v2/weap_${slug}_5x5.png`);
 export const WEAPON_THUMBNAILS = WEAPON_SLUGS.map((slug) => `/game/ui/weapon-thumbs/${slug}.png`);
+
+/** Every removable reload feed has its own tumbling artwork; BR-12 has a fixed tube. */
+export const WEAPON_FEED_FILES = WEAPON_SLUGS.map((slug, slot) => {
+  if (slot === 1) return null;
+  const containers: Record<string, string> = {
+    hx8: "fuel", cm9: "acid", my9: "specimen", lv8: "pressure",
+  };
+  return containers[slug]
+    ? `/game/fx/${containers[slug]}-debris-hd.png`
+    : `/game/fx/feeds/${slug}.png`;
+});

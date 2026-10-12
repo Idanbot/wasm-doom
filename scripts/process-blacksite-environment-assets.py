@@ -247,6 +247,13 @@ def split_sheet(sheet_name: str, source_name: str, families: Iterable[str], out_
         x = (index % 4) * 256
         y = (index // 4) * 256
         cell = sheet.crop((x, y, x + 256, y + 256))
+        if source_name == "objects_datacenter_4x4.png" and family == "terminal_console":
+            # The authored terminal starts 32px above its nominal row. Recover
+            # its entire silhouette without taking the laser barrier beside it.
+            terminal = sheet.crop((0, 736, 240, 1024))
+            terminal.thumbnail((232, 240), Image.Resampling.LANCZOS)
+            cell = Image.new("RGBA", (256, 256))
+            cell.alpha_composite(terminal, ((256-terminal.width)//2, (256-terminal.height)//2))
         # Keep a reviewable 256px source cell and a runtime copy under a
         # namespaced directory. Consumers can promote a cell into an atlas
         # without re-running generation.

@@ -2700,9 +2700,9 @@
   {
     "file": "/game/environment/props/datacenter_terminal_console.png",
     "name": "datacenter_terminal_console.png",
-    "size": 83272,
-    "hash": "327255c7110409a7530e21bf4fc61e542e3137f886d1a1751b478a34561235b7",
-    "shortHash": "327255c7",
+    "size": 66855,
+    "hash": "316b3f8d0eb3e92d09203ffcc767fdbdb6672829574d681f63418c04c37e3609",
+    "shortHash": "316b3f8d",
     "width": 256,
     "height": 256
   },
@@ -6774,9 +6774,9 @@
   {
     "file": "/game/fx25/spore-cluster.png",
     "name": "spore-cluster.png",
-    "size": 92532,
-    "hash": "6b77cec9fab18ef107d912e8bac80247462c0d2ed710299af37e1aba93df3550",
-    "shortHash": "6b77cec9",
+    "size": 68251,
+    "hash": "f1f095050132404d7755e30234185fe4f7f04fc6fdf4d8cf726203472f28100c",
+    "shortHash": "f1f09505",
     "width": 256,
     "height": 256
   },
@@ -6837,9 +6837,9 @@
   {
     "file": "/game/fx25/phase-orb.png",
     "name": "phase-orb.png",
-    "size": 62948,
-    "hash": "8200bfaa320ad756e1e36ad50eb68559c0d3ad7cfb7d2d0e72bd2bf577d4b7c1",
-    "shortHash": "8200bfaa",
+    "size": 42935,
+    "hash": "ba36333f81c206b4e0c0d9196a67bcb62e0bc585931ee60b01af0083544ac7c6",
+    "shortHash": "ba36333f",
     "width": 256,
     "height": 256
   },

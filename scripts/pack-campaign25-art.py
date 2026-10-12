@@ -61,7 +61,10 @@ def main():
    frames=panels(source,3,1);frames.append(frames[1].copy())
   elif 'impact' in name:frames=panels(source,4,1)
   else:
-   save(source.resize((256,256),Image.Resampling.LANCZOS),OUT/f'fx25/{name}.png');continue
+   source.thumbnail((224,224),Image.Resampling.LANCZOS)
+   canvas=Image.new('RGBA',(256,256))
+   canvas.alpha_composite(source,((256-source.width)//2,(256-source.height)//2))
+   save(canvas,OUT/f'fx25/{name}.png');continue
   atlas=Image.new('RGBA',(256,256))
   for i,frame in enumerate(frames):
    frame=frame.resize((120,120),Image.Resampling.LANCZOS)

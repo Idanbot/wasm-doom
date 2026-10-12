@@ -172,7 +172,13 @@ atmosphere effects. Reflections use local probes rather than hardware ray tracin
 See [world material contracts](art/world-materials-v1/README.md) for quality limits
 and regression coverage.
 
-Reloads discard matching HX-8 fuel tanks, CM-9 acid vials, MY-9 specimen
-cartridges and LV-8 pressure cylinders. Spent feeds tumble, bounce and settle
-using the same bounded debris physics as bullet casings. Artwork and packing
-specifications are in `art/weapon-debris-v1/`.
+All 32 removable weapon feeds now eject their matching magazine, ammunition box,
+drum or power cell on reload; BR-12 keeps its shell-by-shell tube reload. New
+blue/cyan projectiles use detailed incoming/outgoing artwork, and beams retain
+their weapon-specific textures on CPU, WebGL and WebGPU. Asset contracts and
+prompts live in `art/weapon-feeds-v2/` and `art/projectiles-v4/`.
+
+Sprite boundary checks cover all 25 frames of every weapon, all projectile art,
+casings and reload ejections. The level 1 terminal uses a corrected source crop
+that retains its complete monitor housing. Weapon edge cleanup removes only
+disconnected neighboring-panel fragments; approved aim poses remain unchanged.

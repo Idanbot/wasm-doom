@@ -57,4 +57,6 @@ export const T_CASING = T_BOSS_ARENA + SECTOR_COUNT;
 export const T_CASING_SHELL = T_CASING + 1;
 export const T_BOSS_ENTRANCE = T_CASING_SHELL + 1;
 export const T_RELOAD_DEBRIS = T_BOSS_ENTRANCE + 8;
-export const TEX_N = T_RELOAD_DEBRIS + 4;
+export const T_WEAPON_FEED = T_RELOAD_DEBRIS + 4;
+export const T_BEAM = T_WEAPON_FEED + 33;
+export const TEX_N = T_BEAM + 2;

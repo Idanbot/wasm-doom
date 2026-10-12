@@ -318,13 +318,6 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
     let soft = pow(1.0 - rad, 1.6) * (0.7 + 0.2 * n);
     rgb = mix(vec3<f32>(0.28, 0.29, 0.30), vec3<f32>(0.74, 0.76, 0.78), soft);
     a = 1.0;
-  } else if (kind == 21) {
-    let d = inp.uv * 2.0 - 1.0;
-    let rad = dot(d, d);
-    if (rad >= 1.0) { discard; }
-    let core = pow(1.0 - rad, 1.7);
-    rgb = vec3<f32>(40.0 + core * 215.0, 170.0 + core * 85.0, 255.0) / 255.0;
-    a = 1.0;
   } else {
     let tex = textureSampleLevel(atlas, atlas_samp, uv, clamp(i32(inp.info.x), 0, ${TEX_N - 1}), 0.0);
     a = tex.a;
@@ -749,13 +742,7 @@ void main() {
     uv = vec2(float(fr & 1), float(fr >> 1)) * 0.5 + clamp(vUv, vec2(0.5 / 128.0), vec2(127.5 / 128.0)) * 0.5;
   }
   vec3 rgb;
-  if (int(kind) == 21) {
-    vec2 d = vUv * 2.0 - 1.0;
-    float rad = dot(d, d);
-    if (rad >= 1.0) discard;
-    float core = pow(1.0 - rad, 1.7);
-    rgb = vec3(40.0 + core * 215.0, 170.0 + core * 85.0, 255.0) / 255.0;
-  } else {
+  {
     vec4 tex = texture(atlas, vec3(uv, clamp(texId, 0.0, ${TEX_N - 1}.0)));
     if (tex.a < 16.0 / 255.0) discard;
     ivec2 parity = ivec2(gl_FragCoord.xy) & ivec2(1);

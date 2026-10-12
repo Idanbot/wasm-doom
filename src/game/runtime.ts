@@ -41,6 +41,8 @@ import {
   T_CASING,
   T_CASING_SHELL,
   T_RELOAD_DEBRIS,
+  T_WEAPON_FEED,
+  T_BEAM,
   T_PLAYER_MISSILE,
   T_SECTOR_SURFACE,
   T_SECTOR_PROP,
@@ -58,7 +60,8 @@ import {
 import { HUD_SIZE } from "./hud-abi";
 import { SAVE_AMMO_BASE, SAVE_SIZE, SAVE_SLOTS } from "./save-abi";
 import { keySpriteAlpha } from "./sprite-alpha";
-import { WEAPON_SHEETS, WEAPON_THUMBNAILS } from "./weapon-assets";
+import { PROJECTILE_ART } from "./projectile-art";
+import { WEAPON_FEED_FILES, WEAPON_SHEETS, WEAPON_THUMBNAILS } from "./weapon-assets";
 import {
   readEnemyCues,
   readBars,
@@ -343,7 +346,12 @@ const TEX_FILES: { id: number; src: string }[] = [
   ...["fuel", "acid", "specimen", "pressure"].map((name, i) => ({
     id: T_RELOAD_DEBRIS + i, src: `/game/fx/${name}-debris-hd.png`,
   })),
-];
+  ...WEAPON_FEED_FILES.flatMap((src, slot) => src && src.includes("/feeds/")
+    ? [{ id: T_WEAPON_FEED + slot, src }] : []),
+  ...["arc-ray", "precision-ray"].map((name, i) => ({
+    id: T_BEAM + i, src: `/game/projectiles/v4/${name}.png`,
+  })),
+].map(texture => ({ ...texture, src: PROJECTILE_ART[texture.src] ?? texture.src }));
 
 const UI_CRITICAL = [
   ...WEAPON_THUMBNAILS,
@@ -1056,7 +1064,7 @@ export class BlacksiteRuntime {
   }
 
   /**
-   * Re-fetches and re-uploads every visual asset: the 818-layer world atlas, the
+   * Re-fetches and re-uploads every visual asset: the 853-layer world atlas, the
    * 16 theme variants, and the cached weapon sheet/thumbnail images.
    *
    * A decode that failed once (a flaky connection, a GPU context loss during a
