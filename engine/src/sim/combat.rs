@@ -43,6 +43,8 @@ impl Engine {
     pub(crate) fn fire_campaign_weapon(&mut self) {
         let slot = self.weapon as usize;
         let spec = campaign::WEAPONS[slot - 19];
+        // SC-6 flechette drum expels a spent shell; energy/drone launchers do not.
+        if slot == 26 { self.eject_debris(1); }
         self.cooldown = spec.cadence;
         self.muzzle = 1.0;
         self.kick = if matches!(spec.mode, 6 | 10) { 1.5 } else { 0.85 };
@@ -496,6 +498,10 @@ impl Engine {
         self.reload_dur = if w == 1 { 0.42 } else { RELOAD_T[w] };
         self.reload_t = self.reload_dur;
         self.events |= EV_RELOAD;
+        // Feed removal is the first reload pose. Emit once, not on refill ticks.
+        if let Some(material) = match w { 7 => Some(2), 10 => Some(3), 24 => Some(4), 20 => Some(5), _ => None } {
+            self.eject_debris(material);
+        }
     }
 
     pub(crate) fn finish_reload(&mut self) {
@@ -573,6 +579,7 @@ impl Engine {
                 self.kick = 1.1;
                 self.shake = (self.shake + 0.22).min(1.0);
                 self.fire_lance();
+                self.eject_casing();
             }
             4 => {
                 self.cooldown = 0.78;
@@ -877,6 +884,10 @@ impl Engine {
     }
 
     pub(crate) fn eject_casing(&mut self) {
+        self.eject_debris(if self.weapon == 1 { 1 } else { 0 });
+    }
+
+    pub(crate) fn eject_debris(&mut self, material: u8) {
         // Cosmetic shells never crowd out hostiles or projectiles.
         let shells: Vec<usize> = self.ents.iter().enumerate()
             .filter(|(_, e)| e.kind == EK_SPARK && e.effect_tick == 5.0).map(|(i, _)| i).collect();
@@ -896,7 +907,15 @@ impl Engine {
         let pay = self.pa.sin() * 0.2;
         let slot = self.fx_n;
         self.queue_fx(EK_SPARK, x, y, rx * jx + pax, ry * jy + pay, 6.0, self.h as f32 * 0.08);
-        if self.fx_n > slot { self.fx_q[slot].variant = 5; }
+        if self.fx_n > slot {
+            self.fx_q[slot].variant = 5;
+            // Capture material at emission; switching weapons before flush must not change it.
+            self.fx_q[slot].projectile_visual = material;
+            if material >= 2 {
+                self.fx_q[slot].vx *= 0.45;
+                self.fx_q[slot].vy *= 0.45;
+            }
+        }
         self.spawn_timed(EK_SMOKE, x, y, 0.22, self.h as f32 * 0.08);
     }
 

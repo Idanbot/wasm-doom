@@ -212,7 +212,7 @@ pub(crate) fn sprite_style(e: &Ent) -> (usize, f32, bool, i32) {
         EK_FLAME | EK_FIREPATCH => return (T_FLAME, 0.58 + (e.frame * 7.0).sin() * 0.035, true, 0),
         EK_SPARK if (16.0..24.0).contains(&e.effect_tick) =>
             return (T_BOSS_ENTRANCE+(e.effect_tick as usize-16),0.28+e.frame*0.35,false,0),
-        EK_SPARK if e.effect_tick == 5.0 => return (if e.skin == 1 { T_CASING_SHELL } else { T_CASING }, 0.12, true,
+        EK_SPARK if e.effect_tick == 5.0 => return (if (2..=5).contains(&e.skin) { T_RELOAD_DEBRIS + (e.skin - 2) as usize } else if e.skin == 1 { T_CASING_SHELL } else { T_CASING }, if e.skin >= 2 && e.skin <= 5 { 0.28 } else { 0.12 }, true,
             if e.shield >= 3 { 0 } else { ((e.frame * 18.0) as i32).rem_euclid(4) }),
         EK_SPARK => return if e.effect_tick < 4.0 {
             (T_MUZZLEFX, 0.10, true, e.effect_tick as i32)

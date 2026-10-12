@@ -149,62 +149,11 @@ repository name.
 
 CI runs source, asset and engine checks in parallel, shares one verified WASM
 build and splits browser checks into four groups. Pages deployment waits for all
-checks and publishes the exact tested build. See [CI dependencies and optional
-AI game testing](docs/CI.md).
+checks and publishes the exact tested build. See [CI dependencies](docs/CI.md).
 
 Deployment stays disabled until all assets decode, the HUD initializes and the renderer presents the first sector frame. Loading shows a 16-pose operator drill (run, stop, fire, reload); failed loads offer **Retry loading**. Sprite sources and the animation contract live in `art/loading/manifest.json`.
 
 HUD cards reserve a safe inset inside the decorative rails. `scripts/hud-insets.browser.mjs` checks all 33 guns and reload labels at four desktop/mobile sizes; `scripts/loading-ready.browser.mjs` checks loading animation, progress, retry and the initial HUD.
-
-## AI gameplay QA
-
-The manually runnable **AI gameplay QA** workflow uses only pinned CPU
-Decider-4B v2.1 Q4_K_M as a test-time player of the real Rust/WASM simulation.
-Its default `completion` tier tests the hybrid commander from five starting
-orientations in sector 1, with **30 minutes of wall-clock time and at most
-512 decisions across the entire test**. The optional `extended` tier retains
-sectors 1, 2, 3, 5, 10, 15, 20 and 25 plus three seeded random boss encounters.
-Independent starts do not imply campaign completion. Death or victory ends an
-episode early and frees budget for later scenarios. One workflow runs at a time;
-new requests queue.
-The `smoke` and `short` tiers remain available for quick checks.
-The `approaches` tier compares compact controls, longer control intervals and a
-hybrid commander. The `completion` tier repeats the selected policy from up to
-five starting orientations; a win requires boss defeat and reward collection.
-The commander lets Decider select tactics while an explicit local executor
-handles aiming, reloads, pickups and navigation. Its success measures the hybrid
-QA player, rather than unaided model skill.
-The verified free-runner completion test won **5/5 first-sector starts** in
-7.5 minutes with 42 decisions and exact replay; it also exposed and fixed a
-player collision trap caused by closing boss doors.
-Reports include confidence, gameplay metrics and deterministic input replay;
-model confidence is diagnostic and does not decide test success. The test
-controller supports reload/switching for all owned guns, remembers explored
-minimap cells and failed routes, and updates steering during longer actions
-without extra inference. Navigation shares one deterministic route search across
-all candidate goals, tries reachable pickups when the nearest is blocked, and
-expires temporary route failures. Pickup memory preserves unseen supplies behind
-the player, and weapon switching waits for an active reload to finish. Regression
-tests cover these cases plus full sector completion and exact replay from all
-five starting orientations. These controller tests use fixed tactical choices;
-they do not invoke Decider or replace the separate model-integration workflow.
-Combat steering retains a visible target through small distance changes, but
-switches immediately to a close threat or a substantially nearer enemy. Ammo
-collection compares each owned gun against two of its own magazines; abundant
-launcher rounds no longer mask an empty rifle. Completion reports count a win
-only after exact input replay succeeds, and system failures cannot be hidden by
-other scenarios exhausting their budget.
-The commander tracks visible enemies while reloading and waits for large aim
-corrections to settle before firing. It also holds fire during weapon changes,
-avoids switching to an empty preferred gun, and prioritizes a loaded fallback
-when its current weapon is completely dry—even during the normal equip cooldown.
-Every resulting input segment is replayed exactly.
-The immutable checkpoint cache survives budget changes. This adds no shipped
-runtime dependency and needs no browser, GPU, cloud API or secrets.
-
-See [setup, model pins and smoke-test limits](docs/AI_GAME_QA.md) and the
-[latest three-run review](docs/AI_GAME_QA_REVIEW_2026-10-08.md), and
-[sector-completion comparisons](docs/DECIDER_APPROACHES.md).
 
 ## Local QA
 
@@ -222,3 +171,8 @@ phase palette pulses. WebGPU and WebGL2 share these effects; Canvas2D uses reduc
 atmosphere effects. Reflections use local probes rather than hardware ray tracing.
 See [world material contracts](art/world-materials-v1/README.md) for quality limits
 and regression coverage.
+
+Reloads discard matching HX-8 fuel tanks, CM-9 acid vials, MY-9 specimen
+cartridges and LV-8 pressure cylinders. Spent feeds tumble, bounce and settle
+using the same bounded debris physics as bullet casings. Artwork and packing
+specifications are in `art/weapon-debris-v1/`.

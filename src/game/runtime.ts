@@ -40,6 +40,7 @@ import {
   T_BOSS_ENTRANCE,
   T_CASING,
   T_CASING_SHELL,
+  T_RELOAD_DEBRIS,
   T_PLAYER_MISSILE,
   T_SECTOR_SURFACE,
   T_SECTOR_PROP,
@@ -339,6 +340,9 @@ const TEX_FILES: { id: number; src: string }[] = [
   ...Array.from({length:8},(_,i)=>({id:T_BOSS_ENTRANCE+i,src:`/game/fx/boss-entry-${i}.png`})),
   { id: T_CASING, src: "/game/fx/casing-hd.png" },
   { id: T_CASING_SHELL, src: "/game/fx/shell-hd.png" },
+  ...["fuel", "acid", "specimen", "pressure"].map((name, i) => ({
+    id: T_RELOAD_DEBRIS + i, src: `/game/fx/${name}-debris-hd.png`,
+  })),
 ];
 
 const UI_CRITICAL = [
@@ -1052,7 +1056,7 @@ export class BlacksiteRuntime {
   }
 
   /**
-   * Re-fetches and re-uploads every visual asset: the 814-layer world atlas, the
+   * Re-fetches and re-uploads every visual asset: the 818-layer world atlas, the
    * 16 theme variants, and the cached weapon sheet/thumbnail images.
    *
    * A decode that failed once (a flaky connection, a GPU context loss during a

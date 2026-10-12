@@ -1,0 +1,76 @@
+{
+  "provider": "OpenAI imagegen",
+  "source": "art/weapon-debris-v1/source.png",
+  "references": [
+    "hx8",
+    "cm9",
+    "my9",
+    "lv8"
+  ],
+  "assets": [
+    {
+      "file": "public/game/fx/fuel-debris-hd.png",
+      "sha256": "8565530d033cd4422eea95cd979501b30f8ffdceb2b13176eecf9ce020a0b693",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "cell": [
+        512,
+        512
+      ]
+    },
+    {
+      "file": "public/game/fx/acid-debris-hd.png",
+      "sha256": "2d8b15f2fda8727dd48ce2c74ddb2d24b858fca90ad441ba5a2879bcf79c644c",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "cell": [
+        512,
+        512
+      ]
+    },
+    {
+      "file": "public/game/fx/specimen-debris-hd.png",
+      "sha256": "faad949616beac87cae3e4a7b02c6dd1128170d8fc58f263b087b11f2e2ad304",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "cell": [
+        512,
+        512
+      ]
+    },
+    {
+      "file": "public/game/fx/pressure-debris-hd.png",
+      "sha256": "ae6699bbd973ff91a726fe4e9f1bdb54928094d51aa0f1c603d6d137e64907bc",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "cell": [
+        512,
+        512
+      ]
+    }
+  ]
+}

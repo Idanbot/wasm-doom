@@ -55,7 +55,6 @@ test("loading animates, retries failed assets and publishes a real HUD before de
     await button.click();
     await page.getByRole("region",{name:"Vitals"}).waitFor();
     const live = await page.evaluate(() => ({
-      enemies:window.__controlsTest.getEnemies().length,
       hostiles:Number(document.querySelector('.hud-threat b').textContent),
       canvas:document.querySelector('.game-canvas').dataset.resolution
     }));

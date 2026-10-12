@@ -1018,3 +1018,37 @@ fn reactor_light_and_boss_phase_palette_are_read_only_and_clear_after_death() {
     e.ents[boss].hp = 0; e.update_lighting();
     assert!(e.light_at(4.5, 4.5).iter().zip(hot).any(|(l, h)| *l < h));
 }
+
+#[test]
+fn reload_containers_match_feed_and_emit_once() {
+    for (weapon, material) in [(7, 2), (10, 3), (24, 4), (20, 5)] {
+        let mut e = Engine::new(320, 200);
+        e.state = 0;
+        e.weapon = weapon;
+        e.mag[weapon as usize] = 0;
+        e.ammo[weapon as usize] = 10;
+        e.begin_reload();
+        e.begin_reload();
+        // Material survives a weapon switch before the transient queue is flushed.
+        e.weapon = 0;
+        e.flush_fx();
+        let debris: Vec<_> = e.ents.iter().filter(|p| p.kind == EK_SPARK && p.effect_tick == 5.0).collect();
+        assert_eq!(debris.len(), 1);
+        assert_eq!(debris[0].skin, material);
+        assert_eq!(sprite_style(debris[0]).0, T_RELOAD_DEBRIS + (material - 2) as usize);
+        assert_eq!(sprite_style(debris[0]).1, 0.28);
+        assert!(debris[0].aim < 1.0);
+    }
+}
+
+#[test]
+fn rejected_reload_does_not_discard_container() {
+    let mut e = Engine::new(320, 200);
+    e.state = 0;
+    e.weapon = 7;
+    e.mag[7] = 0;
+    e.ammo[7] = 0;
+    e.begin_reload();
+    e.flush_fx();
+    assert!(!e.ents.iter().any(|p| p.kind == EK_SPARK && p.effect_tick == 5.0));
+}

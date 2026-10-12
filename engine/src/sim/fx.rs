@@ -62,7 +62,7 @@ impl Engine {
                 _ => (1, 0.1, 0.0),
             };
             *e = Ent {
-                aim: if f.kind == EK_SPARK && f.variant == 5 { 1.6 } else { 0.0 },
+                aim: if f.kind == EK_SPARK && f.variant == 5 { if f.projectile_visual >= 2 { 0.45 } else { 1.6 } } else { 0.0 },
                 kind: f.kind,
                 x: f.x,
                 y: f.y,
@@ -74,7 +74,7 @@ impl Engine {
                 anim: ANIM_IDLE,
                 anim_time: 0.0,
                 anim_lock: 0.0,
-                skin: if f.kind == EK_SPARK && f.variant == 5 && self.weapon == 1 { 1 } else { SKIN_NONE },
+                skin: if f.kind == EK_SPARK && f.variant == 5 { f.projectile_visual } else { SKIN_NONE },
                 projectile_visual: f.projectile_visual,
                 radius,
                 flash: 0.0,
