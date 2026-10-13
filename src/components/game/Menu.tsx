@@ -86,13 +86,14 @@ export function Menu(
           Retry loading
         </button>
       )}
-      <fieldset className="difficulty-picker">
+      <fieldset className="difficulty-picker" disabled={!p.ready}>
         <legend>Deployment difficulty</legend>
         <div className="difficulty-tabs">
           {DIFFICULTIES.map((preset) => (
             <button
               type="button"
               key={preset.id}
+              disabled={!p.ready}
               aria-pressed={p.difficulty === preset.id}
               onClick={() => p.setDifficulty(preset.id)}
             >
@@ -102,8 +103,9 @@ export function Menu(
         </div>
         <p>{DIFFICULTIES.find((preset) => preset.id === p.difficulty)!.description}</p>
         <small>
-          Fixed for this run. Weapon damage, enemy health, ammo and attack warnings remain
-          unchanged.
+          {p.ready
+            ? "Fixed for this run. Weapon damage, enemy health, ammo and attack warnings remain unchanged."
+            : "Difficulty selection unlocks when loading finishes."}
         </small>
       </fieldset>
       <button type="button" className="deploy-button" disabled={!p.ready} onClick={p.onStart}>

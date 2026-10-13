@@ -757,7 +757,7 @@ export function GameApp() {
                 err={err}
                 board={board}
                 difficulty={difficulty}
-                setDifficulty={(value) => { setDifficulty(value); try { localStorage.setItem("blacksite-difficulty", value); } catch { /* unavailable storage */ } }}
+                setDifficulty={(value) => { if (!ready) return; setDifficulty(value); try { localStorage.setItem("blacksite-difficulty", value); } catch { /* unavailable storage */ } }}
                 res={res}
                 setRes={setRes}
                 sens={sens}

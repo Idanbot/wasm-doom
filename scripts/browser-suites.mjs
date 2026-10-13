@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 // suite owns a browser at a time and retains the existing regression coverage.
 export const BROWSER_SUITES = {
   interface: ['difficulty-runs', 'settings-update', 'hud-insets', 'map-controls', 'arsenal'],
-  loading: ['loading-ready', 'loading-tiers', 'loading-fault-matrix'],
+  loading: ['difficulty-loading', 'loading-ready', 'loading-tiers', 'loading-fault-matrix'],
   'loading-recovery': ['loading-recovery'],
   renderer: ['resolution-recovery', 'weapon-viewmodel', 'asset-reload'],
   combat: ['reload-effects', 'weapon-feed-art', 'world-effects', 'world-materials', 'gameplay-polish', 'tactical', 'boss-arena', 'boss-counterplay', 'projectile-presentation', 'sfx'],

@@ -279,6 +279,10 @@ jobs:
         env:
           BLACKSITE_TEST_URL: ${{ env.BLACKSITE_PAGES_URL }}
         run: node --experimental-strip-types --test scripts/settings-update.browser.mjs
+      - name: Check difficulty selection stays locked during loading
+        env:
+          BLACKSITE_TEST_URL: ${{ env.BLACKSITE_PAGES_URL }}
+        run: node --experimental-strip-types --test scripts/difficulty-loading.browser.mjs
       - name: Check fault recovery under the production Pages base
         env:
           BLACKSITE_TEST_URL: ${{ env.BLACKSITE_PAGES_URL }}

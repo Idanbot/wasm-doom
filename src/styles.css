@@ -1606,6 +1606,10 @@ select:focus-visible {
   color: #fbbf24;
   background: #30281a;
 }
+.difficulty-picker button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
 .difficulty-tabs button:focus-visible,
 .run-card summary:focus-visible,
 .menu-records summary:focus-visible {

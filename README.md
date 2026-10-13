@@ -219,6 +219,10 @@ Run `npm run check:sprites` before publishing art; see
 
 ### Difficulty and local field records
 
+Difficulty selection stays locked until deployment assets finish loading. Your
+saved preset remains selected; once loading finishes, all four presets unlock
+without restarting loading.
+
 Choose **Recruit**, **Operative**, **Veteran**, or **Blacksite** on the deployment menu. Operative preserves the original balance. Recruit uses 65% incoming damage, 85% enemy movement speed and 125% attack recovery; Veteran uses 125% / 110% / 90%; Blacksite uses 150% / 120% / 80%. Enemy health, weapon damage, ammunition and attack-warning durations stay unchanged. The preset is fixed during a run and survives sector transitions and browser-local checkpoints.
 
 Local leaderboards retain ten runs per difficulty, ordered by furthest sector, kills and then shortest active simulation time. Log a run on a sector-clear or death screen; inspect records from the menu or end screen. Expand a record for total ammunition consumed, health plus armor damage taken, accuracy, kills, bosses defeated and time. Expand each sector for its time, kills, completion status and traced route over its layout. Green marks the start, amber the sampled path and red the endpoint. Routes sample approximately once per simulation second and progressively thin long paths to 128 points per sector. Records retain the latest 128 sector routes in endless play.
