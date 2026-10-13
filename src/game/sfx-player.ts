@@ -1,4 +1,5 @@
 import { asset } from "@/lib/asset";
+import { fetchAsset, preloadAssets, type AssetProgress } from "./asset-loading";
 import { VoiceGate } from "./voice-gate";
 import type { SoundIntent } from "./sfx-director";
 export type SfxClip = { id: string; url: string; fallback: string; vocal: boolean };
@@ -34,38 +35,35 @@ export class SfxPlayer {
     private ctx: AudioContext,
     private bus: GainNode,
     private voiceGate: VoiceGate,
+    private loadSignal?: AbortSignal,
   ) {}
-  async load(): Promise<void> {
+  async load(onProgress?: AssetProgress): Promise<void> {
     this.loadPromise ??= (async () => {
-      const r = await fetch(asset("/game/sfx/v2/manifest.json"));
-      if (!r.ok) throw new Error(`Sound effects manifest missing (${r.status})`);
-      const manifest = (await r.json()) as { clips: SfxClip[] };
-      let index = 0;
-      await Promise.all(
-        Array.from({ length: 6 }, async () => {
-          while (index < manifest.clips.length && !this.closed) {
-            const clip = manifest.clips[index++]!;
-            let decoded: AudioBuffer | null = null;
-            for (const [n, url] of [clip.url, clip.fallback].entries()) {
-              try {
-                const response = await fetch(asset(url));
-                if (!response.ok) throw new Error(`${response.status}`);
-                decoded = await this.ctx.decodeAudioData(await response.arrayBuffer());
-                if (n) this.fallback.add(clip.id);
-                break;
-              } catch {
-                /* MP3 fallback is attempted once, during loading only. */
-              }
-            }
-            if (!decoded) {
-              this.failed.push(clip.id);
-              continue;
-            }
-            this.buffers.set(clip.id, decoded);
-            if (clip.vocal) this.vocals.add(clip.id);
-          }
-        }),
-      );
+      const manifest = await fetchAsset(asset("/game/sfx/v2/manifest.json"), async response => {
+        const value = await response.json() as { clips: SfxClip[] };
+        if (!Array.isArray(value.clips) || value.clips.some(clip => typeof clip.url !== "string" || typeof clip.fallback !== "string"))
+          throw new Error("Corrupt sound effects manifest");
+        return value;
+      }, { signal: this.loadSignal });
+      const clips = new Map(manifest.clips.map(clip => [clip.id, clip]));
+      const decoded = await preloadAssets(manifest.clips.map(clip => clip.id), async (id, onAttempt) => {
+        const clip = clips.get(id)!;
+        for (const [n, url] of [clip.url, clip.fallback].entries()) {
+          try {
+            const buffer = await fetchAsset(asset(url), async response => this.ctx.decodeAudioData(await response.arrayBuffer()),
+              { signal: this.loadSignal, onAttempt: (done, total) => onAttempt(n * total + done, total * 2) });
+            if (n) this.fallback.add(clip.id);
+            return buffer;
+          } catch { this.loadSignal?.throwIfAborted(); }
+        }
+        throw new Error(`Sound effect unavailable: ${id}`);
+      }, 6, onProgress);
+      for (let i = 0; i < manifest.clips.length; i++) {
+        const clip = manifest.clips[i]!;
+        if (!decoded[i]) { this.failed.push(clip.id); continue; }
+        this.buffers.set(clip.id, decoded[i]!);
+        if (clip.vocal) this.vocals.add(clip.id);
+      }
       if (this.failed.length)
         throw new Error(`Sound effects unavailable: ${this.failed.join(", ")}`);
     })();

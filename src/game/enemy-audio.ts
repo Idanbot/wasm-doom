@@ -1,5 +1,6 @@
 import { SECTOR_ENEMIES } from "./sector-enemies";
 import { asset } from "@/lib/asset";
+import { fetchAsset, preloadAssets } from "./asset-loading";
 import { VoiceGate } from "./voice-gate";
 import {
   DEFAULT_ENEMY_OPTIONS,
@@ -89,6 +90,7 @@ export class EnemyAudio {
     master: GainNode,
     private sfxBus: GainNode,
     private voiceGate: VoiceGate,
+    private loadSignal?: AbortSignal,
   ) {
     this.voiceBus = ctx.createGain();
     this.voiceBus.connect(master);
@@ -96,9 +98,12 @@ export class EnemyAudio {
   }
   async load(onProgress?: (done: number, total: number) => void) {
     this.loaded ??= (async () => {
-      const response = await fetch(asset("/game/voices/manifest.json"));
-      if (!response.ok) throw new Error("Enemy voice manifest could not load");
-      const manifest = (await response.json()) as { enemies: VoiceProfile[] };
+      const manifest = await fetchAsset(asset("/game/voices/manifest.json"), async response => {
+        const value = await response.json() as { enemies: VoiceProfile[] };
+        if (!Array.isArray(value.enemies) || value.enemies.some(p => !Array.isArray(p.lines)))
+          throw new Error("Corrupt enemy voice manifest");
+        return value;
+      }, { signal: this.loadSignal });
       for (const p of manifest.enemies) this.profiles.set(p.skin, p);
       for (const enemy of SECTOR_ENEMIES) {
         const base = this.profiles.get(enemy.base);
@@ -111,22 +116,13 @@ export class EnemyAudio {
           });
       }
       const lines = manifest.enemies.flatMap((p) => p.lines);
-      let index = 0;
-      let done = 0;
-      onProgress?.(0, lines.length);
-      await Promise.all(
-        Array.from({ length: 4 }, async () => {
-          while (index < lines.length && !this.closed) {
-            const line = lines[index++]!;
-            const r = await fetch(asset(line.url));
-            if (!r.ok) throw new Error(`Enemy voice missing: ${line.id}`);
-            const decoded = await this.ctx.decodeAudioData(await r.arrayBuffer());
-            this.buffers.set(line.id, decoded);
-            done += 1;
-            onProgress?.(done, lines.length);
-          }
-        }),
-      );
+      const decoded = await preloadAssets(lines.map(line => line.url), (url, onAttempt) =>
+        fetchAsset(asset(url), async response => this.ctx.decodeAudioData(await response.arrayBuffer()),
+          { signal: this.loadSignal, onAttempt }), 4, onProgress);
+      const failed = lines.filter((_, i) => !decoded[i]);
+      for (let i = 0; i < lines.length; i++) if (decoded[i]) this.buffers.set(lines[i]!.id, decoded[i]!);
+      if (failed.length) throw new Error(`Enemy voices unavailable: ${failed.map(line => line.id).join(", ")}`);
+
     })();
     return this.loaded;
   }

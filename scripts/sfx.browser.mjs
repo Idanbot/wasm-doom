@@ -151,7 +151,7 @@ for (const mobile of [false, true])
       await browser.close();
     }
   });
-test("unsupported or missing OGG uses MP3 once; missing both fails loading clearly without retries", async () => {
+test("missing OGG retries twice before MP3; exhausted formats keep their failed load result", async () => {
   const browser = await chromium.launch({ headless: true });
   try {
     const { page } = await fixture(browser);
@@ -168,7 +168,7 @@ test("unsupported or missing OGG uses MP3 once; missing both fails loading clear
       }),
       ["fire3"],
     );
-    assert.equal(attempts, 1);
+    assert.equal(attempts, 3, "OGG gets one initial request and two retries, even when load is called twice");
     await page.close();
     const bad = await fixture(browser);
     let failures = 0;
@@ -194,7 +194,7 @@ test("unsupported or missing OGG uses MP3 once; missing both fails loading clear
     assert.match(result.message, /Sound effects unavailable: fire3/);
     assert.deepEqual(result.failed, ["fire3"]);
     assert.equal(result.play, false);
-    assert.equal(failures, 2);
+    assert.equal(failures, 6, "each missing format gets exactly three attempts; repeated load does not retry again");
   } finally {
     await browser.close();
   }

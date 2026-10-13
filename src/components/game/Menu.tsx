@@ -8,6 +8,7 @@ export function Menu(
     ready: boolean;
     err: string | null;
     load?: { ratio: number; label: string };
+    loadingSpriteSrc?: string;
     board: Score[];
     muted: boolean;
     setMuted: (v: boolean) => void;
@@ -51,7 +52,7 @@ export function Menu(
       {!p.ready && !p.err && (
         <div className="deployment-loading" role="status" aria-live="polite">
           <span className="loading-operator" aria-hidden="true">
-            <img src={asset("/game/ui/loading-operator.webp")} alt="" width={1536} height={96} />
+            <img src={p.loadingSpriteSrc ?? asset("/game/ui/loading-operator.webp")} alt="" width={1536} height={96} />
           </span>
           <span>Preparing your deployment<small>{p.load?.label ?? "Engine"}</small></span>
         </div>

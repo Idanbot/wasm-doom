@@ -5,6 +5,7 @@ import { SECTOR_ENEMIES } from "./sector-enemies";
 import { SECTOR_SLUGS, SECTOR_SURFACES } from "./sector-assets";
 import { CAMPAIGN_EXPANSION } from "./campaign25";
 import { asset } from "@/lib/asset";
+import { assetLoader, fetchAsset, preloadAssets, retryImageUrl, type AssetProgress } from "./asset-loading";
 import { createAudio, type GameAudio } from "./audio";
 import { createBlitter, type BlitKind, type Blitter } from "./blit";
 import { WorldEffects, sectorEffect } from "./sector-effects";
@@ -354,12 +355,12 @@ const TEX_FILES: { id: number; src: string }[] = [
 ].map(texture => ({ ...texture, src: PROJECTILE_ART[texture.src] ?? texture.src }));
 
 const UI_CRITICAL = [
-  ...WEAPON_THUMBNAILS,
-  ...WEAPON_SHEETS,
   "/game/ui/hud-panel.webp",
   "/game/ui/menu-reactor.webp",
   "/game/ui-plaque.svg",
   "/game/ui/loading-operator.webp",
+  ...WEAPON_THUMBNAILS,
+  ...WEAPON_SHEETS,
 ];
 const weaponSheetPaths = new Set<string>(WEAPON_SHEETS);
 const weaponSheetCache = new Map<string, HTMLImageElement>();
@@ -370,13 +371,7 @@ export function weaponSheetImage(src: string): HTMLImageElement | null {
   if (cached) return cached;
   if (!pendingWeaponSheets.has(src)) {
     pendingWeaponSheets.add(src);
-    const image = new Image();
-    image.onload = () => {
-      weaponSheetCache.set(src, image);
-      pendingWeaponSheets.delete(src);
-    };
-    image.onerror = () => pendingWeaponSheets.delete(src);
-    image.src = asset(src);
+    void decodeImage(src).finally(() => pendingWeaponSheets.delete(src));
   }
   return null;
 }
@@ -401,52 +396,43 @@ const THEME_FILES: { slot: number; src: string }[] = [
   ...THEME_ORDER.map((theme, i) => ({ slot: 8 + i, src: `/game/theme/door_${theme}.png` })),
 ];
 
-function decodeImage(src: string, timeoutMs = 30000): Promise<HTMLImageElement | null> {
-  return new Promise((resolve) => {
-    const img = new Image();
-    let settled = false;
-    const finish = (value: HTMLImageElement | null) => {
-      if (settled) return;
-      settled = true;
-      window.clearTimeout(timer);
-      resolve(value);
-    };
-    const timer = window.setTimeout(() => finish(null), timeoutMs);
-    img.onload = () => {
-      img.decode().then(
-        () => {
-          if (weaponSheetPaths.has(src)) weaponSheetCache.set(src, img);
-          finish(img);
-        },
-        () => finish(null),
-      );
-    };
-    img.onerror = () => finish(null);
-    img.src = asset(src);
-  });
+async function decodeImage(src: string, timeoutMs = 30000, onAttempt?: AssetProgress, signal?: AbortSignal): Promise<HTMLImageElement | null> {
+  try {
+    const img = await assetLoader.load(({ attempt, signal: attemptSignal }) => new Promise<HTMLImageElement>((resolve, reject) => {
+      const image = new Image();
+      const finish = (error?: unknown) => {
+        image.onload = image.onerror = null;
+        attemptSignal.removeEventListener("abort", cancel);
+        if (error) { image.src = ""; reject(error); }
+        else resolve(image);
+      };
+      const cancel = () => finish(attemptSignal.reason);
+      image.onload = () => {
+        image.decode().then(() => {
+          if (attemptSignal.aborted) return;
+          if (!image.naturalWidth || !image.naturalHeight) finish(new Error(`Empty image: ${src}`));
+          else finish();
+        }, finish);
+      };
+      image.onerror = () => finish(new Error(`Image could not decode: ${src}`));
+      attemptSignal.addEventListener("abort", cancel, { once: true });
+      image.src = retryImageUrl(asset(src), attempt);
+    }), { timeoutMs, onAttempt, signal });
+    if (weaponSheetPaths.has(src)) weaponSheetCache.set(src, img);
+    return img;
+  } catch { return null; }
 }
 
 async function preloadImages(
-  urls: string[],
-  limit = 4,
-  onItem?: (done: number, total: number) => void,
-  timeoutMs = 30000,
+  urls: string[], limit = 4, onItem?: AssetProgress, timeoutMs = 30000,
+  signal?: AbortSignal, onReady?: (src: string, image: HTMLImageElement) => void,
 ) {
-  const out: (HTMLImageElement | null)[] = new Array(urls.length);
-  let cursor = 0;
-  let done = 0;
-  onItem?.(0, urls.length);
-  async function worker() {
-    while (cursor < urls.length) {
-      const i = cursor;
-      cursor += 1;
-      out[i] = await decodeImage(urls[i]!, timeoutMs);
-      done += 1;
-      onItem?.(done, urls.length);
-    }
-  }
-  await Promise.all(Array.from({ length: Math.min(limit, urls.length) }, () => worker()));
-  return out;
+  return preloadAssets(urls, async (src, onAttempt) => {
+    const img = await decodeImage(src, timeoutMs, onAttempt, signal);
+    if (!img) throw new Error(`Image unavailable: ${src}`);
+    onReady?.(src, img);
+    return img;
+  }, limit, onItem);
 }
 
 export type RuntimeHooks = {
@@ -460,6 +446,8 @@ export type RuntimeHooks = {
    * on a stale HUD with no game-over ever arriving. */
   onError?: (message: string) => void;
   onLoad?: (progress: { ratio: number; label: string }) => void;
+  /** Successfully decoded UI URLs, including a refreshed URL after a retry. */
+  onUiAssetReady?: (src: string, url: string) => void;
 };
 
 export class BlacksiteRuntime {
@@ -468,6 +456,7 @@ export class BlacksiteRuntime {
   private wasm: WasmExports | null = null;
   private blit: Blitter | null = null;
   private audio: GameAudio;
+  private assetAbort = new AbortController();
   private worldEffects = new WorldEffects();
   private keys = new Set<string>();
   private bits = 0;
@@ -527,7 +516,7 @@ export class BlacksiteRuntime {
   constructor(canvas: HTMLCanvasElement, hooks: RuntimeHooks) {
     this.canvas = canvas;
     this.hooks = hooks;
-    this.audio = createAudio();
+    this.audio = createAudio(this.assetAbort.signal);
   }
   async boot(res: ResMode, opts?: { requireGpu?: boolean }) {
     let progress = 0;
@@ -539,7 +528,7 @@ export class BlacksiteRuntime {
     report(0.02, "Engine");
     // Let React paint the loading animation before allocating the WASM atlas.
     await new Promise<void>(resolve => requestAnimationFrame(() => setTimeout(resolve, 0)));
-    const wasm = await loadWasm();
+    const wasm = await loadWasm((done, total) => report(0.02 + 0.04 * done / total, "Engine"));
     if (this.aborted) return;
     this.wasm = wasm;
     this.requireGpu = opts?.requireGpu ?? false;
@@ -593,6 +582,8 @@ export class BlacksiteRuntime {
           paint("Arsenal & interface");
         },
         30000,
+        this.assetAbort.signal,
+        (src, img) => { if (!this.aborted) this.hooks.onUiAssetReady?.(src, img.src); },
       ).then((imgs) => {
         const failed = UI_CRITICAL.filter((_, i) => !imgs[i]);
         if (failed.length) {
@@ -604,7 +595,10 @@ export class BlacksiteRuntime {
         slices.voice = total ? done / total : 1;
         paint("Enemy voices");
       }),
-      this.audio.prepareMedia().then(() => {
+      this.audio.prepareMedia((done, total) => {
+        slices.media = total ? done / total : 1;
+        paint("Sound & music");
+      }).then(() => {
         slices.media = 1;
         paint("Sound & music");
       }),
@@ -811,6 +805,7 @@ export class BlacksiteRuntime {
   }
 
   stop() {
+    this.assetAbort.abort();
     this.aborted = true;
     if (this.contextTimer) clearTimeout(this.contextTimer);
     this.running = false;
@@ -1007,8 +1002,10 @@ export class BlacksiteRuntime {
     // image loads.
     const loaded = await preloadImages(
       TEX_FILES.map((t) => t.src),
-      12,
-      onItem,
+      8,
+      done => onItem?.(done, TEX_FILES.length + THEME_FILES.length),
+      30000,
+      this.assetAbort.signal,
     );
     const missing = TEX_FILES.filter((_, i) => !loaded[i]).map((t) => t.src);
     if (missing.length) throw new Error(`World textures could not load: ${missing.join(", ")}`);
@@ -1057,7 +1054,7 @@ export class BlacksiteRuntime {
         throw new Error(`World texture could not be prepared: ${TEX_FILES[i]!.src}`);
       }
     }
-    await this.uploadThemeVariants(ctx, size, onItem);
+    await this.uploadThemeVariants(ctx, size, done => onItem?.(TEX_FILES.length + done, TEX_FILES.length + THEME_FILES.length));
     wasm.hs_apply_theme(1);
     wasm.hs_textures_ready();
     this.pushAtlas();
@@ -1103,22 +1100,10 @@ export class BlacksiteRuntime {
   }
 
   /** Resolves once the sheet has decoded, or immediately if it cannot. */
-  private awaitWeaponSheet(src: string): Promise<void> {
-    if (weaponSheetCache.has(src)) return Promise.resolve();
-    return new Promise((resolve) => {
-      const image = new Image();
-      const done = () => {
-        weaponSheetCache.set(src, image);
-        pendingWeaponSheets.delete(src);
-        resolve();
-      };
-      image.onload = done;
-      image.onerror = () => {
-        pendingWeaponSheets.delete(src);
-        resolve();
-      };
-      image.src = asset(src);
-    });
+  private async awaitWeaponSheet(src: string): Promise<void> {
+    if (weaponSheetCache.has(src)) return;
+    const image = await decodeImage(src, 30000, undefined, this.assetAbort.signal);
+    if (!image) throw new Error(`Weapon sheet could not load: ${src}`);
   }
 
   /** Forces the next frame to redraw; used after an out-of-band asset repair. */
@@ -1137,6 +1122,9 @@ export class BlacksiteRuntime {
     const loaded = await preloadImages(
       THEME_FILES.map((t) => t.src),
       4,
+      onItem,
+      30000,
+      this.assetAbort.signal,
     );
     const failed: string[] = [];
     for (let i = 0; i < THEME_FILES.length; i++) {
@@ -1159,8 +1147,6 @@ export class BlacksiteRuntime {
         new Uint8Array(wasm.memory.buffer, ptr, size * size * 4).set(pixels.data);
       } catch {
         failed.push(src);
-      } finally {
-        onItem?.(i + 1, THEME_FILES.length);
       }
     }
     if (failed.length) throw new Error(`Sector textures could not load: ${failed.join(", ")}`);
@@ -1727,14 +1713,11 @@ export class BlacksiteRuntime {
 
 let wasmModule: Promise<WebAssembly.Module> | null = null;
 
-async function loadWasm(): Promise<WasmExports> {
+async function loadWasm(onAttempt?: AssetProgress): Promise<WasmExports> {
   // Share compiled code, never mutable memory between runtime mounts.
   if (!wasmModule) {
-    wasmModule = (async () => {
-      const res = await fetch(asset("/blacksite.wasm"), { cache: "no-cache" });
-      if (!res.ok) throw new Error(`Unable to load engine (${res.status})`);
-      return WebAssembly.compile(await res.arrayBuffer());
-    })().catch((error) => {
+    wasmModule = fetchAsset(asset("/blacksite.wasm"), async response =>
+      WebAssembly.compile(await response.arrayBuffer()), { onAttempt, timeoutMs: 60000, cache: "no-cache" }).catch((error) => {
       wasmModule = null;
       throw error;
     });

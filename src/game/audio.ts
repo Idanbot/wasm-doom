@@ -1,5 +1,6 @@
 import { CAMPAIGN_EXPANSION } from "./campaign25";
 import { asset } from "@/lib/asset";
+import { fetchAsset, preloadAssets, type AssetProgress } from "./asset-loading";
 import { EnemyAudio } from "./enemy-audio";
 import { VoiceGate } from "./voice-gate";
 import { SfxPlayer } from "./sfx-player";
@@ -15,7 +16,7 @@ export type GameAudio = {
   previewEnemy: (skin: number) => void;
   enemyDiagnostics: () => ReturnType<EnemyAudio["diagnostics"]> | null;
   prepareEnemies: (onProgress?: (done: number, total: number) => void) => Promise<void>;
-  prepareMedia: () => Promise<void>;
+  prepareMedia: (onProgress?: AssetProgress) => Promise<void>;
   setEnemyOptions: (options: EnemyOptions) => void;
   updateEnemies: (
     enemies: EnemyCue[],
@@ -48,7 +49,7 @@ export type GameAudio = {
   foot: () => void;
 };
 
-export function createAudio(): GameAudio {
+export function createAudio(loadSignal?: AbortSignal): GameAudio {
   let ctx: AudioContext | null = null;
   let enemies: EnemyAudio | null = null;
   let effects: SfxPlayer | null = null;
@@ -129,9 +130,9 @@ export function createAudio(): GameAudio {
     limiter.release.value = 0.15;
     master.connect(limiter);
     limiter.connect(ctx.destination);
-    effects = new SfxPlayer(ctx, sfx, voiceGate);
+    effects = new SfxPlayer(ctx, sfx, voiceGate, loadSignal);
     effects.spatial = enemyOptions.spatial;
-    enemies = new EnemyAudio(ctx, master, sfx, voiceGate);
+    enemies = new EnemyAudio(ctx, master, sfx, voiceGate, loadSignal);
     enemies.configure(enemyOptions);
     applyGains();
     const data = new Float32Array(ctx.sampleRate * 1.2);
@@ -141,7 +142,6 @@ export function createAudio(): GameAudio {
     }
     noise = ctx.createBuffer(1, data.length, ctx.sampleRate);
     noise.getChannelData(0).set(data);
-    void loadSfx();
   }
 
   function resume() {
@@ -160,32 +160,55 @@ export function createAudio(): GameAudio {
     if (bossBed) bossBed.volume = muted || !musicOn ? 0 : bossVol;
     if (menuBed) menuBed.volume = muted ? 0 : menuV;
   }
-  function loadSfx(): Promise<void> {
+  function loadSfx(onProgress?: AssetProgress): Promise<void> {
     if (!ctx) return Promise.resolve();
-    sfxLoadPromise ??= Promise.all(
-      Object.entries(SFX_URLS).map(([key, url]) =>
-        fetch(url)
-          .then((r) => (r.ok ? r.arrayBuffer() : Promise.reject(new Error(url))))
-          .then((buf) => ctx!.decodeAudioData(buf.slice(0)))
-          .then((audio) => {
-            buffers[key] = audio;
-          })
-          .catch(() => {
-            /* synth fallback */
-          }),
-      ),
-    ).then(() => undefined);
+    const entries = Object.entries(SFX_URLS);
+    sfxLoadPromise ??= preloadAssets(entries.map(([, url]) => url), (url, onAttempt) =>
+      fetchAsset(url, async response => ctx!.decodeAudioData(await response.arrayBuffer()),
+        { signal: loadSignal, onAttempt }), 4, onProgress).then(decoded => {
+      for (let i = 0; i < entries.length; i++) if (decoded[i]) buffers[entries[i]![0]] = decoded[i]!;
+      // Exhausted legacy clips keep the existing synth fallback.
+    });
     return sfxLoadPromise;
   }
 
-  function preloadMusic(): Promise<void> {
-    musicLoadPromise ??= Promise.all(
-      MUSIC_URLS.map(async (url) => {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`Music could not load: ${url}`);
-        await response.arrayBuffer();
-      }),
-    ).then(() => undefined);
+  function preloadMusic(onProgress?: AssetProgress): Promise<void> {
+    musicLoadPromise ??= preloadAssets(MUSIC_URLS, (url, onAttempt) => fetchAsset(url,
+      async (response, signal) => {
+        const blob = await response.blob();
+        // Validate MP3 metadata without expanding long music beds into PCM.
+        const url = URL.createObjectURL(blob);
+        const element = new Audio();
+        try {
+          await new Promise<void>((resolve, reject) => {
+            const cancel = () => reject(signal.reason);
+            signal.addEventListener("abort", cancel, { once: true });
+            const finish = (error?: Error) => {
+              signal.removeEventListener("abort", cancel);
+              if (error) reject(error); else resolve();
+            };
+            element.onloadedmetadata = () => Number.isFinite(element.duration) && element.duration > 0
+              ? finish() : finish(new Error("Invalid music duration"));
+            element.onerror = () => finish(new Error("Music could not decode"));
+            element.preload = "metadata";
+            element.src = url;
+            if (signal.aborted) cancel(); else element.load();
+          });
+          return blob.size;
+        } finally {
+          element.onloadedmetadata = element.onerror = null;
+          element.removeAttribute("src"); element.load();
+          URL.revokeObjectURL(url);
+        }
+      }, { signal: loadSignal, onAttempt, timeoutMs: 60000 }), 2, onProgress).then(loaded => {
+      const failed = MUSIC_URLS.filter((_, i) => !loaded[i]);
+      if (failed.length) throw new Error(`Music could not load: ${failed.join(", ")}`);
+      for (const element of [menuBed, bed, bossBed]) {
+        if (!element?.error) continue;
+        element.load();
+        if (element === menuBed && menuBedWanted) playEl(element);
+      }
+    });
     return musicLoadPromise;
   }
 
@@ -337,9 +360,15 @@ export function createAudio(): GameAudio {
       ensure();
       await enemies?.load(onProgress);
     },
-    async prepareMedia() {
+    async prepareMedia(onProgress) {
       ensure();
-      await Promise.all([loadSfx(), effects?.load(), preloadMusic()]);
+      const progress = [0, 0, 0];
+      const slice = (index: number): AssetProgress => (done, total) => {
+        progress[index] = total ? done / total : 1;
+        onProgress?.(progress.reduce((sum, value) => sum + value, 0), 3);
+      };
+      await Promise.all([loadSfx(slice(0)), effects?.load(slice(1)), preloadMusic(slice(2))]);
+      onProgress?.(3, 3);
     },
     setEnemyOptions(options) {
       enemyOptions = { ...options };

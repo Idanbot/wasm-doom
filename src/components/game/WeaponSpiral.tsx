@@ -4,7 +4,7 @@ import { WEAPON_THUMBNAILS } from "@/game/weapon-assets";
 import { asset } from "@/lib/asset";
 import { WEAPONS } from "./data";
 
-export function WeaponSpiral({ hud, visible }: { hud: HudState; visible: boolean }) {
+export function WeaponSpiral({ hud, visible, artUrls = {} }: { hud: HudState; visible: boolean; artUrls?: Record<string, string> }) {
   const owned = [true, hud.hasW2, hud.hasW3, hud.hasW4, hud.hasW5, hud.hasW6, hud.hasW7, hud.hasW8, hud.hasW9, hud.hasW10, hud.hasW11, hud.hasW12, hud.hasW13, hud.hasW14, hud.hasW15, hud.hasW16, hud.hasW17, hud.hasW18, hud.hasW19, ...CAMPAIGN_EXPANSION.map((_, i) => (hud.extraWeapons & (1 << i)) !== 0)];
   const slots = WEAPONS.map((weapon, index) => ({ weapon, index })).filter(({ index }) => owned[index]);
   const selected = slots.findIndex(({ index }) => index === hud.weapon);
@@ -25,7 +25,7 @@ export function WeaponSpiral({ hud, visible }: { hud: HudState; visible: boolean
                 opacity: distance === 0 ? 1 : 0.5,
               }}
             >
-              <img src={asset(WEAPON_THUMBNAILS[index]!)} alt="" loading="eager" decoding="sync" />
+              <img src={artUrls[WEAPON_THUMBNAILS[index]!] ?? asset(WEAPON_THUMBNAILS[index]!)} alt="" loading="eager" decoding="sync" />
               <span>{index + 1} · {weapon.name.split(" ")[0]}</span>
             </div>
           );

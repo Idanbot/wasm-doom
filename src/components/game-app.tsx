@@ -138,6 +138,7 @@ export function GameApp() {
   const [radio, setRadio] = useState<{ speaker: string; text: string } | null>(null);
   const shownRadioSeq = useRef(0);
   const [missingArt, setMissingArt] = useState<string[]>([]);
+  const [artUrls, setArtUrls] = useState<Record<string, string>>({});
   // Asset reload progress (null = idle). Kept separate from `load` so a repair
   // in flight does not look like the initial boot.
   const [reloadProgress, setReloadProgress] = useState<number | null>(null);
@@ -175,6 +176,12 @@ export function GameApp() {
 
     const rt = new BlacksiteRuntime(canvas, {
       onLoad: (progress) => setLoad(progress),
+      onUiAssetReady: (src, url) => {
+        setArtUrls(previous => previous[src] === url ? previous : { ...previous, [src]: url });
+        if (src === "/game/ui/hud-panel.webp" || src === "/game/ui-plaque.svg") {
+          document.documentElement.style.setProperty(src.endsWith(".svg") ? "--ui-plaque" : "--hud-panel", `url("${url}")`);
+        }
+      },
       onSubtitles: (lines) => {
         const now = performance.now();
         if (!lines.length || now - lastSubtitleAt.current > 50) {
@@ -631,7 +638,7 @@ export function GameApp() {
             renderer={renderer}
             showStats={enemyOptions.showStats}
           />
-          <WeaponSpiral hud={hud} visible={wheelVisible} />
+          <WeaponSpiral hud={hud} visible={wheelVisible} artUrls={artUrls} />
           <Automap hud={hud} readMap={readMap} getEnemies={getEnemies} />
           <EnemyBars getBars={getBars} />
           {radio && <RadioCard speaker={radio.speaker} text={radio.text} />}
@@ -726,7 +733,7 @@ export function GameApp() {
         <div className={`operation-overlay ${screen === "menu" ? "operation-home" : ""}`}>
           <div
             className="operation-backdrop"
-            style={{ backgroundImage: `url(${asset("/game/ui/menu-reactor.webp")})` }}
+            style={{ backgroundImage: `url(${artUrls["/game/ui/menu-reactor.webp"] ?? asset("/game/ui/menu-reactor.webp")})` }}
           />
           <div className="operation-shade" />
           <section className={`operation-content ${screen !== "menu" ? "operation-card" : ""}`}>
@@ -742,6 +749,7 @@ export function GameApp() {
                 ready={ready}
                 onRetry={() => setBootAttempt(attempt => attempt + 1)}
                 load={load}
+                loadingSpriteSrc={artUrls["/game/ui/loading-operator.webp"]}
                 err={err}
                 board={board}
                 res={res}

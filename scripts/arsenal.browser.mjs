@@ -17,10 +17,13 @@ after(async () => { await browser?.close(); });
 
 async function checkpointPage() {
   const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
-  await page.addInitScript(() => localStorage.setItem("blacksite-checkpoint", JSON.stringify({
-    wave: 2, health: 100, armor: 0, weapon: 0, flags: 1,
-    ammo: Array(19).fill(12), mag: Array(19).fill(12),
-  })));
+  await page.addInitScript(() => {
+    localStorage.setItem("blacksite-res", "320");
+    localStorage.setItem("blacksite-checkpoint", JSON.stringify({
+      wave: 2, health: 100, armor: 0, weapon: 0, flags: 1,
+      ammo: Array(19).fill(12), mag: Array(19).fill(12),
+    }));
+  });
   await page.goto(baseUrl);
   await page.locator(".deploy-button").waitFor();
   return page;
@@ -71,7 +74,7 @@ test("loading screen fetches and decodes every weapon sheet and thumbnail before
 test("a missing thumbnail keeps deployment blocked with an asset error", async () => {
   const page = await browser.newPage();
   try {
-    await page.route("**/game/ui/weapon-thumbs/br12.png", (route) => route.fulfill({ status: 404, body: "missing" }));
+    await page.route("**/game/ui/weapon-thumbs/br12.png*", (route) => route.fulfill({ status: 404, body: "missing" }));
     await page.goto(baseUrl);
     await page.getByRole("alert").waitFor({ timeout: 90_000 });
     assert.equal(await page.locator(".deploy-button").isDisabled(), true);

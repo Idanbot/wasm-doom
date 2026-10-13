@@ -151,9 +151,15 @@ CI runs source, asset and engine checks in parallel, shares one verified WASM
 build and splits browser checks into four groups. Pages deployment waits for all
 checks and publishes the exact tested build. See [CI dependencies](docs/CI.md).
 
-Deployment stays disabled until all assets decode, the HUD initializes and the renderer presents the first sector frame. Loading shows a 16-pose operator drill (run, stop, fire, reload); failed loads offer **Retry loading**. Sprite sources and the animation contract live in `art/loading/manifest.json`.
+Deployment stays disabled until assets are validated, the HUD initializes and
+the renderer presents the first sector frame. Loading shows a 16-pose operator
+drill (run, stop, fire, reload). Missing, corrupt or timed-out assets retry
+silently up to twice while progress continues; successful items are retained.
+Downloads share a concurrency budget, and retries refresh failed cached files.
+After three failed attempts, **Retry loading** starts a fresh boot. Sprite
+sources and the animation contract live in `art/loading/manifest.json`.
 
-HUD cards reserve a safe inset inside the decorative rails. `scripts/hud-insets.browser.mjs` checks all 33 guns and reload labels at four desktop/mobile sizes; `scripts/loading-ready.browser.mjs` checks loading animation, progress, retry and the initial HUD.
+HUD cards reserve a safe inset inside the decorative rails. `scripts/hud-insets.browser.mjs` checks all 33 guns and reload labels at four desktop/mobile sizes; `scripts/loading-ready.browser.mjs` checks loading animation, silent retries, progress and the initial HUD. `scripts/loading-recovery.browser.mjs` checks retry exhaustion and recovery of engine, texture and audio manifest failures.
 
 ## Local QA
 
@@ -182,3 +188,7 @@ Sprite boundary checks cover all 25 frames of every weapon, all projectile art,
 casings and reload ejections. The level 1 terminal uses a corrected source crop
 that retains its complete monitor housing. Weapon edge cleanup removes only
 disconnected neighboring-panel fragments; approved aim poses remain unchanged.
+
+Gameplay and technical proposals are collected in
+[Game improvement suggestions](docs/GAME_IMPROVEMENT_SUGGESTIONS.md), with concise
+benefits, implementation approaches and confidence estimates.

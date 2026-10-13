@@ -2,22 +2,24 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { chromium } from "playwright";
 
-test("loading animates, retries failed assets and publishes a real HUD before deployment", async () => {
+test("loading silently retries a missing and then corrupt asset before deployment", async () => {
   const browser = await chromium.launch({headless:true});
   try {
     const page = await browser.newPage({viewport:{width:1280,height:800}});
     await page.addInitScript(() => localStorage.setItem("blacksite-res", "320"));
-    let first = true;
+    let attempts = 0;
     let release;
     let reached;
     const held = new Promise(resolve => { release = resolve; });
     const requested = new Promise(resolve => { reached = resolve; });
-    await page.route("**/game/ui/weapon-thumbs/br12.png", async route => {
-      if (first) {
-        first = false;
+    await page.route("**/game/ui/weapon-thumbs/br12.png*", async route => {
+      attempts++;
+      if (attempts === 1) {
         reached();
         await held;
         await route.fulfill({status:503,body:"temporary asset failure"});
+      } else if (attempts === 2) {
+        await route.fulfill({status:200,contentType:"image/png",body:"corrupt image bytes"});
       } else await route.continue();
     });
     const url = process.env.BLACKSITE_TEST_URL ?? "http://127.0.0.1:8080/";
@@ -35,9 +37,6 @@ test("loading animates, retries failed assets and publishes a real HUD before de
     assert.ok(new Set(transforms).size > 2, "loading sprite must advance through multiple poses");
     await page.screenshot({path:"screenshots/loading-operator.png"});
     release();
-    await page.getByRole("button", {name:"Retry loading",exact:true}).waitFor({timeout:60000});
-    assert.equal(await button.isDisabled(), true);
-    await page.getByRole("button", {name:"Retry loading",exact:true}).click();
     await page.evaluate(() => {
       window.loadingSamples = [];
       const sample = () => {
@@ -47,7 +46,10 @@ test("loading animates, retries failed assets and publishes a real HUD before de
       new MutationObserver(sample).observe(document.body,{subtree:true,attributes:true,attributeFilter:['aria-valuenow']});
       sample();
     });
-    await page.waitForFunction(() => !document.querySelector('.deploy-button')?.disabled, null, {timeout:180000});
+    await page.waitForFunction(() => !document.querySelector('.deploy-button')?.disabled || document.querySelector('[role=alert]'), null, {timeout:180000});
+    assert.equal(attempts, 3, "initial request plus exactly two retries");
+    assert.equal(await page.getByRole("alert").count(), 0, "transient failures must stay silent");
+    assert.equal(await page.getByRole("button", {name:"Retry loading",exact:true}).count(), 0);
     assert.equal(await page.locator('.loading-operator').count(), 0);
     const samples = await page.evaluate(() => window.loadingSamples);
     assert.ok(samples.length > 2);
