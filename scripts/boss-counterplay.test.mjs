@@ -16,3 +16,17 @@ test('every boss has a unique named counter and UI matches engine combat timings
     assert.equal(bossAttackForWave(i + 26), attack);
   }
 });
+
+test('reviewed attack measurements cover every sector with travel time, tell and recovery budgets',async()=>{
+  const records=JSON.parse(await readFile('docs/boss-attack-readability.json','utf8'));
+  assert.equal(records.length,25);
+  for(const [index,r] of records.entries()) {
+    assert.equal(r.sector,index+1);
+    assert.equal(r.windup,BOSS_ATTACKS[index].windup);
+    assert.equal(r.recovery,BOSS_ATTACKS[index].recovery);
+    assert.equal(r.phase_cycles_checked,6);
+    assert.equal(r.min_flight,.35);
+    assert.ok(r.min_speed>0&&r.max_speed<=8.5&&r.max_speed>=r.min_speed);
+    assert.ok(r.max_shots>0&&r.max_shots<=12);
+  }
+});

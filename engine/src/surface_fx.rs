@@ -116,7 +116,7 @@ mod tests {
         let mut e=testutil::arena(); let id=e.spawn(EK_SPARK,5.5,5.5).unwrap();
         e.ents[id].effect_tick=5.0; e.ents[id].zoff=68.0;
         e.update_surface_fx(); let grounded=e.surface_fx[5*MAP_W+5][0]; assert!(grounded>0.0);
-        e.ents[id].zoff=-32.0; e.update_surface_fx(); assert!(e.surface_fx[5*MAP_W+5][0]<grounded);
+        e.ents[id].zoff = -32.0; e.update_surface_fx(); assert!(e.surface_fx[5*MAP_W+5][0]<grounded);
         e.map[5*MAP_W+5]=1; e.update_surface_fx(); assert_eq!(e.surface_fx[5*MAP_W+5][0],0.0);
     }
     #[test] fn stains_align_to_adjacent_walls_and_expire_on_both_surfaces() {

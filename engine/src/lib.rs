@@ -5,11 +5,14 @@
 
 #[cfg(test)]
 mod spatial_checks;
+#[cfg(test)]
+mod reachability_tests;
 mod abi;
 mod helpers;
 use helpers::*;
 mod lighting;
 mod surface_fx;
+mod impact_feedback;
 mod render;
 mod sim;
 mod textures;
@@ -38,6 +41,8 @@ mod testutil;
 mod engine_tests;
 #[cfg(test)]
 mod sim_tests;
+#[cfg(test)]
+mod reload_presentation_tests;
 
 use consts::*;
 use enemies::{default_skin, enemy_def, is_hostile_kind, skin_def};
@@ -441,7 +446,12 @@ impl Engine {
         let previous_weapon=self.weapon;
         self.cooldown = (self.cooldown - dt).max(0.0);
         if self.reload_t > 0.0 {
+            let removal = self.reload_dur * (1.0 - RELOAD_EJECT_PROGRESS);
+            let previous = self.reload_t;
             self.reload_t = (self.reload_t - dt).max(0.0);
+            if previous > removal && self.reload_t <= removal {
+                self.eject_reload_feed();
+            }
             if self.reload_t <= 0.0 {
                 self.finish_reload();
             }

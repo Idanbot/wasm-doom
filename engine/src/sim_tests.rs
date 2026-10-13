@@ -1032,7 +1032,9 @@ fn reload_containers_match_feed_and_emit_once() {
         e.ammo[weapon as usize] = 10;
         e.begin_reload();
         e.begin_reload();
-        // Material survives a weapon switch before the transient queue is flushed.
+        e.qa = true;
+        while e.reload_t > e.reload_dur * (1.0 - RELOAD_EJECT_PROGRESS) { e.tick(0.01); }
+        // Material survives a weapon switch after the removal milestone.
         e.weapon = 0;
         e.flush_fx();
         let debris: Vec<_> = e.ents.iter().filter(|p| p.kind == EK_SPARK && p.effect_tick == 5.0).collect();
@@ -1068,6 +1070,8 @@ fn every_removable_weapon_feed_ejects_its_own_reload_art() {
         e.ammo[slot] = MAG_SZ[slot] * 2;
         e.begin_reload();
         e.begin_reload();
+        e.qa = true;
+        while e.reload_t > e.reload_dur * (1.0 - RELOAD_EJECT_PROGRESS) { e.tick(0.01); }
         e.flush_fx();
         let feeds: Vec<_> = e.ents.iter().filter(|p| p.kind == EK_SPARK && p.effect_tick == 5.0).collect();
         if slot == 1 {

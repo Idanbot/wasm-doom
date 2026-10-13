@@ -85,7 +85,7 @@ export function worldIntent(kind: number, variant = 0): SoundIntent | null {
     {
       1: "door",
       2: "explosion",
-      3: "hit-metal",
+      3: variant === 1 ? "hazard-electric" : "hit-metal",
       4: "hit-flesh",
       5: "break-glass",
       6: "break-metal",
@@ -111,6 +111,7 @@ export function worldIntent(kind: number, variant = 0): SoundIntent | null {
       }
     : null;
 }
+export const RELOAD_EJECT_PROGRESS = 0.1;
 export class SfxDirector {
   private weapon: WeaponSoundState | null = null;
   private enemies = new Map<number, { skin: number; hp: number; anim: number; next: number }>();
@@ -139,9 +140,10 @@ export class SfxDirector {
       return result;
     }
     if (h.reloading <= 0) return [];
-    const stage = (frame: number) => (frame <= 11 ? 0 : frame <= 12 ? 1 : 2);
-    const now = stage(h.weapFrame),
-      prev = p.reloading > 0 ? stage(p.weapFrame) : -1;
+    const stage = (state: WeaponSoundState) => state.reloading < RELOAD_EJECT_PROGRESS
+      ? -1 : state.weapFrame <= 11 ? 0 : state.weapFrame <= 12 ? 1 : 2;
+    const now = stage(h),
+      prev = p.reloading > 0 ? stage(p) : -1;
     // Catch stages crossed by a slow frame; never schedule future stages after an interruption.
     for (let n = prev + 1; n <= now; n++) {
       result.push({

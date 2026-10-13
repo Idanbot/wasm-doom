@@ -13,20 +13,20 @@ const names = (a: { id: string }[]) => a.map((s) => s.id);
 test("magazine stages follow crossed frames, never timer callbacks", () => {
   const d = new SfxDirector();
   d.weaponFrame(base);
-  assert.deepEqual(names(d.weaponFrame({ ...base, reloading: 1, weapFrame: 10 })), ["mag-out", "reload-latch"]);
+  assert.deepEqual(names(d.weaponFrame({ ...base, reloading: 0.1, weapFrame: 10 })), ["mag-out", "reload-latch"]);
   assert.deepEqual(names(d.weaponFrame({ ...base, reloading: 0.5, weapFrame: 12 })), ["mag-in", "reload-seat"]);
-  assert.deepEqual(names(d.weaponFrame({ ...base, reloading: 0.2, weapFrame: 14 })), ["chamber", "reload-bolt"]);
+  assert.deepEqual(names(d.weaponFrame({ ...base, reloading: 0.8, weapFrame: 14 })), ["chamber", "reload-bolt"]);
   assert.deepEqual(d.weaponFrame({ ...base, ammo: 12 }), []);
 });
 test("slow frames catch crossed reload stages once; firing and switching cancel future steps", () => {
   const d = new SfxDirector();
   d.weaponFrame(base);
-  assert.deepEqual(names(d.weaponFrame({ ...base, reloading: 0.2, weapFrame: 14 })), [
+  assert.deepEqual(names(d.weaponFrame({ ...base, reloading: 0.8, weapFrame: 14 })), [
     "mag-out", "reload-latch",
     "mag-in", "reload-seat",
     "chamber", "reload-bolt",
   ]);
-  assert.deepEqual(d.weaponFrame({ ...base, reloading: 0.19, weapFrame: 14 }), []);
+  assert.deepEqual(d.weaponFrame({ ...base, reloading: 0.81, weapFrame: 14 }), []);
   assert.deepEqual(d.weaponFrame({ ...base, ammo: 4, weapFrame: 15 }), []);
   assert.deepEqual(names(d.weaponFrame({ ...base, weapon: 3, reloading: 0 })), ["equip"]);
   assert.deepEqual(d.weaponFrame({ ...base, weapon: 3 }), []);
@@ -127,4 +127,15 @@ test("reload layers match ballistic, powered and pressure feeds, and never dupli
     assert.equal(d.weaponFrame(h).length,4);
     assert.deepEqual(d.weaponFrame(h),[]);
   }
+});
+
+test("feed removal audio waits for the authored crossing and differentiates shield contact", () => {
+  const d=new SfxDirector();d.weaponFrame(base);
+  assert.deepEqual(d.weaponFrame({...base,reloading:.05,weapFrame:10}),[]);
+  assert.deepEqual(d.weaponFrame({...base,reloading:.099,weapFrame:10}),[]);
+  assert.deepEqual(names(d.weaponFrame({...base,reloading:.1,weapFrame:10})),["mag-out","reload-latch"]);
+  assert.deepEqual(d.weaponFrame({...base,reloading:.15,weapFrame:10}),[]);
+  assert.equal(worldIntent(3,1)?.id,"hazard-electric");
+  assert.equal(worldIntent(3,0)?.id,"hit-metal");
+  assert.equal(worldIntent(4,0)?.id,"hit-flesh");
 });

@@ -252,6 +252,9 @@ pub(crate) const DYNAMIC_LIGHT_BUDGET: usize = 40;
 /// Radius in cells within which a dynamic emitter can reach the player.
 pub(crate) const DYNAMIC_LIGHT_RANGE: f32 = 18.0;
 
+/// Halfway through the first of five reload poses (cell 10).
+pub(crate) const RELOAD_EJECT_PROGRESS: f32 = 0.1;
+
 #[cfg(test)]
 mod tests {
     use super::*;

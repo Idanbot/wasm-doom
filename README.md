@@ -203,3 +203,14 @@ objects and spent feeds. Scorch, acid and chip residue is capped at 64 marks and
 fades after 24 seconds. Boss introductions dim the arena before rim lights and
 the final reveal. Footsteps follow the actual floor; reloads layer latch, seat,
 bolt, energy and pressure sounds at animation milestones.
+
+Reload feeds eject halfway through the removal pose, with matching sound timing;
+interrupted reloads cancel pending ejections. Enemy hits distinguish flesh, armor,
+front shields and mechanical bodies. Boss attacks retain a minimum 350 ms projectile
+travel window after release, including gravity captures.
+
+Regression coverage includes fault recovery under Pages paths, player-clear routes
+through every sector and seeded spawn variants, and 2,818 reviewed sprite frames.
+Run `npm run check:sprites` before publishing art; see
+[Sprite safe-area contracts](docs/SPRITE_SAFE_AREAS.md) and
+[Boss attack readability](docs/BOSS_ATTACK_READABILITY.md).

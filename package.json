@@ -17,6 +17,7 @@
     "preview:stop": "node scripts/preview.mjs stop",
     "typecheck": "tsc --noEmit",
     "check:wasm": "node scripts/check-wasm-sync.mjs",
+    "check:sprites": "python3 scripts/sprite-safe-areas.py --check",
     "check:assets": "node --experimental-strip-types scripts/check-assets.mjs",
     "check:environment": "node scripts/check-environment-assets.mjs",
     "assets:environment": "python3 scripts/process-blacksite-environment-assets.py",

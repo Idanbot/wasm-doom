@@ -215,10 +215,7 @@ impl Engine {
                 }
             }
         }
-        let target = self.ents[i];
-        let metal = target.armor_hp > 0 || target.shield_hp > 0 ||
-            !is_hostile_kind(target.kind) || matches!(enemies::combat_skin(target.skin), 5 | 8 | 11 | 13 | 15..=20 | 22..=27 | 29..=36);
-        self.sound(if metal {3} else {4}, 0, target.x, target.y);
+        self.contact_feedback(i,hx,hy);
         // A shot or a USE shuts the lamp. It stays in the world, dark.
         if self.ents[i].kind == EK_LAMP {
             self.ents[i].timer = -1.0;
@@ -230,14 +227,13 @@ impl Engine {
         if self.ents[i].shield_hp > 0
             && field::shield_blocks(self.ents[i].face, self.ents[i].x, self.ents[i].y, hx, hy)
         {
-            let (x, y) = (self.ents[i].x, self.ents[i].y);
             let soak = dmg.min(self.ents[i].shield_hp);
             self.ents[i].shield_hp -= soak;
             dmg -= soak;
             self.ents[i].bar_t = 2.0;
             self.ents[i].flash = 0.2;
             self.events |= EV_HIT;
-            self.burst_fx(x, y, EK_SPARK, 4, 0.14);
+            self.hitmarker = 0.45;
             if dmg <= 0 {
                 return;
             }
@@ -303,7 +299,7 @@ impl Engine {
                 let a = self.rnd() * core::f32::consts::TAU;
                 let sp = 1.2 + self.rnd() * 2.0;
                 let life = 0.45 + self.rnd() * 0.25;
-                self.queue_fx(EK_GIB, x, y, a.cos() * sp, a.sin() * sp, life, 0.0);
+                self.queue_fx(if impact_feedback::mechanical_body(skin) {EK_SPARK}else{EK_GIB}, x, y, a.cos() * sp, a.sin() * sp, life, 0.0);
             }
         }
         if kind == EK_BARREL {
@@ -502,7 +498,11 @@ impl Engine {
         self.reload_dur = if w == 1 { 0.42 } else { RELOAD_T[w] };
         self.reload_t = self.reload_dur;
         self.events |= EV_RELOAD;
-        // Feed removal is the first reload pose. Emit once, not on refill ticks.
+    }
+
+    /// Removal crosses the middle of cell 10, before the fresh feed appears.
+    pub(crate) fn eject_reload_feed(&mut self) {
+        let w = self.weapon as usize;
         if let Some(material) = match w {
             1 => None, // BR-12 inserts shells into its fixed tube.
             7 => Some(2), 10 => Some(3), 24 => Some(4), 20 => Some(5),
@@ -909,8 +909,8 @@ impl Engine {
         let (x, y) = (self.px + self.pa.cos() * 0.55 + rx * 0.18,
                       self.py + self.pa.sin() * 0.55 + ry * 0.18);
         let (x, y) = if self.circle_blocked(x, y, 0.06) { (self.px, self.py) } else { (x, y) };
-        let (jx, jy) = if material >= 6 {
-            // New cosmetic feeds must not advance the combat random stream.
+        let (jx, jy) = if material >= 2 {
+            // Cosmetic feeds must not advance the combat random stream.
             let hash = self.time.to_bits().rotate_left(11) ^ self.px.to_bits()
                 ^ self.py.to_bits().rotate_left(7) ^ (material as u32).wrapping_mul(2654435761);
             (1.2 + (hash & 1023) as f32 / 1024.0,

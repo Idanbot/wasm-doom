@@ -8,6 +8,7 @@ test('boss warnings and exposed cores render inside their cards on desktop and m
   try {
     for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 }]) {
       const page = await browser.newPage({ viewport });
+      await page.addInitScript(()=>localStorage.setItem("blacksite-res","320"));
       const errors = [];
       page.on('pageerror', e => errors.push(e.message));
       const url = new URL(process.env.BLACKSITE_TEST_URL ?? 'http://127.0.0.1:8080/');

@@ -69,11 +69,11 @@ Audio processing reference: [Web Audio API](https://developer.mozilla.org/en-US/
 
 | Suggestion | Why | How | Confidence | Status |
 |---|---|---|---|---|
-| Frame-aligned reload ejection | Make handling feel physically connected. | Emit each feed when its removal frame crosses the matching animation milestone. | 96% | Undone |
+| Frame-aligned reload ejection | Make handling feel physically connected. | Emit each feed when its removal frame crosses the matching animation milestone. | 96% | Done |
 | Material-specific feed landings | Match the new physical debris artwork. | Choose metal/polymer/glass landing samples and bounce damping by feed type. | 94% | Undone |
 | Controlled recoil recovery | Reward bursts without unpredictable aim. | Apply weapon-specific recoil curves; recover smoothly after a short delay. | 90% | Undone |
 | Clear weapon range identities | Give every gun a useful role. | Tune spread/falloff and show concise range guidance in the arsenal. | 95% | Undone |
-| Enemy-material impact feedback | Make hits easier to interpret. | Pair sparks, fragments and audio with armor, flesh and shield contacts. | 95% | Undone |
+| Enemy-material impact feedback | Make hits easier to interpret. | Pair sparks, fragments and audio with armor, flesh and shield contacts. | 95% | Done |
 | Safe explosive targeting cue | Reduce accidental self-damage confusion. | Briefly mark nearby unsafe impact points using distance and line of sight. | 87% | Undone |
 | Stateful boss-weapon displays | Explain complex ammunition at a glance. | Drive liquid, cell charge and cassette indicators from actual ammo state. | 91% | Undone |
 | Optional aim-down-sights support | Add precision without losing FPS silhouettes. | Add a separate aligned pose/FOV blend for suitable conventional weapons. | 80% | Undone |
@@ -82,7 +82,7 @@ Audio processing reference: [Web Audio API](https://developer.mozilla.org/en-US/
 
 | Suggestion | Why | How | Confidence | Status |
 |---|---|---|---|---|
-| Attack readability audit | Make deaths feel fair rather than sudden. | Check every boss tell, windup, projectile speed and recovery window. | 97% | Undone |
+| Attack readability audit | Make deaths feel fair rather than sudden. | Check every boss tell, windup, projectile speed and recovery window. | 97% | Done |
 | Local squad coordination | Reduce enemies bunching in doorways. | Reserve approach slots; limit simultaneous aggressive pushes per group. | 93% | Undone |
 | Distinct retreat behavior | Make ranged enemies feel deliberate. | Add distance-band movement and escape routes constrained by line of sight. | 92% | Undone |
 | Boss recovery windows | Create tactical moments for counterattacks. | Expose short vulnerabilities after missed heavy attacks or interrupted charges. | 94% | Undone |
@@ -165,8 +165,8 @@ hosting-free production feature.
 
 | Suggestion | Why | How | Confidence | Status |
 |---|---|---|---|---|
-| Fault-injected loading matrix | Catch transient failures before release. | Test timeouts, corrupt responses, retries, cancellation and Pages paths in CI. | 98% | Undone |
-| Every-sector reachability checks | Prevent trapped spawns or objectives. | Flood-fill valid walkable cells for all authored sectors and spawn variants. | 98% | Undone |
+| Fault-injected loading matrix | Catch transient failures before release. | Test timeouts, corrupt responses, retries, cancellation and Pages paths in CI. | 98% | Done |
+| Every-sector reachability checks | Prevent trapped spawns or objectives. | Flood-fill valid walkable cells for all authored sectors and spawn variants. | 98% | Done |
 | Boss-phase scenario suite | Protect distinctive encounter mechanics. | Use fixed engine inputs around each attack, interrupt, death and reward transition. | 97% | Undone |
 | Visual atlas sampling fixtures | Catch neighbor-frame bleed across renderers. | Sample diagnostic sheets in CPU/WebGL/WebGPU at multiple scales and rotations. | 96% | Undone |
 | Long-session memory soak | Catch gradual resource accumulation. | Loop sector transitions and reloads; inspect heap/GPU growth after warmup. | 94% | Undone |
@@ -179,7 +179,7 @@ hosting-free production feature.
 | Suggestion | Why | How | Confidence | Status |
 |---|---|---|---|---|
 | One canonical live-asset manifest | Prevent catalogs and runtime paths drifting. | Generate texture slots, catalogs and preload inventories from approved records. | 97% | Undone |
-| Sprite-sheet safe-area contracts | Prevent repeat crop defects. | Record per-frame bounds/gutters and verify approved poses before publishing art. | 98% | Undone |
+| Sprite-sheet safe-area contracts | Prevent repeat crop defects. | Record per-frame bounds/gutters and verify approved poses before publishing art. | 98% | Done |
 | Remove provably unused runtime art | Reduce download/build footprint safely. | Compare references and manifests; retain licensed source masters outside public output. | 95% | Undone |
 | Lossless sprite compression audit | Lower transfer cost without alpha damage. | Benchmark PNG/WebP alternatives against decoded pixel and border tests. | 93% | Undone |
 | Voice script consistency pass | Improve character identity and intelligibility. | Review vocabulary, delivery, accents and event suitability before regeneration. | 94% | Undone |

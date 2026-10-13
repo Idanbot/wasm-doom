@@ -156,7 +156,7 @@ test("missing OGG retries twice before MP3; exhausted formats keep their failed 
   try {
     const { page } = await fixture(browser);
     let attempts = 0;
-    await page.route("**/game/sfx/v2/fire3.ogg", (route) => {
+    await page.route("**/game/sfx/v2/fire3.ogg*", (route) => {
       attempts++;
       return route.fulfill({ status: 404, body: "missing" });
     });
@@ -173,7 +173,7 @@ test("missing OGG retries twice before MP3; exhausted formats keep their failed 
     const bad = await fixture(browser);
     let failures = 0;
     for (const ext of ["ogg", "mp3"])
-      await bad.page.route(`**/game/sfx/v2/fire3.${ext}`, (route) => {
+      await bad.page.route(`**/game/sfx/v2/fire3.${ext}*`, (route) => {
         failures++;
         return route.fulfill({ status: 404, body: "missing" });
       });
@@ -205,6 +205,7 @@ test("game loading waits for SFX and real firing/reload/pause events use recorde
     const page = await browser.newPage({ viewport: { width: 1280, height: 800 } }),
       errors = [];
     page.on("pageerror", (e) => errors.push(e.message));
+    await page.addInitScript(()=>localStorage.setItem("blacksite-res","320"));
     const url = new URL(base);
     url.searchParams.set("qa", "1");
     await page.goto(url.href, { waitUntil: "domcontentloaded" });

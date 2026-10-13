@@ -179,6 +179,10 @@ fn shot(forward: f32, side: f32, angle: f32, speed: f32) -> Shot {
         speed,
     }
 }
+/// At least 350 ms of travel remains after release, even at point-blank range.
+const MIN_FLIGHT: f32 = 0.35;
+fn readable_speed(speed:f32,distance:f32)->f32 {speed.min((distance-0.55).max(0.1)/MIN_FLIGHT)}
+
 /// Different emission geometry AND arrival rhythms, rather than reskinned fans.
 fn pattern(level: usize, cycle: u32) -> Vec<Shot> {
     let flip = if cycle.is_multiple_of(2) { 1.0 } else { -1.0 };
@@ -435,28 +439,6 @@ impl Engine {
         let e = self.ents[i];
         let (x, y) = self.boss_attack.origin;
         let a = self.boss_attack.aim;
-        let damage = combat::profile(e.skin, EK_BOSS).damage;
-        for s in pattern(level, self.boss_attack.sequence) {
-            let sx = x + a.cos() * s.forward - a.sin() * s.side;
-            let sy = y + a.sin() * s.forward + a.cos() * s.side;
-            if self.circle_blocked(sx, sy, 0.12) || !self.los(x, y, sx, sy) {
-                continue;
-            }
-            if let Some(j) = self.spawn(EK_PROJ, sx, sy) {
-                let p = &mut self.ents[j];
-                let angle = a + s.angle;
-                p.vx = angle.cos() * s.speed;
-                p.vy = angle.sin() * s.speed;
-                p.timer = 3.5;
-                p.hp = damage;
-                p.skin = 100 + e.skin;
-                p.zoff = -8.0;
-                p.effect_tick = if matches!(level, 2 | 16) { 3.0 } else { 0.0 };
-                if level >= 11 {
-                    p.face = (level - 10) as f32;
-                } // existing campaign impact identities
-            }
-        }
         let (tx, ty) = self.boss_attack.target;
         // Gravity only captures players who stayed in its advertised target disk.
         if matches!(level, 4 | 14)
@@ -469,6 +451,31 @@ impl Engine {
                 self.py + (y - self.py) / d * 0.55,
             );
             self.shake = self.shake.max(0.2);
+        }
+        let damage = combat::profile(e.skin, EK_BOSS).damage;
+        for s in pattern(level, self.boss_attack.sequence) {
+            let sx = x + a.cos() * s.forward - a.sin() * s.side;
+            let sy = y + a.sin() * s.forward + a.cos() * s.side;
+            if self.circle_blocked(sx, sy, 0.12) || !self.los(x, y, sx, sy) {
+                continue;
+            }
+            let distance=(self.px-sx).hypot(self.py-sy);
+            if distance < 0.75 {continue;} // Never release a projectile already overlapping the player.
+            let speed=readable_speed(s.speed,distance);
+            if let Some(j) = self.spawn(EK_PROJ, sx, sy) {
+                let p = &mut self.ents[j];
+                let angle = a + s.angle;
+                p.vx = angle.cos() * speed;
+                p.vy = angle.sin() * speed;
+                p.timer = 3.5;
+                p.hp = damage;
+                p.skin = 100 + e.skin;
+                p.zoff = -8.0;
+                p.effect_tick = if matches!(level, 2 | 16) { 3.0 } else { 0.0 };
+                if level >= 11 {
+                    p.face = (level - 10) as f32;
+                } // existing campaign impact identities
+            }
         }
         if level == 19 {
             // Ambush the warned position, never silently track the dodging player.
@@ -522,8 +529,56 @@ impl Engine {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn audit_every_boss_phase_cycle_and_close_range_release() {
+        let mut records=Vec::new();
+        let mut fixture=arena(1).0;
+        for wave in 1..=25 {
+            let level=(wave-1) as usize;
+            let mut max_speed=0.0f32;let mut min_speed=f32::MAX;let mut shots=0;
+            for phase in 0..3 {for cycle in 0..2 {
+                let e=&mut fixture;let i=reset_arena(e,wave);e.boss_phase=phase;e.boss_attack.sequence=cycle;
+                e.tick_boss_attack(i,0.01);assert_eq!(e.boss_attack.stage,1);
+                assert!(e.fx_n>=3,"boss {wave} phase {phase} has no visible warning");
+                let locked=e.boss_attack.aim;e.py+=2.0;
+                e.tick_boss_attack(i,PROFILES[level].windup-0.01);
+                assert_eq!(e.health,100);assert_eq!(e.boss_attack.stage,1);
+                assert!(!e.ents.iter().any(|p|p.kind==EK_PROJ));
+                e.tick_boss_attack(i,0.02);assert_eq!(e.boss_attack.stage,2);
+                assert_eq!(e.boss_attack.aim,locked);assert!(e.boss_vuln>=1.5);
+                let projectiles:Vec<_>=e.ents.iter().filter(|p|p.kind==EK_PROJ).copied().collect();
+                assert!(!projectiles.is_empty());shots=shots.max(projectiles.len());
+                for p in &projectiles {
+                    let speed=p.vx.hypot(p.vy);assert!(speed.is_finite()&&speed>0.0&&speed<=8.5);
+                    max_speed=max_speed.max(speed);min_speed=min_speed.min(speed);
+                    assert!(((e.px-p.x).hypot(e.py-p.y)-0.55)/speed>=MIN_FLIGHT-0.001);
+                }
+                e.tick_boss_attack(i,PROFILES[level].recovery-0.02);
+                assert_eq!(e.boss_attack.stage,2);
+                assert_eq!(e.ents.iter().filter(|p|p.kind==EK_PROJ).count(),projectiles.len());
+                e.tick_boss_attack(i,0.03);assert_eq!(e.boss_attack.stage,0);
+            }}
+            for distance in [0.4,0.8,1.2,2.0] {
+                let e=&mut fixture;let i=reset_arena(e,wave);e.px=e.ents[i].x+distance;
+                e.tick_boss_attack(i,0.01);e.tick_boss_attack(i,PROFILES[level].windup+0.01);
+                for p in e.ents.iter().filter(|p|p.kind==EK_PROJ) {
+                    let d=(e.px-p.x).hypot(e.py-p.y);
+                    assert!(d>=0.75);assert!((d-0.55)/p.vx.hypot(p.vy)>=MIN_FLIGHT-0.001);
+                }
+            }
+            records.push(format!("{{\"sector\":{wave},\"windup\":{},\"recovery\":{},\"min_speed\":{min_speed:.2},\"max_speed\":{max_speed:.2},\"max_shots\":{shots},\"min_flight\":{MIN_FLIGHT},\"phase_cycles_checked\":6}}",PROFILES[level].windup,PROFILES[level].recovery));
+        }
+        let report=format!("[{}]\n",records.join(","));
+        if let Ok(path)=std::env::var("BLACKSITE_ATTACK_AUDIT") {std::fs::write(path,&report).unwrap();}
+        assert_eq!(report,include_str!("../../docs/boss-attack-readability.json"),"update the reviewed readability measurements after an intentional pattern change");
+    }
     fn arena(wave: i32) -> (Engine, usize) {
         let mut e = Engine::new(160, 100);
+        let i=reset_arena(&mut e,wave);
+        (e,i)
+    }
+    fn reset_arena(e:&mut Engine,wave:i32)->usize {
+        e.boss_attack=AttackState::new();e.boss_vuln=0.0;e.fx_n=0;
         e.map.fill(0);
         for en in &mut e.ents {
             en.kind = EK_NONE;
@@ -541,7 +596,7 @@ mod tests {
         e.ents[i].armor_hp = 0;
         e.ents[i].shield_hp = 0;
         e.ents[i].shield = 0;
-        (e, i)
+        i
     }
     #[test]
     fn twenty_five_patterns_have_distinct_geometry_and_safe_timings() {
