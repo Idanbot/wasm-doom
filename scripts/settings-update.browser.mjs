@@ -9,6 +9,9 @@ for (const mobile of [false, true]) test(`Settings update date fits its footer (
     const errors = []; page.on('pageerror', e => errors.push(e.message));
     await page.addInitScript(() => localStorage.setItem('blacksite-res', '320'));
     await page.goto(process.env.BLACKSITE_TEST_URL ?? 'http://127.0.0.1:8080/', { waitUntil: 'domcontentloaded' });
+    // The development server emits a visible Settings button before hydration.
+    // A progress update proves the app has mounted without waiting for all art.
+    await page.waitForFunction(() => Number(document.querySelector('.load-meter')?.getAttribute('aria-valuenow')) > 0 || document.querySelector('.deploy-button')?.disabled === false);
     await page.getByRole('button', { name: 'Settings', exact: true }).click();
     const dialog = page.getByRole('dialog');
     await dialog.waitFor();
