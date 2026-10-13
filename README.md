@@ -150,8 +150,9 @@ npm run test:browser
 repository name.
 
 CI runs source, asset and engine checks in parallel, shares one verified WASM
-build and splits browser checks into four groups. Pages deployment waits for all
-checks and publishes the exact tested build, including its asset manifest.
+build and splits browser checks into seven groups. Pages deployment is the final
+CI job: it waits for all checks and publishes the exact tested build and manifest
+from the same run. Pull requests and other branches never deploy.
 Build, Pages QA and deployment verify the assembled WASM against that manifest
 before serving or publishing it. See [CI dependencies](docs/CI.md).
 

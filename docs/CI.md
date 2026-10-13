@@ -27,7 +27,8 @@ flowchart TD
 ## Jobs and artifacts
 
 - **quality:** validates workflow definitions with pinned Actionlint, then runs
-  separate TypeScript and lint steps.
+  separate TypeScript and lint steps. A sparse checkout includes source, scripts
+  and workflows plus root configuration, avoiding the large art/media fetch.
 - **assets:** validates committed WASM synchronization, texture and environment
   manifests, maps, projectiles, audio and voices, then runs the full JavaScript
   and asset unit suite. Chromium supplies image decoding for art tests. Python
@@ -38,7 +39,9 @@ flowchart TD
   This job needs Node but does not install frontend dependencies.
 - **build:** builds both supported production targets using verified WASM. Shares
   `pages-shell`, including `.nojekyll`, the compiled app and WASM, while excluding
-  unchanged `game/` media. Consumers attach `public/game` from the same commit.
+  unchanged `game/` media, and `pages-asset-manifest` generated for that engine.
+  Consumers attach `public/game` from the same commit, then restore the tested
+  manifest and check WASM integrity so checkout identities cannot replace it.
 - **performance:** benchmarks verified WASM on a separate runner, without
   browser processes competing for CPU. Preserves the measured performance JSON.
 - **browser:** seven matrix jobs cover interface, loading, loading recovery,
@@ -57,13 +60,17 @@ flowchart TD
   restrictions and deployed audio paths.
 - **check:** runs even when upstream jobs fail or skip and requires every job to
   succeed. Use this stable status as the branch-protection requirement.
+- **deploy:** depends on successful `check`, restricts publishing to current
+  `main` push/manual runs, assembles the same artifacts and verifies integrity
+  before uploading. Only this job receives Pages write and OIDC permissions.
 
-Pages deployment starts only after successful push CI on `main`. It checks that
-this is still the current main commit, checks out that exact SHA and deploys the
-Pages build tested by CI. It does not rebuild after testing. Pull-request builds
-cannot enter this privileged workflow. Manual deployment also requires successful
-push CI for the current SHA. Build artifacts expire after three days; rerun CI
-before a later redeployment. Browser and performance diagnostics last seven days.
+Pages deployment is the last job of `ci.yml`, so checks and publishing share one
+workflow run and artifact set. There is no separate `workflow_run` listener or
+extra skipped Pages history entry. It checks that this is still the current main
+commit and deploys the build tested by CI without rebuilding. Pull requests and
+other branches never publish. To redeploy, dispatch CI on `main`; it reruns all
+checks before publishing. Build artifacts expire after three days. Browser and
+performance diagnostics last seven days.
 
 Parallel jobs reduce the critical path, but add runner setup and checkout work.
 Compare actual workflow duration and total runner minutes after the first hosted
