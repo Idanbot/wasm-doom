@@ -9,6 +9,7 @@ mod abi;
 mod helpers;
 use helpers::*;
 mod lighting;
+mod surface_fx;
 mod render;
 mod sim;
 mod textures;
@@ -73,6 +74,8 @@ struct Engine {
     floor: Vec<u8>,
     door: Vec<f32>,
     decal: Vec<u8>,
+    residues: Vec<surface_fx::Residue>,
+    surface_fx: Vec<[f32; 4]>,
     ents: [Ent; ENT_N],
     px: f32,
     py: f32,
@@ -220,6 +223,8 @@ impl Engine {
             floor: vec![0; MAP_W * MAP_H],
             door: vec![0.0; MAP_W * MAP_H],
             decal: vec![0; MAP_W * MAP_H],
+            residues: Vec::with_capacity(surface_fx::RESIDUE_CAP),
+            surface_fx: vec![[0.0; 4]; MAP_CELLS],
             ents: [Ent {
                 aim: 0.0,
                 kind: 0,
@@ -1372,3 +1377,6 @@ mod sound_tests {
         assert!(e.sound_cues.iter().any(|s|s.kind==7.0&&s.x==8.5));
     }
 }
+
+#[cfg(test)]
+mod presentation_tests;

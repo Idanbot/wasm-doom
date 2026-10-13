@@ -879,14 +879,17 @@ fn pyre_patches_burn_expire_merge_and_stay_bounded() {
 #[test]
 fn lighting_is_colored_occluded_and_does_not_advance_simulation() {
     let mut e = arena();
-    e.spawn(EK_LAMP, 4.5, 4.5);
+    let lamp=e.spawn(EK_LAMP, 4.5, 4.5).unwrap();
     for y in 0..MAP_H { e.set_cell(5, y as i32, 1); }
     let rng = e.rng;
     e.update_lighting();
     let warm = e.light_at(4.5, 4.5);
     assert!(warm[0] > warm[1] && warm[1] > warm[2]);
     let covered = e.light_at(6.5, 4.5);
-    assert!(covered[0] <= 0.0);
+    // A room may have its own sector wash, but the lamp behind the sealed
+    // wall must contribute no illumination whatsoever.
+    e.ents[lamp].kind=0; e.light_dirty=true; e.update_lighting();
+    assert_eq!(covered,e.light_at(6.5,4.5));
     e.render();
     assert_eq!(e.rng, rng);
     assert_eq!(e.elapsed, 0.0);

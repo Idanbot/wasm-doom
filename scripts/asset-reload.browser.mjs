@@ -99,10 +99,10 @@ test("asset reload re-uploads every atlas layer and leaves the game rendering", 
     await page.waitForFunction(() => window.__controlsTest.isLive(), null, { timeout: 30000 });
 
     // Every atlas layer and theme variant is walked, not just the visible ones.
-    assert.ok(result.total > 800, `expected the whole atlas, got ${result.total} items`);
+    assert.ok(result.total > 800, `expected byte-weighted whole-atlas progress, got ${result.total}`);
     assert.ok(
-      result.calls >= result.total - 1,
-      `progress should fire per item, got ${result.calls} for ${result.total}`,
+      result.calls >= 800,
+      `progress should cover every atlas entry, got ${result.calls} calls`,
     );
 
     const after = await frame();

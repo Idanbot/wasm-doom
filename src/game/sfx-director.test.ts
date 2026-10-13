@@ -6,24 +6,25 @@ import {
   enemyFamily,
   worldIntent,
   weaponMechanism,
+  reloadLayers,
 } from "./sfx-director.ts";
 const base = { weapon: 0, ammo: 5, reloading: 0, weapFrame: 0, state: 0, wave: 1 };
 const names = (a: { id: string }[]) => a.map((s) => s.id);
 test("magazine stages follow crossed frames, never timer callbacks", () => {
   const d = new SfxDirector();
   d.weaponFrame(base);
-  assert.deepEqual(names(d.weaponFrame({ ...base, reloading: 1, weapFrame: 10 })), ["mag-out"]);
-  assert.deepEqual(names(d.weaponFrame({ ...base, reloading: 0.5, weapFrame: 12 })), ["mag-in"]);
-  assert.deepEqual(names(d.weaponFrame({ ...base, reloading: 0.2, weapFrame: 14 })), ["chamber"]);
+  assert.deepEqual(names(d.weaponFrame({ ...base, reloading: 1, weapFrame: 10 })), ["mag-out", "reload-latch"]);
+  assert.deepEqual(names(d.weaponFrame({ ...base, reloading: 0.5, weapFrame: 12 })), ["mag-in", "reload-seat"]);
+  assert.deepEqual(names(d.weaponFrame({ ...base, reloading: 0.2, weapFrame: 14 })), ["chamber", "reload-bolt"]);
   assert.deepEqual(d.weaponFrame({ ...base, ammo: 12 }), []);
 });
 test("slow frames catch crossed reload stages once; firing and switching cancel future steps", () => {
   const d = new SfxDirector();
   d.weaponFrame(base);
   assert.deepEqual(names(d.weaponFrame({ ...base, reloading: 0.2, weapFrame: 14 })), [
-    "mag-out",
-    "mag-in",
-    "chamber",
+    "mag-out", "reload-latch",
+    "mag-in", "reload-seat",
+    "chamber", "reload-bolt",
   ]);
   assert.deepEqual(d.weaponFrame({ ...base, reloading: 0.19, weapFrame: 14 }), []);
   assert.deepEqual(d.weaponFrame({ ...base, ammo: 4, weapFrame: 15 }), []);
@@ -112,5 +113,18 @@ test("all sector enemies inherit their intentional weapon and death family", () 
       director.enemyFrame([{ ...enemy, skin, anim: 3 }], 1)[0]?.id,
       `fire${ENEMY_WEAPONS[base]}`,
     );
+  }
+});
+
+test("reload layers match ballistic, powered and pressure feeds, and never duplicate a stage", () => {
+  assert.deepEqual(reloadLayers(0), ["reload-latch", "reload-seat", "reload-bolt"]);
+  assert.deepEqual(reloadLayers(7), ["reload-valve", "reload-seat", "reload-seal"]);
+  assert.deepEqual(reloadLayers(9), ["reload-lock", "reload-seat", "reload-charge"]);
+  for(let weapon=0;weapon<33;weapon++) {
+    if(weapon===1)continue;
+    const d=new SfxDirector(); d.weaponFrame({...base,weapon});
+    const h={...base,weapon,reloading:.5,weapFrame:12};
+    assert.equal(d.weaponFrame(h).length,4);
+    assert.deepEqual(d.weaponFrame(h),[]);
   }
 });

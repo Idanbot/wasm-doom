@@ -780,6 +780,84 @@
       "url": "/game/sfx/v2/casing-shell.ogg",
       "fallback": "/game/sfx/v2/casing-shell.mp3",
       "vocal": false
+    },
+    {
+      "id": "foot-grate0",
+      "url": "/game/sfx/v2/foot-grate0.ogg",
+      "fallback": "/game/sfx/v2/foot-grate0.mp3",
+      "vocal": false
+    },
+    {
+      "id": "foot-liquid0",
+      "url": "/game/sfx/v2/foot-liquid0.ogg",
+      "fallback": "/game/sfx/v2/foot-liquid0.mp3",
+      "vocal": false
+    },
+    {
+      "id": "foot-grate1",
+      "url": "/game/sfx/v2/foot-grate1.ogg",
+      "fallback": "/game/sfx/v2/foot-grate1.mp3",
+      "vocal": false
+    },
+    {
+      "id": "foot-liquid1",
+      "url": "/game/sfx/v2/foot-liquid1.ogg",
+      "fallback": "/game/sfx/v2/foot-liquid1.mp3",
+      "vocal": false
+    },
+    {
+      "id": "foot-grate2",
+      "url": "/game/sfx/v2/foot-grate2.ogg",
+      "fallback": "/game/sfx/v2/foot-grate2.mp3",
+      "vocal": false
+    },
+    {
+      "id": "foot-liquid2",
+      "url": "/game/sfx/v2/foot-liquid2.ogg",
+      "fallback": "/game/sfx/v2/foot-liquid2.mp3",
+      "vocal": false
+    },
+    {
+      "id": "reload-latch",
+      "url": "/game/sfx/v2/reload-latch.ogg",
+      "fallback": "/game/sfx/v2/reload-latch.mp3",
+      "vocal": false
+    },
+    {
+      "id": "reload-seat",
+      "url": "/game/sfx/v2/reload-seat.ogg",
+      "fallback": "/game/sfx/v2/reload-seat.mp3",
+      "vocal": false
+    },
+    {
+      "id": "reload-bolt",
+      "url": "/game/sfx/v2/reload-bolt.ogg",
+      "fallback": "/game/sfx/v2/reload-bolt.mp3",
+      "vocal": false
+    },
+    {
+      "id": "reload-valve",
+      "url": "/game/sfx/v2/reload-valve.ogg",
+      "fallback": "/game/sfx/v2/reload-valve.mp3",
+      "vocal": false
+    },
+    {
+      "id": "reload-seal",
+      "url": "/game/sfx/v2/reload-seal.ogg",
+      "fallback": "/game/sfx/v2/reload-seal.mp3",
+      "vocal": false
+    },
+    {
+      "id": "reload-lock",
+      "url": "/game/sfx/v2/reload-lock.ogg",
+      "fallback": "/game/sfx/v2/reload-lock.mp3",
+      "vocal": false
+    },
+    {
+      "id": "reload-charge",
+      "url": "/game/sfx/v2/reload-charge.ogg",
+      "fallback": "/game/sfx/v2/reload-charge.mp3",
+      "vocal": false
     }
   ]
 }

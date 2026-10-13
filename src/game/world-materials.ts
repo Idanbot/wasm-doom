@@ -38,6 +38,26 @@ fn surface_finish(base: vec3<f32>, p: vec2<f32>, dist: f32, floor_surface: bool,
     let fresnel = 0.04 + 0.14 * dist / (dist + 4.0);
     rgb = mix(rgb, clamp(ceiling * 0.20 + light * 0.55, vec3<f32>(0.0), vec3<f32>(1.0)), mask.x * fresnel);
   }
+  if (floor_surface) {
+    let cell=vec2<i32>(floor(p));
+    if (all(cell>=vec2<i32>(0)) && all(cell<vec2<i32>(48,32))) {
+      let data=textureLoad(surface_tex,cell,0);
+      let sp=clamp(p-vec2<f32>(0.5),vec2<f32>(0.0),vec2<f32>(46.0,30.0));
+      let si=vec2<i32>(floor(sp));let sf=fract(sp);
+      let sa=mix(textureLoad(surface_tex,si,0).x,textureLoad(surface_tex,si+vec2<i32>(1,0),0).x,sf.x);
+      let sb=mix(textureLoad(surface_tex,si+vec2<i32>(0,1),0).x,textureLoad(surface_tex,si+vec2<i32>(1,1),0).x,sf.x);
+      rgb *= 1.0-mix(sa,sb,sf.y);
+      let kind=i32(floor(data.y));
+      if (kind>0 && style<1.5) {
+        let q=fract(p)-data.zw;
+        let stain=pow(max(0.0,1.0-dot(q,q)/0.18),2.0)*fract(data.y)*0.7;
+        var color=vec3<f32>(18.0,13.0,11.0)/255.0;
+        if(kind==2){color=vec3<f32>(61.0,91.0,18.0)/255.0;}
+        if(kind==3){color=vec3<f32>(93.0,91.0,86.0)/255.0;}
+        rgb=mix(rgb,color,stain);
+      }
+    }
+  }
   return clamp(rgb, vec3<f32>(0.0), vec3<f32>(1.0));
 }
 fn lit_air(rgb: vec3<f32>, start: vec2<f32>, end: vec2<f32>, height: f32) -> vec3<f32> {
@@ -88,6 +108,23 @@ vec3 surfaceFinish(vec3 base, vec2 p, float dist, bool floorSurface, float style
     vec3 light = max(lightAt(probe), vec3(0.0));
     float fresnel = 0.04 + 0.14 * dist / (dist + 4.0);
     rgb = mix(rgb, clamp(ceiling * 0.20 + light * 0.55, vec3(0.0), vec3(1.0)), mask.x * fresnel);
+  }
+  if (floorSurface) {
+    ivec2 cell=ivec2(floor(p));
+    if(all(greaterThanEqual(cell,ivec2(0))) && all(lessThan(cell,ivec2(48,32)))) {
+      vec4 data=texelFetch(surfaceTex,cell,0);
+      vec2 sp=clamp(p-.5,vec2(0.0),vec2(46.0,30.0));ivec2 si=ivec2(floor(sp));vec2 sf=fract(sp);
+      float sa=mix(texelFetch(surfaceTex,si,0).x,texelFetch(surfaceTex,si+ivec2(1,0),0).x,sf.x);
+      float sb=mix(texelFetch(surfaceTex,si+ivec2(0,1),0).x,texelFetch(surfaceTex,si+ivec2(1,1),0).x,sf.x);
+      rgb*=1.0-mix(sa,sb,sf.y);
+      int kind=int(floor(data.y));
+      if(kind>0 && style<1.5) {
+        vec2 q=fract(p)-data.zw;
+        float stain=pow(max(0.0,1.0-dot(q,q)/.18),2.0)*fract(data.y)*.7;
+        vec3 color=kind==2?vec3(61.0,91.0,18.0)/255.0:kind==3?vec3(93.0,91.0,86.0)/255.0:vec3(18.0,13.0,11.0)/255.0;
+        rgb=mix(rgb,color,stain);
+      }
+    }
   }
   return clamp(rgb, vec3(0.0), vec3(1.0));
 }

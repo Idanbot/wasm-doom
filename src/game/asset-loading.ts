@@ -1,3 +1,4 @@
+import { assetBytes, validatedAsset } from "./asset-cache.ts";
 /** One initial attempt and at most two retries, shared by boot asset types. */
 export const ASSET_RETRIES = 2;
 export type AssetProgress = (done: number, total: number) => void;
@@ -80,27 +81,26 @@ export const assetLoader = createAssetLoader();
 /** Decode/parse inside the retry boundary, so a corrupt HTTP 200 is retried too. */
 export function fetchAsset<T>(url: string, decode: (response: Response, signal: AbortSignal) => Promise<T>, options: LoadOptions = {}) {
   return assetLoader.load(async ({ attempt, signal }) => {
-    const response = await fetch(url, { signal, cache: attempt ? "reload" : options.cache ?? "default" });
-    if (!response.ok) throw new Error(`Asset unavailable (${response.status}): ${url}`);
-    return decode(response, signal);
+    return validatedAsset(url, attempt, signal, decode, options.cache);
   }, options);
 }
 
 /** Progress counts attempts on failed items without refetching successful ones. */
 export async function preloadAssets<T>(
   urls: string[], read: (url: string, onAttempt: AssetProgress) => Promise<T>,
-  limit: number, onProgress?: AssetProgress,
+  limit: number, onProgress?: AssetProgress, weight: (url: string) => number = assetBytes,
 ): Promise<(T | null)[]> {
   const result: (T | null)[] = new Array(urls.length).fill(null);
   const progress = new Float64Array(urls.length);
+  const weights = urls.map(weight), totalBytes = weights.reduce((sum, n) => sum + n, 0);
   let cursor = 0, done = 0;
-  onProgress?.(0, urls.length);
+  onProgress?.(0, totalBytes);
   const advance = (index: number, fraction: number) => {
     const value = Math.max(progress[index]!, Math.min(1, fraction));
     if (value === progress[index]) return;
-    done += value - progress[index]!;
+    done += (value - progress[index]!) * weights[index]!;
     progress[index] = value;
-    onProgress?.(Math.min(urls.length, done), urls.length);
+    onProgress?.(Math.min(totalBytes, done), totalBytes);
   };
   await Promise.all(Array.from({ length: Math.min(limit, urls.length) }, async () => {
     while (cursor < urls.length) {
@@ -111,13 +111,4 @@ export async function preloadAssets<T>(
     }
   }));
   return result;
-}
-
-const retrySession = Date.now();
-let retryId = 0;
-/** Fresh image URLs bypass cached 404s and corrupt image responses. */
-export function retryImageUrl(url: string, attempt: number): string {
-  if (!attempt) return url;
-  const [path, hash] = url.split("#", 2);
-  return `${path}${path!.includes("?") ? "&" : "?"}blacksite_retry=${retrySession}-${++retryId}${hash ? `#${hash}` : ""}`;
 }

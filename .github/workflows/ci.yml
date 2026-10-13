@@ -196,7 +196,7 @@ jobs:
           exit 1
       - name: HUD, loading, input and renderer recovery
         if: matrix.group == 'interface'
-        run: node --experimental-strip-types --test --test-concurrency=1 scripts/hud-insets.browser.mjs scripts/loading-ready.browser.mjs scripts/loading-recovery.browser.mjs scripts/resolution-recovery.browser.mjs scripts/map-controls.browser.mjs scripts/weapon-viewmodel.browser.mjs scripts/asset-reload.browser.mjs scripts/arsenal.browser.mjs
+        run: node --experimental-strip-types --test --test-concurrency=1 scripts/hud-insets.browser.mjs scripts/loading-ready.browser.mjs scripts/loading-recovery.browser.mjs scripts/loading-tiers.browser.mjs scripts/resolution-recovery.browser.mjs scripts/map-controls.browser.mjs scripts/weapon-viewmodel.browser.mjs scripts/asset-reload.browser.mjs scripts/arsenal.browser.mjs
       - name: Combat, effects, tactical systems and audio
         if: matrix.group == 'combat'
         run: node --experimental-strip-types --test --test-concurrency=1 scripts/weapon-feed-art.browser.mjs scripts/world-effects.browser.mjs scripts/world-materials.browser.mjs scripts/gameplay-polish.browser.mjs scripts/tactical.browser.mjs scripts/boss-arena.browser.mjs scripts/boss-counterplay.browser.mjs scripts/projectile-presentation.browser.mjs scripts/sfx.browser.mjs

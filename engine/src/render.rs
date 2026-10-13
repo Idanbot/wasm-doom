@@ -64,6 +64,7 @@ impl Engine {
     pub(crate) fn plane_texel(&self, floor: bool, fx: f32, fy: f32, level: usize, mix: u32) -> u32 {
         let (id, u, v, lvl) = self.plane_sample(floor, fx, fy, level);
         let base = self.sample_mip(id, u, v, lvl, mix);
+        let base = if floor { self.finish_floor_fx(base,fx,fy) } else {base};
         if floor && self.boss_arena.armed {
             let x=fx.floor() as i32; let y=fy.floor() as i32;
             if x>=0 && y>=0 && x<MAP_W as i32 && y<MAP_H as i32 {
@@ -106,8 +107,7 @@ impl Engine {
             let lod = footprint.max(1.0).log2().clamp(0.0, 8.0);
             let level = lod as usize;
             let mix = (lod.fract() * 256.0) as u32;
-            let shade = if floor { 0.72 + 0.2 / (1.0 + distance * 0.2)
-                + self.muzzle * 0.45 / (1.0 + distance * distance) } else { 0.78 };
+            let shade = if floor { 0.72 + 0.2 / (1.0 + distance * 0.2) } else { 0.78 };
             let alpha = Self::fog(0, distance);
             let mut gain = [0i32; 3];
             let mut gain_step = [0i32; 3];
@@ -127,9 +127,11 @@ impl Engine {
                     if px % 8 == 0 {
                         let light = self.light_at(start_x + step_x * px as f32, start_y + step_y * px as f32);
                         let next = self.light_at(start_x + step_x * (px + 8) as f32, start_y + step_y * (px + 8) as f32);
+                        let contact=if floor {1.0-self.floor_shadow(start_x+step_x*px as f32,start_y+step_y*px as f32)}else{1.0};
+                        let next_contact=if floor {1.0-self.floor_shadow(start_x+step_x*(px+8) as f32,start_y+step_y*(px+8) as f32)}else{1.0};
                         for c in 0..3 {
-                            gain[c] = ((shade + light[c]).clamp(0.18, 1.8) * 65536.0) as i32;
-                            let target = ((shade + next[c]).clamp(0.18, 1.8) * 65536.0) as i32;
+                            gain[c] = ((shade + light[c]).clamp(0.18, 1.8) * contact * 65536.0) as i32;
+                            let target = ((shade + next[c]).clamp(0.18, 1.8) * next_contact * 65536.0) as i32;
                             gain_step[c] = (target - gain[c]) / 8;
                         }
                     } else {
@@ -163,6 +165,7 @@ impl Engine {
                             colors[i] = self.plane_texel(floor, fx, fy, level, mix);
                         }
                     }
+                    if uniform && floor && !self.residues.is_empty() { for i in 0..n { if write[i] { colors[i]=self.finish_floor_fx(colors[i],start_x+step_x*(x+i) as f32,start_y+step_y*(x+i) as f32); } } }
                     let shaded = Self::shade_texels4(colors, gains, alpha);
                     let row = y * w;
                     for i in 0..n {
@@ -176,6 +179,7 @@ impl Engine {
 
     pub(crate) fn prepare_gpu(&mut self) {
         self.update_lighting();
+        self.update_surface_fx();
         self.rebuild_smoke_grid();
         let w = self.w.min(MAX_W);
         let h = self.h;
@@ -321,6 +325,7 @@ impl Engine {
 
     pub(crate) fn render(&mut self) {
         self.update_lighting();
+        self.update_surface_fx();
         self.rebuild_smoke_grid();
         let w = self.w;
         let h = self.h;
@@ -468,7 +473,7 @@ impl Engine {
                 }
             }
             let light = self.light_at(self.px + (perp - 0.03) * rdx, self.py + (perp - 0.03) * rdy);
-            dist_mul += self.muzzle * 0.55 / (1.0 + perp * perp * 0.3);
+
             let dec = if map_x >= 0 && map_y >= 0 && map_x < MAP_W as i32 && map_y < MAP_H as i32 {
                 self.decal[map_y as usize * MAP_W + map_x as usize]
             } else {
@@ -502,12 +507,10 @@ impl Engine {
                             colors[i] = Self::blend(colors[i], Self::pack(255, 140, 40, 255), 0.35);
                         }
                         if dec > 0 {
-                            let splat = self.sample_mip(
-                                T_SPLAT, tex_x, ty.wrapping_add(dec as i32 * 17), level, mix,
-                            );
-                            if ((splat >> 24) & 255) > 24 {
-                                colors[i] = Self::blend(colors[i], splat, 0.28 + dec as f32 * 0.18);
-                            }
+                            let u=tex_x as f32/TEX as f32-0.5; let v=ty as f32/TEX as f32-0.52;
+                            let mask=(1.0-(u*u+v*v)/0.12).max(0.0).powi(2)*0.55;
+                            let stain=match dec {2=>Self::pack(61,91,18,255),3=>Self::pack(93,91,86,255),_=>Self::pack(18,13,11,255)};
+                            colors[i]=Self::blend(colors[i],stain,mask);
                         }
                     }
                     let shaded = Self::shade_rgb4(colors, dist_mul, light);

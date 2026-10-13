@@ -1,6 +1,7 @@
+import { retryAssetUrl as retryImageUrl } from "../src/game/asset-cache.ts";
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { createAssetLoader, fetchAsset, preloadAssets, retryImageUrl } from '../src/game/asset-loading.ts';
+import { createAssetLoader, fetchAsset, preloadAssets } from '../src/game/asset-loading.ts';
 
 test('transient failure and corrupt decode recover on the third attempt', async () => {
   const loader = createAssetLoader({retryDelays:[0,0]});
@@ -77,7 +78,7 @@ test('HTTP success with corrupt bytes retries with fresh-cache fetches', async (
   } finally {globalThis.fetch=previous;}
 });
 
-test('image retry URLs preserve Pages paths, existing query and fragments', () => {
+test('asset retry URLs preserve Pages paths, existing query and fragments', () => {
   const url='/blacksite/game/ui/menu.webp?version=7#preview';
   assert.equal(retryImageUrl(url,0),url);
   const first=retryImageUrl(url,1),second=retryImageUrl(url,2);

@@ -3770,6 +3770,316 @@
           "mp3": "b32ecfe3c5a1b925856b4a7f716909909f3280884ab54e8b2fb8548088626f59"
         }
       }
+    },
+    {
+      "id": "foot-grate0",
+      "layers": [
+        {
+          "source": "footsteps/footstep00.ogg",
+          "gain": 0.65
+        },
+        {
+          "source": "impacts/impactPlate_light_000.ogg",
+          "rate": 1.25,
+          "gain": 0.45
+        }
+      ],
+      "duration": 0.42,
+      "peakDb": -14,
+      "measurements": {
+        "duration": 0.42,
+        "pcmPeakDb": -14,
+        "rmsDb": -35.81,
+        "files": {
+          "ogg": "0cbf7caaa1e66057d897de4af332a24b4efa65f21d0671955815a4b53d906696",
+          "mp3": "add0cf53f55ce6f50ace7cdf2391323bcdc69be51536308accc4d0cba453f077"
+        }
+      }
+    },
+    {
+      "id": "foot-liquid0",
+      "layers": [
+        {
+          "source": "impacts/footstep_carpet_000.ogg",
+          "gain": 0.3
+        },
+        {
+          "source": "mechanical-fx/slime_000.ogg",
+          "rate": 0.95,
+          "duration": 0.32,
+          "lowpass": 2600,
+          "gain": 0.8
+        }
+      ],
+      "duration": 0.4,
+      "peakDb": -14,
+      "measurements": {
+        "duration": 0.3368,
+        "pcmPeakDb": -14,
+        "rmsDb": -33.87,
+        "files": {
+          "ogg": "fb6561e4a8b84aec9e15100327d2128e6e52174a4c097d7fd5634a8454ea6f1a",
+          "mp3": "7272d25c1b1e59d47ea64c8407a97d4aa1695317dd0e6f69d8b1540b70c2be7c"
+        }
+      }
+    },
+    {
+      "id": "foot-grate1",
+      "layers": [
+        {
+          "source": "footsteps/footstep01.ogg",
+          "gain": 0.65
+        },
+        {
+          "source": "impacts/impactPlate_light_000.ogg",
+          "rate": 1.33,
+          "gain": 0.45
+        }
+      ],
+      "duration": 0.42,
+      "peakDb": -14,
+      "measurements": {
+        "duration": 0.4078,
+        "pcmPeakDb": -14,
+        "rmsDb": -36.47,
+        "files": {
+          "ogg": "add517491ed3398caed819065ba739bb13daa5baadbc44e984227ad95ea67118",
+          "mp3": "4b4205664e9f342eccc3b9e2a2acfd133c46815f5947b1baa59a8bda415c10fa"
+        }
+      }
+    },
+    {
+      "id": "foot-liquid1",
+      "layers": [
+        {
+          "source": "impacts/footstep_carpet_001.ogg",
+          "gain": 0.3
+        },
+        {
+          "source": "mechanical-fx/slime_001.ogg",
+          "rate": 1.02,
+          "duration": 0.32,
+          "lowpass": 2600,
+          "gain": 0.8
+        }
+      ],
+      "duration": 0.4,
+      "peakDb": -14,
+      "measurements": {
+        "duration": 0.3137,
+        "pcmPeakDb": -14,
+        "rmsDb": -34.66,
+        "files": {
+          "ogg": "9ac8c2339c0bb48aa69f01cd284979eb01de67cbe47c6efd535adbd8cecd9cbe",
+          "mp3": "36f02341bfd7e33a3272628a94eb4858d02b9b94b6e08b62faf0ba7517e01e42"
+        }
+      }
+    },
+    {
+      "id": "foot-grate2",
+      "layers": [
+        {
+          "source": "footsteps/footstep02.ogg",
+          "gain": 0.65
+        },
+        {
+          "source": "impacts/impactPlate_light_000.ogg",
+          "rate": 1.41,
+          "gain": 0.45
+        }
+      ],
+      "duration": 0.42,
+      "peakDb": -14,
+      "measurements": {
+        "duration": 0.3847,
+        "pcmPeakDb": -14,
+        "rmsDb": -35.52,
+        "files": {
+          "ogg": "fb1b2e43db79deb0504c93ee608e0697438d132c7cabf58a9419062c38be2911",
+          "mp3": "ddd1beb8fb143bcff84efc44c0a775e3bc99efa6f1caa595b37312c07ae346c1"
+        }
+      }
+    },
+    {
+      "id": "foot-liquid2",
+      "layers": [
+        {
+          "source": "impacts/footstep_carpet_002.ogg",
+          "gain": 0.3
+        },
+        {
+          "source": "mechanical-fx/slime_000.ogg",
+          "rate": 1.0899999999999999,
+          "duration": 0.32,
+          "lowpass": 2600,
+          "gain": 0.8
+        }
+      ],
+      "duration": 0.4,
+      "peakDb": -14,
+      "measurements": {
+        "duration": 0.2936,
+        "pcmPeakDb": -14,
+        "rmsDb": -33.03,
+        "files": {
+          "ogg": "4378e38c7f6c3a3a86f2a31846c6cdb434cb64020b971719dd23c004c429a985",
+          "mp3": "6146e4c92354ea741d5d31a6c9da8048faa72c919bd9264ea328a7e017409403"
+        }
+      }
+    },
+    {
+      "id": "reload-latch",
+      "layers": [
+        {
+          "source": "footsteps/metalLatch.ogg",
+          "rate": 1.15,
+          "start": 0,
+          "duration": 0.18
+        }
+      ],
+      "duration": 0.36,
+      "peakDb": -13,
+      "measurements": {
+        "duration": 0.1565,
+        "pcmPeakDb": -13,
+        "rmsDb": -32.81,
+        "files": {
+          "ogg": "fbf43918f167379fbec0bbbad289436ea9ddfbc3e14c32b89d7b0fe07d8e2833",
+          "mp3": "67d39eb52c6c406f2cc16cbb02c7bb2afcb6d5310a39b94860b92ac69062c8d1"
+        }
+      }
+    },
+    {
+      "id": "reload-seat",
+      "layers": [
+        {
+          "source": "impacts/impactPlate_light_000.ogg",
+          "rate": 0.9,
+          "start": 0,
+          "duration": 0.18
+        }
+      ],
+      "duration": 0.36,
+      "peakDb": -13,
+      "measurements": {
+        "duration": 0.2,
+        "pcmPeakDb": -13,
+        "rmsDb": -32.68,
+        "files": {
+          "ogg": "d04318a7aa9c0a40789ed12f3ecf62c3968c7c86d8d7cfd4a884aa5f0c706ab9",
+          "mp3": "4dd7f39c876cec19cf59db69aeb8ebb84b5b1070cc8e4f02cc0688f4cafe1940"
+        }
+      }
+    },
+    {
+      "id": "reload-bolt",
+      "layers": [
+        {
+          "source": "handling/assaultriflereload1_0.wav",
+          "rate": 1.18,
+          "start": 1.32,
+          "duration": 0.18
+        }
+      ],
+      "duration": 0.36,
+      "peakDb": -13,
+      "measurements": {
+        "duration": 0.1525,
+        "pcmPeakDb": -13,
+        "rmsDb": -30.91,
+        "files": {
+          "ogg": "a5ae11a23964d5f3ca194090662765c3fb84ea1196afb9be8e24dbbf3298ae4a",
+          "mp3": "e5928c37a704579e0fab9c7fb8b4a85340f04cf7f7819732cda3028ea96403df"
+        }
+      }
+    },
+    {
+      "id": "reload-valve",
+      "layers": [
+        {
+          "source": "mechanical-fx/doorClose_000.ogg",
+          "rate": 0.8,
+          "start": 0,
+          "duration": 0.18
+        }
+      ],
+      "duration": 0.36,
+      "peakDb": -13,
+      "measurements": {
+        "duration": 0.225,
+        "pcmPeakDb": -13,
+        "rmsDb": -27.36,
+        "files": {
+          "ogg": "02fe89fefdbfeeb63fcda24bbce470d439623f468d07a8b866ffa75a23e139fb",
+          "mp3": "8b6a562817dca964ed8069698b705288dbe0e8620e7e6a0075fa88a5acbd4843"
+        }
+      }
+    },
+    {
+      "id": "reload-seal",
+      "layers": [
+        {
+          "source": "mechanical-fx/slime_000.ogg",
+          "rate": 1.35,
+          "start": 0,
+          "duration": 0.18
+        }
+      ],
+      "duration": 0.36,
+      "peakDb": -13,
+      "measurements": {
+        "duration": 0.1333,
+        "pcmPeakDb": -13,
+        "rmsDb": -34.08,
+        "files": {
+          "ogg": "aca58c1ca0501ddbbc4f1137f5c55d55a6f19ee716026e747a019a647de53e30",
+          "mp3": "1bac346f22a255a75555fcf3f6ec321dd717cc419c5f867a12710c2fbcd1d203"
+        }
+      }
+    },
+    {
+      "id": "reload-lock",
+      "layers": [
+        {
+          "source": "footsteps/metalLatch.ogg",
+          "rate": 0.72,
+          "start": 0,
+          "duration": 0.18
+        }
+      ],
+      "duration": 0.36,
+      "peakDb": -13,
+      "measurements": {
+        "duration": 0.25,
+        "pcmPeakDb": -13,
+        "rmsDb": -33.25,
+        "files": {
+          "ogg": "6c6ccb04cb19dc9fdac958aba1e044fca76e15fa62d9eccc447316ef7c11cbc3",
+          "mp3": "52b19cc690aee3bddd21a3b7f8d41076deec3fb24172f32001705d3aaac259bf"
+        }
+      }
+    },
+    {
+      "id": "reload-charge",
+      "layers": [
+        {
+          "source": "mechanical-fx/forceField_001.ogg",
+          "rate": 1.15,
+          "start": 0,
+          "duration": 0.3
+        }
+      ],
+      "duration": 0.36,
+      "peakDb": -13,
+      "measurements": {
+        "duration": 0.2609,
+        "pcmPeakDb": -13,
+        "rmsDb": -20.41,
+        "files": {
+          "ogg": "3126bb82c318a6bf84952c5c11a5177945e6fb08862a2e927bef5a76c2c7d038",
+          "mp3": "91a1cb8c5446d2ec3055c5f7f1c457f6d38e8db454c8ef8c4f25eaf3b987ec9d"
+        }
+      }
     }
   ]
 }

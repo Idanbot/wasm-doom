@@ -1,3 +1,4 @@
+import { assetBytes, setAssetManifest, versionedAssetUrl, type AssetManifest } from "./asset-cache";
 import { DEFAULT_SENSITIVITY, normalizeSensitivity } from "./input-settings";
 import { automapCells } from "./automap-data";
 import BOSS_ARENAS from "./boss-arena-data.json";
@@ -5,7 +6,7 @@ import { SECTOR_ENEMIES } from "./sector-enemies";
 import { SECTOR_SLUGS, SECTOR_SURFACES } from "./sector-assets";
 import { CAMPAIGN_EXPANSION } from "./campaign25";
 import { asset } from "@/lib/asset";
-import { assetLoader, fetchAsset, preloadAssets, retryImageUrl, type AssetProgress } from "./asset-loading";
+import { fetchAsset, preloadAssets, type AssetProgress } from "./asset-loading";
 import { createAudio, type GameAudio } from "./audio";
 import { createBlitter, type BlitKind, type Blitter } from "./blit";
 import { WorldEffects, sectorEffect } from "./sector-effects";
@@ -111,6 +112,8 @@ type WasmExports = {
   hs_gpu_sprites: () => number;
   hs_gpu_sprite_count: () => number;
   hs_floor_ptr: () => number;
+  hs_floor_material: () => number;
+  hs_surface_fx_ptr: () => number;
   hs_light_ptr: () => number;
   hs_smoke_ptr: () => number;
   hs_theme_ptr: (slot: number) => number;
@@ -354,17 +357,18 @@ const TEX_FILES: { id: number; src: string }[] = [
   })),
 ].map(texture => ({ ...texture, src: PROJECTILE_ART[texture.src] ?? texture.src }));
 
-const UI_CRITICAL = [
+const MENU_ASSETS = [
   "/game/ui/hud-panel.webp",
   "/game/ui/menu-reactor.webp",
   "/game/ui-plaque.svg",
   "/game/ui/loading-operator.webp",
-  ...WEAPON_THUMBNAILS,
-  ...WEAPON_SHEETS,
-];
+ ];
+const UI_CRITICAL = [...WEAPON_THUMBNAILS, ...WEAPON_SHEETS];
 const weaponSheetPaths = new Set<string>(WEAPON_SHEETS);
 const weaponSheetCache = new Map<string, HTMLImageElement>();
 const pendingWeaponSheets = new Set<string>();
+const imageUrls = new Set<string>();
+const primedImages = new Map<string, HTMLImageElement>();
 
 export function weaponSheetImage(src: string): HTMLImageElement | null {
   const cached = weaponSheetCache.get(src);
@@ -398,26 +402,20 @@ const THEME_FILES: { slot: number; src: string }[] = [
 
 async function decodeImage(src: string, timeoutMs = 30000, onAttempt?: AssetProgress, signal?: AbortSignal): Promise<HTMLImageElement | null> {
   try {
-    const img = await assetLoader.load(({ attempt, signal: attemptSignal }) => new Promise<HTMLImageElement>((resolve, reject) => {
+    const primed = primedImages.get(src);
+    if (primed) { primedImages.delete(src); onAttempt?.(3,3); return primed; }
+    const img = await fetchAsset(asset(src), async (response, attemptSignal) => {
+      const url = URL.createObjectURL(await response.blob());
       const image = new Image();
-      const finish = (error?: unknown) => {
-        image.onload = image.onerror = null;
-        attemptSignal.removeEventListener("abort", cancel);
-        if (error) { image.src = ""; reject(error); }
-        else resolve(image);
-      };
-      const cancel = () => finish(attemptSignal.reason);
-      image.onload = () => {
-        image.decode().then(() => {
-          if (attemptSignal.aborted) return;
-          if (!image.naturalWidth || !image.naturalHeight) finish(new Error(`Empty image: ${src}`));
-          else finish();
-        }, finish);
-      };
-      image.onerror = () => finish(new Error(`Image could not decode: ${src}`));
-      attemptSignal.addEventListener("abort", cancel, { once: true });
-      image.src = retryImageUrl(asset(src), attempt);
-    }), { timeoutMs, onAttempt, signal });
+      image.src = url;
+      try {
+        await image.decode();
+        attemptSignal.throwIfAborted();
+        if (!image.naturalWidth || !image.naturalHeight) throw new Error(`Empty image: ${src}`);
+        imageUrls.add(url);
+        return image;
+      } catch (error) { URL.revokeObjectURL(url); throw error; }
+    }, { timeoutMs, onAttempt, signal });
     if (weaponSheetPaths.has(src)) weaponSheetCache.set(src, img);
     return img;
   } catch { return null; }
@@ -525,10 +523,22 @@ export class BlacksiteRuntime {
       progress = Math.max(progress, ratio);
       this.hooks.onLoad?.({ ratio: progress, label });
     };
-    report(0.02, "Engine");
+    report(0.01, "Asset manifest");
+    const manifest = await fetchAsset(asset("/game/asset-manifest.json"), async response => {
+      const value = await response.json() as AssetManifest;
+      setAssetManifest(value);
+      if(!value.assets["/blacksite.wasm"] || MENU_ASSETS.some(url=>!value.assets[url])) throw new Error("Incomplete asset manifest");
+      return value;
+    }, { cache: "no-store", signal: this.assetAbort.signal });
+    const menu = await preloadImages(MENU_ASSETS, 2,
+      (n, total) => report(.01 + .04 * n / total, "Menu artwork"), 30000, this.assetAbort.signal,
+      (src, image) => this.hooks.onUiAssetReady?.(src, image.src));
+    if (menu.some(image => !image)) throw new Error("Menu artwork could not load");
+    await document.fonts.ready;
+    report(0.05, "Engine");
     // Let React paint the loading animation before allocating the WASM atlas.
     await new Promise<void>(resolve => requestAnimationFrame(() => setTimeout(resolve, 0)));
-    const wasm = await loadWasm((done, total) => report(0.02 + 0.04 * done / total, "Engine"));
+    const wasm = await loadWasm((done, total) => report(0.05 + 0.04 * done / total, "Engine"));
     if (this.aborted) return;
     this.wasm = wasm;
     this.requireGpu = opts?.requireGpu ?? false;
@@ -557,12 +567,27 @@ export class BlacksiteRuntime {
     this.running = true;
     this.last = performance.now();
     this.loop(this.last);
+    // A strict priority barrier: the starting sector is ready before the rest
+    // of the campaign competes for network/decode slots. Deployment still waits
+    // for the complete atlas, all weapons and audio.
+    const startSector=SECTOR_SLUGS[((this.hud.wave || 1)-1)%25]!;
+    const startFiles=TEX_FILES.filter(t=>t.src.includes(startSector)).map(t=>t.src);
+    const starting=await preloadImages(startFiles,4,(n,total)=>report(.10+.02*n/total,"Current sector"),30000,this.assetAbort.signal,
+      (src,image)=>primedImages.set(src,image));
+    if(starting.some(image=>!image))throw new Error("Current sector artwork could not load");
     const slices = { tex: 0, ui: 0, voice: 0, media: 0 };
+    const bytes = (urls: string[]) => urls.reduce((sum, url) => sum + assetBytes(url), 0);
+    const weights = {
+      tex: bytes([...TEX_FILES, ...THEME_FILES].map(t => t.src)), ui: bytes(UI_CRITICAL),
+      voice: bytes(Object.keys(manifest.assets).filter(url => url.startsWith("/game/voices/"))),
+      media: bytes(Object.keys(manifest.assets).filter(url => /\/(sfx|music)\//.test(url))),
+    };
+    const totalBytes = Object.values(weights).reduce((sum, n) => sum + n, 0);
     const paint = (_label: string) => {
       report(
         Math.min(
           0.99,
-          0.12 + 0.4 * slices.tex + 0.25 * slices.ui + 0.15 * slices.voice + 0.08 * slices.media,
+          0.12 + 0.82 * Object.entries(slices).reduce((sum, [key, fraction]) => sum + fraction * weights[key as keyof typeof weights], 0) / totalBytes,
         ),
         slices.tex < 1 ? "World textures" : slices.ui < 1 ? "Arsenal & interface" :
           slices.voice < 1 ? "Enemy voices" : "Sound & music",
@@ -604,6 +629,7 @@ export class BlacksiteRuntime {
       }),
       document.fonts.ready,
     ]);
+    report(.98, "Textures decoded and uploaded");
     this.assetsReady = true;
     this.renderDirty = true;
     if (this.aborted) return;
@@ -816,6 +842,8 @@ export class BlacksiteRuntime {
     this.audio.setMusic(false);
     this.audio.setBoss(false);
     this.audio.dispose();
+    for (const url of imageUrls) URL.revokeObjectURL(url);
+    imageUrls.clear(); primedImages.clear(); weaponSheetCache.clear(); pendingWeaponSheets.clear();
   }
 
   requestLock() {
@@ -1000,18 +1028,23 @@ export class BlacksiteRuntime {
     // Enemy animation layers are independent 256px files; decode them in a
     // wider batch so the first playable frame is not gated by four-at-a-time
     // image loads.
+    const sector = SECTOR_SLUGS[((this.hud.wave || 1) - 1) % 25]!;
+    const priority = (src: string) => src.includes(sector) ? 0 : /\/sectors\/|enemy_sector-/.test(src) ? 2 : 1;
+    const ordered = [...TEX_FILES].sort((a, b) => priority(a.src) - priority(b.src));
+    const textureBytes = ordered.reduce((sum, t) => sum + assetBytes(t.src), 0);
+    const themeBytes = THEME_FILES.reduce((sum, t) => sum + assetBytes(t.src), 0);
     const loaded = await preloadImages(
-      TEX_FILES.map((t) => t.src),
+      ordered.map((t) => t.src),
       8,
-      done => onItem?.(done, TEX_FILES.length + THEME_FILES.length),
+      done => onItem?.(done, textureBytes + themeBytes),
       30000,
       this.assetAbort.signal,
     );
-    const missing = TEX_FILES.filter((_, i) => !loaded[i]).map((t) => t.src);
+    const missing = ordered.filter((_, i) => !loaded[i]).map((t) => t.src);
     if (missing.length) throw new Error(`World textures could not load: ${missing.join(", ")}`);
-    for (let i = 0; i < TEX_FILES.length; i++) {
+    for (let i = 0; i < ordered.length; i++) {
       const img = loaded[i];
-      const id = TEX_FILES[i]!.id;
+      const id = ordered[i]!.id;
       if (!img) continue;
       try {
         ctx.imageSmoothingEnabled = false;
@@ -1051,10 +1084,10 @@ export class BlacksiteRuntime {
         const view = new Uint8Array(wasm.memory.buffer, ptr, size * size * 4);
         view.set(pixels.data);
       } catch {
-        throw new Error(`World texture could not be prepared: ${TEX_FILES[i]!.src}`);
+        throw new Error(`World texture could not be prepared: ${ordered[i]!.src}`);
       }
     }
-    await this.uploadThemeVariants(ctx, size, done => onItem?.(TEX_FILES.length + done, TEX_FILES.length + THEME_FILES.length));
+    await this.uploadThemeVariants(ctx, size, done => onItem?.(textureBytes + done, textureBytes + themeBytes));
     wasm.hs_apply_theme(1);
     wasm.hs_textures_ready();
     this.pushAtlas();
@@ -1071,7 +1104,6 @@ export class BlacksiteRuntime {
    */
   async reloadAllAssets(onItem?: (done: number, total: number) => void): Promise<void> {
     if (this.aborted || !this.wasm) return;
-    const total = TEX_FILES.length + THEME_FILES.length;
 
     // Drop the decoded-image caches so the fetches actually happen again.
     weaponSheetCache.clear();
@@ -1079,7 +1111,7 @@ export class BlacksiteRuntime {
 
     this.assetsReady = false;
     this.renderDirty = true;
-    await this.uploadTextures((d) => onItem?.(d, total));
+    await this.uploadTextures(onItem);
     // Re-apply the live wave's palette so the atlas matches the level in play.
     this.wasm.hs_apply_theme(this.hud.wave);
     this.wasm.hs_textures_ready();
@@ -1543,6 +1575,7 @@ export class BlacksiteRuntime {
         wasm.hs_light_ptr(),
         wasm.hs_smoke_ptr(),
         w,
+        wasm.hs_surface_fx_ptr(),
       );
       presented = blit.drawWorld(frame, fx);
     }
@@ -1593,7 +1626,7 @@ export class BlacksiteRuntime {
       if (ev & 2) this.audio.empty(evWeapon);
       if (ev & 16 && !(ev & 128)) this.audio.hurt();
       if (ev & 128) this.audio.die();
-      if (ev & 512) this.audio.foot();
+      if (ev & 512) this.audio.foot(this.wasm!.hs_floor_material());
       if (ev & 2048) this.audio.setBoss(true);
       if (ev & 8192) this.audio.hushBoss();
       if (ev & 16384) this.audio.dropBoss();
@@ -1712,9 +1745,12 @@ export class BlacksiteRuntime {
 }
 
 let wasmModule: Promise<WebAssembly.Module> | null = null;
+let wasmIdentity = "";
 
 async function loadWasm(onAttempt?: AssetProgress): Promise<WasmExports> {
   // Share compiled code, never mutable memory between runtime mounts.
+  const identity = versionedAssetUrl(asset("/blacksite.wasm"));
+  if (identity !== wasmIdentity) { wasmIdentity = identity; wasmModule = null; }
   if (!wasmModule) {
     wasmModule = fetchAsset(asset("/blacksite.wasm"), async response =>
       WebAssembly.compile(await response.arrayBuffer()), { onAttempt, timeoutMs: 60000, cache: "no-cache" }).catch((error) => {

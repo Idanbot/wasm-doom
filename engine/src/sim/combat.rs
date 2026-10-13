@@ -7,6 +7,7 @@ use crate::*;
 
 impl Engine {
     pub(crate) fn campaign_impact(&mut self, x: f32, y: f32, variant: usize) {
+        self.leave_residue(x,y,if variant%4==3 {2} else {1});
         self.sound(13, (variant % 4) as u8, x, y);
         if let Some(i) = self.spawn(EK_IMPACT, x, y) {
             self.ents[i].skin = 200 + (variant % 4) as u8;
@@ -16,6 +17,7 @@ impl Engine {
     }
 
     pub(crate) fn projectile_impact(&mut self, x: f32, y: f32, visual: u8, palette: i32) {
+        self.leave_residue(x,y,if matches!(visual,110|114|128|233) {2} else {1});
         if visual == 110 || visual == 114 || visual == 128 || visual == 233 { self.effect(EK_IMPACT, 3, x, y, 0.28, -8.0); return; }
         let effect = if palette == 10 || palette == 12 { 3 }
             else if matches!(palette, 4 | 9 | 14) { 2 }
@@ -400,7 +402,9 @@ impl Engine {
         if wall_t < maxd {
             let hx = self.px + dx * wall_t * 0.96;
             let hy = self.py + dy * wall_t * 0.96;
-            self.stamp_decal(hx.floor() as i32, hy.floor() as i32);
+            self.leave_residue(hx,hy,3);
+            let wx=self.px+dx*(wall_t+0.03); let wy=self.py+dy*(wall_t+0.03);
+            self.stamp_decal(wx.floor() as i32, wy.floor() as i32);
             self.spawn_timed(EK_IMPACT, hx, hy, 0.28, -8.0);
             self.burst_fx(hx, hy, EK_SPARK, 2, 0.18);
         }

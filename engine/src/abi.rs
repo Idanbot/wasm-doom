@@ -539,3 +539,8 @@ pub extern "C" fn hs_prepare_agent_items()->i32 {
 }
 #[no_mangle]
 pub extern "C" fn hs_agent_items()->*const agent_view::ItemCue {core::ptr::addr_of!(AGENT_ITEMS).cast()}
+
+#[no_mangle]
+pub extern "C" fn hs_floor_material() -> i32 { let e=eng(); e.floor_material(e.px,e.py) as i32 }
+#[no_mangle]
+pub extern "C" fn hs_surface_fx_ptr() -> *const f32 { eng().surface_fx.as_ptr() as *const f32 }

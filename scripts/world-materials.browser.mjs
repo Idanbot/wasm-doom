@@ -62,7 +62,7 @@ test("world-space reflections, sector cosmetics, shafts and boss pulses preserve
       for (let x = 0; x < w; x++) cols[x * 16 + 14] = 100;
       const frame = { w, h, view: new Float32Array([3, 2, 1, 0, 0, .72, 48, 2, 0, 0, w, h, .72, 0, 0, 0]),
         cols, sprites: new Float32Array(8), spriteCount: 0, floor: new Uint8Array(48 * 32),
-        light: new Float32Array(48 * 32 * 3), smoke: new Float32Array(48 * 32) };
+        light: new Float32Array(48 * 32 * 3), surface: new Float32Array(48 * 32 * 4), smoke: new Float32Array(48 * 32) };
       const gl = canvas.getContext("webgl2");
       const read = fx => {
         if (!blit.drawWorld(frame, fx)) throw new Error("GPU world draw failed");
@@ -73,6 +73,10 @@ test("world-space reflections, sector cosmetics, shafts and boss pulses preserve
       const floorDiff = (a, b) => a.slice(0, canvas.width * Math.floor(canvas.height * .30) * 4)
         .reduce((n, v, i) => n + Math.abs(v - b[i]), 0);
       const original = read();
+      for (let i=0;i<48*32;i++) frame.surface[i*4]=.28;
+      const contactShadows=floorDiff(original,read()); frame.surface.fill(0);
+      for (let i=0;i<48*32;i++) frame.surface.set([0,2.9,.5,.5],i*4);
+      const acidResidue=floorDiff(original,read()); frame.surface.fill(0);
       blit.uploadAtlasLayer(T_SECTOR_SURFACE + 4, blue);
       const reflected = read(), reflection = floorDiff(original, reflected);
       frame.floor.fill(3);
@@ -89,6 +93,10 @@ test("world-space reflections, sector cosmetics, shafts and boss pulses preserve
       frame.light.fill(0); const sealed = read();
       for (let y = 0; y < 32; y++) for (let x = 9; x < 48; x++) frame.light.set([1, .2, .1], (y * 48 + x) * 3);
       const hiddenLight = floorDiff(sealed, read());
+      frame.surface.fill(.8); const hiddenSurface=floorDiff(sealed,read()); frame.surface.fill(0);
+      for(let x=0;x<w;x++) {cols[x*16+11]=3;cols[x*16+1]=128;}
+      const wallResidue=floorDiff(sealed,read());
+      for(let x=0;x<w;x++) cols[x*16+11]=0;
       // Postprocessing phase changes must not tint zero-depth weapon pixels.
       const pixels = new Uint8Array(w * h * 4);
       for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) pixels.set([80, 90, 100, x < w / 2 ? 0 : 150], (y * w + x) * 4);
@@ -109,7 +117,7 @@ test("world-space reflections, sector cosmetics, shafts and boss pulses preserve
       for (let x = 0; x < w; x++) cols.set(new Float32Array(16), x * 16);
       for (let x = 0; x < w; x++) cols[x * 16 + 14] = 100;
       blit.uploadAtlasLayer(T_SECTOR_SURFACE + 3, floor); frame.light.fill(.35); read();
-      return { reflection, protectedMarkers, sectorVariation, scattering, hiddenLight, weaponDiff, phaseDiff, kind: blit.kind, error: gl.getError() };
+      return { contactShadows, acidResidue, hiddenSurface, wallResidue, reflection, protectedMarkers, sectorVariation, scattering, hiddenLight, weaponDiff, phaseDiff, kind: blit.kind, error: gl.getError() };
     });
     await page.screenshot({ path: "screenshots/world-materials.png" });
     assert.equal(result.kind, "webgl2"); assert.equal(result.error, 0);
@@ -118,6 +126,8 @@ test("world-space reflections, sector cosmetics, shafts and boss pulses preserve
     assert.ok(result.sectorVariation > 1000, JSON.stringify(result));
     assert.ok(result.scattering > 1000, JSON.stringify(result));
     assert.equal(result.hiddenLight, 0);
+    assert.equal(result.hiddenSurface,0,"floor shadows and residue cannot appear through walls");
+    assert.ok(result.contactShadows>1000);assert.ok(result.acidResidue>1000);assert.ok(result.wallResidue>1000);
     assert.equal(result.weaponDiff, 0); assert.ok(result.phaseDiff > 1000);
     assert.deepEqual(errors, []);
   } finally { await browser.close(); }

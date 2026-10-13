@@ -98,6 +98,7 @@ impl Engine {
     }
 
     pub(crate) fn effect(&mut self, kind: u8, variant: u8, x: f32, y: f32, life: f32, zoff: f32) {
+        if kind == EK_IMPACT { self.leave_residue(x,y,if variant==3 {2} else {1}); }
         if kind == EK_IMPACT && variant != 2 { self.sound(13, variant, x, y); }
         let slot = self.fx_n;
         self.spawn_timed(kind, x, y, life, zoff);

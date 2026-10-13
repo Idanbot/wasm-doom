@@ -1,3 +1,4 @@
+import { assetBytes } from "./asset-cache";
 import { asset } from "@/lib/asset";
 import { fetchAsset, preloadAssets, type AssetProgress } from "./asset-loading";
 import { VoiceGate } from "./voice-gate";
@@ -57,7 +58,7 @@ export class SfxPlayer {
           } catch { this.loadSignal?.throwIfAborted(); }
         }
         throw new Error(`Sound effect unavailable: ${id}`);
-      }, 6, onProgress);
+      }, 6, onProgress, id => assetBytes(clips.get(id)!.url));
       for (let i = 0; i < manifest.clips.length; i++) {
         const clip = manifest.clips[i]!;
         if (!decoded[i]) { this.failed.push(clip.id); continue; }

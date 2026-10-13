@@ -76,8 +76,8 @@ test('engine, world, themes and audio manifests recover from missing or corrupt 
       const src=background.slice(5,-2);const image=new Image();image.src=src;await image.decode();
       return {background,hud,width:image.naturalWidth};
     });
-    assert.match(art.background,/blacksite_retry=/);
-    assert.match(art.hud,/blacksite_retry=/);
+    assert.match(art.background,/blob:/);
+    assert.match(art.hud,/blob:/);
     assert.ok(art.width>500,'recovered menu background must decode');
     assert.deepEqual(errors,[]);
   } finally {await browser.close();}

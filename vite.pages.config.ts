@@ -1,3 +1,4 @@
+import { assetManifestPlugin } from "./scripts/asset-manifest";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
@@ -9,7 +10,7 @@ const base = process.env.PAGES_BASE || (repository ? `/${repository}/` : "/black
 export default defineConfig({
   base,
   server: { watch: { ignored: ["**/.blacksite/**"] } },
-  plugins: [tailwindcss(), react()],
+  plugins: [assetManifestPlugin(),tailwindcss(), react()],
   resolve: { tsconfigPaths: true },
   build: {
     outDir: "dist-pages",

@@ -99,6 +99,11 @@ impl Engine {
         TINTS[crate::map::level_index(wave) % 25]
     }
 
+    pub(crate) fn sector_contrast(wave: i32) -> [f32;3] {
+        let tint=Self::sector_tint(wave);
+        if tint[0]>tint[2] {[0.28,0.70,1.0]}else{[1.0,0.65,0.26]}
+    }
+
     pub(crate) fn smoke_radius(age: f32) -> f32 {
         0.85 + (age / 2.0).clamp(0.0, 1.0) * 1.25
     }
@@ -183,11 +188,11 @@ impl Engine {
             }
             for e in &self.ents {
                 if e.kind == EK_LAMP && e.timer >= 0.0 {
-                    self.add_light(&mut grid, e.x, e.y, 8.2, [0.78, 0.40, 0.14]);
+                    self.add_light(&mut grid, e.x, e.y, 7.2, Self::sector_tint(self.wave).map(|v|v*0.62+0.06));
                 } else if e.kind == EK_FLAME {
                     self.add_light(&mut grid, e.x, e.y, 5.4, [0.62, 0.18, 0.04]);
                 } else if matches!(e.kind, EK_TERMINAL | EK_NODE | EK_OVERRIDE_CONSOLE) {
-                    self.add_light(&mut grid, e.x, e.y, 6.4, [0.16, 0.42, 0.62]);
+                    self.add_light(&mut grid, e.x, e.y, 6.4, Self::sector_contrast(self.wave).map(|v|v*0.38));
                 } else if matches!(e.kind, EK_PROP_REACTOR | EK_PROP_SERVER | EK_POWER) {
                     let tint = Self::sector_tint(self.wave);
                     self.add_light(&mut grid, e.x, e.y, 5.8, tint.map(|c| c * 0.34));
@@ -220,7 +225,7 @@ impl Engine {
             // so. Static because it only depends on the built map.
             let tint = Self::sector_tint(self.wave);
             for cell in grid.iter_mut() {
-                for c in 0..3 { cell[c] += tint[c] * 0.030; }
+                for c in 0..3 { cell[c] += tint[c] * 0.065; }
             }
             let mut placed = 0;
             'outer: for y in 2..MAP_H - 2 {
@@ -285,13 +290,34 @@ impl Engine {
         if self.boss_intro>0.0 && !self.boss_spawned {
             let (x,y)=map::boss_spots(self.wave)[0];
             let profile=boss_arena::PROFILES[map::level_index(self.wave)];
-            let progress=1.0-self.boss_intro/profile.intro;
-            let intensity=0.2+progress*0.9+(progress*40.0).sin().abs()*0.18;
-            self.add_light(&mut grid,x,y,7.0+progress*4.0,profile.color.map(|v|v*intensity));
+            let progress=(1.0-self.boss_intro/profile.intro).clamp(0.0,1.0);
+            // Dim the local arena, then build two rim lights into a restrained reveal.
+            for (i,cell) in grid.iter_mut().enumerate() {
+                let distance=((i%MAP_W) as f32+0.5-x).hypot((i/MAP_W) as f32+0.5-y);
+                let dim=(1.0-distance/9.0).max(0.0)*(1.0-progress)*0.72;
+                for c in cell { *c*=1.0-dim; }
+            }
+            let reveal=((progress-0.55)/0.45).clamp(0.0,1.0);
+            let energy=0.10+reveal*reveal*0.85;
+            self.add_light(&mut grid,x,y,4.0+progress*6.0,profile.color.map(|v|v*energy));
+            for offset in [-1.3,1.3] {
+                if !self.blocked((x+offset) as i32,y as i32) {
+                    self.add_light(&mut grid,x+offset,y,3.4,profile.color.map(|v|v*(0.18+progress*0.36)));
+                }
+            }
         }
         if self.muzzle > 0.05 {
-            let power = self.muzzle * if self.weapon == 0 { 0.28 } else { 0.72 };
-            self.add_light(&mut grid, self.px, self.py, 5.2, [power, power * 0.55, power * 0.18]);
+            let power=self.muzzle*if self.weapon==0 {0.38} else {0.78};
+            let tint=match self.weapon {10|20=>[0.34,1.0,0.18],3|6|11|13|15|22=>[0.35,0.78,1.0],_=>[1.0,0.62,0.24]};
+            let x=self.px+self.pa.cos()*0.3; let y=self.py+self.pa.sin()*0.3;
+            let (x,y)=if self.blocked(x as i32,y as i32) {(self.px,self.py)}else{(x,y)};
+            let mut flash=vec![[0.0;3];MAP_CELLS];
+            self.add_light(&mut flash,x,y,4.5,tint.map(|v|v*power));
+            for (i,cell) in flash.iter().enumerate() {
+                let material=self.floor_material((i%MAP_W) as f32+0.5,(i/MAP_W) as f32+0.5);
+                let response=match material {1=>1.12,2=>1.06,3=>1.22,4=>0.48,_=>0.74};
+                for c in 0..3 {grid[i][c]+=cell[c]*response;}
+            }
         }
         // Active encounters pulse the arena palette. The read-only render path
         // uses simulation time, so pause freezes the atmosphere and RNG is untouched.

@@ -518,5 +518,57 @@
   "casing-shell": {
     "truePeakDb": -10.3,
     "sha256": "aeb30f99d49a13225623123352f13a65fcc33fe871ac6aea516ac8faaa3d03fd"
+  },
+  "foot-grate0": {
+    "truePeakDb": -13.9,
+    "sha256": "0cbf7caaa1e66057d897de4af332a24b4efa65f21d0671955815a4b53d906696"
+  },
+  "foot-liquid0": {
+    "truePeakDb": -14.1,
+    "sha256": "fb6561e4a8b84aec9e15100327d2128e6e52174a4c097d7fd5634a8454ea6f1a"
+  },
+  "foot-grate1": {
+    "truePeakDb": -13.8,
+    "sha256": "add517491ed3398caed819065ba739bb13daa5baadbc44e984227ad95ea67118"
+  },
+  "foot-liquid1": {
+    "truePeakDb": -14.8,
+    "sha256": "9ac8c2339c0bb48aa69f01cd284979eb01de67cbe47c6efd535adbd8cecd9cbe"
+  },
+  "foot-grate2": {
+    "truePeakDb": -14.2,
+    "sha256": "fb1b2e43db79deb0504c93ee608e0697438d132c7cabf58a9419062c38be2911"
+  },
+  "foot-liquid2": {
+    "truePeakDb": -14.2,
+    "sha256": "4378e38c7f6c3a3a86f2a31846c6cdb434cb64020b971719dd23c004c429a985"
+  },
+  "reload-latch": {
+    "truePeakDb": -12.0,
+    "sha256": "fbf43918f167379fbec0bbbad289436ea9ddfbc3e14c32b89d7b0fe07d8e2833"
+  },
+  "reload-seat": {
+    "truePeakDb": -13.6,
+    "sha256": "d04318a7aa9c0a40789ed12f3ecf62c3968c7c86d8d7cfd4a884aa5f0c706ab9"
+  },
+  "reload-bolt": {
+    "truePeakDb": -13.1,
+    "sha256": "a5ae11a23964d5f3ca194090662765c3fb84ea1196afb9be8e24dbbf3298ae4a"
+  },
+  "reload-valve": {
+    "truePeakDb": -14.0,
+    "sha256": "02fe89fefdbfeeb63fcda24bbce470d439623f468d07a8b866ffa75a23e139fb"
+  },
+  "reload-seal": {
+    "truePeakDb": -13.3,
+    "sha256": "aca58c1ca0501ddbbc4f1137f5c55d55a6f19ee716026e747a019a647de53e30"
+  },
+  "reload-lock": {
+    "truePeakDb": -11.6,
+    "sha256": "6c6ccb04cb19dc9fdac958aba1e044fca76e15fa62d9eccc447316ef7c11cbc3"
+  },
+  "reload-charge": {
+    "truePeakDb": -13.0,
+    "sha256": "3126bb82c318a6bf84952c5c11a5177945e6fb08862a2e927bef5a76c2c7d038"
   }
 }

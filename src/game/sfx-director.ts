@@ -74,6 +74,12 @@ export function weaponMechanism(weapon: number): [string, string, string] {
     ? ["mag-out", "mag-in", "chamber"]
     : ["cell-out", "cell-in", "charge"];
 }
+export function reloadLayers(weapon: number): [string, string, string] {
+  if ([7, 10, 20, 24].includes(weapon)) return ["reload-valve", "reload-seat", "reload-seal"];
+  return weaponMechanism(weapon)[0] === "mag-out"
+    ? ["reload-latch", "reload-seat", "reload-bolt"]
+    : ["reload-lock", "reload-seat", "reload-charge"];
+}
 export function worldIntent(kind: number, variant = 0): SoundIntent | null {
   const id = (
     {
@@ -137,13 +143,16 @@ export class SfxDirector {
     const now = stage(h.weapFrame),
       prev = p.reloading > 0 ? stage(p.weapFrame) : -1;
     // Catch stages crossed by a slow frame; never schedule future stages after an interruption.
-    for (let n = prev + 1; n <= now; n++)
+    for (let n = prev + 1; n <= now; n++) {
       result.push({
         id: weaponMechanism(h.weapon)[n]!,
         gain: 0.65,
         rate: 1 - (h.weapon % 4) * 0.025,
         group: "reload",
       });
+      result.push({ id: reloadLayers(h.weapon)[n]!, gain: n === 1 ? 0.26 : 0.20,
+        rate: 0.94 + (h.weapon % 5) * 0.025, group: "reload" });
+    }
     return result;
   }
   enemyFrame(cues: CombatSoundCue[], time: number): SoundIntent[] {

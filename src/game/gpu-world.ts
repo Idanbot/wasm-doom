@@ -29,6 +29,7 @@ export type WorldFrame = {
   floor: Uint8Array<ArrayBuffer>;
   light: Float32Array<ArrayBuffer>;
   smoke: Float32Array<ArrayBuffer>;
+  surface: Float32Array<ArrayBuffer>;
 };
 
 
@@ -47,6 +48,7 @@ struct View { v: array<vec4<f32>, 4> }
 @group(0) @binding(4) var atlas_samp: sampler;
 @group(0) @binding(5) var floor_tex: texture_2d<f32>;
 @group(0) @binding(6) var light_tex: texture_2d<f32>;
+@group(0) @binding(7) var surface_tex: texture_2d<f32>;
 
 struct VSOut {
   @builtin(position) pos: vec4<f32>,
@@ -165,8 +167,16 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
     else if (tid == 26) { ty += time * 10.0; }
     else if (tid == 3) { ty += sin(time * 3.5) * 3.0; }
     var rgb = sample_atlas(tid, tex_x / 256.0, ty / 256.0).rgb;
+    if(c2.w>0.5) {
+      let q=vec2<f32>(tex_x/256.0-0.5,ty/256.0-0.52);
+      let stain=pow(max(0.0,1.0-dot(q,q)/0.12),2.0)*0.55;
+      var color=vec3<f32>(18.0,13.0,11.0)/255.0;
+      if(c2.w>1.5){color=vec3<f32>(61.0,91.0,18.0)/255.0;}
+      if(c2.w>2.5){color=vec3<f32>(93.0,91.0,86.0)/255.0;}
+      rgb=mix(rgb,color,stain);
+    }
     let side_mul = select(1.0, 0.65, c2.z > 0.5);
-    let dist = (1.0 / (1.0 + perp * 0.12)) * side_mul + muzzle * 0.55 / (1.0 + perp * perp * 0.3);
+    let dist = (1.0 / (1.0 + perp * 0.12)) * side_mul;
     rgb = clamp(rgb * clamp(vec3<f32>(dist) + light, vec3<f32>(0.18), vec3<f32>(1.8)), vec3<f32>(0.0), vec3<f32>(1.0));
     let cam = 2.0 * (f32(x) + 0.5) / w - 1.0;
     let ray = view.v[0].zw + view.v[1].xy * cam;
@@ -207,7 +217,7 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
       v = fy;
       var rgb = sample_atlas(id, u, v).rgb;
       rgb = mix(rgb, mark.rgb, mark.a * (1.0 - smoothstep(0.92, 1.02, length((vec2<f32>(fx, fy) - c) / 1.55))));
-      let shade_k = 0.72 + 0.2 / (1.0 + dist * 0.2) + muzzle * 0.45 / (1.0 + dist * dist);
+      let shade_k = 0.72 + 0.2 / (1.0 + dist * 0.2);
       let lit = light_at(fx, fy) * 1.35;
       rgb = clamp(rgb * clamp(vec3<f32>(shade_k) + lit, vec3<f32>(0.16), vec3<f32>(2.2)), vec3<f32>(0.0), vec3<f32>(1.0));
       rgb = lit_air(through_smoke(rgb, view.v[0].x, view.v[0].y, fx, fy), view.v[0].xy, vec2<f32>(fx, fy), 1.0 - inp.uv.y);
@@ -220,7 +230,7 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
   }
   if (hell < 0.5) { id = ${T_SECTOR_SURFACE} + i32(view.v[3].z) * 5 + select(4, 3, on_floor); } else { id = ${T_BOSS_ARENA} + i32(view.v[3].z); }
   var rgb = sample_atlas(id, u, v).rgb;
-  let shade_k = select(0.78, 0.72 + 0.2 / (1.0 + dist * 0.2) + muzzle * 0.45 / (1.0 + dist * dist), on_floor);
+  let shade_k = select(0.78, 0.72 + 0.2 / (1.0 + dist * 0.2), on_floor);
   rgb = clamp(rgb * clamp(vec3<f32>(shade_k) + light_at(fx, fy), vec3<f32>(0.18), vec3<f32>(1.8)), vec3<f32>(0.0), vec3<f32>(1.0));
   if (on_floor && style > 2.5 && style < 4.5) {
     let border = select(0.0, 1.0, abs(fract(fx)-0.5)>0.39 || abs(fract(fy)-0.5)>0.39);
@@ -371,6 +381,7 @@ export async function createWebGpuWorld(device: GPUDevice): Promise<GpuWorld> {
       { binding: 4, visibility: GPUShaderStage.FRAGMENT, sampler: {} },
       { binding: 5, visibility: GPUShaderStage.FRAGMENT, texture: { sampleType: "float" } },
       { binding: 6, visibility: GPUShaderStage.FRAGMENT, texture: { sampleType: "unfilterable-float" } },
+      { binding: 7, visibility: GPUShaderStage.FRAGMENT, texture: { sampleType: "unfilterable-float" } },
     ],
   });
   const fillPipe = device.createRenderPipeline({
@@ -405,6 +416,7 @@ export async function createWebGpuWorld(device: GPUDevice): Promise<GpuWorld> {
     format: "rgba16float",
     usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST,
   });
+  const surfaceTex = device.createTexture({size:{width:MAP_W,height:MAP_H},format:"rgba16float",usage:GPUTextureUsage.TEXTURE_BINDING|GPUTextureUsage.COPY_DST});
   const bind = device.createBindGroup({
     layout: bgl,
     entries: [
@@ -415,11 +427,13 @@ export async function createWebGpuWorld(device: GPUDevice): Promise<GpuWorld> {
       { binding: 4, resource: samp },
       { binding: 5, resource: floorTex.createView() },
       { binding: 6, resource: lightTex.createView() },
+      { binding: 7, resource: surfaceTex.createView() },
     ],
   });
   let atlasReady = false;
   const floorPad = new Uint8Array(256 * MAP_H);
   const lightPad = new Uint16Array((512 / 2) * MAP_H);
+  const surfacePad = new Uint16Array((512 / 2) * MAP_H);
 
   return {
     uploadAtlas(layers) {
@@ -456,6 +470,9 @@ export async function createWebGpuWorld(device: GPUDevice): Promise<GpuWorld> {
         { bytesPerRow: 256, rowsPerImage: MAP_H },
         { width: MAP_W, height: MAP_H },
       );
+      surfacePad.fill(0);
+      for (let y=0;y<MAP_H;y++) for(let x=0;x<MAP_W*4;x++) surfacePad[y*256+x]=f16(frame.surface[y*MAP_W*4+x]??0);
+      device.queue.writeTexture({texture:surfaceTex},surfacePad,{bytesPerRow:512,rowsPerImage:MAP_H},{width:MAP_W,height:MAP_H});
       lightPad.fill(0);
       for (let y = 0; y < MAP_H; y++) {
         for (let x = 0; x < MAP_W; x++) {
@@ -489,6 +506,7 @@ export async function createWebGpuWorld(device: GPUDevice): Promise<GpuWorld> {
       atlas.destroy();
       floorTex.destroy();
       lightTex.destroy();
+      surfaceTex.destroy();
       viewBuf.destroy();
       colBuf.destroy();
       sprBuf.destroy();
@@ -508,6 +526,7 @@ let frameScratch: {
   floor: Uint8Array<ArrayBuffer>;
   light: Float32Array<ArrayBuffer>;
   smoke: Float32Array<ArrayBuffer>;
+  surface: Float32Array<ArrayBuffer>;
 } | null = null;
 
 export function readWorldFrame(
@@ -520,6 +539,7 @@ export function readWorldFrame(
   lightPtr: number,
   smokePtr: number,
   w: number,
+  surfacePtr = 0,
 ): WorldFrame {
   const spriteNeed = Math.max(spriteCount, 1) * SPR_FLOATS;
   if (!frameScratch || frameScratch.w !== w || frameScratch.spriteCap < spriteNeed) {
@@ -532,6 +552,7 @@ export function readWorldFrame(
       floor: new Uint8Array(MAP_W * MAP_H),
       light: new Float32Array(MAP_W * MAP_H * 3),
       smoke: new Float32Array(MAP_W * MAP_H),
+      surface: new Float32Array(MAP_W * MAP_H * 4),
     };
   }
   const s = frameScratch;
@@ -542,7 +563,9 @@ export function readWorldFrame(
   s.light.set(new Float32Array(memory, lightPtr, MAP_W * MAP_H * 3));
   if (smokePtr) s.smoke.set(new Float32Array(memory, smokePtr, MAP_W * MAP_H));
   else s.smoke.fill(0);
-  return { w, h: s.view[11]!, view: s.view, cols: s.cols, sprites: s.sprites, spriteCount, floor: s.floor, light: s.light, smoke: s.smoke };
+  if (surfacePtr) s.surface.set(new Float32Array(memory, surfacePtr, MAP_W * MAP_H * 4));
+  else s.surface.fill(0);
+  return { w, h: s.view[11]!, view: s.view, cols: s.cols, sprites: s.sprites, spriteCount, floor: s.floor, light: s.light, smoke: s.smoke, surface: s.surface };
 }
 
 const GL_FILL_VS = `#version 300 es
@@ -563,6 +586,7 @@ out vec4 outColor;
 uniform sampler2DArray atlas;
 uniform sampler2D floorTex;
 uniform sampler2D lightTex;
+uniform sampler2D surfaceTex;
 uniform sampler2D cols;
 uniform vec4 view0, view1, view2, view3;
 vec3 arenaColor(int level) {
@@ -619,8 +643,14 @@ void main() {
     else if (tid == 26) ty += view1.w * 10.0;
     else if (tid == 3) ty += sin(view1.w * 3.5) * 3.0;
     vec3 rgb = sampleAtlas(tid, vec2(c0.y / 256.0, ty / 256.0)).rgb;
+    if(c2.w>.5) {
+      vec2 q=vec2(c0.y/256.0-.5,ty/256.0-.52);
+      float stain=pow(max(0.0,1.0-dot(q,q)/.12),2.0)*.55;
+      vec3 color=c2.w>2.5?vec3(93.0,91.0,86.0)/255.0:c2.w>1.5?vec3(61.0,91.0,18.0)/255.0:vec3(18.0,13.0,11.0)/255.0;
+      rgb=mix(rgb,color,stain);
+    }
     float sideMul = c2.z > 0.5 ? 0.65 : 1.0;
-    float dist = (1.0 / (1.0 + c0.x * 0.12)) * sideMul + view2.y * 0.55 / (1.0 + c0.x * c0.x * 0.3);
+    float dist = (1.0 / (1.0 + c0.x * 0.12)) * sideMul;
     vec3 light = vec3(c0.z, c0.w, c1.x);
     rgb = clamp(rgb * clamp(vec3(dist) + light, vec3(0.18), vec3(1.8)), vec3(0.0), vec3(1.0));
     vec2 ray = view0.zw + view1.xy * (2.0 * (float(x) + 0.5) / w - 1.0);
@@ -655,7 +685,7 @@ void main() {
       int floorId = view2.x > 0.5 ? ${T_BOSS_ARENA} + int(view3.z) : ${T_SECTOR_SURFACE} + int(view3.z) * 5 + 3;
       vec3 sealed = sampleAtlas(floorId, vec2(fx, fy)).rgb;
       sealed = mix(sealed, mark.rgb, mark.a * (1.0 - smoothstep(0.92, 1.02, length(p))));
-      float shadeK = 0.72 + 0.2 / (1.0 + dist * 0.2) + view2.y * 0.45 / (1.0 + dist * dist);
+      float shadeK = 0.72 + 0.2 / (1.0 + dist * 0.2);
       sealed = clamp(sealed * clamp(vec3(shadeK) + lightAt(vec2(fx, fy)) * 1.35, vec3(0.16), vec3(2.2)), vec3(0.0), vec3(1.0));
       sealed = litAir(sealed, view0.xy, vec2(fx, fy), 1.0 - vUv.y);
       outColor = vec4(sealed, clamp(dist / 28.0, 0.0, 1.0));
@@ -666,7 +696,7 @@ void main() {
   }
   if (view2.x < 0.5) id = ${T_SECTOR_SURFACE} + int(view3.z) * 5 + (onFloor ? 3 : 4); else id = ${T_BOSS_ARENA} + int(view3.z);
   vec3 rgb = sampleAtlas(id, uv).rgb;
-  float shadeK = onFloor ? 0.72 + 0.2 / (1.0 + dist * 0.2) + view2.y * 0.45 / (1.0 + dist * dist) : 0.78;
+  float shadeK = onFloor ? 0.72 + 0.2 / (1.0 + dist * 0.2) : 0.78;
   rgb = clamp(rgb * clamp(vec3(shadeK) + lightAt(vec2(fx, fy)), vec3(0.18), vec3(1.8)), vec3(0.0), vec3(1.0));
   if (onFloor && style > 2.5 && style < 4.5) {
     float border = abs(fract(fx)-0.5)>0.39 || abs(fract(fy)-0.5)>0.39 ? 1.0 : 0.0;
@@ -769,6 +799,7 @@ export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
     atlas: gl.getUniformLocation(prog, "atlas"),
     floorTex: gl.getUniformLocation(prog, "floorTex"),
     lightTex: gl.getUniformLocation(prog, "lightTex"),
+    surfaceTex: gl.getUniformLocation(prog, "surfaceTex"),
     cols: gl.getUniformLocation(prog, "cols"),
     view: [0, 1, 2, 3].map((i) => gl.getUniformLocation(prog, "view" + i)),
   } as const;
@@ -785,7 +816,7 @@ export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
 
   // Per-frame textures keep a stable size for the life of the world, so they
   // are allocated once and refreshed with `texSubImage2D`.
-  const texSize = { cols: { w: 0, h: 0 }, floor: { w: 0, h: 0 }, light: { w: 0, h: 0 } };
+  const texSize = { cols: { w: 0, h: 0 }, floor: { w: 0, h: 0 }, light: { w: 0, h: 0 }, surface: {w:0,h:0} };
   function uploadTex(
     tex: WebGLTexture,
     target: number,
@@ -809,12 +840,13 @@ export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
   const colsTex = gl.createTexture();
   const floorTex = gl.createTexture();
   const lightTex = gl.createTexture();
+  const surfaceTex = gl.createTexture();
   const atlas = gl.createTexture();
   const fbo = gl.createFramebuffer();
   const sprBuf = gl.createBuffer();
   const sprVao = gl.createVertexArray();
   const fillVao = gl.createVertexArray();
-  if (!colsTex || !floorTex || !lightTex || !atlas || !fbo || !sprBuf || !sprVao || !fillVao) return null;
+  if (!colsTex || !floorTex || !lightTex || !surfaceTex || !atlas || !fbo || !sprBuf || !sprVao || !fillVao) return null;
   const colsImg = new Float32Array(MAX_COLS * 4 * 4);
   const lightRgba = new Float32Array(MAP_W * MAP_H * 4);
   const quad = new Float32Array(24);
@@ -863,6 +895,10 @@ export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
         lightRgba[i * 4 + 2] = frame.light[i * 3 + 2] ?? 0;
         lightRgba[i * 4 + 3] = frame.smoke[i] ?? 0;
       }
+      gl.bindTexture(gl.TEXTURE_2D,surfaceTex);
+      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.NEAREST);
+      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.NEAREST);
+      uploadTex(surfaceTex,gl.TEXTURE_2D,gl.RGBA32F,gl.RGBA,gl.FLOAT,MAP_W,MAP_H,frame.surface,texSize.surface);
       gl.bindTexture(gl.TEXTURE_2D, lightTex);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
@@ -885,6 +921,9 @@ export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
       gl.activeTexture(gl.TEXTURE2);
       gl.bindTexture(gl.TEXTURE_2D, lightTex);
       gl.uniform1i(FILL_U.lightTex, 2);
+      gl.activeTexture(gl.TEXTURE4);
+      gl.bindTexture(gl.TEXTURE_2D,surfaceTex);
+      gl.uniform1i(FILL_U.surfaceTex,4);
       gl.activeTexture(gl.TEXTURE3);
       gl.bindTexture(gl.TEXTURE_2D, colsTex);
       gl.uniform1i(FILL_U.cols, 3);
@@ -945,6 +984,7 @@ export function createWebGlWorld(gl: WebGL2RenderingContext): GlWorld | null {
       gl.deleteTexture(colsTex);
       gl.deleteTexture(floorTex);
       gl.deleteTexture(lightTex);
+      gl.deleteTexture(surfaceTex);
       gl.deleteTexture(atlas);
       gl.deleteFramebuffer(fbo);
     },

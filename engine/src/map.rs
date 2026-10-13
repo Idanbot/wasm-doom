@@ -321,7 +321,7 @@ fn ambush_defs(wave: i32) -> &'static [AmbushDef] {
 pub(crate) fn build_hub_spoke(e: &mut Engine) {
     e.map.fill(1);
     e.floor.fill(0);
-    e.decal.fill(0);
+    e.decal.fill(0); e.residues.clear();
 
     // Start hangar (west), central plaza (hub), tech lab (north),
     // chapel (east), vault (boss arena, south-east), flesh pit (south).
@@ -408,7 +408,7 @@ pub(crate) fn build_hub_spoke(e: &mut Engine) {
 fn build_foundry(e: &mut Engine) {
     e.map.fill(1);
     e.floor.fill(0);
-    e.decal.fill(0);
+    e.decal.fill(0); e.residues.clear();
     e.room(1, 3, 10, 8, 7, 1);
     e.room(14, 2, 13, 11, 6, 1);
     e.room(30, 2, 16, 11, 4, 1);
@@ -454,7 +454,7 @@ fn build_foundry(e: &mut Engine) {
 fn build_bioforge(e: &mut Engine) {
     e.map.fill(1);
     e.floor.fill(0);
-    e.decal.fill(0);
+    e.decal.fill(0); e.residues.clear();
     e.room(1, 12, 10, 8, 3, 0);
     e.room(14, 8, 18, 16, 2, 0);
     e.room(32, 3, 14, 9, 3, 0);
@@ -502,7 +502,7 @@ fn build_bioforge(e: &mut Engine) {
 fn build_datacenter(e: &mut Engine) {
     e.map.fill(1);
     e.floor.fill(0);
-    e.decal.fill(0);
+    e.decal.fill(0); e.residues.clear();
     e.room(1, 2, 11, 9, 6, 0);
     e.room(14, 2, 14, 11, 6, 1);
     e.room(14, 18, 14, 11, 6, 1);
@@ -529,7 +529,7 @@ fn build_datacenter(e: &mut Engine) {
 fn build_reactor(e: &mut Engine) {
     e.map.fill(1);
     e.floor.fill(0);
-    e.decal.fill(0);
+    e.decal.fill(0); e.residues.clear();
     e.room(1, 20, 12, 10, 7, 0);
     e.room(16, 12, 15, 17, 6, 1);
     e.room(16, 2, 15, 9, 7, 1);
@@ -557,7 +557,7 @@ fn build_reactor(e: &mut Engine) {
 fn build_archive(e: &mut Engine) {
     e.map.fill(1);
     e.floor.fill(0);
-    e.decal.fill(0);
+    e.decal.fill(0); e.residues.clear();
     e.room(1, 12, 11, 9, 6, 0);
     e.room(14, 10, 17, 12, 4, 1);
     e.room(14, 2, 17, 8, 6, 1);
@@ -584,7 +584,7 @@ fn build_archive(e: &mut Engine) {
 }
 
 fn build_cryo(e: &mut Engine) {
-    e.map.fill(1); e.floor.fill(0); e.decal.fill(0);
+    e.map.fill(1); e.floor.fill(0); e.decal.fill(0); e.residues.clear();
     for &(x,y,w,h,t) in &[(1,2,11,9,7),(14,2,15,10,7),(14,17,15,13,6),(32,2,14,11,7),(32,17,14,13,4)] { e.room(x,y,w,h,t,1); }
     e.hall_h(10,15,6,11); e.hall_v(21,11,18,13); e.hall_h(28,33,24,12);
     e.hall_h(28,33,7,11); e.hall_v(39,11,18,12);
@@ -593,7 +593,7 @@ fn build_cryo(e: &mut Engine) {
 }
 
 fn build_signal(e: &mut Engine) {
-    e.map.fill(1); e.floor.fill(0); e.decal.fill(0);
+    e.map.fill(1); e.floor.fill(0); e.decal.fill(0); e.residues.clear();
     for &(x,y,w,h,t) in &[(1,20,11,10,4),(14,18,16,12,6),(14,2,16,12,4),(33,2,13,12,4),(33,18,13,12,6)] { e.room(x,y,w,h,t,1); }
     e.hall_h(10,15,25,14); e.hall_v(21,12,19,13); e.hall_h(29,34,8,13);
     e.hall_h(29,34,24,13); e.hall_v(39,12,19,14);
@@ -602,7 +602,7 @@ fn build_signal(e: &mut Engine) {
 }
 
 fn build_siege(e: &mut Engine) {
-    e.map.fill(1); e.floor.fill(0); e.decal.fill(0);
+    e.map.fill(1); e.floor.fill(0); e.decal.fill(0); e.residues.clear();
     for &(x,y,w,h,t) in &[(1,12,11,9,6),(15,11,15,11,7),(15,2,15,7,6),(15,24,15,6,7),(33,10,13,13,4)] { e.room(x,y,w,h,t,1); }
     e.hall_h(10,16,16,14); e.hall_h(29,34,16,12);
     e.hall_v(22,8,12,14); e.hall_v(22,21,25,14);

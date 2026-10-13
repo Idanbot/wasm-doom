@@ -1,6 +1,6 @@
 # Blacksite sound effects
 
-130 short, mono recordings and authored mixes replace the old shared/generated effects. All nine approved source packs use **CC0 1.0 Universal**. Original creator credits and source-page license records live in `licenses/<pack>/`; selected unmodified recordings live in `sources/`. `manifest.json` records each original filename/SHA-256 and every trim, pitch, filter, layer, delay, normalization target and export hash.
+143 short, mono recordings and authored mixes replace the old shared/generated effects. All nine approved source packs use **CC0 1.0 Universal**. Original creator credits and source-page license records live in `licenses/<pack>/`; selected unmodified recordings live in `sources/`. `manifest.json` records each original filename/SHA-256 and every trim, pitch, filter, layer, delay, normalization target and export hash.
 
 This includes 25 distinct sector ambience accents and two casing landing mixes. Map accents are finite quiet machinery, coolant, phase, biological and industrial textures, played only during active simulation every 6–11 seconds. Casings play a spatial landing cue on actual floor bounces. Both use the existing mixer, voice ducking and loading gate. The [world effects guide](../world-fx-v1/README.md) maps every sector to its visual and sound signature. To rebuild selected clips without touching other exports, pass IDs to `python3 scripts/process-blacksite-sfx.py sector-1 casing-brass`.
 
@@ -22,10 +22,18 @@ Rebuild with `npm run assets:sfx` (Python 3 and FFmpeg with libvorbis/libmp3lame
 
 `SfxPlayer` preloads/decodes with six workers during loading and falls back to MP3 if Vorbis fetch/decode fails. Missing both formats blocks readiness with a named asset error, rather than silently substituting a beep. Sources use the existing SFX/master gain buses, a master compressor, spatial distance rolloff and occlusion filtering where enemy visibility is available. Playback is bounded to 24 sources, eight enemy effects, four hazard bursts and six travel loops. Recorded nonverbal human/creature vocals use the same `VoiceGate` as dialogue, preventing overlapping voices. Mechanical effects are ducked during voice playback.
 
-The local development asset catalog contains playable previews of all 130 effects. Production keeps local asset URLs and the deployment base path. No remote audio services are used during play.
+The local development asset catalog contains playable previews of all 143 effects. Production keeps local asset URLs and the deployment base path. No remote audio services are used during play.
 
 ## Verification
 
 `npm run check:sfx` verifies source/export hashes, CC0 records, event coverage, unique weapon mixes and the primary-download budget. `src/game/sfx-director.test.ts` covers state transitions, reload interruption, shell insertion, entity identity and boss phases. Rust tests cover the bounded positional ABI, material impacts, door repetition, pickups and scenery destruction. `scripts/sfx.browser.mjs` decodes both formats, measures actual Web Audio output on desktop/mobile, checks gain/mute, shared vocal exclusivity, loop limits, missing-file fallback/failure and real game firing/reload/pause events.
 
 Waveform checks verify format, signal energy, peaks and loading behavior; they do not substitute for a human aesthetic listening review. These are selected CC0 recordings and detailed authored mixes, ready for further listening adjustments in the catalog.
+
+
+Grate and liquid footsteps each have three variants. They use existing CC0 step,
+plate and slime originals, with exact mixing/filter recipes in `manifest.json`.
+Seven secondary reload layers distinguish latches, feed seating, bolts, pressure
+valves/seals and powered locks/charging. `SfxDirector` emits them at the existing
+reload frame crossings, once per stage; interrupted reloads cannot schedule later
+layers. BR-12 retains ammo-authoritative shell inserts and its final pump.
