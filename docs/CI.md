@@ -9,7 +9,7 @@ flowchart TD
     Q[TypeScript and lint] --> B[Production builds]
     E[Rust tests and verified WASM] --> B
     E --> P[Isolated renderer performance]
-    Q --> D[Four development browser groups]
+    Q --> D[Seven development browser groups]
     E --> D
     A[Assets and JavaScript tests] --> D
     B --> S[Built Pages browser checks]
@@ -41,14 +41,20 @@ flowchart TD
   unchanged `game/` media. Consumers attach `public/game` from the same commit.
 - **performance:** benchmarks verified WASM on a separate runner, without
   browser processes competing for CPU. Preserves the measured performance JSON.
-- **browser:** four matrix jobs cover interface, combat, campaign and smoke tests.
+- **browser:** seven matrix jobs cover interface, loading, loading recovery,
+  renderer recovery, combat, campaign and smoke tests. `scripts/browser-suites.mjs`
+  keeps the regression lists together. Each test has a ten-minute outer limit;
+  each suite stops after sixteen minutes, leaving time for diagnostics within the
+  twenty-minute job budget. Arsenal thumbnail holds match versioned URLs and
+  have a sixty-second request deadline, so a missing interception fails clearly.
   Tests within a group run sequentially to avoid interference. The groups start
   once source checks, assets and engine pass; they do not wait for a production
   build they do not use. Chromium downloads are cached; Linux dependencies are
-  installed on each fresh runner. All groups retain screenshots and server logs,
+  installed on each fresh runner. All groups retain screenshots and server and test logs,
   including on failure, and stop their own servers.
 - **pages:** serves the actual shared Pages build under the repository's path.
-  Tests thumbnails, production QA restrictions and deployed audio paths.
+  Tests thumbnails, the Settings update date on desktop/mobile, production QA
+  restrictions and deployed audio paths.
 - **check:** runs even when upstream jobs fail or skip and requires every job to
   succeed. Use this stable status as the branch-protection requirement.
 

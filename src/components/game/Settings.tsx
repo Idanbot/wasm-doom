@@ -5,6 +5,7 @@ import { SlidersHorizontal, X, Volume2, Monitor, Mouse, Captions, RotateCcw, Ref
 import { DEFAULT_GFX, DEFAULT_RES, RES_MODES, type GfxOpts, type ResMode } from "@/game/types";
 import { DEFAULT_ENEMY_OPTIONS, type EnemyOptions } from "@/game/enemy-presentation";
 import { DEFAULT_VOL, type Vol } from "./data";
+import { LATEST_UPDATE_DATE, LATEST_UPDATE_LABEL } from "@/game/build-info";
 
 export type SettingsProps = {
   res: ResMode;
@@ -338,6 +339,9 @@ export function Settings(p: SettingsProps) {
             </button>
             <Dialog.Close className="action-primary">Done</Dialog.Close>
           </footer>
+          <small className="settings-update">
+            Latest update <time dateTime={LATEST_UPDATE_DATE}>{LATEST_UPDATE_LABEL}</time>
+          </small>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

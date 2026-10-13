@@ -1,4 +1,5 @@
 import { assetManifestPlugin } from "./scripts/asset-manifest";
+import { latestUpdateDate } from "./scripts/build-info";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
@@ -8,6 +9,7 @@ const repository = process.env.GITHUB_REPOSITORY?.split("/").at(-1);
 const base = process.env.PAGES_BASE || (repository ? `/${repository}/` : "/blacksite/");
 
 export default defineConfig({
+  define: { __BLACKSITE_UPDATED_AT__: JSON.stringify(latestUpdateDate()) },
   base,
   server: { watch: { ignored: ["**/.blacksite/**"] } },
   plugins: [assetManifestPlugin(),tailwindcss(), react()],

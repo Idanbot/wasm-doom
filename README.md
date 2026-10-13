@@ -84,6 +84,8 @@ atmospheric particle profile.
   drains shields, freeze slows, acid marks for follow-up damage.
 - After sector 25 layouts repeat with rising enemy totals and health.
 - Progress, settings and scores are stored in the browser.
+- Settings shows a small latest-update date from the source commit, embedded in
+  both production builds (source archives use their build date).
 
 ### Input
 

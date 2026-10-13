@@ -786,6 +786,13 @@ select:focus-visible {
   min-height: 44px;
   color: var(--color-muted);
 }
+.settings-update {
+  padding: 0 28px 12px;
+  color: var(--color-muted);
+  font-size: 11px;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
 .action-primary {
   min-height: 44px;
   padding: 0 26px;
@@ -1342,6 +1349,9 @@ select:focus-visible {
   }
   .settings-footer {
     padding: 12px 18px;
+  }
+  .settings-update {
+    padding: 0 18px 10px;
   }
   .setting-row strong {
     font-size: 17px;

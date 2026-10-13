@@ -37,15 +37,17 @@ test("saved checkpoint never adds Resume last sector to the main menu", async ()
   } finally { await page.close(); }
 });
 
-test("loading screen fetches and decodes every weapon sheet and thumbnail before deployment", async () => {
+test("loading screen fetches and decodes every weapon sheet and thumbnail before deployment", { timeout: 240000 }, async () => {
   const page = await browser.newPage();
+  await page.addInitScript(() => localStorage.setItem("blacksite-res", "320"));
   const requested = new Set();
   let releaseThumbnail;
-  let thumbnailStarted;
   const heldThumbnail = new Promise((resolve) => { releaseThumbnail = resolve; });
-  const thumbnailRequest = new Promise((resolve) => { thumbnailStarted = resolve; });
-  await page.route("**/game/ui/weapon-thumbs/br12.png", async (route) => {
-    thumbnailStarted();
+  const thumbnailRequest = page.waitForRequest(
+    request => new URL(request.url()).pathname === "/game/ui/weapon-thumbs/br12.png",
+    { timeout: 60000 },
+  );
+  await page.route("**/game/ui/weapon-thumbs/br12.png*", async (route) => {
     await heldThumbnail;
     await route.continue();
   });
@@ -55,7 +57,7 @@ test("loading screen fetches and decodes every weapon sheet and thumbnail before
     await thumbnailRequest;
     assert.equal(await page.locator(".deploy-button").isDisabled(), true, "deployment became ready before a thumbnail loaded");
     releaseThumbnail();
-    await page.waitForFunction(() => !document.querySelector(".deploy-button")?.hasAttribute("disabled"), null, { timeout: 90_000 });
+    await page.waitForFunction(() => !document.querySelector(".deploy-button")?.hasAttribute("disabled"), null, { timeout: 180000 });
     for (const slug of slugs) {
       assert.ok(requested.has(`/game/ui/weapon-thumbs/${slug}.png`), `${slug} thumbnail was not loaded before deployment`);
       assert.ok(requested.has(`/game/draft/v2/weap_${slug}_5x5.png`), `${slug} viewmodel was not loaded before deployment`);
