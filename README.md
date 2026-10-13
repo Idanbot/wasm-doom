@@ -151,7 +151,9 @@ repository name.
 
 CI runs source, asset and engine checks in parallel, shares one verified WASM
 build and splits browser checks into four groups. Pages deployment waits for all
-checks and publishes the exact tested build. See [CI dependencies](docs/CI.md).
+checks and publishes the exact tested build, including its asset manifest.
+Build, Pages QA and deployment verify the assembled WASM against that manifest
+before serving or publishing it. See [CI dependencies](docs/CI.md).
 
 Deployment stays disabled until assets are validated, the HUD initializes and
 the renderer presents the first sector frame. Loading shows a 16-pose operator

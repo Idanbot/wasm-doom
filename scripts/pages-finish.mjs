@@ -1,5 +1,6 @@
 import { existsSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { checkPagesIntegrity } from "./check-pages-integrity.mjs";
 
 const out = join(process.cwd(), "dist-pages");
 const nested = join(out, "pages", "index.html");
@@ -14,3 +15,4 @@ if (!existsSync(join(out, "blacksite.wasm"))) {
 const pagesDir = join(out, "pages");
 if (existsSync(pagesDir)) rmSync(pagesDir, { recursive: true, force: true });
 writeFileSync(join(out, ".nojekyll"), "");
+await checkPagesIntegrity(out);

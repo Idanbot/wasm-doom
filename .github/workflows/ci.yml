@@ -265,6 +265,8 @@ jobs:
         with:
           name: pages-asset-manifest
           path: dist-pages/game
+      - name: Verify assembled WASM and manifest
+        run: node scripts/check-pages-integrity.mjs
       - name: Wait for Pages server
         run: |
           for ((attempt=0; attempt<30; attempt++)); do
