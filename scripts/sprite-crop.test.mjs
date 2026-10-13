@@ -25,19 +25,24 @@ test('projectiles, casings and reload ejections have transparent frame boundarie
         const image = new Image(); image.src = src; await image.decode();
         const c = document.createElement('canvas'); c.width = image.width; c.height = image.height;
         const ctx = c.getContext('2d'); ctx.drawImage(image, 0, 0);
-        const w = c.width / grid, h = c.height / grid; let border = 0, visible = 0;
+        const w = c.width / grid, h = c.height / grid; const frames = [];
         for (let fy = 0; fy < grid; fy++) for (let fx = 0; fx < grid; fx++) {
           const d = ctx.getImageData(fx*w, fy*h, w, h).data;
+          let border = 0, visible = 0;
           for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
             const alpha = d[(y*w+x)*4+3];
             if (alpha > 10) visible++;
             if (alpha > 10 && (x < 2 || y < 2 || x >= w-2 || y >= h-2)) border++;
           }
+          frames.push({ frame: fy*grid+fx, border, visible });
         }
-        return { border, visible };
+        return frames;
       }, { src: 'data:image/png;base64,' + readFileSync(path).toString('base64'), grid });
-      assert.equal(result.border, 0, `${path}: silhouette touches a frame boundary`);
-      assert.ok(result.visible > 100, `${path}: empty artwork`);
+      assert.equal(result.length, grid*grid, `${path}: missing frame`);
+      for (const frame of result) {
+        assert.equal(frame.border, 0, `${path} frame ${frame.frame}: silhouette touches a frame boundary`);
+        assert.ok(frame.visible > 100, `${path} frame ${frame.frame}: empty artwork`);
+      }
     }
   } finally { await browser.close(); }
 });
