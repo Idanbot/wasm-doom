@@ -14,7 +14,7 @@ backend, no accounts and no database.
 | Interface | React 19 + TypeScript, Vite |
 | Rendering | WebGPU, WebGL2, Canvas2D fallback (auto-detected) |
 | Audio | Web Audio; recorded SFX, spoken enemy and boss voices |
-| Tests | `node:test` (unit + Playwright browser), `cargo test` (148) |
+| Tests | `node:test` (unit + Playwright browser), `cargo test` (188) |
 
 ## Architecture
 
@@ -214,3 +214,11 @@ through every sector and seeded spawn variants, and 2,818 reviewed sprite frames
 Run `npm run check:sprites` before publishing art; see
 [Sprite safe-area contracts](docs/SPRITE_SAFE_AREAS.md) and
 [Boss attack readability](docs/BOSS_ATTACK_READABILITY.md).
+
+### Difficulty and local field records
+
+Choose **Recruit**, **Operative**, **Veteran**, or **Blacksite** on the deployment menu. Operative preserves the original balance. Recruit uses 65% incoming damage, 85% enemy movement speed and 125% attack recovery; Veteran uses 125% / 110% / 90%; Blacksite uses 150% / 120% / 80%. Enemy health, weapon damage, ammunition and attack-warning durations stay unchanged. The preset is fixed during a run and survives sector transitions and browser-local checkpoints.
+
+Local leaderboards retain ten runs per difficulty, ordered by furthest sector, kills and then shortest active simulation time. Log a run on a sector-clear or death screen; inspect records from the menu or end screen. Expand a record for total ammunition consumed, health plus armor damage taken, accuracy, kills, bosses defeated and time. Expand each sector for its time, kills, completion status and traced route over its layout. Green marks the start, amber the sampled path and red the endpoint. Routes sample approximately once per simulation second and progressively thin long paths to 128 points per sector. Records retain the latest 128 sector routes in endless play.
+
+Accuracy counts shots that contact at least one living hostile, including armor/shields, divided by shots fired. Pellets, penetrating hits and projectile splash share one originating shot; dry firing is excluded. Ammunition counts consumed rounds/charges, excluding temporary free-ammo shots. Invulnerable hits and health overkill do not inflate damage taken. Legacy scores appear under Operative with their original summary; legacy checkpoints are marked assisted because their detailed history is unavailable. Local QA records are also labeled assisted. Under restrictive storage quotas, older route artwork may be removed while retaining sector splits and totals. All records remain browser-local: no backend, account or online submission is used.

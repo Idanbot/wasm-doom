@@ -66,6 +66,7 @@ impl Engine {
         for (i, e) in self.ents.iter_mut().enumerate() {
             if e.kind == 0 {
                 *e = Ent {
+                    shot_id: if matches!(kind, EK_PROJ | EK_BOLT | EK_FIREPATCH) { self.current_shot } else { 0 },
                     aim: 0.0,
                     kind,
                     x,

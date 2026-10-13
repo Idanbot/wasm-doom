@@ -1,3 +1,5 @@
+import { type Difficulty } from "@/game/run-record";
+import { RunBoard } from "./RunBoard";
 import { useState } from "react";
 import { Activity, ChevronRight, Crosshair, RotateCcw, Timer, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -5,6 +7,7 @@ import type { HudState } from "@/game/types";
 import { fmtTime, type Score } from "./data";
 
 export function EndCard({
+  difficulty,
   title,
   body,
   hud,
@@ -17,6 +20,7 @@ export function EndCard({
   onSave,
   variant,
 }: {
+  difficulty: Difficulty;
   title: string;
   body: string;
   hud: HudState;
@@ -40,7 +44,7 @@ export function EndCard({
     <div className={`end-screen end-screen-${variant}`}>
       <header className="end-header">
         <span className="eyebrow">
-          {variant === "win" ? "OPERATION COMPLETE" : "BIOSIGNAL LOST"}
+          {variant === "win" ? "SECTOR COMPLETE" : "BIOSIGNAL LOST"} · {difficulty.toUpperCase()}
         </span>
         <span className="end-status">
           <i /> {variant === "win" ? "SITE SECURED" : "UNIT OFFLINE"}
@@ -91,23 +95,7 @@ export function EndCard({
             </Button>
           </form>
           <div className="end-board">
-            <p>FIELD RECORDS</p>
-            <ol>
-              {board.length === 0 && <li>No runs recorded</li>}
-              {board.map((row, i) => (
-                <li
-                  key={`${row.name}-${row.wave}-${row.kills}-${row.time}-${i}`}
-                  className="end-board-row"
-                >
-                  <span className="text-fg">
-                    {i + 1}. {row.name} · WAVE {row.wave}
-                  </span>
-                  <span>
-                    {row.kills} kills · {fmtTime(row.time)}
-                  </span>
-                </li>
-              ))}
-            </ol>
+            <RunBoard board={board} initialDifficulty={difficulty} />
           </div>
         </>
       )}

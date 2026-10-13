@@ -8,6 +8,7 @@ mod spatial_checks;
 #[cfg(test)]
 mod reachability_tests;
 mod abi;
+mod difficulty;
 mod helpers;
 use helpers::*;
 mod lighting;
@@ -66,6 +67,13 @@ impl Smoke {
 }
 
 struct Engine {
+    difficulty: usize,
+    run_shots: Vec<bool>,
+    run_hits: u32,
+    run_ammo: u32,
+    run_damage: u32,
+    run_bosses: u32,
+    current_shot: usize,
     w: usize,
     h: usize,
     fb: Vec<u32>,
@@ -231,6 +239,7 @@ impl Engine {
             residues: Vec::with_capacity(surface_fx::RESIDUE_CAP),
             surface_fx: vec![[0.0; 4]; MAP_CELLS],
             ents: [Ent {
+                shot_id: 0,
                 aim: 0.0,
                 kind: 0,
                 x: 0.0,
@@ -261,6 +270,7 @@ impl Engine {
             pa: map::PLAYER_START.2,
             pitch: 0.0,
             pr: 0.22,
+            difficulty: 1, run_shots: Vec::new(), run_hits: 0, run_ammo: 0, run_damage: 0, run_bosses: 0, current_shot: 0,
             health: 100,
             armor: 0,
             ammo: { let mut a = [0; WEP_N]; a[0] = 36; a },
@@ -622,6 +632,7 @@ impl Engine {
         let mut shots: Vec<usize> = Vec::new();
         let mut melee: Vec<(usize, i32)> = Vec::new();
         for i in 0..ENT_N {
+            self.current_shot = self.ents[i].shot_id;
             let e = self.ents[i];
             if e.kind == 0 {
                 continue;
@@ -678,7 +689,7 @@ impl Engine {
                     let dist = (dx * dx + dy * dy).sqrt().max(0.01);
                     e.timer -= dt;
                     let role = combat::profile(e.skin, e.kind);
-                    let spd = role.speed * if e.shield != 0 { 0.82 } else { 1.0 } * if self.tactical.slow[i]>0.0 {0.45}else{1.0};
+                    let spd = role.speed * difficulty::PRESETS[self.difficulty].speed * if e.shield != 0 { 0.82 } else { 1.0 } * if self.tactical.slow[i]>0.0 {0.45}else{1.0};
                     let hold = role.range;
                     let (ex, ey, kind) = (e.x, e.y, e.kind);
                     let _ = e;
@@ -689,7 +700,7 @@ impl Engine {
                     if e.effect_tick > 0.0 {
                         e.effect_tick = (e.effect_tick - dt).max(0.0);
                         if e.effect_tick <= 0.0 {
-                            e.timer = role.cooldown;
+                            e.timer = role.cooldown * difficulty::PRESETS[self.difficulty].recovery;
                             set_anim(e, ANIM_FIRE, 0.24);
                             if clear {
                                 if role.melee {
@@ -1005,6 +1016,7 @@ impl Engine {
                 self.ents[i].zoff = floor_seat(self.h as f32, scale, bob);
             }
         }
+        self.current_shot = 0;
         for i in shots {
             if self.ents[i].kind != 0 && self.ents[i].hp > 0 {
                 self.enemy_shoot(i);

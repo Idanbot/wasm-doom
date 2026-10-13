@@ -107,7 +107,7 @@ impl Engine {
             self.events |= EV_HIT;
             return;
         }
-        let mut d = dmg;
+        let mut d = (dmg as f32 * difficulty::PRESETS[self.difficulty].damage).round() as i32;
         if self.shield_pool > 0 {
             let take = d.min(self.shield_pool);
             self.shield_pool -= take;
@@ -117,6 +117,7 @@ impl Engine {
             self.events |= EV_HIT;
             return;
         }
+        let armor_before = self.armor;
         if self.armor > 0 {
             let soak = (d * 2) / 3;
             let take = soak.min(self.armor);
@@ -133,6 +134,7 @@ impl Engine {
             .rem_euclid(core::f32::consts::TAU)
             - core::f32::consts::PI;
         self.hurt = 1.0;
+        self.run_damage = self.run_damage.saturating_add((d.max(1).min(self.health.max(0)) + armor_before - self.armor) as u32);
         self.health -= d.max(1);
         self.iframes = 0.35;
         self.shake = (self.shake + 0.55).min(1.0);
@@ -191,6 +193,9 @@ impl Engine {
             return;
         }
         if is_hostile_kind(self.ents[i].kind) {
+            if self.current_shot > 0 {
+                if let Some(hit) = self.run_shots.get_mut(self.current_shot - 1) { if !*hit { *hit = true; self.run_hits = self.run_hits.saturating_add(1); } }
+            }
             use tactical::Role;
             if let Some(r)=role {
                 if r==Role::Precision && self.tactical.acid[i]>0.0 {
@@ -295,6 +300,7 @@ impl Engine {
         self.events |= EV_KILL;
         if solid_kind(kind) && kind != EK_BARREL {
             self.kills += 1;
+            if kind == EK_BOSS { self.run_bosses = self.run_bosses.saturating_add(1); }
             for _ in 0..5 {
                 let a = self.rnd() * core::f32::consts::TAU;
                 let sp = 1.2 + self.rnd() * 2.0;
@@ -542,6 +548,9 @@ impl Engine {
             self.cooldown = 0.22;
             return;
         }
+        self.run_shots.push(false);
+        self.current_shot = self.run_shots.len();
+        if self.power != field::POWER_FEED { self.run_ammo = self.run_ammo.saturating_add(1); }
         self.mag[w] -= 1;
         if self.power == field::POWER_FEED {
             self.mag[w] += 1;
@@ -743,6 +752,7 @@ impl Engine {
             self.cooldown *= 0.45;
         }
         self.tactical.cooldowns[w]=self.cooldown;
+        self.current_shot = 0;
     }
 
     /// Veyran's rail. Pierces every target in the lane, then bursts.

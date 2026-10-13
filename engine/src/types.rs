@@ -2,6 +2,8 @@
 
 #[derive(Clone, Copy)]
 pub(crate) struct Ent {
+    /// Originating player shot, zero for enemy/environment damage.
+    pub(crate) shot_id: usize,
     pub(crate) kind: u8,
     pub(crate) x: f32,
     pub(crate) y: f32,

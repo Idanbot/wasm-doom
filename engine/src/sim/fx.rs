@@ -63,6 +63,7 @@ impl Engine {
             };
             *e = Ent {
                 aim: if f.kind == EK_SPARK && f.variant == 5 { if f.projectile_visual >= 2 { 0.45 } else { 1.6 } } else { 0.0 },
+                shot_id: 0,
                 kind: f.kind,
                 x: f.x,
                 y: f.y,

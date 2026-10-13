@@ -113,8 +113,10 @@ pub extern "C" fn hs_restart() {
     let e = eng();
     let textures = std::mem::take(&mut e.tex);
     let theme = std::mem::take(&mut e.theme_tex);
+    let difficulty = e.difficulty;
     let (w, h) = (e.w, e.h);
     *e = Engine::with_textures(w, h, Some(textures));
+    e.difficulty = difficulty;
     e.theme_tex = theme;
     e.apply_theme(1);
 }
@@ -544,3 +546,28 @@ pub extern "C" fn hs_agent_items()->*const agent_view::ItemCue {core::ptr::addr_
 pub extern "C" fn hs_floor_material() -> i32 { let e=eng(); e.floor_material(e.px,e.py) as i32 }
 #[no_mangle]
 pub extern "C" fn hs_surface_fx_ptr() -> *const f32 { eng().surface_fx.as_ptr() as *const f32 }
+
+/// Presets are selected only on a fresh run; Operative remains the ABI default.
+#[no_mangle]
+pub extern "C" fn hs_set_difficulty(value: i32) -> i32 {
+    let e = eng();
+    if !(0..=3).contains(&value) || e.elapsed > 0.0 { return 0; }
+    e.difficulty = value as usize;
+    1
+}
+#[no_mangle]
+pub extern "C" fn hs_run_stat(index: i32) -> u32 {
+    let e = eng();
+    match index { 0 => e.run_shots.len() as u32, 1 => e.run_hits,
+        2 => e.run_ammo, 3 => e.run_damage, 4 => e.run_bosses, 5 => e.difficulty as u32, _ => 0 }
+}
+/// Browser-local checkpoints restore cumulative metrics without changing the save ABI.
+#[no_mangle]
+pub extern "C" fn hs_restore_run_stats(shots: u32, hits: u32, ammo: u32, damage: u32, bosses: u32, preset: i32) {
+    let e = eng();
+    e.run_shots = vec![false; shots.min(1_000_000) as usize];
+    for hit in e.run_shots.iter_mut().take(hits as usize) { *hit = true; }
+    e.run_hits = hits.min(e.run_shots.len() as u32);
+    e.run_ammo = ammo; e.run_damage = damage; e.run_bosses = bosses;
+    e.difficulty = preset.clamp(0, 3) as usize; e.current_shot = 0;
+}

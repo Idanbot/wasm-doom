@@ -515,8 +515,8 @@ impl Engine {
         }
         self.boss_attack.sequence = self.boss_attack.sequence.wrapping_add(1);
         self.boss_attack.stage = 2;
-        self.boss_attack.remaining = PROFILES[level].recovery;
-        self.boss_vuln = self.boss_vuln.max(PROFILES[level].recovery);
+        self.boss_attack.remaining = PROFILES[level].recovery * difficulty::PRESETS[self.difficulty].recovery;
+        self.boss_vuln = self.boss_vuln.max(self.boss_attack.remaining);
         self.ents[i].shield_hp = 0;
         self.ents[i].shield = 0;
         self.ents[i].effect_tick = 0.0;

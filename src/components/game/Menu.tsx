@@ -1,3 +1,5 @@
+import { DIFFICULTIES, type Difficulty } from "@/game/run-record";
+import { RunBoard } from "./RunBoard";
 import { ArrowUpRight, Volume2, VolumeX, Crosshair, ShieldAlert } from "lucide-react";
 import { fmtTime, type Score } from "./data";
 import { LazySettings, type SettingsProps } from "./LazySettings";
@@ -10,6 +12,8 @@ export function Menu(
     load?: { ratio: number; label: string };
     loadingSpriteSrc?: string;
     board: Score[];
+    difficulty: Difficulty;
+    setDifficulty: (value: Difficulty) => void;
     muted: boolean;
     setMuted: (v: boolean) => void;
     onStart: () => void;
@@ -17,6 +21,7 @@ export function Menu(
     onOpenCatalog?: () => void;
   },
 ) {
+  const best = p.board.find(row => (row.difficulty ?? "operative") === p.difficulty);
   return (
     <div className="deployment-menu">
       <div className="menu-status">
@@ -52,9 +57,16 @@ export function Menu(
       {!p.ready && !p.err && (
         <div className="deployment-loading" role="status" aria-live="polite">
           <span className="loading-operator" aria-hidden="true">
-            <img src={p.loadingSpriteSrc ?? asset("/game/ui/loading-operator.webp")} alt="" width={1536} height={96} />
+            <img
+              src={p.loadingSpriteSrc ?? asset("/game/ui/loading-operator.webp")}
+              alt=""
+              width={1536}
+              height={96}
+            />
           </span>
-          <span>Preparing your deployment<small>{p.load?.label ?? "Engine"}</small></span>
+          <span>
+            Preparing your deployment<small>{p.load?.label ?? "Engine"}</small>
+          </span>
         </div>
       )}
       {!p.ready && !p.err && (
@@ -69,7 +81,31 @@ export function Menu(
           <span style={{ width: `${Math.round((p.load?.ratio ?? 0) * 100)}%` }} />
         </div>
       )}
-      {p.err && <button type="button" className="menu-secondary" onClick={p.onRetry}>Retry loading</button>}
+      {p.err && (
+        <button type="button" className="menu-secondary" onClick={p.onRetry}>
+          Retry loading
+        </button>
+      )}
+      <fieldset className="difficulty-picker">
+        <legend>Deployment difficulty</legend>
+        <div className="difficulty-tabs">
+          {DIFFICULTIES.map((preset) => (
+            <button
+              type="button"
+              key={preset.id}
+              aria-pressed={p.difficulty === preset.id}
+              onClick={() => p.setDifficulty(preset.id)}
+            >
+              {preset.name}
+            </button>
+          ))}
+        </div>
+        <p>{DIFFICULTIES.find((preset) => preset.id === p.difficulty)!.description}</p>
+        <small>
+          Fixed for this run. Weapon damage, enemy health, ammo and attack warnings remain
+          unchanged.
+        </small>
+      </fieldset>
       <button type="button" className="deploy-button" disabled={!p.ready} onClick={p.onStart}>
         <Crosshair size={22} />
         <span>
@@ -103,10 +139,16 @@ export function Menu(
         </button>
         <span>WASD / MOUSE / 9 0 - BOSS GUNS / R TO RELOAD</span>
       </div>
-      {p.board[0] && (
+      <details className="menu-records">
+        <summary>Local leaderboards</summary>
+        <RunBoard key={p.difficulty} board={p.board} initialDifficulty={p.difficulty} />
+      </details>
+      {best && (
         <p className="best-run">
-          PERSONAL BEST / WAVE {p.board[0].wave} · {p.board[0].kills} KILLS ·{" "}
-          {fmtTime(p.board[0].time)}
+          PERSONAL BEST / WAVE{" "}
+          {best!.wave} ·{" "}
+          {best!.kills} KILLS ·{" "}
+          {fmtTime(best!.time)}
         </p>
       )}
     </div>

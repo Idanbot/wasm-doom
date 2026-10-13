@@ -709,6 +709,7 @@ pub(crate) fn place_hub_spoke(e: &mut Engine) {
 
 fn reset_level_entities(e: &mut Engine) {
     e.ents = [crate::types::Ent {
+        shot_id: 0,
         aim: 0.0,
         kind: 0,
         x: 0.0,

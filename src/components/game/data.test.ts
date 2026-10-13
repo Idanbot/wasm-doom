@@ -236,3 +236,29 @@ describe("tactical machinery hints",()=>{
   }
  });
 });
+
+describe("difficulty leaderboard partitions", () => {
+  it("keeps ten records independently for each preset and preserves run metadata", () => {
+    installMemoryStorage({});
+    for (const difficulty of ["recruit", "operative", "veteran", "blacksite"] as const) {
+      for (let wave = 1; wave <= 12; wave++)
+        saveBoard({ name: "TEST", wave, kills: wave, time: wave * 1000, difficulty });
+    }
+    const board = loadBoard();
+    assert.equal(board.length, 40);
+    for (const difficulty of ["recruit", "operative", "veteran", "blacksite"]) {
+      assert.deepEqual(
+        board.filter((row) => row.difficulty === difficulty).map((row) => row.wave),
+        [12, 11, 10, 9, 8, 7, 6, 5, 4, 3],
+      );
+    }
+  });
+  it("migrates legacy records to Operative and ignores corrupt rows", () => {
+    installMemoryStorage({
+      "blacksite-board": JSON.stringify([null, { name: "LEGACY", wave: 3, kills: 8, time: 1000 }]),
+    });
+    const board = loadBoard();
+    assert.equal(board.length, 1);
+    assert.equal(board[0]!.difficulty, "operative");
+  });
+});

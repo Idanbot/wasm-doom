@@ -1,3 +1,4 @@
+import { cleanRun, difficulty, DIFFICULTIES, type Difficulty, type RunRecord } from "../../game/run-record.ts";
 import MACHINERY from "../../game/tactical-machinery.json" with { type: "json" };
 import BOSS_VOICE_LINES from "../../game/boss-voice-lines.json" with { type: "json" };
 import { migrateGameStorage, readGameStorage } from "../../lib/storage-migration.ts";
@@ -6,7 +7,7 @@ import { WEAPON_SHEETS } from "../../game/weapon-assets.ts";
 
 export type Screen = "menu" | "play" | "pause" | "dead" | "win";
 
-export type Score = { name: string; wave: number; kills: number; time: number };
+export type Score = { name: string; wave: number; kills: number; time: number; difficulty?: Difficulty; run?: RunRecord; recordedAt?: number };
 
 export type Vol = { master: number; music: number; sfx: number; menu: number };
 
@@ -231,38 +232,40 @@ export function fmtTime(ms: number) {
   return `${m}:${r.toString().padStart(2, "0")}`;
 }
 
+const rankScores = (rows: Score[]) => rows.sort((a, b) => b.wave - a.wave || b.kills - a.kills || a.time - b.time);
+function limitBoard(rows: Score[]): Score[] {
+  return DIFFICULTIES.flatMap(p => rankScores(rows.filter(row => difficulty(row.difficulty) === p.id)).slice(0, 10));
+}
 export function loadBoard(): Score[] {
   try {
     const raw = readGameStorage("blacksite-board");
-    if (raw) {
-      const v = JSON.parse(raw) as Score[];
-      if (Array.isArray(v)) {
-        return v
-          .map((r) => ({
-            name: (r.name || "MARINE").slice(0, 12),
-            wave: r.wave || 1,
-            kills: r.kills || 0,
-            time: r.time || 0,
-          }))
-          .slice(0, 10);
-      }
-    }
-  } catch {
-    /* ignore */
-  }
-  return [];
+    const rows: unknown = raw ? JSON.parse(raw) : [];
+    if (!Array.isArray(rows)) return [];
+    const count = (n: unknown) => typeof n === "number" && Number.isFinite(n) ? Math.max(0, Math.floor(n)) : 0;
+    return limitBoard(rows.slice(0, 40).filter(r => r && typeof r === "object").map(r => {
+      const run = cleanRun(r.run);
+      return { name: (typeof r.name === "string" ? r.name : "MARINE").slice(0, 12), wave: Math.max(1, count(r.wave)), kills: count(r.kills), time: count(r.time),
+        difficulty: difficulty(run?.difficulty ?? r.difficulty), ...(run ? { run } : {}), recordedAt: count(r.recordedAt) };
+    }));
+  } catch { return []; }
 }
-
 export function saveBoard(entry: Score): Score[] {
-  const next = [...loadBoard(), entry]
-    .sort((a, b) => b.wave - a.wave || b.kills - a.kills || a.time - b.time)
-    .slice(0, 10);
-  try {
-    localStorage.setItem("blacksite-board", JSON.stringify(next));
-  } catch {
-    /* ignore */
+  const normalized = { ...entry, difficulty: difficulty(entry.run?.difficulty ?? entry.difficulty), recordedAt: Date.now() };
+  const next = limitBoard([...loadBoard(), normalized]);
+  // Route-heavy records may exceed a restricted browser quota. Keep summary
+  // statistics for older records before sacrificing the newly saved route.
+  try { localStorage.setItem("blacksite-board", JSON.stringify(next)); }
+  catch {
+    for (const row of [...next].sort((a,b) => (a.recordedAt ?? 0) - (b.recordedAt ?? 0))) {
+      if (row === normalized || !row.run) continue;
+      row.run.sectors = row.run.sectors.map(s => ({ ...s, route: [], map: "" }));
+      try { localStorage.setItem("blacksite-board", JSON.stringify(next)); break; } catch { /* retain in-memory records when storage is unavailable */ }
+    }
   }
   return next;
+}
+export function loadDifficulty(): Difficulty {
+  try { return difficulty(readGameStorage("blacksite-difficulty")); } catch { return "operative"; }
 }
 
 export function gpuEnabled() {
@@ -302,6 +305,7 @@ export function loadGfx(): GfxOpts {
 }
 
 export type RunSave = {
+  run?: RunRecord;
   wave: number;
   health: number;
   armor: number;
@@ -330,6 +334,7 @@ export function loadCheckpoint(): RunSave | null {
     if (![8, 11, 12, 18, 19, 33].includes(v.mag.length)) return null;
     const padSlots = (a: number[]) => [...a, ...Array(33).fill(0)].slice(0, 33);
     return {
+      ...(cleanRun(v.run) ? { run: cleanRun(v.run) } : {}),
       wave: Math.min(2147483647, Math.max(1, Math.floor(v.wave || 1))),
       health: v.health || 100,
       armor: Math.min(100, Math.max(0, v.armor || 0)),

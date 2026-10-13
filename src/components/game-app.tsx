@@ -1,3 +1,4 @@
+import { type Difficulty } from "@/game/run-record";
 import { DEFAULT_SENSITIVITY, readSensitivity } from "@/game/input-settings";
 import { machineryHint } from "./game/data";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, lazy, Suspense } from "react";
@@ -10,6 +11,7 @@ import {
   clearCheckpoint,
   gpuEnabled,
   loadBoard,
+  loadDifficulty,
   loadCheckpoint,
   loadGfx,
   loadRes,
@@ -127,6 +129,7 @@ export function GameApp() {
   const hadPointerLock = useRef(false);
   const pauseChangedAt = useRef(-Infinity);
   const [gfx, setGfx] = useState<GfxOpts>(loadGfx);
+  const [difficulty, setDifficulty] = useState<Difficulty>("operative");
   const [board, setBoard] = useState<Score[]>([]);
   const [err, setErr] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
@@ -169,6 +172,7 @@ export function GameApp() {
   // no canvas remount) — see handleRequireGpu below.
   useEffect(() => {
     setBoard(loadBoard());
+    setDifficulty(loadDifficulty());
     setIsCoarse(window.matchMedia("(pointer: coarse)").matches);
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -391,7 +395,7 @@ export function GameApp() {
     if (!rt) return;
     clearCheckpoint();
     setCheckpoint(null);
-    rt.restart();
+    rt.restart(difficulty);
     rt.kick();
     rt.setPlaying(true);
     rt.setSens(sens);
@@ -399,7 +403,7 @@ export function GameApp() {
     rt.setVolumes(vol.master, vol.music, vol.sfx, vol.menu);
     setScreen("play");
     rt.requestLock();
-  }, [sens, muted, vol]);
+  }, [sens, muted, vol, difficulty]);
 
   const pause = useCallback(() => {
     pauseChangedAt.current = performance.now();
@@ -752,6 +756,8 @@ export function GameApp() {
                 loadingSpriteSrc={artUrls["/game/ui/loading-operator.webp"]}
                 err={err}
                 board={board}
+                difficulty={difficulty}
+                setDifficulty={(value) => { setDifficulty(value); try { localStorage.setItem("blacksite-difficulty", value); } catch { /* unavailable storage */ } }}
                 res={res}
                 setRes={setRes}
                 sens={sens}
@@ -797,6 +803,8 @@ export function GameApp() {
             )}
             {screen === "dead" && (
               <EndCard
+                key={`${screen}-${hud.wave}`}
+                difficulty={rtRef.current?.getDifficulty() ?? difficulty}
                 variant="dead"
                 title="FLATLINED"
                 body={`${sectorForWave(hud.wave).name} remains hostile. The scanline ends here.`}
@@ -813,19 +821,22 @@ export function GameApp() {
                 }}
                 onSave={(name) =>
                   setBoard(
-                    saveBoard({ name, wave: hud.wave || 1, kills: hud.kills, time: hud.elapsedMs }),
+                    saveBoard({ name, wave: hud.wave || 1, kills: hud.kills, time: hud.elapsedMs, run: rtRef.current?.getRunRecord() }),
                   )
                 }
               />
             )}
             {screen === "win" && (
               <EndCard
+                key={`${screen}-${hud.wave}`}
+                difficulty={rtRef.current?.getDifficulty() ?? difficulty}
                 variant="win"
                 title={`${sectorForWave(hud.wave).name} CLEARED`}
                 body={`${sectorForWave(hud.wave).bossName} is down. A new sector route is unlocked.`}
                 hud={hud}
                 board={board}
-                showBoard={false}
+                showBoard
+                onSave={(name) => setBoard(saveBoard({ name, wave: hud.wave || 1, kills: hud.kills, time: hud.elapsedMs, run: rtRef.current?.getRunRecord() }))}
                 nextLabel={`Enter ${sectorForWave(hud.wave + 1).name}`}
                 onAgain={nextWave}
                 onMenu={() => {

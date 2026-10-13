@@ -1,3 +1,4 @@
+import { DIFFICULTIES, RunRecorder, type Difficulty, type RunTotals } from "./run-record";
 import { assetBytes, setAssetManifest, versionedAssetUrl, type AssetManifest } from "./asset-cache";
 import { DEFAULT_SENSITIVITY, normalizeSensitivity } from "./input-settings";
 import { automapCells } from "./automap-data";
@@ -83,6 +84,9 @@ type WasmExports = {
   memory: WebAssembly.Memory;
   hs_init: (w: number, h: number) => number;
   hs_restart: () => void;
+  hs_set_difficulty: (value: number) => number;
+  hs_run_stat: (index: number) => number;
+  hs_restore_run_stats: (shots: number, hits: number, ammo: number, damage: number, bosses: number, preset: number) => void;
   hs_next_wave: () => void;
   hs_select_weapon: (slot: number) => void;
   hs_resize: (w: number, h: number) => void;
@@ -481,6 +485,7 @@ export class BlacksiteRuntime {
   private fps = 0;
   private fpsAccum = 0;
   private fpsFrames = 0;
+  private runRecorder = new RunRecorder();
   private hud: HudState = { ...DEFAULT_HUD };
   private prevHud = { ...DEFAULT_HUD };
   private prevRadioSeq = 0;
@@ -794,12 +799,14 @@ export class BlacksiteRuntime {
     this.recoverRenderer();
   };
 
-  restart() {
+  restart(preset: Difficulty = this.runRecorder.preset) {
+    this.runRecorder.reset(preset);
     this.worldEffects.reset();
     this.audio.clearEnemies(true);
     this.clearInput();
     this.accumulator = 0;
     this.wasm?.hs_restart();
+    this.wasm?.hs_set_difficulty(DIFFICULTIES.findIndex(p => p.id === preset));
     this.refreshThemeLayers(1);
     this.wasm?.hs_tick(0);
     this.hud = this.wasm ? this.readHud() : { ...DEFAULT_HUD };
@@ -810,6 +817,7 @@ export class BlacksiteRuntime {
   }
 
   nextWave() {
+    this.getRunRecord();
     this.worldEffects.reset();
     this.audio.advanceSectorVoices();
     this.wasm?.hs_next_wave();
@@ -826,6 +834,7 @@ export class BlacksiteRuntime {
     this.wasm?.hs_qa(0, 1);
     this.wasm?.hs_qa_armory();
     this.wasm?.hs_qa(0, 0);
+    this.runRecorder.assisted = true;
     this.qaArmored = true;
     this.presentedFrames = 0;
   }
@@ -950,6 +959,7 @@ export class BlacksiteRuntime {
       throw new Error(`RunSave ABI mismatch: WASM reports ${size} bytes, TS expects ${SAVE_SIZE}.`);
     }
     return {
+      run: this.getRunRecord(),
       wave: dv.getInt32(0, true),
       health: dv.getInt32(4, true),
       armor: dv.getInt32(8, true),
@@ -990,6 +1000,10 @@ export class BlacksiteRuntime {
     mag.forEach((n, i) => dv.setInt32(magBase + i * 4, n, true));
     dv.setUint32(296, save.extraWeapons || 0, true);
     wasm.hs_load_run();
+    const run = save.run;
+    wasm.hs_restore_run_stats(run?.shots ?? 0, run?.hits ?? 0, run?.ammoSpent ?? 0, run?.damageTaken ?? 0, run?.bosses ?? 0, DIFFICULTIES.findIndex(p => p.id === (run?.difficulty ?? "operative")));
+    if (run) this.runRecorder.restore(run, { ...run, time: save.elapsedMs, kills: save.kills }, save.wave);
+    else this.runRecorder.restore({ difficulty: "operative", shots: 0, hits: 0, ammoSpent: 0, damageTaken: 0, bosses: 0, sectors: [], assisted: true }, { shots: 0, hits: 0, ammoSpent: 0, damageTaken: 0, bosses: 0, time: save.elapsedMs, kills: save.kills }, save.wave);
     this.refreshThemeLayers(save.wave);
     this.hud = this.readHud();
   }
@@ -1010,6 +1024,20 @@ export class BlacksiteRuntime {
 
   getBars(): BarCue[] {
     return this.lastBars;
+  }
+
+  private runTotals(hud: HudState): RunTotals {
+    const stat = (i: number) => this.wasm?.hs_run_stat(i) ?? 0;
+    return { time: hud.elapsedMs, kills: hud.kills, shots: stat(0), hits: stat(1), ammoSpent: stat(2), damageTaken: stat(3), bosses: stat(4) };
+  }
+
+  getDifficulty(): Difficulty { return this.runRecorder.preset; }
+
+  getRunRecord() {
+    const hud = this.wasm ? this.readHud() : this.hud;
+    const totals = this.runTotals(hud);
+    if (this.wasm) this.runRecorder.sample(hud.wave || 1, totals, this.wasm.hs_x(), this.wasm.hs_y(), this.readMap() ?? new Uint8Array(), hud.state);
+    return this.runRecorder.record(totals);
   }
 
   getHud() {
@@ -1529,6 +1557,7 @@ export class BlacksiteRuntime {
       }
     }
     this.hud = hud;
+    this.runRecorder.sample(hud.wave || 1, this.runTotals(hud), wasm.hs_x(), wasm.hs_y(), this.readMap() ?? new Uint8Array(), hud.state);
     const count = wasm.hs_prepare_enemies();
     // Cached for the QA probe (`getEnemies`) so browser tests can assert
     // move/fire animation states without touching WASM memory.
