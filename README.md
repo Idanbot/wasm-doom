@@ -14,7 +14,7 @@ backend, no accounts and no database.
 | Interface | React 19 + TypeScript, Vite |
 | Rendering | WebGPU, WebGL2, Canvas2D fallback (auto-detected) |
 | Audio | Web Audio; recorded SFX, spoken enemy and boss voices |
-| Tests | `node:test` (unit + Playwright browser), `cargo test` (188) |
+| Tests | `node:test` (unit + Playwright browser), `cargo test` (190) |
 
 ## Architecture
 

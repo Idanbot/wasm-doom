@@ -503,6 +503,8 @@ impl Engine {
         // BR-12 feeds its tube one shell at a time. Other weapons swap a magazine.
         self.reload_dur = if w == 1 { 0.42 } else { RELOAD_T[w] };
         self.reload_t = self.reload_dur;
+        // A lingering shot flash must not light a lowered reload pose.
+        self.muzzle = 0.0;
         self.events |= EV_RELOAD;
     }
 
@@ -941,7 +943,10 @@ impl Engine {
                 self.fx_q[slot].vy *= 0.45;
             }
         }
-        self.spawn_timed(EK_SMOKE, x, y, 0.22, self.h as f32 * 0.08);
+        // Materials 0/1 are fired casings; 2+ are removed reload feeds.
+        if material < 2 {
+            self.spawn_timed(EK_SMOKE, x, y, 0.22, self.h as f32 * 0.08);
+        }
     }
 
     pub(crate) fn enemy_shoot(&mut self, i: usize) {
