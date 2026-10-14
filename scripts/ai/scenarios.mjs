@@ -55,7 +55,7 @@ export function scriptedDecision(o, schema) {
     movement: choose('movement', o.visibleEnemies.length ? 'hold' : 'move_toward_objective'),
     combat: choose('combat', o.visibleEnemies.length ? 'engage_nearest' : o.routeBearing === null ? 'turn_right' : 'hold'),
   };
-  if (schema.utility) answers.utility = choose('utility', o.magazine === 0 && o.reserve > 0 ? 'reload'
+  if (schema.utility) answers.utility = choose('utility', o.pressure >= 1 || (o.magazine === 0 && o.reserve > 0) ? 'reload'
     : o.nearbyDoor || o.interactPrompt ? 'interact' : 'nothing');
   return answers;
 }

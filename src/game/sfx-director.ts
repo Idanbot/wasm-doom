@@ -97,6 +97,8 @@ export function worldIntent(kind: number, variant = 0): SoundIntent | null {
       12: "hazard-ember",
       21: "empty",
       22: "ui-error",
+      25: "reload-valve",
+      26: "hazard-pressure",
       24: variant % 5 === 0 ? `sector-${Math.floor(variant/5)+1}` : ["hazard-electric","hit-metal","hazard-acid","hazard-electric","explosion"][variant%5]!,
       23: variant === 1 ? "casing-shell" : "casing-brass",
       13: variant === 3 ? "hazard-acid" : variant === 1 ? "hazard-electric" : "hit-stone",

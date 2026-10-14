@@ -4,6 +4,7 @@ import BOSS_VOICE_LINES from "../../game/boss-voice-lines.json" with { type: "js
 import { migrateGameStorage, readGameStorage } from "../../lib/storage-migration.ts";
 import { DEFAULT_GFX, DEFAULT_RES, RES_MODES, type GfxOpts, type ResMode } from "../../game/types.ts";
 import { WEAPON_SHEETS } from "../../game/weapon-assets.ts";
+import { BOSS_WEAPON_ROLES } from "../../game/weapon-mechanics.ts";
 
 export type Screen = "menu" | "play" | "pause" | "dead" | "win";
 
@@ -66,7 +67,7 @@ export const WEAPONS = [
   { id: 17, name: "KS-8 KEST", role: "Director rifle · precise triple burst", magSize: 30, lowAmmoAt: 8, reserve: 180, sheet: WEAPON_SHEETS[17]! },
   { id: 18, name: "MN-6 ECHO", role: "Memory lance · pierces three targets", magSize: 12, lowAmmoAt: 3, reserve: 72, sheet: WEAPON_SHEETS[18]! },
   ...CAMPAIGN_EXPANSION.map((boss, i) => ({ id: i + 19, name: boss.gun, role: boss.ability, magSize: boss.mag, lowAmmoAt: Math.max(1, Math.floor(boss.mag * .25)), reserve: boss.mag * 6, sheet: WEAPON_SHEETS[i + 19]! })),
-];
+].map(weapon => ({ ...weapon, role: BOSS_WEAPON_ROLES[weapon.id] ?? weapon.role }));
 
 export function bossRewardForWave(wave: number) {
   return WEAPONS[sectorForWave(wave).rewardSlot]!;

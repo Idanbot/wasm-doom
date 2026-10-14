@@ -20,6 +20,8 @@ pub(crate) struct Ent {
     pub(crate) skin: u8,
     /// Player weapon VFX layer, independent of collision/element skin. Zero = default.
     pub(crate) projectile_visual: u8,
+    /// Banked pressure carried by a player discharge; zero for ordinary shots.
+    pub(crate) projectile_charge: f32,
     pub(crate) radius: f32,
     pub(crate) flash: f32,
     pub(crate) stun: f32,

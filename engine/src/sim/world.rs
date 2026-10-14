@@ -81,6 +81,7 @@ impl Engine {
                     anim_lock: 0.0,
                     skin,
                     projectile_visual: 0,
+                    projectile_charge: 0.0,
                     radius,
                     flash: 0.0,
                     stun: 0.0,
@@ -93,6 +94,7 @@ impl Engine {
                     shield_hp: 0,
                 };
                 self.tactical.reset_entity(i);
+                self.mechanics.reset_entity(i);
                 return Some(i);
             }
         }
@@ -116,12 +118,8 @@ impl Engine {
     }
 
     pub(crate) fn announce_sector(&mut self) {
-        for slot in 19..WEP_N {
-            if self.owns_slot(slot) {
-                self.mag[slot] = MAG_SZ[slot];
-                self.ammo[slot] = RESERVE_CAP[slot];
-            }
-        }
+        // Inventory changes belong to next_wave, not dialogue. Reannouncing
+        // a restored sector must preserve its checkpoint ammunition.
         self.node_done = false;
         self.lockdown = false;
         self.boss_vuln = 0.0;
@@ -418,7 +416,7 @@ impl Engine {
         self.shake = 0.0;
         // Slot 0 is always carried; owned slots refill to their authored cap.
         for slot in 0..WEP_N {
-            if slot != 0 && !self.has_w(slot - 1) { continue; }
+            if !self.owns_slot(slot) { continue; }
             self.mag[slot] = MAG_SZ[slot];
             self.ammo[slot] = RESERVE_CAP[slot];
         }
@@ -429,6 +427,7 @@ impl Engine {
         self.apply_theme(self.wave);
         self.clear_boss_arena();
         self.tactical=tactical::Tactical::new();
+        self.mechanics=boss_weapons::Arsenal::new();
         self.build_map();
         self.door.fill(0.0);
         self.hell = false;

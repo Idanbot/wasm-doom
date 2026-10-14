@@ -24,8 +24,8 @@ test("all weapon and vitals text stays inside the artwork inset at desktop and m
       const { HudBar } = await import('/src/components/game/HudBar.tsx');
       const root = ReactDOM.createRoot(document.getElementById('root'));
       window.weapons = WEAPONS.length;
-      window.renderHud = (weapon, reloading = 0) => root.render(React.createElement(HudBar, {
-        hud: {...DEFAULT_HUD, weapon, health:100, armor:100, ammo:100, reserve:450, reloading},
+      window.renderHud = (weapon, reloading = 0, pressure = 0, venting = 0) => root.render(React.createElement(HudBar, {
+        hud: {...DEFAULT_HUD, weapon, health:100, armor:100, ammo:100, reserve:450, reloading, pressure, venting},
         fps:60, resolution:'1920 × 1080', renderer:'webgl2'
       }));
       window.renderHud(0);
@@ -62,6 +62,23 @@ test("all weapon and vitals text stays inside the artwork inset at desktop and m
             return failures;
           });
           assert.deepEqual(failures, [], `${viewport.width}×${viewport.height}, weapon ${weapon}, reload ${reload}`);
+        }
+      }
+      for (const weapon of [13,20,28]) {
+        for (const [pressure,venting] of [[0,0],[1,0],[.7,.8],[.1,.1]]) {
+          await page.evaluate(([w,p,v]) => window.renderHud(w,0,p,v), [weapon,pressure,venting]);
+          await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+          const layout = await page.evaluate(() => {
+            const gauge = document.querySelector('.hud-pressure'), card = document.querySelector('.hud-ammo');
+            const g=gauge.getBoundingClientRect(), c=card.getBoundingClientRect();
+            return {fits:g.left>=0 && g.right<=innerWidth && g.top>=0 && g.bottom<c.top,
+              attached:Math.abs(g.left-c.left)<1 && Math.abs(g.right-c.right)<1,
+              wraps:gauge.scrollWidth<=gauge.clientWidth, value:gauge.querySelector('[role=progressbar]').getAttribute('aria-valuenow')};
+          });
+          assert.equal(layout.fits,true,`pressure gauge escaped viewport or covered ammo card at ${viewport.width}`);
+          assert.equal(layout.attached,true,'pressure gauge must align with ammunition card');
+          assert.equal(layout.wraps,true,'pressure hint must fit its panel');
+          assert.equal(Number(layout.value),Math.round(pressure*100));
         }
       }
       await page.screenshot({path:`screenshots/hud-insets-${viewport.width}.png`});

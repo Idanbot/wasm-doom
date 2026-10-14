@@ -8,7 +8,7 @@ export const BROWSER_SUITES = {
   loading: ['difficulty-loading', 'loading-ready', 'loading-tiers', 'loading-fault-matrix'],
   'loading-recovery': ['loading-recovery'],
   renderer: ['resolution-recovery', 'weapon-viewmodel', 'asset-reload'],
-  combat: ['reload-effects', 'weapon-feed-art', 'world-effects', 'world-materials', 'gameplay-polish', 'tactical', 'boss-arena', 'boss-counterplay', 'projectile-presentation', 'sfx'],
+  combat: ['boss-weapons', 'reload-effects', 'weapon-feed-art', 'world-effects', 'world-materials', 'gameplay-polish', 'tactical', 'boss-arena', 'boss-counterplay', 'projectile-presentation', 'sfx'],
   campaign: ['reward-pause', 'qa-run', 'campaign25', 'layouts-10-25', 'enemy-sector'],
 };
 export function browserTestArgs(group) {

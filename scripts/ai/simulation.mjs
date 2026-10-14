@@ -32,7 +32,8 @@ export function snapshot(w) {
   const i = (o) => v.getInt32(o, true), f = (o) => v.getFloat32(o, true);
   const hud = { health: i(0), armor: i(4), ammo: i(8), weapon: i(12), kills: i(16), living: i(20),
     state: i(H.state), prompt: i(28), elapsedMs: i(44), hurt: f(56), hitmarker: f(68),
-    yaw: f(72), x: f(80), y: f(84), reserve: i(H.reserve), reloading: f(H.reloading),
+    yaw: f(72), x: f(80), y: f(84), reserve: i(H.reserve), reloading: Math.max(f(H.reloading), f(H.venting)),
+    pressure: f(H.pressure),
     events: v.getUint32(H.events, true), wave: i(H.wave), objective: i(H.objective),
     radioSeq: i(H.radioSeq), bossHealth: i(H.bossHealth), bossPhase: i(H.bossPhase), nodeX: f(160), nodeY: f(164),
     splash: f(H.splash), hurtDir: f(H.hurtDir),
@@ -135,6 +136,7 @@ export function observe(s, previous, memory) {
     magazineCapacity: WEAPONS[h.weapon].magSize, weaponName: WEAPONS[h.weapon].name,
     weaponRole: WEAPONS[h.weapon].role, inventory: h.inventory.map(({ id, magazine, reserve, capacity }) => ({ id, magazine, reserve, capacity })),
     weapon: h.weapon + 1, ownedWeapons: h.ownedWeapons.map((n) => n + 1), reloading: h.reloading > 0,
+    pressure: rounded(h.pressure ?? 0),
     position: { x: h.x, y: h.y, yaw: angle(h.yaw) }, takingDamage: h.hurt > 0,
     damageBearing: h.hurt > 0 ? h.hurtDir : null, hostilesLeft: h.living,
     visibleEnemies: visible.slice(0, 3).map((e) => ({ id: e.id, distance: e.distance,
@@ -161,9 +163,9 @@ export function questions(o) {
     strafe_left: 'Move left to evade.', strafe_right: 'Move right to evade.', hold: 'Remain in place.' };
   if (o.routeBearing !== null) movement.move_toward_objective = 'Follow the route: reach the objective or explore unvisited areas after activation.';
   const combat = { hold: 'Do not fire or turn.', turn_left: 'Look left to scan.', turn_right: 'Look right to scan.' };
-  if (o.visibleEnemies.length && o.magazine > 0 && !o.reloading && !o.splashRisk) combat.engage_nearest = 'Aim and fire at the nearest visible hostile.';
+  if (o.visibleEnemies.length && o.magazine > 0 && (o.pressure ?? 0) < 1 && !o.reloading && !o.splashRisk) combat.engage_nearest = 'Aim and fire at the nearest visible hostile.';
   const utility = { nothing: 'No utility action.' };
-  if (o.magazine < o.magazineCapacity && o.reserve > 0 && !o.reloading) utility.reload = 'Reload the equipped weapon; empty magazine has priority.';
+  if (((o.magazine < o.magazineCapacity && o.reserve > 0) || o.pressure > 0) && !o.reloading) utility.reload = 'Vent banked pressure safely, then reload if reserve ammo remains. Full pressure or an empty magazine has priority.';
   for (const gun of o.inventory ?? []) {
     if (gun.id !== o.weapon && gun.magazine + gun.reserve > 0) utility[`equip_${gun.id}`] = `Equip ${WEAPONS[gun.id - 1].name} (${gun.magazine}/${gun.reserve} ammo).`;
   }
@@ -192,12 +194,12 @@ export function translate(action, o) {
   let bits = movement.includes(action.movement) ? INPUT[action.movement] : 0;
   let turn = action.movement === 'move_toward_objective' ? o.routeBearing : 0;
   if (action.movement === 'move_toward_objective' && turn !== null) bits |= INPUT.advance;
-  if (action.combat === 'engage_nearest' && o.visibleEnemies.length && o.magazine > 0 && !o.reloading && !o.splashRisk) {
+  if (action.combat === 'engage_nearest' && o.visibleEnemies.length && o.magazine > 0 && (o.pressure ?? 0) < 1 && !o.reloading && !o.splashRisk) {
     turn = o.visibleEnemies[0].bearing; bits |= INPUT.fire;
   } else if (action.movement === 'hold' && (action.combat === 'turn_left' || action.combat === 'turn_right')) {
     bits |= INPUT[action.combat];
   }
-  if (action.utility === 'reload' && o.reserve > 0 && !o.reloading) { bits &= ~INPUT.fire; bits |= INPUT.reload; }
+  if (action.utility === 'reload' && (o.reserve > 0 || o.pressure > 0) && !o.reloading) { bits &= ~INPUT.fire; bits |= INPUT.reload; }
   if (action.utility === 'interact') bits |= INPUT.interact;
   const mx = Number.isFinite(turn) ? Math.max(-0.7, Math.min(0.7, turn)) / 0.0062 : 0;
   const gun = o.inventory?.find(g => `equip_${g.id}` === action.utility && g.id !== o.weapon && g.magazine + g.reserve > 0);

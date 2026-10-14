@@ -1028,6 +1028,8 @@ select:focus-visible {
   }
 }
 .hud-bottom {
+  --hud-card-width: 300px;
+  --hud-card-height: 164px;
   position: absolute;
   left: 24px;
   right: 24px;
@@ -1040,8 +1042,7 @@ select:focus-visible {
 }
 .hud-plate {
   background: var(--hud-panel, url("../public/game/ui/hud-panel.webp")) center / 100% 100% no-repeat;
-  width: 300px;
-  --hud-card-height: 164px;
+  width: var(--hud-card-width);
   height: var(--hud-card-height);
   /* The art has deep top/bottom rails: keep all content in its dark inset. */
   padding: calc(var(--hud-card-height) * .20) 26px calc(var(--hud-card-height) * .24);
@@ -1080,8 +1081,30 @@ select:focus-visible {
 }
 @keyframes deployment-drill { to { transform: translate3d(-100%, 0, 0); } }
 .hud-ammo {
-  width: 300px;
+  width: var(--hud-card-width);
 }
+.hud-pressure {
+  position: absolute;
+  bottom: calc(var(--hud-card-height) + 6px);
+  left: var(--hud-card-width);
+  width: var(--hud-card-width);
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid #a36f39;
+  background: #11191ef2;
+  color: #f4bc73;
+  font: 600 10px/1.4 var(--font-display);
+  text-shadow: 0 1px 3px #000;
+}
+.hud-pressure > div:first-child { display: flex; justify-content: space-between; }
+.pressure-track { height: 4px; background: #33424d; margin: 5px 0; overflow: hidden; }
+.pressure-track i { display: block; height: 100%; background: #e6a04a; transition: width 80ms linear; }
+.hud-pressure small { display: block; font-size: 8px; overflow-wrap: anywhere; }
+.pressure-full { color: #ff956d; border-color: #ef7655; }
+.pressure-full .pressure-track i { background: #ef7655; }
+.pressure-venting { color: #92d9e2; border-color: #62abb6; }
+.pressure-venting .pressure-track i { background: #92d9e2; }
+.pressure-released { border-color: #fff1c1; box-shadow: 0 0 18px #e6a04a55; }
 .hud-health {
   display: flex;
   gap: 12px;
@@ -1259,8 +1282,8 @@ select:focus-visible {
   margin-bottom: 3px;
 }
 @media (max-width: 900px) {
+  .hud-bottom { --hud-card-width: 265px; }
   .hud-plate {
-    width: 265px;
     padding-left: 24px;
     padding-right: 24px;
   }
@@ -1421,20 +1444,22 @@ select:focus-visible {
     display: none;
   }
   .hud-bottom {
+    --hud-card-width: 50%;
+    --hud-card-height: 148px;
     left: 12px;
     right: 12px;
     bottom: 12px;
     gap: 0;
   }
   .hud-plate {
-    width: 50%;
-    --hud-card-height: 148px;
     padding-left: 18px;
     padding-right: 18px;
   }
   .hud-ammo {
-    width: 50%;
+    width: var(--hud-card-width);
   }
+  .hud-pressure { padding: 8px 10px; font-size: 9px; }
+  .hud-pressure small { font-size: 7px; }
   .weapon-view { bottom: 5%; }
   .weapon-spiral { left: 50%; bottom: 150px; transform: translateX(-50%) translateY(18px) scale(.576); }
   .weapon-spiral.visible { transform: translateX(-50%) translateY(0) scale(.576); }
@@ -1508,7 +1533,7 @@ select:focus-visible {
   .mission-copy {
     margin-top: 18px;
   }
-  .hud-plate {
+  .hud-bottom {
     --hud-card-height: 148px;
   }
   .hud-health strong,

@@ -1,6 +1,7 @@
 import { HeartPulse, Shield, Crosshair, Radio } from "lucide-react";
 import { bossAttackForWave } from "@/game/boss-attacks";
 import type { HudState } from "@/game/types";
+import { hasPressureBank, pressureHint } from "@/game/weapon-mechanics";
 import { cn } from "@/lib/utils";
 import { WEAPONS, fmtTime, missionLine, sectorForWave } from "./data";
 
@@ -89,6 +90,18 @@ export function HudBar({
         </section>
       )}
       <div className="hud-bottom">
+        {hasPressureBank(hud.weapon) && (
+          <section
+            className={cn("hud-pressure", hud.pressure >= 0.999 && "pressure-full", hud.venting > 0 && "pressure-venting", hud.pressureRelease > 0 && "pressure-released")}
+            aria-label="Weapon pressure"
+          >
+            <div><b>{hud.venting > 0 ? "VENTING" : "PRESSURE"}</b><span>{Math.round(hud.pressure * 100)}%</span></div>
+            <div className="pressure-track" role="progressbar" aria-label="Banked pressure" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(hud.pressure * 100)}>
+              <i style={{ width: `${Math.max(0, Math.min(100, hud.pressure * 100))}%` }} />
+            </div>
+            <small>{pressureHint(hud.pressure, hud.venting, hud.ammo)}</small>
+          </section>
+        )}
         <section
           className={cn("hud-plate hud-vitals", hud.health < 30 && "hud-critical")}
           aria-label="Vitals"

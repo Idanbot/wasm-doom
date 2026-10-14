@@ -20,6 +20,7 @@ mod textures;
 mod boss_arena;
 mod boss_attacks;
 mod boss_movement;
+mod boss_weapons;
 mod tactical;
 mod tactical_roles;
 mod combat;
@@ -44,6 +45,8 @@ mod engine_tests;
 mod sim_tests;
 #[cfg(test)]
 mod reload_presentation_tests;
+#[cfg(test)]
+mod boss_weapon_tests;
 
 use consts::*;
 use enemies::{default_skin, enemy_def, is_hostile_kind, skin_def};
@@ -161,6 +164,7 @@ struct Engine {
     boss_arena: boss_arena::ArenaState,
     boss_attack: boss_attacks::AttackState,
     tactical: tactical::Tactical,
+    mechanics: boss_weapons::Arsenal,
     node_done: bool,
     lockdown: bool,
     boss_vuln: f32,
@@ -254,6 +258,7 @@ impl Engine {
                 anim_lock: 0.0,
                 skin: SKIN_NONE,
                 projectile_visual: 0,
+                projectile_charge: 0.0,
                 radius: 0.25,
                 flash: 0.0,
                 stun: 0.0,
@@ -276,6 +281,7 @@ impl Engine {
             ammo: { let mut a = [0; WEP_N]; a[0] = 36; a },
             mag: { let mut a = [0; WEP_N]; a[0] = 12; a },
             weapon: 0,
+            mechanics: boss_weapons::Arsenal::new(),
             owned: [false; OWNED_GUNS],
             hurt_dir: 0.0,
             strain: 0.0,
@@ -304,6 +310,9 @@ impl Engine {
             qa: false,
             qa_bits: 0,
             hud: Hud {
+                pressure: 0.0,
+                venting: 0.0,
+                pressure_release: 0.0,
                 hurt_dir: 0.0,
                 strain: 0.0,
                 boss_attack_state: 0,
@@ -455,7 +464,7 @@ impl Engine {
         self.tactical.tick(dt);
         let previous_weapon=self.weapon;
         self.cooldown = (self.cooldown - dt).max(0.0);
-        if self.reload_t > 0.0 {
+        if self.reload_t > 0.0 && self.mechanics.vent.is_none() {
             let removal = self.reload_dur * (1.0 - RELOAD_EJECT_PROGRESS);
             let previous = self.reload_t;
             self.reload_t = (self.reload_t - dt).max(0.0);
@@ -466,6 +475,7 @@ impl Engine {
                 self.finish_reload();
             }
         }
+        let boss_weapon_actions=self.tick_boss_weapons(dt);
         self.iframes = (self.iframes - dt).max(0.0);
         self.pickup_t = (self.pickup_t - dt).max(0.0);
         self.shake = (self.shake - dt * 2.2).max(0.0);
@@ -511,8 +521,7 @@ impl Engine {
 
             for (slot, &bit) in IN_W_SLOT.iter().enumerate() {
                 if bits & bit != 0 && self.wpn_latched & bit == 0 && self.owns_slot(slot) {
-                    self.weapon = slot as i32;
-                    self.reload_t = 0.0;
+                    self.select_weapon(slot);
                 }
             }
             self.wpn_latched = bits & IN_W_ALL;
@@ -598,6 +607,7 @@ impl Engine {
             if bits & IN_FIRE != 0 {
                 self.fire();
             }
+            self.mechanics.fire_held = bits & IN_FIRE != 0;
 
             let mut pick: Vec<usize> = Vec::new();
             for (i, e) in self.ents.iter().enumerate() {
@@ -617,6 +627,7 @@ impl Engine {
         } else {
             self.hud.speed = 0.0;
         }
+        self.resolve_boss_weapon_actions(boss_weapon_actions);
 
         if previous_weapon!=self.weapon {self.cooldown=self.cooldown.min(0.12);self.pickup_t=0.28;self.pickup_dur=0.28;}
 
@@ -829,6 +840,7 @@ impl Engine {
                     if trail && !dead { self.spawn_timed(EK_SMOKE, old_x, old_y, 0.75, 10.0); }
                     if dead || !self.los(old_x, old_y, ex, ey) {
                         self.ents[i].kind = 0;
+                        if self.resolve_reward_projectile(self.ents[i], None, old_x, old_y) { continue; }
                         if (100..=136).contains(&visual) || (230..=234).contains(&visual) { self.projectile_impact(old_x, old_y, visual, palette); }
                         if visual == 230 && !dead && variant == 6.0 { self.explode(old_x, old_y, 1.6, damage as f32 * 0.4); }
                         if variant == 4.0 {
@@ -838,11 +850,9 @@ impl Engine {
                         }
                     } else if pstate == 0 {
                         let d = segment_distance_sq(px, py, old_x, old_y, ex, ey);
-                        if d < 0.22 {
-                            if variant != 4.0 && variant != 5.0 && variant != 6.0 {
-                                self.ents[i].kind = 0;
-                                melee.push((i, damage));
-                            }
+                        if d < 0.22 && variant != 4.0 && variant != 5.0 && variant != 6.0 {
+                            self.ents[i].kind = 0;
+                            melee.push((i, damage));
                         } else if variant == 4.0 || variant == 5.0 || variant == 6.0 {
                             let mut hit = None;
                             for (j, o) in self.ents.iter().enumerate() {
@@ -852,6 +862,7 @@ impl Engine {
                             }
                             if let Some(j) = hit {
                                 self.ents[i].kind = 0;
+                                if self.resolve_reward_projectile(self.ents[i], Some(j), ex, ey) { continue; }
                                 let slot=if self.ents[i].projectile_visual>0 {7+self.ents[i].projectile_visual as usize}else if variant==4.0 {10}else{14};
                                 self.player_hit(j, damage, ex, ey,slot);
                                 if (230..=234).contains(&visual) {
@@ -1228,7 +1239,10 @@ impl Engine {
         // Cells 20-24 (alt-fire) have no mechanic and stay unused.
         let mag_now = self.mag[wpn];
         let mag_max = MAG_SZ[wpn];
-        let weap_frame = if self.reload_t > 0.0 {
+        let weap_frame = if self.mechanics.vent.is_some() {
+            if mag_now == 0 { if self.ammo[wpn] == 0 { 4 } else { 3 } }
+            else if mag_now * 2 >= mag_max { 1 } else { 2 }
+        } else if self.reload_t > 0.0 {
             let p = (1.0 - self.reload_t / self.reload_dur.max(0.05)).clamp(0.0, 0.999);
             10 + (p * 5.0) as i32
         } else if self.muzzle > 0.08 {
@@ -1285,6 +1299,9 @@ impl Engine {
             0.0
         };
         self.hud = Hud {
+            pressure: self.mechanics.pressure[wpn],
+            venting: self.mechanics.vent.map_or(0.0, |v| v.seconds / 0.9),
+            pressure_release: self.mechanics.release_flash,
             health: self.health,
             armor: self.armor,
             ammo: self.mag[wpn],
@@ -1308,7 +1325,7 @@ impl Engine {
             x: self.px,
             y: self.py,
             reserve: self.ammo[wpn],
-            reloading: if self.reload_t > 0.0 {
+            reloading: if self.reload_t > 0.0 && self.mechanics.vent.is_none() {
                 1.0 - self.reload_t / self.reload_dur.max(0.05)
             } else {
                 0.0

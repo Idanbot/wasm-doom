@@ -34,6 +34,7 @@ engine/src/          Rust simulation, compiled to one .wasm
   abi.rs             the 59 WASM exports and the save blob
   map.rs layouts.rs  authored sector geometry and placement
   field.rs           per-sector objective contract
+  boss_weapons.rs    pressure banking and distinct boss reward attacks
 engine/src/*.rs      data tables: enemies, bosses, weapons, palettes
 
 src/game/            engine bridge and presentation
@@ -77,8 +78,12 @@ atmospheric particle profile.
   [movement patterns](docs/BOSS_MOVEMENT.md).
 - Sector loop: complete the node objective, activate the override station,
   defeat the boss, collect the reward case.
-- 33 weapons — 19 standard plus one exclusive reward per boss — with magazine,
-  shell and charge reloads.
+- 33 weapons — eight base weapons and 25 exclusive boss rewards — with magazine,
+  shell and charge reloads. Ten boss rewards have distinct marks, chain arcs,
+  frost shatters, timed bursts and delayed strikes. GS-4 SINK, LV-8 UNDERTOW and
+  SL-12 HELIOS bank pressure: press **R** to cool safely, or press fire during
+  venting to spend a round on an inaccurate heavy discharge. A gauge shows the
+  bank and available action. See [boss weapon mechanics](docs/BOSS_WEAPON_MECHANICS.md).
 - 62 enemy and boss appearances; sectors 1–11 use 28-pose animation boards.
 - Weapon roles combine: precision shots strip armour, shock interrupts and
   drains shields, freeze slows, acid marks for follow-up damage.

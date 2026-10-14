@@ -25,21 +25,12 @@ test('real WASM reloads eject feeds without port smoke or muzzle illumination', 
       };
       const results = [];
       const prepareWeapon = (slot, mag, reserve) => {
-        // Loading a checkpoint preserves transient timers. Start each case
-        // from a fresh engine, then restore its weapon and ammunition.
+        // Each case restores real checkpoint ammunition from a fresh engine.
         w.hs_restart(); w.hs_qa(0, 1); w.hs_qa_armory(); w.hs_tick(0);
         const save = rt.exportSave(); save.weapon = slot; save.mag[slot] = mag; save.ammo[slot] = reserve;
         rt.loadSave(save);
         w.hs_tick(0);
-        if (mag === 0) {
-          // Sector entry deliberately refills expansion boss weapons. Empty
-          // those magazines through real shots, then let shot effects expire.
-          w.hs_qa(16, 1);
-          for (let n = 0; rt.readHud().ammo > 0 && n < 500; n++) w.hs_tick(0.08);
-          if (rt.readHud().ammo !== 0) throw new Error(`could not empty weapon ${slot}`);
-          w.hs_qa(0, 1);
-          for (let n = 0; n < 8; n++) w.hs_tick(0.08);
-        }
+        if (rt.readHud().ammo !== mag) throw new Error(`checkpoint did not preserve ammunition for ${slot}`);
       };
       for (const slot of [0, 1, 7, 10, 20, 24, 32]) {
         prepareWeapon(slot, 0, 100); w.hs_qa(4096, 1); w.hs_tick(1 / 60); w.hs_qa(0, 1);

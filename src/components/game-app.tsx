@@ -205,7 +205,7 @@ export function GameApp() {
           const swapAge = (performance.now() - swapAt.current) / 200;
           const swapDip = swapAge < 1 ? Math.sin(swapAge * Math.PI) * 30 : 0;
           const reloading = h.reloading > 0.001;
-          const reloadDip = reloading ? 32 + Math.sin(Math.min(1, h.reloading) * Math.PI) * 18 : 0;
+          const reloadDip = h.venting > 0 ? 16 : reloading ? 32 + Math.sin(Math.min(1, h.reloading) * Math.PI) * 18 : 0;
           const weight = [0.65, 1.25, 0.5, 1.1, 1.4, 0.9, 1.45, 1.1, 1.5, 0.8, 1.0][h.weapon] ?? 1;
           const motion = reducedMotion.matches ? 0.2 : 1;
           const bobY = (h.bob * 7 + h.kick * 18 * weight + reloadDip + swapDip) * motion;
@@ -261,6 +261,9 @@ export function GameApp() {
           h.bossAttackState,
           h.splash > 0.5,
           h.reloading > 0.001,
+          h.venting > 0,
+          h.pressure >= 0.999,
+          h.pressure >= 0.2,
         ].join("|");
         if (now - lastHudAt.current > 100 || key !== lastHudKey.current) {
           lastHudAt.current = now;

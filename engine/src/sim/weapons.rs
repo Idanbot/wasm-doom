@@ -35,6 +35,7 @@ impl Engine {
         if slot < WEP_N && self.owns_slot(slot) && slot != self.weapon as usize {
             self.weapon = slot as i32;
             self.reload_t = 0.0;
+            self.mechanics.cancel_handling();
             self.pickup_t = 0.28;self.pickup_dur=0.28;
             self.cooldown=self.cooldown.min(0.12);
         }

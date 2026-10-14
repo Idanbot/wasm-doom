@@ -12,6 +12,20 @@ const armory = async () => {
   return w;
 };
 
+test('the headless player observes pressure, vents at the limit and waits through handling', async () => {
+  const w=await armory();
+  w.hs_select_weapon(13);
+  for(let n=0;n<400 && snapshot(w).hud.pressure<1;n++)step(w,{bits:INPUT.fire,mx:0,my:0},1);
+  const hot=observe(snapshot(w));
+  assert.equal(hot.pressure,1);
+  assert.equal('engage_nearest' in questions({...hot,visibleEnemies:[{bearing:0}]}).combat.criteria,false);
+  const input=translate({...idle,utility:'reload'},{...hot,reserve:0});
+  assert.equal(input.bits&INPUT.reload,INPUT.reload);
+  const vent=observe(step(w,input,1).snapshot);
+  assert.equal(vent.reloading,true);
+  assert.equal('reload' in (questions(vent).utility?.criteria??{}),false);
+});
+
 test('all 33 guns expose accurate owned ammo and legal reload/switch choices; reload suppresses firing', async () => {
   const w = await armory();
   for (const gun of WEAPONS) {

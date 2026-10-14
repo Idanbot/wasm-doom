@@ -156,6 +156,7 @@ pub(crate) fn sprite_style(e: &Ent) -> (usize, f32, bool, i32) {
     if matches!(e.kind, EK_PROJ|EK_BOLT|EK_RAY|EK_FLAME) && (1..=25).contains(&e.projectile_visual) {
         let index=(e.projectile_visual-1) as usize;
         let scale=if index==15 {0.38+(e.frame*24.0).sin()*0.018} else if matches!(index,8|17|21) {0.40} else if e.kind==EK_RAY {0.10} else {0.25};
+        let scale=scale*(1.0+e.projectile_charge.clamp(0.0,1.0)*0.8);
         return (T_BOSS_PROJECTILE+index,scale,false,0);
     }
     if e.kind == EK_CRATE && (150..=224).contains(&e.skin) {

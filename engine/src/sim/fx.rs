@@ -77,6 +77,7 @@ impl Engine {
                 anim_lock: 0.0,
                 skin: if f.kind == EK_SPARK && f.variant == 5 { f.projectile_visual } else { SKIN_NONE },
                 projectile_visual: f.projectile_visual,
+                projectile_charge: 0.0,
                 radius,
                 flash: 0.0,
                 stun: if f.kind == EK_SPARK && f.variant == 5 { 0.74 } else { 0.0 },

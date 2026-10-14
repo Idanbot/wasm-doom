@@ -60,6 +60,9 @@ export type HudState = {
   bossPhase: number;
   bossAttackState: number;
   bossAttackT: number;
+  pressure: number;
+  venting: number;
+  pressureRelease: number;
   splash: number;
 };
 
@@ -156,5 +159,8 @@ export const DEFAULT_HUD: HudState = {
   bossPhase: 0,
   bossAttackState: 0,
   bossAttackT: 0,
+  pressure: 0,
+  venting: 0,
+  pressureRelease: 0,
   splash: 0,
 };

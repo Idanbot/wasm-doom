@@ -87,6 +87,7 @@ impl Engine {
         }
         self.weapon = slot as i32;
         self.reload_t = 0.0;
+        self.mechanics.cancel_handling();
         self.events |= EV_PICK_GOLD;
         self.sound(11, 0, self.px, self.py);
     }
@@ -497,9 +498,11 @@ impl Engine {
             return;
         }
         let w = self.weapon as usize;
+        if self.begin_pressure_vent() { return; }
         if self.mag[w] >= MAG_SZ[w] || self.ammo[w] <= 0 {
             return;
         }
+        self.mechanics.cancel_handling();
         // BR-12 feeds its tube one shell at a time. Other weapons swap a magazine.
         self.reload_dur = if w == 1 { 0.42 } else { RELOAD_T[w] };
         self.reload_t = self.reload_dur;
@@ -535,10 +538,15 @@ impl Engine {
     }
 
     pub(crate) fn fire(&mut self) {
+        if self.state == 0 && self.mechanics.vent.is_some() {
+            self.release_pressure();
+            return;
+        }
         if self.state != 0 || self.cooldown > 0.0 || self.tactical.cooldowns[self.weapon as usize]>0.0 {
             return;
         }
         let w = self.weapon as usize;
+        if boss_weapons::pressure_gain(w) > 0.0 && self.mechanics.pressure[w] >= 1.0 { return; }
         // A tube-fed BR-12 can fire the shells already loaded. Pulling the
         // trigger interrupts the remaining shell-feed sequence.
         if self.reload_t > 0.0 {
@@ -550,18 +558,10 @@ impl Engine {
             self.cooldown = 0.22;
             return;
         }
-        self.run_shots.push(false);
-        self.current_shot = self.run_shots.len();
-        if self.power != field::POWER_FEED { self.run_ammo = self.run_ammo.saturating_add(1); }
-        self.mag[w] -= 1;
-        if self.power == field::POWER_FEED {
-            self.mag[w] += 1;
-        }
-        self.events |= EV_FIRE;
-        self.ev_weapon = self.weapon;
+        self.commit_round(w);
         let fx_start=self.fx_n;
         let free_slots: [bool; ENT_N] = core::array::from_fn(|i| self.ents[i].kind == EK_NONE);
-        match self.weapon {
+        if !self.fire_reworked_boss(w) { match self.weapon {
             0 => {
                 self.cooldown = 0.26;
                 self.muzzle = 1.0;
@@ -657,61 +657,6 @@ impl Engine {
             8 => self.fire_override(),
             9 => self.fire_forge(),
             10 => self.fire_chimera(),
-            11 => {
-                // Archivist's carbine is a precise amber pulse: a single
-                // instant hit with a brief, narrow afterimage along its path.
-                self.cooldown = 0.38;
-                self.muzzle = 1.0;
-                self.kick = 0.8;
-                self.shake = (self.shake + 0.16).min(1.0);
-                let a = self.pa;
-                self.hitscan(a, 42, 22.0);
-                let reach = self.wall_distance(self.px, self.py, a.cos(), a.sin(), 22.0).min(15.0);
-                for n in 1..=20 {
-                    let t = reach * n as f32 / 21.0;
-                    self.spawn_timed(EK_RAY, self.px + a.cos() * t, self.py + a.sin() * t, 0.09, 12.0);
-                }
-            }
-            12 => {
-                // Oracle's predictor lands a delayed-looking, accurate double pulse.
-                self.cooldown = 0.68; self.muzzle = 1.0; self.kick = 1.1;
-                self.hitscan(self.pa, 58, 28.0);
-                self.hitscan(self.pa + 0.012, 24, 28.0);
-                for n in 1..=18 {
-                    let t = n as f32 * 0.7;
-                    self.spawn_timed(EK_RAY, self.px + self.pa.cos()*t, self.py + self.pa.sin()*t, 0.12, 13.0);
-                }
-            }
-            13 => {
-                // Reactor sink: short, dense copper scatter with a pressure kick.
-                self.cooldown = 0.9; self.muzzle = 1.0; self.kick = 1.7;
-                self.shake = (self.shake + 0.38).min(1.0);
-                for _ in 0..11 {
-                    let a = self.pa + (self.rnd()-0.5)*0.22;
-                    self.hitscan(a, 11, 10.0);
-                }
-                self.eject_casing();
-            }
-            14 => {
-                // Rime's three slow coolant slugs force movement through lanes.
-                self.cooldown = 0.75; self.muzzle = 1.0; self.kick = 1.2;
-                for n in -1..=1 {
-                    let a = self.pa + n as f32 * 0.055;
-                    if let Some(i) = self.spawn(EK_PROJ, self.px, self.py) {
-                        self.ents[i].vx = a.cos()*6.1; self.ents[i].vy = a.sin()*6.1;
-                        self.ents[i].timer = 2.4; self.ents[i].hp = 30; self.ents[i].zoff = 12.0;
-                        self.ents[i].effect_tick = 5.0;
-                        self.ents[i].skin = 232;
-                    }
-                }
-            }
-            15 => {
-                // Relay discharges a fast, narrow signal burst.
-                self.cooldown = 0.11; self.muzzle = 1.0; self.kick = 0.55;
-                let a = self.pa + (self.rnd()-0.5)*0.045;
-                self.hitscan(a, 14, 23.0);
-                for n in 1..=8 { let t = n as f32 * 1.1; self.spawn_timed(EK_RAY, self.px+a.cos()*t, self.py+a.sin()*t, 0.06, 14.0); }
-            }
             16 => {
                 // Titan's siege shell is a slow, visible heavy explosive.
                 self.cooldown = 1.25; self.muzzle = 1.0; self.kick = 1.9;
@@ -721,12 +666,6 @@ impl Engine {
                     self.ents[i].vx = a.cos()*8.2; self.ents[i].vy = a.sin()*8.2;
                     self.ents[i].timer = 1.65; self.ents[i].zoff = 10.0; self.ents[i].hp = 85;
                 }
-            }
-            17 => {
-                // Kest's assault rifle fires an accurate three-shot burst.
-                self.cooldown = 0.32; self.muzzle = 1.0; self.kick = 0.85;
-                for n in -1..=1 { self.hitscan(self.pa + n as f32 * 0.025, 14, 22.0); }
-                self.eject_casing();
             }
             18 => {
                 self.muzzle = 1.0;
@@ -739,7 +678,7 @@ impl Engine {
                 }
             }
             _ => {}
-        }
+        } }
         if self.weapon >= 8 {
             if !self.fx_q[fx_start..self.fx_n].iter().any(|fx|matches!(fx.kind,EK_RAY|EK_FLAME)) && !self.ents.iter().enumerate().any(|(i,en)| free_slots[i] && matches!(en.kind,EK_PROJ|EK_BOLT|EK_RAY|EK_FLAME)) {
                 let reach=self.wall_distance(self.px,self.py,self.pa.cos(),self.pa.sin(),20.0).min(12.0);

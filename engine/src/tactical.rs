@@ -4,6 +4,7 @@ use crate::{consts::*, field, map, Engine, is_hostile_kind};
 pub(crate) enum Role { Precision, Stagger, Control, Blast, Shock, Suppress, Burn, Acid, Freeze }
 pub(crate) fn role(slot: usize) -> Role {
     use Role::*;
+    if slot==crate::boss_weapons::HELIOS {return Burn;}
     [Precision,Stagger,Control,Precision,Blast,Shock,Suppress,Burn,Precision,Burn,Acid,Precision,Precision,Stagger,Freeze,Shock,Blast,Precision,Precision,Blast,Stagger,Precision,Shock,Control,Acid,Precision,Suppress,Precision,Freeze,Blast,Control,Precision,Shock][slot.min(32)]
 }
 pub(crate) struct Tactical {
@@ -28,6 +29,8 @@ impl Engine {
         self.tactical.outages.iter().any(|&(a,b,k)| k==kind && (x-a).hypot(y-b)<12.0 && self.los(a,b,x,y))
     }
     pub(crate) fn player_hit(&mut self,i:usize,dmg:i32,hx:f32,hy:f32,slot:usize) {
+        if i>=ENT_N {return;}
+        let dmg=self.boss_hit_modifier(i,dmg,slot);
         let effect=if slot==1 && (self.ents[i].x-hx).hypot(self.ents[i].y-hy)>=4.0 {None}else{Some(role(slot))};
         self.hurt_ent_role(i,dmg,hx,hy,effect);
     }

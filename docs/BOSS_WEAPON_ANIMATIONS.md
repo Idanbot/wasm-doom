@@ -22,6 +22,12 @@ accents dim in contiguous regions; chemical bottles lower their visible fluid
 level. Empty and feed-removed poses are separately generated. Alternate-fire
 art does not imply a gameplay ability.
 
+Pressure banking adds a handling stage for GS-4, LV-8 and SL-12 without changing
+any sheet pixels or frame indices. Venting lowers the current ammo aim pose;
+waiting starts the ordinary 10–14 magazine sequence, while a deliberate trigger
+press cancels venting and uses the existing firing poses. It never shows a
+removed magazine while discharging. See [pressure controls and reward mechanics](BOSS_WEAPON_MECHANICS.md).
+
 Generated nine-pose source boards and exact generation prompts are retained in
 `art/weapon-animations-v3/`. They are outside `public/`, so the browser loads
 only the packed runtime sheets. Alpha cleanup discards small disconnected
