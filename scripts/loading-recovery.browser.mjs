@@ -4,15 +4,56 @@ import { chromium } from 'playwright';
 import { readFileSync } from 'node:fs';
 
 const base = process.env.BLACKSITE_TEST_URL ?? 'http://127.0.0.1:8080/';
-const readyOrError = page => page.waitForFunction(() =>
-  !document.querySelector('.deploy-button')?.disabled || document.querySelector('[role=alert]'),
-  null, {timeout:180000});
+const readyOrError = (page,{allowError=true}={}) => page.waitForFunction(allowError => {
+  const button=document.querySelector('.deploy-button');
+  return (button && !button.disabled) || (allowError && document.querySelector('[role=alert]'));
+},allowError,{timeout:180000});
 
 async function menu(browser) {
   const page=await browser.newPage({viewport:{width:640,height:400}});
   await page.addInitScript(() => localStorage.setItem('blacksite-res','320'));
   return page;
 }
+
+test('manual retry readiness ignores the previous error until deployment is enabled', async () => {
+  const browser=await chromium.launch({headless:true});
+  try {
+    const page=await browser.newPage();
+    await page.setContent('<p role="alert">Previous attempt failed</p><button class="deploy-button" disabled>Deploy</button>');
+    let settled=false;
+    const waiting=readyOrError(page,{allowError:false}).then(()=>{settled=true;});
+    void waiting.catch(()=>{});
+    await page.waitForTimeout(100);
+    assert.equal(settled,false,'a stale error must not complete the retry wait');
+    await page.getByRole('alert').evaluate(element=>element.remove());
+    await page.waitForTimeout(100);
+    assert.equal(settled,false,'clearing an error does not mean loading finished');
+    await page.locator('.deploy-button').evaluate(button=>{button.disabled=false;});
+    await waiting;
+  } finally {await browser.close();}
+});
+
+test('initial readiness waits for a real button and still reports a fresh loading error', async () => {
+  const browser=await chromium.launch({headless:true});
+  try {
+    const page=await browser.newPage();
+    await page.setContent('<body></body>');
+    let settled=false;
+    const waiting=readyOrError(page).then(()=>{settled=true;});
+    void waiting.catch(()=>{});
+    await page.waitForTimeout(100);
+    assert.equal(settled,false,'an absent deployment button is not ready');
+    await page.setContent('<button class="deploy-button" disabled>Deploy</button>');
+    await page.waitForTimeout(100);
+    assert.equal(settled,false);
+    await page.evaluate(()=>{
+      const error=document.createElement('p');error.setAttribute('role','alert');
+      error.textContent='New loading failure';document.body.append(error);
+    });
+    await waiting;
+    assert.equal(await page.locator('.deploy-button').isDisabled(),true);
+  } finally {await browser.close();}
+});
 
 test('permanently missing art stops after two retries and allows a fresh manual retry', async () => {
   const browser=await chromium.launch({headless:true});
@@ -29,7 +70,9 @@ test('permanently missing art stops after two retries and allows a fresh manual 
     assert.equal(await page.locator('.deploy-button').isDisabled(),true);
     recover=true;
     await page.getByRole('button',{name:'Retry loading',exact:true}).click();
-    await readyOrError(page);
+    // The previous alert can outlive the click until React starts the new boot.
+    // A successful retry requires the actual enabled deployment button.
+    await readyOrError(page,{allowError:false});
     assert.equal(await page.getByRole('alert').count(),0);
     assert.equal(await page.locator('.deploy-button').isDisabled(),false);
     assert.equal(attempts,4,'manual boot must recover on its first healthy attempt');

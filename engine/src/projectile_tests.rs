@@ -164,3 +164,76 @@ fn stationary_projectiles_only_hit_overlapping_bodies_and_expire_normally() {
     assert!(!e.ents.iter().any(|ent| ent.kind == EK_PROJ));
     assert_eq!(e.ents[body].hp, 1960);
 }
+
+#[test]
+fn friendly_rounds_and_rockets_respect_both_door_types() {
+    for door_kind in [8, 9] {
+        for open in [false, true] {
+            for kind in [EK_PROJ, EK_BOLT] {
+                let mut e = testutil::arena();
+                let behind = target(&mut e, 11.0, 4.5);
+                e.set_cell(8, 4, door_kind);
+                e.door[4 * MAP_W + 8] = if open { 1.0 } else { 0.0 };
+                projectile(&mut e, kind, 5.5, 100.0, true);
+                e.tick(0.08);
+                assert_eq!(e.ents[behind].hp < 2000, open,
+                    "door {door_kind}, open={open}, projectile {kind}");
+                assert!(!e.ents.iter().any(|ent| ent.kind == kind));
+            }
+        }
+    }
+}
+
+#[test]
+fn enemy_rounds_cannot_damage_the_player_through_closed_doors() {
+    for door_kind in [8, 9] {
+        for open in [false, true] {
+            let mut e = testutil::arena();
+            e.px = 12.5;
+            e.armor = 0;
+            e.set_cell(8, 4, door_kind);
+            e.door[4 * MAP_W + 8] = if open { 1.0 } else { 0.0 };
+            projectile(&mut e, EK_PROJ, 5.5, 100.0, false);
+            let health = e.health;
+            e.tick(0.08);
+            assert_eq!(e.health < health, open, "door {door_kind}, open={open}");
+        }
+    }
+}
+
+#[test]
+fn projectile_geometry_includes_endpoint_contacts_and_the_exact_door_threshold() {
+    let mut e = testutil::arena();
+    e.set_cell(8, 4, 8);
+    let (start, end) = ((5.5, 4.5), (8.0, 4.5));
+    assert_eq!(e.projectile_wall_contact(start, end), Some(1.0));
+    assert_eq!(e.projectile_wall_contact(end, end), Some(0.0));
+    assert_eq!(e.projectile_wall_contact(end, (9.0, 4.5)), Some(0.0));
+    e.door[4 * MAP_W + 8] = 0.979;
+    assert_eq!(e.projectile_wall_contact(start, end), Some(1.0));
+    e.door[4 * MAP_W + 8] = 0.98;
+    assert_eq!(e.projectile_wall_contact(start, end), None);
+    assert_eq!(e.projectile_wall_contact(end, end), None);
+}
+
+#[test]
+fn body_contacts_handle_diagonals_tangents_endpoints_and_reverse_motion() {
+    use sim::geometry::sweep_circle_contact;
+    let cases = [
+        ((2.0, 2.0), (8.0, 8.0), (5.0, 5.0), 2.0_f32.sqrt(), Some(1.0 / 3.0)),
+        ((2.0, 2.0), (8.0, 2.0), (5.0, 3.0), 1.0, Some(0.5)),
+        ((2.0, 2.0), (8.0, 2.0), (5.0, 3.01), 1.0, None),
+        ((2.0, 2.0), (8.0, 2.0), (9.0, 2.0), 1.0, Some(1.0)),
+        ((2.0, 2.0), (-4.0, 2.0), (5.0, 2.0), 1.0, None),
+        ((2.0, 2.0), (2.0, 2.0), (2.0, 2.0), 1.0, Some(0.0)),
+        ((2.0, 2.0), (2.0, 2.0), (4.0, 2.0), 1.0, None),
+    ];
+    for (start, end, center, radius, expected) in cases {
+        let actual = sweep_circle_contact(start, end, center, radius);
+        match (actual, expected) {
+            (Some(a), Some(b)) => assert!((a - b).abs() < 1e-5, "{start:?} -> {end:?}: {a} != {b}"),
+            (None, None) => {},
+            _ => panic!("{start:?} -> {end:?}: {actual:?} != {expected:?}"),
+        }
+    }
+}

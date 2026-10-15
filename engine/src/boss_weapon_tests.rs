@@ -596,3 +596,51 @@ fn the_first_reload_press_after_checkpoint_restore_is_not_latched_by_the_old_run
     e.tick(0.02);
     assert!(e.reload_t > 0.0, "restoring must reset the old run's reload edge detector");
 }
+
+#[test]
+fn checkpoint_restore_cancels_bursts_before_entities_are_reused() {
+    for slot in [PREDICTOR, KEST, EPOCH] {
+        let mut e = gun(slot);
+        let save = abi::capture_save(&e);
+        target(&mut e, 8.0, 4.5);
+        e.fire();
+        abi::apply_save(&mut e, &save);
+        e.map.fill(0);
+        for ent in &mut e.ents { ent.kind = EK_NONE; }
+        e.px = 4.5;
+        e.py = 4.5;
+        let fresh = target(&mut e, 8.0, 4.5);
+        advance(&mut e, 1.0);
+        assert_eq!(e.ents[fresh].hp, 2000, "slot {slot} carried an attack into a restored sector");
+        assert_eq!(e.mag[slot], save.mag[slot], "slot {slot} spent restored ammunition on an old burst");
+    }
+}
+
+#[test]
+fn checkpoint_round_trip_preserves_every_owned_weapon_and_exact_ammunition() {
+    let mut e = gun(HELIOS);
+    for slot in 0..WEP_N {
+        e.grant_slot(slot);
+        e.mag[slot] = slot as i32 % (MAG_SZ[slot] + 1);
+        e.ammo[slot] = (slot as i32 + 5).min(RESERVE_CAP[slot]);
+    }
+    e.health = 64;
+    e.armor = 22;
+    e.kills = 7;
+    e.secrets = 2;
+    e.elapsed = 123.5;
+    let save = abi::capture_save(&e);
+    e.owned.fill(false);
+    e.extra_weapons = 0;
+    e.weapon = 0;
+    e.mag.fill(-42);
+    e.ammo.fill(i32::MAX);
+    abi::apply_save(&mut e, &save);
+    let restored = abi::capture_save(&e);
+    assert!((0..WEP_N).all(|slot| e.owns_slot(slot)));
+    assert_eq!(restored.weapon, save.weapon);
+    assert_eq!((restored.flags, restored.extra_weapons), (save.flags, save.extra_weapons));
+    assert_eq!((restored.ammo, restored.mag), (save.ammo, save.mag));
+    assert_eq!((restored.health, restored.armor, restored.kills, restored.secrets), (64, 22, 7, 2));
+    assert_eq!(restored.elapsed_ms, 123500);
+}
