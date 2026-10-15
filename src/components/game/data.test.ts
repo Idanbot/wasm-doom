@@ -6,6 +6,7 @@ import {
   gpuEnabled,
   loadBoard,
   loadGfx,
+  loadCheckpoint,
   loadRes,
   loadVol,
   radioCopy,
@@ -146,6 +147,13 @@ describe("loadVol", () => {
     installMemoryStorage({ "blacksite-vol": "{" });
     assert.deepEqual(loadVol(), { master: 0.85, music: 0.42, sfx: 0.75, menu: 0.7 });
   });
+
+  it("keeps corrupt persisted channel values out of Web Audio gains", () => {
+    installMemoryStorage({ "blacksite-vol": '{"master":"loud","music":1e999,"sfx":-4,"menu":2}' });
+    assert.deepEqual(loadVol(), { master: 0.85, music: 0.42, sfx: 0, menu: 1 });
+    installMemoryStorage({ "blacksite-vol": '{"master":0,"music":0,"sfx":0,"menu":0}' });
+    assert.deepEqual(loadVol(), { master: 0, music: 0, sfx: 0, menu: 0 });
+  });
 });
 
 describe("leaderboard", () => {
@@ -209,6 +217,62 @@ describe("loadGfx", () => {
   it("merges stored toggles over defaults", () => {
     installMemoryStorage({ "blacksite-gfx": JSON.stringify({ bloom: false }) });
     assert.deepEqual(loadGfx(), { ...DEFAULT_GFX, bloom: false });
+  });
+
+  it("accepts only boolean graphics toggles from storage", () => {
+    installMemoryStorage({ "blacksite-gfx": '{"crt":"false","bloom":0,"fog":false}' });
+    assert.deepEqual(loadGfx(), { ...DEFAULT_GFX, fog:false });
+  });
+});
+
+describe("checkpoint validation", () => {
+  it("restores matching legacy inventories without inventing ammo", () => {
+    for (const length of [8,11,12,18,19,33]) {
+      installMemoryStorage({"blacksite-checkpoint":JSON.stringify({wave:26,health:57,weapon:1,flags:1,
+        ammo:Array(length).fill(2),mag:Array(length).fill(0)})});
+      const save=loadCheckpoint()!;
+      assert.equal(save.wave,26); assert.equal(save.health,57); assert.equal(save.weapon,1);
+      assert.equal(save.ammo.length,33); assert.equal(save.mag.length,33);
+      assert.deepEqual(save.ammo.slice(0,length),Array(length).fill(2));
+      assert.deepEqual(save.ammo.slice(length),Array(33-length).fill(0));
+      assert.ok(save.mag.every(n=>n===0));
+    }
+  });
+
+  it("normalizes malformed checkpoint fields before writing the WASM ABI", () => {
+    const ammo: unknown[]=Array(33).fill(1e100), mag: unknown[]=Array(33).fill(1e100);
+    ammo[0]=-1; ammo[1]="50"; ammo[2]=null; mag[0]=-2; mag[1]={bad:true};
+    installMemoryStorage({"blacksite-checkpoint":JSON.stringify({wave:"bad",health:0,armor:1000,weapon:999,
+      flags:-1,extraWeapons:-1,kills:-2,secrets:"bad",elapsedMs:1e100,ammo,mag})});
+    const save=loadCheckpoint()!;
+    assert.equal(save.wave,1); assert.equal(save.health,1); assert.equal(save.armor,100);
+    assert.equal(save.weapon,0); assert.equal(save.flags,0); assert.equal(save.extraWeapons,0);
+    assert.equal(save.kills,0); assert.equal(save.secrets,0); assert.equal(save.elapsedMs,2147483647);
+    for (const weapon of WEAPONS) {
+      assert.ok(Number.isInteger(save.ammo[weapon.id]) && save.ammo[weapon.id]!>=0 && save.ammo[weapon.id]!<=weapon.reserve);
+      assert.ok(Number.isInteger(save.mag[weapon.id]) && save.mag[weapon.id]!>=0 && save.mag[weapon.id]!<=weapon.magSize);
+    }
+    assert.deepEqual(save.ammo.slice(0,3),[0,0,0]); assert.deepEqual(save.mag.slice(0,2),[0,0]);
+  });
+
+  it("rejects mismatched arrays and never restores an unowned selected gun", () => {
+    installMemoryStorage({"blacksite-checkpoint":JSON.stringify({ammo:Array(8).fill(0),mag:Array(11).fill(0)})});
+    assert.equal(loadCheckpoint(),null);
+    for (const weapon of [1,18,19,32]) {
+      installMemoryStorage({"blacksite-checkpoint":JSON.stringify({weapon,flags:0,extraWeapons:0,
+        ammo:Array(33).fill(0),mag:Array(33).fill(0)})});
+      assert.equal(loadCheckpoint()!.weapon,0);
+    }
+    installMemoryStorage({"blacksite-checkpoint":JSON.stringify({weapon:32,extraWeapons:1<<13,
+      ammo:Array(33).fill(0),mag:Array(33).fill(0)})});
+    assert.equal(loadCheckpoint()!.weapon,32);
+    installMemoryStorage({"blacksite-checkpoint":JSON.stringify({weapon:999,extraWeapons:1<<13,
+      ammo:Array(33).fill(0),mag:Array(33).fill(0)})});
+    assert.equal(loadCheckpoint()!.weapon,0);
+    installMemoryStorage({"blacksite-checkpoint":JSON.stringify({weapon:32,flags:1e100,extraWeapons:1e100,
+      ammo:Array(33).fill(0),mag:Array(33).fill(0)})});
+    const invalidBits=loadCheckpoint()!;
+    assert.equal(invalidBits.flags,0); assert.equal(invalidBits.extraWeapons,0); assert.equal(invalidBits.weapon,0);
   });
 });
 

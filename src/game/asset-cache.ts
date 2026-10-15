@@ -14,7 +14,7 @@ export function setAssetManifest(value: AssetManifest) {
 }
 
 function entryFor(url: string) {
-  const pathname = url.split("?", 1)[0]!;
+  const pathname = url.split(/[?#]/, 1)[0]!;
   const start = pathname.indexOf("/game/");
   return manifest?.assets[start >= 0 ? pathname.slice(start) : pathname.endsWith("/blacksite.wasm") ? "/blacksite.wasm" : pathname];
 }
@@ -67,7 +67,12 @@ export async function validatedAsset<T>(url: string, attempt: number, signal: Ab
       await writes;
     }
     return value;
-  } catch (error) { await cache?.delete(key).catch(() => false); throw error; }
+  } catch (error) {
+    // Abandoning a runtime says nothing about the validity of cached bytes.
+    // Keep them for the next boot; actual integrity/decode failures still evict.
+    if (!signal.aborted) await cache?.delete(key).catch(() => false);
+    throw error;
+  }
 }
 let writes: Promise<void> = Promise.resolve();
 

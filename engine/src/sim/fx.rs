@@ -147,6 +147,7 @@ impl Engine {
                 if self.mag[slot] <= 0 { self.mag[slot] = MAG_SZ[slot]; }
                 self.weapon = slot as i32;
                 self.reload_t = 0.0;
+                self.mechanics.cancel_handling();
                 self.pickup_t = 0.6;self.pickup_dur=0.6;
                 self.events |= EV_PICK_GOLD;
             }

@@ -14,6 +14,21 @@ export type Vol = { master: number; music: number; sfx: number; menu: number };
 
 export const DEFAULT_VOL: Vol = { master: 0.85, music: 0.42, sfx: 0.75, menu: 0.7 };
 
+function boundedNumber(value: unknown, fallback: number, min: number, max: number) {
+  return typeof value === "number" && Number.isFinite(value)
+    ? Math.min(max, Math.max(min, value))
+    : fallback;
+}
+
+function savedInteger(value: unknown, fallback = 0, min = 0, max = 2147483647) {
+  return Math.floor(boundedNumber(value, fallback, min, max));
+}
+
+function savedBits(value: unknown, mask: number) {
+  return typeof value === "number" && Number.isSafeInteger(value) && value >= 0 && value <= 0xffffffff
+    ? value & mask : 0;
+}
+
 import { CAMPAIGN_EXPANSION } from "../../game/campaign25.ts";
 
 export const SECTORS = [
@@ -216,10 +231,10 @@ export function loadVol(): Vol {
     if (!raw) return { ...DEFAULT_VOL };
     const v = JSON.parse(raw) as Partial<Vol>;
     return {
-      master: v.master ?? DEFAULT_VOL.master,
-      music: v.music ?? DEFAULT_VOL.music,
-      sfx: v.sfx ?? DEFAULT_VOL.sfx,
-      menu: v.menu ?? DEFAULT_VOL.menu,
+      master: boundedNumber(v.master, DEFAULT_VOL.master, 0, 1),
+      music: boundedNumber(v.music, DEFAULT_VOL.music, 0, 1),
+      sfx: boundedNumber(v.sfx, DEFAULT_VOL.sfx, 0, 1),
+      menu: boundedNumber(v.menu, DEFAULT_VOL.menu, 0, 1),
     };
   } catch {
     return { ...DEFAULT_VOL };
@@ -294,9 +309,9 @@ export function loadGfx(): GfxOpts {
     if (raw) {
       const v = JSON.parse(raw) as Partial<GfxOpts>;
       return {
-        crt: v.crt ?? DEFAULT_GFX.crt,
-        bloom: v.bloom ?? DEFAULT_GFX.bloom,
-        fog: v.fog ?? DEFAULT_GFX.fog,
+        crt: typeof v.crt === "boolean" ? v.crt : DEFAULT_GFX.crt,
+        bloom: typeof v.bloom === "boolean" ? v.bloom : DEFAULT_GFX.bloom,
+        fog: typeof v.fog === "boolean" ? v.fog : DEFAULT_GFX.fog,
       };
     }
   } catch {
@@ -330,23 +345,31 @@ export function loadCheckpoint(): RunSave | null {
     if (!v || !Array.isArray(v.ammo) || !Array.isArray(v.mag)) {
       return null;
     }
-    // Old 8- and 11-slot checkpoints remain loadable after adding AR-6.
+    // Preserve supported legacy inventories, padding only genuinely new slots.
     if (![8, 11, 12, 18, 19, 33].includes(v.ammo.length)) return null;
-    if (![8, 11, 12, 18, 19, 33].includes(v.mag.length)) return null;
-    const padSlots = (a: number[]) => [...a, ...Array(33).fill(0)].slice(0, 33);
+    if (v.mag.length !== v.ammo.length) return null;
+    const flags = savedBits(v.flags, (1 << 18) - 1);
+    const extraWeapons = savedBits(v.extraWeapons, 16383);
+    const requested = savedInteger(v.weapon);
+    const selected = requested < WEAPONS.length ? requested : 0;
+    const owned = selected === 0 || (selected <= 18
+      ? (flags & (1 << (selected - 1))) !== 0
+      : (extraWeapons & (1 << (selected - 19))) !== 0);
+    const run = cleanRun(v.run);
+    const ammo = v.ammo, mag = v.mag;
     return {
-      ...(cleanRun(v.run) ? { run: cleanRun(v.run) } : {}),
-      wave: Math.min(2147483647, Math.max(1, Math.floor(v.wave || 1))),
-      health: v.health || 100,
-      armor: Math.min(100, Math.max(0, v.armor || 0)),
-      weapon: v.weapon || 0,
-      flags: v.flags || 0,
-      extraWeapons: (v.extraWeapons || 0) & 16383,
-      kills: v.kills || 0,
-      secrets: v.secrets || 0,
-      elapsedMs: v.elapsedMs || 0,
-      ammo: padSlots(v.ammo),
-      mag: padSlots(v.mag),
+      ...(run ? { run } : {}),
+      wave: savedInteger(v.wave, 1, 1),
+      health: savedInteger(v.health, 100, 1, 100),
+      armor: savedInteger(v.armor, 0, 0, 100),
+      weapon: owned ? selected : 0,
+      flags,
+      extraWeapons,
+      kills: savedInteger(v.kills),
+      secrets: savedInteger(v.secrets),
+      elapsedMs: savedInteger(v.elapsedMs),
+      ammo: WEAPONS.map(w => savedInteger(ammo[w.id], 0, 0, w.reserve)),
+      mag: WEAPONS.map(w => savedInteger(mag[w.id], 0, 0, w.magSize)),
     };
   } catch {
     return null;

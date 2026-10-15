@@ -5,7 +5,59 @@
 // imports (`consts::*`, `mod tactical`, the `Engine` type) as well as `sim`.
 use crate::*;
 
+/// First contact along a segment, expressed as a fraction of its length.
+/// Using body entry rather than closest-point distance makes collision order
+/// independent of entity storage order and includes differently sized targets.
+pub(crate) fn sweep_circle_contact(
+    start: (f32, f32),
+    end: (f32, f32),
+    center: (f32, f32),
+    radius: f32,
+) -> Option<f32> {
+    let (dx, dy) = (end.0 - start.0, end.1 - start.1);
+    let (ox, oy) = (start.0 - center.0, start.1 - center.1);
+    let c = ox * ox + oy * oy - radius * radius;
+    if c <= 0.0 { return Some(0.0); }
+    let a = dx * dx + dy * dy;
+    if a <= 1e-8 { return None; }
+    let b = ox * dx + oy * dy;
+    let discriminant = b * b - a * c;
+    if discriminant < 0.0 { return None; }
+    let t = (-b - discriminant.sqrt()) / a;
+    (0.0..=1.0).contains(&t).then_some(t)
+}
+
 impl Engine {
+    /// Reuse the exact grid traversal used by hitscan rather than rejecting a
+    /// whole simulation step when a wall lies beyond a nearer actor.
+    pub(crate) fn projectile_wall_contact(&self, start: (f32, f32), end: (f32, f32)) -> Option<f32> {
+        let (dx, dy) = (end.0 - start.0, end.1 - start.1);
+        let distance = dx.hypot(dy);
+        if distance <= 1e-8 {
+            return self.blocked(start.0.floor() as i32, start.1.floor() as i32).then_some(0.0);
+        }
+        // Trace slightly beyond the endpoint so a contact exactly on it is
+        // distinguishable from an unobstructed trace of the full step.
+        let wall = self.wall_distance(start.0, start.1, dx / distance, dy / distance, distance + 0.0001);
+        (wall <= distance).then_some(wall / distance)
+    }
+
+    pub(crate) fn projectile_target_contact(
+        &self,
+        start: (f32, f32),
+        end: (f32, f32),
+        padding: f32,
+        before: f32,
+    ) -> Option<(usize, f32)> {
+        self.ents.iter().enumerate()
+            .filter(|(_, e)| e.hp > 0 && target_kind(e.kind))
+            .filter_map(|(i, e)| {
+                let t = sweep_circle_contact(start, end, (e.x, e.y), e.radius + padding)?;
+                (t < before).then_some((i, t))
+            })
+            .min_by(|(ai, at), (bi, bt)| at.total_cmp(bt).then_with(|| ai.cmp(bi)))
+    }
+
     pub(crate) fn cell(&self, x: i32, y: i32) -> u8 {
         if x < 0 || y < 0 || x >= MAP_W as i32 || y >= MAP_H as i32 {
             return 1;

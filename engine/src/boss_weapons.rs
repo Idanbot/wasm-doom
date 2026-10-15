@@ -182,6 +182,13 @@ impl Engine {
     /// must cancel a burst before it spends or fires the next bullet.
     pub(crate) fn resolve_boss_weapon_actions(&mut self, due: Vec<Pending>) {
         for p in due {
+            // Input/pickups can complete the sector after the timers were
+            // collected. A pulse can also finish it itself when reward spawn
+            // falls back to an immediate grant, so recheck each action.
+            if self.state != 0 {
+                self.mechanics.pending.clear();
+                break;
+            }
             self.current_shot = p.shot;
             match p.attack {
                 Attack::Pulse {

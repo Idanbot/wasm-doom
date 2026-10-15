@@ -47,6 +47,8 @@ mod sim_tests;
 mod reload_presentation_tests;
 #[cfg(test)]
 mod boss_weapon_tests;
+#[cfg(test)]
+mod projectile_tests;
 
 use consts::*;
 use enemies::{default_skin, enemy_def, is_hostile_kind, skin_def};
@@ -838,43 +840,56 @@ impl Engine {
                     let (ex, ey, dead, damage, variant, visual, palette, trail) = (e.x, e.y, e.timer <= 0.0, e.hp, e.effect_tick, e.skin, e.face as i32, matches!(e.skin, 120 | 129 | 133 | 230) && (e.frame * 12.0).floor() != ((e.frame - dt) * 12.0).floor());
                     let _ = e;
                     if trail && !dead { self.spawn_timed(EK_SMOKE, old_x, old_y, 0.75, 10.0); }
-                    if dead || !self.los(old_x, old_y, ex, ey) {
+                    let start = (old_x, old_y);
+                    let end = (ex, ey);
+                    let wall = self.projectile_wall_contact(start, end);
+                    let before_wall = wall.unwrap_or(f32::INFINITY);
+                    let friendly = matches!(variant, 4.0 | 5.0 | 6.0);
+                    let target = if !dead && pstate == 0 && friendly {
+                        self.projectile_target_contact(start, end, 0.25, before_wall)
+                    } else { None };
+                    let player = if !dead && pstate == 0 && !friendly {
+                        sim::geometry::sweep_circle_contact(start, end, (px, py), 0.22_f32.sqrt())
+                            .filter(|t| *t < before_wall)
+                    } else { None };
+                    if let Some((j, t)) = target {
+                        let (hx, hy) = (old_x + (ex - old_x) * t, old_y + (ey - old_y) * t);
+                        self.ents[i].x = hx;
+                        self.ents[i].y = hy;
                         self.ents[i].kind = 0;
-                        if self.resolve_reward_projectile(self.ents[i], None, old_x, old_y) { continue; }
-                        if (100..=136).contains(&visual) || (230..=234).contains(&visual) { self.projectile_impact(old_x, old_y, visual, palette); }
-                        if visual == 230 && !dead && variant == 6.0 { self.explode(old_x, old_y, 1.6, damage as f32 * 0.4); }
-                        if variant == 4.0 {
-                            self.chimera_burst(old_x, old_y);
-                        } else if !dead {
-                            self.effect(EK_IMPACT, if variant == 3.0 { 3 } else { 1 }, old_x, old_y, 0.22, -6.0);
+                        if self.resolve_reward_projectile(self.ents[i], Some(j), hx, hy) { continue; }
+                        let slot=if self.ents[i].projectile_visual>0 {7+self.ents[i].projectile_visual as usize}else if variant==4.0 {10}else{14};
+                        self.player_hit(j, damage, hx, hy,slot);
+                        if (230..=234).contains(&visual) {
+                            self.projectile_impact(hx, hy, visual, palette);
+                            if visual == 230 { self.explode(hx, hy, 1.6, damage as f32 * 0.4); }
                         }
-                    } else if pstate == 0 {
-                        let d = segment_distance_sq(px, py, old_x, old_y, ex, ey);
-                        if d < 0.22 && variant != 4.0 && variant != 5.0 && variant != 6.0 {
-                            self.ents[i].kind = 0;
-                            melee.push((i, damage));
-                        } else if variant == 4.0 || variant == 5.0 || variant == 6.0 {
-                            let mut hit = None;
-                            for (j, o) in self.ents.iter().enumerate() {
-                                if o.hp <= 0 || !target_kind(o.kind) { continue; }
-                                let d2 = segment_distance_sq(o.x, o.y, old_x, old_y, ex, ey);
-                                if d2 < (o.radius + 0.25).powi(2) { hit = Some(j); break; }
-                            }
-                            if let Some(j) = hit {
-                                self.ents[i].kind = 0;
-                                if self.resolve_reward_projectile(self.ents[i], Some(j), ex, ey) { continue; }
-                                let slot=if self.ents[i].projectile_visual>0 {7+self.ents[i].projectile_visual as usize}else if variant==4.0 {10}else{14};
-                                self.player_hit(j, damage, ex, ey,slot);
-                                if (230..=234).contains(&visual) {
-                                    self.projectile_impact(ex, ey, visual, palette);
-                                    if visual == 230 { self.explode(ex, ey, 1.6, damage as f32 * 0.4); }
-                                }
-                                if variant == 4.0 { self.chimera_burst(ex, ey); }
-                                else {
-                                    self.ents[j].timer += 0.45;
-                                    self.effect(EK_IMPACT, 1, ex, ey, 0.22, -8.0);
-                                }
-                            }
+                        if variant == 4.0 { self.chimera_burst(hx, hy); }
+                        else {
+                            self.ents[j].timer += 0.45;
+                            self.effect(EK_IMPACT, 1, hx, hy, 0.22, -8.0);
+                        }
+                    } else if let Some(t) = player {
+                        self.ents[i].x = old_x + (ex - old_x) * t;
+                        self.ents[i].y = old_y + (ey - old_y) * t;
+                        self.ents[i].kind = 0;
+                        melee.push((i, damage));
+                    } else if dead || wall.is_some() {
+                        // Keep impact effects just outside the wall so splash
+                        // line-of-sight starts on the accessible side.
+                        let distance = (ex - old_x).hypot(ey - old_y).max(1e-8);
+                        let t = if dead { 0.0 } else { (wall.unwrap() - 0.001 / distance).max(0.0) };
+                        let (hx, hy) = (old_x + (ex - old_x) * t, old_y + (ey - old_y) * t);
+                        self.ents[i].x = hx;
+                        self.ents[i].y = hy;
+                        self.ents[i].kind = 0;
+                        if self.resolve_reward_projectile(self.ents[i], None, hx, hy) { continue; }
+                        if (100..=136).contains(&visual) || (230..=234).contains(&visual) { self.projectile_impact(hx, hy, visual, palette); }
+                        if visual == 230 && !dead && variant == 6.0 { self.explode(hx, hy, 1.6, damage as f32 * 0.4); }
+                        if variant == 4.0 {
+                            self.chimera_burst(hx, hy);
+                        } else if !dead {
+                            self.effect(EK_IMPACT, if variant == 3.0 { 3 } else { 1 }, hx, hy, 0.22, -6.0);
                         }
                     }
                 }
@@ -970,26 +985,22 @@ impl Engine {
                         // Small puffs trace the missile's flight and expire within one second.
                         self.spawn_timed(EK_SMOKE, old_x, old_y, 0.9, 10.0);
                     }
-                    if dead || !self.los(old_x, old_y, ex, ey) {
+                    let wall = self.projectile_wall_contact((old_x, old_y), (ex, ey));
+                    let hit = if dead { None } else {
+                        self.projectile_target_contact((old_x, old_y), (ex, ey), 0.2, wall.unwrap_or(f32::INFINITY))
+                    };
+                    if dead || wall.is_some() || hit.is_some() {
+                        let distance = (ex - old_x).hypot(ey - old_y).max(1e-8);
+                        let t = if dead { 0.0 } else if let Some((_, t)) = hit { t }
+                            else { (wall.unwrap() - 0.001 / distance).max(0.0) };
+                        let (hx, hy) = (old_x + (ex - old_x) * t, old_y + (ey - old_y) * t);
+                        self.ents[i].x = hx;
+                        self.ents[i].y = hy;
                         self.ents[i].kind = 0;
-                        self.explode(old_x, old_y, if heavy { 5.6 } else { 4.8 }, if heavy { 95.0 } else { 65.0 });
-                    } else {
-                        let mut hit = None;
-                        for (j, o) in self.ents.iter().enumerate() {
-                            if j == i || o.hp <= 0 || !target_kind(o.kind) {
-                                continue;
-                            }
-                            let d2 = segment_distance_sq(o.x, o.y, old_x, old_y, ex, ey);
-                            if d2 < (o.radius + 0.2).powi(2) {
-                                hit = Some(j);
-                                break;
-                            }
+                        if let Some((j, _)) = hit {
+                            self.hurt_ent(j, if heavy { 45 } else { 24 }, hx, hy);
                         }
-                        if let Some(j) = hit {
-                            self.ents[i].kind = 0;
-                            self.hurt_ent(j, if heavy { 45 } else { 24 }, ex, ey);
-                            self.explode(ex, ey, if heavy { 5.6 } else { 4.8 }, if heavy { 95.0 } else { 65.0 });
-                        }
+                        self.explode(hx, hy, if heavy { 5.6 } else { 4.8 }, if heavy { 95.0 } else { 65.0 });
                     }
                 }
                 EK_LAMP => {

@@ -65,13 +65,6 @@ pub(crate) fn floor_seat(h: f32, scale: f32, bob: f32) -> f32 {
     (h * 0.5) * (1.0 - scale) + h * 0.14 + bob
 }
 
-pub(crate) fn segment_distance_sq(x: f32, y: f32, ax: f32, ay: f32, bx: f32, by: f32) -> f32 {
-    let dx = bx - ax;
-    let dy = by - ay;
-    let t = (((x - ax) * dx + (y - ay) * dy) / (dx * dx + dy * dy).max(1e-8)).clamp(0.0, 1.0);
-    (x - ax - dx * t).powi(2) + (y - ay - dy * t).powi(2)
-}
-
 pub(crate) fn animation_fps(state: u8) -> f32 {
     match state { ANIM_IDLE => 2.2, ANIM_MOVE => 8.0, ANIM_PAIN => 7.0,
         ANIM_FIRE => 9.0, ANIM_RELOAD => 5.5, ANIM_DEAD => 3.2,

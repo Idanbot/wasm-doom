@@ -223,8 +223,10 @@ pub(crate) fn apply_save(e: &mut Engine, s: &RunSave) {
     for (i, slot) in e.owned.iter_mut().enumerate() {
         *slot = s.flags & (1 << i) != 0;
     }
-    e.ammo = s.ammo;
-    e.mag = s.mag;
+    // The load buffer is browser-writable. Reject negative/overflowing ammo
+    // before reload subtraction and grant arithmetic can consume it.
+    e.ammo = core::array::from_fn(|slot| s.ammo[slot].clamp(0, RESERVE_CAP[slot]));
+    e.mag = core::array::from_fn(|slot| s.mag[slot].clamp(0, MAG_SZ[slot]));
     e.extra_weapons = s.extra_weapons & 16383;
     e.weapon = if (0..WEP_N as i32).contains(&s.weapon) && e.owns_slot(s.weapon as usize) { s.weapon } else { 0 };
     e.state = 0;

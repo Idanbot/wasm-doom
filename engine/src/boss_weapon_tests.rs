@@ -511,3 +511,52 @@ fn reload_input_on_the_due_frame_cancels_a_burst_before_it_spends_ammo() {
     assert_eq!(e.run_ammo, 1);
     assert!(e.reload_t > 0.0);
 }
+
+#[test]
+fn collecting_a_basic_weapon_cancels_another_weapons_pressure_vent() {
+    let mut e = gun(SINK);
+    e.mechanics.pressure[SINK] = 0.8;
+    e.begin_reload();
+    e.spawn(EK_GUN3, e.px, e.py).unwrap();
+    e.tick(0.02);
+    assert_eq!(e.weapon, 2);
+    assert!(e.mechanics.vent.is_none(), "auto-equip must cancel the previous weapon's vent");
+    let ammo = (e.mag[SINK], e.mag[2]);
+    e.cooldown = 0.0;
+    e.bits = IN_FIRE;
+    e.tick(0.02);
+    assert_eq!((e.mag[SINK], e.mag[2]), (ammo.0, ammo.1 - 1));
+    assert!(e.mechanics.pressure[SINK] > 0.0, "cancellation preserves the old weapon's pressure");
+}
+
+#[test]
+fn a_delayed_attack_due_on_the_reward_pickup_frame_cannot_fire_after_sector_completion() {
+    let mut e = gun(PREDICTOR);
+    let i = target(&mut e, 8.0, 4.5);
+    e.fire();
+    advance(&mut e, 0.16);
+    let hp = e.ents[i].hp;
+    e.spawn(field::boss_case(e.wave), e.px, e.py).unwrap();
+    e.tick(0.04);
+    assert_eq!(e.state, 2);
+    assert_eq!(e.ents[i].hp, hp, "a committed pulse must stop when the sector ends");
+}
+
+#[test]
+fn checkpoint_ammunition_is_bounded_before_reload_and_fire() {
+    let mut e = gun(HELIOS);
+    let mut save = abi::capture_save(&e);
+    for slot in 0..WEP_N {
+        save.mag[slot] = if slot % 2 == 0 { i32::MIN } else { i32::MAX };
+        save.ammo[slot] = if slot % 2 == 0 { i32::MAX } else { i32::MIN };
+    }
+    abi::apply_save(&mut e, &save);
+    for slot in 0..WEP_N {
+        assert!((0..=MAG_SZ[slot]).contains(&e.mag[slot]), "slot {slot} magazine escaped its bounds");
+        assert!((0..=RESERVE_CAP[slot]).contains(&e.ammo[slot]), "slot {slot} reserve escaped its bounds");
+    }
+    e.begin_reload();
+    advance(&mut e, 4.0);
+    assert_eq!(e.mag[HELIOS], MAG_SZ[HELIOS]);
+    assert_eq!(e.ammo[HELIOS], RESERVE_CAP[HELIOS] - MAG_SZ[HELIOS]);
+}

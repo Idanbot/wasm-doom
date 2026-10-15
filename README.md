@@ -14,7 +14,7 @@ backend, no accounts and no database.
 | Interface | React 19 + TypeScript, Vite |
 | Rendering | WebGPU, WebGL2, Canvas2D fallback (auto-detected) |
 | Audio | Web Audio; recorded SFX, spoken enemy and boss voices |
-| Tests | `node:test` (unit + Playwright browser), `cargo test` (190) |
+| Tests | `node:test` (unit + Playwright browser), `cargo test` |
 
 ## Architecture
 
@@ -89,6 +89,8 @@ atmospheric particle profile.
   drains shields, freeze slows, acid marks for follow-up damage.
 - After sector 25 layouts repeat with rising enemy totals and health.
 - Progress, settings and scores are stored in the browser.
+  Saved settings and inventories are validated before use; legacy checkpoints
+  retain their ammunition and new weapon slots start empty.
 - Settings shows a small latest-update date from the source commit, embedded in
   both production builds (source archives use their build date).
 
@@ -170,10 +172,15 @@ campaign. A content-hashed manifest weights progress by bytes; decode/upload and
 first-frame presentation have reserved progress. Successfully decoded files persist
 in a best-effort 384 MiB cache, with hash validation and eviction of old entries.
 Downloads share a concurrency budget, and retries refresh failed cached files.
+Canceling a load preserves valid cached assets for the next attempt; URL fragments
+use the same manifest identity and integrity checks as their underlying files.
 After three failed attempts, **Retry loading** starts a fresh boot. Sprite
 sources and the animation contract live in `art/loading/manifest.json`.
 
 HUD cards reserve a safe inset inside the decorative rails. `scripts/hud-insets.browser.mjs` checks all 33 guns and reload labels at four desktop/mobile sizes; `scripts/loading-ready.browser.mjs` checks loading animation, silent retries, progress and the initial HUD. `scripts/loading-recovery.browser.mjs` checks retry exhaustion and recovery of engine, texture and audio manifest failures.
+
+Rust combat regressions exercise projectile first-contact ordering, wall-blocked
+splash, weapon pickup cancellation and delayed attacks at sector completion.
 
 ## Local QA
 

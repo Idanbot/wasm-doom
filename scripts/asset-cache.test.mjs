@@ -19,6 +19,20 @@ test('manifest rejects malformed identities and applies content versions under P
   assert.equal(versionedAssetUrl('/blacksite/game/a.json'),`/blacksite/game/a.json?blacksite_version=${hash(a)}`);
 });
 
+test('asset fragments preserve manifest byte weights and cannot bypass integrity validation',async()=>{
+  const previousFetch=globalThis.fetch;
+  let decoded=0;
+  globalThis.fetch=async()=>new Response('corrupt');
+  try {
+    setAssetManifest(manifest);
+    for(const url of ['/blacksite/game/a.json#preview','/blacksite/game/a.json?view=1#preview']) {
+      assert.equal(assetBytes(url),a.length,'fragments identify the same published bytes');
+      await assert.rejects(validatedAsset(url,0,new AbortController().signal,async()=>{decoded++;}),/Asset integrity mismatch/);
+    }
+    assert.equal(decoded,0,'corrupt bytes must never reach the decoder');
+  } finally { globalThis.fetch=previousFetch; }
+});
+
 test('progress weights real asset bytes rather than counting equally sized files',async()=>{
   setAssetManifest(manifest);let release;
   const held=new Promise(resolve=>release=resolve), samples=[];
@@ -50,6 +64,13 @@ test('persistent cache validates hashes, caches only decoded success, evicts by 
     assert.deepEqual(await validatedAsset('/game/a.json',0,signal,r=>r.json()),{valid:true});
     assert.equal(requests,1,'second boot reuses validated bytes');
     const key=absolute(versionedAssetUrl('/game/a.json'));
+    const controller=new AbortController();
+    await assert.rejects(validatedAsset('/game/a.json',0,controller.signal,async()=>{
+      controller.abort();controller.signal.throwIfAborted();
+    }),{name:'AbortError'});
+    assert.equal(values.has(key),true,'cancelling a runtime must preserve validated cached bytes');
+    assert.deepEqual(await validatedAsset('/game/a.json',0,signal,r=>r.json()),{valid:true});
+    assert.equal(requests,1,'the next runtime can reuse bytes from a cancelled decode');
     values.set(key,new Response('corrupt'));
     assert.deepEqual(await fetchAsset('/game/a.json',r=>r.json()),{valid:true});
     assert.equal(requests,2,'corrupt cached bytes are deleted before network retry');
