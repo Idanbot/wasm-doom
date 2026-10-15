@@ -469,6 +469,7 @@ export class BlacksiteRuntime {
   private touchLookX = 0;
   private touchLookY = 0;
   private ignoreMouse = 0;
+  private pointerLockRequest = 0;
   private fireHeld = false;
   private running = false;
   private aborted = false;
@@ -677,6 +678,7 @@ export class BlacksiteRuntime {
   setPlaying(v: boolean) {
     const changed = this.playing !== v;
     this.playing = v;
+    if (!v) this.pointerLockRequest++;
     this.renderDirty = true;
     this.clearInput();
     this.accumulator = 0;
@@ -856,7 +858,8 @@ export class BlacksiteRuntime {
   }
 
   requestLock() {
-    if (window.matchMedia("(pointer: coarse)").matches || !this.canvas.requestPointerLock) return;
+    if (this.aborted || !this.playing || window.matchMedia("(pointer: coarse)").matches || !this.canvas.requestPointerLock) return;
+    const request = ++this.pointerLockRequest;
     this.ignoreMouse = 3;
     this.lookX = 0;
     this.lookY = 0;
@@ -864,23 +867,27 @@ export class BlacksiteRuntime {
     const req = el.requestPointerLock as (opts?: {
       unadjustedMovement?: boolean;
     }) => Promise<void> | void;
-    try {
-      const p = req.call(el, { unadjustedMovement: true });
-      if (p && typeof (p as Promise<void>).catch === "function") {
-        (p as Promise<void>).catch(() => {
-          try {
-            void Promise.resolve(el.requestPointerLock()).catch(() => {});
-          } catch {
-            /* unavailable */
-          }
-        });
-      }
-    } catch {
+    const release = () => this.releaseInactiveLock();
+    const fallback = () => {
+      // A raw-mouse rejection may arrive after pause, stop or another request.
+      // It must not recapture the cursor over a menu or replace newer input.
+      if (this.aborted || !this.playing || request !== this.pointerLockRequest) return;
       try {
-        void Promise.resolve(el.requestPointerLock()).catch(() => {});
+        void Promise.resolve(el.requestPointerLock()).then(release, () => {});
       } catch {
         /* unavailable */
       }
+    };
+    try {
+      void Promise.resolve(req.call(el, { unadjustedMovement: true })).then(release, fallback);
+    } catch {
+      fallback();
+    }
+  }
+
+  private releaseInactiveLock() {
+    if ((!this.playing || this.aborted) && document.pointerLockElement === this.canvas) {
+      document.exitPointerLock();
     }
   }
 
@@ -1322,6 +1329,7 @@ export class BlacksiteRuntime {
     this.lookX = 0;
     this.lookY = 0;
     this.ignoreMouse = 3;
+    this.releaseInactiveLock();
   };
 
   private onMouse = (e: MouseEvent) => {

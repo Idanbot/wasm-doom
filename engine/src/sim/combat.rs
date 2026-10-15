@@ -6,6 +6,31 @@
 use crate::*;
 
 impl Engine {
+    /// Checkpoints restart a sector with its saved body and inventory. Buffs,
+    /// trigger edges and unfinished handling belong to the abandoned attempt.
+    pub(crate) fn reset_checkpoint_combat(&mut self) {
+        self.tactical = tactical::Tactical::new();
+        self.mechanics = boss_weapons::Arsenal::new();
+        self.power = 0;
+        self.power_t = 0.0;
+        self.shield_pool = 0;
+        self.cooldown = 0.0;
+        self.reload_t = 0.0;
+        self.pickup_t = 0.0;
+        self.muzzle = 0.0;
+        self.kick = 0.0;
+        self.hitmarker = 0.0;
+        self.spread = 0.0;
+        self.bits = 0;
+        self.qa_bits = 0;
+        self.mx = 0.0;
+        self.my = 0.0;
+        self.use_latched = false;
+        self.reload_latched = false;
+        self.wpn_latched = 0;
+        self.current_shot = 0;
+    }
+
     pub(crate) fn campaign_impact(&mut self, x: f32, y: f32, variant: usize) {
         self.leave_residue(x,y,if variant%4==3 {2} else {1});
         self.sound(13, (variant % 4) as u8, x, y);

@@ -20,6 +20,7 @@ import {
 } from "./data.ts";
 import { DEFAULT_GFX, RES_MODES } from "../../game/types.ts";
 import { WEAPON_SHEETS, WEAPON_THUMBNAILS } from "../../game/weapon-assets.ts";
+import { encodeRouteMap, type RunRecord } from "../../game/run-record.ts";
 
 function installMemoryStorage(initial: Record<string, string> = {}) {
   const store = new Map<string, string>(Object.entries(initial));
@@ -179,6 +180,56 @@ describe("leaderboard", () => {
   it("ignores corrupt storage", () => {
     installMemoryStorage({ "blacksite-board": "not json" });
     assert.deepEqual(loadBoard(), []);
+  });
+
+  it("persists a new run's statistics when its route alone exceeds browser quota", () => {
+    const storage = installMemoryStorage();
+    const write = storage.setItem;
+    storage.setItem = (key, value) => {
+      if (key === "blacksite-board" && value.length > 1200) {
+        throw new DOMException("Storage quota exceeded", "QuotaExceededError");
+      }
+      write(key, value);
+    };
+    const run: RunRecord = {
+      difficulty: "veteran", assisted: false, shots: 20, hits: 12,
+      ammoSpent: 20, damageTaken: 35, bosses: 1,
+      sectors: [{ sector: 1, time: 30000, kills: 8, completed: true,
+        route: Array.from({ length: 128 }, (_, i) => [i % 48, i % 32]),
+        map: encodeRouteMap(Uint8Array.from({ length: 1536 }, (_, i) => i % 4)) }],
+    };
+    const board = saveBoard({ name: "QUOTA", wave: 1, kills: 8, time: 30000, run });
+    const restored = loadBoard();
+    assert.equal(restored.length, 1, "summary must survive a page reload");
+    assert.deepEqual(restored, board);
+    assert.equal(restored[0]!.run!.hits, 12);
+    assert.equal(restored[0]!.run!.damageTaken, 35);
+    assert.deepEqual(restored[0]!.run!.sectors[0]!.route, []);
+    assert.equal(restored[0]!.run!.sectors[0]!.map, "");
+    assert.equal(run.sectors[0]!.route.length, 128, "quota fallback must not mutate the live run");
+  });
+
+  it("sacrifices older routes before removing a new route that fits the remaining quota", () => {
+    const storage = installMemoryStorage();
+    const oldRun: RunRecord = {
+      difficulty: "operative", assisted: false, shots: 10, hits: 5,
+      ammoSpent: 10, damageTaken: 12, bosses: 1,
+      sectors: [{ sector: 1, time: 20000, kills: 4, completed: true, route: [[4, 4], [8, 8]],
+        map: encodeRouteMap(Uint8Array.from({ length: 1536 }, (_, i) => i % 4)) }],
+    };
+    saveBoard({ name: "OLDER", wave: 1, kills: 4, time: 20000, run: oldRun });
+    const write = storage.setItem;
+    storage.setItem = (key, value) => {
+      if (key === "blacksite-board" && value.length > 1800) throw new DOMException("Quota", "QuotaExceededError");
+      write(key, value);
+    };
+    const newRun = structuredClone(oldRun);
+    newRun.sectors[0]!.map = encodeRouteMap(new Uint8Array(1536));
+    const board = saveBoard({ name: "NEWER", wave: 2, kills: 5, time: 25000, run: newRun });
+    assert.deepEqual(loadBoard(), board);
+    assert.deepEqual(board.find(row => row.name === "OLDER")!.run!.sectors[0]!.route, []);
+    assert.deepEqual(board.find(row => row.name === "NEWER")!.run!.sectors[0]!.route, [[4, 4], [8, 8]]);
+    assert.equal(newRun.sectors[0]!.map, encodeRouteMap(new Uint8Array(1536)));
   });
 });
 

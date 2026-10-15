@@ -560,3 +560,39 @@ fn checkpoint_ammunition_is_bounded_before_reload_and_fire() {
     assert_eq!(e.mag[HELIOS], MAG_SZ[HELIOS]);
     assert_eq!(e.ammo[HELIOS], RESERVE_CAP[HELIOS] - MAG_SZ[HELIOS]);
 }
+
+#[test]
+fn a_checkpoint_does_not_inherit_an_unsaved_powerup_from_the_abandoned_sector() {
+    let mut e = gun(HELIOS);
+    let save = abi::capture_save(&e);
+    e.power = field::POWER_FEED;
+    e.power_t = 10.0;
+    e.shield_pool = 96;
+    abi::apply_save(&mut e, &save);
+    assert_eq!((e.power, e.power_t, e.shield_pool), (0, 0.0, 0));
+    e.fire();
+    assert_eq!(e.mag[HELIOS], save.mag[HELIOS] - 1, "restoring cannot grant free feed shots");
+    assert_eq!(e.run_ammo, 1);
+}
+
+#[test]
+fn a_checkpoint_does_not_inherit_the_previous_weapons_cooldown() {
+    let mut e = gun(HELIOS);
+    let save = abi::capture_save(&e);
+    e.cooldown = 0.95;
+    abi::apply_save(&mut e, &save);
+    e.fire();
+    assert_eq!(e.mag[HELIOS], save.mag[HELIOS] - 1, "the restored gun must be immediately usable");
+}
+
+#[test]
+fn the_first_reload_press_after_checkpoint_restore_is_not_latched_by_the_old_run() {
+    let mut e = gun(HELIOS);
+    e.mag[HELIOS] = 0;
+    let save = abi::capture_save(&e);
+    e.reload_latched = true;
+    abi::apply_save(&mut e, &save);
+    e.bits = IN_RELOAD;
+    e.tick(0.02);
+    assert!(e.reload_t > 0.0, "restoring must reset the old run's reload edge detector");
+}

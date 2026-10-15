@@ -98,3 +98,19 @@ test("corrupt stored runs cannot inject nonfinite values or oversized routes", (
   assert.deepEqual(run.sectors[0]!.route, [[4, 5]]);
   assert.equal(run.sectors[0]!.map, "");
 });
+
+test("checkpoint sector splits cannot exceed restored cumulative time or kills", () => {
+  const recorder = new RunRecorder();
+  recorder.sample(1, totals(10_000, 4), 8, 4, map, 0);
+  const run = recorder.record(totals(10_000, 4));
+  const restored = new RunRecorder();
+  restored.restore(run, totals(5_000, 2), 1);
+  const initial = restored.record(totals(5_000, 2)).sectors[0]!;
+  assert.equal(initial.time, 5_000);
+  assert.equal(initial.kills, 2);
+  restored.sample(1, totals(6_000, 3), 9, 4, map, 0);
+  const current = restored.record(totals(6_000, 3)).sectors[0]!;
+  assert.equal(current.time, 6_000, "a negative baseline must not inflate elapsed time");
+  assert.equal(current.kills, 3, "a negative baseline must not invent kills");
+  assert.equal(run.sectors[0]!.time, 10_000, "restoring must not mutate its source");
+});

@@ -152,6 +152,12 @@ export class RunRecorder {
     this.reset(run.difficulty, run.assisted);
     this.sectors = structuredClone(run.sectors.filter((s) => s.sector !== sector));
     this.active = structuredClone(run.sectors.find((s) => s.sector === sector) ?? null);
+    if (this.active) {
+      // The engine's checkpoint totals are authoritative. A stale or edited
+      // sector split must not create a negative cumulative baseline.
+      this.active.time = Math.max(0, Math.min(totals.time, this.active.time));
+      this.active.kills = Math.max(0, Math.min(totals.kills, this.active.kills));
+    }
     this.base = {
       time: totals.time - (this.active?.time ?? 0),
       kills: totals.kills - (this.active?.kills ?? 0),

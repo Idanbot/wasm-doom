@@ -105,6 +105,7 @@ export function GameApp() {
     }
     return "game";
   });
+  const catalogOpen = view === "catalog" && catalogEnabled && AssetCatalog !== null;
   const [hud, setHud] = useState<HudState>(DEFAULT_HUD);
   const [wheelVisible, setWheelVisible] = useState(false);
   const wheelTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -492,7 +493,7 @@ export function GameApp() {
   }, [hud.radioSeq, hud.radioLine, hud.wave, screen]);
   useLayoutEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.repeat || e.defaultPrevented) return;
+      if (catalogOpen || e.repeat || e.defaultPrevented) return;
       if (
         document.querySelector('[role="dialog"]') ||
         /INPUT|SELECT|TEXTAREA/.test((e.target as HTMLElement)?.tagName)
@@ -520,7 +521,7 @@ export function GameApp() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [screen, pause, start, resume, ready]);
+  }, [screen, pause, start, resume, ready, catalogOpen]);
 
   useEffect(() => {
     if (screen !== "play" && document.pointerLockElement) {
@@ -594,18 +595,12 @@ export function GameApp() {
     }
   }, [vol]);
 
-  if (view === "catalog" && catalogEnabled && AssetCatalog) {
-    return (
-      <Suspense fallback={null}>
-        <AssetCatalog onBackToGame={() => setView("game")} />
-      </Suspense>
-    );
-  }
-
   const overlay = screen !== "play";
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-bg text-fg">
+    <>
+    {/* Keep the runtime's canvas mounted while browsing local assets. */}
+    <main hidden={catalogOpen} inert={catalogOpen} className="relative h-dvh w-full overflow-hidden bg-bg text-fg">
       <canvas
         ref={canvasRef}
         className="game-canvas"
@@ -853,5 +848,11 @@ export function GameApp() {
         </div>
       )}
     </main>
+    {catalogOpen && AssetCatalog && (
+      <Suspense fallback={null}>
+        <AssetCatalog onBackToGame={() => setView("game")} />
+      </Suspense>
+    )}
+    </>
   );
 }

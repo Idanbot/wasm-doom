@@ -1,245 +1,107 @@
 # BLACKSITE
 
-A standalone browser FPS set in Site Nadir-7. The simulation is Rust compiled to
-WebAssembly; the interface is React. Deploys to GitHub Pages or Vercel with no
-backend, no accounts and no database.
+A standalone browser FPS set in Site Nadir-7. Disable each sector's defenses,
+defeat its boss, and turn the recovered weapon against the next one.
 
-[Play BLACKSITE](https://idanbot.me/wasm-doom/)
+**[Play BLACKSITE](https://idanbot.me/wasm-doom/)**
 
-## Stack
+- **25 sectors and bosses**, each with a distinct layout, enemy cast, machinery,
+  attack patterns and reward. Beyond sector 25, the campaign repeats with rising
+  enemy counts and health.
+- **33 weapons** with magazine, shell and charge reloads. Boss rewards add marks,
+  chain arcs, frost shatters, timed bursts and pressure banking.
+- **Four difficulties:** Recruit, Operative, Veteran and Blacksite. Each has a
+  separate local leaderboard with expandable combat totals, sector splits and routes.
+- Spatial voices, enemy subtitles, material-based sound effects, sector lighting
+  and atmospheric effects. Keyboard/mouse and touch controls are supported.
 
-| Layer | Choice |
+The Rust/WASM simulation runs entirely in the browser, with React 19 and
+TypeScript for the interface. Rendering uses WebGPU, WebGL2 or Canvas2D fallback.
+Settings, records and checkpoints stay on the device; no accounts or backend.
+
+## Play
+
+| Action | Control |
 | --- | --- |
-| Simulation | Rust → `wasm32-unknown-unknown`, no runtime dependencies |
-| Interface | React 19 + TypeScript, Vite |
-| Rendering | WebGPU, WebGL2, Canvas2D fallback (auto-detected) |
-| Audio | Web Audio; recorded SFX, spoken enemy and boss voices |
-| Tests | `node:test` (unit + Playwright browser), `cargo test` |
+| Move / sprint | `WASD` / `Shift` |
+| Aim / fire | Mouse / left click |
+| Equip weapon | Mouse wheel or number keys |
+| Reload / interact | `R` / `E` |
+| Pause / resume | `Esc` or `P` |
 
-## Architecture
+Choose a difficulty after loading completes; it stays fixed for the run.
+For GS-4 SINK, LV-8 UNDERTOW and SL-12 HELIOS, **R** vents stored pressure;
+firing during the vent spends a round on a heavy, inaccurate discharge.
 
-```
-engine/src/          Rust simulation, compiled to one .wasm
-  lib.rs             Engine state, the single-instance accessor, tick orchestration
-  sim/               simulation split by responsibility
-    combat.rs        damage resolution and weapon fire
-    movement.rs      collision, sliding, line of sight
-    world.rs         spawning, wave progression, sector objectives
-    fx.rs            transient effect queue: sound cues, impacts, casings
-    geometry.rs      map cells, doors, flow fields
-    weapons.rs       ownership and selection
-  render.rs          GPU scratch buffers, prepare_gpu, software renderer
-  lighting.rs        light grid, emitter budget, diffusion, volumetric smoke
-  textures.rs        procedural atlas generation, mipmapping, sampling
-  abi.rs             the 59 WASM exports and the save blob
-  map.rs layouts.rs  authored sector geometry and placement
-  field.rs           per-sector objective contract
-  boss_weapons.rs    pressure banking and distinct boss reward attacks
-engine/src/*.rs      data tables: enemies, bosses, weapons, palettes
+## Develop
 
-src/game/            engine bridge and presentation
-  runtime.ts         WASM ABI, fixed-step loop, asset loading, saves
-  blit.ts            post-processing (WGSL + GLSL), bloom, fog, damage feedback
-  gpu-world.ts       WebGPU/WebGL2 world pass, atlas upload
-  audio.ts sfx-player.ts enemy-audio.ts   three audio layers
-  hud-abi.ts save-abi.ts    wire formats pinned against the Rust structs
-
-src/components/      React UI: HUD, menus, settings, touch controls
-scripts/             asset checks, benchmarks, Playwright suites
-```
-
-The engine owns all game state. TypeScript never writes into WASM memory except
-through the exported ABI, and the HUD is read back over a `#[repr(C)]` struct
-whose size and field offsets are asserted on both sides at compile time.
-
-### Simulation loop
-
-A fixed 1/60 s step with an accumulator, capped so a stall cannot spiral. The
-engine is deterministic: a seeded LCG instead of `rand`, fixed-size arrays
-instead of hash maps, `f32` throughout. Two identical runs produce identical
-results.
-
-### Rendering
-
-The simulation still casts one ray per screen column. The GPU pass fills the
-same walls from the atlas in a single draw, so WebGPU and software rendering
-agree. The post pass adds fog, bloom, sector atmosphere, damage feedback and
-optional CRT scanlines. Each sector contributes a light signature and an
-atmospheric particle profile.
-
-## Game logic
-
-- 25 sectors, each with its own layout, enemy cast, machinery and boss.
-  Each boss now has a gun-inspired, locked attack warning and an exposed recovery
-  window; the HUD shows its dodge instruction and preferred counter weapon role.
-  Each boss also has authored footwork between attacks, with its own spacing,
-  tempo and direction; warnings and recovery windows remain stationary.
-  See [boss counterplay](docs/BOSS_COUNTERPLAY.md) and
-  [movement patterns](docs/BOSS_MOVEMENT.md).
-- Sector loop: complete the node objective, activate the override station,
-  defeat the boss, collect the reward case.
-- 33 weapons — eight base weapons and 25 exclusive boss rewards — with magazine,
-  shell and charge reloads. Ten boss rewards have distinct marks, chain arcs,
-  frost shatters, timed bursts and delayed strikes. GS-4 SINK, LV-8 UNDERTOW and
-  SL-12 HELIOS bank pressure: press **R** to cool safely, or press fire during
-  venting to spend a round on an inaccurate heavy discharge. A gauge shows the
-  bank and available action. See [boss weapon mechanics](docs/BOSS_WEAPON_MECHANICS.md).
-- 62 enemy and boss appearances; sectors 1–11 use 28-pose animation boards.
-- Weapon roles combine: precision shots strip armour, shock interrupts and
-  drains shields, freeze slows, acid marks for follow-up damage.
-- After sector 25 layouts repeat with rising enemy totals and health.
-- Progress, settings and scores are stored in the browser.
-  Saved settings and inventories are validated before use; legacy checkpoints
-  retain their ammunition and new weapon slots start empty.
-- Settings shows a small latest-update date from the source commit, embedded in
-  both production builds (source archives use their build date).
-
-### Input
-
-`WASD` move · mouse look · click fire · wheel or number keys equip · `R` reload ·
-`E` interact · `Shift` sprint · `P`/`Esc` pause. Touch controls appear on
-coarse-pointer devices.
-
-## Assets
-
-Everything ships in the repository under `public/game/` and `art/`:
-
-- **Textures** — 853-layer procedural atlas (walls, floors, enemy sheets,
-  sector surfaces and props), generated by `npm run assets:weapons` and friends.
-- **Audio** — 143 SFX with an MP3 fallback per clip, 200 spoken enemy lines,
-  50 boss lines, three music beds. Manifests record CC0 provenance.
-- **Art sources** — prompts, generation records and licences under `art/`.
-
-Asset checks gate every change:
-
-```
-npm run check:assets     # manifest, dimensions, alpha, atlas slots
-npm run check:sfx        # clip coverage, hashes, loudness
-npm run check:voices     # spoken line coverage and provenance
-npm run check:maps       # sector layouts and connectivity
-```
-
-## Running it
-
-Requires Node 24 and Rust stable.
+Requires **Node 24**, **Rust stable**, and the `wasm32-unknown-unknown` target
+(installed by the WASM build script).
 
 ```sh
 npm install
-npm run build:wasm     # compile the engine and commit the .wasm
-npm run dev            # http://localhost:8080
+npm run build:wasm
+npm run dev                 # http://localhost:8080, bound to 0.0.0.0
 ```
 
-`npm run build:wasm` writes `public/blacksite.wasm` and its checksum. Both are
-committed, and `npm run check:wasm` fails if the sources and the binary drift.
+`startup.sh` starts the local server idempotently. After engine edits, rebuild
+and commit `public/blacksite.wasm` with its synchronized `public/blacksite.sha256`.
+Keep credentials in ignored `.env` files or process variables.
 
-### Verification
+| Path | Contents |
+| --- | --- |
+| `engine/src/` | Deterministic simulation, combat, maps, rendering and WASM ABI |
+| `src/game/` | Runtime, graphics, input, audio and asset loading |
+| `src/components/game/` | Menus, HUD, settings and touch controls |
+| `public/game/` | Published textures, sprites, music, effects and voices |
+| `art/` | Source assets, prompts, generation records and licenses |
+| `scripts/` | Asset checks, benchmarks and browser tests |
+
+### Local tools
+
+Use `?qa=1` for the full arsenal and QA helpers, or `?qa=1&lvl=N` to start in
+sector N. Open the asset catalog from the main menu or `/catalog`. These tools
+are restricted to the local development server and excluded from production.
+
+**Settings → Display → Reload all assets** repairs missing or damaged visual
+assets. Loading validates content hashes, caches valid files and retries failures
+up to twice before offering **Retry loading**.
+
+## Verify
 
 ```sh
 npm run typecheck
 npm run lint
+npm test
+cargo test --release --manifest-path engine/Cargo.toml -- --test-threads=2
 npm run check:wasm
+npm run check:assets
+npm run check:sprites
 npm run build
-npm run build:pages    # static output in dist-pages/
-npm test               # unit suites
-cargo test --manifest-path engine/Cargo.toml
+npm run build:pages
 ```
 
-Browser suites drive a running dev server:
+With the dev server running:
 
 ```sh
-npm run dev &
-node scripts/browser-smoke.mjs http://127.0.0.1:8080/
+node scripts/browser-smoke.mjs http://127.0.0.1:8080/ screenshots/menu.png
 node scripts/combat-smoke.mjs http://127.0.0.1:8080/
 npm run test:browser
 ```
 
-`PAGES_BASE` sets the deployment base path; GitHub Actions derives it from the
-repository name.
+CI runs source, asset and engine checks in parallel, then tests production builds
+and browser behavior. Only a successful `main` run deploys the tested Pages build.
+See [CI and deployment](docs/CI.md) for jobs, artifacts and diagnostics.
 
-CI runs source, asset and engine checks in parallel, shares one verified WASM
-build and splits browser checks into seven groups. Pages deployment is the final
-CI job: it waits for all checks and publishes the exact tested build and manifest
-from the same run. Pull requests and other branches never deploy.
-Build, Pages QA and deployment verify the assembled WASM against that manifest
-before serving or publishing it. See [CI dependencies](docs/CI.md).
+## Deploy and reference
 
-Deployment stays disabled until assets are validated, the HUD initializes and
-the renderer presents the first sector frame. Loading shows a 16-pose operator
-drill (run, stop, fire, reload). Missing, corrupt or timed-out assets retry
-silently up to twice while progress continues; successful items are retained.
-Menu art and fonts load first, followed by the starting sector and the remaining
-campaign. A content-hashed manifest weights progress by bytes; decode/upload and
-first-frame presentation have reserved progress. Successfully decoded files persist
-in a best-effort 384 MiB cache, with hash validation and eviction of old entries.
-Downloads share a concurrency budget, and retries refresh failed cached files.
-Canceling a load preserves valid cached assets for the next attempt; URL fragments
-use the same manifest identity and integrity checks as their underlying files.
-After three failed attempts, **Retry loading** starts a fresh boot. Sprite
-sources and the animation contract live in `art/loading/manifest.json`.
+GitHub Pages serves `dist-pages/`; set `PAGES_BASE` to the deployment path
+(`/wasm-doom/` for this repository). The standard `npm run build` also produces
+the TanStack/Vercel output.
 
-HUD cards reserve a safe inset inside the decorative rails. `scripts/hud-insets.browser.mjs` checks all 33 guns and reload labels at four desktop/mobile sizes; `scripts/loading-ready.browser.mjs` checks loading animation, silent retries, progress and the initial HUD. `scripts/loading-recovery.browser.mjs` checks retry exhaustion and recovery of engine, texture and audio manifest failures.
-
-Rust combat regressions exercise projectile first-contact ordering, wall-blocked
-splash, weapon pickup cancellation and delayed attacks at sector completion.
-
-## Local QA
-
-Append `?qa=1` for the full arsenal and god-mode helpers, or `?qa=1&lvl=N` to
-start in sector N. These are development-server only and are compiled out of
-production builds. The asset catalogue lives at `/catalog` on the local server.
-
-If the world renders incorrectly after a graphics reset, **Settings → Display →
-Reload all assets** re-fetches and re-uploads every texture, sprite and weapon
-sheet.
-
-BLACKSITE now adds sector-specific cosmetic surface layers, wet-floor ceiling/light
-reflections, illuminated dust shafts, colored machinery bounce light, and boss
-phase palette pulses. WebGPU and WebGL2 share these effects; Canvas2D uses reduced
-atmosphere effects. Reflections use local probes rather than hardware ray tracing.
-See [world material contracts](art/world-materials-v1/README.md) for quality limits
-and regression coverage.
-
-All 32 removable weapon feeds now eject their matching magazine, ammunition box,
-drum or power cell on reload; BR-12 keeps its shell-by-shell tube reload. New
-blue/cyan projectiles use detailed incoming/outgoing artwork, and beams retain
-their weapon-specific textures on CPU, WebGL and WebGPU. Asset contracts and
-prompts live in `art/weapon-feeds-v2/` and `art/projectiles-v4/`.
-
-Sprite boundary checks cover all 25 frames of every weapon, all projectile art,
-casings and reload ejections. The level 1 terminal uses a corrected source crop
-that retains its complete monitor housing. Weapon edge cleanup removes only
-disconnected neighboring-panel fragments; approved aim poses remain unchanged.
-
-Gameplay and technical proposals are collected in
-[Game improvement suggestions](docs/GAME_IMPROVEMENT_SUGGESTIONS.md), with concise
-benefits, implementation approaches and confidence estimates.
-
-Sector lighting uses a dominant palette and restrained objective accents. Weapon
-flashes illuminate nearby visible materials, while local floor shadows ground
-objects and spent feeds. Scorch, acid and chip residue is capped at 64 marks and
-fades after 24 seconds. Boss introductions dim the arena before rim lights and
-the final reveal. Footsteps follow the actual floor; reloads layer latch, seat,
-bolt, energy and pressure sounds at animation milestones.
-
-Reload feeds eject halfway through the removal pose, with matching sound timing;
-interrupted reloads cancel pending ejections. Enemy hits distinguish flesh, armor,
-front shields and mechanical bodies. Boss attacks retain a minimum 350 ms projectile
-travel window after release, including gravity captures.
-
-Regression coverage includes fault recovery under Pages paths, player-clear routes
-through every sector and seeded spawn variants, and 2,818 reviewed sprite frames.
-Run `npm run check:sprites` before publishing art; see
-[Sprite safe-area contracts](docs/SPRITE_SAFE_AREAS.md) and
-[Boss attack readability](docs/BOSS_ATTACK_READABILITY.md).
-
-### Difficulty and local field records
-
-Difficulty selection stays locked until deployment assets finish loading. Your
-saved preset remains selected; once loading finishes, all four presets unlock
-without restarting loading.
-
-Choose **Recruit**, **Operative**, **Veteran**, or **Blacksite** on the deployment menu. Operative preserves the original balance. Recruit uses 65% incoming damage, 85% enemy movement speed and 125% attack recovery; Veteran uses 125% / 110% / 90%; Blacksite uses 150% / 120% / 80%. Enemy health, weapon damage, ammunition and attack-warning durations stay unchanged. The preset is fixed during a run and survives sector transitions and browser-local checkpoints.
-
-Local leaderboards retain ten runs per difficulty, ordered by furthest sector, kills and then shortest active simulation time. Log a run on a sector-clear or death screen; inspect records from the menu or end screen. Expand a record for total ammunition consumed, health plus armor damage taken, accuracy, kills, bosses defeated and time. Expand each sector for its time, kills, completion status and traced route over its layout. Green marks the start, amber the sampled path and red the endpoint. Routes sample approximately once per simulation second and progressively thin long paths to 128 points per sector. Records retain the latest 128 sector routes in endless play.
-
-Accuracy counts shots that contact at least one living hostile, including armor/shields, divided by shots fired. Pellets, penetrating hits and projectile splash share one originating shot; dry firing is excluded. Ammunition counts consumed rounds/charges, excluding temporary free-ammo shots. Invulnerable hits and health overkill do not inflate damage taken. Legacy scores appear under Operative with their original summary; legacy checkpoints are marked assisted because their detailed history is unavailable. Local QA records are also labeled assisted. Under restrictive storage quotas, older route artwork may be removed while retaining sector splits and totals. All records remain browser-local: no backend, account or online submission is used.
+- Gameplay: [boss counterplay](docs/BOSS_COUNTERPLAY.md),
+  [movement](docs/BOSS_MOVEMENT.md), [weapon mechanics](docs/BOSS_WEAPON_MECHANICS.md).
+- Art: [sprite safe areas](docs/SPRITE_SAFE_AREAS.md),
+  [weapon animations](docs/BOSS_WEAPON_ANIMATIONS.md),
+  [materials](art/world-materials-v1/README.md), [audio credits](art/audio/README.md).
+- [Improvement suggestions and implementation status](docs/GAME_IMPROVEMENT_SUGGESTIONS.md).

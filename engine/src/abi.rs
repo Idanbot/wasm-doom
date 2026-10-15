@@ -210,10 +210,7 @@ pub(crate) fn capture_save(e: &Engine) -> RunSave {
 
 pub(crate) fn apply_save(e: &mut Engine, s: &RunSave) {
     e.clear_boss_arena();
-    e.tactical=tactical::Tactical::new();
-    e.mechanics=boss_weapons::Arsenal::new();
-    e.reload_t=0.0;
-    e.muzzle=0.0;
+    e.reset_checkpoint_combat();
     e.wave = s.wave.max(1);
     e.health = s.health.clamp(1, 100);
     e.armor = s.armor.clamp(0, 100);

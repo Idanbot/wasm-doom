@@ -266,14 +266,15 @@ export function loadBoard(): Score[] {
   } catch { return []; }
 }
 export function saveBoard(entry: Score): Score[] {
-  const normalized = { ...entry, difficulty: difficulty(entry.run?.difficulty ?? entry.difficulty), recordedAt: Date.now() };
+  const normalized = { ...entry, ...(entry.run ? { run: structuredClone(entry.run) } : {}), difficulty: difficulty(entry.run?.difficulty ?? entry.difficulty), recordedAt: Date.now() };
   const next = limitBoard([...loadBoard(), normalized]);
   // Route-heavy records may exceed a restricted browser quota. Keep summary
   // statistics for older records before sacrificing the newly saved route.
+  // Work on a copy so trimming the score never changes the live recorder.
   try { localStorage.setItem("blacksite-board", JSON.stringify(next)); }
   catch {
-    for (const row of [...next].sort((a,b) => (a.recordedAt ?? 0) - (b.recordedAt ?? 0))) {
-      if (row === normalized || !row.run) continue;
+    for (const row of [...next].sort((a,b) => Number(a === normalized) - Number(b === normalized) || (a.recordedAt ?? 0) - (b.recordedAt ?? 0))) {
+      if (!row.run) continue;
       row.run.sectors = row.run.sectors.map(s => ({ ...s, route: [], map: "" }));
       try { localStorage.setItem("blacksite-board", JSON.stringify(next)); break; } catch { /* retain in-memory records when storage is unavailable */ }
     }

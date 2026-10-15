@@ -1,7 +1,7 @@
 import { DIFFICULTIES, type Difficulty } from "@/game/run-record";
 import { RunBoard } from "./RunBoard";
 import { ArrowUpRight, Volume2, VolumeX, Crosshair, ShieldAlert } from "lucide-react";
-import { fmtTime, type Score } from "./data";
+import { fmtTime, WEAPONS, type Score } from "./data";
 import { LazySettings, type SettingsProps } from "./LazySettings";
 import { asset } from "@/lib/asset";
 
@@ -129,7 +129,7 @@ export function Menu(
         >
           <span>
             Asset Catalog & Weapon Preview
-            <small>Inspect all 19 current guns, frame loops & hashes</small>
+            <small>Inspect all {WEAPONS.length} current guns, frame loops & hashes</small>
           </span>
         </button>
       )}
