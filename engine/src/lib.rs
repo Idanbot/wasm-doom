@@ -9,6 +9,9 @@ mod spatial_checks;
 mod reachability_tests;
 mod abi;
 mod camera;
+mod presentation;
+#[cfg(test)]
+mod accessibility_tests;
 mod difficulty;
 mod helpers;
 use helpers::*;
@@ -103,6 +106,7 @@ struct Engine {
     pa: f32,
     pitch: f32,
     camera: camera::Camera,
+    effects: presentation::Effects,
     pr: f32,
     health: i32,
     armor: i32,
@@ -281,6 +285,7 @@ impl Engine {
             pa: map::PLAYER_START.2,
             pitch: 0.0,
             camera: camera::Camera::new(map::PLAYER_START.0, map::PLAYER_START.1),
+            effects: presentation::Effects::default(),
             pr: 0.22,
             difficulty: 1, run_shots: Vec::new(), run_hits: 0, run_ammo: 0, run_damage: 0, run_bosses: 0, current_shot: 0,
             health: 100,
@@ -1330,9 +1335,9 @@ impl Engine {
             has_w3: self.owned_flag(1),
             secrets: self.secrets,
             elapsed_ms: (self.elapsed * 1000.0) as i32,
-            shake: self.shake * self.shake,
-            muzzle: self.muzzle,
-            hurt: self.hurt,
+            shake: self.shake * self.shake * self.effects.shake,
+            muzzle: self.muzzle * self.effects.flash,
+            hurt: self.hurt * self.effects.flash,
             bob: self.walk.sin() * (if self.hud.speed > 0.2 { 1.0 } else { 0.12 }),
             kick: self.kick,
             hitmarker: self.hitmarker,

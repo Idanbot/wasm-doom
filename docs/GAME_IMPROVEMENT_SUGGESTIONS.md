@@ -121,8 +121,8 @@ Audio processing reference: [Web Audio API](https://developer.mozilla.org/en-US/
 
 | Suggestion | Why | How | Confidence | Status |
 |---|---|---|---|---|
-| Full control rebinding | Accommodate keyboards and accessibility needs. | Centralize action mappings and validate conflicts in settings. | 96% | Undone |
-| Separate effects intensity sliders | Avoid overwhelming flashes and shakes. | Expose bloom, flash, shake and debris amounts without changing combat logic. | 97% | Undone |
+| Full control rebinding | Accommodate keyboards and accessibility needs. | Centralize action mappings and validate conflicts in settings. | 96% | Done |
+| Separate effects intensity sliders | Avoid overwhelming flashes and shakes. | Add independent flash, shake and debris sliders alongside the bloom toggle. | 97% | Done |
 | Subtitle presentation controls | Keep dialogue readable across devices. | Add size, contrast backing and placement presets alongside the existing toggle. | 95% | Undone |
 | Contextual objective guidance | Reduce confusion without constant arrows. | Reveal concise guidance after prolonged inactivity or repeated failed interactions. | 92% | Undone |
 | First-run combat tutorial room | Teach reload and boss mechanics safely. | Offer a short optional room using real input and simulation rules. | 95% | Undone |

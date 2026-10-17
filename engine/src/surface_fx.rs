@@ -46,7 +46,8 @@ impl Engine {
             self.surface_fx[i][1] = r.kind as f32 + fade * 0.9;
             self.surface_fx[i][2] = r.x.fract(); self.surface_fx[i][3] = r.y.fract();
         }
-        for e in &self.ents {
+        for (index,e) in self.ents.iter().enumerate() {
+            if !self.effects.show_sprite(index,e) { continue; }
             if e.kind == 0 || matches!(e.kind, EK_PROJ | EK_BOLT | EK_RAY | EK_IMPACT | EK_SMOKE | EK_FIREPATCH | EK_FLAME)
                 || (e.kind == EK_SPARK && e.effect_tick != 5.0) { continue; }
             if (e.x-self.px).powi(2)+(e.y-self.py).powi(2)>144.0 { continue; }

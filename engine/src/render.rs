@@ -204,7 +204,7 @@ impl Engine {
             horizon,
             time: tnow,
             hell: if self.hell { 1.0 } else { 0.0 },
-            muzzle: self.muzzle,
+            muzzle: self.muzzle * self.effects.flash,
             w: w as f32,
             h: h as f32,
             plane_len,
@@ -298,8 +298,8 @@ impl Engine {
             };
         }
         let mut n = 0usize;
-        for e in &self.ents {
-            if e.kind == 0 || n >= ENT_N { continue; }
+        for (i, e) in self.ents.iter().enumerate() {
+            if e.kind == 0 || n >= ENT_N || !self.effects.show_sprite(i,e) { continue; }
             let (tex, scale, sheet4, frame_i) = sprite_style(e);
             let frame = if sheet4 { frame_i as f32 } else { -1.0 };
             scratch.sprites[n] = GpuSprite {
@@ -541,7 +541,7 @@ impl Engine {
         let mut order = [(0.0f32, 0usize); ENT_N];
         let mut count = 0;
         for (i, e) in self.ents.iter().enumerate() {
-            if e.kind == 0 {
+            if e.kind == 0 || !self.effects.show_sprite(i,e) {
                 continue;
             }
             let depth = (e.x - px) * dir_x + (e.y - py) * dir_y;

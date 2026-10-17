@@ -6,8 +6,12 @@ import { DEFAULT_GFX, DEFAULT_RES, RES_MODES, type GfxOpts, type ResMode } from 
 import { DEFAULT_ENEMY_OPTIONS, type EnemyOptions } from "@/game/enemy-presentation";
 import { DEFAULT_VOL, type Vol } from "./data";
 import { LATEST_UPDATE_DATE, LATEST_UPDATE_LABEL } from "@/game/build-info";
+import { DEFAULT_BINDINGS, type ControlBindings as Bindings } from '@/game/controls';
+import { ControlBindings } from './ControlBindings';
 
 export type SettingsProps = {
+  bindings: Bindings;
+  setBindings: (bindings: Bindings) => void;
   res: ResMode;
   setRes: (r: ResMode) => void;
   sens: number;
@@ -103,6 +107,7 @@ export function Settings(p: SettingsProps) {
   const reset = () => {
     p.setVol({ ...DEFAULT_VOL });
     p.setSens(DEFAULT_SENSITIVITY);
+    p.setBindings({...DEFAULT_BINDINGS});
     p.setGfx({ ...DEFAULT_GFX });
     p.setRes(DEFAULT_RES);
     p.setRequireGpu(false);
@@ -277,22 +282,7 @@ export function Settings(p: SettingsProps) {
                   display={`${p.sens.toFixed(2)}×`}
                   onChange={p.setSens}
                 />
-                <dl className="control-reference">
-                  {[
-                    ["Move", "W A S D"],
-                    ["Look / fire", "Mouse / left click"],
-                    ["Reload", "R"],
-                    ["Interact", "E"],
-                    ["Sprint", "Shift"],
-                    ["Switch weapon", "1–9, 0, – / wheel"],
-                    ["Pause", "Esc / P"],
-                  ].map(([action, key]) => (
-                    <div key={action}>
-                      <dt>{action}</dt>
-                      <dd>{key}</dd>
-                    </div>
-                  ))}
-                </dl>
+                <ControlBindings bindings={p.bindings} onChange={p.setBindings} />
                 <p className="section-note">
                   Touch: drag the left side to move, the right side to look. Use the on-screen
                   action buttons.
@@ -301,6 +291,12 @@ export function Settings(p: SettingsProps) {
             )}
             {tab === "access" && (
               <>
+                {([
+                  ['flash','Flash intensity','Weapon flashes, damage tint and decorative light pulses.'],
+                  ['shake','Shake intensity','Weapon kick, walking bob and explosion distortion.'],
+                  ['debris','Debris amount','Cosmetic fragments, casings, removed magazines and ambient motes.'],
+                ] as const).map(([key,label,description])=><Slider key={key} label={label} description={description}
+                  value={p.gfx[key]} onChange={v=>p.setGfx({...p.gfx,[key]:v})} />)}
                 <Toggle
                   label="Enemy subtitles"
                   description="Show spoken lines above the visible enemy. Hidden enemies never reveal their position."

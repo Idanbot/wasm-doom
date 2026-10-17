@@ -114,9 +114,11 @@ pub extern "C" fn hs_restart() {
     let textures = std::mem::take(&mut e.tex);
     let theme = std::mem::take(&mut e.theme_tex);
     let difficulty = e.difficulty;
+    let effects = e.effects;
     let (w, h) = (e.w, e.h);
     *e = Engine::with_textures(w, h, Some(textures));
     e.difficulty = difficulty;
+    e.effects = effects;
     e.theme_tex = theme;
     e.apply_theme(1);
 }
@@ -368,6 +370,10 @@ pub extern "C" fn hs_input(bits: u32, mx: f32, my: f32) {
 /// Apply mouse displacement immediately, without advancing physics or weapons.
 #[no_mangle]
 pub extern "C" fn hs_look(mx: f32, my: f32) { eng().look(mx, my); }
+
+/// Presentation-only preferences, independent of gameplay and saved run state.
+#[no_mangle]
+pub extern "C" fn hs_effects(flash: f32, shake: f32, debris: f32) { eng().set_effects(flash, shake, debris); }
 
 /// Presentation position: pointer to two f32s. Alpha is fixed-step remainder / step.
 #[no_mangle]

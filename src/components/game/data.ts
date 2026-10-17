@@ -2,7 +2,7 @@ import { cleanRun, difficulty, DIFFICULTIES, type Difficulty, type RunRecord } f
 import MACHINERY from "../../game/tactical-machinery.json" with { type: "json" };
 import BOSS_VOICE_LINES from "../../game/boss-voice-lines.json" with { type: "json" };
 import { migrateGameStorage, readGameStorage } from "../../lib/storage-migration.ts";
-import { DEFAULT_GFX, DEFAULT_RES, RES_MODES, type GfxOpts, type ResMode } from "../../game/types.ts";
+import { effectIntensity, DEFAULT_GFX, DEFAULT_RES, RES_MODES, type GfxOpts, type ResMode } from "../../game/types.ts";
 import { WEAPON_SHEETS } from "../../game/weapon-assets.ts";
 import { BOSS_WEAPON_ROLES } from "../../game/weapon-mechanics.ts";
 
@@ -313,6 +313,7 @@ export function loadGfx(): GfxOpts {
         crt: typeof v.crt === "boolean" ? v.crt : DEFAULT_GFX.crt,
         bloom: typeof v.bloom === "boolean" ? v.bloom : DEFAULT_GFX.bloom,
         fog: typeof v.fog === "boolean" ? v.fog : DEFAULT_GFX.fog,
+        flash: effectIntensity(v.flash), shake: effectIntensity(v.shake), debris: effectIntensity(v.debris),
       };
     }
   } catch {

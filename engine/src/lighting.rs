@@ -307,7 +307,7 @@ impl Engine {
             }
         }
         if self.muzzle > 0.05 {
-            let power=self.muzzle*if self.weapon==0 {0.38} else {0.78};
+            let power=self.muzzle*self.effects.flash*if self.weapon==0 {0.38} else {0.78};
             let tint=match self.weapon {10|20=>[0.34,1.0,0.18],3|6|11|13|15|22=>[0.35,0.78,1.0],_=>[1.0,0.62,0.24]};
             let x=self.px+self.pa.cos()*0.3; let y=self.py+self.pa.sin()*0.3;
             let (x,y)=if self.blocked(x as i32,y as i32) {(self.px,self.py)}else{(x,y)};

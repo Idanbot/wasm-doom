@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 // Keep fault injection and renderer recovery off the interface runner. Each
 // suite owns a browser at a time and retains the existing regression coverage.
 export const BROWSER_SUITES = {
-  interface: ['difficulty-runs', 'settings-update', 'hud-insets', 'map-controls', 'arsenal', 'catalog-return'],
+  interface: ['accessibility', 'difficulty-runs', 'settings-update', 'hud-insets', 'map-controls', 'arsenal', 'catalog-return'],
   loading: ['difficulty-loading', 'loading-ready', 'loading-tiers', 'loading-fault-matrix'],
   'loading-recovery': ['loading-recovery'],
   renderer: ['aim', 'runtime-input', 'resolution-recovery', 'weapon-viewmodel', 'asset-reload'],

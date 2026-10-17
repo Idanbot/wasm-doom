@@ -1,3 +1,4 @@
+import { actionLabel } from "@/game/controls";
 import { DIFFICULTIES, type Difficulty } from "@/game/run-record";
 import { RunBoard } from "./RunBoard";
 import { ArrowUpRight, Volume2, VolumeX, Crosshair, ShieldAlert } from "lucide-react";
@@ -139,7 +140,7 @@ export function Menu(
           {p.muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
           {p.muted ? "Sound off" : "Sound on"}
         </button>
-        <span>WASD / MOUSE / 9 0 - BOSS GUNS / R TO RELOAD</span>
+        <span>{actionLabel(p.bindings,"forward")} {actionLabel(p.bindings,"left")} {actionLabel(p.bindings,"backward")} {actionLabel(p.bindings,"right")} / {actionLabel(p.bindings,"fire")} / {actionLabel(p.bindings,"reload")} TO RELOAD</span>
       </div>
       <details className="menu-records">
         <summary>Local leaderboards</summary>

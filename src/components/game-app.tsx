@@ -1,3 +1,4 @@
+import { DEFAULT_BINDINGS, loadBindings, controlForCode, actionLabel } from "@/game/controls";
 import { type Difficulty } from "@/game/run-record";
 import { DEFAULT_SENSITIVITY, readSensitivity } from "@/game/input-settings";
 import { machineryHint } from "./game/data";
@@ -122,14 +123,19 @@ export function GameApp() {
   });
   const [muted, setMuted] = useState(false);
   const [vol, setVol] = useState(loadVol);
+  const [bindings, setBindings] = useState(DEFAULT_BINDINGS);
+  const [bindingsLoaded, setBindingsLoaded] = useState(false);
+  useEffect(() => { setBindings(loadBindings()); setBindingsLoaded(true); }, []);
   // Boot/retry uses current settings without restarting the engine on a slider change.
-  const bootSettings = useRef({ sens, muted, vol });
-  bootSettings.current = { sens, muted, vol };
+  const bootSettings = useRef({ sens, muted, vol, bindings });
+  bootSettings.current = { sens, muted, vol, bindings };
   const [requireGpu, setRequireGpu] = useState(gpuEnabled);
   const qaRef = useRef(false);
   const hadPointerLock = useRef(false);
   const pauseChangedAt = useRef(-Infinity);
   const [gfx, setGfx] = useState<GfxOpts>(loadGfx);
+  const gfxRef = useRef(gfx);
+  gfxRef.current = gfx;
   const [difficulty, setDifficulty] = useState<Difficulty>("operative");
   const [board, setBoard] = useState<Score[]>([]);
   const [err, setErr] = useState<string | null>(null);
@@ -209,16 +215,19 @@ export function GameApp() {
           const reloadDip = h.venting > 0 ? 16 : reloading ? 32 + Math.sin(Math.min(1, h.reloading) * Math.PI) * 18 : 0;
           const weight = [0.65, 1.25, 0.5, 1.1, 1.4, 0.9, 1.45, 1.1, 1.5, 0.8, 1.0][h.weapon] ?? 1;
           const motion = reducedMotion.matches ? 0.2 : 1;
-          const bobY = (h.bob * 7 + h.kick * 18 * weight + reloadDip + swapDip) * motion;
-          const bobX = (h.kick * -6 * weight + (reloading ? 20 : 0)) * motion;
-          const roll = h.kick * -1.8 * weight * motion;
+          const bobY = ((h.bob * 7 + h.kick * 18 * weight) * gfxRef.current.shake + reloadDip + swapDip) * motion;
+          const bobX = (h.kick * -6 * weight * gfxRef.current.shake + (reloading ? 20 : 0)) * motion;
+          const roll = h.kick * -1.8 * weight * motion * gfxRef.current.shake;
           weapEl.style.transform = `translateY(${bobY}px) translateX(${bobX}px) rotate(${roll}deg)`;
           weapEl.style.filter = h.muzzle > 0.05 ? `brightness(${1 + h.muzzle * 0.22})` : "";
           const wpn = WEAPONS[h.weapon] ?? WEAPONS[0]!;
           const artMissing = missingRef.current.includes(wpn.sheet);
           // Engine weapFrame is a v2 5x5 cell index (0-24); one sheet
           // covers idle, dry, pickup, reload and fire states.
-          const fr = Math.max(0, Math.min(24, h.weapFrame | 0));
+          let fr = Math.max(0, Math.min(24, h.weapFrame | 0));
+          if (gfxRef.current.flash === 0 && fr >= 15 && fr <= 19) {
+            fr = h.ammo >= wpn.magSize ? 0 : h.ammo === 0 ? (h.reserve === 0 ? 4 : 3) : h.ammo * 2 >= wpn.magSize ? 1 : 2;
+          }
           const sheet = artMissing ? null : weaponSheetImage(wpn.sheet);
           const frameContext = weaponCtx();
           if (frameContext) {
@@ -324,6 +333,7 @@ export function GameApp() {
     rt.setGfx(loadGfx());
     const settings = bootSettings.current;
     rt.setSens(settings.sens);
+    rt.setBindings(settings.bindings);
     rt.setMuted(settings.muted);
     rt.setVolumes(settings.vol.master, settings.vol.music, settings.vol.sfx, settings.vol.menu);
     rt.setMenuBed(true);
@@ -499,7 +509,7 @@ export function GameApp() {
         /INPUT|SELECT|TEXTAREA/.test((e.target as HTMLElement)?.tagName)
       )
         return;
-      if (e.code === "Escape" || e.code === "KeyP") {
+      if (e.code === "Escape" || controlForCode(bindings, e.code)?.id === "pause") {
         e.preventDefault();
         // Compare event creation time: queued duplicates may arrive after a slow frame.
         if (e.timeStamp - pauseChangedAt.current < 300) return;
@@ -519,9 +529,17 @@ export function GameApp() {
       )
         start();
     };
+    const onMousePause = (e: MouseEvent) => {
+      if (document.querySelector('[role="dialog"]') || catalogOpen || controlForCode(bindings, `Mouse${e.button}`)?.id !== "pause") return;
+      if (e.target instanceof Element && e.target.closest('button,a,input,select,textarea')) return;
+      e.preventDefault();
+      if (e.timeStamp - pauseChangedAt.current < 300) return;
+      if (screen === "play") pause(); else if (screen === "pause") resume();
+    };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [screen, pause, start, resume, ready, catalogOpen]);
+    window.addEventListener("mousedown", onMousePause);
+    return () => {window.removeEventListener("keydown", onKey);window.removeEventListener("mousedown", onMousePause);};
+  }, [screen, pause, start, resume, ready, catalogOpen, bindings]);
 
   useEffect(() => {
     if (screen !== "play" && document.pointerLockElement) {
@@ -553,6 +571,12 @@ export function GameApp() {
       /* ignore */
     }
   }, [res]);
+
+  useEffect(() => {
+    if (!bindingsLoaded) return;
+    rtRef.current?.setBindings(bindings);
+    try { localStorage.setItem("blacksite-controls", JSON.stringify({version:1,bindings})); } catch { /* device storage unavailable */ }
+  }, [bindings, bindingsLoaded]);
 
   useEffect(() => {
     rtRef.current?.setGfx(gfx);
@@ -627,7 +651,7 @@ export function GameApp() {
             })()}
             name={(WEAPONS[hud.weapon] ?? WEAPONS[0]!).name}
           />
-          <ReloadHint hud={hud} />
+          <ReloadHint hud={hud} reloadKey={actionLabel(bindings,"reload")} />
           <Crosshair
             flash={hud.hitmarker}
             spread={(hud.weapon === 2 ? hud.spread : hud.weapon === 1 ? 0.1 : 0) + hud.kick * 0.04}
@@ -638,6 +662,7 @@ export function GameApp() {
             fps={fps}
             resolution={renderResolution}
             renderer={renderer}
+            reloadKey={actionLabel(bindings,"reload")}
             showStats={enemyOptions.showStats}
           />
           <WeaponSpiral hud={hud} visible={wheelVisible} artUrls={artUrls} />
@@ -654,12 +679,12 @@ export function GameApp() {
           )}
           {hud.prompt === 1 && (
             <p className="pointer-events-none absolute bottom-28 left-1/2 -translate-x-1/2 font-display text-sm tracking-[0.2em] text-steel">
-              USE E
+              USE {actionLabel(bindings,"interact")}
             </p>
           )}
           {hud.prompt === 2 && (
             <p className="pointer-events-none absolute bottom-28 left-1/2 -translate-x-1/2 font-display text-sm tracking-[0.2em] text-danger">
-              RELOAD R
+              RELOAD {actionLabel(bindings,"reload")}
             </p>
           )}
           {hud.prompt === 4 && (
@@ -679,17 +704,17 @@ export function GameApp() {
           )}
           {(hud.prompt === 13 || hud.prompt === 15) && (
             <p className="pointer-events-none absolute bottom-28 left-1/2 -translate-x-1/2 font-display text-sm tracking-[0.2em] text-danger">
-              {hud.prompt === 13 ? "USE E — SECTOR NODE" : "FIND THE SECTOR NODE"}
+              {hud.prompt === 13 ? `USE ${actionLabel(bindings,"interact")} — SECTOR NODE` : "FIND THE SECTOR NODE"}
             </p>
           )}
           {hud.prompt === 14 && (
             <p className="pointer-events-none absolute bottom-28 left-1/2 -translate-x-1/2 font-display text-sm tracking-[0.2em] text-steel">
-              USE E — READ TERMINAL
+              USE {actionLabel(bindings,"interact")} — READ TERMINAL
             </p>
           )}
           {hud.prompt === 3 && (
             <p className="pointer-events-none absolute bottom-28 left-1/2 -translate-x-1/2 font-display text-sm tracking-[0.2em] text-danger">
-              USE E — INITIATE OVERRIDE
+              USE {actionLabel(bindings,"interact")} — INITIATE OVERRIDE
             </p>
           )}
           {hud.prompt === 16 && (
@@ -766,6 +791,8 @@ export function GameApp() {
                 setVol={setVol}
                 requireGpu={requireGpu}
                 setRequireGpu={handleRequireGpu}
+                bindings={bindings}
+                setBindings={setBindings}
                 gfx={gfx}
                 setGfx={setGfx}
               />
@@ -788,6 +815,8 @@ export function GameApp() {
                 setVol={setVol}
                 requireGpu={requireGpu}
                 setRequireGpu={handleRequireGpu}
+                bindings={bindings}
+                setBindings={setBindings}
                 gfx={gfx}
                 setGfx={setGfx}
                 onResume={resume}

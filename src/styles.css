@@ -1715,3 +1715,16 @@ select:focus-visible {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* Rebind controls without overflowing narrow settings dialogs. */
+.binding-row {display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #4c626f44;flex-wrap:wrap;}
+.binding-row > strong {font-size:12px;flex:1 1 150px;}
+.binding-keys {display:flex;flex-wrap:wrap;gap:6px;max-width:100%;}
+.binding-key {display:inline-flex;border:1px solid #68818f77;border-radius:3px;overflow:hidden;}
+.binding-key button,.binding-add {padding:8px;font-size:12px;min-height:36px;}
+.binding-key button[aria-pressed=true],.binding-add[aria-pressed=true] {background:#bd761d44;color:#ffb549;}
+.binding-key button:last-child {border-left:1px solid #68818f44;}
+.binding-add {border:1px dashed #68818f77;border-radius:3px;}
+.binding-status {font-size:12px;min-height:32px;line-height:1.5;margin:12px 0;color:#9dbfc9;overflow-wrap:anywhere;}
+.binding-status[role=alert] {color:#ffb549;}
+.weapon-bindings summary {cursor:pointer;padding:16px 0;color:#ffb549;font-size:12px;}

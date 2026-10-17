@@ -71,3 +71,42 @@ it("migrates the old automatic sensitivity default and preserves versioned choic
   assert.equal(read(".8"), .8);
   assert.equal(read("3.5"), 3);
 });
+
+import { DEFAULT_BINDINGS, INPUT_BITS, assignBinding, controlBits, controlForCode, normalizeBindings, actionLabel } from './controls.ts';
+import { DEFAULT_GFX, effectIntensity } from './types.ts';
+
+describe('custom controls and comfort settings',()=>{
+  it('preserves legacy defaults and exposes all 33 direct weapon choices',()=>{
+    assert.equal(controlBits(DEFAULT_BINDINGS,['KeyW','KeyR','Space']),INPUT_BITS.W|INPUT_BITS.RELOAD|INPUT_BITS.FIRE);
+    assert.equal(controlForCode(DEFAULT_BINDINGS,'Digit1')?.slot,0);
+    assert.equal(Object.keys(DEFAULT_BINDINGS).filter(id=>id.startsWith('weapon')).length,33);
+    assert.equal(DEFAULT_BINDINGS.pause?.includes('KeyP'),true);
+  });
+  it('replaces a key, rejects conflicts and keeps old keys inactive',()=>{
+    const result=assignBinding(DEFAULT_BINDINGS,'reload',0,'KeyF');
+    assert.ok(result.bindings);
+    assert.equal(controlBits(result.bindings,['KeyR']),0);
+    assert.equal(controlBits(result.bindings,['KeyF']),INPUT_BITS.RELOAD);
+    assert.equal(actionLabel(result.bindings,'reload'),'F');
+    assert.ok(assignBinding(result.bindings,'interact',0,'KeyF').error);
+    assert.ok(assignBinding(result.bindings,'reload',0,'Escape').error);
+    assert.ok(assignBinding(result.bindings,'unknown',0,'KeyF').error);
+    assert.ok(assignBinding(result.bindings,'reload',3,'KeyF').error);
+    assert.deepEqual(DEFAULT_BINDINGS.reload,['KeyR']);
+  });
+  it('validates saved bindings, preserves unbound actions and removes duplicates',()=>{
+    const value=normalizeBindings({forward:['KeyI','KeyI','Escape',17],reload:[],fire:['Mouse2'],pause:['Mouse2'],unknown:['KeyZ']});
+    assert.deepEqual(value.forward,['KeyI']);
+    assert.deepEqual(value.reload,[]);
+    assert.deepEqual(value.fire,['Mouse2']);
+    assert.deepEqual(value.pause,[]);
+    assert.equal(value.unknown,undefined);
+    assert.deepEqual(normalizeBindings(null),DEFAULT_BINDINGS);
+  });
+  it('clamps effects without accepting corrupt persisted values',()=>{
+    assert.equal(effectIntensity(0),0);assert.equal(effectIntensity(.4),.4);
+    assert.equal(effectIntensity(-1),0);assert.equal(effectIntensity(4),1);
+    for(const bad of [NaN,Infinity,'0',null,undefined])assert.equal(effectIntensity(bad),1);
+    assert.equal(DEFAULT_GFX.flash,1);assert.equal(DEFAULT_GFX.shake,1);assert.equal(DEFAULT_GFX.debris,1);
+  });
+});

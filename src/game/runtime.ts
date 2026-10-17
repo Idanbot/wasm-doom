@@ -1,3 +1,4 @@
+import { INPUT_BITS as IN, DEFAULT_BINDINGS, controlForCode, controlBits, type ControlBindings } from "./controls";
 import { DIFFICULTIES, RunRecorder, type Difficulty, type RunTotals } from "./run-record";
 import { assetBytes, setAssetManifest, versionedAssetUrl, type AssetManifest } from "./asset-cache";
 import { DEFAULT_SENSITIVITY, normalizeSensitivity } from "./input-settings";
@@ -106,6 +107,7 @@ type WasmExports = {
   hs_textures_ready: () => void;
   hs_input: (bits: number, mx: number, my: number) => void;
   hs_look: (mx: number, my: number) => void;
+  hs_effects: (flash: number, shake: number, debris: number) => void;
   /** Pointer to the two-f32 interpolated camera position. */
   hs_camera: (alpha: number) => number;
   hs_qa: (bits: number, enabled: number) => void;
@@ -150,75 +152,6 @@ type WasmExports = {
   hs_map_h: () => number;
 };
 
-const IN = {
-  W: 1,
-  S: 2,
-  A: 4,
-  D: 8,
-  FIRE: 16,
-  SPRINT: 32,
-  USE: 64,
-  W1: 128,
-  W2: 256,
-  W3: 512,
-  TURNL: 1024,
-  TURNR: 2048,
-  RELOAD: 4096,
-  W4: 8192,
-  W5: 16384,
-  W6: 32768,
-  W7: 65536,
-  W8: 131072,
-  W9: 262144,
-  W10: 524288,
-  W11: 1048576,
-  W12: 2097152,
-  W13: 4194304,
-  W14: 8388608,
-  W15: 16777216,
-  W16: 33554432,
-  W17: 67108864,
-  W18: 134217728,
-  W19: 268435456,
-};
-
-const CODE_BITS: Record<string, number> = {
-  KeyW: IN.W,
-  ArrowUp: IN.W,
-  KeyS: IN.S,
-  ArrowDown: IN.S,
-  KeyA: IN.A,
-  KeyD: IN.D,
-  ControlLeft: IN.FIRE,
-  ControlRight: IN.FIRE,
-  Space: IN.FIRE,
-  ShiftLeft: IN.SPRINT,
-  ShiftRight: IN.SPRINT,
-  KeyE: IN.USE,
-  Digit1: IN.W1,
-  Digit2: IN.W2,
-  Digit3: IN.W3,
-  Digit4: IN.W4,
-  Digit5: IN.W5,
-  Digit6: IN.W6,
-  Digit7: IN.W7,
-  Digit8: IN.W8,
-  Digit9: IN.W9,
-  Digit0: IN.W10,
-  Minus: IN.W11,
-  Equal: IN.W12,
-  BracketLeft: IN.W13,
-  BracketRight: IN.W14,
-  Backslash: IN.W15,
-  Semicolon: IN.W16,
-  Quote: IN.W17,
-  Backquote: IN.W18,
-  Comma: IN.W19,
-  ArrowLeft: IN.TURNL,
-  KeyQ: IN.TURNL,
-  ArrowRight: IN.TURNR,
-  KeyR: IN.RELOAD,
-};
 
 const ENEMY_SKINS = [
   "rifleman",
@@ -504,6 +437,7 @@ export class BlacksiteRuntime {
   muted = false;
   renderer: BlitKind = "canvas2d";
   private volumes = { master: 0.85, music: 0.42, sfx: 0.75, menu: 0.7 };
+  private bindings: ControlBindings = DEFAULT_BINDINGS;
   private gfx: GfxOpts = { ...DEFAULT_GFX };
   private requireGpu = false;
   private fbView: Uint8Array<ArrayBuffer> | null = null;
@@ -552,6 +486,7 @@ export class BlacksiteRuntime {
     this.wasm = wasm;
     this.requireGpu = opts?.requireGpu ?? false;
     wasm.hs_init(res.w, res.h);
+    wasm.hs_effects(this.gfx.flash, this.gfx.shake, this.gfx.debris);
     const hudSize = wasm.hs_hud_size();
     if (hudSize !== HUD_SIZE) {
       throw new Error(
@@ -727,8 +662,14 @@ export class BlacksiteRuntime {
     this.audio.setVolumes(master, music, sfx, menu);
   }
 
+  setBindings(bindings: ControlBindings) {
+    this.bindings = bindings;
+    this.clearInput();
+  }
+
   setGfx(g: GfxOpts) {
     this.gfx = { ...g };
+    this.wasm?.hs_effects(g.flash, g.shake, g.debris);
     this.blit?.setGfx(this.gfx);
     this.renderDirty = true;
   }
@@ -1270,6 +1211,7 @@ export class BlacksiteRuntime {
     document.addEventListener("mousemove", this.onMouse);
     document.addEventListener("pointerlockchange", this.onLock);
     this.canvas.addEventListener("mousedown", this.onMouseDown);
+    this.canvas.addEventListener("contextmenu", this.onContextMenu);
     window.addEventListener("mouseup", this.onMouseUp);
   }
 
@@ -1284,6 +1226,7 @@ export class BlacksiteRuntime {
     document.removeEventListener("mousemove", this.onMouse);
     document.removeEventListener("pointerlockchange", this.onLock);
     this.canvas.removeEventListener("mousedown", this.onMouseDown);
+    this.canvas.removeEventListener("contextmenu", this.onContextMenu);
     window.removeEventListener("mouseup", this.onMouseUp);
   }
 
@@ -1295,10 +1238,18 @@ export class BlacksiteRuntime {
     )
       return;
     if (e.repeat) return;
-    if (CODE_BITS[e.code] !== undefined) e.preventDefault();
-    this.keys.add(e.code);
+    this.pressControl(e.code, e);
     this.audio.unlock();
   };
+
+  private pressControl(code: string, event: Event) {
+    const action = controlForCode(this.bindings, code);
+    if (!action || action.id === "pause") return;
+    event.preventDefault();
+    this.keys.add(code);
+    if (action.id === "nextWeapon" || action.id === "previousWeapon") this.cycleWeapon(action.id === "nextWeapon" ? 1 : -1);
+    if (action.slot !== undefined && action.slot >= 19) this.wasm?.hs_select_weapon(action.slot);
+  }
 
   private onKeyUp = (e: KeyboardEvent) => {
     this.keys.delete(e.code);
@@ -1345,20 +1296,24 @@ export class BlacksiteRuntime {
     this.lookY += e.movementY || 0;
   };
 
+  private onContextMenu = (e: Event) => { if (this.playing) e.preventDefault(); };
+
   private onMouseDown = (e: MouseEvent) => {
-    if (e.button === 0) this.fireHeld = true;
+    if (!this.playing) return;
+    this.pressControl(`Mouse${e.button}`, e);
+    if (e.button !== 0 && controlForCode(this.bindings,`Mouse${e.button}`)?.id === 'fire') this.requestLock();
     this.audio.unlock();
   };
 
   private onMouseUp = (e: MouseEvent) => {
-    if (e.button === 0) this.fireHeld = false;
+    this.keys.delete(`Mouse${e.button}`);
   };
 
   private bitsFromKeys(): number {
     let bits = this.weaponPulse;
     this.weaponPulse = 0;
     for (const code of this.keys) {
-      bits |= CODE_BITS[code] ?? 0;
+      bits |= controlBits(this.bindings, [code]);
     }
     if (this.fireHeld) bits |= IN.FIRE;
     if (this.usePulse > 0) {
@@ -1602,9 +1557,9 @@ export class BlacksiteRuntime {
     const boss = -1;
     const w = wasm.hs_fb_w();
     const h = wasm.hs_fb_h();
-    const fx = { muzzle: hud.muzzle, hurt: hud.hurt, time: this.worldEffects.time, boss,
+    const fx = { flash: this.gfx.flash, motion: this.gfx.shake, debris: this.gfx.debris, muzzle: hud.muzzle, hurt: hud.hurt, time: this.worldEffects.time, boss,
       hurtDir: hud.hurtDir, strain: hud.strain, encounter: this.worldEffects.bossAtmosphere(),
-      entrance: this.worldEffects.projectEntrance(viewHud,w/h), sector: hud.wave, yaw: hud.yaw, shocks: this.worldEffects.project(viewHud, w / h) };
+      entrance: this.worldEffects.projectEntrance(viewHud,w/h), sector: hud.wave, yaw: hud.yaw, shocks: this.worldEffects.project(viewHud, w / h).map(s => ({...s,strength:s.strength*this.gfx.shake})) };
     let presented = false;
     if (this.gpuReady && blit.drawWorld) {
       wasm.hs_prepare_gpu();
@@ -1692,7 +1647,7 @@ export class BlacksiteRuntime {
     if (!import.meta.env.DEV) return;
     const mapCodes = (codes: string[]) => {
       let bits = 0;
-      for (const c of codes) bits |= CODE_BITS[c] ?? 0;
+      for (const c of codes) bits |= controlBits(DEFAULT_BINDINGS, [c]);
       return bits;
     };
     window.__controlsTest = {
@@ -1703,6 +1658,8 @@ export class BlacksiteRuntime {
         signature: sectorEffect(this.hud.wave).name, entrance:this.worldEffects.projectEntrance(this.hud,1.6) }),
       getEnemies: () => this.lastEnemies.map((e) => ({ ...e })),
       getYaw: () => this.wasm?.hs_yaw() ?? 0,
+      getPreferences: () => ({gfx:{...this.gfx},bindings:this.bindings}),
+      getFeedback: () => ({muzzle:this.hud.muzzle,hurt:this.hud.hurt,shake:this.hud.shake}),
       getSpeed: () => this.wasm?.hs_speed() ?? 0,
       getX: () => this.wasm?.hs_x() ?? 0,
       getY: () => this.wasm?.hs_y() ?? 0,
@@ -1815,6 +1772,8 @@ declare global {
       getWorldEffects: () => { time: number; wave: number; signature: string; entrance?: ReturnType<WorldEffects["projectEntrance"]> };
       getEnemies?: () => EnemyCue[];
       getYaw: () => number;
+      getPreferences: () => {gfx: GfxOpts; bindings: ControlBindings};
+      getFeedback: () => {muzzle:number;hurt:number;shake:number};
       getSpeed: () => number;
       getX?: () => number;
       getY?: () => number;

@@ -16,8 +16,8 @@ export function hasPressureBank(slot: number) {
   return slot === 13 || slot === 20 || slot === 28;
 }
 
-export function pressureHint(pressure: number, venting: number, ammo: number) {
+export function pressureHint(pressure: number, venting: number, ammo: number, reloadKey = "R") {
   if (venting > 0) return ammo > 0 && pressure >= 0.2 ? "FIRE TO DISCHARGE · WAIT TO COOL" : "VENTING SAFELY";
-  if (pressure >= 0.999) return "PRESS R TO VENT · PRESSURE LIMIT";
-  return "R TO VENT · FIRE DURING VENT FOR BLAST";
+  if (pressure >= 0.999) return `PRESS ${reloadKey} TO VENT · PRESSURE LIMIT`;
+  return `${reloadKey} TO VENT · FIRE DURING VENT FOR BLAST`;
 }

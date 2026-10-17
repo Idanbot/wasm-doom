@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { HudState } from "@/game/types";
 
 /** One first-play reminder, after three seconds moving with an empty magazine. */
-export function ReloadHint({ hud }: { hud: HudState }) {
+export function ReloadHint({ hud, reloadKey = "R" }: { hud: HudState; reloadKey?: string }) {
   const [seen, setSeen] = useState(() => {
     try {
       return localStorage.getItem("blacksite-reload-hint-seen") === "1";
@@ -33,7 +33,7 @@ export function ReloadHint({ hud }: { hud: HudState }) {
   }, [visible]);
   return visible ? (
     <div className="reload-hint" role="status">
-      Press <kbd>R</kbd> to reload
+      Press <kbd>{reloadKey}</kbd> to reload
     </div>
   ) : null;
 }

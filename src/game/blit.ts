@@ -5,6 +5,9 @@ import { sectorEffect, type Entrance, type Shockwave } from "./sector-effects";
 export type BlitKind = "webgpu" | "webgl2" | "canvas2d";
 
 export type BlitFx = {
+  flash?: number;
+  motion?: number;
+  debris?: number;
   muzzle: number;
   hurt: number;
   time: number;
@@ -48,12 +51,15 @@ function writeEffectUniforms(data: Float32Array, fx?: BlitFx) {
     data.set([s.x, s.y, s.radius, s.strength], 20 + i * 4);
     data[36 + i] = s.depth;
   }
+  data[16] = fx?.flash ?? 1;
   // `feedback`: x = directional hurt bearing, y = low-health strain.
   data[48] = fx?.hurtDir ?? 0;
   data[49] = fx?.strain ?? 0;
   data[50] = fx?.encounter?.phase ?? 0;
   data[51] = fx?.encounter?.pulse ?? 0;
   if (fx?.encounter) data.set(fx.encounter.color, 12);
+  data[52] = fx?.debris ?? 1;
+  data[53] = fx?.motion ?? 1;
 }
 
 export async function createBlitter(
@@ -176,6 +182,7 @@ struct Uni {
   entrance: vec4<f32>,
   entranceColor: vec4<f32>,
   feedback: vec4<f32>,
+  comfort: vec4<f32>,
 };
 @group(0) @binding(0) var fb: texture_2d<f32>;
 @group(0) @binding(1) var bloomTex: texture_2d<f32>;
@@ -280,7 +287,7 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
   let depthMask = smoothstep(0.015, 0.12, depth);
   let scan = select(1.0, pow(abs(sin(q.y * 55.0 + u.time * drift * 3.0)), 12.0), kind == 3.0 || kind == 7.0);
   let ion = select(1.0, 0.45 + 0.55 * abs(sin(q.x * 16.0 - u.time * drift * 2.0)), kind == 4.0 || kind == 5.0);
-  c = vec4<f32>(c.rgb + u.atmosphere.rgb * (mote * twinkle * scan * ion * 0.28 + haze * 0.025) * light * depthMask, depth);
+  c = vec4<f32>(c.rgb + u.atmosphere.rgb * (mote * twinkle * scan * ion * 0.28 + haze * 0.025) * light * depthMask * u.comfort.x, depth);
   if (u.feedback.z > 0.0) {
     // Palette shift and an expanding phase ripple touch distant world pixels;
     // zero-depth weapon pixels keep their authored colours.
@@ -289,7 +296,7 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
     let pulse = u.feedback.w;
     let radius = length((inp.uv - 0.5) * vec2<f32>(aspect, 1.0));
     let wave = exp(-abs(radius - (1.0 - pulse) * 0.85) * 45.0) * pulse;
-    let energy = (0.018 * phase + 0.035 * pulse + wave * 0.12) * world;
+    let energy = (0.018 * phase + (0.035 * pulse + wave * 0.12) * u.motion.x) * world;
     c = vec4<f32>(mix(c.rgb, c.rgb * (vec3<f32>(0.86) + u.atmosphere.rgb * 0.22), world * 0.3) + u.atmosphere.rgb * energy, depth);
   }
   if (u.entranceColor.w > 0.0) {
@@ -303,7 +310,7 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
     let visible=smoothstep(u.entrance.w-.025,u.entrance.w,depth);
     let fade=sin(phase*3.14159);
     let energy=(beam*.24+ring*.55)*exp(-radius*3.0)*fade*visible;
-    c=vec4<f32>(c.rgb+u.entranceColor.rgb*energy,depth);
+    c=vec4<f32>(c.rgb+u.entranceColor.rgb*energy*u.motion.x,depth);
   }
 
 
@@ -327,7 +334,7 @@ fn fs(inp: VSOut) -> @location(0) vec4<f32> {
   if (u.muzzle > 0.02) {
     // Heat shimmer: a short upward wobble that rises with the shot and decays
     // with it, strongest low in the frame where the muzzle flash sits.
-    let amp = u.muzzle * 0.0032;
+    let amp = u.muzzle * 0.0032 * u.comfort.y;
     let rise = u.time * 2.4;
     let wob = sin(inp.uv.y * 46.0 - rise) * sin(inp.uv.x * 31.0 + rise * 0.7);
     let low = smoothstep(0.85, 0.05, inp.uv.y);
@@ -428,7 +435,7 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
   let pipeline: GPURenderPipeline | null = null;
   let bloomPipe: GPURenderPipeline | null = null;
   let uniBuf: GPUBuffer | null = null;
-  const uniData = new Float32Array(52);
+  const uniData = new Float32Array(56);
   let tex: GPUTexture[] = [];
   let view: GPUTextureView[] = [];
   let bloomTex: GPUTexture | null = null;
@@ -566,7 +573,7 @@ async function createGpuBlit(canvas: HTMLCanvasElement): Promise<Blitter | null>
         primitive: { topology: "triangle-list" },
       });
       uniBuf = dev.createBuffer({
-        size: 208,
+        size: 224,
         usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
       });
       world?.dispose();
@@ -763,6 +770,7 @@ uniform vec4 shockDepth;
 uniform vec4 entrance;
 uniform vec4 entranceColor;
 uniform vec4 feedback;
+uniform vec4 comfort;
 in vec2 v;
 out vec4 o;
 
@@ -796,7 +804,7 @@ void main(){
   rgb *= 1.0 - 0.22 * dot(g, g);
 
   if (muzzle > 0.02) {
-    float amp = muzzle * 0.0032;
+    float amp = muzzle * 0.0032 * comfort.y;
     float rise = time * 2.4;
     float wob = sin(v.y * 46.0 - rise) * sin(v.x * 31.0 + rise * 0.7);
     float low = smoothstep(0.85, 0.05, v.y);
@@ -876,13 +884,13 @@ void main(){
   float light = clamp(dot(raw.rgb,vec3(.3,.5,.2))*1.8+muzzle*1.7,.04,1.5);
   float scan = atmosphere.w==3.0||atmosphere.w==7.0?pow(abs(sin(q.y*55.0+time*motion.y*3.0)),12.0):1.0;
   float ion = atmosphere.w==4.0||atmosphere.w==5.0?.45+.55*abs(sin(q.x*16.0-time*motion.y*2.0)):1.0;
-  rgb += atmosphere.rgb*(mote*(.45+.55*flicker*flicker)*scan*ion*.28+haze*.025)*light*smoothstep(.015,.12,raw.a);
+  rgb += atmosphere.rgb*(mote*(.45+.55*flicker*flicker)*scan*ion*.28+haze*.025)*light*smoothstep(.015,.12,raw.a)*comfort.x;
   if (feedback.z > 0.0) {
     float world = smoothstep(.015,.10,raw.a);
     float pulse = feedback.w;
     float radius = length((v-.5)*vec2(aspect,1.0));
     float wave = exp(-abs(radius-(1.0-pulse)*.85)*45.0)*pulse;
-    float energy = (.018*feedback.z+.035*pulse+wave*.12)*world;
+    float energy = (.018*feedback.z+(.035*pulse+wave*.12)*motion.x)*world;
     rgb = mix(rgb,rgb*(vec3(.86)+atmosphere.rgb*.22),world*.3)+atmosphere.rgb*energy;
   }
   if(entranceColor.w>0.0) {
@@ -893,7 +901,7 @@ void main(){
     float beam=pow(abs(cos((angle+phase*(1.1+entranceColor.w*.08)+jag)*rays*.5)),90.0);
     float ring=exp(-abs(radius-(1.0-phase)*.32)*90.0);
     float visible=smoothstep(entrance.w-.025,entrance.w,raw.a);
-    rgb+=entranceColor.rgb*(beam*.24+ring*.55)*exp(-radius*3.0)*sin(phase*3.14159)*visible;
+    rgb+=entranceColor.rgb*(beam*.24+ring*.55)*exp(-radius*3.0)*sin(phase*3.14159)*visible*motion.x;
   }
   o = vec4(rgb, 1.0);
 }
@@ -926,6 +934,7 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
   const locWorldTexture = gl.getUniformLocation(prog, "worldTexture");
   const locRes = gl.getUniformLocation(prog, "res");
   const locDisplay = gl.getUniformLocation(prog, "display");
+  const locComfort = gl.getUniformLocation(prog, "comfort");
   const locMuzzle = gl.getUniformLocation(prog, "muzzle");
   const locHurt = gl.getUniformLocation(prog, "hurt");
   const locCrt = gl.getUniformLocation(prog, "crt");
@@ -941,7 +950,7 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
   const locShockDepth = gl.getUniformLocation(prog, "shockDepth");
   // Mirrors the WGSL uniform: 48 floats of existing effects + a 4-float
   // feedback block (hurtDir, strain, 2 spare). Must match `writeEffectUniforms`.
-  const effectData = new Float32Array(52);
+  const effectData = new Float32Array(56);
   const locFeedback = gl.getUniformLocation(prog, "feedback");
   const uploadEffects = (fx?: BlitFx) => {
     writeEffectUniforms(effectData, fx);
@@ -952,6 +961,7 @@ function createGlBlit(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext): Bl
     gl.uniform4fv(locEntranceColor,effectData.subarray(44,48));
     gl.uniform4fv(locShockDepth, effectData.subarray(36, 40));
     gl.uniform4fv(locFeedback, effectData.subarray(48, 52));
+    gl.uniform4fv(locComfort, effectData.subarray(52, 56));
   };
 
   const vao = gl.createVertexArray();
@@ -1119,7 +1129,7 @@ function createCanvas2dBlit(canvas: HTMLCanvasElement): Blitter {
       if (fx?.encounter) {
         const e = fx.encounter;
         ctx.save(); ctx.globalCompositeOperation = "screen";
-        ctx.fillStyle = `rgba(${e.color.map(c => Math.round(c * 255)).join(",")},${.015 * e.phase + .05 * e.pulse})`;
+        ctx.fillStyle = `rgba(${e.color.map(c => Math.round(c * 255)).join(",")},${.015 * e.phase + .05 * e.pulse * (fx.flash ?? 1)})`;
         const tile = Math.max(8, Math.ceil(dh / 32));
         for (let y = 0; y < dh; y += tile) for (let x = 0; x < dw; x += tile) {
           const px = Math.min(w - 1, Math.floor(x / dw * w)), py = Math.min(h - 1, Math.floor(y / dh * h));
@@ -1130,7 +1140,7 @@ function createCanvas2dBlit(canvas: HTMLCanvasElement): Blitter {
       if (fx?.sector !== undefined) {
         const profile = sectorEffect(fx.sector);
         ctx.save(); ctx.globalCompositeOperation = "screen";
-        for (let i = 0; i < 110; i++) {
+        for (let i = 0; i < Math.round(110 * (fx.debris ?? 1)); i++) {
           const seed = Math.sin(i * 127.1 + profile.index * 311.7) * 43758.5453;
           const rand = seed - Math.floor(seed);
           const x = ((rand + (fx.yaw ?? 0) * .04) % 1 + 1) % 1 * dw;

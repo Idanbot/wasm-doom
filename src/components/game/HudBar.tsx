@@ -11,12 +11,14 @@ export function HudBar({
   resolution,
   renderer,
   showStats = false,
+  reloadKey = "R",
 }: {
   hud: HudState;
   fps: number;
   resolution: string;
   renderer: string;
   showStats?: boolean;
+  reloadKey?: string;
 }) {
   const weapon = WEAPONS[hud.weapon] ?? WEAPONS[0]!;
   const sector = sectorForWave(hud.wave);
@@ -99,7 +101,7 @@ export function HudBar({
             <div className="pressure-track" role="progressbar" aria-label="Banked pressure" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(hud.pressure * 100)}>
               <i style={{ width: `${Math.max(0, Math.min(100, hud.pressure * 100))}%` }} />
             </div>
-            <small>{pressureHint(hud.pressure, hud.venting, hud.ammo)}</small>
+            <small>{pressureHint(hud.pressure, hud.venting, hud.ammo, reloadKey)}</small>
           </section>
         )}
         <section

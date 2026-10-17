@@ -91,13 +91,23 @@ export type GfxOpts = {
   crt: boolean;
   bloom: boolean;
   fog: boolean;
+  flash: number;
+  shake: number;
+  debris: number;
 };
 
 export const DEFAULT_GFX: GfxOpts = {
   crt: true,
   bloom: true,
   fog: true,
+  flash: 1,
+  shake: 1,
+  debris: 1,
 };
+
+export function effectIntensity(value: unknown): number {
+  return typeof value === 'number' && Number.isFinite(value) ? Math.max(0, Math.min(1,value)) : 1;
+}
 
 export const DEFAULT_HUD: HudState = {
   health: 100,
