@@ -30,8 +30,9 @@ Settings, records and checkpoints stay on the device; no accounts or backend.
 | Pause / resume | `Esc` or `P` |
 
 Choose a difficulty after loading completes; it stays fixed for the run.
-Mouse look responds every display frame, with wider vertical look and interpolated
-camera movement. Sensitivity remains adjustable in Settings.
+Mouse look responds every display frame, with matching horizontal/vertical
+sensitivity, wider vertical look and interpolated camera movement.
+Sensitivity remains adjustable in Settings.
 For GS-4 SINK, LV-8 UNDERTOW and SL-12 HELIOS, **R** vents stored pressure;
 firing during the vent spends a round on a heavy, inaccurate discharge.
 

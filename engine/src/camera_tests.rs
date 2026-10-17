@@ -16,7 +16,7 @@ fn immediate_look_updates_aim_without_advancing_gameplay() {
     let (yaw, elapsed, ammo, cooldown, position) = (e.pa, e.elapsed, e.mag, e.cooldown, (e.px, e.py));
     e.look(2.0, -3.0);
     assert!((e.pa - yaw - 0.0124).abs() < 1e-6);
-    assert!((e.pitch - 0.0162).abs() < 1e-6);
+    assert!((e.pitch - 3.0 * 0.0062 / 0.81).abs() < 1e-6);
     assert_eq!(e.hud.yaw, e.pa);
     assert_eq!((e.elapsed, e.mag, e.cooldown, (e.px, e.py)), (elapsed, ammo, cooldown, position));
     let aim = (e.pa, e.pitch);
@@ -34,6 +34,35 @@ fn look_displacement_is_independent_of_mouse_packet_count() {
     for _ in 0..240 { e.look(0.1, -0.05); }
     assert!((e.pa - expected.0).abs() < 1e-5);
     assert!((e.pitch - expected.1).abs() < 1e-5);
+}
+
+#[test]
+fn mouse_tracking_has_equal_screen_gain_in_every_direction() {
+    let mut e = testutil::arena();
+    e.spawn_with_skin(EK_HUSK, SKIN_RIFLEMAN, 9.5, 4.5).unwrap();
+    let cue = |e: &Engine| {
+        let mut cues = [voices::EnemyCue::default(); 1];
+        assert_eq!(voices::snapshot(e, &mut cues), 1);
+        (cues[0].screen_x * e.w as f32, cues[0].screen_y * e.h as f32)
+    };
+    for (w, h) in [(160, 100), (320, 180), (640, 480), (390, 844), (1920, 540)] {
+        e.w = w; e.h = h;
+        for pitch in [-0.6, 0.0, 0.6] {
+            for (mx, my) in [(0.5, 0.0), (-0.5, 0.0), (0.0, 0.5), (0.0, -0.5),
+                (0.5, 0.5), (-0.5, 0.5), (0.5, -0.5), (-0.5, -0.5)] {
+                e.pa = 0.0; e.pitch = pitch;
+                let start = cue(&e);
+                e.look(mx, my);
+                let end = cue(&e);
+                // A centered target moves by focal_length * tan(yaw).
+                // Both mouse axes must share that local gain in screen pixels.
+                let gain = h as f32 / (2.0 * (0.72 / 1.6)) * 0.0062;
+                let error = ((end.0 - start.0) + mx * gain).abs()
+                    .max(((end.1 - start.1) + my * gain).abs());
+                assert!(error < 0.001, "{w}x{h}, pitch {pitch}, mouse ({mx}, {my}): error {error}");
+            }
+        }
+    }
 }
 
 #[test]

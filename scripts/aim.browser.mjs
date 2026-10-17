@@ -56,7 +56,27 @@ test('real WASM aim updates every display frame and camera movement interpolates
       rt.last=100;rt.accumulator=0;const beforeMouse=w.hs_yaw();rt.frame(101);
       const immediate={yaw:w.hs_yaw()-beforeMouse,ticks:ticks(),sample:samples.at(-1)};
       delete document.pointerLockElement;
-      return {rates,movement,beforePause,paused,immediate};
+      // Measure the GPU projection, rather than comparing unlike yaw/pitch units.
+      const axes=[];
+      const view=()=>{
+        w.hs_prepare_gpu();
+        return new Float32Array(w.memory.buffer,w.hs_gpu_view(),8).slice();
+      };
+      for(const [width,height] of [[160,100],[320,180],[390,844],[1920,540]]) {
+        w.hs_resize(width,height);
+        for(const offset of [0,30,-60,30]) {
+          w.hs_look(0,offset);
+          for(let angle=0;angle<8;angle++) {
+            const mx=Math.cos(angle*Math.PI/4),my=Math.sin(angle*Math.PI/4);
+            const before=view();w.hs_look(mx,my);const after=view();w.hs_look(-mx,-my);
+            const yaw=Math.atan2(before[3],before[2])-Math.atan2(after[3],after[2]);
+            axes.push({width,height,mx,my,
+              x:width*.5*Math.tan(yaw)/Math.hypot(after[4],after[5]),
+              y:after[6]-before[6]});
+          }
+        }
+      }
+      return {rates,movement,beforePause,paused,immediate,axes};
     });
     for(const rate of results.rates) {
       assert.equal(rate.ticks,20,`${rate.hz} Hz changed simulation cadence`);
@@ -73,6 +93,12 @@ test('real WASM aim updates every display frame and camera movement interpolates
     assert.equal(results.paused.view.x,results.beforePause.x);
     assert.ok(Math.abs(results.immediate.yaw-.5*.0062)<1e-6,'mouse event must update aim before the next physics tick');
     assert.equal(results.immediate.ticks,4);
+    for(const axis of results.axes) {
+      const gain=axis.height*.0062/.9;
+      assert.ok(Math.abs(axis.x+axis.mx*gain)<.005,`horizontal gain: ${JSON.stringify(axis)}`);
+      assert.ok(Math.abs(axis.y+axis.my*gain)<.005,`vertical gain: ${JSON.stringify(axis)}`);
+      assert.ok(Math.abs(Math.hypot(axis.x,axis.y)-gain)<.005,`directional gain: ${JSON.stringify(axis)}`);
+    }
     assert.deepEqual(errors,[]);
   } finally {await browser.close();}
 });

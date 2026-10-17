@@ -2,6 +2,10 @@
 use crate::*;
 
 pub(crate) const PITCH_LIMIT: f32 = 0.85;
+const LOOK_GAIN: f32 = 0.0062;
+// Horizontal focal length is height / (2 * (0.72 / 1.6)); a pitch unit
+// shifts the horizon by height * 0.9. Match their screen-space mouse gain.
+const PITCH_GAIN: f32 = LOOK_GAIN / (2.0 * (0.72 / 1.6) * 0.9);
 
 pub(crate) struct Camera {
     previous: [f32; 2],
@@ -20,8 +24,8 @@ impl Engine {
     /// Apply before combat as well as rendering; no filtering or acceleration.
     pub(crate) fn look(&mut self, mx: f32, my: f32) {
         if self.state != 0 { return; }
-        self.pa += finite(mx) * 0.0062;
-        self.pitch = (self.pitch - finite(my) * 0.0054).clamp(-PITCH_LIMIT, PITCH_LIMIT);
+        self.pa += finite(mx) * LOOK_GAIN;
+        self.pitch = (self.pitch - finite(my) * PITCH_GAIN).clamp(-PITCH_LIMIT, PITCH_LIMIT);
         self.hud.yaw = self.pa;
     }
 
