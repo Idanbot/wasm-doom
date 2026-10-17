@@ -11,6 +11,7 @@ pub struct EnemyCue {
 }
 
 pub(crate) fn snapshot(e: &Engine, out: &mut [EnemyCue]) -> usize {
+    let (px, py) = e.view_position();
     let (dx, dy) = (e.pa.cos(), e.pa.sin());
     let plane = 0.72 * (e.w as f32 / e.h as f32 / 1.6);
     let horizon = e.h as f32 * (0.5 + e.pitch * 0.9);
@@ -21,7 +22,7 @@ pub(crate) fn snapshot(e: &Engine, out: &mut [EnemyCue]) -> usize {
         if n >= out.len() { break; }
         if !crate::enemies::is_hostile_kind(enemy.kind) { continue; }
         let Some(skin) = skin_def(enemy.skin) else { continue; };
-        let (sx, sy) = (enemy.x - e.px, enemy.y - e.py);
+        let (sx, sy) = (enemy.x - px, enemy.y - py);
         let depth = sx * dx + sy * dy;
         let distance = (sx * sx + sy * sy).sqrt();
         if distance > 20.0 { continue; }
@@ -29,7 +30,7 @@ pub(crate) fn snapshot(e: &Engine, out: &mut [EnemyCue]) -> usize {
         let screen_y = if depth > 0.12 { (horizon + enemy.zoff / depth) / e.h as f32 - skin.scale / (2.0 * depth) } else { -10.0 };
         out[n] = EnemyCue { id: id as f32, skin: enemy.skin as f32, anim: enemy.anim as f32, hp: enemy.hp as f32,
             x: enemy.x, y: enemy.y, screen_x, screen_y,
-            sight: if e.los(e.px, e.py, enemy.x, enemy.y) { 1.0 } else { 0.0 }, distance };
+            sight: if e.los(px, py, enemy.x, enemy.y) { 1.0 } else { 0.0 }, distance };
         n += 1;
     }
     n
@@ -48,6 +49,7 @@ pub struct BarCue {
 }
 
 pub(crate) fn snapshot_bars(e: &Engine, out: &mut [BarCue]) -> usize {
+    let (px, py) = e.view_position();
     let (dx, dy) = (e.pa.cos(), e.pa.sin());
     let plane = 0.72 * (e.w as f32 / e.h as f32 / 1.6);
     let horizon = e.h as f32 * (0.5 + e.pitch * 0.9);
@@ -57,7 +59,7 @@ pub(crate) fn snapshot_bars(e: &Engine, out: &mut [BarCue]) -> usize {
         if !crate::enemies::is_hostile_kind(enemy.kind) || enemy.hp <= 0 || enemy.bar_t <= 0.0 {
             continue;
         }
-        let (sx, sy) = (enemy.x - e.px, enemy.y - e.py);
+        let (sx, sy) = (enemy.x - px, enemy.y - py);
         let depth = sx * dx + sy * dy;
         if depth < 0.2 { continue; }
         let screen_x = 0.5 * (1.0 + (-dy * sx + dx * sy) / (plane * depth));

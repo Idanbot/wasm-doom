@@ -803,7 +803,7 @@ fn mipmaps_average_texture_detail_and_render_at_extreme_pitch() {
     }
     e.rebuild_mipmaps();
     assert_eq!(e.sample_lod(0, 0, 0, 2.0) & 0xffffff, 0x7f7f7f);
-    for pitch in [-0.42, 0.0, 0.42] {
+    for pitch in [-camera::PITCH_LIMIT, 0.0, camera::PITCH_LIMIT] {
         e.pitch = pitch;
         e.render();
         assert!(e.fb.iter().any(|c| c & 0xffffff != 0));

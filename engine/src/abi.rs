@@ -238,6 +238,7 @@ pub(crate) fn apply_save(e: &mut Engine, s: &RunSave) {
     e.py = start.1;
     e.pa = start.2;
     e.pitch = 0.0;
+    e.reset_camera();
     e.apply_theme(e.wave);
     e.build_map();
     e.door.fill(0.0);
@@ -363,6 +364,14 @@ pub extern "C" fn hs_input(bits: u32, mx: f32, my: f32) {
     e.mx = finite(mx);
     e.my = finite(my);
 }
+
+/// Apply mouse displacement immediately, without advancing physics or weapons.
+#[no_mangle]
+pub extern "C" fn hs_look(mx: f32, my: f32) { eng().look(mx, my); }
+
+/// Presentation position: pointer to two f32s. Alpha is fixed-step remainder / step.
+#[no_mangle]
+pub extern "C" fn hs_camera(alpha: f32) -> *const f32 { eng().prepare_camera(alpha) }
 
 #[no_mangle]
 pub extern "C" fn hs_qa(bits: u32, enabled: i32) {

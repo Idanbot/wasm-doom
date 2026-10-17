@@ -105,6 +105,9 @@ type WasmExports = {
   hs_tex_size: () => number;
   hs_textures_ready: () => void;
   hs_input: (bits: number, mx: number, my: number) => void;
+  hs_look: (mx: number, my: number) => void;
+  /** Pointer to the two-f32 interpolated camera position. */
+  hs_camera: (alpha: number) => number;
   hs_qa: (bits: number, enabled: number) => void;
   hs_qa_armory: () => void;
   hs_fire_patches: () => number;
@@ -858,7 +861,7 @@ export class BlacksiteRuntime {
   }
 
   requestLock() {
-    if (this.aborted || !this.playing || window.matchMedia("(pointer: coarse)").matches || !this.canvas.requestPointerLock) return;
+    if (this.aborted || !this.playing || document.pointerLockElement === this.canvas || window.matchMedia("(pointer: coarse)").matches || !this.canvas.requestPointerLock) return;
     const request = ++this.pointerLockRequest;
     this.ignoreMouse = 3;
     this.lookX = 0;
@@ -1508,15 +1511,14 @@ export class BlacksiteRuntime {
 
     // Fixed simulation steps keep weapons, physics and AI independent of display refresh.
     const step = 1 / 60;
+    // Mouse displacement is consumed once per display frame, even when no
+    // simulation step is due. Combat and rendering share this immediate aim.
+    wasm.hs_look((this.lookX + this.touchLookX) * this.sens, (this.lookY + this.touchLookY) * this.sens);
+    this.lookX = this.lookY = this.touchLookX = this.touchLookY = 0;
     this.accumulator += dt;
-    while (this.accumulator >= step) {
+    while (this.accumulator + 1e-9 >= step) {
       const bits = this.qaOn ? this.qaBits : this.bitsFromKeys();
-      wasm.hs_input(
-        bits,
-        (this.lookX + this.touchLookX) * this.sens,
-        (this.lookY + this.touchLookY) * this.sens,
-      );
-      this.lookX = this.lookY = this.touchLookX = this.touchLookY = 0;
+      wasm.hs_input(bits, 0, 0);
       wasm.hs_tick(step);
       const effectHud = new DataView(wasm.memory.buffer, wasm.hs_hud_ptr(), HUD_SIZE);
       const effectWave = effectHud.getInt32(116, true);
@@ -1550,13 +1552,13 @@ export class BlacksiteRuntime {
         wave: soundHud.getInt32(116, true),
         bossPhase: soundHud.getInt32(128, true),
       });
-      this.accumulator -= step;
+      this.accumulator = Math.max(0, this.accumulator - step);
     }
     const hud = this.readHud();
     // Wave transitions swap the wall/door theme inside the engine; push
     // the two layers before presenting so no frame shows the old theme.
     if (hud.wave !== this.lastThemeWave) this.refreshThemeLayers(hud.wave);
-    this.presentFrame(hud);
+    this.presentFrame(hud, this.accumulator / step);
     const w = wasm.hs_fb_w(), h = wasm.hs_fb_h();
 
     // Radio text persists across frames and sector transitions. Boss death
@@ -1592,15 +1594,17 @@ export class BlacksiteRuntime {
     if (hud.state !== this.prevHud.state) this.hooks.onState(hud.state);
     this.prevHud = hud;
   }
-  private presentFrame(hud: HudState) {
+  private presentFrame(hud: HudState, alpha = 1) {
     const wasm = this.wasm!, blit = this.blit!;
+    const camera = new Float32Array(wasm.memory.buffer, wasm.hs_camera(alpha), 2);
+    const viewHud = { ...hud, x: camera[0]!, y: camera[1]! };
     if (this.atlasRevision !== blit.revision()) this.pushAtlas();
     const boss = -1;
     const w = wasm.hs_fb_w();
     const h = wasm.hs_fb_h();
     const fx = { muzzle: hud.muzzle, hurt: hud.hurt, time: this.worldEffects.time, boss,
       hurtDir: hud.hurtDir, strain: hud.strain, encounter: this.worldEffects.bossAtmosphere(),
-      entrance: this.worldEffects.projectEntrance(hud,w/h), sector: hud.wave, yaw: hud.yaw, shocks: this.worldEffects.project(hud, w / h) };
+      entrance: this.worldEffects.projectEntrance(viewHud,w/h), sector: hud.wave, yaw: hud.yaw, shocks: this.worldEffects.project(viewHud, w / h) };
     let presented = false;
     if (this.gpuReady && blit.drawWorld) {
       wasm.hs_prepare_gpu();

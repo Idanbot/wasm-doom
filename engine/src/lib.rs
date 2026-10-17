@@ -8,6 +8,7 @@ mod spatial_checks;
 #[cfg(test)]
 mod reachability_tests;
 mod abi;
+mod camera;
 mod difficulty;
 mod helpers;
 use helpers::*;
@@ -49,6 +50,8 @@ mod reload_presentation_tests;
 mod boss_weapon_tests;
 #[cfg(test)]
 mod projectile_tests;
+#[cfg(test)]
+mod camera_tests;
 
 use consts::*;
 use enemies::{default_skin, enemy_def, is_hostile_kind, skin_def};
@@ -99,6 +102,7 @@ struct Engine {
     py: f32,
     pa: f32,
     pitch: f32,
+    camera: camera::Camera,
     pr: f32,
     health: i32,
     armor: i32,
@@ -276,6 +280,7 @@ impl Engine {
             py: map::PLAYER_START.1,
             pa: map::PLAYER_START.2,
             pitch: 0.0,
+            camera: camera::Camera::new(map::PLAYER_START.0, map::PLAYER_START.1),
             pr: 0.22,
             difficulty: 1, run_shots: Vec::new(), run_hits: 0, run_ammo: 0, run_damage: 0, run_bosses: 0, current_shot: 0,
             health: 100,
@@ -432,6 +437,7 @@ impl Engine {
         if generate { e.gen_textures(); }
         e.rebuild_mipmaps();
         e.place_ents();
+        e.reset_camera();
         e
     }
 
@@ -444,6 +450,7 @@ impl Engine {
     // Test-only probe into the mipmap chain (see shade_and_mip_blend).
     fn tick(&mut self, dt: f32) {
         let dt = safe_dt(dt);
+        self.begin_camera_step();
         self.time += dt;
         self.age_smoke(dt);
         self.boss_vuln = (self.boss_vuln - dt).max(0.0);
@@ -508,9 +515,7 @@ impl Engine {
         let bits = if self.qa { self.qa_bits } else { self.bits };
 
         if self.state == 0 {
-            self.pa += self.mx * 0.0062;
-            self.pitch -= self.my * 0.0054;
-            self.pitch = self.pitch.clamp(-0.42, 0.42);
+            self.look(self.mx, self.my);
             self.mx = 0.0;
             self.my = 0.0;
 

@@ -44,13 +44,13 @@ test('pointer capture cannot restart after pause, stop or a newer capture reques
         cases.activeFallback=calls;
       }
       {
-        const {canvas,rt}=create();let resolve,exits=0;
+        const {canvas,rt}=create();let resolve,exits=0,locked=false;
         canvas.requestPointerLock=()=>new Promise(done=>{resolve=done;});
         const oldExit=document.exitPointerLock;
         document.exitPointerLock=()=>{exits++;};
-        Object.defineProperty(document,'pointerLockElement',{configurable:true,get:()=>canvas});
+        Object.defineProperty(document,'pointerLockElement',{configurable:true,get:()=>locked?canvas:null});
         rt.setPlaying(true);rt.requestLock();rt.setPlaying(false);
-        resolve();await flush();cases.lateCaptureReleased=exits;
+        locked=true;resolve();await flush();cases.lateCaptureReleased=exits;
         delete document.pointerLockElement;document.exitPointerLock=oldExit;
       }
       {

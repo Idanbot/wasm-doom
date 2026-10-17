@@ -83,6 +83,7 @@ impl Engine {
 
     pub(crate) fn render_planes(&mut self, dx: f32, dy: f32, plane_x: f32, plane_y: f32,
         horizon: f32, walls: &[[i32; 2]]) {
+        let (px, py) = self.view_position();
         let w = self.w;
         let h = self.h;
         let plane_len = (plane_x * plane_x + plane_y * plane_y).sqrt();
@@ -100,8 +101,8 @@ impl Engine {
             let distance = (0.5 * h as f32) / p.abs();
             let step_x = 2.0 * plane_x * distance / w as f32;
             let step_y = 2.0 * plane_y * distance / w as f32;
-            let start_x = self.px + (dx - plane_x) * distance + step_x * 0.5;
-            let start_y = self.py + (dy - plane_y) * distance + step_y * 0.5;
+            let start_x = px + (dx - plane_x) * distance + step_x * 0.5;
+            let start_y = py + (dy - plane_y) * distance + step_y * 0.5;
             let footprint = (distance * 2.0 * plane_len / w as f32)
                 .max(distance / p.abs()) * TEX as f32;
             let lod = footprint.max(1.0).log2().clamp(0.0, 8.0);
@@ -178,6 +179,7 @@ impl Engine {
     }
 
     pub(crate) fn prepare_gpu(&mut self) {
+        let (px, py) = self.view_position();
         self.update_lighting();
         self.update_surface_fx();
         self.rebuild_smoke_grid();
@@ -193,8 +195,8 @@ impl Engine {
         let tnow = self.time;
         let scratch = gpu_scratch();
         scratch.view = GpuView {
-            px: self.px,
-            py: self.py,
+            px,
+            py,
             dir_x,
             dir_y,
             plane_x,
@@ -216,14 +218,14 @@ impl Engine {
             let mut rdy = dir_y + plane_y * cam;
             if rdx.abs() < 1e-6 { rdx = 1e-6; }
             if rdy.abs() < 1e-6 { rdy = 1e-6; }
-            let mut map_x = self.px.floor() as i32;
-            let mut map_y = self.py.floor() as i32;
+            let mut map_x = px.floor() as i32;
+            let mut map_y = py.floor() as i32;
             let ddx = (1.0 / rdx).abs();
             let ddy = (1.0 / rdy).abs();
             let step_x = if rdx < 0.0 { -1 } else { 1 };
             let step_y = if rdy < 0.0 { -1 } else { 1 };
-            let mut sdx = if rdx < 0.0 { (self.px - map_x as f32) * ddx } else { (map_x as f32 + 1.0 - self.px) * ddx };
-            let mut sdy = if rdy < 0.0 { (self.py - map_y as f32) * ddy } else { (map_y as f32 + 1.0 - self.py) * ddy };
+            let mut sdx = if rdx < 0.0 { (px - map_x as f32) * ddx } else { (map_x as f32 + 1.0 - px) * ddx };
+            let mut sdy = if rdy < 0.0 { (py - map_y as f32) * ddy } else { (map_y as f32 + 1.0 - py) * ddy };
             let mut side = 0;
             let mut hit = 0u8;
             for _ in 0..(MAP_W + MAP_H) {
@@ -247,9 +249,9 @@ impl Engine {
                 }
             }
             let perp = if side == 0 {
-                (map_x as f32 - self.px + (1 - step_x) as f32 / 2.0) / rdx
+                (map_x as f32 - px + (1 - step_x) as f32 / 2.0) / rdx
             } else {
-                (map_y as f32 - self.py + (1 - step_y) as f32 / 2.0) / rdy
+                (map_y as f32 - py + (1 - step_y) as f32 / 2.0) / rdy
             }.abs().max(0.05);
             let z = if hit == 0 { 40.0 } else { perp };
             let line_h = (h as f32 / perp) as i32;
@@ -259,7 +261,7 @@ impl Engine {
             if draw0 < 0 { draw0 = 0; }
             if draw1 >= h as i32 { draw1 = h as i32 - 1; }
             if hit == 0 { draw0 = h as i32; draw1 = -1; }
-            let mut wall_x = if side == 0 { self.py + perp * rdy } else { self.px + perp * rdx };
+            let mut wall_x = if side == 0 { py + perp * rdy } else { px + perp * rdx };
             wall_x -= wall_x.floor();
             let mut tex_x = (wall_x * TEX as f32) as i32;
             if side == 0 && rdx > 0.0 { tex_x = TEX as i32 - tex_x - 1; }
@@ -272,7 +274,7 @@ impl Engine {
             let hash = (map_x.wrapping_mul(19) + map_y.wrapping_mul(7)) as u32;
             if tid == T_METAL && hash.is_multiple_of(7) { tid = T_HAZARD; }
             if tid == T_BRICK && hash.is_multiple_of(5) { tid = T_SKULL; }
-            let light = self.light_at(self.px + (perp - 0.03) * rdx, self.py + (perp - 0.03) * rdy);
+            let light = self.light_at(px + (perp - 0.03) * rdx, py + (perp - 0.03) * rdy);
             let dec = if map_x >= 0 && map_y >= 0 && (map_x as usize) < MAP_W && (map_y as usize) < MAP_H {
                 self.decal[map_y as usize * MAP_W + map_x as usize]
             } else { 0 };
@@ -316,7 +318,7 @@ impl Engine {
         // Paint far to near, matching the CPU path; transparent holes keep
         // the already drawn scenery instead of overwriting closer entities.
         scratch.sprites[..n].sort_by(|a, b| {
-            let depth = |s: &GpuSprite| (s.x - self.px) * dir_x + (s.y - self.py) * dir_y;
+            let depth = |s: &GpuSprite| (s.x - px) * dir_x + (s.y - py) * dir_y;
             depth(b).total_cmp(&depth(a))
         });
         scratch.sprite_n = n;
@@ -324,6 +326,7 @@ impl Engine {
     }
 
     pub(crate) fn render(&mut self) {
+        let (px, py) = self.view_position();
         self.update_lighting();
         self.update_surface_fx();
         self.rebuild_smoke_grid();
@@ -352,21 +355,21 @@ impl Engine {
             if rdy.abs() < 1e-6 {
                 rdy = 1e-6;
             }
-            let mut map_x = self.px.floor() as i32;
-            let mut map_y = self.py.floor() as i32;
+            let mut map_x = px.floor() as i32;
+            let mut map_y = py.floor() as i32;
             let ddx = (1.0 / rdx).abs();
             let ddy = (1.0 / rdy).abs();
             let step_x = if rdx < 0.0 { -1 } else { 1 };
             let step_y = if rdy < 0.0 { -1 } else { 1 };
             let mut sdx = if rdx < 0.0 {
-                (self.px - map_x as f32) * ddx
+                (px - map_x as f32) * ddx
             } else {
-                (map_x as f32 + 1.0 - self.px) * ddx
+                (map_x as f32 + 1.0 - px) * ddx
             };
             let mut sdy = if rdy < 0.0 {
-                (self.py - map_y as f32) * ddy
+                (py - map_y as f32) * ddy
             } else {
-                (map_y as f32 + 1.0 - self.py) * ddy
+                (map_y as f32 + 1.0 - py) * ddy
             };
             let mut side = 0;
             let mut hit = 0u8;
@@ -395,9 +398,9 @@ impl Engine {
                 }
             }
             let perp = if side == 0 {
-                (map_x as f32 - self.px + (1 - step_x) as f32 / 2.0) / rdx
+                (map_x as f32 - px + (1 - step_x) as f32 / 2.0) / rdx
             } else {
-                (map_y as f32 - self.py + (1 - step_y) as f32 / 2.0) / rdy
+                (map_y as f32 - py + (1 - step_y) as f32 / 2.0) / rdy
             }
             .abs()
             .max(0.05);
@@ -415,9 +418,9 @@ impl Engine {
             wall_spans[x] = if hit == 0 { [h as i32, -1] } else { [draw0, draw1] };
 
             let mut wall_x = if side == 0 {
-                self.py + perp * rdy
+                py + perp * rdy
             } else {
-                self.px + perp * rdx
+                px + perp * rdx
             };
             wall_x -= wall_x.floor();
             let mut tex_x = (wall_x * TEX as f32) as i32;
@@ -472,7 +475,7 @@ impl Engine {
                     dist_mul *= 0.85 + 0.4 * flick;
                 }
             }
-            let light = self.light_at(self.px + (perp - 0.03) * rdx, self.py + (perp - 0.03) * rdy);
+            let light = self.light_at(px + (perp - 0.03) * rdx, py + (perp - 0.03) * rdy);
 
             let dec = if map_x >= 0 && map_y >= 0 && map_x < MAP_W as i32 && map_y < MAP_H as i32 {
                 self.decal[map_y as usize * MAP_W + map_x as usize]
@@ -541,7 +544,7 @@ impl Engine {
             if e.kind == 0 {
                 continue;
             }
-            let depth = (e.x - self.px) * dir_x + (e.y - self.py) * dir_y;
+            let depth = (e.x - px) * dir_x + (e.y - py) * dir_y;
             if depth <= 0.12 { continue; }
             order[count] = (depth, i);
             count += 1;
@@ -552,8 +555,8 @@ impl Engine {
         let inv_det = 1.0 / (plane_x * dir_y - dir_x * plane_y);
         for &(_d, i) in &order[..count] {
             let e = self.ents[i];
-            let sx = e.x - self.px;
-            let sy = e.y - self.py;
+            let sx = e.x - px;
+            let sy = e.y - py;
             let tx = inv_det * (dir_y * sx - dir_x * sy);
             let ty = inv_det * (-plane_y * sx + plane_x * sy);
             if ty <= 0.12 {

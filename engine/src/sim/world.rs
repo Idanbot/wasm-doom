@@ -407,6 +407,7 @@ impl Engine {
         self.py = start.1;
         self.pa = start.2;
         self.pitch = 0.0;
+        self.reset_camera();
         self.state = 0;
         self.cooldown = 0.0;
         self.reload_t = 0.0;
