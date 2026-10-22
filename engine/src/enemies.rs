@@ -319,4 +319,43 @@ mod tests {
             assert!(!d.name.is_empty() && !d.role.is_empty());
         }
     }
+
+    #[test]
+    fn sector_spawns_use_valid_dedicated_skins_and_matching_combat_roles() {
+        let mut visual_skins = HashSet::new();
+        for wave in 1..=crate::campaign::LEVELS as i32 {
+            let level = crate::map::level_index(wave);
+            let (kind, packed_skin) = sector_spawn(wave, 0);
+            let skin = crate::field::visual_skin(packed_skin);
+
+            assert_eq!(skin, 37 + level as u8, "wave {wave} skin");
+            assert!(visual_skins.insert(skin), "duplicate visual skin {skin}");
+            assert!(skin_def(skin).is_some(), "wave {wave} has no skin definition");
+            assert_eq!(combat_skin(skin), SECTOR_BASE_SKINS[level]);
+            assert!(is_hostile_kind(kind), "wave {wave} has non-hostile kind {kind}");
+            assert!(enemy_def(kind).unwrap().hostile);
+        }
+    }
+
+    #[test]
+    fn sector_spawn_preserves_only_the_shield_flag() {
+        for wave in 1..=crate::campaign::LEVELS as i32 {
+            let (_, ordinary) = sector_spawn(wave, 0x00);
+            let (_, shielded) = sector_spawn(wave, crate::field::SHIELD_BIT | 0x35);
+
+            assert_eq!(ordinary, 37 + crate::map::level_index(wave) as u8);
+            assert_eq!(shielded & !crate::field::SHIELD_BIT, ordinary);
+            assert!(crate::field::is_shielded_spawn(shielded));
+            assert!(!crate::field::is_shielded_spawn(ordinary));
+        }
+    }
+
+    #[test]
+    fn sector_enemy_appearance_wraps_with_the_campaign_after_level_twenty_five() {
+        for wave in 1..=crate::campaign::LEVELS as i32 {
+            let expected = sector_spawn(wave, 0);
+            let endless = sector_spawn(wave + crate::campaign::LEVELS as i32, 0);
+            assert_eq!(endless, expected, "endless wave after sector {wave}");
+        }
+    }
 }
