@@ -208,4 +208,36 @@ mod tests {
         assert!(!shield_blocks(face, 5.0, 5.0, 3.0, 5.0));
         assert!(!shield_blocks(face, 5.0, 5.0, 5.0, 7.0));
     }
+
+    #[test]
+    fn boss_reward_sequence_maps_each_sector_to_its_matching_weapon_slot() {
+        let expected_slots = [
+            8, 9, 10, 12, 13, 11, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
+            29, 30, 31, 32,
+        ];
+        for wave in 1..=crate::campaign::LEVELS as i32 {
+            let kind = boss_case(wave);
+            assert!(is_boss_case(kind), "wave {wave} reward kind {kind}");
+            assert_eq!(boss_slot(kind), expected_slots[(wave - 1) as usize], "wave {wave} reward slot");
+            assert_eq!(boss_case(wave + crate::campaign::LEVELS as i32), kind);
+        }
+    }
+
+    #[test]
+    fn every_sector_powerup_is_supported_and_placed_on_walkable_map() {
+        let mut e = crate::Engine::new(160, 100);
+        for wave in 1..=crate::campaign::LEVELS as i32 {
+            e.wave = wave;
+            crate::map::build_level(&mut e);
+            crate::map::place_level(&mut e);
+
+            assert!(matches!(power_kind(wave), POWER_OVERDRIVE | POWER_FEED | POWER_AEGIS));
+            let powerups: Vec<_> = e.ents.iter().filter(|ent| ent.kind == crate::consts::EK_POWER).collect();
+            assert_eq!(powerups.len(), 1, "wave {wave} powerup count");
+            let powerup = powerups[0];
+            assert!(powerup.x >= 0.0 && powerup.x < crate::consts::MAP_W as f32);
+            assert!(powerup.y >= 0.0 && powerup.y < crate::consts::MAP_H as f32);
+            assert!(!e.circle_blocked(powerup.x, powerup.y, powerup.radius), "wave {wave} powerup is blocked");
+        }
+    }
 }
